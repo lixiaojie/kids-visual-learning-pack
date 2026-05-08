@@ -5,6 +5,7 @@
   "description": "Multi-theme visual learning dashboards for kids and parent-child reading.",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "build": "bash scripts/build-vercel.sh",
     "build:paw": "vite build boards/paw-patrol --base=./ --emptyOutDir --outDir ../../dist/paw-patrol",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
     "deploy": "bash scripts/deploy.sh"
