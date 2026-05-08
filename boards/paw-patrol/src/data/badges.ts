@@ -1,0 +1,68 @@
+import type { Badge } from "../types";
+
+export const badges: Badge[] = [
+  {
+    id: "rules",
+    name: "规则徽章",
+    meaning: "遵守秩序，保护大家",
+    childText: "遇到混乱时，先让大家安全有序。",
+    relatedCharacterIds: ["chase"],
+    icon: "ShieldCheck",
+  },
+  {
+    id: "bravery",
+    name: "勇敢徽章",
+    meaning: "面对危险不慌张",
+    childText: "勇敢不是乱冲，是知道怎么安全地帮忙。",
+    relatedCharacterIds: ["marshall"],
+    icon: "Flame",
+  },
+  {
+    id: "observation",
+    name: "观察徽章",
+    meaning: "从不同角度看问题",
+    childText: "站得高一点，也许能看到新线索。",
+    relatedCharacterIds: ["skye"],
+    icon: "Eye",
+  },
+  {
+    id: "building",
+    name: "建造徽章",
+    meaning: "用工具解决结构问题",
+    childText: "路坏了、石头挡住了，需要工程办法。",
+    relatedCharacterIds: ["rubble"],
+    icon: "Construction",
+  },
+  {
+    id: "creativity",
+    name: "创意徽章",
+    meaning: "废物利用，想新办法",
+    childText: "旧东西也可能变成新工具。",
+    relatedCharacterIds: ["rocky"],
+    icon: "Recycle",
+  },
+  {
+    id: "water",
+    name: "水上徽章",
+    meaning: "适应水上环境",
+    childText: "在水边救援，要用水上工具。",
+    relatedCharacterIds: ["zuma"],
+    icon: "Waves",
+  },
+  {
+    id: "teamwork",
+    name: "合作徽章",
+    meaning: "大家一起完成任务",
+    childText: "有些任务需要好几位队员合作。",
+    relatedCharacterIds: ["chase", "marshall", "skye", "rubble", "rocky", "zuma"],
+    icon: "Users",
+  },
+  {
+    id: "review",
+    name: "复盘徽章",
+    meaning: "说清楚发生了什么",
+    childText: "任务完成后，可以讲出问题、办法和结果。",
+    relatedCharacterIds: ["ryder"],
+    icon: "MessageCircleQuestion",
+  },
+];

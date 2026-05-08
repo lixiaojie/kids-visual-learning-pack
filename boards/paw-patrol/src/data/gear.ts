@@ -1,0 +1,60 @@
+import type { GearItem } from "../types";
+
+export const gearItems: GearItem[] = [
+  {
+    id: "police-car",
+    name: "警车",
+    characterId: "chase",
+    type: "vehicle",
+    functions: ["快速巡逻", "交通指挥", "追踪线索"],
+    bestForProblemTypes: ["迷路", "交通秩序", "搜索线索"],
+  },
+  {
+    id: "fire-truck",
+    name: "消防车",
+    characterId: "marshall",
+    type: "vehicle",
+    functions: ["水炮灭火", "云梯够到高处", "急救包帮助受伤的人"],
+    bestForProblemTypes: ["火灾", "高处救援", "医疗救援"],
+  },
+  {
+    id: "helicopter",
+    name: "直升机",
+    characterId: "skye",
+    type: "vehicle",
+    functions: ["空中观察", "快速飞行", "吊运轻小物品"],
+    bestForProblemTypes: ["高空任务", "远距离观察", "快速到达"],
+  },
+  {
+    id: "bulldozer",
+    name: "推土机",
+    characterId: "rubble",
+    type: "vehicle",
+    functions: ["挖掘泥土", "推开障碍", "修整道路"],
+    bestForProblemTypes: ["工程清障", "道路堵塞", "建筑问题"],
+  },
+  {
+    id: "recycle-truck",
+    name: "回收修理车",
+    characterId: "rocky",
+    type: "vehicle",
+    functions: ["收纳工具", "修理设备", "旧材料再利用"],
+    bestForProblemTypes: ["机器损坏", "工具不足", "修理创造"],
+  },
+  {
+    id: "hovercraft",
+    name: "水上艇",
+    characterId: "zuma",
+    type: "vehicle",
+    functions: ["水面移动", "靠近小船", "救援落水者"],
+    bestForProblemTypes: ["水上救援", "船只故障", "海边任务"],
+  },
+  {
+    id: "command-screen",
+    name: "任务屏幕",
+    characterId: "ryder",
+    type: "tool",
+    functions: ["接收求助", "分析问题", "分配队员"],
+    bestForProblemTypes: ["接收任务", "协调救援", "复盘表达"],
+  },
+];
