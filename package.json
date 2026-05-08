@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build:paw": "vite build boards/paw-patrol --base=./ --emptyOutDir --outDir ../../dist/paw-patrol",
-    "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol"
+    "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "react": "^18.3.1",
