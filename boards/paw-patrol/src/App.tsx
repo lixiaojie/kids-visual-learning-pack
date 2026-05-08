@@ -62,6 +62,17 @@ export function App() {
     setUnlockedBadges((previous) => Array.from(new Set([...previous, badgeId])));
   }
 
+  function handleResetAll() {
+    window.localStorage.removeItem(storageKey);
+    setUnlockedBadges([]);
+    setSelectedMissionCharacterId(null);
+    setMissionResult(null);
+    setCurrentMissionId(missions[0].id);
+    setSelectedCharacterId(characters[0].id);
+    setActiveTab("home");
+    setGuideOpen(false);
+  }
+
   function handleMissionChoice(characterId: string) {
     setSelectedMissionCharacterId(characterId);
 
@@ -91,6 +102,7 @@ export function App() {
     <div className="app-shell">
       <header className="app-header">
         <a className="brand-link" href="../../index.html" aria-label="返回学习包首页">
+          <span className="brand-back" aria-hidden="true">←</span>
           <span className="brand-badge">
             <IconFor name="PawPrint" />
           </span>
@@ -145,7 +157,7 @@ export function App() {
         {activeTab === "badges" && <BadgePanel unlockedBadges={unlockedBadges} />}
       </main>
 
-      <ParentGuide open={guideOpen} onClose={() => setGuideOpen(false)} />
+      <ParentGuide open={guideOpen} onClose={() => setGuideOpen(false)} onReset={handleResetAll} />
     </div>
   );
 }

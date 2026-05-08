@@ -1347,3 +1347,83 @@ h3,
     grid-template-columns: 1fr;
   }
 }
+
+/* Brand 返回箭头：让 brand-link 看起来明显是"返回"链接 */
+.brand-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.brand-link:hover {
+  text-decoration: none;
+}
+
+.brand-link:hover .brand-back {
+  color: var(--ink);
+  transform: translateX(-4px);
+}
+
+.brand-link:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* 家长工具：重置 / 返回首页 */
+.parent-tools {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 2px dashed var(--line);
+}
+
+.parent-tools .section-kicker {
+  margin-bottom: 10px;
+}
+
+.parent-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tool-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.tool-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--ink);
+}
+
+.tool-danger {
+  border-color: #ffb3b3;
+  background: #fff5f5;
+  color: #c0392b;
+}
+
+.tool-danger:hover {
+  border-color: #c0392b;
+  background: #ffe8e8;
+}

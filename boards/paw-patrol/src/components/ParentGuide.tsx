@@ -1,10 +1,17 @@
 type ParentGuideProps = {
   open: boolean;
   onClose: () => void;
+  onReset: () => void;
 };
 
-export function ParentGuide({ open, onClose }: ParentGuideProps) {
+export function ParentGuide({ open, onClose, onReset }: ParentGuideProps) {
   if (!open) return null;
+
+  function handleResetClick() {
+    if (window.confirm("确定要清空所有徽章进度吗？此操作不可撤销。")) {
+      onReset();
+    }
+  }
 
   return (
     <div className="modal-backdrop" role="presentation" onClick={onClose}>
@@ -44,6 +51,18 @@ export function ParentGuide({ open, onClose }: ParentGuideProps) {
             <strong>合作</strong>
             <span>有些任务为什么需要多个队员？</span>
           </article>
+        </div>
+
+        <div className="parent-tools">
+          <p className="section-kicker">家长工具</p>
+          <div className="parent-tools-row">
+            <button type="button" className="tool-button tool-danger" onClick={handleResetClick}>
+              重置徽章进度
+            </button>
+            <a className="tool-button" href="../../index.html">
+              返回学习包首页
+            </a>
+          </div>
         </div>
       </section>
     </div>
