@@ -17,3 +17,6 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# raw PNG assets — keep WebP in repo, PNGs are intermediate (~127MB → ~7MB)
+boards/spider-verse/assets/**/*.png

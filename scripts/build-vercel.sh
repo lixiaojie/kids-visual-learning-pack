@@ -27,10 +27,10 @@ cp index.html dist/
 echo "==> copying shared/"
 cp -r shared dist/
 
-echo "==> copying spider-verse (excluding test/spec)"
+echo "==> copying spider-verse (excluding test/spec, raw PNG)"
 cp -r boards/spider-verse dist/boards/
 find dist/boards/spider-verse \
-  \( -name '*.test.*' -o -name '*.spec.*' -o -name '.DS_Store' \) \
+  \( -name '*.test.*' -o -name '*.spec.*' -o -name '.DS_Store' -o -path '*/assets/*.png' \) \
   -delete
 
 echo "==> build done. dist/ layout:"
