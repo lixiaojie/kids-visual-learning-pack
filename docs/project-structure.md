@@ -8,6 +8,7 @@
 ├── README.md                   # 项目总说明
 ├── boards/
 │   ├── spider-verse/           # 蜘蛛宇宙视觉学习包
+│   │   ├── assets/             # 批量生成图片素材
 │   │   ├── index.html
 │   │   ├── styles.css
 │   │   ├── script.js
@@ -36,7 +37,7 @@
 
 ## 蜘蛛宇宙视觉故事板
 
-`boards/spider-verse/` 是纯静态 HTML / CSS / JS 页面，包含 10 张主卡和 2 个家长附录。`structure.test.mjs` 用来检查主卡数量、附录、导航、打印按钮和可点击讲解入口是否齐全。
+`boards/spider-verse/` 是纯静态 HTML / CSS / JS 页面，包含 10 个视觉模块和家长讲解附录。图片素材按 `assets/cast`、`assets/characters`、`assets/relationships`、`assets/story-01`、`assets/story-02`、`assets/boards` 分类放置。`structure.test.mjs` 用来检查模块数量、附录、导航、打印按钮、素材路径和可点击讲解入口是否齐全。
 
 ## 命名建议
 

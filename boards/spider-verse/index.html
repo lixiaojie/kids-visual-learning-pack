@@ -3,238 +3,219 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>不止一个蜘蛛英雄：给孩子看的蜘蛛宇宙视觉故事板</title>
-  <meta name="description" content="面向 6 岁孩子的蜘蛛宇宙亲子视觉故事板，包含 10 张主卡和 2 个家长附录。">
+  <title>不止一个城市小英雄｜蛛网主题亲子故事板</title>
+  <meta name="description" content="面向 6 岁儿童和家长共读的原创蛛网主题视觉故事板，支持儿童模式、家长模式和 A4 打印。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Noto+Sans+SC:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Noto+Sans+SC:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <header class="topbar" aria-label="学习板导航">
-    <a class="brand" href="#card-1" aria-label="回到第一张卡">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span><strong>蜘蛛宇宙视觉故事板</strong><small>10 张主卡 + 2 个附录</small></span>
+<body data-mode="child">
+  <header class="topbar" aria-label="故事板导航">
+    <a class="brand" href="#hero" aria-label="回到封面">
+      <span class="brand-badge" aria-hidden="true"></span>
+      <span><strong>蛛网主题亲子故事板</strong><small>角色 · 关系 · 故事 · 选择</small></span>
     </a>
-    <nav class="card-nav" aria-label="卡片目录">
-      <a href="#card-1">角色</a><a href="#card-2">关系</a><a href="#card-3">能力</a><a href="#card-4">第一部</a><a href="#card-5">第二部</a><a href="#card-6">问题</a><a href="#card-7">宇宙</a><a href="#card-8">选择</a><a href="#card-9">艺术</a><a href="#card-10">创作</a><a href="#appendix-a">成长表</a><a href="#appendix-b">问题库</a>
+    <nav class="card-nav" aria-label="页面目录">
+      <a href="#hero">封面</a><a href="#section-1">阵容</a><a href="#section-2">关系</a><a href="#section-3">能力</a><a href="#section-4">故事一</a><a href="#section-5">故事二</a><a href="#section-6">问题</a><a href="#section-7">地图</a><a href="#section-8">选择</a><a href="#section-9">艺术</a><a href="#section-10">创作</a><a href="#appendix">附录</a>
     </nav>
-    <button class="print-button" type="button" data-print>打印</button>
+    <details class="top-actions">
+      <summary>工具</summary>
+      <div class="action-panel">
+        <a class="home-link" href="../../index.html">首页</a>
+        <button class="mode-toggle" type="button" data-mode-toggle aria-pressed="false">儿童模式</button>
+        <button class="reset-button" type="button" data-reset>重置</button>
+        <button class="print-button" type="button" data-print>打印</button>
+      </div>
+    </details>
   </header>
 
   <main class="deck">
-    <section class="card card-hero reveal" id="card-1" aria-labelledby="title-1">
-      <div class="card-kicker">CARD 01 · 角色大合影</div>
-      <div class="card-head">
-        <div>
-          <h1 id="title-1">先认识<br>这些朋友</h1>
-          <p>不止一个蜘蛛英雄。每个人来自不同世界，也带着不同的性格和本领。</p>
+    <section class="hero-overview reveal" id="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">原创城市冒险学习板</p>
+        <h1 id="hero-title">不止一个<br>城市小英雄</h1>
+        <p class="hero-line">先认识角色，再看他们之间的关系，然后顺着故事板理解主角如何从紧张、困惑，慢慢学会相信自己。</p>
+        <div class="keyword-row" aria-label="核心关键词"><span>认人</span><span>看故事</span><span>做选择</span></div>
+      </div>
+      <figure class="hero-visual asset-frame">
+        <img src="assets/cast/cast-lineup.png" alt="原创城市小英雄角色阵容总图" data-fallback="角色阵容总图">
+        <figcaption>你觉得这几个人里面，谁最像故事主角？</figcaption>
+      </figure>
+    </section>
+
+    <section class="board-section reveal" id="section-1" aria-labelledby="title-1">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 01 · 角色阵容</p>
+        <h2 id="title-1">先把朋友认清楚</h2>
+        <p>每张角色图都有同一套故事书质感和小星形标志。点一下角色，看看家长可以怎样讲。</p>
+      </div>
+      <div class="lineup-panel asset-frame">
+        <img src="assets/cast/cast-lineup.png" alt="八位原创蛛网主题角色的阵容图" data-fallback="角色阵容总图">
+      </div>
+      <div class="character-grid" id="character-grid" aria-label="角色卡"></div>
+      <aside class="detail-panel parent-note" id="character-detail" aria-live="polite">点一张角色卡，展开家长讲解。</aside>
+      <p class="talk-question">亲子问题：你最想先认识谁？</p>
+    </section>
+
+    <section class="board-section reveal" id="section-2" aria-labelledby="title-2">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 02 · 主角关系图</p>
+        <h2 id="title-2">故事不是一个人完成的</h2>
+        <p>家人、朋友、导师和问题角色，一起推动主角做选择。</p>
+      </div>
+      <div class="relationship-layout">
+        <div class="relationship-map asset-frame">
+          <img src="assets/boards/relationship-map-bg.png" alt="关系图底图" data-fallback="关系图底图">
+          <div class="relation-center">
+            <img src="assets/characters/main-boy.png" alt="黑红少年" data-fallback="黑红少年">
+            <strong>黑红少年</strong>
+          </div>
+          <div class="relation-node family">家人<br><span>关心和牵挂</span></div>
+          <div class="relation-node friend">朋友<br><span>理解和同行</span></div>
+          <div class="relation-node mentor">导师<br><span>指导和支持</span></div>
+          <div class="relation-node problem">压力<br><span>麻烦和分歧</span></div>
         </div>
-        <aside class="guide-note"><strong>家长提示</strong><span>这一页只负责认人，先不讲复杂背景。</span></aside>
+        <div class="relation-list" id="relation-list"></div>
       </div>
-      <div class="cast-orbit" aria-label="主要角色大合影">
-        <article class="cast-card lead" data-accent="red">
-          <span class="sticker spider-kid"></span>
-          <h3>Miles</h3>
-          <p>正在成长的新蜘蛛英雄</p>
-          <button type="button" data-detail="Miles 的重点不是最强，而是学会相信自己、成为自己。">讲给孩子听</button>
-        </article>
-        <article class="cast-card" data-accent="blue"><span class="sticker classic"></span><h3>Peter</h3><p>最经典、有经验</p><button type="button" data-detail="Peter 让孩子看到：能力越大，越要愿意照顾别人。">讲给孩子听</button></article>
-        <article class="cast-card" data-accent="pink"><span class="sticker gwen"></span><h3>Gwen</h3><p>轻快又勇敢</p><button type="button" data-detail="Gwen 可以用来聊朋友、秘密和独立。">讲给孩子听</button></article>
-        <article class="cast-card" data-accent="gold"><span class="sticker mentor"></span><h3>Peter B.</h3><p>有点累，但愿意教人</p><button type="button" data-detail="Peter B. 让孩子知道：大人也会失败，也能重新学习。">讲给孩子听</button></article>
-        <article class="cast-card" data-accent="mint"><span class="sticker ham"></span><h3>Spider-Ham</h3><p>会让大家笑</p><button type="button" data-detail="这个角色负责轻松感：紧张故事里也可以有幽默。">讲给孩子听</button></article>
-        <article class="cast-card" data-accent="cyan"><span class="sticker peni"></span><h3>Peni</h3><p>和机器人合作</p><button type="button" data-detail="Peni 适合聊科技不是一个人厉害，而是伙伴协作。">讲给孩子听</button></article>
-        <article class="cast-card" data-accent="ink"><span class="sticker noir"></span><h3>Noir</h3><p>黑白侦探世界</p><button type="button" data-detail="Noir 帮孩子理解：同一种英雄，也可以有完全不同的画风。">讲给孩子听</button></article>
-        <article class="cast-card" data-accent="violet"><span class="sticker future"></span><h3>Miguel</h3><p>未来、规则、秩序</p><button type="button" data-detail="Miguel 可以用来聊规则很重要，但规则也需要被理解和讨论。">讲给孩子听</button></article>
-      </div>
-      <div class="detail-drawer" aria-live="polite">点一张角色卡，看看可以怎样讲给孩子听。</div>
-      <aside class="talk-box"><strong>亲子问题</strong><span>你最想先认识谁？为什么？</span></aside>
+      <p class="talk-question">亲子问题：如果你有一个秘密，什么时候应该告诉家人？</p>
     </section>
 
-    <section class="card card-relations reveal" id="card-2" aria-labelledby="title-2">
-      <div class="card-kicker">CARD 02 · Miles 身边的人</div>
-      <div class="card-head compact"><h2 id="title-2">故事不是一个人完成的</h2><p>Miles 的选择，常常和家人、朋友、老师、对手有关。</p></div>
-      <div class="relation-board">
-        <div class="relation-center"><span class="sticker spider-kid"></span><strong>Miles</strong><small>想做好，也想做自己</small></div>
-        <article class="relation-group family"><h3>家人</h3><p>爸爸：爱他，也担心他</p><p>妈妈：希望他做自己</p><p>叔叔：很亲近，但有秘密</p></article>
-        <article class="relation-group friends"><h3>朋友</h3><p>Gwen：互相理解</p><p>伙伴：一起面对更大的世界</p></article>
-        <article class="relation-group mentors"><h3>导师</h3><p>Peter：给他榜样</p><p>Peter B.：教他，也被他改变</p></article>
-        <article class="relation-group pressure"><h3>压力</h3><p>Spot：小麻烦变大危险</p><p>Miguel：规则和选择冲突</p></article>
+    <section class="board-section reveal" id="section-3" aria-labelledby="title-3">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 03 · 能力图鉴</p>
+        <h2 id="title-3">能力是解决问题的工具</h2>
+        <p>这些能力不是为了炫耀，而是帮助角色观察、移动、保护别人。</p>
       </div>
-      <div class="choice-chips">
-        <button type="button" data-detail="家人关系适合从“担心也是爱的一种表达”开始讲。">家人怎么爱他？</button>
-        <button type="button" data-detail="朋友关系适合聊：真正的朋友会尊重你的害怕，也愿意一起想办法。">朋友怎么帮他？</button>
-        <button type="button" data-detail="对立关系不只是谁赢谁输，也是在考验 Miles 要不要坚持自己的判断。">压力从哪里来？</button>
+      <div class="power-stage asset-frame">
+        <img src="assets/boards/power-atlas-bg.png" alt="能力图鉴底图" data-fallback="能力图鉴底图">
       </div>
-      <div class="detail-drawer" aria-live="polite">点一个关系问题，展开家长讲解。</div>
+      <div class="power-grid" id="power-grid" aria-label="能力图鉴"></div>
+      <aside class="detail-panel" id="power-detail" aria-live="polite">点一个能力，看看它能帮忙解决什么问题。</aside>
     </section>
 
-    <section class="card card-powers reveal" id="card-3" aria-labelledby="title-3">
-      <div class="card-kicker">CARD 03 · 蜘蛛能力图鉴</div>
-      <div class="card-head compact"><h2 id="title-3">蜘蛛英雄会什么？</h2><p>能力不是为了炫耀，而是帮助英雄行动、保护别人。</p></div>
-      <div class="power-grid">
-        <article><span class="power-icon climb"></span><h3>爬墙</h3><p>可以去高处找路。</p><button type="button" data-detail="问孩子：如果你会爬墙，最想爬到哪里看风景？">提问</button></article>
-        <article><span class="power-icon web"></span><h3>摆荡</h3><p>像飞一样穿过城市。</p><button type="button" data-detail="摆荡代表移动和自由，也可以聊安全与方向。">提问</button></article>
-        <article><span class="power-icon sense"></span><h3>感应</h3><p>危险来时会提醒他。</p><button type="button" data-detail="可以对应生活里的“我感觉不太对”，鼓励孩子说出来。">提问</button></article>
-        <article><span class="power-icon jump"></span><h3>跳跃</h3><p>身体很灵活。</p><button type="button" data-detail="跳跃可以引出“先试试看”的勇气。">提问</button></article>
-        <article><span class="power-icon vanish"></span><h3>隐身</h3><p>安静地躲开危险。</p><button type="button" data-detail="隐身不是逃避，它也可以是观察和保护自己。">提问</button></article>
-        <article><span class="power-icon spark"></span><h3>电光</h3><p>关键时刻有爆发力。</p><button type="button" data-detail="这适合聊：每个孩子也可能有自己的特别本领。">提问</button></article>
-        <article><span class="power-icon rhythm"></span><h3>节奏</h3><p>动作像音乐一样轻快。</p><button type="button" data-detail="让孩子找找电影里动作和音乐一起变化的地方。">提问</button></article>
-        <article><span class="power-icon robot"></span><h3>机甲协作</h3><p>和伙伴一起完成任务。</p><button type="button" data-detail="协作能力强调：厉害不是只靠一个人。">提问</button></article>
+    <section class="board-section reveal" id="section-4" aria-labelledby="title-4">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 04 · 第一段故事板</p>
+        <h2 id="title-4">从紧张到相信自己</h2>
+        <p>12 格图片帮助孩子复述：普通生活怎样变成一次成长冒险。</p>
       </div>
-      <div class="detail-drawer" aria-live="polite">点一个能力，得到一个亲子提问。</div>
+      <ol class="story-grid" id="story-one-grid" aria-label="第一段故事 12 格"></ol>
+      <p class="talk-question">亲子问题：你觉得他是在哪一刻开始相信自己的？</p>
     </section>
 
-    <section class="card card-story reveal" id="card-4" aria-labelledby="title-4">
-      <div class="card-kicker">CARD 04 · 第一部剧情地图</div>
-      <div class="card-head compact"><h2 id="title-4">成为自己的英雄</h2><p>这 12 格让孩子能复述第一段故事：从普通孩子，到相信自己。</p></div>
-      <ol class="story-grid" aria-label="第一部 12 格剧情故事板">
-        <li><span class="scene school"></span><strong>新学校</strong><small>来到陌生地方</small></li>
-        <li><span class="scene graffiti"></span><strong>地下涂鸦</strong><small>和叔叔很亲近</small></li>
-        <li><span class="scene bite"></span><strong>被蜘蛛咬</strong><small>命运开始变了</small></li>
-        <li><span class="scene chaos"></span><strong>能力失控</strong><small>新本领还不听话</small></li>
-        <li><span class="scene collider"></span><strong>机器危机</strong><small>世界开始混乱</small></li>
-        <li><span class="scene fall"></span><strong>英雄倒下</strong><small>第一次理解责任</small></li>
-        <li><span class="scene mentor-scene"></span><strong>遇见导师</strong><small>边学边出错</small></li>
-        <li><span class="scene portal"></span><strong>更多伙伴</strong><small>原来不止一个</small></li>
-        <li><span class="scene secret"></span><strong>叔叔秘密</strong><small>爱与错误很复杂</small></li>
-        <li><span class="scene door"></span><strong>门后鼓励</strong><small>家人的爱还在</small></li>
-        <li><span class="scene leap"></span><strong>信仰一跃</strong><small>决定相信自己</small></li>
-        <li><span class="scene hero"></span><strong>自己的英雄</strong><small>用自己的方式守护</small></li>
-      </ol>
-      <button class="wide-detail" type="button" data-detail="复述时可以只问三个问题：故事怎么开始？哪里最困难？Miles 怎么变勇敢？">怎么陪孩子复述？</button>
-      <div class="detail-drawer" aria-live="polite">点按钮查看复述方法。</div>
-    </section>
-
-    <section class="card card-story reveal" id="card-5" aria-labelledby="title-5">
-      <div class="card-kicker">CARD 05 · 第二部剧情地图</div>
-      <div class="card-head compact"><h2 id="title-5">规则和选择变难了</h2><p>第二段故事让世界变大，也让 Miles 面对更难的选择。</p></div>
-      <ol class="story-grid across" aria-label="第二部 12 格剧情故事板">
-        <li><span class="scene drum"></span><strong>她的世界</strong><small>每个人都有烦恼</small></li>
-        <li><span class="scene missing"></span><strong>想念朋友</strong><small>长大也会孤单</small></li>
-        <li><span class="scene spot"></span><strong>黑洞麻烦</strong><small>小问题变大</small></li>
-        <li><span class="scene reunion"></span><strong>朋友重逢</strong><small>开心又犹豫</small></li>
-        <li><span class="scene tunnel"></span><strong>进入宇宙</strong><small>世界突然变大</small></li>
-        <li><span class="scene rescue"></span><strong>彩城救人</strong><small>关键时刻先帮人</small></li>
-        <li><span class="scene society"></span><strong>英雄总部</strong><small>好多蜘蛛英雄</small></li>
-        <li><span class="scene rules"></span><strong>规则解释</strong><small>秩序看起来很重要</small></li>
-        <li><span class="scene family"></span><strong>不放弃家人</strong><small>心里有重要的人</small></li>
-        <li><span class="scene chase"></span><strong>一路追逐</strong><small>大家意见不同</small></li>
-        <li><span class="scene wrong"></span><strong>错误宇宙</strong><small>像家，又不对</small></li>
-        <li><span class="scene team"></span><strong>新团队出发</strong><small>朋友选择帮忙</small></li>
-      </ol>
-      <button class="wide-detail" type="button" data-detail="第二部不急着解释所有设定，先抓住一句话：Miles 不想把重要的人当成必须失去的规则。">怎么讲核心冲突？</button>
-      <div class="detail-drawer" aria-live="polite">点按钮查看讲解重点。</div>
-    </section>
-
-    <section class="card card-villains reveal" id="card-6" aria-labelledby="title-6">
-      <div class="card-kicker">CARD 06 · 反派与问题卡</div>
-      <div class="card-head compact"><h2 id="title-6">他们为什么会做错事？</h2><p>反派不只是“坏人”。他们常常有难过、生气、害怕，但用了错误的方法。</p></div>
-      <div class="villain-grid">
-        <article><span class="sticker king"></span><h3>巨大控制者</h3><dl><dt>想要</dt><dd>找回家人</dd><dt>做错</dt><dd>伤害许多世界</dd><dt>Miles 学到</dt><dd>爱不能变成控制</dd></dl><button type="button" data-detail="可以温和地讲：想念很重要，但不能为了自己让别人受伤。">展开</button></article>
-        <article><span class="sticker uncle"></span><h3>有秘密的叔叔</h3><dl><dt>想要</dt><dd>保护自己的生活</dd><dt>做错</dt><dd>选择危险身份</dd><dt>Miles 学到</dt><dd>亲近的人也会犯错</dd></dl><button type="button" data-detail="适合聊复杂情绪：喜欢一个人，不代表要赞成他的错误选择。">展开</button></article>
-        <article><span class="sticker spot-face"></span><h3>黑洞麻烦</h3><dl><dt>想要</dt><dd>被看见</dd><dt>做错</dt><dd>把委屈变成攻击</dd><dt>Miles 学到</dt><dd>小情绪也要认真处理</dd></dl><button type="button" data-detail="可以问孩子：如果觉得没人听你说话，可以怎样表达？">展开</button></article>
-        <article><span class="sticker future"></span><h3>未来规则者</h3><dl><dt>想要</dt><dd>保护秩序</dd><dt>做错</dt><dd>不愿听不同想法</dd><dt>Miles 学到</dt><dd>规则也要问为什么</dd></dl><button type="button" data-detail="规则不是敌人，但规则需要解释，也需要照顾人。">展开</button></article>
+    <section class="board-section reveal" id="section-5" aria-labelledby="title-5">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 05 · 第二段故事板</p>
+        <h2 id="title-5">世界变大，选择也变难</h2>
+        <p>更多世界、更多伙伴、更多规则，也带来更难的选择。</p>
       </div>
-      <div class="detail-drawer" aria-live="polite">点一张问题卡，展开讨论角度。</div>
+      <ol class="story-grid" id="story-two-grid" aria-label="第二段故事 12 格"></ol>
+      <p class="talk-question">亲子问题：如果很多人都说“必须这样”，你还可以问为什么吗？</p>
     </section>
 
-    <section class="card card-worlds reveal" id="card-7" aria-labelledby="title-7">
-      <div class="card-kicker">CARD 07 · 多元宇宙地图</div>
-      <div class="card-head compact"><h2 id="title-7">很多本不同风格的故事书</h2><p>多元宇宙可以讲成一排故事书：每本书都有自己的颜色、规则和英雄。</p></div>
-      <div class="book-shelf" aria-label="多元宇宙书架地图">
-        <article><span class="book graffiti-book"></span><strong>涂鸦城市</strong><small>年轻、街头、会发光</small></article>
-        <article><span class="book classic-book"></span><strong>经典漫画</strong><small>红蓝、明亮、责任感</small></article>
-        <article><span class="book watercolor-book"></span><strong>音乐水彩</strong><small>粉蓝、鼓点、情绪</small></article>
-        <article><span class="book noir-book"></span><strong>黑白侦探</strong><small>旧电影、街灯、谜题</small></article>
-        <article><span class="book cartoon-book"></span><strong>卡通世界</strong><small>弹性、幽默、夸张</small></article>
-        <article><span class="book tech-book"></span><strong>科技机甲</strong><small>屏幕、线路、伙伴</small></article>
-        <article><span class="book future-book"></span><strong>未来霓虹</strong><small>秩序、速度、规则</small></article>
+    <section class="board-section reveal" id="section-6" aria-labelledby="title-6">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 06 · 问题角色卡</p>
+        <h2 id="title-6">有情绪，也要做对选择</h2>
+        <p>问题角色不是只贴“坏人”标签，而是看见情绪、行为和后果。</p>
       </div>
-      <button class="wide-detail" type="button" data-detail="讲多元宇宙时，可以先让孩子选一本“最想打开的故事书”，再问这本书里的英雄会怎样行动。">怎么讲多元宇宙？</button>
-      <div class="detail-drawer" aria-live="polite">点按钮查看讲法。</div>
+      <div class="problem-grid" id="problem-grid" aria-label="问题角色卡"></div>
+      <aside class="detail-panel" id="problem-detail" aria-live="polite">点一张问题卡，看“情绪 → 行为 → 后果”。</aside>
+      <p class="talk-question">亲子问题：一个人很难过，就可以伤害别人吗？</p>
     </section>
 
-    <section class="card card-choices reveal" id="card-8" aria-labelledby="title-8">
-      <div class="card-kicker">CARD 08 · 角色选择天平</div>
-      <div class="card-head compact"><h2 id="title-8">最难的地方，是做选择</h2><p>成长不是永远不害怕，而是害怕时也慢慢做出选择。</p></div>
-      <div class="balance-grid">
-        <article><span>我害怕</span><b>vs</b><span>我也试试</span><p>Miles 一开始不确定，但仍然迈出第一步。</p></article>
-        <article><span>保护秘密</span><b>vs</b><span>相信家人</span><p>有些话很难说，但信任能让人更靠近。</p></article>
-        <article><span>听规则</span><b>vs</b><span>问为什么</span><p>规则重要，理解规则也重要。</p></article>
-        <article><span>服从团队</span><b>vs</b><span>帮助朋友</span><p>当大家意见不同，心里的答案会变得很珍贵。</p></article>
+    <section class="board-section reveal" id="section-7" aria-labelledby="title-7">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 07 · 多元故事书地图</p>
+        <h2 id="title-7">很多本不同风格的故事书</h2>
+        <p>复杂世界观变成一排可以打开的故事书，每本书都有自己的颜色和规则。</p>
       </div>
-      <button class="wide-detail" type="button" data-detail="不要急着要求孩子说大道理，可以问：如果你是 Miles，你现在心里会是什么感觉？">怎么聊选择？</button>
-      <div class="detail-drawer" aria-live="polite">点按钮查看亲子讨论方式。</div>
+      <div class="books-stage asset-frame">
+        <img src="assets/boards/multiverse-books-bg.png" alt="多元故事书地图底图" data-fallback="多元故事书地图">
+      </div>
+      <div class="book-grid" id="book-grid"></div>
+      <p class="talk-question">亲子问题：如果你也有一个世界，它会像森林、海底、太空还是机器人城市？</p>
     </section>
 
-    <section class="card card-art reveal" id="card-9" aria-labelledby="title-9">
-      <div class="card-kicker">CARD 09 · 动画艺术实验室</div>
-      <div class="card-head compact"><h2 id="title-9">为什么像一本会动的漫画书？</h2><p>每个世界都可以有自己的画法，声音、速度和情绪也能变成图形。</p></div>
-      <div class="art-lab">
-        <div class="comic-page" aria-hidden="true"><span></span><span></span><span></span><span></span><strong>WOW!</strong></div>
-        <div class="art-grid">
-          <article><b>漫画分格</b><span>像一页页漫画跳出来</span></article>
-          <article><b>速度线</b><span>让动作更快、更有力</span></article>
-          <article><b>拟声字</b><span>声音也能被看见</span></article>
-          <article><b>网点印刷</b><span>像印在纸上的漫画</span></article>
-          <article><b>不同画风</b><span>每个宇宙像不同绘本</span></article>
-          <article><b>情绪颜色</b><span>孤单、紧张、勇敢都有颜色</span></article>
+    <section class="board-section reveal" id="section-8" aria-labelledby="title-8">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 08 · 关键选择天平</p>
+        <h2 id="title-8">成长就是遇到难选择</h2>
+        <p>用四个天平把抽象价值观变成孩子能看懂的选择题。</p>
+      </div>
+      <div class="choice-grid" id="choice-grid" aria-label="关键选择天平"></div>
+      <aside class="detail-panel" id="choice-detail" aria-live="polite">点一个天平，看看它关联哪段剧情。</aside>
+      <p class="talk-question">亲子问题：你有没有害怕但还是试了一次的事情？</p>
+    </section>
+
+    <section class="board-section reveal" id="section-9" aria-labelledby="title-9">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 09 · 动画艺术实验室</p>
+        <h2 id="title-9">像一本会动的漫画故事书</h2>
+        <p>孩子可以找速度线、分格、圆点和情绪颜色，理解画面为什么有趣。</p>
+      </div>
+      <div class="art-layout">
+        <div class="art-poster asset-frame">
+          <img src="assets/boards/art-lab-bg.png" alt="动画艺术实验室底图" data-fallback="艺术实验室底图">
         </div>
+        <div class="art-grid" id="art-grid"></div>
       </div>
-      <button class="wide-detail" type="button" data-detail="陪孩子二刷时，可以玩“找视觉魔法”：找一个拟声字、一个速度线、一个颜色变化。">怎么观察画面？</button>
-      <div class="detail-drawer" aria-live="polite">点按钮查看观察任务。</div>
+      <aside class="detail-panel" id="art-detail" aria-live="polite">点一个视觉模块，展开一句解释。</aside>
+      <p class="talk-question">亲子问题：你能在图里找到速度线和颜色情绪吗？</p>
     </section>
 
-    <section class="card card-create reveal" id="card-10" aria-labelledby="title-10">
-      <div class="card-kicker">CARD 10 · 我的蜘蛛英雄创作卡</div>
-      <div class="card-head compact"><h2 id="title-10">创造我的蜘蛛英雄</h2><p>故事看完后，让孩子输出自己的版本：名字、世界、能力、困难和勇敢选择。</p></div>
-      <div class="create-sheet">
-        <form aria-label="原创蜘蛛英雄填写卡">
-          <label>我的英雄名字：<span></span></label>
-          <label>来自什么世界：<span></span></label>
-          <label>代表颜色：<span></span></label>
-          <label>特殊能力：<span></span></label>
-          <label>普通身份：<span></span></label>
-          <label>最想保护谁：<span></span></label>
-          <label>最害怕什么：<span></span></label>
-          <label>遇到的麻烦：<span></span></label>
-          <label>勇敢选择：<span></span></label>
-          <label>英雄口号：<span></span></label>
+    <section class="board-section creation-section reveal" id="section-10" aria-labelledby="title-10">
+      <div class="section-head">
+        <p class="section-kicker">SECTION 10 · 儿童创作卡</p>
+        <h2 id="title-10">创造我的城市小英雄</h2>
+        <p>从看故事走向讲自己的故事：名字、世界、能力、困难和勇敢选择。</p>
+      </div>
+      <div class="creation-card">
+        <form class="creation-form" aria-label="儿童创作填写区">
+          <label>我的角色名字<input type="text" aria-label="我的角色名字"></label>
+          <label>来自什么世界<input type="text" aria-label="来自什么世界"></label>
+          <label>代表颜色<input type="text" aria-label="代表颜色"></label>
+          <label>特别能力<input type="text" aria-label="特别能力"></label>
+          <label>最想保护谁<input type="text" aria-label="最想保护谁"></label>
+          <label>最害怕什么<input type="text" aria-label="最害怕什么"></label>
+          <label>遇到的麻烦<input type="text" aria-label="遇到的麻烦"></label>
+          <label>勇敢选择<input type="text" aria-label="勇敢选择"></label>
+          <label>角色口号<input type="text" aria-label="角色口号"></label>
         </form>
-        <div class="draw-zone"><strong>在这里画出原创蜘蛛英雄</strong><span>可以画面具、颜色、伙伴和城市</span></div>
+        <div class="drawing-zone asset-frame">
+          <img src="assets/boards/creation-card-bg.png" alt="创作卡绘画底图" data-fallback="创作卡底图">
+          <strong>在这里画出你的原创角色</strong>
+        </div>
       </div>
-      <button class="wide-detail" type="button" data-detail="如果孩子不知道画什么，可以先选三个词：颜色、能力、想保护的人。">创作卡怎么开始？</button>
-      <div class="detail-drawer" aria-live="polite">点按钮查看创作引导。</div>
+      <p class="talk-question">亲子问题：你的角色最后做了什么勇敢选择？</p>
     </section>
 
-    <section class="card appendix-card reveal" id="appendix-a" aria-labelledby="title-a">
-      <div class="card-kicker">APPENDIX A · 人物成长简表</div>
-      <div class="card-head compact"><h2 id="title-a">给家长的成长线索</h2><p>这一页不是给孩子背的，是给家长陪讲时做准备。</p></div>
-      <div class="parent-table" role="table" aria-label="人物成长简表">
-        <div role="row"><strong role="columnheader">角色</strong><strong role="columnheader">表层身份</strong><strong role="columnheader">内在问题</strong><strong role="columnheader">可以聊什么</strong></div>
-        <div role="row"><span>Miles</span><span>年轻英雄</span><span>怕自己做不到</span><span>成为自己</span></div>
-        <div role="row"><span>Gwen</span><span>敏捷伙伴</span><span>孤单和秘密</span><span>信任朋友</span></div>
-        <div role="row"><span>Peter B.</span><span>导师</span><span>失败后的疲惫</span><span>重新学习</span></div>
-        <div role="row"><span>爸爸妈妈</span><span>家人</span><span>担心与期待</span><span>爱也需要沟通</span></div>
-        <div role="row"><span>叔叔</span><span>亲近的人</span><span>双重选择</span><span>喜欢与赞成不同</span></div>
-        <div role="row"><span>Spot</span><span>黑洞麻烦</span><span>想被看见</span><span>情绪要被好好表达</span></div>
-        <div role="row"><span>Miguel</span><span>规则守护者</span><span>害怕失控</span><span>规则和关心都重要</span></div>
+    <section class="appendix-section reveal" id="appendix" aria-labelledby="appendix-title">
+      <div class="section-head">
+        <p class="section-kicker">APPENDIX · 家长讲解附录</p>
+        <h2 id="appendix-title">顺着页面讲，不用硬编解释</h2>
+        <p>家长模式会显示更多讲解目标、情绪线索和互动建议。</p>
       </div>
-    </section>
-
-    <section class="card appendix-card reveal" id="appendix-b" aria-labelledby="title-b">
-      <div class="card-kicker">APPENDIX B · 亲子讨论问题库</div>
-      <div class="card-head compact"><h2 id="title-b">看完可以聊什么？</h2><p>这些问题没有标准答案，只是帮孩子把故事和自己的生活连起来。</p></div>
-      <div class="qa-columns">
-        <article><h3>剧情理解</h3><p>故事从哪里开始？</p><p>Miles 最困难的一刻是什么？</p><p>哪一格最容易复述？</p></article>
-        <article><h3>情绪表达</h3><p>英雄可以害怕吗？</p><p>如果没人理解你，你会怎么办？</p><p>Spot 为什么越来越生气？</p></article>
-        <article><h3>价值选择</h3><p>规则一定都是对的吗？</p><p>什么时候要问为什么？</p><p>保护别人和保护自己怎么平衡？</p></article>
-        <article><h3>创作延展</h3><p>你的英雄来自哪里？</p><p>他最想保护谁？</p><p>他最后做了什么勇敢选择？</p></article>
+      <div class="appendix-grid">
+        <article><h3>儿童体验目标</h3><p>认出 4 个角色，说出主角、朋友、导师、家人各是谁，按图复述 5 个关键节点。</p></article>
+        <article><h3>家长讲解目标</h3><p>先讲图，再讲关系，最后才讲选择和成长。不要一开始就解释复杂世界观。</p></article>
+        <article><h3>图片替换方式</h3><p>把批量生图按 spec 文件名放入 <code>boards/spider-verse/assets/</code> 对应子目录，页面会自动引用。</p></article>
       </div>
-      <footer class="closing"><strong>孩子最后记住三句话就够了：</strong><span>很多人都可以戴上面具。</span><span>英雄不是不害怕，而是害怕时仍愿意帮助别人。</span><span>最重要的成长，是成为自己。</span></footer>
     </section>
   </main>
+
+  <dialog class="story-modal" id="story-modal" aria-labelledby="modal-title">
+    <button class="modal-close" type="button" data-modal-close aria-label="关闭">×</button>
+    <img id="modal-image" alt="">
+    <div class="modal-copy">
+      <p id="modal-kicker"></p>
+      <h3 id="modal-title"></h3>
+      <p id="modal-child"></p>
+      <p class="parent-note" id="modal-parent"></p>
+      <p id="modal-question"></p>
+    </div>
+  </dialog>
 
   <script src="script.js"></script>
 </body>
