@@ -54,19 +54,19 @@
   ],
   "assets": {
     "hero": {
-      "path": "/assets/life/animal-classification-tree/life-animal-tree-hero-v01.png",
+      "path": "/assets/life/animal-classification-tree/life-animal-classification-tree-hero-v02.webp",
       "purpose": "主视觉：动物生命树",
-      "status": "planned"
+      "status": "ready"
     },
     "compare": {
-      "path": "/assets/life/animal-classification-tree/life-animal-misconception-compare-v01.png",
+      "path": "/assets/life/animal-classification-tree/life-animal-classification-tree-compare-v02.webp",
       "purpose": "误区对比图",
-      "status": "planned"
+      "status": "ready"
     },
     "cards": {
-      "path": "/assets/life/animal-classification-tree/life-animal-cards-v01.png",
+      "path": "/assets/life/animal-classification-tree/life-animal-classification-tree-object-icons-v02.webp",
       "purpose": "动物分类卡",
-      "status": "planned"
+      "status": "ready"
     }
   },
   "interactions": [

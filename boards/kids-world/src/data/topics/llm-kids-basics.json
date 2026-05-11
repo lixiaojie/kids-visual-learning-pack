@@ -54,24 +54,24 @@
   ],
   "assets": {
     "hero": {
-      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-kids-hero-v01.png",
+      "path": "/assets/human-made/llm-kids-basics/human-made-llm-kids-basics-hero-v02.webp",
       "purpose": "主视觉：会接龙的机器大脑",
-      "status": "planned"
+      "status": "ready"
     },
     "steps": {
-      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-4steps-v01.png",
+      "path": "/assets/human-made/llm-kids-basics/human-made-llm-four-steps-v02.webp",
       "purpose": "四步骤机制图",
-      "status": "planned"
+      "status": "ready"
     },
     "compare": {
-      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-search-compare-v01.png",
+      "path": "/assets/human-made/llm-kids-basics/human-made-llm-vs-search-v02.webp",
       "purpose": "AI 与搜索对比图",
-      "status": "planned"
+      "status": "ready"
     },
     "cards": {
-      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-prompt-cards-v01.png",
+      "path": "/assets/human-made/llm-kids-basics/human-made-llm-object-icons-v02.webp",
       "purpose": "问题和回答卡片",
-      "status": "planned"
+      "status": "ready"
     }
   },
   "interactions": [

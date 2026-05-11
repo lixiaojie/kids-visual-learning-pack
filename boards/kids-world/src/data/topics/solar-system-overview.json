@@ -54,19 +54,19 @@
   ],
   "assets": {
     "hero": {
-      "path": "/assets/space/solar-system-overview/space-solar-system-hero-v01.png",
+      "path": "/assets/space/solar-system-overview/space-solar-system-overview-hero-v02.webp",
       "purpose": "主视觉：太阳系轨道总览",
-      "status": "planned"
+      "status": "ready"
     },
     "compare": {
-      "path": "/assets/space/solar-system-overview/space-solar-system-star-planet-compare-v01.png",
+      "path": "/assets/space/solar-system-overview/space-solar-system-star-vs-planet-v02.webp",
       "purpose": "恒星与行星比较",
-      "status": "planned"
+      "status": "ready"
     },
     "cards": {
-      "path": "/assets/space/solar-system-overview/space-solar-system-planet-cards-v01.png",
+      "path": "/assets/space/solar-system-overview/space-solar-system-object-icons-v02.webp",
       "purpose": "行星卡片",
-      "status": "planned"
+      "status": "ready"
     }
   },
   "interactions": [

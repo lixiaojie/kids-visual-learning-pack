@@ -58,24 +58,24 @@
   ],
   "assets": {
     "hero": {
-      "path": "/assets/body/blood-cells-3d/body-blood-cells-hero-v01.png",
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-3d-hero-v02.webp",
       "purpose": "主视觉：友好型 3D 血管内部",
-      "status": "planned"
+      "status": "ready"
     },
     "oxygenFlow": {
-      "path": "/assets/body/blood-cells-3d/body-blood-cells-oxygen-flow-v01.png",
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-oxygen-flow-v02.webp",
       "purpose": "氧气运输机制图",
-      "status": "planned"
+      "status": "ready"
     },
     "clotting": {
-      "path": "/assets/body/blood-cells-3d/body-blood-cells-clotting-v01.png",
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-platelet-repair-v02.webp",
       "purpose": "止血机制图",
-      "status": "planned"
+      "status": "ready"
     },
     "cards": {
-      "path": "/assets/body/blood-cells-3d/body-blood-cells-cards-v01.png",
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-object-icons-v02.webp",
       "purpose": "细胞职责卡",
-      "status": "planned"
+      "status": "ready"
     }
   },
   "interactions": [

@@ -54,19 +54,19 @@
   ],
   "assets": {
     "hero": {
-      "path": "/assets/earth/earth-climate-cities/earth-climate-globe-hero-v01.png",
+      "path": "/assets/earth/earth-climate-cities/earth-climate-cities-hero-v02.webp",
       "purpose": "主视觉：地球仪与气候带",
-      "status": "planned"
+      "status": "ready"
     },
     "cities": {
-      "path": "/assets/earth/earth-climate-cities/earth-climate-city-cards-v01.png",
+      "path": "/assets/earth/earth-climate-cities/earth-climate-city-cards-v02.webp",
       "purpose": "城市气候卡",
-      "status": "planned"
+      "status": "ready"
     },
     "sunAngle": {
-      "path": "/assets/earth/earth-climate-cities/earth-climate-sun-angle-v01.png",
+      "path": "/assets/earth/earth-climate-cities/earth-climate-sun-angle-mechanism-v02.webp",
       "purpose": "太阳照射角度机制图",
-      "status": "planned"
+      "status": "ready"
     }
   },
   "interactions": [

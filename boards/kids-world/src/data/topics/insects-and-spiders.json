@@ -54,19 +54,19 @@
   ],
   "assets": {
     "hero": {
-      "path": "/assets/life/insects-and-spiders/life-insects-hero-v01.png",
+      "path": "/assets/life/insects-and-spiders/life-insects-and-spiders-hero-v02.webp",
       "purpose": "主视觉：自然观察台",
-      "status": "planned"
+      "status": "ready"
     },
     "compare": {
-      "path": "/assets/life/insects-and-spiders/life-insects-structure-compare-v01.png",
+      "path": "/assets/life/insects-and-spiders/life-insects-and-spiders-compare-insect-spider-v02.webp",
       "purpose": "结构比较图",
-      "status": "planned"
+      "status": "ready"
     },
     "cards": {
-      "path": "/assets/life/insects-and-spiders/life-insects-cards-v01.png",
+      "path": "/assets/life/insects-and-spiders/life-insects-and-spiders-object-icons-v02.webp",
       "purpose": "拖拽分类卡",
-      "status": "planned"
+      "status": "ready"
     }
   },
   "interactions": [
