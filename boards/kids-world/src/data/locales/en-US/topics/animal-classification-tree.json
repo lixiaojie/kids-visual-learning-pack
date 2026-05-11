@@ -1,0 +1,386 @@
+{
+  "id": "topic-life-animal-classification-tree",
+  "slug": "animal-classification-tree",
+  "title": "Animal Classification Tree",
+  "subtitle": "Put animals on the right branches",
+  "coreQuestion": "How can we sort animals?",
+  "learningGoals": [
+    "Know that animals can be grouped in different ways.",
+    "Understand vertebrates and invertebrates at a first level.",
+    "Use clues such as feathers, fur, gills, scales, and legs to classify animals."
+  ],
+  "misconceptions": [
+    "Whales are fish.",
+    "Bats are birds.",
+    "Every animal that lives in water is a fish."
+  ],
+  "hero": {
+    "title": "Animal Classification Tree",
+    "kicker": "Life World · Classification Task",
+    "lead": "The animal world is like a big tree. Each animal lives on its own branch.",
+    "sceneExplanation": "The main scene is a layered tree: the root is ‘animals’, the first split is vertebrates and invertebrates, and the branches continue into mammals, birds, fish, reptiles, amphibians, insects, and more. When a child clicks an animal card, the matching branch lights up.",
+    "childPrompt": "Tap an animal card and see which branch it belongs to.",
+    "parentPrompt": "The goal is not to memorize category names. Help the child explain the clue used for sorting: body structure, breathing, babies, or lifestyle."
+  },
+  "classificationGroups": [
+    {
+      "id": "vertebrates",
+      "name": "Vertebrates",
+      "childExplanation": "Animals with an important bone column inside the body, like a body support.",
+      "parentNote": "Use this as a child-friendly way to introduce the spine.",
+      "representativeObjects": [
+        "cat",
+        "whale",
+        "sparrow",
+        "goldfish",
+        "snake",
+        "frog"
+      ],
+      "misconception": "Not every animal in water is a fish. A whale is a vertebrate, but it is a mammal."
+    },
+    {
+      "id": "mammals",
+      "name": "Mammals",
+      "childExplanation": "Many baby mammals drink milk from their mothers, and many have hair or fur.",
+      "parentNote": "Whales and bats are useful examples: classification is not only about where an animal lives or whether it flies.",
+      "representativeObjects": [
+        "cat",
+        "whale",
+        "bat"
+      ],
+      "misconception": "A whale is not a fish. A bat is not a bird."
+    },
+    {
+      "id": "birds",
+      "name": "Birds",
+      "childExplanation": "Birds have feathers. Many birds can fly, but not all birds fly well.",
+      "parentNote": "Feathers are a better clue than flying.",
+      "representativeObjects": [
+        "sparrow",
+        "penguin"
+      ],
+      "misconception": "An animal that can fly is not always a bird, such as a bat."
+    },
+    {
+      "id": "fish",
+      "name": "Fish",
+      "childExplanation": "Most fish live in water and breathe with gills.",
+      "parentNote": "For this age, use water + gills + fins as simple clues.",
+      "representativeObjects": [
+        "goldfish",
+        "shark"
+      ],
+      "misconception": "Living in water does not always mean fish."
+    },
+    {
+      "id": "reptiles",
+      "name": "Reptiles",
+      "childExplanation": "Reptiles often have scales. Many move close to the ground.",
+      "parentNote": "Avoid using ‘crawls’ as the only clue.",
+      "representativeObjects": [
+        "snake",
+        "turtle"
+      ],
+      "misconception": "Not every animal that crawls is a reptile."
+    },
+    {
+      "id": "amphibians",
+      "name": "Amphibians",
+      "childExplanation": "Some amphibians live in water when young and can also live on land when grown.",
+      "parentNote": "Frogs are the easiest starting example.",
+      "representativeObjects": [
+        "frog"
+      ],
+      "misconception": "A frog is not a reptile."
+    },
+    {
+      "id": "insects",
+      "name": "Insects",
+      "childExplanation": "Insects usually have six legs and three body parts.",
+      "parentNote": "This connects naturally to the insects-and-spiders topic.",
+      "representativeObjects": [
+        "butterfly",
+        "ant"
+      ],
+      "misconception": "A spider is not an insect."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "cat",
+      "name": "Cat",
+      "groupId": "mammals",
+      "childExplanation": "A cat is a mammal. Baby cats drink milk from their mother.",
+      "visualHint": "fur, four legs, kittens drinking milk",
+      "commonMisread": "Sorting only by living at home."
+    },
+    {
+      "id": "whale",
+      "name": "Whale",
+      "groupId": "mammals",
+      "childExplanation": "A whale lives in the sea, but it is not a fish. It is a mammal.",
+      "visualHint": "sea life, breathes air, baby drinks milk",
+      "commonMisread": "Thinking every sea animal is a fish."
+    },
+    {
+      "id": "bat",
+      "name": "Bat",
+      "groupId": "mammals",
+      "childExplanation": "A bat can fly, but it is not a bird. It is a mammal.",
+      "visualHint": "skin wings, no feathers",
+      "commonMisread": "Thinking every flying animal is a bird."
+    },
+    {
+      "id": "sparrow",
+      "name": "Sparrow",
+      "groupId": "birds",
+      "childExplanation": "A sparrow has feathers, so it is a bird.",
+      "visualHint": "feathers, beak, wings",
+      "commonMisread": "Only looking at flying."
+    },
+    {
+      "id": "penguin",
+      "name": "Penguin",
+      "groupId": "birds",
+      "childExplanation": "A penguin does not fly well, but it has feathers, so it is still a bird.",
+      "visualHint": "feathers, wings used for swimming",
+      "commonMisread": "Thinking a bird must fly."
+    },
+    {
+      "id": "goldfish",
+      "name": "Goldfish",
+      "groupId": "fish",
+      "childExplanation": "A goldfish lives in water and breathes with gills.",
+      "visualHint": "gills, fins, water",
+      "commonMisread": "Thinking all water animals are fish."
+    },
+    {
+      "id": "shark",
+      "name": "Shark",
+      "groupId": "fish",
+      "childExplanation": "A shark is a fish with a body made for swimming.",
+      "visualHint": "fins, gills, streamlined body",
+      "commonMisread": "Thinking big sea animals are all the same kind."
+    },
+    {
+      "id": "snake",
+      "name": "Snake",
+      "groupId": "reptiles",
+      "childExplanation": "A snake has scales and is a reptile.",
+      "visualHint": "scales, long body",
+      "commonMisread": "Thinking all long animals are worms."
+    },
+    {
+      "id": "turtle",
+      "name": "Turtle",
+      "groupId": "reptiles",
+      "childExplanation": "A turtle is a reptile with a shell.",
+      "visualHint": "shell, scales",
+      "commonMisread": "Sorting only by slow movement."
+    },
+    {
+      "id": "frog",
+      "name": "Frog",
+      "groupId": "amphibians",
+      "childExplanation": "A frog is an amphibian. It changes a lot as it grows.",
+      "visualHint": "tadpole to frog",
+      "commonMisread": "Thinking frogs are reptiles."
+    },
+    {
+      "id": "butterfly",
+      "name": "Butterfly",
+      "groupId": "insects",
+      "childExplanation": "A butterfly is an insect with six legs.",
+      "visualHint": "wings, six legs, antennae",
+      "commonMisread": "Thinking wings are the only clue."
+    },
+    {
+      "id": "ant",
+      "name": "Ant",
+      "groupId": "insects",
+      "childExplanation": "An ant is an insect with six legs.",
+      "visualHint": "six legs, antennae, small body",
+      "commonMisread": "Thinking insects must fly."
+    }
+  ],
+  "mechanism": {
+    "title": "What clues do we use for classification?",
+    "steps": [
+      {
+        "id": "look-body",
+        "shortTitle": "Look at the body",
+        "childExplanation": "Does it have feathers, scales, fur, or six legs?",
+        "parentNote": "Guide the child to observe stable features first."
+      },
+      {
+        "id": "look-life",
+        "shortTitle": "Look at lifestyle",
+        "childExplanation": "Does it live in water, on land, or both?",
+        "parentNote": "Lifestyle is a helpful clue, but not the only clue."
+      },
+      {
+        "id": "look-baby",
+        "shortTitle": "Look at the baby",
+        "childExplanation": "How the baby grows can also help us classify.",
+        "parentNote": "Milk-feeding, eggs, and body changes can be expanded later."
+      },
+      {
+        "id": "avoid-single-clue",
+        "shortTitle": "Do not use one clue only",
+        "childExplanation": "Flying does not always mean bird. Living in water does not always mean fish.",
+        "parentNote": "This is the core thinking skill of the page."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "whale-vs-fish",
+      "title": "Whale vs Fish",
+      "a": {
+        "name": "Whale",
+        "points": [
+          "breathes air with lungs",
+          "baby drinks milk",
+          "is a mammal"
+        ]
+      },
+      "b": {
+        "name": "Fish",
+        "points": [
+          "mostly breathe with gills",
+          "have fins",
+          "are fish"
+        ]
+      },
+      "childConclusion": "Living in the sea does not always mean fish."
+    },
+    {
+      "id": "bat-vs-bird",
+      "title": "Bat vs Bird",
+      "a": {
+        "name": "Bat",
+        "points": [
+          "no feathers",
+          "baby drinks milk",
+          "is a mammal"
+        ]
+      },
+      "b": {
+        "name": "Bird",
+        "points": [
+          "has feathers",
+          "has a beak",
+          "is a bird"
+        ]
+      },
+      "childConclusion": "Flying does not always mean bird."
+    },
+    {
+      "id": "penguin-vs-sparrow",
+      "title": "Penguin vs Sparrow",
+      "a": {
+        "name": "Penguin",
+        "points": [
+          "does not fly well",
+          "has feathers",
+          "is a bird"
+        ]
+      },
+      "b": {
+        "name": "Sparrow",
+        "points": [
+          "can fly",
+          "has feathers",
+          "is a bird"
+        ]
+      },
+      "childConclusion": "Flying is not the only clue for birds."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "animal-classify-01",
+      "title": "Which branch should a whale live on?",
+      "prompt": "A whale lives in the sea, but what kind of animal is it?",
+      "options": [
+        {
+          "id": "fish",
+          "label": "Fish"
+        },
+        {
+          "id": "mammals",
+          "label": "Mammals"
+        },
+        {
+          "id": "birds",
+          "label": "Birds"
+        }
+      ],
+      "wrongHints": {
+        "fish": "Living in water is not enough. A whale breathes air and feeds milk to its baby.",
+        "birds": "A whale does not have feathers."
+      },
+      "successCopy": "Right! A whale lives in the sea, but it is a mammal."
+    },
+    {
+      "id": "animal-classify-02",
+      "title": "Is a bat a bird?",
+      "prompt": "It can fly, but what clue matters more?",
+      "options": [
+        {
+          "id": "bird",
+          "label": "Yes, because it can fly"
+        },
+        {
+          "id": "mammal",
+          "label": "No, it is a mammal"
+        }
+      ],
+      "wrongHints": {
+        "bird": "Flying is not the only clue. Birds have feathers; bats do not."
+      },
+      "successCopy": "Yes! A bat can fly, but it is still a mammal."
+    },
+    {
+      "id": "animal-find-01",
+      "title": "Find: who has feathers?",
+      "successCopy": "You found the feather clue. Sparrows and penguins are both birds.",
+      "wrongHint": "Look for feathers, not only wings."
+    },
+    {
+      "id": "animal-sequence-01",
+      "title": "What should we check when sorting animals?",
+      "prompt": "Tap the clues in order.",
+      "options": [
+        {
+          "id": "body",
+          "label": "Body clue"
+        },
+        {
+          "id": "life",
+          "label": "How it lives"
+        },
+        {
+          "id": "compare",
+          "label": "Compare with a similar animal"
+        }
+      ],
+      "successCopy": "You sorted like a scientist: look, think, then compare.",
+      "wrongHint": "Start with what you can see on the body."
+    }
+  ],
+  "speakTemplates": [
+    "I think ____ belongs to ____ because it has ____.",
+    "____ looks like ____, but it is actually ____ because ____.",
+    "Today I found out: do not only look at ____. Also look at ____."
+  ],
+  "parentTips": [
+    "Do not ask the child to memorize all categories at once. Ask them to explain the clue.",
+    "Ask: Which clue did you use? Is there a counterexample?",
+    "This page connects naturally to Insects and Spiders and Dinosaur Classification."
+  ],
+  "acceptanceCriteria": [
+    "The child can name at least three animal groups.",
+    "The child can explain at least one misconception, such as why a whale is not a fish."
+  ]
+}

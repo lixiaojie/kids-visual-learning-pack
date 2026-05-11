@@ -1,0 +1,268 @@
+{
+  "project": "kids-world-visual-boards",
+  "version": "1.0",
+  "worlds": {
+    "life": {
+      "label": "生命世界",
+      "color": "#5BBF72",
+      "soft": "#EAF8EE"
+    },
+    "body": {
+      "label": "身体世界",
+      "color": "#EF6F8F",
+      "soft": "#FFF0F4"
+    },
+    "earth": {
+      "label": "地球世界",
+      "color": "#3FA7D6",
+      "soft": "#EAF7FC"
+    },
+    "space": {
+      "label": "宇宙世界",
+      "color": "#6554C0",
+      "soft": "#F1EEFF"
+    },
+    "energy": {
+      "label": "物质与能量世界",
+      "color": "#F5A623",
+      "soft": "#FFF6E4"
+    },
+    "humanMade": {
+      "label": "人造系统世界",
+      "color": "#2F80ED",
+      "soft": "#ECF4FF"
+    }
+  },
+  "firstBatch": [
+    "insects-and-spiders",
+    "animal-classification-tree",
+    "blood-cells-3d",
+    "solar-system-overview",
+    "earth-climate-cities",
+    "llm-kids-basics"
+  ],
+  "topics": [
+    {
+      "slug": "insects-and-spiders",
+      "title": "昆虫与蜘蛛侦探站",
+      "world": "life",
+      "priority": "P0",
+      "pageType": "classification-compare-task",
+      "coreQuestion": "昆虫和蜘蛛有什么不同？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/insects-and-spiders/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/insects-and-spiders.json"
+      }
+    },
+    {
+      "slug": "animal-classification-tree",
+      "title": "动物生命树",
+      "world": "life",
+      "priority": "P0",
+      "pageType": "tree-classification",
+      "coreQuestion": "动物可以怎么分？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/animal-classification-tree/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/animal-classification-tree.json"
+      }
+    },
+    {
+      "slug": "blood-cells-3d",
+      "title": "血液里的小小工作队",
+      "world": "body",
+      "priority": "P0",
+      "pageType": "micro-scene-mechanism",
+      "coreQuestion": "血液为什么能帮助身体工作？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/blood-cells-3d/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/blood-cells-3d.json"
+      }
+    },
+    {
+      "slug": "solar-system-overview",
+      "title": "太阳系探索站",
+      "world": "space",
+      "priority": "P0",
+      "pageType": "orbit-map",
+      "coreQuestion": "太阳系里有哪些成员？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/solar-system-overview/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/solar-system-overview.json"
+      }
+    },
+    {
+      "slug": "earth-climate-cities",
+      "title": "地球上的冷热带",
+      "world": "earth",
+      "priority": "P0",
+      "pageType": "globe-climate-map",
+      "coreQuestion": "为什么世界上有些地方热，有些地方冷？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/earth-climate-cities/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/earth-climate-cities.json"
+      }
+    },
+    {
+      "slug": "llm-kids-basics",
+      "title": "会接龙的机器大脑",
+      "world": "humanMade",
+      "priority": "P0",
+      "pageType": "system-diagram-abstract",
+      "coreQuestion": "大模型是怎么回答问题的？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/llm-kids-basics/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/llm-kids-basics.json"
+      }
+    },
+    {
+      "slug": "dinosaurs",
+      "title": "恐龙世界",
+      "world": "life",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "ecosystem",
+      "title": "生态系统",
+      "world": "life",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "immune-system",
+      "title": "免疫系统",
+      "world": "body",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "heart",
+      "title": "心脏",
+      "world": "body",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "digestion",
+      "title": "消化系统",
+      "world": "body",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "water-cycle",
+      "title": "水循环",
+      "world": "earth",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "volcano-earthquake",
+      "title": "火山与地震",
+      "world": "earth",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "internet-message",
+      "title": "互联网信息传递",
+      "world": "humanMade",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "robots",
+      "title": "机器人",
+      "world": "humanMade",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "search-engine-kids",
+      "title": "搜索引擎",
+      "world": "humanMade",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "moon-phases",
+      "title": "月相变化",
+      "world": "space",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    },
+    {
+      "slug": "asteroid-belt",
+      "title": "小行星带",
+      "world": "space",
+      "priority": "P2",
+      "pageType": "TBD",
+      "coreQuestion": "TBD",
+      "status": "planned",
+      "uiStatus": "planned",
+      "contentStatus": "planned"
+    }
+  ]
+}

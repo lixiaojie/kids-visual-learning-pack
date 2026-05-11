@@ -1,0 +1,52 @@
+{
+  "id": "kids-world-visual-boards-i18n-config",
+  "version": "1.0",
+  "defaultLocale": "zh-CN",
+  "supportedLocales": [
+    {
+      "locale": "zh-CN",
+      "label": "中文",
+      "nativeLabel": "中文",
+      "direction": "ltr",
+      "source": "base-json"
+    },
+    {
+      "locale": "en-US",
+      "label": "English",
+      "nativeLabel": "English",
+      "direction": "ltr",
+      "source": "data/locales/en-US"
+    }
+  ],
+  "fallbackLocale": "zh-CN",
+  "displayMode": {
+    "default": "single-language",
+    "supportedModes": [
+      "zh-CN",
+      "en-US",
+      "bilingual-inline",
+      "bilingual-card"
+    ],
+    "recommendation": "5-8 岁儿童默认单语展示；家长共读或英语启蒙时可开启中英对照。"
+  },
+  "dataStrategy": {
+    "baseLanguage": "zh-CN",
+    "englishIsOverlay": true,
+    "homeBaseSource": "data/exploration-map.json",
+    "homeLocaleSourcePattern": "data/locales/{locale}/exploration-map.json",
+    "topicBaseSourcePattern": "data/topics/{slug}.json",
+    "topicLocaleSourcePattern": "data/locales/{locale}/topics/{slug}.json",
+    "mergeRules": [
+      "Objects are deep-merged by key.",
+      "Arrays of objects with stable id fields are replaced by the locale array or merged by id if the renderer supports it.",
+      "Arrays of plain strings are replaced by the locale array.",
+      "Non-text structural fields such as id, slug, href, asset, status, groupId and correctOptionId must remain stable across locales."
+    ]
+  },
+  "copyPolicy": {
+    "childCopy": "Use short, concrete sentences. Avoid encyclopedia tone.",
+    "parentCopy": "Use clear explanatory notes for adults; keep them brief and actionable.",
+    "technicalTerms": "Keep the Chinese term and English term aligned in bilingual mode when the term is important, e.g. 大模型 / Large Language Model.",
+    "aiSafety": "Never say AI thinks exactly like a person or always tells the truth."
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "id": "topic-humanmade-llm-kids-basics",
+  "slug": "llm-kids-basics",
+  "title": "The Word-Chain Machine Brain",
+  "subtitle": "A child-friendly introduction to large language models",
+  "coreQuestion": "How does a large language model answer questions?",
+  "learningGoals": [
+    "Know that a large language model learns patterns from lots of text.",
+    "Know that it organizes answers from context instead of truly knowing everything like a person.",
+    "Learn that clearer questions usually lead to more helpful answers, and important answers need checking."
+  ],
+  "misconceptions": [
+    "AI understands everything exactly like a human.",
+    "Everything AI says is true.",
+    "AI only answers by searching the internet every time."
+  ],
+  "hero": {
+    "title": "The Word-Chain Machine Brain",
+    "kicker": "Human-made Systems World · AI Basics",
+    "lead": "A large language model is like a machine that learned many language patterns. Give it a prompt, and it builds an answer step by step.",
+    "sceneExplanation": "The main visual is a friendly language machine: books, story cards, and question bubbles enter on the left; word networks and glowing nodes work in the middle; answer bubbles come out on the right. Tapping each step shows: read lots of text — learn patterns — read your prompt — build an answer — check important facts.",
+    "childPrompt": "Give the machine a clearer question and see if it can help better.",
+    "parentPrompt": "The key idea is safe AI literacy: AI can organize answers from learned patterns, but it can still be wrong. Avoid saying AI thinks exactly like a person."
+  },
+  "classificationGroups": [
+    {
+      "id": "input",
+      "name": "Input",
+      "childExplanation": "Your question, story, or request is the input.",
+      "parentNote": "This corresponds to a prompt, but the English term is not required at first.",
+      "representativeObjects": [
+        "questionCard",
+        "storyCard"
+      ],
+      "misconception": "AI cannot always guess what you mean if you do not say it clearly."
+    },
+    {
+      "id": "patterns",
+      "name": "Language patterns",
+      "childExplanation": "AI learns how words and sentences often go together from lots of text.",
+      "parentNote": "Emphasize patterns, not perfect understanding.",
+      "representativeObjects": [
+        "wordNetwork",
+        "patternGears"
+      ],
+      "misconception": "AI is not a perfectly correct encyclopedia inside a machine."
+    },
+    {
+      "id": "context",
+      "name": "Context",
+      "childExplanation": "What you said earlier can affect what AI says next.",
+      "parentNote": "Use a word-chain game to explain context.",
+      "representativeObjects": [
+        "chatBubbles"
+      ],
+      "misconception": "AI answers are affected by the current conversation."
+    },
+    {
+      "id": "output",
+      "name": "Output",
+      "childExplanation": "AI puts words together step by step into an answer.",
+      "parentNote": "Generated output is not the same as verified truth.",
+      "representativeObjects": [
+        "answerBubble"
+      ],
+      "misconception": "A smooth answer is not always a correct answer."
+    },
+    {
+      "id": "check",
+      "name": "Check",
+      "childExplanation": "Important questions should be checked with adults or reliable sources.",
+      "parentNote": "This sets a safety boundary for children using AI.",
+      "representativeObjects": [
+        "checkBadge"
+      ],
+      "misconception": "AI can sound confident and still be wrong."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "questionCard",
+      "name": "Question card",
+      "groupId": "input",
+      "childExplanation": "The clearer your question is, the easier it is for AI to help.",
+      "visualHint": "a card with a question mark",
+      "commonMisread": "Thinking a very short question always works well."
+    },
+    {
+      "id": "storyCard",
+      "name": "Story card",
+      "groupId": "input",
+      "childExplanation": "You can give AI a story and ask it to continue or organize it.",
+      "visualHint": "book page and small stars",
+      "commonMisread": "Thinking AI knows background you did not tell it."
+    },
+    {
+      "id": "wordNetwork",
+      "name": "Word network",
+      "groupId": "patterns",
+      "childExplanation": "Words have relationships. AI learns many of these relationships.",
+      "visualHint": "glowing nodes and lines",
+      "commonMisread": "Thinking the network is a real human brain."
+    },
+    {
+      "id": "patternGears",
+      "name": "Pattern gears",
+      "groupId": "patterns",
+      "childExplanation": "Patterns help turn input into a possible answer.",
+      "visualHint": "soft gears and word pieces",
+      "commonMisread": "Thinking patterns are the same as facts."
+    },
+    {
+      "id": "chatBubbles",
+      "name": "Chat bubbles",
+      "groupId": "context",
+      "childExplanation": "The same sentence can mean different things in different conversations.",
+      "visualHint": "connected speech bubbles",
+      "commonMisread": "Only looking at the last sentence."
+    },
+    {
+      "id": "answerBubble",
+      "name": "Answer bubble",
+      "groupId": "output",
+      "childExplanation": "AI organizes its answer into sentences for you.",
+      "visualHint": "glowing answer box",
+      "commonMisread": "Thinking smooth sentences must be true."
+    },
+    {
+      "id": "checkBadge",
+      "name": "Check badge",
+      "groupId": "check",
+      "childExplanation": "Important answers need checking.",
+      "visualHint": "check mark and small magnifier",
+      "commonMisread": "Thinking confident words mean correct facts."
+    }
+  ],
+  "mechanism": {
+    "title": "How does a large language model answer?",
+    "steps": [
+      {
+        "id": "read-many",
+        "shortTitle": "Reads lots of text",
+        "childExplanation": "It has learned from many sentences, stories, and question-answer examples.",
+        "parentNote": "Do not imply specific data sources. Keep it conceptual."
+      },
+      {
+        "id": "learn-patterns",
+        "shortTitle": "Learns language patterns",
+        "childExplanation": "It learns which words often go together and what a complete answer may look like.",
+        "parentNote": "This is the core: pattern learning, not human-like understanding."
+      },
+      {
+        "id": "read-prompt",
+        "shortTitle": "Reads your prompt",
+        "childExplanation": "The clearer you are, the easier it is for AI to answer in the right direction.",
+        "parentNote": "Teach the child to ask clearer questions."
+      },
+      {
+        "id": "generate-answer",
+        "shortTitle": "Builds the answer step by step",
+        "childExplanation": "It works like a word-chain game, adding words into an answer.",
+        "parentNote": "Word-chain is a useful analogy."
+      },
+      {
+        "id": "check-important",
+        "shortTitle": "Checks important things",
+        "childExplanation": "AI can be wrong. Important questions need an adult or reliable source.",
+        "parentNote": "This is the safety baseline for children."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "ai-vs-search",
+      "title": "Large language model vs Search",
+      "a": {
+        "name": "Large language model",
+        "points": [
+          "organizes answers from learned language patterns",
+          "can rewrite, summarize, and continue writing",
+          "may be wrong"
+        ]
+      },
+      "b": {
+        "name": "Search",
+        "points": [
+          "helps find webpages and sources",
+          "you still judge the source",
+          "may find unsuitable information"
+        ]
+      },
+      "childConclusion": "AI and search can both help, but we need to check important things."
+    },
+    {
+      "id": "clear-vs-vague-prompt",
+      "title": "Clear question vs Vague question",
+      "a": {
+        "name": "Clear question",
+        "points": [
+          "says the topic",
+          "says the number or scope",
+          "says the format wanted"
+        ]
+      },
+      "b": {
+        "name": "Vague question",
+        "points": [
+          "only says ‘tell me about’",
+          "no range",
+          "easy to go off track"
+        ]
+      },
+      "childConclusion": "Clearer questions make answers more useful."
+    },
+    {
+      "id": "fluent-vs-correct",
+      "title": "Smooth answer vs Correct answer",
+      "a": {
+        "name": "Smooth answer",
+        "points": [
+          "sounds nice",
+          "looks complete",
+          "may not be true"
+        ]
+      },
+      "b": {
+        "name": "Correct answer",
+        "points": [
+          "can be checked",
+          "matches reliable sources",
+          "survives follow-up questions"
+        ]
+      },
+      "childConclusion": "A smooth AI answer still needs checking if it is important."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "llm-single-01",
+      "title": "Which question is clearer?",
+      "prompt": "A clear question helps AI answer better.",
+      "options": [
+        {
+          "id": "vague",
+          "label": "Tell me about animals"
+        },
+        {
+          "id": "clear",
+          "label": "Tell me three forest animals and how they protect themselves"
+        }
+      ],
+      "wrongHints": {
+        "vague": "This question is too broad. Try saying what kind of answer you want."
+      },
+      "successCopy": "Right! A clear question gives AI a better direction."
+    },
+    {
+      "id": "llm-single-02",
+      "title": "Is everything AI says always true?",
+      "prompt": "Choose the safest answer.",
+      "options": [
+        {
+          "id": "always-true",
+          "label": "Yes, AI is always right"
+        },
+        {
+          "id": "check-important",
+          "label": "Important things should be checked again"
+        },
+        {
+          "id": "never-use",
+          "label": "No, so we should never use AI"
+        }
+      ],
+      "wrongHints": {
+        "always-true": "AI can make mistakes. Important things need checking.",
+        "never-use": "AI can help, but we need to use it carefully."
+      },
+      "successCopy": "Good judgment! AI can help, and important answers should be checked."
+    },
+    {
+      "id": "llm-find-01",
+      "title": "Find: which things need checking again?",
+      "successCopy": "You found the careful-use cases. Important facts need checking.",
+      "wrongHint": "Think about health, money, and school facts: these should be checked."
+    },
+    {
+      "id": "llm-sequence-01",
+      "title": "How AI answers",
+      "prompt": "Tap the steps in order.",
+      "options": [
+        {
+          "id": "learn",
+          "label": "Learn from lots of text"
+        },
+        {
+          "id": "prompt",
+          "label": "Read your prompt"
+        },
+        {
+          "id": "answer",
+          "label": "Build an answer step by step"
+        },
+        {
+          "id": "check",
+          "label": "Check important parts"
+        }
+      ],
+      "successCopy": "You built the AI answer flow.",
+      "wrongHint": "AI first learns from lots of text, then reads your prompt."
+    }
+  ],
+  "speakTemplates": [
+    "AI is like ____. It answers using ____.",
+    "I can change ‘____’ into a clearer question: ‘____’. ",
+    "If AI answers about ____, I should ____."
+  ],
+  "parentTips": [
+    "Avoid saying AI thinks like a person or understands everything.",
+    "Encourage the child to turn vague questions into clear questions.",
+    "Set safety boundaries: health, safety, money, privacy, and school facts need checking."
+  ],
+  "acceptanceCriteria": [
+    "The child can explain that AI answers from learned patterns.",
+    "The child understands that important answers need checking.",
+    "The child can improve a vague question into a clearer one."
+  ]
+}

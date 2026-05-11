@@ -1,0 +1,454 @@
+{
+  "id": "topic-life-insects-and-spiders",
+  "slug": "insects-and-spiders",
+  "title": "昆虫与蜘蛛侦探站",
+  "subtitle": "找一找，谁是昆虫？谁是蜘蛛？",
+  "world": "life",
+  "priority": "P0",
+  "ageRange": "5-8",
+  "pageType": "classification-compare-task",
+  "coreQuestion": "昆虫和蜘蛛有什么不同？",
+  "learningGoals": [
+    "知道昆虫通常有 6 条腿，身体分头、胸、腹",
+    "知道蜘蛛不是昆虫，通常有 8 条腿",
+    "能根据外形把常见小动物分到正确类别"
+  ],
+  "misconceptions": [
+    "蜘蛛就是昆虫",
+    "有很多腿的小动物都算昆虫",
+    "只要会飞就是昆虫"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "title": "草地观察台",
+      "assetKey": "hero"
+    },
+    {
+      "type": "classification",
+      "title": "谁是昆虫",
+      "groups": [
+        "昆虫",
+        "蜘蛛",
+        "其他节肢动物"
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "昆虫 vs 蜘蛛",
+      "items": [
+        "腿数",
+        "身体分段",
+        "触角",
+        "翅膀"
+      ]
+    },
+    {
+      "type": "task",
+      "title": "小侦探分类任务"
+    },
+    {
+      "type": "relatedTopics",
+      "title": "接着探索"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/life/insects-and-spiders/life-insects-hero-v01.png",
+      "purpose": "主视觉：自然观察台",
+      "status": "planned"
+    },
+    "compare": {
+      "path": "/assets/life/insects-and-spiders/life-insects-structure-compare-v01.png",
+      "purpose": "结构比较图",
+      "status": "planned"
+    },
+    "cards": {
+      "path": "/assets/life/insects-and-spiders/life-insects-cards-v01.png",
+      "purpose": "拖拽分类卡",
+      "status": "planned"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "animal-card",
+      "description": "点击小动物显示名称与结构提示"
+    },
+    {
+      "type": "highlight",
+      "target": "body-parts",
+      "description": "高亮腿部和身体分段"
+    },
+    {
+      "type": "drag-or-select",
+      "target": "classification-groups",
+      "description": "把小动物放入正确类别"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "classify",
+      "title": "把小动物分一分",
+      "items": [
+        "蝴蝶",
+        "蜜蜂",
+        "瓢虫",
+        "蚂蚁",
+        "蜻蜓",
+        "蜘蛛",
+        "蜈蚣"
+      ]
+    },
+    {
+      "type": "find",
+      "title": "找到 1 只蜘蛛和 2 只昆虫"
+    },
+    {
+      "type": "explain",
+      "title": "我觉得它是____，因为它有____。"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "昆虫是一大类小动物。",
+      "蜘蛛不是昆虫，它们有不同的身体结构。"
+    ],
+    "keyFacts": [
+      "昆虫通常有 6 条腿。",
+      "蜘蛛通常有 8 条腿。",
+      "观察腿和身体结构，是识别它们的好办法。"
+    ],
+    "explainPrompt": "你为什么说它是昆虫？"
+  },
+  "relatedTopics": [
+    "animal-classification-tree",
+    "ecosystem",
+    "dinosaurs"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出蜘蛛不是昆虫",
+    "孩子能至少正确分类 4/6 个对象",
+    "画面不恐怖、不写实、不杂乱"
+  ],
+  "status": "render-ready",
+  "renderPriority": "P0-fourth-lightweight-topic",
+  "hero": {
+    "title": "昆虫与蜘蛛侦探站",
+    "kicker": "生命世界 · 找不同任务",
+    "lead": "草地里有很多小小居民。小侦探要先数腿，再看身体，才能分清谁是昆虫、谁是蜘蛛。",
+    "sceneExplanation": "页面主视觉是一个放大镜观察台：草叶、石头和小花之间分布着蝴蝶、蜜蜂、瓢虫、蚂蚁、蜻蜓、蜘蛛、蜈蚣等对象。点击每个小动物时，页面高亮它的腿数、触角和身体分段。",
+    "childPrompt": "先别急着猜，点一点小动物，数数它有几条腿。",
+    "parentPrompt": "本页重点是训练“观察依据”：不要只看会不会飞、长得像不像，而是看腿数、身体结构和触角。",
+    "placeholder": {
+      "type": "natureObservationTable",
+      "asset": "/assets/life/insects-and-spiders/hero-v01.png"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "insects",
+      "name": "昆虫",
+      "childExplanation": "昆虫通常有 6 条腿，身体可以看成头、胸、腹几个部分。",
+      "parentNote": "对 5–8 岁儿童先抓“6 条腿 + 触角 + 身体分段”即可，不必展开昆虫纲细节。",
+      "representativeObjects": [
+        "butterfly",
+        "bee",
+        "ladybug",
+        "ant",
+        "dragonfly"
+      ],
+      "misconception": "不是所有会飞的小动物都是昆虫，但蝴蝶、蜜蜂、蜻蜓都是昆虫。"
+    },
+    {
+      "id": "spiders",
+      "name": "蜘蛛",
+      "childExplanation": "蜘蛛通常有 8 条腿，没有昆虫那样的触角。",
+      "parentNote": "蜘蛛属于蛛形纲，不属于昆虫。儿童阶段先理解“蜘蛛不是昆虫”。",
+      "representativeObjects": [
+        "gardenSpider",
+        "jumpingSpider"
+      ],
+      "misconception": "蜘蛛小小的、也会出现在草地里，但它不是昆虫。"
+    },
+    {
+      "id": "otherArthropods",
+      "name": "其他多脚小动物",
+      "childExplanation": "有些小动物腿很多，比如蜈蚣，它们也不是昆虫。",
+      "parentNote": "这一组用于防止孩子把“很多腿的小动物”统称为昆虫。",
+      "representativeObjects": [
+        "centipede"
+      ],
+      "misconception": "腿很多不等于昆虫。昆虫的典型线索是 6 条腿。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "butterfly",
+      "name": "蝴蝶",
+      "groupId": "insects",
+      "childExplanation": "蝴蝶是昆虫，通常有 6 条腿和一对漂亮翅膀。",
+      "visualHint": "翅膀、触角、6 条腿",
+      "commonMisread": "只看翅膀，忘记数腿。"
+    },
+    {
+      "id": "bee",
+      "name": "蜜蜂",
+      "groupId": "insects",
+      "childExplanation": "蜜蜂是昆虫，会飞，也会帮花朵传粉。",
+      "visualHint": "6 条腿、触角、翅膀",
+      "commonMisread": "以为会飞就是鸟，或只把蝴蝶当昆虫。"
+    },
+    {
+      "id": "ladybug",
+      "name": "瓢虫",
+      "groupId": "insects",
+      "childExplanation": "瓢虫是昆虫，圆圆的身体下面有 6 条腿。",
+      "visualHint": "红色壳、黑点、6 条腿",
+      "commonMisread": "身体圆就不像昆虫。"
+    },
+    {
+      "id": "ant",
+      "name": "蚂蚁",
+      "groupId": "insects",
+      "childExplanation": "蚂蚁是昆虫，虽然大多数工蚁不会飞，但也有 6 条腿。",
+      "visualHint": "触角、6 条腿、身体分段",
+      "commonMisread": "不会飞就以为不是昆虫。"
+    },
+    {
+      "id": "dragonfly",
+      "name": "蜻蜓",
+      "groupId": "insects",
+      "childExplanation": "蜻蜓是昆虫，有细长身体、透明翅膀和 6 条腿。",
+      "visualHint": "透明翅膀、长身体、6 条腿",
+      "commonMisread": "只注意翅膀，不观察腿。"
+    },
+    {
+      "id": "gardenSpider",
+      "name": "结网蜘蛛",
+      "groupId": "spiders",
+      "childExplanation": "蜘蛛会结网，通常有 8 条腿，它不是昆虫。",
+      "visualHint": "8 条腿、蛛网、没有触角",
+      "commonMisread": "看到小小的节肢动物就叫昆虫。"
+    },
+    {
+      "id": "jumpingSpider",
+      "name": "跳蛛",
+      "groupId": "spiders",
+      "childExplanation": "跳蛛也是蜘蛛，身体小，但也有 8 条腿。",
+      "visualHint": "大眼睛、8 条腿、跳跃动作",
+      "commonMisread": "看起来可爱小巧就当成昆虫。"
+    },
+    {
+      "id": "centipede",
+      "name": "蜈蚣",
+      "groupId": "otherArthropods",
+      "childExplanation": "蜈蚣有很多很多腿，它不是昆虫，也不是蜘蛛。",
+      "visualHint": "长身体、很多腿",
+      "commonMisread": "腿多就以为是昆虫。"
+    }
+  ],
+  "mechanism": {
+    "title": "小侦探怎么分辨？",
+    "steps": [
+      {
+        "id": "count-legs",
+        "shortTitle": "先数腿",
+        "childExplanation": "6 条腿更像昆虫，8 条腿更像蜘蛛，很多腿就要再想想。",
+        "parentNote": "腿数是本页最稳定、最适合儿童操作的第一线索。"
+      },
+      {
+        "id": "check-antennae",
+        "shortTitle": "看触角",
+        "childExplanation": "很多昆虫有触角，蜘蛛没有昆虫那样的触角。",
+        "parentNote": "触角是补充线索，不要求孩子过细辨认。"
+      },
+      {
+        "id": "check-body",
+        "shortTitle": "看身体分段",
+        "childExplanation": "昆虫身体常分成头、胸、腹；蜘蛛身体看起来不一样。",
+        "parentNote": "用视觉分段帮助理解，避免讲太多解剖名词。"
+      },
+      {
+        "id": "avoid-wing-rule",
+        "shortTitle": "不要只看翅膀",
+        "childExplanation": "有翅膀的不一定都一样；不会飞的蚂蚁也是昆虫。",
+        "parentNote": "帮助孩子理解单一线索会误导判断。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "insect-vs-spider",
+      "title": "昆虫 vs 蜘蛛",
+      "a": {
+        "name": "昆虫",
+        "points": [
+          "通常 6 条腿",
+          "常有触角",
+          "身体常分头、胸、腹"
+        ]
+      },
+      "b": {
+        "name": "蜘蛛",
+        "points": [
+          "通常 8 条腿",
+          "没有昆虫那样的触角",
+          "不是昆虫"
+        ]
+      },
+      "childConclusion": "先数腿，是分清昆虫和蜘蛛的好办法。"
+    },
+    {
+      "id": "ant-vs-spider",
+      "title": "蚂蚁 vs 蜘蛛",
+      "a": {
+        "name": "蚂蚁",
+        "points": [
+          "6 条腿",
+          "有触角",
+          "是昆虫"
+        ]
+      },
+      "b": {
+        "name": "蜘蛛",
+        "points": [
+          "8 条腿",
+          "没有触角",
+          "不是昆虫"
+        ]
+      },
+      "childConclusion": "都很小，但腿数和触角不同。"
+    },
+    {
+      "id": "centipede-vs-insect",
+      "title": "蜈蚣 vs 昆虫",
+      "a": {
+        "name": "蜈蚣",
+        "points": [
+          "很多腿",
+          "长长的身体",
+          "不是昆虫"
+        ]
+      },
+      "b": {
+        "name": "昆虫",
+        "points": [
+          "通常 6 条腿",
+          "常有触角",
+          "身体分段更清楚"
+        ]
+      },
+      "childConclusion": "腿很多的小动物，也不一定是昆虫。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "insects-single-01",
+      "type": "singleChoice",
+      "title": "蜘蛛是昆虫吗？",
+      "prompt": "点出更准确的说法。",
+      "options": [
+        {
+          "id": "yes-insect",
+          "label": "是昆虫，因为它很小"
+        },
+        {
+          "id": "no-spider",
+          "label": "不是昆虫，蜘蛛通常有 8 条腿"
+        },
+        {
+          "id": "depends-fly",
+          "label": "会飞才是昆虫"
+        }
+      ],
+      "correctOptionId": "no-spider",
+      "wrongHints": {
+        "yes-insect": "小不小不是分类线索。再数数蜘蛛有几条腿。",
+        "depends-fly": "会不会飞不是唯一线索，蚂蚁不会飞也常常是昆虫。"
+      },
+      "successCopy": "对！蜘蛛不是昆虫，数腿帮你找到了线索。"
+    },
+    {
+      "id": "insects-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪些是昆虫？",
+      "targetIds": [
+        "butterfly",
+        "bee",
+        "ladybug",
+        "ant",
+        "dragonfly"
+      ],
+      "decoyIds": [
+        "gardenSpider",
+        "centipede"
+      ],
+      "successCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+      "wrongHint": "再数数腿。昆虫通常是 6 条腿。"
+    },
+    {
+      "id": "insects-single-02",
+      "type": "singleChoice",
+      "title": "蜈蚣为什么不是昆虫？",
+      "prompt": "选择一个最好的理由。",
+      "options": [
+        {
+          "id": "too-many-legs",
+          "label": "它有很多腿，不是典型 6 条腿的昆虫"
+        },
+        {
+          "id": "too-long",
+          "label": "因为它身体太长"
+        },
+        {
+          "id": "not-flying",
+          "label": "因为它不会飞"
+        }
+      ],
+      "correctOptionId": "too-many-legs",
+      "wrongHints": {
+        "too-long": "身体长短不是最重要的分类线索。",
+        "not-flying": "不会飞也可能是昆虫，比如蚂蚁。"
+      },
+      "successCopy": "很好！你没有被“很多腿的小动物”迷惑。"
+    },
+    {
+      "id": "insects-sequence-01",
+      "type": "sequenceClick",
+      "title": "小侦探观察顺序",
+      "prompt": "按顺序点三个观察动作。",
+      "options": [
+        {
+          "id": "count",
+          "label": "数腿"
+        },
+        {
+          "id": "antennae",
+          "label": "看触角"
+        },
+        {
+          "id": "body",
+          "label": "看身体分段"
+        }
+      ],
+      "correctSequence": [
+        "count",
+        "antennae",
+        "body"
+      ],
+      "successCopy": "你学会了小侦探的观察顺序。",
+      "wrongHint": "先从最容易观察的腿数开始。"
+    }
+  ],
+  "speakTemplates": [
+    "我觉得____是____，因为它有____条腿。",
+    "____看起来像昆虫，但它其实不是，因为____。",
+    "我今天学会：不能只看____，还要看____。"
+  ],
+  "parentTips": [
+    "不要要求孩子背“节肢动物”等术语，先掌握观察线索。",
+    "可以追问：你是先看腿，还是先看翅膀？哪个线索更可靠？",
+    "本页可以承接蜘蛛宇宙兴趣，也可以跳回动物分类生命树。"
+  ]
+}

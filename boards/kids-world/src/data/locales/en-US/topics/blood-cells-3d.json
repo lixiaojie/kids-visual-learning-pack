@@ -1,0 +1,317 @@
+{
+  "id": "topic-body-blood-cells-3d",
+  "slug": "blood-cells-3d",
+  "title": "The Tiny Team in Blood",
+  "subtitle": "A friendly 3D micro-world",
+  "coreQuestion": "Why can blood help the body work?",
+  "learningGoals": [
+    "Know that blood is made of different parts.",
+    "Recognize red blood cells, white blood cells, platelets, and plasma.",
+    "Understand that different blood parts have different jobs."
+  ],
+  "misconceptions": [
+    "Blood is just red water.",
+    "All blood cells do the same job.",
+    "White blood cells are bad germs."
+  ],
+  "hero": {
+    "title": "The Tiny Team in Blood",
+    "kicker": "Body World · Micro Scene",
+    "lead": "Blood is not just red water. Many tiny team members are working inside it.",
+    "sceneExplanation": "The main scene is a gentle blood vessel micro-world: red blood cells carry oxygen like small delivery carts, white blood cells are larger and fewer like guards, platelets are tiny repair helpers, and plasma flows like a river carrying everyone along.",
+    "childPrompt": "Tap each tiny member and see what job it does in the body.",
+    "parentPrompt": "This page uses the ‘working team’ metaphor to explain blood components without scary or bloody visuals."
+  },
+  "classificationGroups": [
+    {
+      "id": "red-blood-cells",
+      "name": "Red blood cells",
+      "childExplanation": "Like little oxygen delivery carts that bring oxygen around the body.",
+      "parentNote": "At this age, focus on oxygen transport. Hemoglobin can be mentioned briefly.",
+      "representativeObjects": [
+        "red-cell"
+      ],
+      "misconception": "Red blood cells are not germs or ordinary red drops."
+    },
+    {
+      "id": "white-blood-cells",
+      "name": "White blood cells",
+      "childExplanation": "Like body guards that help protect you from invaders.",
+      "parentNote": "Do not expand into immune cell subtypes yet.",
+      "representativeObjects": [
+        "white-cell"
+      ],
+      "misconception": "White blood cells are helpers, not bad things."
+    },
+    {
+      "id": "platelets",
+      "name": "Platelets",
+      "childExplanation": "Like tiny repair helpers that help small wounds stop bleeding.",
+      "parentNote": "Explain clotting as a repair process without technical detail.",
+      "representativeObjects": [
+        "platelet"
+      ],
+      "misconception": "Stopping bleeding is a process, not instant magic."
+    },
+    {
+      "id": "plasma",
+      "name": "Plasma",
+      "childExplanation": "Like the flowing river in blood that carries many things along.",
+      "parentNote": "Plasma is the liquid part of blood and transports many substances.",
+      "representativeObjects": [
+        "plasma"
+      ],
+      "misconception": "Blood is not only cells; it also has a liquid part."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "red-cell",
+      "name": "Red blood cell",
+      "groupId": "red-blood-cells",
+      "childExplanation": "I deliver oxygen.",
+      "visualHint": "red, flat round shape, many of them",
+      "commonMisread": "Thinking all red pieces have the same job."
+    },
+    {
+      "id": "white-cell",
+      "name": "White blood cell",
+      "groupId": "white-blood-cells",
+      "childExplanation": "I help protect the body.",
+      "visualHint": "pale color, bigger than red cells, fewer",
+      "commonMisread": "Thinking the white cell is an invader."
+    },
+    {
+      "id": "platelet",
+      "name": "Platelet",
+      "groupId": "platelets",
+      "childExplanation": "I help repair small wounds.",
+      "visualHint": "tiny dots or small fragments",
+      "commonMisread": "Thinking it has no important job."
+    },
+    {
+      "id": "plasma",
+      "name": "Plasma",
+      "groupId": "plasma",
+      "childExplanation": "I carry the team as blood flows.",
+      "visualHint": "light yellow or transparent flowing background",
+      "commonMisread": "Forgetting the liquid part."
+    }
+  ],
+  "mechanism": {
+    "title": "How does oxygen travel through the body?",
+    "steps": [
+      {
+        "id": "get-oxygen",
+        "shortTitle": "Oxygen enters the lungs",
+        "childExplanation": "When we breathe in, oxygen comes into the lungs.",
+        "parentNote": "No need to explain alveoli in detail."
+      },
+      {
+        "id": "red-cell-load",
+        "shortTitle": "Red cells pick it up",
+        "childExplanation": "Red blood cells carry oxygen and get ready to travel.",
+        "parentNote": "You may mention hemoglobin as the helper inside red cells."
+      },
+      {
+        "id": "heart-pump",
+        "shortTitle": "The heart pushes",
+        "childExplanation": "The heart works like a pump that moves blood through the body.",
+        "parentNote": "The pump metaphor is enough for this page."
+      },
+      {
+        "id": "deliver",
+        "shortTitle": "Oxygen is delivered",
+        "childExplanation": "Red cells bring oxygen to places that need to work.",
+        "parentNote": "Examples: muscles, brain, hands, and feet."
+      },
+      {
+        "id": "return",
+        "shortTitle": "Waste gas goes back",
+        "childExplanation": "Blood also carries waste gas back to be breathed out.",
+        "parentNote": "Call it carbon dioxide or waste gas."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "How do platelets help a small wound?",
+    "steps": [
+      {
+        "id": "small-cut",
+        "shortTitle": "A small opening appears",
+        "childExplanation": "When the skin has a small cut, the body needs a repair team.",
+        "parentNote": "Keep the visual soft and non-bloody."
+      },
+      {
+        "id": "platelets-arrive",
+        "shortTitle": "Platelets gather",
+        "childExplanation": "Platelets come together near the opening.",
+        "parentNote": "This is a simplified explanation of clotting."
+      },
+      {
+        "id": "seal",
+        "shortTitle": "Help seal it",
+        "childExplanation": "They help make a patch so bleeding can slow down.",
+        "parentNote": "Do not overpromise; serious wounds need adult help."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "red-vs-white",
+      "title": "Red blood cells vs White blood cells",
+      "a": {
+        "name": "Red blood cells",
+        "points": [
+          "many of them",
+          "carry oxygen",
+          "like delivery carts"
+        ]
+      },
+      "b": {
+        "name": "White blood cells",
+        "points": [
+          "fewer",
+          "protect the body",
+          "like guards"
+        ]
+      },
+      "childConclusion": "They are both in blood, but they do different jobs."
+    },
+    {
+      "id": "platelet-vs-red",
+      "title": "Platelets vs Red blood cells",
+      "a": {
+        "name": "Platelets",
+        "points": [
+          "smaller",
+          "help stop bleeding",
+          "like repair helpers"
+        ]
+      },
+      "b": {
+        "name": "Red blood cells",
+        "points": [
+          "more common",
+          "carry oxygen",
+          "like carts"
+        ]
+      },
+      "childConclusion": "Tiny platelets also have an important job."
+    },
+    {
+      "id": "blood-vs-water",
+      "title": "Blood vs Red water",
+      "a": {
+        "name": "Blood",
+        "points": [
+          "many members",
+          "transports and protects",
+          "circulates in the body"
+        ]
+      },
+      "b": {
+        "name": "Red water",
+        "points": [
+          "only liquid",
+          "no working team",
+          "does not protect the body"
+        ]
+      },
+      "childConclusion": "Blood is not ordinary red water."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "blood-match-01",
+      "title": "Who is most like an oxygen delivery cart?",
+      "prompt": "Choose the blood team member with the oxygen job.",
+      "options": [
+        {
+          "id": "red-cell",
+          "label": "Red blood cell"
+        },
+        {
+          "id": "white-cell",
+          "label": "White blood cell"
+        },
+        {
+          "id": "platelet",
+          "label": "Platelet"
+        }
+      ],
+      "wrongHints": {
+        "white-cell": "White blood cells help protect the body. Look for the oxygen delivery job.",
+        "platelet": "Platelets help with repair. Look for the oxygen delivery job."
+      },
+      "successCopy": "Correct! Red blood cells carry oxygen around the body."
+    },
+    {
+      "id": "blood-match-02",
+      "title": "When the body meets an invader, who helps protect it?",
+      "prompt": "Choose the small body guard.",
+      "options": [
+        {
+          "id": "plasma",
+          "label": "Plasma"
+        },
+        {
+          "id": "white-cell",
+          "label": "White blood cell"
+        },
+        {
+          "id": "red-cell",
+          "label": "Red blood cell"
+        }
+      ],
+      "wrongHints": {
+        "plasma": "Plasma is like the flowing river that carries many things.",
+        "red-cell": "Red blood cells carry oxygen. Protection is the white blood cell’s job."
+      },
+      "successCopy": "Yes! White blood cells help protect the body."
+    },
+    {
+      "id": "blood-sequence-01",
+      "title": "What is the oxygen travel order?",
+      "prompt": "Tap the path in order.",
+      "options": [
+        {
+          "id": "lung",
+          "label": "Lungs get oxygen"
+        },
+        {
+          "id": "heart",
+          "label": "Heart pushes blood"
+        },
+        {
+          "id": "body",
+          "label": "Body receives oxygen"
+        }
+      ],
+      "successCopy": "You followed the oxygen trip!",
+      "wrongHint": "Start where oxygen enters the body: the lungs."
+    },
+    {
+      "id": "blood-find-01",
+      "title": "Find: who is the repair team?",
+      "successCopy": "You found the repair helper. Platelets help stop small bleeding.",
+      "wrongHint": "Look for the tiny pieces that help patch a small wound."
+    }
+  ],
+  "speakTemplates": [
+    "Blood has ____, ____, and ____.",
+    "Red blood cells are like ____. They help ____.",
+    "White blood cells are like ____. They help ____.",
+    "If there were no ____, the body might ____."
+  ],
+  "parentTips": [
+    "Keep the tone gentle; avoid scary medical visuals.",
+    "Ask the child to match each cell to a job instead of memorizing names only.",
+    "This page can connect to immunity, heart, lungs, and wound healing."
+  ],
+  "acceptanceCriteria": [
+    "The child can name at least two blood members.",
+    "The child can explain one job of red blood cells and one job of white blood cells.",
+    "The page does not create fear of blood or the body."
+  ]
+}

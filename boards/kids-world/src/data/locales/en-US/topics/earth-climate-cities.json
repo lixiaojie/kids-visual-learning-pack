@@ -1,0 +1,318 @@
+{
+  "id": "topic-earth-climate-cities",
+  "slug": "earth-climate-cities",
+  "title": "Hot and Cold Bands on Earth",
+  "subtitle": "A globe, climate bands, and city cards",
+  "coreQuestion": "Why are some places hot and some places cold?",
+  "learningGoals": [
+    "Know that Earth has different climate bands.",
+    "Understand that places near the equator are often hotter and places near the poles are often colder.",
+    "Connect city location, climate, clothing, plants, and daily life."
+  ],
+  "misconceptions": [
+    "Weather is about the same everywhere.",
+    "All faraway places are simply hot or cold.",
+    "A flat map is the whole story of Earth."
+  ],
+  "hero": {
+    "title": "Hot and Cold Bands on Earth",
+    "kicker": "Earth World · Globe Map",
+    "lead": "Earth is a big ball. Different places receive sunlight in different ways, so life feels different there.",
+    "sceneExplanation": "The main visual is a child-friendly globe. Soft horizontal bands show tropical, temperate, and cold regions. City cards sit in different areas; tapping a city shows weather impressions, clothing ideas, and everyday life scenes.",
+    "childPrompt": "Tap a city and guess: should we bring shorts, an umbrella, or a thick coat?",
+    "parentPrompt": "The goal is not exact climate classification. Build the chain: Earth is a sphere — sunlight is different — places feel different — life changes."
+  },
+  "classificationGroups": [
+    {
+      "id": "tropical",
+      "name": "Tropical area",
+      "childExplanation": "Near the equator, many places are warm or hot all year.",
+      "parentNote": "Use ‘near the equator’ to build spatial sense; no latitude numbers needed.",
+      "representativeObjects": [
+        "singapore"
+      ],
+      "misconception": "Tropical does not mean sunny every day; it may rain a lot too."
+    },
+    {
+      "id": "subtropical",
+      "name": "Warm and humid area",
+      "childExplanation": "Some places are not in the hottest tropics, but they are warm for much of the year.",
+      "parentNote": "Shenzhen can be a familiar anchor city.",
+      "representativeObjects": [
+        "shenzhen"
+      ],
+      "misconception": "The child’s own city is not the weather standard for the whole world."
+    },
+    {
+      "id": "temperate",
+      "name": "Temperate area",
+      "childExplanation": "Temperate places often have clearer seasons: warm times and cold times.",
+      "parentNote": "Beijing and London can show that temperate cities still differ.",
+      "representativeObjects": [
+        "beijing",
+        "london"
+      ],
+      "misconception": "Temperate does not mean always warm."
+    },
+    {
+      "id": "dryHot",
+      "name": "Dry hot area",
+      "childExplanation": "Some places are hot but have little rain, so the land feels dry.",
+      "parentNote": "Cairo can introduce hot and dry, not the same as tropical rainforest.",
+      "representativeObjects": [
+        "cairo"
+      ],
+      "misconception": "Hot places are not always humid."
+    },
+    {
+      "id": "cold",
+      "name": "Cold area",
+      "childExplanation": "Far north or far south places are often colder and need warmer clothes.",
+      "parentNote": "Use snow, wind, and coats as everyday anchors.",
+      "representativeObjects": [
+        "reykjavik"
+      ],
+      "misconception": "Cold places still have cities and daily life."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "groupId": "tropical",
+      "childExplanation": "Singapore is near the equator. It is often hot and rainy.",
+      "visualHint": "short sleeves, umbrella, tropical plants",
+      "commonMisread": "Thinking tropical places are only sunny."
+    },
+    {
+      "id": "shenzhen",
+      "name": "Shenzhen",
+      "groupId": "subtropical",
+      "childExplanation": "Shenzhen is warm for much of the year, with hot summers and lots of rain.",
+      "visualHint": "city, tall buildings, humid summer",
+      "commonMisread": "Thinking all cities feel like your city."
+    },
+    {
+      "id": "beijing",
+      "name": "Beijing",
+      "groupId": "temperate",
+      "childExplanation": "Beijing has more obvious seasons: hot summer and cold winter.",
+      "visualHint": "short sleeves in summer, thick coat in winter",
+      "commonMisread": "Thinking temperate means always mild."
+    },
+    {
+      "id": "london",
+      "name": "London",
+      "groupId": "temperate",
+      "childExplanation": "London is also temperate, often mild, with a strong rainy-day impression.",
+      "visualHint": "umbrella, river, mild weather",
+      "commonMisread": "Thinking cities in the same band are exactly the same."
+    },
+    {
+      "id": "cairo",
+      "name": "Cairo",
+      "groupId": "dryHot",
+      "childExplanation": "Cairo is near dry hot desert environments, with strong sunshine in the day.",
+      "visualHint": "desert, sun, light clothing",
+      "commonMisread": "Thinking all hot places are rainforests."
+    },
+    {
+      "id": "reykjavik",
+      "name": "Reykjavik",
+      "groupId": "cold",
+      "childExplanation": "Reykjavik is far north and often feels cold.",
+      "visualHint": "thick coat, cold wind, northern city",
+      "commonMisread": "Thinking cold places have no city life."
+    }
+  ],
+  "mechanism": {
+    "title": "Why are some places hot and some cold?",
+    "steps": [
+      {
+        "id": "earth-ball",
+        "shortTitle": "Earth is a ball",
+        "childExplanation": "Earth is not a flat sheet. It is a big ball.",
+        "parentNote": "Build sphere thinking first."
+      },
+      {
+        "id": "sunlight-angle",
+        "shortTitle": "Sunlight hits differently",
+        "childExplanation": "Sunlight reaches different places in different ways. Near the equator it is more direct; near the poles it is more slanted.",
+        "parentNote": "A flashlight and ball demonstration works well."
+      },
+      {
+        "id": "climate-bands",
+        "shortTitle": "Climate bands appear",
+        "childExplanation": "That is why Earth has hot, mild, and cold regions.",
+        "parentNote": "This is a simplified first model."
+      },
+      {
+        "id": "life-changes",
+        "shortTitle": "Life changes too",
+        "childExplanation": "Climate affects clothes, plants, animals, and homes.",
+        "parentNote": "Connect climate back to everyday life."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "singapore-vs-reykjavik",
+      "title": "Singapore vs Reykjavik",
+      "a": {
+        "name": "Singapore",
+        "points": [
+          "near the equator",
+          "often hot",
+          "tropical plants"
+        ]
+      },
+      "b": {
+        "name": "Reykjavik",
+        "points": [
+          "far north",
+          "often cold",
+          "warmer clothes"
+        ]
+      },
+      "childConclusion": "A city’s place on Earth affects how hot or cold it feels."
+    },
+    {
+      "id": "shenzhen-vs-beijing",
+      "title": "Shenzhen vs Beijing",
+      "a": {
+        "name": "Shenzhen",
+        "points": [
+          "farther south",
+          "warm and humid",
+          "hot summer"
+        ]
+      },
+      "b": {
+        "name": "Beijing",
+        "points": [
+          "farther north",
+          "clearer seasons",
+          "colder winter"
+        ]
+      },
+      "childConclusion": "Even in one country, cities can have different climates."
+    },
+    {
+      "id": "hot-wet-vs-hot-dry",
+      "title": "Hot wet vs Hot dry",
+      "a": {
+        "name": "Hot wet",
+        "points": [
+          "hot",
+          "more rain",
+          "many plants"
+        ]
+      },
+      "b": {
+        "name": "Hot dry",
+        "points": [
+          "hot",
+          "little rain",
+          "desert scenes"
+        ]
+      },
+      "childConclusion": "Hot places can still be very different."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "earth-single-01",
+      "title": "Which city is closest to the equator?",
+      "prompt": "Look for the city in the hottest band.",
+      "options": [
+        {
+          "id": "singapore",
+          "label": "Singapore"
+        },
+        {
+          "id": "beijing",
+          "label": "Beijing"
+        },
+        {
+          "id": "reykjavik",
+          "label": "Reykjavik"
+        }
+      ],
+      "wrongHints": {
+        "beijing": "Beijing is in a temperate area, not the hottest band.",
+        "reykjavik": "Reykjavik is far north and much colder."
+      },
+      "successCopy": "Correct! Singapore is close to the equator and often feels hot and humid."
+    },
+    {
+      "id": "earth-find-01",
+      "title": "Find: which cities may need a thick coat?",
+      "successCopy": "Good observation! Colder places often need warmer clothes.",
+      "wrongHint": "Think about which cities are farther from the hot band."
+    },
+    {
+      "id": "earth-single-02",
+      "title": "Why is it often hotter near the equator?",
+      "prompt": "Choose the best reason.",
+      "options": [
+        {
+          "id": "closer-sun",
+          "label": "Because the equator is much closer to the Sun"
+        },
+        {
+          "id": "direct-light",
+          "label": "Because sunlight hits more directly there"
+        },
+        {
+          "id": "more-cities",
+          "label": "Because there are more cities there"
+        }
+      ],
+      "wrongHints": {
+        "closer-sun": "The key is not that it is much closer. It is how sunlight hits the surface.",
+        "more-cities": "Cities do not create the main climate bands."
+      },
+      "successCopy": "Right! More direct sunlight helps make the equator warmer."
+    },
+    {
+      "id": "earth-sequence-01",
+      "title": "How climate bands form",
+      "prompt": "Tap the idea chain in order.",
+      "options": [
+        {
+          "id": "ball",
+          "label": "Earth is a ball"
+        },
+        {
+          "id": "sunlight",
+          "label": "Sunlight hits places differently"
+        },
+        {
+          "id": "bands",
+          "label": "Hot and cold bands appear"
+        },
+        {
+          "id": "life",
+          "label": "People, plants, and animals live differently"
+        }
+      ],
+      "successCopy": "You built the climate idea chain.",
+      "wrongHint": "Start with the shape of Earth: it is a ball."
+    }
+  ],
+  "speakTemplates": [
+    "____ is located more toward ____, so it often feels ____.",
+    "If I visit ____, I may bring ____ because ____.",
+    "Today I found out: hot places can be ____ or ____."
+  ],
+  "parentTips": [
+    "Do not focus on exact climate categories yet. Build spatial understanding first.",
+    "Use a flashlight and ball to show sunlight angle.",
+    "Ask life-based questions: what would you wear, what plants might you see, what houses might help?"
+  ],
+  "acceptanceCriteria": [
+    "The child understands different places on Earth can feel different.",
+    "The child can match at least three cities to rough climate impressions.",
+    "The child can say that places near the equator are often warmer."
+  ]
+}

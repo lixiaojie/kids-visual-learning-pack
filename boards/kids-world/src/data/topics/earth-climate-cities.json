@@ -1,0 +1,456 @@
+{
+  "id": "topic-earth-climate-cities",
+  "slug": "earth-climate-cities",
+  "title": "地球上的冷热带",
+  "subtitle": "为什么不同地方的天气不一样？",
+  "world": "earth",
+  "priority": "P0",
+  "ageRange": "5-8",
+  "pageType": "globe-climate-map",
+  "coreQuestion": "为什么世界上有些地方热，有些地方冷？",
+  "learningGoals": [
+    "认识地球上有不同气候带",
+    "初步知道赤道附近更热、两极附近更冷",
+    "通过代表性城市建立地图、气候和生活的联系"
+  ],
+  "misconceptions": [
+    "全世界天气差不多",
+    "离自己远的地方都很冷或都很热",
+    "地球只是平面地图"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "title": "地球仪与气候带",
+      "assetKey": "hero"
+    },
+    {
+      "type": "classification",
+      "title": "气候带",
+      "groups": [
+        "热带",
+        "温带",
+        "寒带",
+        "干热地区"
+      ]
+    },
+    {
+      "type": "mechanism",
+      "title": "太阳照射角度",
+      "steps": [
+        "太阳照到地球",
+        "不同地方接受阳光不同",
+        "形成冷热差异"
+      ]
+    },
+    {
+      "type": "task",
+      "title": "城市和气候配对"
+    },
+    {
+      "type": "relatedTopics",
+      "title": "接着探索"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/earth/earth-climate-cities/earth-climate-globe-hero-v01.png",
+      "purpose": "主视觉：地球仪与气候带",
+      "status": "planned"
+    },
+    "cities": {
+      "path": "/assets/earth/earth-climate-cities/earth-climate-city-cards-v01.png",
+      "purpose": "城市气候卡",
+      "status": "planned"
+    },
+    "sunAngle": {
+      "path": "/assets/earth/earth-climate-cities/earth-climate-sun-angle-v01.png",
+      "purpose": "太阳照射角度机制图",
+      "status": "planned"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "city",
+      "description": "点击城市显示气候、衣着和生活印象"
+    },
+    {
+      "type": "highlight",
+      "target": "climate-zone",
+      "description": "点击气候带高亮区域"
+    },
+    {
+      "type": "match",
+      "target": "city-climate",
+      "description": "城市与气候带配对"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "match",
+      "title": "把城市和气候带连起来",
+      "pairs": {
+        "新加坡": "热带",
+        "深圳": "温暖湿润",
+        "北京": "温带",
+        "伦敦": "温带",
+        "开罗": "干热",
+        "雷克雅未克": "较冷地区"
+      }
+    },
+    {
+      "type": "find",
+      "title": "哪个城市更热？哪个城市更冷？"
+    },
+    {
+      "type": "explain",
+      "title": "如果你去那里，要穿什么？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "地球是一个大球。",
+      "不同地方的冷热和阳光、位置有关。"
+    ],
+    "keyFacts": [
+      "靠近赤道的地方通常更热。",
+      "靠近两极的地方通常更冷。",
+      "不同气候会影响植物、动物和人们的生活。"
+    ],
+    "explainPrompt": "为什么有些城市很热，有些城市很冷？"
+  },
+  "relatedTopics": [
+    "water-cycle",
+    "volcano-earthquake",
+    "solar-system-overview"
+  ],
+  "acceptanceCriteria": [
+    "孩子知道地球不同地区冷热不同",
+    "能把至少 3 个城市匹配到大致气候区域",
+    "能说出靠近赤道更热的基本概念"
+  ],
+  "status": "render-ready",
+  "renderPriority": "P1-enhanced-after-first-three",
+  "hero": {
+    "title": "地球上的冷热带",
+    "kicker": "地球世界 · 地球仪任务",
+    "lead": "地球像一个大球。靠近赤道的地方常常更热，靠近两极的地方常常更冷。",
+    "sceneExplanation": "页面主视觉是一个儿童化地球仪，横向用三条柔和色带表示热带、温带、寒带。城市卡片分布在不同区域，点击城市时显示天气印象、衣着建议和生活场景。",
+    "childPrompt": "点一点城市，看看那里是热、温暖，还是很冷。",
+    "parentPrompt": "本页重点不是精确气候分类，而是建立“地球是球体—阳光照射不同—地区冷热不同—生活方式不同”的基础链条。",
+    "placeholder": {
+      "type": "globeClimateBands",
+      "asset": "/assets/earth/climate-cities/hero-v01.png"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "tropical",
+      "name": "热带",
+      "childExplanation": "靠近赤道，阳光更直接，很多地方一年都比较热。",
+      "parentNote": "用“靠近赤道”建立空间感，不必讲纬度数字。",
+      "representativeObjects": [
+        "singapore"
+      ],
+      "misconception": "热带不等于每天都晴天，也可能经常下雨。"
+    },
+    {
+      "id": "subtropical",
+      "name": "温暖湿润地区",
+      "childExplanation": "有些地方不在最热的热带，但一年里很多时候也比较暖和。",
+      "parentNote": "深圳可作为孩子熟悉的生活锚点。",
+      "representativeObjects": [
+        "shenzhen"
+      ],
+      "misconception": "自己生活的城市不是“全世界天气的标准”。"
+    },
+    {
+      "id": "temperate",
+      "name": "温带",
+      "childExplanation": "温带常常有比较明显的季节变化：有暖的时候，也有冷的时候。",
+      "parentNote": "北京、伦敦可作为不同温带生活方式对比。",
+      "representativeObjects": [
+        "beijing",
+        "london"
+      ],
+      "misconception": "温带城市的天气也可能差很多。"
+    },
+    {
+      "id": "dryHot",
+      "name": "干热地区",
+      "childExplanation": "有些地方很热，但雨比较少，空气和土地都更干。",
+      "parentNote": "开罗可用于解释沙漠边缘城市，不等同于所有热带。",
+      "representativeObjects": [
+        "cairo"
+      ],
+      "misconception": "热的地方不一定都潮湿。"
+    },
+    {
+      "id": "cold",
+      "name": "寒冷地区",
+      "childExplanation": "靠近地球很北或很南的地方，常常更冷，需要更厚的衣服。",
+      "parentNote": "用冰、雪、厚衣服建立生活体验连接。",
+      "representativeObjects": [
+        "reykjavik"
+      ],
+      "misconception": "冷的地方也有人生活，并不只是冰雪。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "singapore",
+      "name": "新加坡",
+      "groupId": "tropical",
+      "childExplanation": "新加坡靠近赤道，常常很热，也常常下雨。",
+      "visualHint": "短袖、雨伞、热带植物",
+      "commonMisread": "以为热带只会晒太阳，不会下雨。"
+    },
+    {
+      "id": "shenzhen",
+      "name": "深圳",
+      "groupId": "subtropical",
+      "childExplanation": "深圳很多时候比较暖和，夏天会很热，也会有很多雨。",
+      "visualHint": "城市、高楼、湿热夏天",
+      "commonMisread": "以为所有城市都和自己所在城市一样。"
+    },
+    {
+      "id": "beijing",
+      "name": "北京",
+      "groupId": "temperate",
+      "childExplanation": "北京四季比较明显，夏天热，冬天冷。",
+      "visualHint": "夏天短袖、冬天厚外套",
+      "commonMisread": "以为温带就是一直温暖。"
+    },
+    {
+      "id": "london",
+      "name": "伦敦",
+      "groupId": "temperate",
+      "childExplanation": "伦敦也在温带，天气常常比较温和，雨天印象很强。",
+      "visualHint": "雨伞、河流、温和天气",
+      "commonMisread": "以为同一气候带的城市完全一样。"
+    },
+    {
+      "id": "cairo",
+      "name": "开罗",
+      "groupId": "dryHot",
+      "childExplanation": "开罗附近有很干热的沙漠环境，白天阳光很强。",
+      "visualHint": "沙漠、太阳、轻薄衣服",
+      "commonMisread": "热的地方都像热带雨林。"
+    },
+    {
+      "id": "reykjavik",
+      "name": "雷克雅未克",
+      "groupId": "cold",
+      "childExplanation": "雷克雅未克在很北的地方，天气常常比较冷。",
+      "visualHint": "厚外套、冷风、北方城市",
+      "commonMisread": "冷的地方就没有城市生活。"
+    }
+  ],
+  "mechanism": {
+    "title": "为什么有的地方热，有的地方冷？",
+    "steps": [
+      {
+        "id": "earth-ball",
+        "shortTitle": "地球是球",
+        "childExplanation": "地球不是一张平纸，而是一个大球。",
+        "parentNote": "先建立球体空间感，再讲冷热差异。"
+      },
+      {
+        "id": "sunlight-angle",
+        "shortTitle": "阳光照法不同",
+        "childExplanation": "太阳照到地球不同地方的方式不一样。赤道附近更直接，两极附近更斜。",
+        "parentNote": "可用手电筒照球演示，不需要公式。"
+      },
+      {
+        "id": "climate-bands",
+        "shortTitle": "形成冷热带",
+        "childExplanation": "所以地球上会有热带、温带、寒带。",
+        "parentNote": "这是简化模型，适合儿童第一版理解。"
+      },
+      {
+        "id": "life-changes",
+        "shortTitle": "生活也不同",
+        "childExplanation": "气候会影响衣服、植物、动物和房子的样子。",
+        "parentNote": "从城市生活反推气候，有利于孩子形成真实世界连接。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "singapore-vs-reykjavik",
+      "title": "新加坡 vs 雷克雅未克",
+      "a": {
+        "name": "新加坡",
+        "points": [
+          "靠近赤道",
+          "常常炎热",
+          "常见热带植物"
+        ]
+      },
+      "b": {
+        "name": "雷克雅未克",
+        "points": [
+          "很靠北",
+          "常常较冷",
+          "需要更厚衣服"
+        ]
+      },
+      "childConclusion": "城市在地球上的位置，会影响冷热感受。"
+    },
+    {
+      "id": "shenzhen-vs-beijing",
+      "title": "深圳 vs 北京",
+      "a": {
+        "name": "深圳",
+        "points": [
+          "更靠南",
+          "很多时候暖和湿润",
+          "夏天很热"
+        ]
+      },
+      "b": {
+        "name": "北京",
+        "points": [
+          "更靠北",
+          "四季更明显",
+          "冬天更冷"
+        ]
+      },
+      "childConclusion": "同一个国家里，不同城市的气候也会不同。"
+    },
+    {
+      "id": "hot-wet-vs-hot-dry",
+      "title": "湿热 vs 干热",
+      "a": {
+        "name": "湿热",
+        "points": [
+          "热",
+          "雨多",
+          "植物茂盛"
+        ]
+      },
+      "b": {
+        "name": "干热",
+        "points": [
+          "热",
+          "雨少",
+          "常见沙漠景观"
+        ]
+      },
+      "childConclusion": "都是热，也可以很不一样。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "earth-single-01",
+      "type": "singleChoice",
+      "title": "哪个城市最靠近赤道？",
+      "prompt": "点一个城市。",
+      "options": [
+        {
+          "id": "singapore",
+          "label": "新加坡"
+        },
+        {
+          "id": "beijing",
+          "label": "北京"
+        },
+        {
+          "id": "reykjavik",
+          "label": "雷克雅未克"
+        }
+      ],
+      "correctOptionId": "singapore",
+      "wrongHints": {
+        "beijing": "北京在更北的温带，不是最靠近赤道。",
+        "reykjavik": "雷克雅未克在很北的地方，离赤道很远。"
+      },
+      "successCopy": "对！新加坡靠近赤道，常常比较热。"
+    },
+    {
+      "id": "earth-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪些城市更适合带厚外套？",
+      "targetIds": [
+        "beijing",
+        "reykjavik"
+      ],
+      "decoyIds": [
+        "singapore",
+        "shenzhen",
+        "cairo"
+      ],
+      "successCopy": "很好！你开始把城市位置和衣着联系起来了。",
+      "wrongHint": "想一想，哪些地方冬天或常年会更冷？"
+    },
+    {
+      "id": "earth-single-02",
+      "type": "singleChoice",
+      "title": "为什么赤道附近常常更热？",
+      "prompt": "点出更好的解释。",
+      "options": [
+        {
+          "id": "closer-sun",
+          "label": "因为离太阳特别近"
+        },
+        {
+          "id": "direct-light",
+          "label": "因为阳光照得更直接"
+        },
+        {
+          "id": "more-cities",
+          "label": "因为城市更多"
+        }
+      ],
+      "correctOptionId": "direct-light",
+      "wrongHints": {
+        "closer-sun": "地球不同地方到太阳的距离差别不是主要原因。",
+        "more-cities": "城市多少不会决定太阳怎么照。"
+      },
+      "successCopy": "对！阳光照得更直接，通常会更热。"
+    },
+    {
+      "id": "earth-sequence-01",
+      "type": "sequenceClick",
+      "title": "冷热带形成顺序",
+      "prompt": "按顺序点出原因链。",
+      "options": [
+        {
+          "id": "ball",
+          "label": "地球是球"
+        },
+        {
+          "id": "sunlight",
+          "label": "阳光照法不同"
+        },
+        {
+          "id": "bands",
+          "label": "形成冷热带"
+        },
+        {
+          "id": "life",
+          "label": "生活方式不同"
+        }
+      ],
+      "correctSequence": [
+        "ball",
+        "sunlight",
+        "bands",
+        "life"
+      ],
+      "successCopy": "你连起了一条地球气候小线索！",
+      "wrongHint": "先从“地球是什么形状”开始想。"
+    }
+  ],
+  "speakTemplates": [
+    "____在地球上比较靠____，所以那里常常比较____。",
+    "如果我去____，我可能要带____，因为____。",
+    "我今天发现：同样是热，也可能有____和____的不同。"
+  ],
+  "parentTips": [
+    "不要纠结精确气候类型，先让孩子建立地球空间感。",
+    "可用手电筒照球演示太阳照射角度。",
+    "家长追问可落到生活：穿什么、住什么、植物有什么不同。"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "click-task-rules-v1",
+  "scope": "首版只做点击式任务，不做拖拽。",
+  "commonRules": {
+    "attempts": "允许多次尝试，不显示失败次数。",
+    "wrongFeedbackStyle": "提示型，不惩罚。告诉孩子再观察哪个线索。",
+    "completionReward": "完成后点亮主题徽章或观察星。",
+    "analyticsSuggestion": "可记录完成状态、首次正确率、重复点击对象，但不在儿童界面显示分数压力。"
+  },
+  "taskTypes": [
+    {
+      "type": "singleChoice",
+      "howToJudge": "selectedOptionId === correctOptionId",
+      "feedback": "选错时显示该选项对应 hint，再保留题目继续选择。"
+    },
+    {
+      "type": "multiSelect",
+      "howToJudge": "选中集合与 correctOptionIds 完全一致。",
+      "feedback": "少选时提示‘还差一个线索’，多选时提示‘有一个线索混进来了’。"
+    },
+    {
+      "type": "sequenceClick",
+      "howToJudge": "用户点击顺序数组与 correctSequence 完全一致。",
+      "feedback": "顺序错误时提示第一个错误位置对应线索，可选择重来。"
+    },
+    {
+      "type": "findTarget",
+      "howToJudge": "点击对象 id 在 targetIds 中则正确。",
+      "feedback": "点到非目标对象时给观察提示，不扣分。"
+    },
+    {
+      "type": "compareChoice",
+      "howToJudge": "selectedStatementId 在 correctStatementIds 中。",
+      "feedback": "用 A/B 对比线索提示。"
+    }
+  ],
+  "defaultCompletionCopy": [
+    "你点亮了一枚观察星。",
+    "你已经抓住这张看板的关键线索。",
+    "探索完成！可以试着讲给爸爸妈妈听。"
+  ]
+}

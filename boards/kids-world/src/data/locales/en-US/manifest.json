@@ -1,0 +1,21 @@
+{
+  "locale": "en-US",
+  "label": "English",
+  "version": "1.0",
+  "baseLocale": "zh-CN",
+  "files": {
+    "explorationMap": "data/locales/en-US/exploration-map.json",
+    "topics": {
+      "animal-classification-tree": "data/locales/en-US/topics/animal-classification-tree.json",
+      "blood-cells-3d": "data/locales/en-US/topics/blood-cells-3d.json",
+      "earth-climate-cities": "data/locales/en-US/topics/earth-climate-cities.json",
+      "insects-and-spiders": "data/locales/en-US/topics/insects-and-spiders.json",
+      "llm-kids-basics": "data/locales/en-US/topics/llm-kids-basics.json",
+      "solar-system-overview": "data/locales/en-US/topics/solar-system-overview.json"
+    }
+  },
+  "notes": [
+    "These files are English overlay data. Merge them over the zh-CN base JSON at render time.",
+    "Stable IDs, slugs, status values, hrefs, asset paths, and answer IDs should not be translated."
+  ]
+}

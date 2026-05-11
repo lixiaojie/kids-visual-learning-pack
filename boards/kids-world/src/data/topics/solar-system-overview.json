@@ -1,0 +1,488 @@
+{
+  "id": "topic-space-solar-system-overview",
+  "slug": "solar-system-overview",
+  "title": "太阳系探索站",
+  "subtitle": "地球住在什么样的宇宙邻居圈里？",
+  "world": "space",
+  "priority": "P0",
+  "ageRange": "5-8",
+  "pageType": "orbit-map",
+  "coreQuestion": "太阳系里有哪些成员？",
+  "learningGoals": [
+    "知道太阳在中心，行星绕太阳转",
+    "初步认识 8 大行星的顺序",
+    "知道小行星带在火星和木星之间"
+  ],
+  "misconceptions": [
+    "太阳也是行星",
+    "月亮和太阳一样，没有区分",
+    "地球是宇宙中心"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/space/solar-system-overview/space-solar-system-hero-v01.png",
+      "purpose": "主视觉：太阳系轨道总览",
+      "status": "planned"
+    },
+    "compare": {
+      "path": "/assets/space/solar-system-overview/space-solar-system-star-planet-compare-v01.png",
+      "purpose": "恒星与行星比较",
+      "status": "planned"
+    },
+    "cards": {
+      "path": "/assets/space/solar-system-overview/space-solar-system-planet-cards-v01.png",
+      "purpose": "行星卡片",
+      "status": "planned"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "planet",
+      "description": "点击行星展开行星卡片"
+    },
+    {
+      "type": "highlight",
+      "target": "orbit",
+      "description": "高亮行星轨道"
+    },
+    {
+      "type": "sequence",
+      "target": "planet-order",
+      "description": "按离太阳远近排序"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "sequence",
+      "title": "把行星按离太阳远近排序",
+      "items": [
+        "水星",
+        "金星",
+        "地球",
+        "火星",
+        "木星",
+        "土星",
+        "天王星",
+        "海王星"
+      ]
+    },
+    {
+      "type": "find",
+      "title": "找到有环的行星、最大的行星和地球"
+    },
+    {
+      "type": "explain",
+      "title": "地球在太阳系的哪里？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "太阳系是太阳和很多天体组成的大家庭。",
+      "地球是太阳系里的一颗行星。"
+    ],
+    "keyFacts": [
+      "太阳在中心，是一颗恒星。",
+      "行星围着太阳转。",
+      "火星和木星之间有一片小行星带。"
+    ],
+    "explainPrompt": "你能指出太阳、地球和小行星带吗？"
+  },
+  "relatedTopics": [
+    "moon-phases",
+    "asteroid-belt",
+    "earth-climate-cities"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出太阳在中心",
+    "能辨认出地球、木星、土星等关键行星",
+    "能知道小行星带的大致位置"
+  ],
+  "status": "building",
+  "renderPriority": 3,
+  "hero": {
+    "title": "太阳系探索站",
+    "kicker": "宇宙世界 · 轨道地图",
+    "lead": "太阳系像一个宇宙邻居圈，太阳在中间，行星沿着轨道转。",
+    "sceneExplanation": "页面主视觉是一张可点击轨道图：太阳放在中心或左侧，八大行星按离太阳远近排列，小行星带以颗粒环显示在火星和木星之间。点击任一行星时，高亮它的轨道和行星卡片。",
+    "childPrompt": "从太阳出发，按顺序点亮每一颗行星。",
+    "parentPrompt": "本页重点建立空间顺序、中心关系和天体分类，不要求孩子记住复杂数据。",
+    "placeholder": {
+      "type": "orbitMap",
+      "asset": "/assets/space/solar-system-overview/hero-v01.png"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "star",
+      "name": "恒星",
+      "childExplanation": "自己会发光发热的大天体。",
+      "parentNote": "太阳是恒星，是太阳系的中心。",
+      "representativeObjects": [
+        "sun"
+      ],
+      "misconception": "太阳不是行星。"
+    },
+    {
+      "id": "rocky-planets",
+      "name": "岩石行星",
+      "childExplanation": "离太阳比较近，表面比较像石头世界。",
+      "parentNote": "水星、金星、地球、火星可作为内侧行星组。",
+      "representativeObjects": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars"
+      ],
+      "misconception": "行星不都像地球一样适合生活。"
+    },
+    {
+      "id": "gas-ice-giants",
+      "name": "巨行星",
+      "childExplanation": "个头很大，有的像气体巨人，有的很冷很远。",
+      "parentNote": "儿童版可合并木星、土星、天王星、海王星为外侧巨行星。",
+      "representativeObjects": [
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "misconception": "大行星不一定有坚硬地面可以站。"
+    },
+    {
+      "id": "small-bodies",
+      "name": "小天体",
+      "childExplanation": "小行星、彗星等小成员也住在太阳系里。",
+      "parentNote": "首版重点讲小行星带在火星和木星之间。",
+      "representativeObjects": [
+        "asteroid-belt"
+      ],
+      "misconception": "太阳系不只有太阳和行星。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "太阳",
+      "groupId": "star",
+      "orderFromSun": 0,
+      "childExplanation": "太阳是太阳系中心，自己会发光发热。",
+      "visualHint": "最大、最亮、在中心",
+      "commonMisread": "以为太阳也是行星。"
+    },
+    {
+      "id": "mercury",
+      "name": "水星",
+      "groupId": "rocky-planets",
+      "orderFromSun": 1,
+      "childExplanation": "水星离太阳最近，个头很小。",
+      "visualHint": "最靠近太阳的小圆点",
+      "commonMisread": "名字有水但不是水做的。"
+    },
+    {
+      "id": "venus",
+      "name": "金星",
+      "groupId": "rocky-planets",
+      "orderFromSun": 2,
+      "childExplanation": "金星很亮，但表面非常热。",
+      "visualHint": "黄色或金色、靠近地球轨道内侧",
+      "commonMisread": "很亮就适合居住。"
+    },
+    {
+      "id": "earth",
+      "name": "地球",
+      "groupId": "rocky-planets",
+      "orderFromSun": 3,
+      "childExplanation": "地球是我们的家，有海洋、陆地和空气。",
+      "visualHint": "蓝绿色",
+      "commonMisread": "以为地球在太阳系中心。"
+    },
+    {
+      "id": "mars",
+      "name": "火星",
+      "groupId": "rocky-planets",
+      "orderFromSun": 4,
+      "childExplanation": "火星看起来偏红，是地球外侧的邻居。",
+      "visualHint": "红色小行星",
+      "commonMisread": "火星在小行星带外面。"
+    },
+    {
+      "id": "asteroid-belt",
+      "name": "小行星带",
+      "groupId": "small-bodies",
+      "orderFromSun": 4.5,
+      "childExplanation": "很多小石头一样的小天体，主要在火星和木星之间。",
+      "visualHint": "一圈小颗粒",
+      "commonMisread": "以为小行星带在太阳系最外面。"
+    },
+    {
+      "id": "jupiter",
+      "name": "木星",
+      "groupId": "gas-ice-giants",
+      "orderFromSun": 5,
+      "childExplanation": "木星是太阳系最大的行星。",
+      "visualHint": "最大、有条纹",
+      "commonMisread": "把木星当成恒星。"
+    },
+    {
+      "id": "saturn",
+      "name": "土星",
+      "groupId": "gas-ice-giants",
+      "orderFromSun": 6,
+      "childExplanation": "土星有非常明显的环。",
+      "visualHint": "漂亮的行星环",
+      "commonMisread": "只有土星有环；其实其他外侧行星也有环，只是不那么明显。"
+    },
+    {
+      "id": "uranus",
+      "name": "天王星",
+      "groupId": "gas-ice-giants",
+      "orderFromSun": 7,
+      "childExplanation": "天王星离太阳很远，看起来偏蓝绿色。",
+      "visualHint": "浅蓝绿色",
+      "commonMisread": "和海王星混淆。"
+    },
+    {
+      "id": "neptune",
+      "name": "海王星",
+      "groupId": "gas-ice-giants",
+      "orderFromSun": 8,
+      "childExplanation": "海王星是八大行星中离太阳最远的一颗。",
+      "visualHint": "深蓝色、最外侧",
+      "commonMisread": "以为冥王星仍是八大行星之一。"
+    }
+  ],
+  "mechanism": {
+    "title": "太阳系怎么排队？",
+    "steps": [
+      {
+        "id": "center-sun",
+        "shortTitle": "太阳在中心",
+        "childExplanation": "太阳像太阳系的大灯塔，很多成员围着它转。",
+        "parentNote": "此处强调引力中心，不展开公式。"
+      },
+      {
+        "id": "orbits",
+        "shortTitle": "行星沿轨道转",
+        "childExplanation": "行星不是乱跑，而是沿着自己的轨道转。",
+        "parentNote": "可说明轨道不是地面轨道，而是天体运动路径。"
+      },
+      {
+        "id": "inner-planets",
+        "shortTitle": "内侧岩石行星",
+        "childExplanation": "水星、金星、地球、火星比较靠近太阳。",
+        "parentNote": "先建立内外层结构。"
+      },
+      {
+        "id": "asteroid-belt",
+        "shortTitle": "中间有小行星带",
+        "childExplanation": "火星和木星之间，有很多小天体。",
+        "parentNote": "这是本页明确位置目标。"
+      },
+      {
+        "id": "outer-planets",
+        "shortTitle": "外侧巨行星",
+        "childExplanation": "木星、土星、天王星、海王星在更外面。",
+        "parentNote": "不需要记具体距离。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "star-vs-planet",
+      "title": "恒星 vs 行星",
+      "a": {
+        "name": "恒星",
+        "points": [
+          "自己发光发热",
+          "太阳是恒星",
+          "可以是一个系统中心"
+        ]
+      },
+      "b": {
+        "name": "行星",
+        "points": [
+          "围着恒星转",
+          "主要反射光",
+          "地球是行星"
+        ]
+      },
+      "childConclusion": "太阳不是行星，地球才是行星。"
+    },
+    {
+      "id": "earth-vs-jupiter",
+      "title": "地球 vs 木星",
+      "a": {
+        "name": "地球",
+        "points": [
+          "岩石行星",
+          "我们生活的地方",
+          "比木星小很多"
+        ]
+      },
+      "b": {
+        "name": "木星",
+        "points": [
+          "最大行星",
+          "外侧巨行星",
+          "有明显条纹"
+        ]
+      },
+      "childConclusion": "行星之间大小和样子差别很大。"
+    },
+    {
+      "id": "mars-vs-asteroid-belt",
+      "title": "火星 vs 小行星带",
+      "a": {
+        "name": "火星",
+        "points": [
+          "一颗行星",
+          "红色",
+          "在小行星带内侧"
+        ]
+      },
+      "b": {
+        "name": "小行星带",
+        "points": [
+          "很多小天体",
+          "不是一颗行星",
+          "在火星和木星之间"
+        ]
+      },
+      "childConclusion": "小行星带是一片区域，不是一颗大行星。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "solar-sequence-01",
+      "type": "sequenceClick",
+      "title": "从太阳出发，前四颗行星怎么排？",
+      "options": [
+        {
+          "id": "mercury",
+          "label": "水星"
+        },
+        {
+          "id": "venus",
+          "label": "金星"
+        },
+        {
+          "id": "earth",
+          "label": "地球"
+        },
+        {
+          "id": "mars",
+          "label": "火星"
+        }
+      ],
+      "correctSequence": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars"
+      ],
+      "wrongHint": "从最靠近太阳的小行星开始。",
+      "successCopy": "你点亮了内侧四颗岩石行星。"
+    },
+    {
+      "id": "solar-find-01",
+      "type": "findTarget",
+      "title": "找一找：谁是最大的行星？",
+      "targetIds": [
+        "jupiter"
+      ],
+      "decoyIds": [
+        "earth",
+        "saturn",
+        "sun"
+      ],
+      "wrongHint": "太阳最大，但它不是行星。最大的行星有明显条纹。",
+      "successCopy": "对！木星是太阳系最大的行星。"
+    },
+    {
+      "id": "solar-find-02",
+      "type": "findTarget",
+      "title": "找一找：小行星带在哪里？",
+      "targetIds": [
+        "asteroid-belt"
+      ],
+      "decoyIds": [
+        "mars",
+        "jupiter",
+        "saturn"
+      ],
+      "wrongHint": "它不是一颗行星，而是火星和木星之间的一圈小颗粒。",
+      "successCopy": "你找到了火星和木星之间的小行星带。"
+    },
+    {
+      "id": "solar-choice-01",
+      "type": "singleChoice",
+      "title": "太阳是什么？",
+      "options": [
+        {
+          "id": "star",
+          "label": "恒星"
+        },
+        {
+          "id": "planet",
+          "label": "行星"
+        },
+        {
+          "id": "asteroid",
+          "label": "小行星"
+        }
+      ],
+      "correctOptionId": "star",
+      "wrongHints": {
+        "planet": "行星会围着恒星转，太阳是中心。",
+        "asteroid": "小行星很小，太阳非常大而且会发光。"
+      },
+      "successCopy": "对！太阳是一颗恒星。"
+    }
+  ],
+  "speakTemplates": [
+    "太阳系里，____在中心。",
+    "地球是第____颗行星。",
+    "小行星带在____和____之间。",
+    "____和____不一样，因为____。"
+  ],
+  "parentTips": [
+    "太阳系页重点是位置关系，不必要求孩子背完整天文数据。",
+    "可以让孩子用玩具球排一排太阳、水星、金星、地球、火星和木星。",
+    "如果孩子问冥王星，可说明它现在通常归为矮行星，以后可以单独做一页。"
+  ]
+}

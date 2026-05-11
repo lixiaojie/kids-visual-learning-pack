@@ -1,0 +1,467 @@
+{
+  "id": "topic-humanmade-llm-kids-basics",
+  "slug": "llm-kids-basics",
+  "title": "会接龙的机器大脑",
+  "subtitle": "它为什么会说话、会回答问题？",
+  "world": "humanMade",
+  "priority": "P0",
+  "ageRange": "6-9",
+  "pageType": "system-diagram-abstract",
+  "coreQuestion": "大模型是怎么回答问题的？",
+  "learningGoals": [
+    "知道大模型通过学习大量文字中的规律来回答问题",
+    "知道它是根据上下文预测和组织语言，不是什么都真的懂",
+    "知道提问清楚一些，AI 更容易给出有帮助的回答"
+  ],
+  "misconceptions": [
+    "AI 和人类一样什么都懂",
+    "AI 说的都是真的",
+    "AI 是靠联网当场偷看答案才会回答"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "title": "语言机器系统图",
+      "assetKey": "hero"
+    },
+    {
+      "type": "mechanism",
+      "title": "四步理解大模型",
+      "steps": [
+        "看过很多文字",
+        "学会语言规律",
+        "读取你的问题",
+        "一步一步组织回答"
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "AI vs 搜索",
+      "items": [
+        "搜索像找资料",
+        "大模型像组织回答",
+        "重要问题要检查"
+      ]
+    },
+    {
+      "type": "task",
+      "title": "把问题问清楚"
+    },
+    {
+      "type": "relatedTopics",
+      "title": "接着探索"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-kids-hero-v01.png",
+      "purpose": "主视觉：会接龙的机器大脑",
+      "status": "planned"
+    },
+    "steps": {
+      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-4steps-v01.png",
+      "purpose": "四步骤机制图",
+      "status": "planned"
+    },
+    "compare": {
+      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-search-compare-v01.png",
+      "purpose": "AI 与搜索对比图",
+      "status": "planned"
+    },
+    "cards": {
+      "path": "/assets/human-made/llm-kids-basics/humanmade-llm-prompt-cards-v01.png",
+      "purpose": "问题和回答卡片",
+      "status": "planned"
+    }
+  },
+  "interactions": [
+    {
+      "type": "stepper",
+      "target": "llm-steps",
+      "description": "点击四个步骤展开解释"
+    },
+    {
+      "type": "rewrite",
+      "target": "prompt",
+      "description": "把模糊问题改成清楚问题"
+    },
+    {
+      "type": "judgement",
+      "target": "trust-check",
+      "description": "判断回答是否需要再检查"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "rewrite",
+      "title": "把坏提问改成好提问",
+      "before": "告诉我动物",
+      "afterExample": "请告诉我 3 种住在森林里的动物，并说说它们怎么保护自己"
+    },
+    {
+      "type": "quiz",
+      "title": "AI 说的重要答案，要不要检查？"
+    },
+    {
+      "type": "explain",
+      "title": "AI 为什么有时会答错？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "大模型像一个学过很多文字规律的机器大脑。",
+      "它会根据你说的话，一步一步组织回答。"
+    ],
+    "keyFacts": [
+      "它看过很多书、文章和对话，学会了语言里的模式。",
+      "它不是真的像人一样完全懂世界。",
+      "它有时会答错，所以重要问题要检查。",
+      "如果你说得更清楚，它通常会帮得更好。"
+    ],
+    "explainPrompt": "你能把一个模糊问题问得更清楚吗？"
+  },
+  "relatedTopics": [
+    "internet-message",
+    "robots",
+    "search-engine-kids"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出 AI 是根据学到的规律来回答这一大意",
+    "能理解重要问题不能盲信 AI",
+    "能把一个简单问题改得更清楚"
+  ],
+  "status": "render-ready",
+  "renderPriority": "P1-enhanced-after-first-three",
+  "hero": {
+    "title": "会接龙的机器大脑",
+    "kicker": "人造系统世界 · AI 入门",
+    "lead": "大模型像一个读过很多文字规律的机器。你给它一句提示，它会一步一步接出回答。",
+    "sceneExplanation": "页面主视觉是一台友好的语言机器：左边是书本、故事卡和问题气泡，中间是词语网络和发光节点，右边输出回答气泡。点击每一步，孩子能看到“读很多文字—学规律—看提示—组织回答—检查答案”的过程。",
+    "childPrompt": "给机器一个更清楚的问题，看看它能不能回答得更好。",
+    "parentPrompt": "本页重点是建立“AI 会根据学到的语言规律组织回答，但也可能出错”的安全理解。避免把 AI 说成真正像人一样思考。",
+    "placeholder": {
+      "type": "languageMachineDiagram",
+      "asset": "/assets/human-made/llm-kids-basics/hero-v01.png"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "input",
+      "name": "输入",
+      "childExplanation": "你给 AI 的问题、故事或要求，就是输入。",
+      "parentNote": "输入可对应 prompt，但先不讲英文术语。",
+      "representativeObjects": [
+        "questionCard",
+        "storyCard"
+      ],
+      "misconception": "不是随便说一句，AI 就一定知道你真正想要什么。"
+    },
+    {
+      "id": "patterns",
+      "name": "语言规律",
+      "childExplanation": "AI 从很多文字里学到词语和句子的搭配规律。",
+      "parentNote": "强调“规律”而非“真正理解一切”。",
+      "representativeObjects": [
+        "wordNetwork",
+        "patternGears"
+      ],
+      "misconception": "AI 不是脑袋里装着一本完全正确的百科全书。"
+    },
+    {
+      "id": "context",
+      "name": "上下文",
+      "childExplanation": "你前面说过的话，会影响 AI 后面怎么回答。",
+      "parentNote": "可用接龙游戏解释上下文。",
+      "representativeObjects": [
+        "chatBubbles"
+      ],
+      "misconception": "AI 的回答会受当前对话影响。"
+    },
+    {
+      "id": "output",
+      "name": "输出",
+      "childExplanation": "AI 把词语一步一步接起来，变成回答。",
+      "parentNote": "输出是生成内容，不等于事实已经验证。",
+      "representativeObjects": [
+        "answerBubble"
+      ],
+      "misconception": "回答说得流畅，不代表一定正确。"
+    },
+    {
+      "id": "check",
+      "name": "检查",
+      "childExplanation": "重要问题要找大人或可靠资料再确认。",
+      "parentNote": "建立儿童使用 AI 的安全边界。",
+      "representativeObjects": [
+        "checkBadge"
+      ],
+      "misconception": "AI 说得很肯定，也可能会错。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "questionCard",
+      "name": "问题卡",
+      "groupId": "input",
+      "childExplanation": "问题越清楚，AI 越容易知道你想要什么。",
+      "visualHint": "一个带问号的卡片",
+      "commonMisread": "问题太短也一定能答好。"
+    },
+    {
+      "id": "storyCard",
+      "name": "故事卡",
+      "groupId": "input",
+      "childExplanation": "你也可以给 AI 一段故事，让它接着写或帮你整理。",
+      "visualHint": "书页和小星星",
+      "commonMisread": "AI 能自动知道没说出来的背景。"
+    },
+    {
+      "id": "wordNetwork",
+      "name": "词语网络",
+      "groupId": "patterns",
+      "childExplanation": "很多词语之间有关系，AI 会学习这些关系。",
+      "visualHint": "发光节点和连线",
+      "commonMisread": "把词语网络当成真的人脑。"
+    },
+    {
+      "id": "patternGears",
+      "name": "规律齿轮",
+      "groupId": "patterns",
+      "childExplanation": "规律像齿轮一样，把输入变成可能的回答。",
+      "visualHint": "柔和齿轮和文字碎片",
+      "commonMisread": "规律就是事实。"
+    },
+    {
+      "id": "chatBubbles",
+      "name": "对话气泡",
+      "groupId": "context",
+      "childExplanation": "同一句话放在不同对话里，意思可能不一样。",
+      "visualHint": "连续气泡",
+      "commonMisread": "只看最后一句，不看前面说过什么。"
+    },
+    {
+      "id": "answerBubble",
+      "name": "回答气泡",
+      "groupId": "output",
+      "childExplanation": "AI 会把回答组织成句子，说给你听。",
+      "visualHint": "发光回答框",
+      "commonMisread": "回答顺口就一定正确。"
+    },
+    {
+      "id": "checkBadge",
+      "name": "检查徽章",
+      "groupId": "check",
+      "childExplanation": "遇到健康、安全、金钱、学校作业等重要问题，要检查。",
+      "visualHint": "放大镜和对勾",
+      "commonMisread": "AI 说了就不用再问大人。"
+    }
+  ],
+  "mechanism": {
+    "title": "大模型怎么回答？",
+    "steps": [
+      {
+        "id": "read-many",
+        "shortTitle": "看过很多文字",
+        "childExplanation": "它学习过很多句子、故事和问答。",
+        "parentNote": "不要暗示具体训练数据来源，保持概念层表达。"
+      },
+      {
+        "id": "learn-patterns",
+        "shortTitle": "学习语言规律",
+        "childExplanation": "它学会哪些词常常放在一起，什么回答更像一句完整的话。",
+        "parentNote": "这里是核心：模式学习，而不是人类式理解。"
+      },
+      {
+        "id": "read-prompt",
+        "shortTitle": "读你的提示",
+        "childExplanation": "你说得越清楚，它越容易沿着正确方向回答。",
+        "parentNote": "引导孩子学会提出清晰问题。"
+      },
+      {
+        "id": "generate-answer",
+        "shortTitle": "一步步接出回答",
+        "childExplanation": "它像接龙一样，一个词一个词组织成回答。",
+        "parentNote": "可用“词语接龙”类比生成。"
+      },
+      {
+        "id": "check-important",
+        "shortTitle": "重要事情要检查",
+        "childExplanation": "AI 有时会答错，重要问题要找大人或资料确认。",
+        "parentNote": "这是儿童 AI 素养中的安全底线。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "ai-vs-search",
+      "title": "大模型 vs 搜索",
+      "a": {
+        "name": "大模型",
+        "points": [
+          "根据学到的语言规律组织回答",
+          "可以改写、总结、接着写",
+          "可能说错"
+        ]
+      },
+      "b": {
+        "name": "搜索",
+        "points": [
+          "帮你找网页和资料",
+          "需要自己判断来源",
+          "也可能找到不合适信息"
+        ]
+      },
+      "childConclusion": "AI 和搜索都能帮忙，但都要学会检查。"
+    },
+    {
+      "id": "clear-vs-vague-prompt",
+      "title": "清楚问题 vs 模糊问题",
+      "a": {
+        "name": "清楚问题",
+        "points": [
+          "说清主题",
+          "说清数量",
+          "说清想要的方式"
+        ]
+      },
+      "b": {
+        "name": "模糊问题",
+        "points": [
+          "只说“讲讲”",
+          "没有范围",
+          "容易答偏"
+        ]
+      },
+      "childConclusion": "问题说得清楚，回答更容易有用。"
+    },
+    {
+      "id": "fluent-vs-correct",
+      "title": "说得顺 vs 说得对",
+      "a": {
+        "name": "说得顺",
+        "points": [
+          "句子好听",
+          "看起来很完整",
+          "不一定真实"
+        ]
+      },
+      "b": {
+        "name": "说得对",
+        "points": [
+          "能查到依据",
+          "和可靠资料一致",
+          "经得起追问"
+        ]
+      },
+      "childConclusion": "AI 说得很顺，也要检查重要信息。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "llm-single-01",
+      "type": "singleChoice",
+      "title": "哪个问题更清楚？",
+      "prompt": "点出更容易让 AI 帮上忙的问题。",
+      "options": [
+        {
+          "id": "vague",
+          "label": "告诉我动物"
+        },
+        {
+          "id": "clear",
+          "label": "请告诉我 3 种森林动物，并说说它们怎么保护自己"
+        }
+      ],
+      "correctOptionId": "clear",
+      "wrongHints": {
+        "vague": "这个问题太大了。加上数量、场景和想知道的内容，会更清楚。"
+      },
+      "successCopy": "对！清楚的问题更像一张好地图。"
+    },
+    {
+      "id": "llm-single-02",
+      "type": "singleChoice",
+      "title": "AI 说的一定是真的吗？",
+      "prompt": "点出更安全的说法。",
+      "options": [
+        {
+          "id": "always-true",
+          "label": "一定是真的"
+        },
+        {
+          "id": "check-important",
+          "label": "重要事情要再检查"
+        },
+        {
+          "id": "never-use",
+          "label": "完全不能用"
+        }
+      ],
+      "correctOptionId": "check-important",
+      "wrongHints": {
+        "always-true": "AI 有时会答错，尤其是重要事情。",
+        "never-use": "AI 可以帮忙，但要学会检查和提问。"
+      },
+      "successCopy": "很好！会使用，也会检查，才是聪明用法。"
+    },
+    {
+      "id": "llm-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪些事情需要再确认？",
+      "targetIds": [
+        "healthQuestion",
+        "moneyQuestion",
+        "schoolFact"
+      ],
+      "decoyIds": [
+        "storyIdea",
+        "nameRobot",
+        "makeRiddle"
+      ],
+      "successCopy": "你找到了需要认真检查的重要问题。",
+      "wrongHint": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？"
+    },
+    {
+      "id": "llm-sequence-01",
+      "type": "sequenceClick",
+      "title": "AI 回答的过程",
+      "prompt": "按顺序点出大模型回答问题的过程。",
+      "options": [
+        {
+          "id": "learn",
+          "label": "学习很多文字规律"
+        },
+        {
+          "id": "prompt",
+          "label": "读你的提示"
+        },
+        {
+          "id": "answer",
+          "label": "组织回答"
+        },
+        {
+          "id": "check",
+          "label": "重要问题再检查"
+        }
+      ],
+      "correctSequence": [
+        "learn",
+        "prompt",
+        "answer",
+        "check"
+      ],
+      "successCopy": "你把 AI 的回答过程连起来了！",
+      "wrongHint": "先想：AI 要先学过语言规律，才能根据提示回答。"
+    }
+  ],
+  "speakTemplates": [
+    "AI 像____，它会根据____来回答。",
+    "我可以把“____”改成更清楚的问题：“____”。",
+    "如果 AI 回答的是____，我还要____。"
+  ],
+  "parentTips": [
+    "避免说“AI 像人一样思考”或“AI 完全懂了”。",
+    "鼓励孩子把模糊问题改写成清楚问题，这是比记技术名词更重要的能力。",
+    "建立安全边界：健康、安全、金钱、隐私、作业事实都要再确认。"
+  ]
+}

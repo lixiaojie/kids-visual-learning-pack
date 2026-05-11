@@ -1,0 +1,90 @@
+{
+  "id": "child-playtest-observation-v1",
+  "title": "儿童试玩观察表",
+  "scope": [
+    "home-exploration-map",
+    "animal-classification-tree",
+    "blood-cells-3d",
+    "solar-system-overview"
+  ],
+  "principles": [
+    "每页试玩 3–5 分钟",
+    "家长先观察，再追问，不急于纠正",
+    "重点记录孩子能否说出核心问题和完成点击任务"
+  ],
+  "successSignals": [
+    "孩子能说出页面核心问题",
+    "孩子愿意点击主视觉或任务卡",
+    "孩子能完成至少 2 个点击任务",
+    "孩子能用一句话解释自己的判断"
+  ],
+  "adjustmentSignals": [
+    "孩子只看图但说不出学了什么",
+    "孩子频繁在同一误区上出错",
+    "孩子不知道该点哪里",
+    "家长需要解释很久才能继续"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "title": "芋头世界",
+      "coreQuestionCheck": "孩子能否说出这是探索地图，而不只是普通菜单？",
+      "firstAttentionOptions": [
+        "动画世界",
+        "六大知识世界",
+        "状态标签",
+        "随机点击"
+      ],
+      "parentFollowUps": [
+        "你今天想去哪一个世界？",
+        "已经点亮的是哪些？"
+      ]
+    },
+    {
+      "id": "animal-classification-tree",
+      "title": "动物分类生命树",
+      "coreQuestionCheck": "孩子能否说出动物可以按线索分类？",
+      "firstAttentionOptions": [
+        "生命树",
+        "动物卡",
+        "对比卡",
+        "任务区"
+      ],
+      "parentFollowUps": [
+        "鲸鱼为什么不是鱼？",
+        "你用了哪个线索？"
+      ]
+    },
+    {
+      "id": "blood-cells-3d",
+      "title": "血液细胞 3D",
+      "coreQuestionCheck": "孩子能否说出血液里有不同工作队员？",
+      "firstAttentionOptions": [
+        "红细胞",
+        "白细胞",
+        "血小板",
+        "血管场景"
+      ],
+      "parentFollowUps": [
+        "谁负责送氧气？",
+        "谁像身体守卫？"
+      ]
+    },
+    {
+      "id": "solar-system-overview",
+      "title": "太阳系总览",
+      "coreQuestionCheck": "孩子能否说出行星绕太阳转？",
+      "firstAttentionOptions": [
+        "太阳",
+        "地球",
+        "土星",
+        "轨道",
+        "小行星带"
+      ],
+      "parentFollowUps": [
+        "谁在中间？",
+        "小行星带在哪两颗行星中间？"
+      ]
+    }
+  ]
+}

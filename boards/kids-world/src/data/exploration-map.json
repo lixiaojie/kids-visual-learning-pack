@@ -1,0 +1,416 @@
+{
+  "id": "xiaoyutou-exploration-map",
+  "title": "芋头世界",
+  "subtitle": "从喜欢的故事出发，去认识生命、身体、地球、宇宙、能量和人类创造的系统。",
+  "positioning": {
+    "animationWorldDecision": "动画世界作为首页的兴趣入口区，视觉上排在第 0 位；不计入六大知识世界。",
+    "reason": "动画主题适合吸引孩子进入，但知识体系需要保持稳定，因此动画世界承担入口、复盘和迁移作用。",
+    "homeLearningPromise": "每点亮一张看板，就学会一种认识世界的方法：观察、分类、比较、解释、表达。"
+  },
+  "homeHero": {
+    "title": "芋头世界",
+    "subtitle": "从动画故事出发，点亮真正的世界知识。",
+    "childIntro": "今天想先去故事世界玩一玩，还是去看看身体、动物、地球和宇宙怎么工作？",
+    "parentIntro": "本系统不是儿童百科页面，而是用统一可视化结构帮助孩子建立分类、机制、比较和表达能力。",
+    "primaryCTA": "开始探索",
+    "secondaryCTA": "看看已点亮的主题"
+  },
+  "statusLegend": [
+    {
+      "status": "completed",
+      "label": "已完成",
+      "childLabel": "已经点亮",
+      "description": "已有可浏览页面或完整素材，可作为入口示例。"
+    },
+    {
+      "status": "building",
+      "label": "建设中",
+      "childLabel": "正在搭建",
+      "description": "已有详细 spec 或数据，适合优先实现。"
+    },
+    {
+      "status": "comingSoon",
+      "label": "即将上线",
+      "childLabel": "马上出发",
+      "description": "已进入规划目录，暂未细化页面。"
+    },
+    {
+      "status": "planned",
+      "label": "计划中",
+      "childLabel": "以后探索",
+      "description": "作为后续扩展主题保留。"
+    }
+  ],
+  "sections": [
+    {
+      "id": "interest-entry",
+      "title": "兴趣入口",
+      "description": "孩子喜欢的故事和角色，用来把注意力带到观察、任务、关系和表达上。",
+      "worlds": [
+        "animation"
+      ]
+    },
+    {
+      "id": "knowledge-worlds",
+      "title": "六大知识世界",
+      "description": "稳定的知识地图，帮助孩子把零散兴趣连接成体系化认知。",
+      "worlds": [
+        "life",
+        "body",
+        "earth",
+        "space",
+        "energy",
+        "humanMade"
+      ]
+    }
+  ],
+  "worlds": [
+    {
+      "id": "animation",
+      "order": 0,
+      "type": "interestEntrance",
+      "name": "动画世界",
+      "shortName": "动画",
+      "status": "completed",
+      "recommendedColor": {
+        "name": "故事紫",
+        "hex": "#8B5CF6",
+        "softHex": "#F3E8FF"
+      },
+      "icon": "sparkles",
+      "childOneLiner": "从喜欢的英雄和小队开始，学会看故事、看任务、看角色关系。",
+      "parentNote": "动画世界不是知识分类本身，而是兴趣入口。它把孩子熟悉的角色转化为观察、分类、协作、价值判断和表达训练。",
+      "entryCard": {
+        "title": "先从喜欢的故事出发",
+        "subtitle": "蜘蛛英雄、汪汪队和更多故事看板。",
+        "cta": "进入动画世界",
+        "badge": "兴趣入口"
+      },
+      "topicCards": [
+        {
+          "id": "spider-verse-storyboard",
+          "title": "蜘蛛宇宙视觉故事板",
+          "status": "completed",
+          "cardDescription": "看不同蜘蛛英雄如何面对成长、责任、选择和合作。",
+          "childDescription": "每个蜘蛛英雄都有自己的难题，也都有自己的勇敢方式。",
+          "learningGoalTags": [
+            "角色关系",
+            "成长主题",
+            "故事结构",
+            "价值判断"
+          ],
+          "suggestedRoute": "从角色卡 → 世界关系 → 成长任务 → 我来讲故事",
+          "href": "boards/spider-verse/index.html"
+        },
+        {
+          "id": "paw-patrol-command-center",
+          "title": "汪汪队任务指挥中心",
+          "status": "completed",
+          "cardDescription": "用任务、装备和分工理解团队协作。",
+          "childDescription": "每只小狗都有自己的本领，大家一起完成任务。",
+          "learningGoalTags": [
+            "任务拆解",
+            "团队协作",
+            "职业启蒙",
+            "问题解决"
+          ],
+          "suggestedRoute": "从任务地图 → 成员分工 → 工具装备 → 徽章挑战",
+          "href": "boards/paw-patrol/index.html"
+        }
+      ]
+    },
+    {
+      "id": "life",
+      "order": 1,
+      "type": "knowledgeWorld",
+      "name": "生命世界",
+      "shortName": "生命",
+      "status": "building",
+      "recommendedColor": {
+        "name": "生命绿",
+        "hex": "#22C55E",
+        "softHex": "#DCFCE7"
+      },
+      "icon": "leaf",
+      "childOneLiner": "认识动物、植物和昆虫，看看生命怎么长大、吃饭、保护自己。",
+      "parentNote": "生命世界优先训练分类能力和生态关系理解，从常见动物、昆虫、植物逐步进入食物链、生态系统与进化。",
+      "entryCard": {
+        "title": "生命世界",
+        "subtitle": "动物、植物、昆虫和生态关系。",
+        "cta": "去生命世界",
+        "badge": "建设中"
+      },
+      "topicCards": [
+        {
+          "slug": "animal-classification-tree",
+          "title": "动物分类生命树",
+          "status": "building",
+          "cardDescription": "把动物放回正确的大类。",
+          "learningGoalTags": [
+            "分类",
+            "代表动物",
+            "纠正常见误解"
+          ],
+          "href": "boards/animal-classification-tree/index.html"
+        },
+        {
+          "slug": "insects-and-spiders",
+          "title": "昆虫与蜘蛛侦探站",
+          "status": "building",
+          "cardDescription": "用腿数、触角和身体结构找不同。",
+          "learningGoalTags": [
+            "观察",
+            "比较",
+            "分类"
+          ],
+          "href": "boards/insects-and-spiders/index.html"
+        },
+        {
+          "slug": "plant-life-cycle",
+          "title": "植物的一生",
+          "status": "comingSoon",
+          "cardDescription": "从种子到开花结果。",
+          "learningGoalTags": [
+            "过程",
+            "时间线",
+            "自然观察"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "body",
+      "order": 2,
+      "type": "knowledgeWorld",
+      "name": "身体世界",
+      "shortName": "身体",
+      "status": "building",
+      "recommendedColor": {
+        "name": "身体红",
+        "hex": "#EF4444",
+        "softHex": "#FEE2E2"
+      },
+      "icon": "heart-pulse",
+      "childOneLiner": "进入身体里面，看看血液、心脏、骨头和大脑怎样一起工作。",
+      "parentNote": "身体世界用友好可视化解释人体内部机制，重点避免血腥恐怖感，帮助孩子理解身体分工、健康习惯和基本生理过程。",
+      "entryCard": {
+        "title": "身体世界",
+        "subtitle": "身体里的小小工作队。",
+        "cta": "去身体世界",
+        "badge": "建设中"
+      },
+      "topicCards": [
+        {
+          "slug": "blood-cells-3d",
+          "title": "血液细胞 3D",
+          "status": "building",
+          "cardDescription": "认识红细胞、白细胞、血小板和血浆。",
+          "learningGoalTags": [
+            "微观世界",
+            "分工",
+            "运输机制"
+          ],
+          "href": "boards/blood-cells-3d/index.html"
+        },
+        {
+          "slug": "digestion-journey",
+          "title": "食物旅行记",
+          "status": "comingSoon",
+          "cardDescription": "看看食物进入身体后去了哪里。",
+          "learningGoalTags": [
+            "路径",
+            "器官",
+            "健康习惯"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "earth",
+      "order": 3,
+      "type": "knowledgeWorld",
+      "name": "地球世界",
+      "shortName": "地球",
+      "status": "building",
+      "recommendedColor": {
+        "name": "地球蓝",
+        "hex": "#0EA5E9",
+        "softHex": "#E0F2FE"
+      },
+      "icon": "globe-2",
+      "childOneLiner": "看看地球上的城市、气候、山河海洋和天气为什么不一样。",
+      "parentNote": "地球世界连接真实地图、气候带、自然过程和生活经验，适合帮助孩子建立空间方位、环境差异和地理常识。",
+      "entryCard": {
+        "title": "地球世界",
+        "subtitle": "城市、气候、地图和自然力量。",
+        "cta": "去地球世界",
+        "badge": "建设中"
+      },
+      "topicCards": [
+        {
+          "slug": "earth-climate-cities",
+          "title": "地球仪、气候带与城市",
+          "status": "building",
+          "cardDescription": "为什么有些地方热，有些地方冷？",
+          "learningGoalTags": [
+            "地图",
+            "气候",
+            "城市"
+          ],
+          "href": "boards/earth-climate-cities/index.html"
+        },
+        {
+          "slug": "water-cycle",
+          "title": "小水滴旅行记",
+          "status": "planned",
+          "cardDescription": "蒸发、云、降雨、河流和海洋。",
+          "learningGoalTags": [
+            "循环",
+            "天气",
+            "机制"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space",
+      "order": 4,
+      "type": "knowledgeWorld",
+      "name": "宇宙世界",
+      "shortName": "宇宙",
+      "status": "building",
+      "recommendedColor": {
+        "name": "宇宙蓝紫",
+        "hex": "#4F46E5",
+        "softHex": "#E0E7FF"
+      },
+      "icon": "orbit",
+      "childOneLiner": "从太阳系开始，看看地球住在宇宙的什么地方。",
+      "parentNote": "宇宙世界适合建立尺度、轨道、位置关系和天体分类，优先从太阳系、月相和行星比较切入。",
+      "entryCard": {
+        "title": "宇宙世界",
+        "subtitle": "太阳、行星、月亮和小行星。",
+        "cta": "去宇宙世界",
+        "badge": "建设中"
+      },
+      "topicCards": [
+        {
+          "slug": "solar-system-overview",
+          "title": "太阳系总览",
+          "status": "building",
+          "cardDescription": "太阳在中心，行星围着太阳转。",
+          "learningGoalTags": [
+            "轨道",
+            "排序",
+            "空间关系"
+          ],
+          "href": "boards/solar-system-overview/index.html"
+        },
+        {
+          "slug": "moon-phases",
+          "title": "月亮与月相",
+          "status": "comingSoon",
+          "cardDescription": "月亮为什么有时圆、有时弯？",
+          "learningGoalTags": [
+            "观察",
+            "周期",
+            "天体关系"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "energy",
+      "order": 5,
+      "type": "knowledgeWorld",
+      "name": "物质与能量世界",
+      "shortName": "能量",
+      "status": "comingSoon",
+      "recommendedColor": {
+        "name": "能量橙",
+        "hex": "#F97316",
+        "softHex": "#FFEDD5"
+      },
+      "icon": "zap",
+      "childOneLiner": "看看水、光、电、热和能量怎样变化。",
+      "parentNote": "该世界承接基础物理和能量转换，用可观察现象作为入口，再逐步延展到电磁、发电、裂变与聚变。",
+      "entryCard": {
+        "title": "物质与能量世界",
+        "subtitle": "光、电、热、水和能量变化。",
+        "cta": "去能量世界",
+        "badge": "即将上线"
+      },
+      "topicCards": [
+        {
+          "slug": "light-and-color",
+          "title": "光和颜色",
+          "status": "comingSoon",
+          "cardDescription": "为什么彩虹有很多颜色？",
+          "learningGoalTags": [
+            "观察",
+            "实验",
+            "颜色"
+          ]
+        },
+        {
+          "slug": "fission-fusion-kids",
+          "title": "裂变与聚变儿童版",
+          "status": "planned",
+          "cardDescription": "大积木拆开，小积木合体，也会释放能量。",
+          "learningGoalTags": [
+            "高阶",
+            "能量",
+            "对比"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "humanMade",
+      "order": 6,
+      "type": "knowledgeWorld",
+      "name": "人造系统世界",
+      "shortName": "系统",
+      "status": "building",
+      "recommendedColor": {
+        "name": "系统青蓝",
+        "hex": "#06B6D4",
+        "softHex": "#CFFAFE"
+      },
+      "icon": "cpu",
+      "childOneLiner": "看看机器人、城市、互联网和 AI 这些人类创造的系统怎么工作。",
+      "parentNote": "人造系统世界负责把技术和社会系统儿童化，强调输入、处理、输出、反馈和规则，而不是成人化工程细节。",
+      "entryCard": {
+        "title": "人造系统世界",
+        "subtitle": "机器人、交通、互联网和 AI。",
+        "cta": "去系统世界",
+        "badge": "建设中"
+      },
+      "topicCards": [
+        {
+          "slug": "llm-kids-basics",
+          "title": "大模型基础原理",
+          "status": "building",
+          "cardDescription": "AI 为什么会回答问题？它也会出错吗？",
+          "learningGoalTags": [
+            "AI 素养",
+            "提问",
+            "核查"
+          ],
+          "href": "boards/llm-kids-basics/index.html"
+        },
+        {
+          "slug": "robot-sense-think-act",
+          "title": "机器人怎么动",
+          "status": "planned",
+          "cardDescription": "传感器看到，控制器判断，马达行动。",
+          "learningGoalTags": [
+            "输入输出",
+            "控制",
+            "机器人"
+          ]
+        }
+      ]
+    }
+  ]
+}

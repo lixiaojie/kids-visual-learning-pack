@@ -1,0 +1,528 @@
+{
+  "id": "topic-life-animal-classification-tree",
+  "slug": "animal-classification-tree",
+  "title": "动物生命树",
+  "subtitle": "世界上的动物都住在哪些“大房间”里？",
+  "world": "life",
+  "priority": "P0",
+  "ageRange": "5-8",
+  "pageType": "tree-classification",
+  "coreQuestion": "动物可以怎么分？",
+  "learningGoals": [
+    "知道动物世界可以分成几个大类",
+    "初步认识脊椎动物与无脊椎动物",
+    "认识哺乳类、鸟类、鱼类、爬行类、两栖类等基本类别"
+  ],
+  "misconceptions": [
+    "鲸鱼是鱼",
+    "蝙蝠是鸟",
+    "所有会游泳的都是鱼"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/life/animal-classification-tree/life-animal-tree-hero-v01.png",
+      "purpose": "主视觉：动物生命树",
+      "status": "planned"
+    },
+    "compare": {
+      "path": "/assets/life/animal-classification-tree/life-animal-misconception-compare-v01.png",
+      "purpose": "误区对比图",
+      "status": "planned"
+    },
+    "cards": {
+      "path": "/assets/life/animal-classification-tree/life-animal-cards-v01.png",
+      "purpose": "动物分类卡",
+      "status": "planned"
+    }
+  },
+  "interactions": [
+    {
+      "type": "expand",
+      "target": "tree-branch",
+      "description": "点击类别展开代表动物"
+    },
+    {
+      "type": "click-reveal",
+      "target": "animal-card",
+      "description": "显示为什么它属于这一类"
+    },
+    {
+      "type": "drag-or-select",
+      "target": "tree-branch",
+      "description": "把动物放回生命树分支"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "classify",
+      "title": "把动物放回正确分支",
+      "items": [
+        "猫",
+        "鲸",
+        "蝙蝠",
+        "麻雀",
+        "企鹅",
+        "金鱼",
+        "蛇",
+        "乌龟",
+        "青蛙",
+        "蝴蝶"
+      ]
+    },
+    {
+      "type": "quiz",
+      "title": "谁不属于这组？"
+    },
+    {
+      "type": "explain",
+      "title": "鲸鱼为什么不是鱼？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "动物世界很大，我们可以把它们分类。",
+      "分类能帮助我们更好地认识世界。"
+    ],
+    "keyFacts": [
+      "有些动物身体里有脊椎，叫脊椎动物。",
+      "有些动物没有脊椎，叫无脊椎动物。",
+      "哺乳类会用奶喂宝宝，鸟类有羽毛，鱼类用鳃呼吸。"
+    ],
+    "explainPrompt": "你能说出三个动物大类吗？"
+  },
+  "relatedTopics": [
+    "insects-and-spiders",
+    "dinosaurs",
+    "ecosystem"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出至少 3 个动物大类",
+    "能纠正鲸鱼是鱼或蝙蝠是鸟中的至少 1 个误区",
+    "树状结构清晰，不像成人生物分类表"
+  ],
+  "status": "building",
+  "renderPriority": 1,
+  "hero": {
+    "title": "动物生命树",
+    "kicker": "生命世界 · 分类任务",
+    "lead": "动物世界像一棵大树。每个动物都住在自己的分支上。",
+    "sceneExplanation": "页面左侧展示一棵分层生命树：树根是“动物”，第一层分成“有脊椎”和“无脊椎”，再向外分出哺乳类、鸟类、鱼类、爬行类、两栖类、昆虫等分支。孩子点击动物卡片时，对应分支发亮。",
+    "childPrompt": "点一点动物卡，看看它应该住在哪根树枝上。",
+    "parentPrompt": "本页重点不是背分类名，而是让孩子通过代表特征建立‘归类依据’：身体结构、呼吸方式、繁殖和生活方式。",
+    "placeholder": {
+      "type": "classificationTree",
+      "asset": "/assets/life/animal-classification-tree/hero-v01.png"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "vertebrates",
+      "name": "脊椎动物",
+      "childExplanation": "身体里有一根重要的骨头柱子，像身体的支架。",
+      "parentNote": "这里用儿童化语言解释脊柱，不必展开完整解剖学。",
+      "representativeObjects": [
+        "cat",
+        "whale",
+        "sparrow",
+        "goldfish",
+        "snake",
+        "frog"
+      ],
+      "misconception": "不是所有生活在水里的动物都是鱼，鲸鱼也是脊椎动物，但它是哺乳类。"
+    },
+    {
+      "id": "mammals",
+      "name": "哺乳类",
+      "childExplanation": "很多哺乳动物小时候会喝妈妈的奶，身上常常有毛。",
+      "parentNote": "可提示鲸鱼和蝙蝠也是哺乳类，分类不能只看生活环境或会不会飞。",
+      "representativeObjects": [
+        "cat",
+        "whale",
+        "bat"
+      ],
+      "misconception": "鲸鱼不是鱼，蝙蝠不是鸟。"
+    },
+    {
+      "id": "birds",
+      "name": "鸟类",
+      "childExplanation": "鸟类有羽毛，很多鸟会飞，也有一些鸟不太会飞。",
+      "parentNote": "羽毛是鸟类更稳定的识别线索，会不会飞不是唯一标准。",
+      "representativeObjects": [
+        "sparrow",
+        "penguin"
+      ],
+      "misconception": "会飞的不一定是鸟，比如蝙蝠。"
+    },
+    {
+      "id": "fish",
+      "name": "鱼类",
+      "childExplanation": "鱼大多生活在水里，用鳃呼吸。",
+      "parentNote": "鱼类概念可先用‘水里 + 鳃 + 鳍’帮助孩子识别。",
+      "representativeObjects": [
+        "goldfish",
+        "shark"
+      ],
+      "misconception": "生活在水里不一定就是鱼，比如鲸鱼。"
+    },
+    {
+      "id": "reptiles",
+      "name": "爬行类",
+      "childExplanation": "爬行类常常有鳞片，很多会贴近地面爬行。",
+      "parentNote": "避免只用‘会爬’判断，乌龟、蛇、蜥蜴都可作为代表。",
+      "representativeObjects": [
+        "snake",
+        "turtle"
+      ],
+      "misconception": "会爬的不一定都是爬行类。"
+    },
+    {
+      "id": "amphibians",
+      "name": "两栖类",
+      "childExplanation": "两栖类小时候常在水里，长大后可以到陆地活动。",
+      "parentNote": "青蛙是最佳代表，可用蝌蚪到青蛙的变化解释。",
+      "representativeObjects": [
+        "frog"
+      ],
+      "misconception": "青蛙不是爬行类。"
+    },
+    {
+      "id": "insects",
+      "name": "昆虫",
+      "childExplanation": "昆虫通常有 6 条腿，身体分成几段。",
+      "parentNote": "昆虫属于无脊椎动物。蜘蛛不是昆虫，可跳转到昆虫与蜘蛛页。",
+      "representativeObjects": [
+        "butterfly",
+        "ant"
+      ],
+      "misconception": "蜘蛛不是昆虫。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "cat",
+      "name": "猫",
+      "groupId": "mammals",
+      "childExplanation": "猫是哺乳动物，小时候会喝妈妈的奶。",
+      "visualHint": "毛、四条腿、幼崽喝奶",
+      "commonMisread": "不要只按‘住在家里’来分类。"
+    },
+    {
+      "id": "whale",
+      "name": "鲸鱼",
+      "groupId": "mammals",
+      "childExplanation": "鲸鱼住在海里，但它不是鱼，它是哺乳动物。",
+      "visualHint": "海里生活、用肺呼吸、宝宝喝奶",
+      "commonMisread": "看到海里生活就以为是鱼。"
+    },
+    {
+      "id": "bat",
+      "name": "蝙蝠",
+      "groupId": "mammals",
+      "childExplanation": "蝙蝠会飞，但它不是鸟，它是哺乳动物。",
+      "visualHint": "翅膀像皮膜、没有羽毛",
+      "commonMisread": "会飞就以为是鸟。"
+    },
+    {
+      "id": "sparrow",
+      "name": "麻雀",
+      "groupId": "birds",
+      "childExplanation": "麻雀有羽毛，是鸟类。",
+      "visualHint": "羽毛、鸟喙、翅膀",
+      "commonMisread": "只看会飞，不看羽毛。"
+    },
+    {
+      "id": "penguin",
+      "name": "企鹅",
+      "groupId": "birds",
+      "childExplanation": "企鹅不太会飞，但它有羽毛，仍然是鸟类。",
+      "visualHint": "羽毛、翅膀变成游泳帮手",
+      "commonMisread": "不会飞就以为不是鸟。"
+    },
+    {
+      "id": "goldfish",
+      "name": "金鱼",
+      "groupId": "fish",
+      "childExplanation": "金鱼住在水里，用鳃呼吸，是鱼类。",
+      "visualHint": "鳃、鳍、水中生活",
+      "commonMisread": "所有水中动物都算鱼。"
+    },
+    {
+      "id": "shark",
+      "name": "鲨鱼",
+      "groupId": "fish",
+      "childExplanation": "鲨鱼是鱼类，身体适合在水里游动。",
+      "visualHint": "鳍、鱼形身体",
+      "commonMisread": "鲨鱼很大就不像鱼。"
+    },
+    {
+      "id": "snake",
+      "name": "蛇",
+      "groupId": "reptiles",
+      "childExplanation": "蛇是爬行类，身体常有鳞片。",
+      "visualHint": "鳞片、贴地移动",
+      "commonMisread": "没有脚就不知道归哪类。"
+    },
+    {
+      "id": "turtle",
+      "name": "乌龟",
+      "groupId": "reptiles",
+      "childExplanation": "乌龟是爬行类，有硬硬的壳。",
+      "visualHint": "龟壳、鳞片",
+      "commonMisread": "会游泳就以为是鱼。"
+    },
+    {
+      "id": "frog",
+      "name": "青蛙",
+      "groupId": "amphibians",
+      "childExplanation": "青蛙是两栖类，小时候像小蝌蚪，长大后能到陆地。",
+      "visualHint": "蝌蚪变青蛙",
+      "commonMisread": "青蛙会跳就随便分类。"
+    },
+    {
+      "id": "butterfly",
+      "name": "蝴蝶",
+      "groupId": "insects",
+      "childExplanation": "蝴蝶是昆虫，通常有 6 条腿。",
+      "visualHint": "翅膀、触角、6 条腿",
+      "commonMisread": "只看翅膀，不看腿数。"
+    },
+    {
+      "id": "ant",
+      "name": "蚂蚁",
+      "groupId": "insects",
+      "childExplanation": "蚂蚁是昆虫，身体小但分工很强。",
+      "visualHint": "6 条腿、触角",
+      "commonMisread": "不会飞就以为不是昆虫。"
+    }
+  ],
+  "mechanism": {
+    "title": "分类时看什么线索？",
+    "steps": [
+      {
+        "id": "look-body",
+        "shortTitle": "先看身体",
+        "childExplanation": "它有羽毛、鳞片、毛，还是 6 条腿？",
+        "parentNote": "引导孩子先观察稳定特征。"
+      },
+      {
+        "id": "look-life",
+        "shortTitle": "再看生活方式",
+        "childExplanation": "它住在水里、陆地，还是两边都能去？",
+        "parentNote": "生活环境是辅助线索，不是唯一标准。"
+      },
+      {
+        "id": "look-baby",
+        "shortTitle": "看看宝宝",
+        "childExplanation": "小时候怎么长大，也能帮助分类。",
+        "parentNote": "哺乳、卵生、变态发育等可以后续扩展。"
+      },
+      {
+        "id": "avoid-single-clue",
+        "shortTitle": "不要只看一个线索",
+        "childExplanation": "会飞不一定是鸟，住水里不一定是鱼。",
+        "parentNote": "这是本页最重要的分类思维。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "whale-vs-fish",
+      "title": "鲸鱼 vs 鱼",
+      "a": {
+        "name": "鲸鱼",
+        "points": [
+          "用肺呼吸",
+          "宝宝喝奶",
+          "是哺乳类"
+        ]
+      },
+      "b": {
+        "name": "鱼",
+        "points": [
+          "多用鳃呼吸",
+          "有鳍",
+          "是鱼类"
+        ]
+      },
+      "childConclusion": "住在海里，不一定就是鱼。"
+    },
+    {
+      "id": "bat-vs-bird",
+      "title": "蝙蝠 vs 鸟",
+      "a": {
+        "name": "蝙蝠",
+        "points": [
+          "没有羽毛",
+          "宝宝喝奶",
+          "是哺乳类"
+        ]
+      },
+      "b": {
+        "name": "鸟",
+        "points": [
+          "有羽毛",
+          "有鸟喙",
+          "是鸟类"
+        ]
+      },
+      "childConclusion": "会飞，不一定就是鸟。"
+    },
+    {
+      "id": "penguin-vs-sparrow",
+      "title": "企鹅 vs 麻雀",
+      "a": {
+        "name": "企鹅",
+        "points": [
+          "不太会飞",
+          "有羽毛",
+          "是鸟类"
+        ]
+      },
+      "b": {
+        "name": "麻雀",
+        "points": [
+          "会飞",
+          "有羽毛",
+          "是鸟类"
+        ]
+      },
+      "childConclusion": "会不会飞，不是判断鸟类的唯一线索。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "animal-classify-01",
+      "type": "singleChoice",
+      "title": "鲸鱼应该住在哪根树枝上？",
+      "prompt": "点一个分类。",
+      "options": [
+        {
+          "id": "fish",
+          "label": "鱼类"
+        },
+        {
+          "id": "mammals",
+          "label": "哺乳类"
+        },
+        {
+          "id": "birds",
+          "label": "鸟类"
+        }
+      ],
+      "correctOptionId": "mammals",
+      "wrongHints": {
+        "fish": "鲸鱼住在海里，但它用肺呼吸，宝宝会喝奶。",
+        "birds": "鲸鱼不会长羽毛，也不是鸟类。"
+      },
+      "successCopy": "对！鲸鱼是住在海里的哺乳动物。"
+    },
+    {
+      "id": "animal-classify-02",
+      "type": "singleChoice",
+      "title": "蝙蝠是鸟吗？",
+      "prompt": "点出更准确的说法。",
+      "options": [
+        {
+          "id": "bird",
+          "label": "是鸟，因为会飞"
+        },
+        {
+          "id": "mammal",
+          "label": "是哺乳类，因为没有羽毛，宝宝喝奶"
+        }
+      ],
+      "correctOptionId": "mammal",
+      "wrongHints": {
+        "bird": "再看一个线索：蝙蝠没有羽毛。"
+      },
+      "successCopy": "很棒！会飞不一定是鸟。"
+    },
+    {
+      "id": "animal-find-01",
+      "type": "findTarget",
+      "title": "找一找：谁有羽毛？",
+      "targetIds": [
+        "sparrow",
+        "penguin"
+      ],
+      "decoyIds": [
+        "bat",
+        "butterfly",
+        "whale"
+      ],
+      "successCopy": "你找到了鸟类的重要线索：羽毛。",
+      "wrongHint": "再看看身体表面，羽毛和翅膀不是同一个线索。"
+    },
+    {
+      "id": "animal-sequence-01",
+      "type": "sequenceClick",
+      "title": "分类时先后看什么？",
+      "prompt": "按顺序点三个线索。",
+      "options": [
+        {
+          "id": "body",
+          "label": "看身体特征"
+        },
+        {
+          "id": "life",
+          "label": "看生活方式"
+        },
+        {
+          "id": "compare",
+          "label": "和容易混淆的动物比一比"
+        }
+      ],
+      "correctSequence": [
+        "body",
+        "life",
+        "compare"
+      ],
+      "successCopy": "你学会了分类侦探的观察顺序。",
+      "wrongHint": "先从最容易看到的身体特征开始。"
+    }
+  ],
+  "speakTemplates": [
+    "我觉得____属于____，因为它有____。",
+    "____看起来像____，但它其实是____，因为____。",
+    "我今天发现：不能只看____，还要看____。"
+  ],
+  "parentTips": [
+    "不要要求孩子一次记住所有类别，优先让他说出分类依据。",
+    "可以追问：你是看哪个线索判断的？还有没有反例？",
+    "本页可自然连接到‘昆虫与蜘蛛’和‘恐龙分类’。"
+  ]
+}

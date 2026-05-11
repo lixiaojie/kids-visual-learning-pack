@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kids Visual Board i18n Overlay Schema",
+  "description": "Schema for locale overlay files. These files override display text while preserving stable structural IDs.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "coreQuestion": {
+      "type": "string"
+    },
+    "learningGoals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hero": {
+      "type": "object"
+    },
+    "classificationGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ]
+      }
+    },
+    "representativeObjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ]
+      }
+    },
+    "mechanism": {
+      "type": "object"
+    },
+    "secondaryMechanism": {
+      "type": "object"
+    },
+    "comparePairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ]
+      }
+    },
+    "clickTasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ]
+      }
+    },
+    "speakTemplates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parentTips": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

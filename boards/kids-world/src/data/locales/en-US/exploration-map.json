@@ -1,0 +1,416 @@
+{
+  "id": "xiaoyutou-exploration-map",
+  "title": "Yutou World",
+  "subtitle": "Start with favorite stories, then explore life, the body, Earth, space, energy, and human-made systems.",
+  "positioning": {
+    "animationWorldDecision": "Animation World is the interest gateway on the homepage. Visually it is World 0, but it is not counted as one of the six knowledge worlds.",
+    "reason": "Animation themes help attract the child into learning, while the knowledge system stays stable. Animation World carries entry, review, and transfer practice.",
+    "homeLearningPromise": "Each board lights up one way to understand the world: observe, classify, compare, explain, and express."
+  },
+  "homeHero": {
+    "title": "Yutou World",
+    "subtitle": "Start from stories, then light up real-world knowledge.",
+    "childIntro": "Do you want to visit the story world first, or see how bodies, animals, Earth, and space work?",
+    "parentIntro": "This is not a children’s encyclopedia page. It uses a consistent visual structure to build classification, mechanism thinking, comparison, and expression.",
+    "primaryCTA": "Start Exploring",
+    "secondaryCTA": "See Lighted Topics"
+  },
+  "statusLegend": [
+    {
+      "status": "completed",
+      "label": "Completed",
+      "childLabel": "Already lighted",
+      "description": "A browsable page or complete asset set is available as an entry example."
+    },
+    {
+      "status": "building",
+      "label": "Building",
+      "childLabel": "Being built",
+      "description": "Detailed specs or data are ready, suitable for priority implementation."
+    },
+    {
+      "status": "comingSoon",
+      "label": "Coming Soon",
+      "childLabel": "Almost ready",
+      "description": "The topic is in the roadmap but the page is not yet detailed."
+    },
+    {
+      "status": "planned",
+      "label": "Planned",
+      "childLabel": "Explore later",
+      "description": "Reserved as a future expansion topic."
+    }
+  ],
+  "sections": [
+    {
+      "id": "interest-entry",
+      "title": "Interest Gateway",
+      "description": "Stories and characters children love help bring attention to observation, tasks, relationships, and expression.",
+      "worlds": [
+        "animation"
+      ]
+    },
+    {
+      "id": "knowledge-worlds",
+      "title": "Six Knowledge Worlds",
+      "description": "A stable knowledge map that connects scattered interests into systematic understanding.",
+      "worlds": [
+        "life",
+        "body",
+        "earth",
+        "space",
+        "energy",
+        "humanMade"
+      ]
+    }
+  ],
+  "worlds": [
+    {
+      "id": "animation",
+      "order": 0,
+      "type": "interestEntrance",
+      "name": "Animation World",
+      "shortName": "Stories",
+      "status": "completed",
+      "recommendedColor": {
+        "name": "Story Purple",
+        "hex": "#8B5CF6",
+        "softHex": "#F3E8FF"
+      },
+      "icon": "sparkles",
+      "childOneLiner": "Start with favorite heroes and teams, then learn to notice stories, missions, and character relationships.",
+      "parentNote": "Animation World is not a knowledge category by itself. It is an interest gateway that turns familiar stories into practice in observation, classification, teamwork, value judgment, and expression.",
+      "entryCard": {
+        "title": "Start with favorite stories",
+        "subtitle": "Spider heroes, Paw Patrol, and more story boards.",
+        "cta": "Enter Animation World",
+        "badge": "Interest Gateway"
+      },
+      "topicCards": [
+        {
+          "id": "spider-verse-storyboard",
+          "title": "Spider Universe Visual Storyboard",
+          "status": "completed",
+          "cardDescription": "See how different spider heroes face growth, responsibility, choices, and teamwork.",
+          "childDescription": "Every spider hero has a challenge, and every hero has a brave way to try.",
+          "learningGoalTags": [
+            "character relationships",
+            "growth theme",
+            "story structure",
+            "value judgment"
+          ],
+          "suggestedRoute": "Character cards → world relationships → growth mission → tell the story myself",
+          "href": "boards/spider-verse/index.html"
+        },
+        {
+          "id": "paw-patrol-command-center",
+          "title": "Paw Patrol Mission Command Center",
+          "status": "completed",
+          "cardDescription": "Use missions, tools, and roles to understand teamwork.",
+          "childDescription": "Each pup has a special skill, and the team solves problems together.",
+          "learningGoalTags": [
+            "task breakdown",
+            "teamwork",
+            "career awareness",
+            "problem solving"
+          ],
+          "suggestedRoute": "Mission map → team roles → tools → badge challenge",
+          "href": "boards/paw-patrol/index.html"
+        }
+      ]
+    },
+    {
+      "id": "life",
+      "order": 1,
+      "type": "knowledgeWorld",
+      "name": "Life World",
+      "shortName": "Life",
+      "status": "building",
+      "recommendedColor": {
+        "name": "Life Green",
+        "hex": "#22C55E",
+        "softHex": "#DCFCE7"
+      },
+      "icon": "leaf",
+      "childOneLiner": "Meet animals, plants, and insects, and see how living things grow, eat, and protect themselves.",
+      "parentNote": "Life World first trains classification and ecological relationship thinking, then expands from common animals, insects, and plants into food chains, ecosystems, and evolution.",
+      "entryCard": {
+        "title": "Life World",
+        "subtitle": "Animals, plants, insects, and ecological relationships.",
+        "cta": "Go to Life World",
+        "badge": "Building"
+      },
+      "topicCards": [
+        {
+          "slug": "animal-classification-tree",
+          "title": "Animal Classification Tree",
+          "status": "building",
+          "cardDescription": "Put animals back into the right big groups.",
+          "learningGoalTags": [
+            "classification",
+            "representative animals",
+            "fix misconceptions"
+          ],
+          "href": "boards/animal-classification-tree/index.html"
+        },
+        {
+          "slug": "insects-and-spiders",
+          "title": "Insects and Spiders Detective Station",
+          "status": "building",
+          "cardDescription": "Use leg count, antennae, and body structure to spot differences.",
+          "learningGoalTags": [
+            "observation",
+            "comparison",
+            "classification"
+          ],
+          "href": "boards/insects-and-spiders/index.html"
+        },
+        {
+          "slug": "plant-life-cycle",
+          "title": "A Plant’s Life",
+          "status": "comingSoon",
+          "cardDescription": "From seed to flower and fruit.",
+          "learningGoalTags": [
+            "process",
+            "timeline",
+            "nature observation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "body",
+      "order": 2,
+      "type": "knowledgeWorld",
+      "name": "Body World",
+      "shortName": "Body",
+      "status": "building",
+      "recommendedColor": {
+        "name": "Body Red",
+        "hex": "#EF4444",
+        "softHex": "#FEE2E2"
+      },
+      "icon": "heart-pulse",
+      "childOneLiner": "Go inside the body and see how blood, the heart, bones, and the brain work together.",
+      "parentNote": "Body World explains internal body mechanisms through friendly visuals, avoiding scary or bloody imagery while building understanding of roles, health habits, and basic physiology.",
+      "entryCard": {
+        "title": "Body World",
+        "subtitle": "Tiny work teams inside the body.",
+        "cta": "Go to Body World",
+        "badge": "Building"
+      },
+      "topicCards": [
+        {
+          "slug": "blood-cells-3d",
+          "title": "Blood Cells 3D",
+          "status": "building",
+          "cardDescription": "Meet red blood cells, white blood cells, platelets, and plasma.",
+          "learningGoalTags": [
+            "micro world",
+            "roles",
+            "transport mechanism"
+          ],
+          "href": "boards/blood-cells-3d/index.html"
+        },
+        {
+          "slug": "digestion-journey",
+          "title": "Food Journey",
+          "status": "comingSoon",
+          "cardDescription": "See where food goes after it enters the body.",
+          "learningGoalTags": [
+            "path",
+            "organs",
+            "healthy habits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "earth",
+      "order": 3,
+      "type": "knowledgeWorld",
+      "name": "Earth World",
+      "shortName": "Earth",
+      "status": "building",
+      "recommendedColor": {
+        "name": "Earth Blue",
+        "hex": "#0EA5E9",
+        "softHex": "#E0F2FE"
+      },
+      "icon": "globe-2",
+      "childOneLiner": "See why cities, climates, mountains, rivers, oceans, and weather are different around Earth.",
+      "parentNote": "Earth World connects real maps, climate zones, natural processes, and daily life, helping children build spatial awareness, environmental differences, and geography basics.",
+      "entryCard": {
+        "title": "Earth World",
+        "subtitle": "Cities, climate, maps, and natural forces.",
+        "cta": "Go to Earth World",
+        "badge": "Building"
+      },
+      "topicCards": [
+        {
+          "slug": "earth-climate-cities",
+          "title": "Globe, Climate Zones, and Cities",
+          "status": "building",
+          "cardDescription": "Why are some places hot and some places cold?",
+          "learningGoalTags": [
+            "map",
+            "climate",
+            "cities"
+          ],
+          "href": "boards/earth-climate-cities/index.html"
+        },
+        {
+          "slug": "water-cycle",
+          "title": "Little Water Drop Journey",
+          "status": "planned",
+          "cardDescription": "Evaporation, clouds, rain, rivers, and oceans.",
+          "learningGoalTags": [
+            "cycle",
+            "weather",
+            "mechanism"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space",
+      "order": 4,
+      "type": "knowledgeWorld",
+      "name": "Space World",
+      "shortName": "Space",
+      "status": "building",
+      "recommendedColor": {
+        "name": "Space Blue-Purple",
+        "hex": "#4F46E5",
+        "softHex": "#E0E7FF"
+      },
+      "icon": "orbit",
+      "childOneLiner": "Start with the solar system and see where Earth lives in space.",
+      "parentNote": "Space World builds scale, orbit, position relationships, and celestial classification, starting with the solar system, Moon phases, and planet comparison.",
+      "entryCard": {
+        "title": "Space World",
+        "subtitle": "The Sun, planets, the Moon, and asteroids.",
+        "cta": "Go to Space World",
+        "badge": "Building"
+      },
+      "topicCards": [
+        {
+          "slug": "solar-system-overview",
+          "title": "Solar System Overview",
+          "status": "building",
+          "cardDescription": "The Sun is in the center, and planets travel around it.",
+          "learningGoalTags": [
+            "orbits",
+            "ordering",
+            "spatial relationships"
+          ],
+          "href": "boards/solar-system-overview/index.html"
+        },
+        {
+          "slug": "moon-phases",
+          "title": "The Moon and Its Phases",
+          "status": "comingSoon",
+          "cardDescription": "Why does the Moon sometimes look round and sometimes curved?",
+          "learningGoalTags": [
+            "observation",
+            "cycle",
+            "celestial relationships"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "energy",
+      "order": 5,
+      "type": "knowledgeWorld",
+      "name": "Matter and Energy World",
+      "shortName": "Energy",
+      "status": "comingSoon",
+      "recommendedColor": {
+        "name": "Energy Orange",
+        "hex": "#F97316",
+        "softHex": "#FFEDD5"
+      },
+      "icon": "zap",
+      "childOneLiner": "See how water, light, electricity, heat, and energy change.",
+      "parentNote": "This world uses observable phenomena as the entry point for basic physics and energy conversion, then later expands into electromagnetism, power generation, fission, and fusion.",
+      "entryCard": {
+        "title": "Matter and Energy World",
+        "subtitle": "Light, electricity, heat, water, and energy changes.",
+        "cta": "Go to Energy World",
+        "badge": "Coming Soon"
+      },
+      "topicCards": [
+        {
+          "slug": "light-and-color",
+          "title": "Light and Color",
+          "status": "comingSoon",
+          "cardDescription": "Why does a rainbow have many colors?",
+          "learningGoalTags": [
+            "observation",
+            "experiment",
+            "color"
+          ]
+        },
+        {
+          "slug": "fission-fusion-kids",
+          "title": "Fission and Fusion for Kids",
+          "status": "planned",
+          "cardDescription": "Big blocks split apart, small blocks join together, and energy can be released.",
+          "learningGoalTags": [
+            "advanced",
+            "energy",
+            "comparison"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "humanMade",
+      "order": 6,
+      "type": "knowledgeWorld",
+      "name": "Human-Made Systems World",
+      "shortName": "Systems",
+      "status": "building",
+      "recommendedColor": {
+        "name": "System Cyan-Blue",
+        "hex": "#06B6D4",
+        "softHex": "#CFFAFE"
+      },
+      "icon": "cpu",
+      "childOneLiner": "See how robots, cities, the internet, and AI systems made by people work.",
+      "parentNote": "Human-Made Systems World turns technology and social systems into child-friendly ideas: input, processing, output, feedback, and rules instead of adult engineering details.",
+      "entryCard": {
+        "title": "Human-Made Systems World",
+        "subtitle": "Robots, traffic, the internet, and AI.",
+        "cta": "Go to Systems World",
+        "badge": "Building"
+      },
+      "topicCards": [
+        {
+          "slug": "llm-kids-basics",
+          "title": "Large Language Models for Kids",
+          "status": "building",
+          "cardDescription": "Why can AI answer questions? Can it also make mistakes?",
+          "learningGoalTags": [
+            "AI literacy",
+            "asking questions",
+            "checking"
+          ],
+          "href": "boards/llm-kids-basics/index.html"
+        },
+        {
+          "slug": "robot-sense-think-act",
+          "title": "How Robots Move",
+          "status": "planned",
+          "cardDescription": "Sensors notice, controllers decide, and motors act.",
+          "learningGoalTags": [
+            "input and output",
+            "control",
+            "robots"
+          ]
+        }
+      ]
+    }
+  ]
+}

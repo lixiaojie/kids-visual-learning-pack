@@ -1,0 +1,104 @@
+{
+  "id": "placeholder-assets-v1",
+  "pathConvention": {
+    "root": "/assets",
+    "pattern": "/assets/{world}/{topicSlug}/{purpose}-v{version}.png",
+    "examples": [
+      "/assets/life/animal-classification-tree/hero-v01.png",
+      "/assets/body/blood-cells-3d/hero-v01.png",
+      "/assets/space/solar-system-overview/hero-v01.png"
+    ],
+    "futureReplacement": "未来正式生图替换时沿用同一路径，前端不改数据结构，只替换文件。"
+  },
+  "worldColors": {
+    "animation": {
+      "name": "故事紫",
+      "hex": "#8B5CF6",
+      "softHex": "#F3E8FF"
+    },
+    "life": {
+      "name": "生命绿",
+      "hex": "#22C55E",
+      "softHex": "#DCFCE7"
+    },
+    "body": {
+      "name": "身体红",
+      "hex": "#EF4444",
+      "softHex": "#FEE2E2"
+    },
+    "earth": {
+      "name": "地球蓝",
+      "hex": "#0EA5E9",
+      "softHex": "#E0F2FE"
+    },
+    "space": {
+      "name": "宇宙蓝紫",
+      "hex": "#4F46E5",
+      "softHex": "#E0E7FF"
+    },
+    "energy": {
+      "name": "能量橙",
+      "hex": "#F97316",
+      "softHex": "#FFEDD5"
+    },
+    "humanMade": {
+      "name": "系统青蓝",
+      "hex": "#06B6D4",
+      "softHex": "#CFFAFE"
+    }
+  },
+  "pageTypePlaceholders": [
+    {
+      "pageType": "classificationTree",
+      "ratio": "16:10",
+      "placeholderShouldShow": "中心生命树、分叉枝干、动物小圆点、类别标签占位块",
+      "avoid": "不要直接画成复杂真实动物群"
+    },
+    {
+      "pageType": "microScene",
+      "ratio": "16:10",
+      "placeholderShouldShow": "柔和管道或微观空间、漂浮圆片、少量发光对象",
+      "avoid": "不要血腥、不要真实医学照片感"
+    },
+    {
+      "pageType": "orbitMap",
+      "ratio": "16:9",
+      "placeholderShouldShow": "中心太阳、同心轨道、行星圆点、小行星带颗粒",
+      "avoid": "不要密集星云压过轨道关系"
+    },
+    {
+      "pageType": "globeMap",
+      "ratio": "16:10",
+      "placeholderShouldShow": "球体、纬度色带、城市点位",
+      "avoid": "不要做成复杂真实地图"
+    },
+    {
+      "pageType": "systemFlow",
+      "ratio": "16:10",
+      "placeholderShouldShow": "输入、处理、输出三个区域和连接线",
+      "avoid": "不要成人化黑色科幻控制台"
+    }
+  ],
+  "componentSlots": {
+    "hero": {
+      "ratio": "16:10",
+      "minWidth": 960,
+      "usage": "页面主视觉区域"
+    },
+    "support": {
+      "ratio": "4:3",
+      "minWidth": 720,
+      "usage": "机制、对比、解释模块"
+    },
+    "cardIcon": {
+      "ratio": "1:1",
+      "minWidth": 320,
+      "usage": "分类卡、任务选项、对象图标"
+    },
+    "badge": {
+      "ratio": "1:1",
+      "minWidth": 256,
+      "usage": "完成反馈与探索地图点亮"
+    }
+  }
+}

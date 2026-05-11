@@ -1,0 +1,328 @@
+{
+  "id": "topic-space-solar-system-overview",
+  "slug": "solar-system-overview",
+  "title": "Solar System Exploration Station",
+  "subtitle": "Find the Sun, planets, and asteroid belt",
+  "coreQuestion": "Who lives in the Solar System?",
+  "learningGoals": [
+    "Know that the Sun is at the center of the Solar System.",
+    "Know that planets go around the Sun.",
+    "Find the asteroid belt between Mars and Jupiter."
+  ],
+  "misconceptions": [
+    "The Sun is a planet.",
+    "Earth is the center of the universe.",
+    "All bright things in the sky are the same kind of thing."
+  ],
+  "hero": {
+    "title": "Solar System Exploration Station",
+    "kicker": "Space World · Orbit Map",
+    "lead": "The Solar System is like a big space neighborhood. Earth is one member of it.",
+    "sceneExplanation": "The main scene is a clickable orbit map: the Sun sits in the center or on the left, eight planets are arranged by distance from the Sun, and the asteroid belt appears as a ring of small rocks between Mars and Jupiter. When a planet is clicked, its orbit and card light up.",
+    "childPrompt": "Tap a planet and see where it travels around the Sun.",
+    "parentPrompt": "Focus on the spatial relationship: Sun, orbit, planet order, and asteroid belt. Avoid overwhelming the child with exact numbers."
+  },
+  "classificationGroups": [
+    {
+      "id": "star",
+      "name": "Star",
+      "childExplanation": "The Sun is a star. It makes its own light and heat.",
+      "parentNote": "Introduce the Sun as the central energy source of the Solar System.",
+      "representativeObjects": [
+        "sun"
+      ],
+      "misconception": "The Sun is not a planet."
+    },
+    {
+      "id": "rocky-planets",
+      "name": "Rocky planets",
+      "childExplanation": "These planets are closer to the Sun and have solid rocky surfaces.",
+      "parentNote": "Mercury, Venus, Earth, and Mars are the simple first group.",
+      "representativeObjects": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars"
+      ],
+      "misconception": "Small does not mean unimportant; Earth is one rocky planet."
+    },
+    {
+      "id": "gas-ice-giants",
+      "name": "Giant planets",
+      "childExplanation": "These planets are much bigger and farther from the Sun.",
+      "parentNote": "For this age, group gas and ice giants together as outer giant planets.",
+      "representativeObjects": [
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "misconception": "Not all planets have a hard surface like Earth."
+    },
+    {
+      "id": "small-bodies",
+      "name": "Asteroid belt",
+      "childExplanation": "A wide area with many small rocky objects between Mars and Jupiter.",
+      "parentNote": "Explain it as many small rocks sharing a region, not a solid wall.",
+      "representativeObjects": [
+        "asteroid-belt"
+      ],
+      "misconception": "The asteroid belt is not one giant ring road you can stand on."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "Sun",
+      "groupId": "star",
+      "childExplanation": "The Sun gives light and heat. Planets go around it.",
+      "visualHint": "large bright center",
+      "commonMisread": "Calling the Sun a planet."
+    },
+    {
+      "id": "mercury",
+      "name": "Mercury",
+      "groupId": "rocky-planets",
+      "childExplanation": "Mercury is the closest planet to the Sun.",
+      "visualHint": "small gray planet near the Sun",
+      "commonMisread": "Thinking closest means biggest."
+    },
+    {
+      "id": "venus",
+      "name": "Venus",
+      "groupId": "rocky-planets",
+      "childExplanation": "Venus is a rocky planet with thick clouds.",
+      "visualHint": "yellow cloudy planet",
+      "commonMisread": "Thinking it is just like Earth because it is nearby."
+    },
+    {
+      "id": "earth",
+      "name": "Earth",
+      "groupId": "rocky-planets",
+      "childExplanation": "Earth is our home planet.",
+      "visualHint": "blue and green planet",
+      "commonMisread": "Thinking Earth is the center of everything."
+    },
+    {
+      "id": "mars",
+      "name": "Mars",
+      "groupId": "rocky-planets",
+      "childExplanation": "Mars is a rocky planet often shown as red.",
+      "visualHint": "red planet",
+      "commonMisread": "Thinking Mars is always burning hot because it is red."
+    },
+    {
+      "id": "asteroid-belt",
+      "name": "Asteroid belt",
+      "groupId": "small-bodies",
+      "childExplanation": "Many small rocky objects move in this region.",
+      "visualHint": "small dots between Mars and Jupiter",
+      "commonMisread": "Thinking it is a solid ring."
+    },
+    {
+      "id": "jupiter",
+      "name": "Jupiter",
+      "groupId": "gas-ice-giants",
+      "childExplanation": "Jupiter is the biggest planet in the Solar System.",
+      "visualHint": "very large striped planet",
+      "commonMisread": "Thinking bigger means closer to the Sun."
+    },
+    {
+      "id": "saturn",
+      "name": "Saturn",
+      "groupId": "gas-ice-giants",
+      "childExplanation": "Saturn is famous for its beautiful rings.",
+      "visualHint": "rings around planet",
+      "commonMisread": "Thinking Saturn is the only planet with rings."
+    },
+    {
+      "id": "uranus",
+      "name": "Uranus",
+      "groupId": "gas-ice-giants",
+      "childExplanation": "Uranus is a faraway giant planet with a blue-green color.",
+      "visualHint": "pale blue-green planet",
+      "commonMisread": "Thinking far planets are small because they look small."
+    },
+    {
+      "id": "neptune",
+      "name": "Neptune",
+      "groupId": "gas-ice-giants",
+      "childExplanation": "Neptune is a far, deep-blue giant planet.",
+      "visualHint": "dark blue planet",
+      "commonMisread": "Thinking it is next to Earth because it appears on the same chart."
+    }
+  ],
+  "mechanism": {
+    "title": "How do planets move?",
+    "steps": [
+      {
+        "id": "center-sun",
+        "shortTitle": "The Sun is the center",
+        "childExplanation": "The Sun is the big bright star at the center of the Solar System.",
+        "parentNote": "Use this to correct Earth-centered thinking."
+      },
+      {
+        "id": "orbits",
+        "shortTitle": "Planets follow orbits",
+        "childExplanation": "Each planet travels around the Sun on its own path.",
+        "parentNote": "Use orbit as a path, not a physical track."
+      },
+      {
+        "id": "inner-planets",
+        "shortTitle": "Near and far order",
+        "childExplanation": "Some planets are closer to the Sun, and some are farther away.",
+        "parentNote": "Order matters more than exact distance for the first version."
+      },
+      {
+        "id": "asteroid-belt",
+        "shortTitle": "Small rocks also travel",
+        "childExplanation": "Many small rocky objects travel between Mars and Jupiter.",
+        "parentNote": "This introduces non-planet Solar System members."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "star-vs-planet",
+      "title": "Star vs Planet",
+      "a": {
+        "name": "Star",
+        "points": [
+          "makes its own light",
+          "gives heat",
+          "the Sun is a star"
+        ]
+      },
+      "b": {
+        "name": "Planet",
+        "points": [
+          "goes around a star",
+          "does not make sunlight like the Sun",
+          "Earth is a planet"
+        ]
+      },
+      "childConclusion": "The Sun is a star. Earth is a planet."
+    },
+    {
+      "id": "earth-vs-jupiter",
+      "title": "Earth vs Jupiter",
+      "a": {
+        "name": "Earth",
+        "points": [
+          "rocky planet",
+          "our home",
+          "smaller"
+        ]
+      },
+      "b": {
+        "name": "Jupiter",
+        "points": [
+          "giant planet",
+          "biggest planet",
+          "farther from the Sun"
+        ]
+      },
+      "childConclusion": "Planets can be very different from each other."
+    },
+    {
+      "id": "mars-vs-asteroid-belt",
+      "title": "Mars vs Asteroid Belt",
+      "a": {
+        "name": "Mars",
+        "points": [
+          "one planet",
+          "rocky",
+          "has its own orbit"
+        ]
+      },
+      "b": {
+        "name": "Asteroid belt",
+        "points": [
+          "many small objects",
+          "between Mars and Jupiter",
+          "not one planet"
+        ]
+      },
+      "childConclusion": "The Solar System has planets and many smaller objects too."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "solar-sequence-01",
+      "title": "Starting from the Sun, what are the first four planets?",
+      "prompt": "Tap the planets in order from near to far.",
+      "options": [
+        {
+          "id": "mercury",
+          "label": "Mercury"
+        },
+        {
+          "id": "venus",
+          "label": "Venus"
+        },
+        {
+          "id": "earth",
+          "label": "Earth"
+        },
+        {
+          "id": "mars",
+          "label": "Mars"
+        }
+      ],
+      "successCopy": "Great! You found the first four planet neighbors.",
+      "wrongHint": "Start with the planet closest to the Sun."
+    },
+    {
+      "id": "solar-find-01",
+      "title": "Find: which is the largest planet?",
+      "successCopy": "Correct! Jupiter is the largest planet in the solar system.",
+      "wrongHint": "Look for the giant planet with stripes."
+    },
+    {
+      "id": "solar-find-02",
+      "title": "Find: where is the asteroid belt?",
+      "successCopy": "You found it! The asteroid belt is between Mars and Jupiter.",
+      "wrongHint": "Look between Mars and Jupiter."
+    },
+    {
+      "id": "solar-choice-01",
+      "title": "What is the Sun?",
+      "prompt": "Choose the most accurate answer.",
+      "options": [
+        {
+          "id": "star",
+          "label": "A star"
+        },
+        {
+          "id": "planet",
+          "label": "A planet"
+        },
+        {
+          "id": "asteroid",
+          "label": "An asteroid"
+        }
+      ],
+      "wrongHints": {
+        "planet": "Planets go around stars. The Sun is the star in the center.",
+        "asteroid": "Asteroids are much smaller objects."
+      },
+      "successCopy": "Right! The Sun is a star and sits at the center of the solar system."
+    }
+  ],
+  "speakTemplates": [
+    "The Sun is a ____ because it ____.",
+    "Earth is the ____ planet from the Sun.",
+    "The asteroid belt is between ____ and ____.",
+    "I found out that planets can be ____ or ____."
+  ],
+  "parentTips": [
+    "Do not focus on exact sizes and distances first; focus on positions and relationships.",
+    "Use the orbit map to ask: what is closer, what is farther, what is between?",
+    "This topic can connect to Moon phases, day and night, and space exploration."
+  ],
+  "acceptanceCriteria": [
+    "The child knows the Sun is the central star.",
+    "The child can identify Earth, Jupiter, Saturn, and the asteroid belt.",
+    "The child can place the asteroid belt between Mars and Jupiter."
+  ]
+}

@@ -1,0 +1,503 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/kids-world-visual-boards/topic.schema.json",
+  "title": "Kids World Visual Board Topic",
+  "description": "Schema for both legacy topic JSON and enhanced render-ready topic JSON. Stable logic IDs are intentionally strings and should not be localized.",
+  "type": "object",
+  "required": [
+    "id",
+    "slug",
+    "title",
+    "world",
+    "priority",
+    "ageRange",
+    "pageType",
+    "coreQuestion",
+    "learningGoals",
+    "modules",
+    "assets",
+    "tasks",
+    "copy",
+    "acceptanceCriteria"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "world": {
+      "enum": [
+        "animation",
+        "life",
+        "body",
+        "earth",
+        "space",
+        "energy",
+        "humanMade"
+      ]
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2"
+      ]
+    },
+    "ageRange": {
+      "type": "string"
+    },
+    "pageType": {
+      "type": "string"
+    },
+    "coreQuestion": {
+      "type": "string"
+    },
+    "learningGoals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "misconceptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "copy": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "relatedTopics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "acceptanceCriteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "description": "Content readiness status for a topic. UI status is tracked separately in exploration-map/topic-registry when needed.",
+      "type": "string",
+      "enum": [
+        "draft",
+        "building",
+        "render-ready",
+        "completed",
+        "comingSoon",
+        "planned"
+      ]
+    },
+    "renderPriority": {
+      "description": "Render/order hint. Kept permissive for backward compatibility: some topics use numbers, some use descriptive strings.",
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "hero": {
+      "$ref": "#/$defs/hero"
+    },
+    "classificationGroups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/classificationGroup"
+      }
+    },
+    "representativeObjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/representativeObject"
+      }
+    },
+    "mechanism": {
+      "$ref": "#/$defs/mechanism"
+    },
+    "secondaryMechanism": {
+      "$ref": "#/$defs/mechanism"
+    },
+    "comparePairs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/comparePair"
+      }
+    },
+    "clickTasks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/clickTask"
+      }
+    },
+    "speakTemplates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parentTips": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "localizedString": {
+      "type": "string"
+    },
+    "idString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hero": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "kicker": {
+          "type": "string"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "sceneExplanation": {
+          "type": "string"
+        },
+        "childPrompt": {
+          "type": "string"
+        },
+        "parentPrompt": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "asset": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "classificationGroup": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "name": {
+          "type": "string"
+        },
+        "childExplanation": {
+          "type": "string"
+        },
+        "parentNote": {
+          "type": "string"
+        },
+        "representativeObjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "misconception": {
+          "type": "string"
+        }
+      }
+    },
+    "representativeObject": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "name": {
+          "type": "string"
+        },
+        "groupId": {
+          "type": "string"
+        },
+        "childExplanation": {
+          "type": "string"
+        },
+        "visualHint": {
+          "type": "string"
+        },
+        "commonMisread": {
+          "type": "string"
+        }
+      }
+    },
+    "mechanism": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mechanismStep"
+          }
+        }
+      }
+    },
+    "mechanismStep": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "shortTitle": {
+          "type": "string"
+        },
+        "childExplanation": {
+          "type": "string"
+        },
+        "parentNote": {
+          "type": "string"
+        }
+      }
+    },
+    "comparePair": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "title": {
+          "type": "string"
+        },
+        "a": {
+          "$ref": "#/$defs/compareSide"
+        },
+        "b": {
+          "$ref": "#/$defs/compareSide"
+        },
+        "childConclusion": {
+          "type": "string"
+        }
+      }
+    },
+    "compareSide": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "clickTask": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "type",
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "type": {
+          "enum": [
+            "singleChoice",
+            "findTarget",
+            "sequenceClick"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/taskOption"
+          }
+        },
+        "correctOptionId": {
+          "type": "string"
+        },
+        "correctSequence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "targetIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decoyIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wrongHint": {
+          "type": "string"
+        },
+        "wrongHints": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "successCopy": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "singleChoice"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "options",
+              "correctOptionId",
+              "successCopy"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "findTarget"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "targetIds",
+              "successCopy"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "sequenceClick"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "options",
+              "correctSequence",
+              "successCopy"
+            ]
+          }
+        }
+      ]
+    },
+    "taskOption": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

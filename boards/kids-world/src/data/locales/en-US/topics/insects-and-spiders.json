@@ -1,0 +1,314 @@
+{
+  "id": "topic-life-insects-and-spiders",
+  "slug": "insects-and-spiders",
+  "title": "Insects and Spiders Detective Station",
+  "subtitle": "Count legs and find clues",
+  "coreQuestion": "How are insects and spiders different?",
+  "learningGoals": [
+    "Know that insects usually have six legs.",
+    "Know that spiders are not insects and usually have eight legs.",
+    "Use observable clues to sort small animals."
+  ],
+  "misconceptions": [
+    "Spiders are insects.",
+    "All small creepy-crawly animals are insects.",
+    "Anything with wings must be an insect."
+  ],
+  "hero": {
+    "title": "Insects and Spiders Detective Station",
+    "kicker": "Life World · Observation Task",
+    "lead": "Small animals can look similar, but a careful detective looks for clues.",
+    "sceneExplanation": "The main scene is a magnifying-glass observation table: butterflies, bees, ladybugs, ants, dragonflies, spiders, and centipedes hide among grass, stones, and flowers. When a child taps an animal, the page highlights leg count, antennae, and body sections.",
+    "childPrompt": "Tap a little animal. Count its legs and look for antennae.",
+    "parentPrompt": "The focus is evidence-based observation: do not judge only by flying or by whether it looks small and crawly."
+  },
+  "classificationGroups": [
+    {
+      "id": "insects",
+      "name": "Insects",
+      "childExplanation": "Insects usually have six legs, antennae, and three main body parts.",
+      "parentNote": "For ages 5-8, focus on six legs + antennae + body sections.",
+      "representativeObjects": [
+        "butterfly",
+        "bee",
+        "ladybug",
+        "ant",
+        "dragonfly"
+      ],
+      "misconception": "Not all insects fly; ants are insects too."
+    },
+    {
+      "id": "spiders",
+      "name": "Spiders",
+      "childExplanation": "Spiders usually have eight legs and no antennae.",
+      "parentNote": "Use spiders as a clear contrast with insects.",
+      "representativeObjects": [
+        "jumping-spider",
+        "orb-weaver"
+      ],
+      "misconception": "A spider is not an insect."
+    },
+    {
+      "id": "otherArthropods",
+      "name": "Other many-legged animals",
+      "childExplanation": "Some small animals have many legs, but that does not make them insects.",
+      "parentNote": "Centipedes are useful as a decoy category.",
+      "representativeObjects": [
+        "centipede"
+      ],
+      "misconception": "Many legs does not mean insect."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "butterfly",
+      "name": "Butterfly",
+      "groupId": "insects",
+      "childExplanation": "A butterfly is an insect with six legs and antennae.",
+      "visualHint": "wings, antennae, six legs",
+      "commonMisread": "Only noticing the wings."
+    },
+    {
+      "id": "bee",
+      "name": "Bee",
+      "groupId": "insects",
+      "childExplanation": "A bee is an insect. It has six legs and antennae.",
+      "visualHint": "striped body, wings, antennae",
+      "commonMisread": "Thinking all stinging animals are the same."
+    },
+    {
+      "id": "ladybug",
+      "name": "Ladybug",
+      "groupId": "insects",
+      "childExplanation": "A ladybug is an insect with six legs.",
+      "visualHint": "round red shell, spots, six legs",
+      "commonMisread": "Thinking round body means not an insect."
+    },
+    {
+      "id": "ant",
+      "name": "Ant",
+      "groupId": "insects",
+      "childExplanation": "An ant is an insect even though it usually does not fly.",
+      "visualHint": "six legs, antennae, small body",
+      "commonMisread": "Thinking insects must have wings."
+    },
+    {
+      "id": "dragonfly",
+      "name": "Dragonfly",
+      "groupId": "insects",
+      "childExplanation": "A dragonfly is an insect with six legs and long wings.",
+      "visualHint": "long body, wings, six legs",
+      "commonMisread": "Only focusing on the wings."
+    },
+    {
+      "id": "gardenSpider",
+      "name": "Jumping spider",
+      "groupId": "spiders",
+      "childExplanation": "A jumping spider has eight legs and is not an insect.",
+      "visualHint": "eight legs, big eyes, no antennae",
+      "commonMisread": "Calling it an insect because it is small."
+    },
+    {
+      "id": "jumpingSpider",
+      "name": "Web spider",
+      "groupId": "spiders",
+      "childExplanation": "This spider has eight legs and can make a web.",
+      "visualHint": "web, eight legs, no antennae",
+      "commonMisread": "Thinking web-making means insect."
+    },
+    {
+      "id": "centipede",
+      "name": "Centipede",
+      "groupId": "otherArthropods",
+      "childExplanation": "A centipede has many legs. It is not an insect or a spider.",
+      "visualHint": "long body, many legs",
+      "commonMisread": "Thinking many legs means insect."
+    }
+  ],
+  "mechanism": {
+    "title": "How do we identify small animals?",
+    "steps": [
+      {
+        "id": "count-legs",
+        "shortTitle": "Count the legs",
+        "childExplanation": "Six legs often points to an insect. Eight legs often points to a spider.",
+        "parentNote": "Counting legs is the most accessible first clue."
+      },
+      {
+        "id": "check-antennae",
+        "shortTitle": "Look for antennae",
+        "childExplanation": "Insects usually have antennae. Spiders do not.",
+        "parentNote": "Use simple visual labels or highlights."
+      },
+      {
+        "id": "check-body",
+        "shortTitle": "Look at body parts",
+        "childExplanation": "Insects have head, chest, and belly parts. Spiders look different.",
+        "parentNote": "No need for formal anatomical terms unless the child asks."
+      },
+      {
+        "id": "avoid-wing-rule",
+        "shortTitle": "Do not only look for wings",
+        "childExplanation": "Some insects fly, but some insects do not fly.",
+        "parentNote": "Ants help correct the ‘insects must fly’ misconception."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "insect-vs-spider",
+      "title": "Insect vs Spider",
+      "a": {
+        "name": "Insect",
+        "points": [
+          "usually six legs",
+          "usually has antennae",
+          "three main body parts"
+        ]
+      },
+      "b": {
+        "name": "Spider",
+        "points": [
+          "usually eight legs",
+          "no antennae",
+          "not an insect"
+        ]
+      },
+      "childConclusion": "Counting legs is a good first clue."
+    },
+    {
+      "id": "ant-vs-spider",
+      "title": "Ant vs Spider",
+      "a": {
+        "name": "Ant",
+        "points": [
+          "six legs",
+          "antennae",
+          "insect"
+        ]
+      },
+      "b": {
+        "name": "Spider",
+        "points": [
+          "eight legs",
+          "no antennae",
+          "spider"
+        ]
+      },
+      "childConclusion": "Both are small, but they are not the same kind."
+    },
+    {
+      "id": "centipede-vs-insect",
+      "title": "Butterfly vs Centipede",
+      "a": {
+        "name": "Butterfly",
+        "points": [
+          "six legs",
+          "antennae",
+          "insect"
+        ]
+      },
+      "b": {
+        "name": "Centipede",
+        "points": [
+          "many legs",
+          "long body",
+          "not an insect"
+        ]
+      },
+      "childConclusion": "Many legs does not mean insect."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "insects-single-01",
+      "title": "Is a spider an insect?",
+      "prompt": "Tap the more accurate answer.",
+      "options": [
+        {
+          "id": "yes-insect",
+          "label": "Yes, because it is small"
+        },
+        {
+          "id": "no-spider",
+          "label": "No. A spider usually has 8 legs"
+        },
+        {
+          "id": "depends-fly",
+          "label": "Only animals that fly are insects"
+        }
+      ],
+      "wrongHints": {
+        "yes-insect": "Being small is not the clue. Count how many legs the spider has.",
+        "depends-fly": "Flying is not the only clue. Ants usually do not fly, but they are insects."
+      },
+      "successCopy": "Right! A spider is not an insect. Counting legs helped you find the clue."
+    },
+    {
+      "id": "insects-find-01",
+      "title": "Find: which ones are insects?",
+      "successCopy": "Detective mission complete! You found the six-legged insect friends.",
+      "wrongHint": "Count the legs again. Insects usually have 6 legs."
+    },
+    {
+      "id": "insects-single-02",
+      "title": "Why is a centipede not an insect?",
+      "prompt": "Choose the best reason.",
+      "options": [
+        {
+          "id": "too-many-legs",
+          "label": "It has many legs, not the typical 6 legs of an insect"
+        },
+        {
+          "id": "too-long",
+          "label": "Because its body is too long"
+        },
+        {
+          "id": "not-flying",
+          "label": "Because it cannot fly"
+        }
+      ],
+      "wrongHints": {
+        "too-long": "Body length is not the most important classification clue.",
+        "not-flying": "An animal can be an insect even if it cannot fly, such as an ant."
+      },
+      "successCopy": "Great! You were not fooled by “an animal with many legs.”"
+    },
+    {
+      "id": "insects-sequence-01",
+      "title": "Little detective observation order",
+      "prompt": "Tap the three observation steps in order.",
+      "options": [
+        {
+          "id": "count",
+          "label": "Count legs"
+        },
+        {
+          "id": "antennae",
+          "label": "Check antennae"
+        },
+        {
+          "id": "body",
+          "label": "Check body parts"
+        }
+      ],
+      "successCopy": "You learned the little detective’s observation order.",
+      "wrongHint": "Start with the easiest clue to see: the number of legs."
+    }
+  ],
+  "speakTemplates": [
+    "I think ____ is an insect because it has ____.",
+    "I think ____ is a spider because it has ____.",
+    "____ looks small, but I need to check ____ before I classify it."
+  ],
+  "parentTips": [
+    "Keep the tone curious, not scary. Avoid making spiders or insects frightening.",
+    "Ask the child to point to the clue: legs, antennae, or body parts.",
+    "This page can connect to the animal classification tree and to ecology later."
+  ],
+  "acceptanceCriteria": [
+    "The child can say spiders are not insects.",
+    "The child can use leg count as a first clue.",
+    "The child can classify at least four small animals correctly."
+  ]
+}

@@ -1,0 +1,826 @@
+{
+  "version": "1.0",
+  "topics": [
+    {
+      "id": "topic-life-insects-and-spiders",
+      "slug": "insects-and-spiders",
+      "title": "昆虫与蜘蛛侦探站",
+      "subtitle": "找一找，谁是昆虫？谁是蜘蛛？",
+      "world": "life",
+      "priority": "P0",
+      "ageRange": "5-8",
+      "pageType": "classification-compare-task",
+      "coreQuestion": "昆虫和蜘蛛有什么不同？",
+      "learningGoals": [
+        "知道昆虫通常有 6 条腿，身体分头、胸、腹",
+        "知道蜘蛛不是昆虫，通常有 8 条腿",
+        "能根据外形把常见小动物分到正确类别"
+      ],
+      "misconceptions": [
+        "蜘蛛就是昆虫",
+        "有很多腿的小动物都算昆虫",
+        "只要会飞就是昆虫"
+      ],
+      "modules": [
+        {
+          "type": "hero",
+          "title": "草地观察台",
+          "assetKey": "hero"
+        },
+        {
+          "type": "classification",
+          "title": "谁是昆虫",
+          "groups": [
+            "昆虫",
+            "蜘蛛",
+            "其他节肢动物"
+          ]
+        },
+        {
+          "type": "compare",
+          "title": "昆虫 vs 蜘蛛",
+          "items": [
+            "腿数",
+            "身体分段",
+            "触角",
+            "翅膀"
+          ]
+        },
+        {
+          "type": "task",
+          "title": "小侦探分类任务"
+        },
+        {
+          "type": "relatedTopics",
+          "title": "接着探索"
+        }
+      ],
+      "assets": {
+        "hero": {
+          "path": "/assets/life/insects-and-spiders/life-insects-hero-v01.png",
+          "purpose": "主视觉：自然观察台",
+          "status": "planned"
+        },
+        "compare": {
+          "path": "/assets/life/insects-and-spiders/life-insects-structure-compare-v01.png",
+          "purpose": "结构比较图",
+          "status": "planned"
+        },
+        "cards": {
+          "path": "/assets/life/insects-and-spiders/life-insects-cards-v01.png",
+          "purpose": "拖拽分类卡",
+          "status": "planned"
+        }
+      },
+      "interactions": [
+        {
+          "type": "click-reveal",
+          "target": "animal-card",
+          "description": "点击小动物显示名称与结构提示"
+        },
+        {
+          "type": "highlight",
+          "target": "body-parts",
+          "description": "高亮腿部和身体分段"
+        },
+        {
+          "type": "drag-or-select",
+          "target": "classification-groups",
+          "description": "把小动物放入正确类别"
+        }
+      ],
+      "tasks": [
+        {
+          "type": "classify",
+          "title": "把小动物分一分",
+          "items": [
+            "蝴蝶",
+            "蜜蜂",
+            "瓢虫",
+            "蚂蚁",
+            "蜻蜓",
+            "蜘蛛",
+            "蜈蚣"
+          ]
+        },
+        {
+          "type": "find",
+          "title": "找到 1 只蜘蛛和 2 只昆虫"
+        },
+        {
+          "type": "explain",
+          "title": "我觉得它是____，因为它有____。"
+        }
+      ],
+      "copy": {
+        "intro": [
+          "昆虫是一大类小动物。",
+          "蜘蛛不是昆虫，它们有不同的身体结构。"
+        ],
+        "keyFacts": [
+          "昆虫通常有 6 条腿。",
+          "蜘蛛通常有 8 条腿。",
+          "观察腿和身体结构，是识别它们的好办法。"
+        ],
+        "explainPrompt": "你为什么说它是昆虫？"
+      },
+      "relatedTopics": [
+        "animal-classification-tree",
+        "ecosystem",
+        "dinosaurs"
+      ],
+      "acceptanceCriteria": [
+        "孩子能说出蜘蛛不是昆虫",
+        "孩子能至少正确分类 4/6 个对象",
+        "画面不恐怖、不写实、不杂乱"
+      ]
+    },
+    {
+      "id": "topic-life-animal-classification-tree",
+      "slug": "animal-classification-tree",
+      "title": "动物生命树",
+      "subtitle": "世界上的动物都住在哪些“大房间”里？",
+      "world": "life",
+      "priority": "P0",
+      "ageRange": "5-8",
+      "pageType": "tree-classification",
+      "coreQuestion": "动物可以怎么分？",
+      "learningGoals": [
+        "知道动物世界可以分成几个大类",
+        "初步认识脊椎动物与无脊椎动物",
+        "认识哺乳类、鸟类、鱼类、爬行类、两栖类等基本类别"
+      ],
+      "misconceptions": [
+        "鲸鱼是鱼",
+        "蝙蝠是鸟",
+        "所有会游泳的都是鱼"
+      ],
+      "modules": [
+        {
+          "type": "hero",
+          "title": "生命树总览",
+          "assetKey": "hero"
+        },
+        {
+          "type": "classification",
+          "title": "动物的大房间",
+          "groups": [
+            "脊椎动物",
+            "无脊椎动物",
+            "哺乳类",
+            "鸟类",
+            "鱼类",
+            "爬行类",
+            "两栖类",
+            "昆虫"
+          ]
+        },
+        {
+          "type": "compare",
+          "title": "容易分错的动物",
+          "items": [
+            "鲸鱼 vs 鱼",
+            "蝙蝠 vs 鸟",
+            "青蛙小时候 vs 长大后"
+          ]
+        },
+        {
+          "type": "task",
+          "title": "把动物送回生命树"
+        },
+        {
+          "type": "relatedTopics",
+          "title": "接着探索"
+        }
+      ],
+      "assets": {
+        "hero": {
+          "path": "/assets/life/animal-classification-tree/life-animal-tree-hero-v01.png",
+          "purpose": "主视觉：动物生命树",
+          "status": "planned"
+        },
+        "compare": {
+          "path": "/assets/life/animal-classification-tree/life-animal-misconception-compare-v01.png",
+          "purpose": "误区对比图",
+          "status": "planned"
+        },
+        "cards": {
+          "path": "/assets/life/animal-classification-tree/life-animal-cards-v01.png",
+          "purpose": "动物分类卡",
+          "status": "planned"
+        }
+      },
+      "interactions": [
+        {
+          "type": "expand",
+          "target": "tree-branch",
+          "description": "点击类别展开代表动物"
+        },
+        {
+          "type": "click-reveal",
+          "target": "animal-card",
+          "description": "显示为什么它属于这一类"
+        },
+        {
+          "type": "drag-or-select",
+          "target": "tree-branch",
+          "description": "把动物放回生命树分支"
+        }
+      ],
+      "tasks": [
+        {
+          "type": "classify",
+          "title": "把动物放回正确分支",
+          "items": [
+            "猫",
+            "鲸",
+            "蝙蝠",
+            "麻雀",
+            "企鹅",
+            "金鱼",
+            "蛇",
+            "乌龟",
+            "青蛙",
+            "蝴蝶"
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "谁不属于这组？"
+        },
+        {
+          "type": "explain",
+          "title": "鲸鱼为什么不是鱼？"
+        }
+      ],
+      "copy": {
+        "intro": [
+          "动物世界很大，我们可以把它们分类。",
+          "分类能帮助我们更好地认识世界。"
+        ],
+        "keyFacts": [
+          "有些动物身体里有脊椎，叫脊椎动物。",
+          "有些动物没有脊椎，叫无脊椎动物。",
+          "哺乳类会用奶喂宝宝，鸟类有羽毛，鱼类用鳃呼吸。"
+        ],
+        "explainPrompt": "你能说出三个动物大类吗？"
+      },
+      "relatedTopics": [
+        "insects-and-spiders",
+        "dinosaurs",
+        "ecosystem"
+      ],
+      "acceptanceCriteria": [
+        "孩子能说出至少 3 个动物大类",
+        "能纠正鲸鱼是鱼或蝙蝠是鸟中的至少 1 个误区",
+        "树状结构清晰，不像成人生物分类表"
+      ]
+    },
+    {
+      "id": "topic-body-blood-cells-3d",
+      "slug": "blood-cells-3d",
+      "title": "血液里的小小工作队",
+      "subtitle": "它们都在忙什么？",
+      "world": "body",
+      "priority": "P0",
+      "ageRange": "5-8",
+      "pageType": "micro-scene-mechanism",
+      "coreQuestion": "血液为什么能帮助身体工作？",
+      "learningGoals": [
+        "知道血液里不只有一种东西",
+        "认识红细胞、白细胞、血小板、血浆",
+        "理解红细胞运送氧气、白细胞保护身体、血小板帮助止血"
+      ],
+      "misconceptions": [
+        "血液只是红色的水",
+        "红细胞、白细胞、血小板没有分工差别",
+        "白细胞就是细菌"
+      ],
+      "modules": [
+        {
+          "type": "hero",
+          "title": "血管里的微观世界",
+          "assetKey": "hero"
+        },
+        {
+          "type": "classification",
+          "title": "小小工作队成员",
+          "groups": [
+            "红细胞",
+            "白细胞",
+            "血小板",
+            "血浆"
+          ]
+        },
+        {
+          "type": "mechanism",
+          "title": "红细胞送氧气",
+          "steps": [
+            "肺部取氧",
+            "心脏推动",
+            "送到身体",
+            "带回二氧化碳"
+          ]
+        },
+        {
+          "type": "mechanism",
+          "title": "血小板帮助止血",
+          "steps": [
+            "出现小伤口",
+            "血小板聚集",
+            "帮助封住破口"
+          ]
+        },
+        {
+          "type": "task",
+          "title": "把细胞送到正确岗位"
+        }
+      ],
+      "assets": {
+        "hero": {
+          "path": "/assets/body/blood-cells-3d/body-blood-cells-hero-v01.png",
+          "purpose": "主视觉：友好型 3D 血管内部",
+          "status": "planned"
+        },
+        "oxygenFlow": {
+          "path": "/assets/body/blood-cells-3d/body-blood-cells-oxygen-flow-v01.png",
+          "purpose": "氧气运输机制图",
+          "status": "planned"
+        },
+        "clotting": {
+          "path": "/assets/body/blood-cells-3d/body-blood-cells-clotting-v01.png",
+          "purpose": "止血机制图",
+          "status": "planned"
+        },
+        "cards": {
+          "path": "/assets/body/blood-cells-3d/body-blood-cells-cards-v01.png",
+          "purpose": "细胞职责卡",
+          "status": "planned"
+        }
+      },
+      "interactions": [
+        {
+          "type": "click-reveal",
+          "target": "cell",
+          "description": "点击细胞显示名称、功能、大小印象"
+        },
+        {
+          "type": "path-follow",
+          "target": "oxygen-flow",
+          "description": "跟随红细胞完成送氧气路线"
+        },
+        {
+          "type": "match",
+          "target": "cell-role",
+          "description": "细胞和职责配对"
+        }
+      ],
+      "tasks": [
+        {
+          "type": "match",
+          "title": "细胞职责配对",
+          "pairs": {
+            "红细胞": "送氧气",
+            "白细胞": "守护身体",
+            "血小板": "帮助止血",
+            "血浆": "带着大家流动"
+          }
+        },
+        {
+          "type": "path",
+          "title": "跟随红细胞送氧气"
+        },
+        {
+          "type": "explain",
+          "title": "如果没有红细胞会怎样？"
+        }
+      ],
+      "copy": {
+        "intro": [
+          "血液像身体里的流动小河。",
+          "血液里有不同成员，它们有不同工作。"
+        ],
+        "keyFacts": [
+          "红细胞像送氧气的小车。",
+          "白细胞像身体里的守卫队。",
+          "血小板像修路工，帮助伤口止血。",
+          "血浆像河水，把大家带着一起流动。"
+        ],
+        "explainPrompt": "你能说出红细胞和白细胞的不同工作吗？"
+      },
+      "relatedTopics": [
+        "immune-system",
+        "heart",
+        "digestion"
+      ],
+      "acceptanceCriteria": [
+        "孩子能说出 3 种血液成员名称中的 2 种以上",
+        "能说出红细胞和白细胞至少各 1 个功能",
+        "页面不出现血腥、恐怖感"
+      ]
+    },
+    {
+      "id": "topic-space-solar-system-overview",
+      "slug": "solar-system-overview",
+      "title": "太阳系探索站",
+      "subtitle": "地球住在什么样的宇宙邻居圈里？",
+      "world": "space",
+      "priority": "P0",
+      "ageRange": "5-8",
+      "pageType": "orbit-map",
+      "coreQuestion": "太阳系里有哪些成员？",
+      "learningGoals": [
+        "知道太阳在中心，行星绕太阳转",
+        "初步认识 8 大行星的顺序",
+        "知道小行星带在火星和木星之间"
+      ],
+      "misconceptions": [
+        "太阳也是行星",
+        "月亮和太阳一样，没有区分",
+        "地球是宇宙中心"
+      ],
+      "modules": [
+        {
+          "type": "hero",
+          "title": "太阳系轨道图",
+          "assetKey": "hero"
+        },
+        {
+          "type": "classification",
+          "title": "太阳系成员",
+          "groups": [
+            "太阳",
+            "岩石行星",
+            "气态巨行星",
+            "冰巨行星",
+            "小行星带"
+          ]
+        },
+        {
+          "type": "compare",
+          "title": "恒星与行星",
+          "items": [
+            "太阳",
+            "地球",
+            "木星",
+            "土星"
+          ]
+        },
+        {
+          "type": "task",
+          "title": "行星排序挑战"
+        },
+        {
+          "type": "relatedTopics",
+          "title": "接着探索"
+        }
+      ],
+      "assets": {
+        "hero": {
+          "path": "/assets/space/solar-system-overview/space-solar-system-hero-v01.png",
+          "purpose": "主视觉：太阳系轨道总览",
+          "status": "planned"
+        },
+        "compare": {
+          "path": "/assets/space/solar-system-overview/space-solar-system-star-planet-compare-v01.png",
+          "purpose": "恒星与行星比较",
+          "status": "planned"
+        },
+        "cards": {
+          "path": "/assets/space/solar-system-overview/space-solar-system-planet-cards-v01.png",
+          "purpose": "行星卡片",
+          "status": "planned"
+        }
+      },
+      "interactions": [
+        {
+          "type": "click-reveal",
+          "target": "planet",
+          "description": "点击行星展开行星卡片"
+        },
+        {
+          "type": "highlight",
+          "target": "orbit",
+          "description": "高亮行星轨道"
+        },
+        {
+          "type": "sequence",
+          "target": "planet-order",
+          "description": "按离太阳远近排序"
+        }
+      ],
+      "tasks": [
+        {
+          "type": "sequence",
+          "title": "把行星按离太阳远近排序",
+          "items": [
+            "水星",
+            "金星",
+            "地球",
+            "火星",
+            "木星",
+            "土星",
+            "天王星",
+            "海王星"
+          ]
+        },
+        {
+          "type": "find",
+          "title": "找到有环的行星、最大的行星和地球"
+        },
+        {
+          "type": "explain",
+          "title": "地球在太阳系的哪里？"
+        }
+      ],
+      "copy": {
+        "intro": [
+          "太阳系是太阳和很多天体组成的大家庭。",
+          "地球是太阳系里的一颗行星。"
+        ],
+        "keyFacts": [
+          "太阳在中心，是一颗恒星。",
+          "行星围着太阳转。",
+          "火星和木星之间有一片小行星带。"
+        ],
+        "explainPrompt": "你能指出太阳、地球和小行星带吗？"
+      },
+      "relatedTopics": [
+        "moon-phases",
+        "asteroid-belt",
+        "earth-climate-cities"
+      ],
+      "acceptanceCriteria": [
+        "孩子能说出太阳在中心",
+        "能辨认出地球、木星、土星等关键行星",
+        "能知道小行星带的大致位置"
+      ]
+    },
+    {
+      "id": "topic-earth-climate-cities",
+      "slug": "earth-climate-cities",
+      "title": "地球上的冷热带",
+      "subtitle": "为什么不同地方的天气不一样？",
+      "world": "earth",
+      "priority": "P0",
+      "ageRange": "5-8",
+      "pageType": "globe-climate-map",
+      "coreQuestion": "为什么世界上有些地方热，有些地方冷？",
+      "learningGoals": [
+        "认识地球上有不同气候带",
+        "初步知道赤道附近更热、两极附近更冷",
+        "通过代表性城市建立地图、气候和生活的联系"
+      ],
+      "misconceptions": [
+        "全世界天气差不多",
+        "离自己远的地方都很冷或都很热",
+        "地球只是平面地图"
+      ],
+      "modules": [
+        {
+          "type": "hero",
+          "title": "地球仪与气候带",
+          "assetKey": "hero"
+        },
+        {
+          "type": "classification",
+          "title": "气候带",
+          "groups": [
+            "热带",
+            "温带",
+            "寒带",
+            "干热地区"
+          ]
+        },
+        {
+          "type": "mechanism",
+          "title": "太阳照射角度",
+          "steps": [
+            "太阳照到地球",
+            "不同地方接受阳光不同",
+            "形成冷热差异"
+          ]
+        },
+        {
+          "type": "task",
+          "title": "城市和气候配对"
+        },
+        {
+          "type": "relatedTopics",
+          "title": "接着探索"
+        }
+      ],
+      "assets": {
+        "hero": {
+          "path": "/assets/earth/earth-climate-cities/earth-climate-globe-hero-v01.png",
+          "purpose": "主视觉：地球仪与气候带",
+          "status": "planned"
+        },
+        "cities": {
+          "path": "/assets/earth/earth-climate-cities/earth-climate-city-cards-v01.png",
+          "purpose": "城市气候卡",
+          "status": "planned"
+        },
+        "sunAngle": {
+          "path": "/assets/earth/earth-climate-cities/earth-climate-sun-angle-v01.png",
+          "purpose": "太阳照射角度机制图",
+          "status": "planned"
+        }
+      },
+      "interactions": [
+        {
+          "type": "click-reveal",
+          "target": "city",
+          "description": "点击城市显示气候、衣着和生活印象"
+        },
+        {
+          "type": "highlight",
+          "target": "climate-zone",
+          "description": "点击气候带高亮区域"
+        },
+        {
+          "type": "match",
+          "target": "city-climate",
+          "description": "城市与气候带配对"
+        }
+      ],
+      "tasks": [
+        {
+          "type": "match",
+          "title": "把城市和气候带连起来",
+          "pairs": {
+            "新加坡": "热带",
+            "深圳": "温暖湿润",
+            "北京": "温带",
+            "伦敦": "温带",
+            "开罗": "干热",
+            "雷克雅未克": "较冷地区"
+          }
+        },
+        {
+          "type": "find",
+          "title": "哪个城市更热？哪个城市更冷？"
+        },
+        {
+          "type": "explain",
+          "title": "如果你去那里，要穿什么？"
+        }
+      ],
+      "copy": {
+        "intro": [
+          "地球是一个大球。",
+          "不同地方的冷热和阳光、位置有关。"
+        ],
+        "keyFacts": [
+          "靠近赤道的地方通常更热。",
+          "靠近两极的地方通常更冷。",
+          "不同气候会影响植物、动物和人们的生活。"
+        ],
+        "explainPrompt": "为什么有些城市很热，有些城市很冷？"
+      },
+      "relatedTopics": [
+        "water-cycle",
+        "volcano-earthquake",
+        "solar-system-overview"
+      ],
+      "acceptanceCriteria": [
+        "孩子知道地球不同地区冷热不同",
+        "能把至少 3 个城市匹配到大致气候区域",
+        "能说出靠近赤道更热的基本概念"
+      ]
+    },
+    {
+      "id": "topic-humanmade-llm-kids-basics",
+      "slug": "llm-kids-basics",
+      "title": "会接龙的机器大脑",
+      "subtitle": "它为什么会说话、会回答问题？",
+      "world": "humanMade",
+      "priority": "P0",
+      "ageRange": "6-9",
+      "pageType": "system-diagram-abstract",
+      "coreQuestion": "大模型是怎么回答问题的？",
+      "learningGoals": [
+        "知道大模型通过学习大量文字中的规律来回答问题",
+        "知道它是根据上下文预测和组织语言，不是什么都真的懂",
+        "知道提问清楚一些，AI 更容易给出有帮助的回答"
+      ],
+      "misconceptions": [
+        "AI 和人类一样什么都懂",
+        "AI 说的都是真的",
+        "AI 是靠联网当场偷看答案才会回答"
+      ],
+      "modules": [
+        {
+          "type": "hero",
+          "title": "语言机器系统图",
+          "assetKey": "hero"
+        },
+        {
+          "type": "mechanism",
+          "title": "四步理解大模型",
+          "steps": [
+            "看过很多文字",
+            "学会语言规律",
+            "读取你的问题",
+            "一步一步组织回答"
+          ]
+        },
+        {
+          "type": "compare",
+          "title": "AI vs 搜索",
+          "items": [
+            "搜索像找资料",
+            "大模型像组织回答",
+            "重要问题要检查"
+          ]
+        },
+        {
+          "type": "task",
+          "title": "把问题问清楚"
+        },
+        {
+          "type": "relatedTopics",
+          "title": "接着探索"
+        }
+      ],
+      "assets": {
+        "hero": {
+          "path": "/assets/human-made/llm-kids-basics/humanmade-llm-kids-hero-v01.png",
+          "purpose": "主视觉：会接龙的机器大脑",
+          "status": "planned"
+        },
+        "steps": {
+          "path": "/assets/human-made/llm-kids-basics/humanmade-llm-4steps-v01.png",
+          "purpose": "四步骤机制图",
+          "status": "planned"
+        },
+        "compare": {
+          "path": "/assets/human-made/llm-kids-basics/humanmade-llm-search-compare-v01.png",
+          "purpose": "AI 与搜索对比图",
+          "status": "planned"
+        },
+        "cards": {
+          "path": "/assets/human-made/llm-kids-basics/humanmade-llm-prompt-cards-v01.png",
+          "purpose": "问题和回答卡片",
+          "status": "planned"
+        }
+      },
+      "interactions": [
+        {
+          "type": "stepper",
+          "target": "llm-steps",
+          "description": "点击四个步骤展开解释"
+        },
+        {
+          "type": "rewrite",
+          "target": "prompt",
+          "description": "把模糊问题改成清楚问题"
+        },
+        {
+          "type": "judgement",
+          "target": "trust-check",
+          "description": "判断回答是否需要再检查"
+        }
+      ],
+      "tasks": [
+        {
+          "type": "rewrite",
+          "title": "把坏提问改成好提问",
+          "before": "告诉我动物",
+          "afterExample": "请告诉我 3 种住在森林里的动物，并说说它们怎么保护自己"
+        },
+        {
+          "type": "quiz",
+          "title": "AI 说的重要答案，要不要检查？"
+        },
+        {
+          "type": "explain",
+          "title": "AI 为什么有时会答错？"
+        }
+      ],
+      "copy": {
+        "intro": [
+          "大模型像一个学过很多文字规律的机器大脑。",
+          "它会根据你说的话，一步一步组织回答。"
+        ],
+        "keyFacts": [
+          "它看过很多书、文章和对话，学会了语言里的模式。",
+          "它不是真的像人一样完全懂世界。",
+          "它有时会答错，所以重要问题要检查。",
+          "如果你说得更清楚，它通常会帮得更好。"
+        ],
+        "explainPrompt": "你能把一个模糊问题问得更清楚吗？"
+      },
+      "relatedTopics": [
+        "internet-message",
+        "robots",
+        "search-engine-kids"
+      ],
+      "acceptanceCriteria": [
+        "孩子能说出 AI 是根据学到的规律来回答这一大意",
+        "能理解重要问题不能盲信 AI",
+        "能把一个简单问题改得更清楚"
+      ]
+    }
+  ]
+}

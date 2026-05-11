@@ -1,0 +1,458 @@
+{
+  "id": "topic-body-blood-cells-3d",
+  "slug": "blood-cells-3d",
+  "title": "血液里的小小工作队",
+  "subtitle": "它们都在忙什么？",
+  "world": "body",
+  "priority": "P0",
+  "ageRange": "5-8",
+  "pageType": "micro-scene-mechanism",
+  "coreQuestion": "血液为什么能帮助身体工作？",
+  "learningGoals": [
+    "知道血液里不只有一种东西",
+    "认识红细胞、白细胞、血小板、血浆",
+    "理解红细胞运送氧气、白细胞保护身体、血小板帮助止血"
+  ],
+  "misconceptions": [
+    "血液只是红色的水",
+    "红细胞、白细胞、血小板没有分工差别",
+    "白细胞就是细菌"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "secondaryMechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-hero-v01.png",
+      "purpose": "主视觉：友好型 3D 血管内部",
+      "status": "planned"
+    },
+    "oxygenFlow": {
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-oxygen-flow-v01.png",
+      "purpose": "氧气运输机制图",
+      "status": "planned"
+    },
+    "clotting": {
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-clotting-v01.png",
+      "purpose": "止血机制图",
+      "status": "planned"
+    },
+    "cards": {
+      "path": "/assets/body/blood-cells-3d/body-blood-cells-cards-v01.png",
+      "purpose": "细胞职责卡",
+      "status": "planned"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "cell",
+      "description": "点击细胞显示名称、功能、大小印象"
+    },
+    {
+      "type": "path-follow",
+      "target": "oxygen-flow",
+      "description": "跟随红细胞完成送氧气路线"
+    },
+    {
+      "type": "match",
+      "target": "cell-role",
+      "description": "细胞和职责配对"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "match",
+      "title": "细胞职责配对",
+      "pairs": {
+        "红细胞": "送氧气",
+        "白细胞": "守护身体",
+        "血小板": "帮助止血",
+        "血浆": "带着大家流动"
+      }
+    },
+    {
+      "type": "path",
+      "title": "跟随红细胞送氧气"
+    },
+    {
+      "type": "explain",
+      "title": "如果没有红细胞会怎样？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "血液像身体里的流动小河。",
+      "血液里有不同成员，它们有不同工作。"
+    ],
+    "keyFacts": [
+      "红细胞像送氧气的小车。",
+      "白细胞像身体里的守卫队。",
+      "血小板像修路工，帮助伤口止血。",
+      "血浆像河水，把大家带着一起流动。"
+    ],
+    "explainPrompt": "你能说出红细胞和白细胞的不同工作吗？"
+  },
+  "relatedTopics": [
+    "immune-system",
+    "heart",
+    "digestion"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出 3 种血液成员名称中的 2 种以上",
+    "能说出红细胞和白细胞至少各 1 个功能",
+    "页面不出现血腥、恐怖感"
+  ],
+  "status": "building",
+  "renderPriority": 2,
+  "hero": {
+    "title": "血液里的小小工作队",
+    "kicker": "身体世界 · 微观场景",
+    "lead": "血液不是一杯红色的水，里面有很多小小成员在工作。",
+    "sceneExplanation": "页面左侧是一个温和的血管微观通道：红细胞像扁扁的小圆盘在运输氧气，白细胞数量少但更大，像守护者；血小板更小，负责修补伤口；血浆像河水一样带着大家流动。",
+    "childPrompt": "点一点每个小成员，看看它在身体里做什么工作。",
+    "parentPrompt": "本页用‘工作队’比喻帮助孩子理解血液成分分工，避免血腥表现。",
+    "placeholder": {
+      "type": "microScene",
+      "asset": "/assets/body/blood-cells-3d/hero-v01.png"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "red-blood-cells",
+      "name": "红细胞",
+      "childExplanation": "像送氧气的小车，把氧气送到身体各处。",
+      "parentNote": "红细胞含有血红蛋白，儿童版先理解运输氧气即可。",
+      "representativeObjects": [
+        "red-cell"
+      ],
+      "misconception": "红细胞不是细菌，也不是普通红色水滴。"
+    },
+    {
+      "id": "white-blood-cells",
+      "name": "白细胞",
+      "childExplanation": "像身体里的守卫，发现入侵者时会帮忙保护身体。",
+      "parentNote": "不要展开复杂免疫分类，先理解防御功能。",
+      "representativeObjects": [
+        "white-cell"
+      ],
+      "misconception": "白细胞不是坏东西，它是身体的保护者。"
+    },
+    {
+      "id": "platelets",
+      "name": "血小板",
+      "childExplanation": "像小小修补队，帮助伤口慢慢止血。",
+      "parentNote": "可解释为参与凝血，不用讲凝血级联。",
+      "representativeObjects": [
+        "platelet"
+      ],
+      "misconception": "止血不是因为血液自己马上变硬，而是有修补过程。"
+    },
+    {
+      "id": "plasma",
+      "name": "血浆",
+      "childExplanation": "像身体里的小河水，带着很多成员一起流动。",
+      "parentNote": "血浆是液体部分，负责运输多种物质。",
+      "representativeObjects": [
+        "plasma"
+      ],
+      "misconception": "血液不只是细胞，也有液体部分。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "red-cell",
+      "name": "红细胞",
+      "groupId": "red-blood-cells",
+      "childExplanation": "我负责送氧气。",
+      "visualHint": "红色、扁圆、数量最多",
+      "commonMisread": "以为所有红色小圆片功能都一样。"
+    },
+    {
+      "id": "white-cell",
+      "name": "白细胞",
+      "groupId": "white-blood-cells",
+      "childExplanation": "我负责保护身体。",
+      "visualHint": "白色或淡色、比红细胞大、数量少",
+      "commonMisread": "以为白细胞是入侵者。"
+    },
+    {
+      "id": "platelet",
+      "name": "血小板",
+      "groupId": "platelets",
+      "childExplanation": "我会帮忙修补小伤口。",
+      "visualHint": "小小的碎片状或小圆点",
+      "commonMisread": "以为它没有作用。"
+    },
+    {
+      "id": "plasma",
+      "name": "血浆",
+      "groupId": "plasma",
+      "childExplanation": "我带着大家一起流动。",
+      "visualHint": "淡黄色或透明流动背景",
+      "commonMisread": "忽略液体部分。"
+    }
+  ],
+  "mechanism": {
+    "title": "氧气怎么送到身体各处？",
+    "steps": [
+      {
+        "id": "get-oxygen",
+        "shortTitle": "肺部取氧",
+        "childExplanation": "我们吸气时，氧气来到肺里。",
+        "parentNote": "这里不展开肺泡结构，只说明氧气进入血液。"
+      },
+      {
+        "id": "red-cell-load",
+        "shortTitle": "红细胞装上氧气",
+        "childExplanation": "红细胞带上氧气，准备出发。",
+        "parentNote": "可补充红细胞里的血红蛋白帮助携带氧。"
+      },
+      {
+        "id": "heart-pump",
+        "shortTitle": "心脏推动",
+        "childExplanation": "心脏像水泵，把血液推向全身。",
+        "parentNote": "用水泵比喻即可，避免心脏结构过细。"
+      },
+      {
+        "id": "deliver",
+        "shortTitle": "送到身体",
+        "childExplanation": "红细胞把氧气送给需要工作的地方。",
+        "parentNote": "可举例肌肉、脑、手脚都需要氧气。"
+      },
+      {
+        "id": "return",
+        "shortTitle": "再带回废气",
+        "childExplanation": "血液还会把身体产生的废气带回去。",
+        "parentNote": "儿童版称为二氧化碳或废气均可。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "小伤口为什么会慢慢止血？",
+    "steps": [
+      {
+        "id": "small-cut",
+        "shortTitle": "出现小伤口",
+        "childExplanation": "皮肤破了一个小口。",
+        "parentNote": "画面要非常温和，不血腥。"
+      },
+      {
+        "id": "platelets-arrive",
+        "shortTitle": "血小板赶来",
+        "childExplanation": "血小板像修补队一样聚过来。",
+        "parentNote": "可说明它们参与形成堵住伤口的结构。"
+      },
+      {
+        "id": "seal",
+        "shortTitle": "帮助封住",
+        "childExplanation": "小口慢慢被封住，血就少流了。",
+        "parentNote": "不要表达为瞬间愈合。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "red-vs-white",
+      "title": "红细胞 vs 白细胞",
+      "a": {
+        "name": "红细胞",
+        "points": [
+          "数量很多",
+          "主要送氧气",
+          "像运输小车"
+        ]
+      },
+      "b": {
+        "name": "白细胞",
+        "points": [
+          "数量较少",
+          "主要保护身体",
+          "像守卫队"
+        ]
+      },
+      "childConclusion": "它们都在血液里，但工作不一样。"
+    },
+    {
+      "id": "platelet-vs-red",
+      "title": "血小板 vs 红细胞",
+      "a": {
+        "name": "血小板",
+        "points": [
+          "更小",
+          "帮助止血",
+          "像修补队"
+        ]
+      },
+      "b": {
+        "name": "红细胞",
+        "points": [
+          "更常见",
+          "运输氧气",
+          "像小车"
+        ]
+      },
+      "childConclusion": "小小的血小板也有重要工作。"
+    },
+    {
+      "id": "blood-vs-water",
+      "title": "血液 vs 红色水",
+      "a": {
+        "name": "血液",
+        "points": [
+          "有多种成员",
+          "会运输和保护",
+          "在身体里循环"
+        ]
+      },
+      "b": {
+        "name": "红色水",
+        "points": [
+          "只是液体",
+          "没有工作队",
+          "不会主动保护身体"
+        ]
+      },
+      "childConclusion": "血液不是普通红色水。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "blood-match-01",
+      "type": "singleChoice",
+      "title": "谁最像送氧气的小车？",
+      "options": [
+        {
+          "id": "red-cell",
+          "label": "红细胞"
+        },
+        {
+          "id": "white-cell",
+          "label": "白细胞"
+        },
+        {
+          "id": "platelet",
+          "label": "血小板"
+        }
+      ],
+      "correctOptionId": "red-cell",
+      "wrongHints": {
+        "white-cell": "白细胞更像守卫，负责保护身体。",
+        "platelet": "血小板更像修补队，帮助止血。"
+      },
+      "successCopy": "对！红细胞负责把氧气送到身体各处。"
+    },
+    {
+      "id": "blood-match-02",
+      "type": "singleChoice",
+      "title": "身体遇到入侵者时，谁来帮忙保护？",
+      "options": [
+        {
+          "id": "plasma",
+          "label": "血浆"
+        },
+        {
+          "id": "white-cell",
+          "label": "白细胞"
+        },
+        {
+          "id": "red-cell",
+          "label": "红细胞"
+        }
+      ],
+      "correctOptionId": "white-cell",
+      "wrongHints": {
+        "plasma": "血浆像河水，负责带着大家流动。",
+        "red-cell": "红细胞主要送氧气。"
+      },
+      "successCopy": "观察得很准！白细胞是身体里的守护者。"
+    },
+    {
+      "id": "blood-sequence-01",
+      "type": "sequenceClick",
+      "title": "氧气旅行顺序是什么？",
+      "options": [
+        {
+          "id": "lung",
+          "label": "肺部取氧"
+        },
+        {
+          "id": "heart",
+          "label": "心脏推动"
+        },
+        {
+          "id": "body",
+          "label": "送到身体"
+        }
+      ],
+      "correctSequence": [
+        "lung",
+        "heart",
+        "body"
+      ],
+      "wrongHint": "先想想：氧气是从哪里进入身体的？",
+      "successCopy": "你完成了一次红细胞送氧气任务。"
+    },
+    {
+      "id": "blood-find-01",
+      "type": "findTarget",
+      "title": "找一找：谁是修补队？",
+      "targetIds": [
+        "platelet"
+      ],
+      "decoyIds": [
+        "red-cell",
+        "white-cell",
+        "plasma"
+      ],
+      "wrongHint": "修补队通常很小，负责帮助伤口止血。",
+      "successCopy": "你找到了小小血小板。"
+    }
+  ],
+  "speakTemplates": [
+    "血液里有____、____和____。",
+    "红细胞像____，它负责____。",
+    "白细胞像____，它负责____。",
+    "如果没有____，身体可能会____。"
+  ],
+  "parentTips": [
+    "孩子能说出‘血液有不同成员’就已经达到第一层目标。",
+    "不要把免疫机制讲得过深，白细胞先解释为保护身体即可。",
+    "可结合生活经验：跑步为什么会喘？小伤口为什么会慢慢不流血？"
+  ]
+}
