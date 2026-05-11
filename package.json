@@ -6,23 +6,33 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "bash scripts/build-vercel.sh",
+    "build:kids-world": "vite build boards/kids-world --base=./ --emptyOutDir --outDir ../../dist/kids-world",
     "build:paw": "vite build boards/paw-patrol --base=./ --emptyOutDir --outDir ../../dist/paw-patrol",
+    "check:images": "node scripts/check-image-assets.mjs",
+    "images:import-prompts": "node scripts/import-kids-world-image-prompts.mjs",
+    "images:import-generated-png": "node scripts/import-kids-world-generated-images.mjs",
+    "preview:kids-world": "vite preview --host 127.0.0.1 --outDir dist/boards/kids-world",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs",
+    "validate:topics": "node scripts/validate-topics.mjs",
+    "validate:i18n": "node scripts/validate-i18n.mjs",
+    "validate:assets": "node scripts/validate-assets.mjs"
   },
   "dependencies": {
+    "lucide-react": "^0.468.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "lucide-react": "^0.468.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^5.4.11",
-    "typescript": "^5.6.3",
-    "tailwindcss": "^3.4.17",
+    "ajv": "^8.20.0",
+    "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
-    "autoprefixer": "^10.4.20"
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
   }
 }
