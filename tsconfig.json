@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["boards/paw-patrol/src"],
+  "include": ["boards/paw-patrol/src", "boards/kids-world/src"],
   "references": []
 }

@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { ChevronRight } from "lucide-react";
 import type { ExplorationMap, World } from "../../types/world";
 import type { Locale } from "../../types/topic";
@@ -10,9 +11,9 @@ import { hasTopicData } from "../../data/loaders/load-topic";
 
 type Props = { world: World; map: ExplorationMap; locale: Locale };
 
-export function WorldTopicPanel({ world, map, locale }: Props) {
+export const WorldTopicPanel = forwardRef<HTMLDivElement, Props>(function WorldTopicPanel({ world, map, locale }, ref) {
   return (
-    <section className="selected-world-panel">
+    <section className="selected-world-panel" ref={ref}>
       <div>
         <SectionHeader title={world.name} kicker={world.entryCard.badge}>
           {world.parentNote}
@@ -21,8 +22,9 @@ export function WorldTopicPanel({ world, map, locale }: Props) {
       <div className="topic-card-grid">
         {world.topicCards.map((topic) => {
           const topicHref = topic.slug && hasTopicData(topic.slug) ? getTopicHref(topic.slug) : undefined;
+          const Tag = topicHref ? "a" : "div";
           return (
-            <a className={`topic-card ${topic.status}`} href={topicHref ?? "#worlds"} key={topic.slug ?? topic.id}>
+            <Tag className={`topic-card ${topic.status}`} href={topicHref} key={topic.slug ?? topic.id}>
               <GeneratedImage alt="" assetId={getKnowledgeTopicAssetId(topic)} className="topic-card-image" />
               <StatusPill status={topic.status} map={map} />
               <strong>{topic.title}</strong>
@@ -33,10 +35,10 @@ export function WorldTopicPanel({ world, map, locale }: Props) {
                   {locale === "zh-CN" ? "打开看板" : "Open board"} <ChevronRight size={15} />
                 </small>
               )}
-            </a>
+            </Tag>
           );
         })}
       </div>
     </section>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ExplorationMap } from "../types/world";
 import type { Locale } from "../types/topic";
 import { HeroSection } from "../components/home/HeroSection";
@@ -13,6 +13,14 @@ export function HomePage({ locale, map }: Props) {
   const selectedWorld = map.worlds.find((world) => world.id === selectedWorldId) ?? map.worlds[0];
   const knowledgeWorlds = map.worlds.filter((world) => world.id !== "animation");
   const animationWorld = map.worlds.find((world) => world.id === "animation") ?? map.worlds[0];
+  const topicPanelRef = useRef<HTMLDivElement>(null);
+
+  function handleSelectWorld(id: string) {
+    setSelectedWorldId(id);
+    requestAnimationFrame(() => {
+      topicPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
   return (
     <main className="page-shell">
@@ -21,11 +29,11 @@ export function HomePage({ locale, map }: Props) {
       <WorldGrid
         worlds={knowledgeWorlds}
         selectedWorldId={selectedWorldId}
-        onSelectWorld={setSelectedWorldId}
+        onSelectWorld={handleSelectWorld}
         map={map}
         locale={locale}
       />
-      <WorldTopicPanel world={selectedWorld} map={map} locale={locale} />
+      <WorldTopicPanel ref={topicPanelRef} world={selectedWorld} map={map} locale={locale} />
     </main>
   );
 }
