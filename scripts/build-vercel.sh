@@ -15,8 +15,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "==> checking image asset source/deployment pairs"
-node scripts/check-image-assets.mjs
+echo "==> skipping PNG pair check (PNGs excluded from repo, only WebP deployed)"
 
 echo "==> cleaning dist/"
 rm -rf dist
