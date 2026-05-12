@@ -1,0 +1,371 @@
+{
+  "id": "topic-life-ecosystem",
+  "slug": "ecosystem",
+  "title": "Forest Pond Ecosystem Web",
+  "subtitle": "How are living things connected in a small pond?",
+  "coreQuestion": "How are plants, animals, mushrooms, sunlight, and water connected?",
+  "learningGoals": [
+    "Recognize producers, consumers, decomposers, and environment in an ecosystem.",
+    "Understand living things are connected through food, energy, and material cycles.",
+    "Know decomposers help turn leaves and remains into soil nutrients."
+  ],
+  "misconceptions": [
+    "An ecosystem is only a group of animals living together.",
+    "Mushrooms and earthworms are useless.",
+    "Food chains only mean who eats whom and do not include sunlight, water, or soil."
+  ],
+  "hero": {
+    "title": "Forest Pond Ecosystem Web",
+    "kicker": "Life World · Relationship Network",
+    "lead": "A small pond is not just animals and plants; it is a connected web of life.",
+    "sceneExplanation": "The main scene is a warm forest pond: sunlight reaches plants, and insects, frogs, birds, foxes, mushrooms, earthworms, water, and soil are connected with a few clear arrows.",
+    "childPrompt": "Start from the Sun and find one route connecting living things.",
+    "parentPrompt": "Focus on connection and cycles, not a complex food web."
+  },
+  "classificationGroups": [
+    {
+      "id": "producers",
+      "name": "Producers",
+      "childExplanation": "Plants use sunlight, water, and air to grow.",
+      "parentNote": "For children: living things that make their own food.",
+      "representativeObjects": [
+        "sun",
+        "plant"
+      ],
+      "misconception": "Plants are just background for animals."
+    },
+    {
+      "id": "consumers",
+      "name": "Consumers",
+      "childExplanation": "Animals need to eat plants or other animals for energy.",
+      "parentNote": "Do not dramatize predation; focus on energy transfer.",
+      "representativeObjects": [
+        "insect",
+        "frog",
+        "bird",
+        "fox"
+      ],
+      "misconception": "Animal relationships are only fighting."
+    },
+    {
+      "id": "decomposers",
+      "name": "Decomposers",
+      "childExplanation": "Mushrooms, earthworms, and tiny microbes help leaves return to soil.",
+      "parentNote": "Mushrooms are not plants, but can be introduced as decomposer partners.",
+      "representativeObjects": [
+        "mushroom",
+        "earthworm",
+        "soil"
+      ],
+      "misconception": "Decomposers are useless or only dirty."
+    },
+    {
+      "id": "environment",
+      "name": "Environment",
+      "childExplanation": "Sunlight, water, air, and soil help living things live.",
+      "parentNote": "Ecosystems include nonliving parts.",
+      "representativeObjects": [
+        "sun",
+        "water",
+        "soil"
+      ],
+      "misconception": "An ecosystem includes only living things."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "Sunlight",
+      "groupId": "environment",
+      "childExplanation": "Sunlight gives plants energy to grow.",
+      "visualHint": "warm yellow sun",
+      "commonMisread": "Thinking sunlight is unrelated to ecosystems."
+    },
+    {
+      "id": "plant",
+      "name": "Plant",
+      "groupId": "producers",
+      "childExplanation": "Plants use sunlight, water, and air to grow and provide food or shelter.",
+      "visualHint": "small green plant with roots",
+      "commonMisread": "Thinking plants are just background."
+    },
+    {
+      "id": "insect",
+      "name": "Insect",
+      "groupId": "consumers",
+      "childExplanation": "Some insects eat leaves or nectar and may be eaten by frogs or birds.",
+      "visualHint": "butterfly or beetle",
+      "commonMisread": "Thinking all insects are pests."
+    },
+    {
+      "id": "frog",
+      "name": "Frog",
+      "groupId": "consumers",
+      "childExplanation": "Frogs live near ponds and eat small insects.",
+      "visualHint": "green frog on lily pad",
+      "commonMisread": "Thinking frogs are only about water."
+    },
+    {
+      "id": "bird",
+      "name": "Bird",
+      "groupId": "consumers",
+      "childExplanation": "Birds may eat seeds, fruit, or insects, and can help spread seeds.",
+      "visualHint": "small bird on branch",
+      "commonMisread": "Forgetting animals can help plants."
+    },
+    {
+      "id": "fox",
+      "name": "Fox",
+      "groupId": "consumers",
+      "childExplanation": "The fox is a larger consumer near the pond.",
+      "visualHint": "gentle orange fox",
+      "commonMisread": "Seeing foxes only as bad characters."
+    },
+    {
+      "id": "mushroom",
+      "name": "Mushroom",
+      "groupId": "decomposers",
+      "childExplanation": "Mushrooms help break down leaves and dead wood.",
+      "visualHint": "small red or brown mushroom",
+      "commonMisread": "Thinking mushrooms are ordinary plants."
+    },
+    {
+      "id": "earthworm",
+      "name": "Earthworm",
+      "groupId": "decomposers",
+      "childExplanation": "Earthworms move through soil and help loosen it.",
+      "visualHint": "pink worm in soil",
+      "commonMisread": "Thinking earthworms are only dirty bugs."
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "groupId": "environment",
+      "childExplanation": "Pond water helps plants and animals live.",
+      "visualHint": "blue pond water",
+      "commonMisread": "Thinking water is just decoration."
+    },
+    {
+      "id": "soil",
+      "name": "Soil",
+      "groupId": "environment",
+      "childExplanation": "Soil supports roots and holds water and nutrients.",
+      "visualHint": "soil layer with roots",
+      "commonMisread": "Thinking soil is only mud."
+    }
+  ],
+  "mechanism": {
+    "title": "How is an ecosystem connected?",
+    "steps": [
+      {
+        "id": "sun-to-plant",
+        "shortTitle": "Sun feeds plants",
+        "childExplanation": "Plants use sunlight, water, and air to grow.",
+        "parentNote": "This introduces producers."
+      },
+      {
+        "id": "plant-to-animal",
+        "shortTitle": "Plants feed animals",
+        "childExplanation": "Insects or other animals eat parts of plants.",
+        "parentNote": "Energy starts moving from plants."
+      },
+      {
+        "id": "animal-to-animal",
+        "shortTitle": "Animals connect",
+        "childExplanation": "Frogs, birds, and foxes can form food relationships.",
+        "parentNote": "Avoid gore; focus on dependence."
+      },
+      {
+        "id": "life-to-decomposer",
+        "shortTitle": "Leaves return to soil",
+        "childExplanation": "Leaves and dead wood are slowly broken down by mushrooms, earthworms, and microbes.",
+        "parentNote": "Decomposers are central."
+      },
+      {
+        "id": "nutrient-to-plant",
+        "shortTitle": "Nutrients help plants again",
+        "childExplanation": "Nutrients in soil help plants grow again.",
+        "parentNote": "Build a cycle, not just a line."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "The environment also participates",
+    "steps": [
+      {
+        "id": "water-help",
+        "shortTitle": "Water helps life",
+        "childExplanation": "Plants and animals need water.",
+        "parentNote": "Connect to the water cycle."
+      },
+      {
+        "id": "soil-home",
+        "shortTitle": "Soil is a home",
+        "childExplanation": "Plants root in soil, and many small lives live there.",
+        "parentNote": "Build habitat concept."
+      },
+      {
+        "id": "change-affects",
+        "shortTitle": "Change affects life",
+        "childExplanation": "If water or plants decrease, many animals may be affected.",
+        "parentNote": "Introduce systems thinking."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "food-chain-vs-ecosystem",
+      "title": "Food chain vs Ecosystem",
+      "a": {
+        "name": "Food chain",
+        "points": [
+          "like one line",
+          "shows energy passing from one to another",
+          "simpler"
+        ]
+      },
+      "b": {
+        "name": "Ecosystem",
+        "points": [
+          "like a web",
+          "includes living things and environment",
+          "has more relationships"
+        ]
+      },
+      "childConclusion": "A food chain is a line; an ecosystem is a web."
+    },
+    {
+      "id": "producer-vs-consumer",
+      "title": "Producer vs Consumer",
+      "a": {
+        "name": "Producer",
+        "points": [
+          "often plants",
+          "uses sunlight to grow",
+          "starts many food relationships"
+        ]
+      },
+      "b": {
+        "name": "Consumer",
+        "points": [
+          "often animals",
+          "needs food for energy",
+          "connects with other lives"
+        ]
+      },
+      "childConclusion": "Plants and animals have different jobs in an ecosystem."
+    },
+    {
+      "id": "decompose-vs-disappear",
+      "title": "Decompose vs Disappear",
+      "a": {
+        "name": "Decompose",
+        "points": [
+          "leaves become smaller parts",
+          "nutrients return to soil",
+          "decomposers are working"
+        ]
+      },
+      "b": {
+        "name": "Disappear",
+        "points": [
+          "seems like nothing is left",
+          "process is hidden",
+          "decomposers are ignored"
+        ]
+      },
+      "childConclusion": "Leaves do not vanish; decomposers help return them to the cycle."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "ecosystem-find-01",
+      "title": "Find: who are decomposer partners?",
+      "prompt": "Find the partners that help leaves return to soil.",
+      "wrongHint": "Decomposers often work near leaves, dead wood, and soil.",
+      "successCopy": "Correct! Mushrooms and earthworms help decomposition."
+    },
+    {
+      "id": "ecosystem-sequence-01",
+      "title": "Connect an ecosystem route from sunlight",
+      "prompt": "Tap the energy and nutrient route in order.",
+      "options": [
+        {
+          "id": "sun",
+          "label": "Sunlight"
+        },
+        {
+          "id": "plant",
+          "label": "Plant"
+        },
+        {
+          "id": "insect",
+          "label": "Insect"
+        },
+        {
+          "id": "frog",
+          "label": "Frog"
+        },
+        {
+          "id": "soil",
+          "label": "Soil"
+        }
+      ],
+      "wrongHint": "First think: where do plants get energy to grow?",
+      "successCopy": "You connected an ecosystem route!"
+    },
+    {
+      "id": "ecosystem-choice-01",
+      "title": "Does an ecosystem include only animals?",
+      "prompt": "Choose the best answer.",
+      "options": [
+        {
+          "id": "no-life-and-environment",
+          "label": "No, it includes plants, decomposers, and environment too"
+        },
+        {
+          "id": "animals-only",
+          "label": "Yes, only animals"
+        },
+        {
+          "id": "plants-only",
+          "label": "Yes, only plants"
+        }
+      ],
+      "wrongHints": {
+        "animals-only": "Plants, mushrooms, water, and soil also matter.",
+        "plants-only": "Animals, decomposers, and environmental conditions also matter."
+      },
+      "successCopy": "Right! Ecosystems include living things and environment."
+    }
+  ],
+  "speakTemplates": [
+    "An ecosystem is like a _____.",
+    "Plants use _____ to grow.",
+    "Decomposers help _____ return to soil.",
+    "If _____ becomes less, _____ may also be affected."
+  ],
+  "parentTips": [
+    "Do not make the ecosystem a complicated food web first; explain 5–6 objects clearly.",
+    "On a walk, ask the child to find producers, consumers, decomposers, and environmental conditions.",
+    "Stress that no life is useless; mushrooms, earthworms, and soil all matter."
+  ],
+  "copy": {
+    "intro": [
+      "Plants, insects, frogs, birds, mushrooms, and soil near a pond are not separate worlds.",
+      "They form an invisible web of relationships."
+    ],
+    "keyFacts": [
+      "Plants use sunlight to grow and become a food source for many lives.",
+      "Animals eat plants or other animals.",
+      "Decomposers such as mushrooms, microbes, and earthworms help turn leaves into nutrients.",
+      "Water, sunlight, air, and soil are also part of an ecosystem."
+    ],
+    "explainPrompt": "Can you start from sunlight and describe one connection route near the pond?"
+  },
+  "acceptanceCriteria": [
+    "The child can tell basic differences among producers, consumers, and decomposers.",
+    "The child knows sunlight, water, and soil are environmental conditions.",
+    "The child can explain at least one ecosystem connection with arrows."
+  ]
+}

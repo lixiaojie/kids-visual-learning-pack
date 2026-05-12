@@ -1,0 +1,347 @@
+{
+  "id": "topic-space-moon-phases",
+  "slug": "moon-phases",
+  "title": "Moon Phase Observation Station",
+  "subtitle": "Why does the Moon look different on different nights?",
+  "coreQuestion": "Does the Moon really change shape, or do we see different lit parts?",
+  "learningGoals": [
+    "Know the Moon does not make light like the Sun.",
+    "Understand phases come from seeing different lit parts of the Moon.",
+    "Recognize common phases such as new, crescent, half, and full moon."
+  ],
+  "misconceptions": [
+    "The Moon makes its own light.",
+    "The Moon really changes shape every day.",
+    "Moon phases are caused by Earth’s shadow every night."
+  ],
+  "hero": {
+    "title": "Moon Phase Observation Station",
+    "kicker": "Space World · Observation Cycle",
+    "lead": "The Moon seems to change faces, but what changes is the lit part we see.",
+    "sceneExplanation": "The scene shows a gentle rooftop observation at night, an arc of Moon phases, and a simple Sun–Earth–Moon relationship diagram explaining where light comes from.",
+    "childPrompt": "Find the round Moon and the Moon with only a tiny bright edge.",
+    "parentPrompt": "Start with observing shapes, then guide the child toward lit parts and positions."
+  },
+  "classificationGroups": [
+    {
+      "id": "light-source",
+      "name": "Where light comes from",
+      "childExplanation": "The Sun lights the Moon, and the Moon reflects that light to us.",
+      "parentNote": "Say the Moon is like a reflecting friend.",
+      "representativeObjects": [
+        "sun",
+        "moon"
+      ],
+      "misconception": "The Moon makes light like the Sun."
+    },
+    {
+      "id": "earth-moon-system",
+      "name": "Earth and Moon",
+      "childExplanation": "The Moon travels around Earth, and we look from Earth.",
+      "parentNote": "Emphasize observer position.",
+      "representativeObjects": [
+        "earth",
+        "moon"
+      ],
+      "misconception": "The Moon just hangs still in the sky."
+    },
+    {
+      "id": "visible-shapes",
+      "name": "Shapes we see",
+      "childExplanation": "We see curved, half, and round-looking Moons.",
+      "parentNote": "The visible shape is the lit part, not the Moon changing body.",
+      "representativeObjects": [
+        "new-moon",
+        "crescent",
+        "half-moon",
+        "full-moon"
+      ],
+      "misconception": "The Moon body grows and shrinks."
+    },
+    {
+      "id": "observation-tools",
+      "name": "Observation tools",
+      "childExplanation": "Eyes, windows, and telescopes can help us observe the Moon.",
+      "parentNote": "Try a one-week observation record.",
+      "representativeObjects": [
+        "telescope"
+      ],
+      "misconception": "You need a telescope to see Moon phases."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "Sun",
+      "groupId": "light-source",
+      "childExplanation": "The Sun lights one side of the Moon.",
+      "visualHint": "glowing yellow sphere",
+      "commonMisread": "Forgetting the Sun’s role."
+    },
+    {
+      "id": "earth",
+      "name": "Earth",
+      "groupId": "earth-moon-system",
+      "childExplanation": "We stand on Earth to look at the Moon.",
+      "visualHint": "blue-green Earth",
+      "commonMisread": "Thinking viewpoint does not matter."
+    },
+    {
+      "id": "moon",
+      "name": "Moon",
+      "groupId": "earth-moon-system",
+      "childExplanation": "The Moon moves around Earth and is lit by the Sun.",
+      "visualHint": "gray-yellow sphere",
+      "commonMisread": "Thinking the Moon makes its own light."
+    },
+    {
+      "id": "new-moon",
+      "name": "New Moon",
+      "groupId": "visible-shapes",
+      "childExplanation": "We can barely see the bright side.",
+      "visualHint": "dark small circle",
+      "commonMisread": "Thinking the Moon disappeared."
+    },
+    {
+      "id": "crescent",
+      "name": "Crescent Moon",
+      "groupId": "visible-shapes",
+      "childExplanation": "We see a thin bright edge.",
+      "visualHint": "banana-like curve",
+      "commonMisread": "Thinking the Moon was bitten."
+    },
+    {
+      "id": "half-moon",
+      "name": "Half Moon",
+      "groupId": "visible-shapes",
+      "childExplanation": "We see about half of the bright side.",
+      "visualHint": "half bright, half dark",
+      "commonMisread": "Calling it half a Moon."
+    },
+    {
+      "id": "full-moon",
+      "name": "Full Moon",
+      "groupId": "visible-shapes",
+      "childExplanation": "We see the whole bright face.",
+      "visualHint": "round bright Moon",
+      "commonMisread": "Thinking only a full Moon counts as the Moon."
+    },
+    {
+      "id": "telescope",
+      "name": "Telescope",
+      "groupId": "observation-tools",
+      "childExplanation": "A telescope helps us see more clearly.",
+      "visualHint": "blue telescope",
+      "commonMisread": "Thinking observation is impossible without it."
+    }
+  ],
+  "mechanism": {
+    "title": "Why do Moon phases change?",
+    "steps": [
+      {
+        "id": "sunlight",
+        "shortTitle": "Sun lights it",
+        "childExplanation": "The Sun always lights part of the Moon.",
+        "parentNote": "Set up the light source first."
+      },
+      {
+        "id": "moon-orbits",
+        "shortTitle": "Moon orbits Earth",
+        "childExplanation": "The Moon travels around Earth while sunlight hits it.",
+        "parentNote": "Focus on movement, not exact period."
+      },
+      {
+        "id": "viewer-on-earth",
+        "shortTitle": "We watch from Earth",
+        "childExplanation": "We can only see the side of the Moon facing us.",
+        "parentNote": "Observer viewpoint matters."
+      },
+      {
+        "id": "lit-part-changes",
+        "shortTitle": "Different lit parts",
+        "childExplanation": "Sometimes we see a little, half, or all of the lit side.",
+        "parentNote": "Use a flashlight and ball demo."
+      },
+      {
+        "id": "cycle-repeat",
+        "shortTitle": "The cycle repeats",
+        "childExplanation": "The phases change in order and repeat.",
+        "parentNote": "Introduce cycle observation."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "How to observe Moon phases",
+    "steps": [
+      {
+        "id": "same-time",
+        "shortTitle": "Look at a fixed time",
+        "childExplanation": "Try observing at about the same time each day.",
+        "parentNote": "Reduce confusion."
+      },
+      {
+        "id": "draw-shape",
+        "shortTitle": "Draw the shape",
+        "childExplanation": "Draw the bright part you see.",
+        "parentNote": "Make a parent-child observation sheet."
+      },
+      {
+        "id": "compare-week",
+        "shortTitle": "Compare after a week",
+        "childExplanation": "Check whether the Moon changed gradually.",
+        "parentNote": "Turn observation into discovery."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "moonlight-vs-sunlight",
+      "title": "Moonlight vs Sunlight",
+      "a": {
+        "name": "Moonlight",
+        "points": [
+          "soft-looking",
+          "reflected sunlight",
+          "does not warm Earth like the Sun"
+        ]
+      },
+      "b": {
+        "name": "Sunlight",
+        "points": [
+          "very bright",
+          "made by the Sun",
+          "brings light and heat"
+        ]
+      },
+      "childConclusion": "The Moon does not make light like the Sun."
+    },
+    {
+      "id": "shape-vs-lit-part",
+      "title": "Shape changed vs Lit part changed",
+      "a": {
+        "name": "Shape changed",
+        "points": [
+          "looks bitten",
+          "common mistake",
+          "the Moon body is not reshaping"
+        ]
+      },
+      "b": {
+        "name": "Lit part changed",
+        "points": [
+          "we see different bright parts",
+          "depends on Sun-Earth-Moon positions",
+          "forms the phase cycle"
+        ]
+      },
+      "childConclusion": "A phase is a different visible lit part."
+    },
+    {
+      "id": "new-vs-full",
+      "title": "New Moon vs Full Moon",
+      "a": {
+        "name": "New Moon",
+        "points": [
+          "almost no bright side visible",
+          "not disappeared",
+          "still orbiting Earth"
+        ]
+      },
+      "b": {
+        "name": "Full Moon",
+        "points": [
+          "whole bright side visible",
+          "looks roundest",
+          "good for observing surface features"
+        ]
+      },
+      "childConclusion": "New and full Moon are the same Moon at different phases."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "moon-sequence-01",
+      "title": "Tap the Moon from thin to full",
+      "prompt": "Start where it is barely visible and tap toward full Moon.",
+      "options": [
+        {
+          "id": "new-moon",
+          "label": "New Moon"
+        },
+        {
+          "id": "crescent",
+          "label": "Crescent Moon"
+        },
+        {
+          "id": "half-moon",
+          "label": "Half Moon"
+        },
+        {
+          "id": "full-moon",
+          "label": "Full Moon"
+        }
+      ],
+      "wrongHint": "Start with the darkest, hardest-to-see Moon.",
+      "successCopy": "You arranged part of the Moon’s journey toward full Moon."
+    },
+    {
+      "id": "moon-find-01",
+      "title": "Find: which one is the full Moon?",
+      "prompt": "Find the roundest and brightest-looking Moon.",
+      "wrongHint": "The full Moon has the whole visible face lit.",
+      "successCopy": "Correct! That is the full Moon."
+    },
+    {
+      "id": "moon-choice-01",
+      "title": "What mainly causes Moon phases?",
+      "prompt": "Choose the best answer.",
+      "options": [
+        {
+          "id": "lit-part",
+          "label": "We see different lit parts"
+        },
+        {
+          "id": "moon-bites",
+          "label": "The Moon is bitten"
+        },
+        {
+          "id": "moon-fire",
+          "label": "The Moon turns on its own light"
+        }
+      ],
+      "wrongHints": {
+        "moon-bites": "The Moon was not bitten; it is still a round sphere.",
+        "moon-fire": "The Moon does not make light like the Sun."
+      },
+      "successCopy": "Right! Phases come from different visible lit parts."
+    }
+  ],
+  "speakTemplates": [
+    "Moonlight mostly comes from _____.",
+    "We stand on _____ to observe the Moon.",
+    "Moon phases change because we see different _____.",
+    "Tonight the Moon looks like _____."
+  ],
+  "parentTips": [
+    "Use a flashlight, a ball, and the child’s eyes to model Sun, Moon, and observer.",
+    "Do not begin with lunar eclipses; phases are not caused by Earth’s shadow every night.",
+    "Observing over several nights works better than explaining everything at once."
+  ],
+  "copy": {
+    "intro": [
+      "The Moon looks as if it changes faces.",
+      "Actually, the Moon does not reshape itself; we see different lit parts."
+    ],
+    "keyFacts": [
+      "The Sun lights the Moon.",
+      "The Moon moves around Earth.",
+      "From Earth, we see different amounts of the Moon’s lit side."
+    ],
+    "explainPrompt": "Can you use Sun, Earth, and Moon to explain Moon phases?"
+  },
+  "acceptanceCriteria": [
+    "The child can say the Moon does not shine like the Sun by itself.",
+    "The child can identify at least three Moon phases.",
+    "The child can explain phases as different visible lit parts."
+  ]
+}

@@ -1,0 +1,344 @@
+{
+  "id": "topic-earth-water-cycle",
+  "slug": "water-cycle",
+  "title": "Water Cycle Travel Station",
+  "subtitle": "How does one drop of water travel around Earth?",
+  "coreQuestion": "How does water rise from the sea, become rain, and return to the ground?",
+  "learningGoals": [
+    "Know the water cycle includes evaporation, condensation, precipitation, and collection.",
+    "Understand that the Sun helps water become vapor.",
+    "Connect clouds, rain, rivers, and oceans in one cycle."
+  ],
+  "misconceptions": [
+    "Clouds are made of cotton.",
+    "Rain happens because clouds leak like bags of water.",
+    "Water disappears after it is used."
+  ],
+  "hero": {
+    "title": "Water Cycle Travel Station",
+    "kicker": "Earth World · Cycle Map",
+    "lead": "A drop of water can rise from the sea, become a cloud, fall as rain, and return to the ground.",
+    "sceneExplanation": "The main scene is a circular droplet path: sunlight warms the ocean, vapor rises, clouds form, rain falls on mountains and plants, and water flows through rivers back to the sea.",
+    "childPrompt": "Start at the ocean and help one water drop find its way home.",
+    "parentPrompt": "Focus on cycle and state change before introducing technical weather terms."
+  },
+  "classificationGroups": [
+    {
+      "id": "water-places",
+      "name": "Places water stays",
+      "childExplanation": "Water can be in oceans, rivers, soil, and plants.",
+      "parentNote": "Build a spatial sense of where water appears.",
+      "representativeObjects": [
+        "ocean",
+        "river",
+        "plant"
+      ],
+      "misconception": "Water only exists in cups or taps."
+    },
+    {
+      "id": "sky-process",
+      "name": "Changes in the sky",
+      "childExplanation": "Water vapor rises, gathers as clouds, and falls as rain.",
+      "parentNote": "Use child-friendly words for evaporation, condensation, and precipitation.",
+      "representativeObjects": [
+        "water-vapor",
+        "cloud",
+        "rain"
+      ],
+      "misconception": "Clouds are cotton and rain means clouds break."
+    },
+    {
+      "id": "energy-driver",
+      "name": "What powers the trip",
+      "childExplanation": "The Sun warms water and helps it become vapor.",
+      "parentNote": "Do not explain thermodynamics; just highlight solar energy.",
+      "representativeObjects": [
+        "sun"
+      ],
+      "misconception": "Water suddenly flies into the sky by itself."
+    },
+    {
+      "id": "return-path",
+      "name": "The way back down",
+      "childExplanation": "Rain flows into streams, rivers, and oceans.",
+      "parentNote": "Introduce runoff and return flow.",
+      "representativeObjects": [
+        "rain",
+        "river",
+        "ocean"
+      ],
+      "misconception": "Rainwater stops being part of the cycle after it falls."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "Sun",
+      "groupId": "energy-driver",
+      "childExplanation": "The Sun warms water on land and sea, turning some of it into vapor.",
+      "visualHint": "bright round sun",
+      "commonMisread": "Thinking the water cycle does not need the Sun."
+    },
+    {
+      "id": "ocean",
+      "name": "Ocean",
+      "groupId": "water-places",
+      "childExplanation": "The ocean holds a lot of water and is an important starting point.",
+      "visualHint": "wide blue water",
+      "commonMisread": "Thinking seawater never becomes rain."
+    },
+    {
+      "id": "water-vapor",
+      "name": "Water vapor",
+      "groupId": "sky-process",
+      "childExplanation": "Water vapor is light and often invisible, so it can rise into the air.",
+      "visualHint": "thin upward wisps",
+      "commonMisread": "Thinking invisible means not real."
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud",
+      "groupId": "sky-process",
+      "childExplanation": "A cloud contains many tiny water droplets or ice crystals.",
+      "visualHint": "soft cloud with tiny droplets",
+      "commonMisread": "Thinking clouds are cotton."
+    },
+    {
+      "id": "rain",
+      "name": "Rain",
+      "groupId": "sky-process",
+      "childExplanation": "When droplets grow bigger and heavier, they fall as rain.",
+      "visualHint": "falling blue drops",
+      "commonMisread": "Thinking rain means the cloud breaks apart."
+    },
+    {
+      "id": "river",
+      "name": "River",
+      "groupId": "return-path",
+      "childExplanation": "Rainwater can gather into streams and rivers.",
+      "visualHint": "curving blue stream",
+      "commonMisread": "Thinking river water never returns to the sea."
+    },
+    {
+      "id": "plant",
+      "name": "Plant",
+      "groupId": "water-places",
+      "childExplanation": "Plants take in water and can also send some vapor back into the air.",
+      "visualHint": "small green plant with roots",
+      "commonMisread": "Thinking plants only drink water."
+    }
+  ],
+  "mechanism": {
+    "title": "One water drop’s cycle journey",
+    "steps": [
+      {
+        "id": "evaporation",
+        "shortTitle": "Warmed by the Sun",
+        "childExplanation": "The Sun warms water on the ocean and land, and some water becomes vapor.",
+        "parentNote": "This is evaporation in child-friendly language."
+      },
+      {
+        "id": "rising",
+        "shortTitle": "Vapor rises",
+        "childExplanation": "Light water vapor rises into the sky with the air.",
+        "parentNote": "Keep the air-flow explanation simple."
+      },
+      {
+        "id": "condensation",
+        "shortTitle": "Clouds form",
+        "childExplanation": "When vapor meets cooler air, many tiny droplets gather to form clouds.",
+        "parentNote": "This maps to condensation."
+      },
+      {
+        "id": "precipitation",
+        "shortTitle": "Rain falls",
+        "childExplanation": "When droplets grow bigger and heavier, they fall back as rain.",
+        "parentNote": "Rain, snow, and hail can be introduced later."
+      },
+      {
+        "id": "collection",
+        "shortTitle": "Water returns",
+        "childExplanation": "Rain enters soil, streams, rivers, and eventually many drops return to the sea.",
+        "parentNote": "Emphasize a loop rather than a straight line."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "Plants also join the water cycle",
+    "steps": [
+      {
+        "id": "plant-drink",
+        "shortTitle": "Roots drink water",
+        "childExplanation": "Plant roots take water from the soil.",
+        "parentNote": "Connect to watering plants at home."
+      },
+      {
+        "id": "plant-release",
+        "shortTitle": "Leaves send vapor",
+        "childExplanation": "Leaves can send some water vapor back into the air.",
+        "parentNote": "Child-friendly transpiration."
+      },
+      {
+        "id": "plant-cool",
+        "shortTitle": "Plants cool places",
+        "childExplanation": "Places with more plants often feel cooler and more humid.",
+        "parentNote": "Connect to ecosystems and climate."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "cloud-vs-cotton",
+      "title": "Cloud vs Cotton",
+      "a": {
+        "name": "Cloud",
+        "points": [
+          "made of tiny droplets or ice crystals",
+          "moves and changes",
+          "can bring rain or snow"
+        ]
+      },
+      "b": {
+        "name": "Cotton",
+        "points": [
+          "plant fiber",
+          "can be held in your hand",
+          "does not become rain"
+        ]
+      },
+      "childConclusion": "Clouds look soft, but they are not cotton."
+    },
+    {
+      "id": "evaporation-vs-boiling",
+      "title": "Evaporation vs Boiling",
+      "a": {
+        "name": "Evaporation",
+        "points": [
+          "water slowly becomes vapor",
+          "can happen on oceans and ground",
+          "does not need big bubbles"
+        ]
+      },
+      "b": {
+        "name": "Boiling",
+        "points": [
+          "water becomes very hot",
+          "bubbles appear",
+          "usually happens in a pot"
+        ]
+      },
+      "childConclusion": "Ocean water can evaporate without boiling."
+    },
+    {
+      "id": "river-vs-ocean",
+      "title": "River vs Ocean",
+      "a": {
+        "name": "River",
+        "points": [
+          "flows across land",
+          "often moves downhill",
+          "carries water toward lakes or seas"
+        ]
+      },
+      "b": {
+        "name": "Ocean",
+        "points": [
+          "very large",
+          "holds lots of water",
+          "sends vapor upward when warmed"
+        ]
+      },
+      "childConclusion": "Rivers and oceans are connected in the same cycle."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "water-sequence-01",
+      "title": "Help one water drop travel in order",
+      "prompt": "Start at the sea and tap the water-cycle route.",
+      "options": [
+        {
+          "id": "ocean",
+          "label": "Ocean"
+        },
+        {
+          "id": "water-vapor",
+          "label": "Water vapor"
+        },
+        {
+          "id": "cloud",
+          "label": "Cloud"
+        },
+        {
+          "id": "rain",
+          "label": "Rain"
+        },
+        {
+          "id": "river",
+          "label": "River"
+        }
+      ],
+      "wrongHint": "Think first: where does water get warmed by the Sun?",
+      "successCopy": "Great! You helped one drop complete its cycle journey."
+    },
+    {
+      "id": "water-find-01",
+      "title": "Find: what helps water rise into the sky?",
+      "prompt": "Find the important energy source.",
+      "wrongHint": "It is bright and warm, and it helps water become vapor.",
+      "successCopy": "Correct! The Sun powers the water cycle."
+    },
+    {
+      "id": "water-choice-01",
+      "title": "What are clouds mostly made of?",
+      "prompt": "Choose the best answer.",
+      "options": [
+        {
+          "id": "tiny-water",
+          "label": "Many tiny droplets or ice crystals"
+        },
+        {
+          "id": "cotton",
+          "label": "Cotton"
+        },
+        {
+          "id": "smoke",
+          "label": "Smoke"
+        }
+      ],
+      "wrongHints": {
+        "cotton": "Clouds look like cotton, but they are not cotton.",
+        "smoke": "Clouds are related to water, not smoke."
+      },
+      "successCopy": "Right! Clouds contain many tiny droplets or ice crystals."
+    }
+  ],
+  "speakTemplates": [
+    "Water changes from ____ into ____ and rises into the sky.",
+    "Clouds contain many _____.",
+    "After rain falls, water can flow into _____.",
+    "The water cycle is not a straight line; it is a _____."
+  ],
+  "parentTips": [
+    "Use a foggy mirror, droplets on a cold cup, or water under a pot lid to explain state change.",
+    "Do not force terminology first; let the child tell the story of the cycle.",
+    "Ask the child to draw arrows connecting Sun, ocean, cloud, rain, and river."
+  ],
+  "copy": {
+    "intro": [
+      "Water keeps traveling around Earth.",
+      "The Sun, ocean, clouds, rain, rivers, and plants all join the journey."
+    ],
+    "keyFacts": [
+      "The Sun helps water turn into invisible vapor.",
+      "Water vapor gathers in the sky to form clouds.",
+      "Rain returns to the ground, rivers, oceans, and plants."
+    ],
+    "explainPrompt": "Can you follow one drop of water from the ocean to the sky and back again?"
+  },
+  "acceptanceCriteria": [
+    "The child can name at least three water-cycle steps.",
+    "The child knows the Sun helps water evaporate.",
+    "The child can use arrows to show water returning to rivers or the ocean."
+  ]
+}

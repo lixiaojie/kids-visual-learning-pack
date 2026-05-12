@@ -1,0 +1,487 @@
+{
+  "id": "topic-humanMade-robots",
+  "slug": "robots",
+  "title": "机器人小工坊",
+  "subtitle": "机器人怎么接收信息、判断和行动？",
+  "world": "humanMade",
+  "priority": "P1",
+  "ageRange": "5-8",
+  "pageType": "system-flow",
+  "coreQuestion": "机器人是不是有魔法，还是由传感器、程序和动作部件一起工作？",
+  "learningGoals": [
+    "认识机器人由输入、判断、行动和反馈组成",
+    "知道摄像头、麦克风、按钮、距离传感器等可以接收信息",
+    "理解轮子、灯光、机械臂等是机器人行动或反馈方式"
+  ],
+  "misconceptions": [
+    "机器人会像人一样自己什么都懂",
+    "机器人动作都是魔法",
+    "有屏幕或会动的玩具就是机器人"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/human-system/robots/human-system-robots-hero-v02.webp",
+      "purpose": "机器人：主视觉",
+      "status": "ready"
+    },
+    "cards": {
+      "path": "/assets/human-system/robots/human-system-robots-object-icons-v02.webp",
+      "purpose": "机器人：对象/分类图标",
+      "status": "ready"
+    },
+    "mechanism": {
+      "path": "/assets/human-system/robots/human-system-robots-mechanism-v02.webp",
+      "purpose": "机器人：机制流程图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/human-system/robots/human-system-robots-compare-v02.webp",
+      "purpose": "机器人：概念对比图",
+      "status": "ready"
+    },
+    "clickTask": {
+      "path": "/assets/human-system/robots/human-system-robots-click-task-v02.webp",
+      "purpose": "机器人：互动任务背景图",
+      "status": "ready"
+    },
+    "parentGuide": {
+      "path": "/assets/human-system/robots/human-system-robots-parent-guide-v02.webp",
+      "purpose": "机器人：亲子共读引导图",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "representative-object",
+      "description": "点击对象卡片展开儿童解释和视觉提示"
+    },
+    {
+      "type": "highlight",
+      "target": "classification-group",
+      "description": "点击分类组高亮对应对象"
+    },
+    {
+      "type": "task-feedback",
+      "target": "click-task",
+      "description": "完成选择、寻找或排序任务后显示反馈"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "find",
+      "title": "找到机器人用来接收信息的传感器"
+    },
+    {
+      "type": "sequence",
+      "title": "按顺序说出机器人工作流程",
+      "items": [
+        "接收信息",
+        "程序判断",
+        "做出动作",
+        "看结果再调整"
+      ]
+    },
+    {
+      "type": "explain",
+      "title": "机器人为什么不是靠魔法动起来？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "机器人不是靠魔法工作。",
+      "它先接收信息，再按照程序判断，然后用轮子、灯光或机械臂行动。"
+    ],
+    "keyFacts": [
+      "传感器帮助机器人接收外界信息。",
+      "程序像任务规则，帮助机器人决定下一步。",
+      "行动部件让机器人移动、发光、抓取或发出声音。"
+    ],
+    "explainPrompt": "你能说出一个机器人“看到—想一想—动起来”的过程吗？"
+  },
+  "relatedTopics": [
+    "llm-kids-basics",
+    "internet-message",
+    "search-engine-kids"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出输入、判断、行动三个环节",
+    "能区分传感器和行动部件",
+    "能用非魔法语言解释机器人工作"
+  ],
+  "status": "building",
+  "renderPriority": 11,
+  "hero": {
+    "title": "机器人小工坊",
+    "kicker": "人造系统世界 · 输入与行动",
+    "lead": "机器人会先看见或听见，再按规则判断，最后做动作。",
+    "sceneExplanation": "主视觉是友好的机器人工作台：左侧是摄像头、麦克风、按钮、距离传感器等输入，中央是程序判断云，右侧是灯光、轮子、机械臂等行动输出。",
+    "childPrompt": "帮机器人找一找：它先接收到什么信息？然后做了什么动作？",
+    "parentPrompt": "重点建立系统流程，不把机器人拟人化成“什么都懂”。",
+    "placeholder": {
+      "type": "systemFlow",
+      "asset": "/assets/human-system/robots/human-system-robots-hero-v02.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "sensors",
+      "name": "接收信息",
+      "childExplanation": "传感器像机器人的眼睛、耳朵和小按钮。",
+      "parentNote": "用“接收信息”替代复杂硬件术语。",
+      "representativeObjects": [
+        "camera",
+        "microphone",
+        "button",
+        "distance-sensor"
+      ],
+      "misconception": "机器人不用感知就知道外面发生什么。"
+    },
+    {
+      "id": "controller",
+      "name": "判断规则",
+      "childExplanation": "程序告诉机器人遇到情况时该怎么做。",
+      "parentNote": "可类比任务卡或交通规则。",
+      "representativeObjects": [
+        "program"
+      ],
+      "misconception": "机器人会自己随便想。"
+    },
+    {
+      "id": "actuators",
+      "name": "做出动作",
+      "childExplanation": "轮子、灯和机械臂让机器人动起来或表达结果。",
+      "parentNote": "行动部件也叫执行器，儿童版不用术语。",
+      "representativeObjects": [
+        "wheel",
+        "light",
+        "robot-arm"
+      ],
+      "misconception": "发光和转动都是同一种能力。"
+    },
+    {
+      "id": "feedback",
+      "name": "看结果再调整",
+      "childExplanation": "机器人做完动作后，还可以再看看结果。",
+      "parentNote": "引入反馈回路，和后续 AI/控制系统关联。",
+      "representativeObjects": [
+        "distance-sensor",
+        "program"
+      ],
+      "misconception": "机器人只做一次动作，不会检查结果。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "camera",
+      "name": "摄像头",
+      "groupId": "sensors",
+      "childExplanation": "摄像头可以帮助机器人看到图像。",
+      "visualHint": "圆圆镜头",
+      "commonMisread": "以为摄像头就是机器人的大脑。"
+    },
+    {
+      "id": "microphone",
+      "name": "麦克风",
+      "groupId": "sensors",
+      "childExplanation": "麦克风可以帮助机器人听到声音。",
+      "visualHint": "小话筒",
+      "commonMisread": "以为机器人不用设备就能听见。"
+    },
+    {
+      "id": "button",
+      "name": "按钮",
+      "groupId": "sensors",
+      "childExplanation": "按钮可以把人的选择告诉机器人。",
+      "visualHint": "红色圆按钮",
+      "commonMisread": "以为按钮是装饰。"
+    },
+    {
+      "id": "distance-sensor",
+      "name": "距离传感器",
+      "groupId": "sensors",
+      "childExplanation": "它可以帮机器人知道前面是不是太近了。",
+      "visualHint": "两个小圆眼",
+      "commonMisread": "以为它真的像眼睛一样看世界。"
+    },
+    {
+      "id": "program",
+      "name": "程序规则",
+      "groupId": "controller",
+      "childExplanation": "程序像任务规则，告诉机器人先做什么、后做什么。",
+      "visualHint": "发光小脑云",
+      "commonMisread": "以为程序就是魔法。"
+    },
+    {
+      "id": "wheel",
+      "name": "轮子",
+      "groupId": "actuators",
+      "childExplanation": "轮子让机器人前进、后退或转弯。",
+      "visualHint": "黑色小轮胎",
+      "commonMisread": "以为有轮子就一定是机器人。"
+    },
+    {
+      "id": "light",
+      "name": "灯光",
+      "groupId": "actuators",
+      "childExplanation": "灯光可以告诉我们机器人现在的状态。",
+      "visualHint": "黄色发光灯",
+      "commonMisread": "以为灯光只是好看。"
+    },
+    {
+      "id": "robot-arm",
+      "name": "机械臂",
+      "groupId": "actuators",
+      "childExplanation": "机械臂可以伸出去抓取或推动东西。",
+      "visualHint": "有夹爪的小手臂",
+      "commonMisread": "以为机械臂和人的手完全一样。"
+    }
+  ],
+  "mechanism": {
+    "title": "机器人怎样完成一个任务？",
+    "steps": [
+      {
+        "id": "input",
+        "shortTitle": "接收信息",
+        "childExplanation": "摄像头、麦克风、按钮或传感器先接收到信息。",
+        "parentNote": "对应 input。"
+      },
+      {
+        "id": "interpret",
+        "shortTitle": "看懂情况",
+        "childExplanation": "机器人把信息交给程序，看看现在发生了什么。",
+        "parentNote": "可简化为识别或判断。"
+      },
+      {
+        "id": "decide",
+        "shortTitle": "按规则决定",
+        "childExplanation": "程序根据任务规则，决定下一步做什么。",
+        "parentNote": "避免说机器人自己“想”。"
+      },
+      {
+        "id": "act",
+        "shortTitle": "做出动作",
+        "childExplanation": "轮子、灯光或机械臂开始工作。",
+        "parentNote": "对应 actuator / output。"
+      },
+      {
+        "id": "feedback-loop",
+        "shortTitle": "再检查",
+        "childExplanation": "机器人可以再看看结果，必要时调整动作。",
+        "parentNote": "引入反馈闭环。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "一个避障小例子",
+    "steps": [
+      {
+        "id": "sense-wall",
+        "shortTitle": "发现前面近",
+        "childExplanation": "距离传感器发现前面有东西。",
+        "parentNote": "连接传感器。"
+      },
+      {
+        "id": "rule-stop",
+        "shortTitle": "规则说停下",
+        "childExplanation": "程序规则告诉机器人：太近就停下。",
+        "parentNote": "连接程序。"
+      },
+      {
+        "id": "wheel-stop",
+        "shortTitle": "轮子停住",
+        "childExplanation": "轮子停止转动，机器人不撞上去。",
+        "parentNote": "连接执行器。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "sensor-vs-actuator",
+      "title": "传感器 vs 行动部件",
+      "a": {
+        "name": "传感器",
+        "points": [
+          "接收信息",
+          "像机器人的感知入口",
+          "摄像头、麦克风、按钮都可以是输入"
+        ]
+      },
+      "b": {
+        "name": "行动部件",
+        "points": [
+          "做出动作",
+          "把决定变成结果",
+          "轮子、灯、机械臂都可以行动"
+        ]
+      },
+      "childConclusion": "传感器负责知道，行动部件负责做。"
+    },
+    {
+      "id": "program-vs-magic",
+      "title": "程序 vs 魔法",
+      "a": {
+        "name": "程序",
+        "points": [
+          "有规则",
+          "可以被人设计",
+          "同样输入常有同样动作"
+        ]
+      },
+      "b": {
+        "name": "魔法",
+        "points": [
+          "说不清规则",
+          "无法稳定复现",
+          "不是工程解释"
+        ]
+      },
+      "childConclusion": "机器人靠程序和部件工作，不靠魔法。"
+    },
+    {
+      "id": "robot-vs-remote-toy",
+      "title": "机器人 vs 遥控玩具",
+      "a": {
+        "name": "机器人",
+        "points": [
+          "能接收信息",
+          "能按规则判断",
+          "可以自动做一些动作"
+        ]
+      },
+      "b": {
+        "name": "遥控玩具",
+        "points": [
+          "主要听人遥控",
+          "不一定会判断环境",
+          "动作更简单"
+        ]
+      },
+      "childConclusion": "会动不一定就是机器人，关键看能不能感知和按规则行动。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "robot-sequence-01",
+      "type": "sequenceClick",
+      "title": "机器人完成任务的顺序是什么？",
+      "prompt": "按从接收到行动的顺序点击。",
+      "options": [
+        {
+          "id": "input",
+          "label": "接收信息"
+        },
+        {
+          "id": "interpret",
+          "label": "看懂情况"
+        },
+        {
+          "id": "decide",
+          "label": "按规则决定"
+        },
+        {
+          "id": "act",
+          "label": "做出动作"
+        }
+      ],
+      "correctSequence": [
+        "input",
+        "interpret",
+        "decide",
+        "act"
+      ],
+      "wrongHint": "机器人要先知道发生了什么，才能行动。",
+      "successCopy": "你排出了机器人工作的基本流程！"
+    },
+    {
+      "id": "robot-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪些是接收信息的部件？",
+      "prompt": "找到可以接收外界信息的部件。",
+      "targetIds": [
+        "camera",
+        "microphone",
+        "button",
+        "distance-sensor"
+      ],
+      "decoyIds": [
+        "wheel",
+        "light",
+        "robot-arm"
+      ],
+      "wrongHint": "想一想：它是在“知道信息”，还是在“做动作”？",
+      "successCopy": "对！这些都可以帮助机器人接收信息。"
+    },
+    {
+      "id": "robot-choice-01",
+      "type": "singleChoice",
+      "title": "机器人不是靠什么工作的？",
+      "prompt": "选择最不准确的解释。",
+      "options": [
+        {
+          "id": "magic",
+          "label": "魔法"
+        },
+        {
+          "id": "sensors-program",
+          "label": "传感器和程序"
+        },
+        {
+          "id": "wheels-arm",
+          "label": "轮子和机械臂"
+        }
+      ],
+      "correctOptionId": "magic",
+      "wrongHints": {
+        "sensors-program": "传感器和程序正是机器人工作的关键。",
+        "wheels-arm": "轮子和机械臂能帮助机器人行动。"
+      },
+      "successCopy": "对！机器人不是靠魔法，而是靠系统部件合作。"
+    }
+  ],
+  "speakTemplates": [
+    "机器人先用____接收信息。",
+    "程序像____，告诉机器人怎么做。",
+    "轮子和机械臂属于____部件。",
+    "机器人完成任务通常是：____、____、____。"
+  ],
+  "parentTips": [
+    "可以用家里的扫地机器人、自动门、声控灯做例子。",
+    "避免把机器人说成“真的懂一切”，而是说它按规则处理信息。",
+    "如果孩子感兴趣，可引导他画一个“输入—判断—行动”的小流程图。"
+  ]
+}

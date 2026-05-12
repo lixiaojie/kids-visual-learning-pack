@@ -1,0 +1,351 @@
+{
+  "id": "topic-body-digestion",
+  "slug": "digestion",
+  "title": "Food Journey Team",
+  "subtitle": "How does one bite of food become energy your body can use?",
+  "coreQuestion": "Where does food go inside the body after we eat it?",
+  "learningGoals": [
+    "Know digestion is a route, not only the stomach working.",
+    "Recognize the order: mouth, esophagus, stomach, small intestine, large intestine.",
+    "Understand food is broken down and absorbed to help the body get energy."
+  ],
+  "misconceptions": [
+    "Digestion only happens in the stomach.",
+    "Food disappears directly in the belly.",
+    "More realistic anatomy always means better science for children."
+  ],
+  "hero": {
+    "title": "Food Journey Team",
+    "kicker": "Body World · Route Map",
+    "lead": "Food does not simply disappear; it travels along a route inside the body.",
+    "sceneExplanation": "The main scene is a gentle icon-like body route: from the mouth, through the esophagus to the stomach, then to the small and large intestines, with nutrients becoming little energy stars.",
+    "childPrompt": "Start at the mouth and help one bite of food find the next stop.",
+    "parentPrompt": "Focus on sequence and function, not realistic anatomy."
+  },
+  "classificationGroups": [
+    {
+      "id": "entry",
+      "name": "Entry and preparation",
+      "childExplanation": "The mouth and teeth make food smaller.",
+      "parentNote": "Chewing is the first step of digestion.",
+      "representativeObjects": [
+        "mouth",
+        "teeth",
+        "saliva"
+      ],
+      "misconception": "Digestion starts only after swallowing."
+    },
+    {
+      "id": "transport",
+      "name": "Transport tube",
+      "childExplanation": "The esophagus is a soft tube that sends food to the stomach.",
+      "parentNote": "Avoid confusing it with the airway.",
+      "representativeObjects": [
+        "esophagus"
+      ],
+      "misconception": "Food just drops into the belly."
+    },
+    {
+      "id": "breakdown",
+      "name": "Mixing and breaking down",
+      "childExplanation": "The stomach keeps mixing food so it becomes softer and smaller.",
+      "parentNote": "Use a mixing bag or kitchen metaphor.",
+      "representativeObjects": [
+        "stomach"
+      ],
+      "misconception": "The stomach does all digestion alone."
+    },
+    {
+      "id": "absorb-and-sort",
+      "name": "Absorb and sort",
+      "childExplanation": "The small intestine absorbs nutrients; the large intestine sorts what remains.",
+      "parentNote": "Stress different jobs, not enzymes.",
+      "representativeObjects": [
+        "small-intestine",
+        "large-intestine",
+        "energy"
+      ],
+      "misconception": "Intestines are only storage tubes."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "mouth",
+      "name": "Mouth",
+      "groupId": "entry",
+      "childExplanation": "The food journey starts in the mouth.",
+      "visualHint": "friendly open mouth icon",
+      "commonMisread": "Thinking the mouth only eats and does not digest."
+    },
+    {
+      "id": "teeth",
+      "name": "Teeth",
+      "groupId": "entry",
+      "childExplanation": "Teeth break food into smaller pieces.",
+      "visualHint": "rounded white teeth",
+      "commonMisread": "Thinking chewing does not matter."
+    },
+    {
+      "id": "saliva",
+      "name": "Saliva",
+      "groupId": "entry",
+      "childExplanation": "Saliva makes food wet and soft.",
+      "visualHint": "small drops and food bits",
+      "commonMisread": "Thinking saliva has nothing to do with digestion."
+    },
+    {
+      "id": "esophagus",
+      "name": "Esophagus",
+      "groupId": "transport",
+      "childExplanation": "The esophagus carries food from the mouth to the stomach.",
+      "visualHint": "soft curved tube",
+      "commonMisread": "Mixing it up with the airway."
+    },
+    {
+      "id": "stomach",
+      "name": "Stomach",
+      "groupId": "breakdown",
+      "childExplanation": "The stomach mixes food and makes it softer and smaller.",
+      "visualHint": "rounded pink stomach",
+      "commonMisread": "Thinking the stomach absorbs all nutrients."
+    },
+    {
+      "id": "small-intestine",
+      "name": "Small intestine",
+      "groupId": "absorb-and-sort",
+      "childExplanation": "The small intestine absorbs many nutrients the body needs.",
+      "visualHint": "thin winding route",
+      "commonMisread": "Thinking it is not important because it is called small."
+    },
+    {
+      "id": "large-intestine",
+      "name": "Large intestine",
+      "groupId": "absorb-and-sort",
+      "childExplanation": "The large intestine sorts what remains and helps keep some water.",
+      "visualHint": "thicker green route",
+      "commonMisread": "Thinking it only removes waste."
+    },
+    {
+      "id": "energy",
+      "name": "Energy",
+      "groupId": "absorb-and-sort",
+      "childExplanation": "The body uses nutrients to grow, run, jump, and think.",
+      "visualHint": "glowing little stars",
+      "commonMisread": "Thinking food only fills the belly."
+    }
+  ],
+  "mechanism": {
+    "title": "How does food finish its body journey?",
+    "steps": [
+      {
+        "id": "chew",
+        "shortTitle": "Chew smaller",
+        "childExplanation": "Teeth break food down and saliva makes it wet.",
+        "parentNote": "Connect to slow chewing."
+      },
+      {
+        "id": "swallow",
+        "shortTitle": "Send it down",
+        "childExplanation": "After swallowing, food moves through the esophagus to the stomach.",
+        "parentNote": "Use a slide metaphor."
+      },
+      {
+        "id": "mix",
+        "shortTitle": "Mix in the stomach",
+        "childExplanation": "The stomach is like a moving bag that mixes food.",
+        "parentNote": "Avoid scary acid details."
+      },
+      {
+        "id": "absorb",
+        "shortTitle": "Small intestine absorbs",
+        "childExplanation": "The small intestine sends useful nutrients to the body.",
+        "parentNote": "This is the key function."
+      },
+      {
+        "id": "sort",
+        "shortTitle": "Large intestine sorts",
+        "childExplanation": "The large intestine sorts what remains and keeps some water.",
+        "parentNote": "Keep the explanation simple."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "Why does food give us energy?",
+    "steps": [
+      {
+        "id": "food-to-small",
+        "shortTitle": "Become smaller",
+        "childExplanation": "Big food becomes small parts the body can handle.",
+        "parentNote": "Move from chunk to nutrient."
+      },
+      {
+        "id": "small-to-body",
+        "shortTitle": "Sent to the body",
+        "childExplanation": "Nutrients are sent to many places in the body.",
+        "parentNote": "Connect to the blood topic."
+      },
+      {
+        "id": "body-use",
+        "shortTitle": "Body uses it",
+        "childExplanation": "The body uses them to run, grow, repair, and think.",
+        "parentNote": "No metabolic pathway needed."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "stomach-vs-route",
+      "title": "Only stomach vs Whole route",
+      "a": {
+        "name": "Only stomach",
+        "points": [
+          "one station only",
+          "forgets mouth and intestines",
+          "incomplete explanation"
+        ]
+      },
+      "b": {
+        "name": "Whole route",
+        "points": [
+          "has entrance and later stations",
+          "organs cooperate",
+          "closer to the real process"
+        ]
+      },
+      "childConclusion": "Digestion is a team route, not a stomach-only job."
+    },
+    {
+      "id": "small-vs-large-intestine",
+      "title": "Small intestine vs Large intestine",
+      "a": {
+        "name": "Small intestine",
+        "points": [
+          "thin and long",
+          "absorbs many nutrients",
+          "very important"
+        ]
+      },
+      "b": {
+        "name": "Large intestine",
+        "points": [
+          "thicker",
+          "sorts what remains",
+          "helps keep some water"
+        ]
+      },
+      "childConclusion": "Their names sound similar, but their jobs are different."
+    },
+    {
+      "id": "food-vs-energy",
+      "title": "Food vs Energy",
+      "a": {
+        "name": "Food",
+        "points": [
+          "can be seen and bitten",
+          "has different tastes",
+          "enters through the mouth"
+        ]
+      },
+      "b": {
+        "name": "Energy",
+        "points": [
+          "helps the body move",
+          "cannot be seen but can be felt",
+          "comes from nutrients"
+        ]
+      },
+      "childConclusion": "Food helps the body get energy."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "digestion-sequence-01",
+      "title": "Tap the food journey stations in order",
+      "prompt": "Start at the mouth and help food travel the whole route.",
+      "options": [
+        {
+          "id": "mouth",
+          "label": "Mouth"
+        },
+        {
+          "id": "esophagus",
+          "label": "Esophagus"
+        },
+        {
+          "id": "stomach",
+          "label": "Stomach"
+        },
+        {
+          "id": "small-intestine",
+          "label": "Small intestine"
+        },
+        {
+          "id": "large-intestine",
+          "label": "Large intestine"
+        }
+      ],
+      "wrongHint": "Start where food enters the body.",
+      "successCopy": "You helped food complete its body journey!"
+    },
+    {
+      "id": "digestion-find-01",
+      "title": "Find: where are many nutrients absorbed?",
+      "prompt": "Find the station that absorbs many nutrients.",
+      "wrongHint": "It is called small, but it is long and important.",
+      "successCopy": "Correct! The small intestine absorbs many nutrients."
+    },
+    {
+      "id": "digestion-choice-01",
+      "title": "Who completes digestion?",
+      "prompt": "Choose the most accurate answer.",
+      "options": [
+        {
+          "id": "whole-route",
+          "label": "A whole route working together"
+        },
+        {
+          "id": "only-stomach",
+          "label": "Only the stomach"
+        },
+        {
+          "id": "only-mouth",
+          "label": "Only the mouth"
+        }
+      ],
+      "wrongHints": {
+        "only-stomach": "The stomach matters, but the mouth and intestines also work.",
+        "only-mouth": "The mouth is the first stop, but many stops follow."
+      },
+      "successCopy": "Right! Digestion is a route of body parts working together."
+    }
+  ],
+  "speakTemplates": [
+    "Food first goes to ____, then through ____.",
+    "The stomach's job is to _____.",
+    "The small intestine helps the body _____.",
+    "Digestion is not only ____; it is ____."
+  ],
+  "parentTips": [
+    "Keep digestion icon-like and gentle; avoid realistic organ photos.",
+    "At meals, say that chewing slowly helps the first station work well.",
+    "If the child asks about poop, simply say the body sorts what remains."
+  ],
+  "copy": {
+    "intro": [
+      "After food enters the body, it is like taking a little train ride.",
+      "It passes different stations and becomes nutrients and energy the body can use."
+    ],
+    "keyFacts": [
+      "Teeth break food into smaller pieces.",
+      "The esophagus sends food to the stomach.",
+      "The small intestine absorbs many nutrients.",
+      "The large intestine sorts what remains."
+    ],
+    "explainPrompt": "Can you name the body stations food visits in order?"
+  },
+  "acceptanceCriteria": [
+    "The child can say mouth, esophagus, stomach, small intestine, large intestine in order.",
+    "The child knows digestion is not only the stomach working.",
+    "The child can explain food as becoming smaller, absorbed, and used as energy."
+  ]
+}

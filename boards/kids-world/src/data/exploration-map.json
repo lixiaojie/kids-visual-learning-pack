@@ -166,6 +166,30 @@
           "href": "boards/insects-and-spiders/index.html"
         },
         {
+          "slug": "dinosaurs",
+          "title": "恐龙与化石侦探站",
+          "status": "building",
+          "cardDescription": "用化石线索推理恐龙的样子和生活。",
+          "learningGoalTags": [
+            "化石证据",
+            "推理",
+            "生命演化"
+          ],
+          "href": "boards/dinosaurs/index.html"
+        },
+        {
+          "slug": "ecosystem",
+          "title": "森林池塘生态网",
+          "status": "building",
+          "cardDescription": "看阳光、水、植物、动物和分解者怎样连成一张网。",
+          "learningGoalTags": [
+            "关系网",
+            "能量流动",
+            "生态平衡"
+          ],
+          "href": "boards/ecosystem/index.html"
+        },
+        {
           "slug": "plant-life-cycle",
           "title": "植物的一生",
           "status": "comingSoon",
@@ -213,15 +237,16 @@
           "href": "boards/blood-cells-3d/index.html"
         },
         {
-          "slug": "digestion-journey",
-          "title": "食物旅行记",
-          "status": "comingSoon",
-          "cardDescription": "看看食物进入身体后去了哪里。",
+          "slug": "digestion",
+          "title": "食物旅行队",
+          "status": "building",
+          "cardDescription": "看看食物从嘴巴出发，怎样变成身体能用的能量。",
           "learningGoalTags": [
             "路径",
-            "器官",
+            "器官分工",
             "健康习惯"
-          ]
+          ],
+          "href": "boards/digestion/index.html"
         }
       ]
     },
@@ -261,14 +286,15 @@
         },
         {
           "slug": "water-cycle",
-          "title": "小水滴旅行记",
-          "status": "planned",
-          "cardDescription": "蒸发、云、降雨、河流和海洋。",
+          "title": "水循环旅行站",
+          "status": "building",
+          "cardDescription": "跟着小水滴认识蒸发、云、降雨、河流和海洋。",
           "learningGoalTags": [
             "循环",
             "天气",
             "机制"
-          ]
+          ],
+          "href": "boards/water-cycle/index.html"
         }
       ]
     },
@@ -308,14 +334,15 @@
         },
         {
           "slug": "moon-phases",
-          "title": "月亮与月相",
-          "status": "comingSoon",
-          "cardDescription": "月亮为什么有时圆、有时弯？",
+          "title": "月亮变脸观察站",
+          "status": "building",
+          "cardDescription": "连续观察月亮，理解月相为什么会变。",
           "learningGoalTags": [
             "观察",
             "周期",
             "天体关系"
-          ]
+          ],
+          "href": "boards/moon-phases/index.html"
         }
       ]
     },
@@ -400,15 +427,16 @@
           "href": "boards/llm-kids-basics/index.html"
         },
         {
-          "slug": "robot-sense-think-act",
-          "title": "机器人怎么动",
-          "status": "planned",
-          "cardDescription": "传感器看到，控制器判断，马达行动。",
+          "slug": "robots",
+          "title": "机器人小工坊",
+          "status": "building",
+          "cardDescription": "把传感器、程序和动作部件连起来，理解机器人怎样工作。",
           "learningGoalTags": [
             "输入输出",
             "控制",
             "机器人"
-          ]
+          ],
+          "href": "boards/robots/index.html"
         }
       ]
     }

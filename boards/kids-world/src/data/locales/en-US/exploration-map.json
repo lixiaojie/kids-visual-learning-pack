@@ -166,6 +166,30 @@
           "href": "boards/insects-and-spiders/index.html"
         },
         {
+          "slug": "dinosaurs",
+          "title": "Dinosaur and Fossil Detective Station",
+          "status": "building",
+          "cardDescription": "Use fossil clues to infer what dinosaurs looked like and how they lived.",
+          "learningGoalTags": [
+            "fossil evidence",
+            "inference",
+            "life history"
+          ],
+          "href": "boards/dinosaurs/index.html"
+        },
+        {
+          "slug": "ecosystem",
+          "title": "Forest Pond Ecosystem Web",
+          "status": "building",
+          "cardDescription": "See how sunlight, water, plants, animals, and decomposers form a web.",
+          "learningGoalTags": [
+            "relationship web",
+            "energy flow",
+            "ecosystem balance"
+          ],
+          "href": "boards/ecosystem/index.html"
+        },
+        {
           "slug": "plant-life-cycle",
           "title": "A Plant’s Life",
           "status": "comingSoon",
@@ -213,15 +237,16 @@
           "href": "boards/blood-cells-3d/index.html"
         },
         {
-          "slug": "digestion-journey",
-          "title": "Food Journey",
-          "status": "comingSoon",
-          "cardDescription": "See where food goes after it enters the body.",
+          "slug": "digestion",
+          "title": "Food Travel Team",
+          "status": "building",
+          "cardDescription": "Follow food from the mouth and see how it becomes energy the body can use.",
           "learningGoalTags": [
             "path",
-            "organs",
+            "organ roles",
             "healthy habits"
-          ]
+          ],
+          "href": "boards/digestion/index.html"
         }
       ]
     },
@@ -261,14 +286,15 @@
         },
         {
           "slug": "water-cycle",
-          "title": "Little Water Drop Journey",
-          "status": "planned",
-          "cardDescription": "Evaporation, clouds, rain, rivers, and oceans.",
+          "title": "Water Cycle Travel Station",
+          "status": "building",
+          "cardDescription": "Follow a water drop through evaporation, clouds, rain, rivers, and oceans.",
           "learningGoalTags": [
             "cycle",
             "weather",
             "mechanism"
-          ]
+          ],
+          "href": "boards/water-cycle/index.html"
         }
       ]
     },
@@ -308,14 +334,15 @@
         },
         {
           "slug": "moon-phases",
-          "title": "The Moon and Its Phases",
-          "status": "comingSoon",
-          "cardDescription": "Why does the Moon sometimes look round and sometimes curved?",
+          "title": "Moon Phase Observation Station",
+          "status": "building",
+          "cardDescription": "Observe the Moon over time and learn why its shape appears to change.",
           "learningGoalTags": [
             "observation",
             "cycle",
             "celestial relationships"
-          ]
+          ],
+          "href": "boards/moon-phases/index.html"
         }
       ]
     },
@@ -400,15 +427,16 @@
           "href": "boards/llm-kids-basics/index.html"
         },
         {
-          "slug": "robot-sense-think-act",
-          "title": "How Robots Move",
-          "status": "planned",
-          "cardDescription": "Sensors notice, controllers decide, and motors act.",
+          "slug": "robots",
+          "title": "Robot Workshop",
+          "status": "building",
+          "cardDescription": "Connect sensors, programs, and moving parts to understand how robots work.",
           "learningGoalTags": [
             "input and output",
             "control",
             "robots"
-          ]
+          ],
+          "href": "boards/robots/index.html"
         }
       ]
     }

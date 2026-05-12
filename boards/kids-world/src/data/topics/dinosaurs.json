@@ -1,0 +1,468 @@
+{
+  "id": "topic-life-dinosaurs",
+  "slug": "dinosaurs",
+  "title": "恐龙与化石侦探站",
+  "subtitle": "我们怎样认识很久以前的恐龙？",
+  "world": "life",
+  "priority": "P1",
+  "ageRange": "5-8",
+  "pageType": "fossil-detective",
+  "coreQuestion": "恐龙已经不在身边了，科学家怎么知道它们的样子和生活？",
+  "learningGoals": [
+    "认识不同类型的恐龙和它们的身体特征",
+    "知道化石、脚印等证据能帮助我们了解古生物",
+    "初步区分食草、食肉、防御型特征"
+  ],
+  "misconceptions": [
+    "所有恐龙都生活在同一个时代和地方",
+    "恐龙都很凶猛",
+    "化石就是完整恐龙骨架"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/life/dinosaurs/life-dinosaurs-hero-v02.webp",
+      "purpose": "恐龙与化石：主视觉",
+      "status": "ready"
+    },
+    "cards": {
+      "path": "/assets/life/dinosaurs/life-dinosaurs-object-icons-v02.webp",
+      "purpose": "恐龙与化石：对象/分类图标",
+      "status": "ready"
+    },
+    "mechanism": {
+      "path": "/assets/life/dinosaurs/life-dinosaurs-mechanism-v02.webp",
+      "purpose": "恐龙与化石：机制流程图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/life/dinosaurs/life-dinosaurs-compare-v02.webp",
+      "purpose": "恐龙与化石：概念对比图",
+      "status": "ready"
+    },
+    "clickTask": {
+      "path": "/assets/life/dinosaurs/life-dinosaurs-click-task-v02.webp",
+      "purpose": "恐龙与化石：互动任务背景图",
+      "status": "ready"
+    },
+    "parentGuide": {
+      "path": "/assets/life/dinosaurs/life-dinosaurs-parent-guide-v02.webp",
+      "purpose": "恐龙与化石：亲子共读引导图",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "representative-object",
+      "description": "点击对象卡片展开儿童解释和视觉提示"
+    },
+    {
+      "type": "highlight",
+      "target": "classification-group",
+      "description": "点击分类组高亮对应对象"
+    },
+    {
+      "type": "task-feedback",
+      "target": "click-task",
+      "description": "完成选择、寻找或排序任务后显示反馈"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "find",
+      "title": "找到化石证据"
+    },
+    {
+      "type": "find",
+      "title": "找到可能吃植物的恐龙"
+    },
+    {
+      "type": "explain",
+      "title": "科学家为什么要看牙齿和脚印？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "恐龙生活在很久很久以前。",
+      "我们不能直接见到它们，但可以通过化石和脚印当小侦探。"
+    ],
+    "keyFacts": [
+      "不同恐龙有不同身体特征。",
+      "牙齿、脚印、骨骼和化石能提供线索。",
+      "恐龙并不是都很凶猛，也不都吃肉。"
+    ],
+    "explainPrompt": "你能根据牙齿、脚印或身体形状猜一猜恐龙怎样生活吗？"
+  },
+  "relatedTopics": [
+    "animal-classification-tree",
+    "ecosystem",
+    "insects-and-spiders"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出至少 3 类恐龙特征",
+    "能知道化石是认识恐龙的证据",
+    "能区分“恐龙本身”和“化石证据”"
+  ],
+  "status": "building",
+  "renderPriority": 10,
+  "hero": {
+    "title": "恐龙与化石侦探站",
+    "kicker": "生命世界 · 古生物证据",
+    "lead": "恐龙离我们很远，但化石、脚印和骨骼会留下线索。",
+    "sceneExplanation": "主视觉是儿童友好的自然历史探索场景：前景是化石和脚印，背景是几类温和的原创恐龙，用身体特征帮助孩子观察分类。",
+    "childPrompt": "拿起小刷子，找一找恐龙留下的线索。",
+    "parentPrompt": "重点从“证据”理解恐龙，不要把恐龙页做成怪兽大集合。",
+    "placeholder": {
+      "type": "fossilScene",
+      "asset": "/assets/life/dinosaurs/life-dinosaurs-hero-v02.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "plant-eaters",
+      "name": "吃植物的恐龙",
+      "childExplanation": "有些恐龙脖子长、嘴巴适合吃叶子。",
+      "parentNote": "儿童版以特征观察为主，不讲严谨分类。",
+      "representativeObjects": [
+        "sauropod",
+        "triceratops"
+      ],
+      "misconception": "所有恐龙都吃肉。"
+    },
+    {
+      "id": "meat-eaters",
+      "name": "吃肉的恐龙",
+      "childExplanation": "有些恐龙有尖牙和强壮后腿。",
+      "parentNote": "保持温和，不渲染捕食。",
+      "representativeObjects": [
+        "tyranno"
+      ],
+      "misconception": "吃肉恐龙一定是坏角色。"
+    },
+    {
+      "id": "defense-bodies",
+      "name": "保护自己的身体",
+      "childExplanation": "角、甲片、尾锤可能帮助恐龙保护自己。",
+      "parentNote": "强调结构和功能关系。",
+      "representativeObjects": [
+        "triceratops",
+        "ankylosaur"
+      ],
+      "misconception": "恐龙身上的角只是装饰。"
+    },
+    {
+      "id": "evidence",
+      "name": "留下的证据",
+      "childExplanation": "骨头、脚印和化石能告诉我们过去发生过什么。",
+      "parentNote": "建立古生物学的证据意识。",
+      "representativeObjects": [
+        "fossil",
+        "footprint"
+      ],
+      "misconception": "化石就是一整只恐龙。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sauropod",
+      "name": "长脖子恐龙",
+      "groupId": "plant-eaters",
+      "childExplanation": "长长的脖子可能帮助它吃到高处的叶子。",
+      "visualHint": "长脖子、大身体、小脑袋",
+      "commonMisread": "以为大就一定凶。"
+    },
+    {
+      "id": "triceratops",
+      "name": "角龙",
+      "groupId": "defense-bodies",
+      "childExplanation": "头上的角和颈盾可能帮助它保护自己。",
+      "visualHint": "三个角和大颈盾",
+      "commonMisread": "以为角只是好看。"
+    },
+    {
+      "id": "ankylosaur",
+      "name": "甲龙",
+      "groupId": "defense-bodies",
+      "childExplanation": "背上像穿了盔甲，尾巴也可能用来防御。",
+      "visualHint": "低矮身体、甲片、尾锤",
+      "commonMisread": "把甲龙当成乌龟。"
+    },
+    {
+      "id": "tyranno",
+      "name": "尖牙肉食恐龙",
+      "groupId": "meat-eaters",
+      "childExplanation": "尖牙和强壮身体说明它可能会捕食。",
+      "visualHint": "大头、尖牙、强壮后腿",
+      "commonMisread": "以为所有肉食恐龙都只会攻击。"
+    },
+    {
+      "id": "pterosaur",
+      "name": "翼龙伙伴",
+      "groupId": "evidence",
+      "childExplanation": "翼龙不是恐龙，但常常和恐龙时代一起出现。",
+      "visualHint": "张开的翅膀",
+      "commonMisread": "以为会飞的古生物都是恐龙。"
+    },
+    {
+      "id": "fossil",
+      "name": "化石",
+      "groupId": "evidence",
+      "childExplanation": "化石是保存在岩石里的古老生命痕迹。",
+      "visualHint": "岩石里的骨头或贝壳纹",
+      "commonMisread": "以为化石一定是完整骨架。"
+    },
+    {
+      "id": "footprint",
+      "name": "脚印",
+      "groupId": "evidence",
+      "childExplanation": "脚印能告诉我们动物走过哪里、脚有多大。",
+      "visualHint": "泥地里的大脚印",
+      "commonMisread": "以为脚印不是化石证据。"
+    }
+  ],
+  "mechanism": {
+    "title": "怎样像小侦探一样认识恐龙？",
+    "steps": [
+      {
+        "id": "find-evidence",
+        "shortTitle": "发现线索",
+        "childExplanation": "科学家会寻找骨头、牙齿、脚印和蛋壳等线索。",
+        "parentNote": "让孩子知道结论来自证据。"
+      },
+      {
+        "id": "clean-carefully",
+        "shortTitle": "小心清理",
+        "childExplanation": "化石很珍贵，要用小刷子慢慢清理。",
+        "parentNote": "强调科学工作的耐心。"
+      },
+      {
+        "id": "compare-shape",
+        "shortTitle": "比较形状",
+        "childExplanation": "看牙齿、腿、角和甲片，猜它可能怎样生活。",
+        "parentNote": "对应结构—功能关系。"
+      },
+      {
+        "id": "rebuild-story",
+        "shortTitle": "拼出故事",
+        "childExplanation": "把很多线索放在一起，想象它的样子和生活环境。",
+        "parentNote": "避免把复原图当成百分百照片。"
+      },
+      {
+        "id": "update-idea",
+        "shortTitle": "发现会更新",
+        "childExplanation": "有新化石时，科学家的想法也可能更新。",
+        "parentNote": "建立科学知识可修正的观念。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "从身体特征猜生活方式",
+    "steps": [
+      {
+        "id": "teeth",
+        "shortTitle": "看牙齿",
+        "childExplanation": "尖牙可能适合咬肉，平一点的牙可能适合磨植物。",
+        "parentNote": "只做简单特征关联。"
+      },
+      {
+        "id": "legs",
+        "shortTitle": "看腿脚",
+        "childExplanation": "腿的形状能告诉我们它可能怎么走路。",
+        "parentNote": "可和脚印联系。"
+      },
+      {
+        "id": "armor",
+        "shortTitle": "看防御",
+        "childExplanation": "角、甲片和尾锤可能帮助保护自己。",
+        "parentNote": "连接生态关系，不渲染战斗。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "dinosaur-vs-fossil",
+      "title": "恐龙 vs 化石",
+      "a": {
+        "name": "恐龙",
+        "points": [
+          "曾经活着",
+          "有身体和行为",
+          "生活在很久以前"
+        ]
+      },
+      "b": {
+        "name": "化石",
+        "points": [
+          "是留下的痕迹",
+          "可能是骨头、脚印或蛋壳",
+          "帮助我们研究恐龙"
+        ]
+      },
+      "childConclusion": "化石不是活恐龙，而是认识恐龙的证据。"
+    },
+    {
+      "id": "herbivore-vs-carnivore",
+      "title": "食草 vs 食肉",
+      "a": {
+        "name": "食草恐龙",
+        "points": [
+          "常有适合吃植物的嘴和牙",
+          "有些身体很大",
+          "可能需要防御"
+        ]
+      },
+      "b": {
+        "name": "食肉恐龙",
+        "points": [
+          "常有尖牙",
+          "可能跑得快或咬合强",
+          "也是生态系统的一部分"
+        ]
+      },
+      "childConclusion": "吃什么会影响身体长什么样。"
+    },
+    {
+      "id": "bone-vs-footprint",
+      "title": "骨头化石 vs 脚印化石",
+      "a": {
+        "name": "骨头化石",
+        "points": [
+          "帮助了解身体结构",
+          "可能拼出骨架",
+          "不一定完整"
+        ]
+      },
+      "b": {
+        "name": "脚印化石",
+        "points": [
+          "帮助了解走路路线",
+          "能猜脚大小",
+          "可能显示群体活动"
+        ]
+      },
+      "childConclusion": "不同证据能告诉我们不同事情。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "dino-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪些是恐龙留下的证据？",
+      "prompt": "找到化石和脚印。",
+      "targetIds": [
+        "fossil",
+        "footprint"
+      ],
+      "decoyIds": [
+        "sauropod",
+        "triceratops",
+        "pterosaur"
+      ],
+      "wrongHint": "证据是留下来的线索，不是正在走动的恐龙。",
+      "successCopy": "对！化石和脚印都能成为线索。"
+    },
+    {
+      "id": "dino-choice-01",
+      "type": "singleChoice",
+      "title": "看到尖牙，可能说明什么？",
+      "prompt": "选择最可能的解释。",
+      "options": [
+        {
+          "id": "meat",
+          "label": "可能适合吃肉"
+        },
+        {
+          "id": "leaf",
+          "label": "一定只吃树叶"
+        },
+        {
+          "id": "toy",
+          "label": "只是装饰"
+        }
+      ],
+      "correctOptionId": "meat",
+      "wrongHints": {
+        "leaf": "吃植物的牙通常不需要那么尖。",
+        "toy": "身体结构常常和生活方式有关。"
+      },
+      "successCopy": "对！尖牙可能和捕食或吃肉有关。"
+    },
+    {
+      "id": "dino-sequence-01",
+      "type": "sequenceClick",
+      "title": "化石研究怎么做？",
+      "prompt": "按顺序点出小侦探流程。",
+      "options": [
+        {
+          "id": "find-evidence",
+          "label": "发现线索"
+        },
+        {
+          "id": "clean-carefully",
+          "label": "小心清理"
+        },
+        {
+          "id": "compare-shape",
+          "label": "比较形状"
+        },
+        {
+          "id": "rebuild-story",
+          "label": "拼出故事"
+        }
+      ],
+      "correctSequence": [
+        "find-evidence",
+        "clean-carefully",
+        "compare-shape",
+        "rebuild-story"
+      ],
+      "wrongHint": "先找到线索，再小心处理。",
+      "successCopy": "你完成了一次古生物小侦探流程！"
+    }
+  ],
+  "speakTemplates": [
+    "我看到____，它可能说明____。",
+    "化石是____留下的线索。",
+    "这种恐龙可能吃____，因为____。",
+    "科学家不是猜的，而是看____。"
+  ],
+  "parentTips": [
+    "尽量把恐龙讲成自然历史和科学证据，而不是怪兽战斗。",
+    "孩子喜欢恐龙时，可以用“牙齿、脚、尾巴、角”引导观察。",
+    "如果问“谁最厉害”，可转成“它靠什么适应生活”。"
+  ]
+}

@@ -134,25 +134,33 @@
     },
     {
       "slug": "dinosaurs",
-      "title": "恐龙世界",
+      "title": "恐龙与化石侦探站",
       "world": "life",
       "priority": "P2",
-      "pageType": "TBD",
-      "coreQuestion": "TBD",
-      "status": "planned",
-      "uiStatus": "planned",
-      "contentStatus": "planned"
+      "pageType": "fossil-detective",
+      "coreQuestion": "恐龙已经不在身边了，科学家怎么知道它们的样子和生活？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/dinosaurs/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/dinosaurs.json"
+      }
     },
     {
       "slug": "ecosystem",
-      "title": "生态系统",
+      "title": "森林池塘生态网",
       "world": "life",
       "priority": "P2",
-      "pageType": "TBD",
-      "coreQuestion": "TBD",
-      "status": "planned",
-      "uiStatus": "planned",
-      "contentStatus": "planned"
+      "pageType": "relationship-web",
+      "coreQuestion": "植物、动物、蘑菇、阳光和水之间有什么关系？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/ecosystem/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/ecosystem.json"
+      }
     },
     {
       "slug": "immune-system",
@@ -178,25 +186,33 @@
     },
     {
       "slug": "digestion",
-      "title": "消化系统",
+      "title": "食物旅行队",
       "world": "body",
       "priority": "P2",
-      "pageType": "TBD",
-      "coreQuestion": "TBD",
-      "status": "planned",
-      "uiStatus": "planned",
-      "contentStatus": "planned"
+      "pageType": "body-route",
+      "coreQuestion": "吃下去的食物在身体里经过哪些地方？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/digestion/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/digestion.json"
+      }
     },
     {
       "slug": "water-cycle",
-      "title": "水循环",
+      "title": "水循环旅行站",
       "world": "earth",
       "priority": "P2",
-      "pageType": "TBD",
-      "coreQuestion": "TBD",
-      "status": "planned",
-      "uiStatus": "planned",
-      "contentStatus": "planned"
+      "pageType": "cycle-map",
+      "coreQuestion": "水为什么会从海里跑到天上，又变成雨回到地面？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/water-cycle/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/water-cycle.json"
+      }
     },
     {
       "slug": "volcano-earthquake",
@@ -222,14 +238,18 @@
     },
     {
       "slug": "robots",
-      "title": "机器人",
+      "title": "机器人小工坊",
       "world": "humanMade",
       "priority": "P2",
-      "pageType": "TBD",
-      "coreQuestion": "TBD",
-      "status": "planned",
-      "uiStatus": "planned",
-      "contentStatus": "planned"
+      "pageType": "system-flow",
+      "coreQuestion": "机器人是不是有魔法，还是由传感器、程序和动作部件一起工作？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/robots/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/robots.json"
+      }
     },
     {
       "slug": "search-engine-kids",
@@ -244,14 +264,18 @@
     },
     {
       "slug": "moon-phases",
-      "title": "月相变化",
+      "title": "月亮变脸观察站",
       "world": "space",
       "priority": "P2",
-      "pageType": "TBD",
-      "coreQuestion": "TBD",
-      "status": "planned",
-      "uiStatus": "planned",
-      "contentStatus": "planned"
+      "pageType": "observation-cycle",
+      "coreQuestion": "月亮是真的变形了吗，还是我们看到的亮面不同？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/moon-phases/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/moon-phases.json"
+      }
     },
     {
       "slug": "asteroid-belt",

@@ -1,0 +1,348 @@
+{
+  "id": "topic-humanMade-robots",
+  "slug": "robots",
+  "title": "Robot Workshop",
+  "subtitle": "How do robots receive information, decide, and act?",
+  "coreQuestion": "Do robots use magic, or do sensors, programs, and action parts work together?",
+  "learningGoals": [
+    "Recognize robots as input, decision, action, and feedback systems.",
+    "Know that cameras, microphones, buttons, and distance sensors can receive information.",
+    "Understand that wheels, lights, and robot arms are action or feedback parts."
+  ],
+  "misconceptions": [
+    "Robots understand everything like people.",
+    "Robot movement is magic.",
+    "Any toy with a screen or motion is a robot."
+  ],
+  "hero": {
+    "title": "Robot Workshop",
+    "kicker": "Human-Made Systems World · Input and Action",
+    "lead": "A robot first sees or hears, then follows rules, and finally acts.",
+    "sceneExplanation": "The main scene is a friendly robot workbench: inputs such as camera, microphone, button, and distance sensor on the left; a program-thinking cloud in the center; lights, wheels, and a robot arm as outputs on the right.",
+    "childPrompt": "Help the robot find what it receives first and what it does next.",
+    "parentPrompt": "Build system flow without over-personifying the robot."
+  },
+  "classificationGroups": [
+    {
+      "id": "sensors",
+      "name": "Receive information",
+      "childExplanation": "Sensors are like a robot’s eyes, ears, and buttons.",
+      "parentNote": "Use receiving information instead of complex hardware terms.",
+      "representativeObjects": [
+        "camera",
+        "microphone",
+        "button",
+        "distance-sensor"
+      ],
+      "misconception": "Robots know the outside world without sensing."
+    },
+    {
+      "id": "controller",
+      "name": "Decision rules",
+      "childExplanation": "A program tells the robot what to do in different situations.",
+      "parentNote": "Compare it to a task card or traffic rule.",
+      "representativeObjects": [
+        "program"
+      ],
+      "misconception": "Robots freely think whatever they want."
+    },
+    {
+      "id": "actuators",
+      "name": "Take action",
+      "childExplanation": "Wheels, lights, and robot arms let a robot move or show a result.",
+      "parentNote": "No need to use the term actuator first.",
+      "representativeObjects": [
+        "wheel",
+        "light",
+        "robot-arm"
+      ],
+      "misconception": "Lighting and moving are the same ability."
+    },
+    {
+      "id": "feedback",
+      "name": "Check and adjust",
+      "childExplanation": "After acting, a robot can check the result again.",
+      "parentNote": "Introduce a feedback loop.",
+      "representativeObjects": [
+        "distance-sensor",
+        "program"
+      ],
+      "misconception": "Robots only act once and never check."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "camera",
+      "name": "Camera",
+      "groupId": "sensors",
+      "childExplanation": "A camera helps a robot see images.",
+      "visualHint": "round lens",
+      "commonMisread": "Thinking the camera is the brain."
+    },
+    {
+      "id": "microphone",
+      "name": "Microphone",
+      "groupId": "sensors",
+      "childExplanation": "A microphone helps a robot hear sounds.",
+      "visualHint": "small microphone",
+      "commonMisread": "Thinking robots hear without devices."
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "groupId": "sensors",
+      "childExplanation": "A button can tell the robot a human choice.",
+      "visualHint": "red round button",
+      "commonMisread": "Thinking buttons are decoration."
+    },
+    {
+      "id": "distance-sensor",
+      "name": "Distance sensor",
+      "groupId": "sensors",
+      "childExplanation": "It helps a robot know whether something is close in front.",
+      "visualHint": "two small sensor eyes",
+      "commonMisread": "Thinking it sees exactly like human eyes."
+    },
+    {
+      "id": "program",
+      "name": "Program rules",
+      "groupId": "controller",
+      "childExplanation": "A program is like task rules telling the robot what to do.",
+      "visualHint": "glowing little brain cloud",
+      "commonMisread": "Thinking a program is magic."
+    },
+    {
+      "id": "wheel",
+      "name": "Wheel",
+      "groupId": "actuators",
+      "childExplanation": "Wheels let the robot move forward, backward, or turn.",
+      "visualHint": "black little tire",
+      "commonMisread": "Thinking wheels alone make a robot."
+    },
+    {
+      "id": "light",
+      "name": "Light",
+      "groupId": "actuators",
+      "childExplanation": "Lights can show the robot’s current state.",
+      "visualHint": "yellow glowing lamp",
+      "commonMisread": "Thinking lights are only decorative."
+    },
+    {
+      "id": "robot-arm",
+      "name": "Robot arm",
+      "groupId": "actuators",
+      "childExplanation": "A robot arm can reach, grab, or push things.",
+      "visualHint": "small arm with claw",
+      "commonMisread": "Thinking it works exactly like a human hand."
+    }
+  ],
+  "mechanism": {
+    "title": "How does a robot complete a task?",
+    "steps": [
+      {
+        "id": "input",
+        "shortTitle": "Receive information",
+        "childExplanation": "A camera, microphone, button, or sensor receives information first.",
+        "parentNote": "This maps to input."
+      },
+      {
+        "id": "interpret",
+        "shortTitle": "Understand the situation",
+        "childExplanation": "The robot gives the information to the program to see what is happening.",
+        "parentNote": "Simplify as recognition or judgment."
+      },
+      {
+        "id": "decide",
+        "shortTitle": "Decide by rules",
+        "childExplanation": "The program follows task rules to decide the next step.",
+        "parentNote": "Avoid saying the robot freely thinks."
+      },
+      {
+        "id": "act",
+        "shortTitle": "Take action",
+        "childExplanation": "Wheels, lights, or a robot arm start working.",
+        "parentNote": "This maps to actuator/output."
+      },
+      {
+        "id": "feedback-loop",
+        "shortTitle": "Check again",
+        "childExplanation": "The robot can check the result and adjust if needed.",
+        "parentNote": "Introduce feedback loop."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "A simple obstacle example",
+    "steps": [
+      {
+        "id": "sense-wall",
+        "shortTitle": "Detect something close",
+        "childExplanation": "The distance sensor notices something in front.",
+        "parentNote": "Connect to sensor."
+      },
+      {
+        "id": "rule-stop",
+        "shortTitle": "Rule says stop",
+        "childExplanation": "The program says: if too close, stop.",
+        "parentNote": "Connect to program."
+      },
+      {
+        "id": "wheel-stop",
+        "shortTitle": "Wheels stop",
+        "childExplanation": "The wheels stop turning so the robot does not bump into it.",
+        "parentNote": "Connect to action part."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "sensor-vs-actuator",
+      "title": "Sensor vs Action part",
+      "a": {
+        "name": "Sensor",
+        "points": [
+          "receives information",
+          "input gateway",
+          "camera, microphone, and button can be inputs"
+        ]
+      },
+      "b": {
+        "name": "Action part",
+        "points": [
+          "does something",
+          "turns a decision into a result",
+          "wheels, lights, and arms act"
+        ]
+      },
+      "childConclusion": "Sensors know; action parts do."
+    },
+    {
+      "id": "program-vs-magic",
+      "title": "Program vs Magic",
+      "a": {
+        "name": "Program",
+        "points": [
+          "has rules",
+          "can be designed by people",
+          "same input often gives same action"
+        ]
+      },
+      "b": {
+        "name": "Magic",
+        "points": [
+          "no clear rule",
+          "not repeatable",
+          "not an engineering explanation"
+        ]
+      },
+      "childConclusion": "Robots work through programs and parts, not magic."
+    },
+    {
+      "id": "robot-vs-remote-toy",
+      "title": "Robot vs Remote toy",
+      "a": {
+        "name": "Robot",
+        "points": [
+          "can receive information",
+          "can follow rules",
+          "may act automatically"
+        ]
+      },
+      "b": {
+        "name": "Remote toy",
+        "points": [
+          "mostly follows human remote control",
+          "may not judge the environment",
+          "simpler movement"
+        ]
+      },
+      "childConclusion": "Moving is not enough; sensing and rule-based action matter."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "robot-sequence-01",
+      "title": "What is the order of a robot task?",
+      "prompt": "Tap from receiving information to acting.",
+      "options": [
+        {
+          "id": "input",
+          "label": "Receive information"
+        },
+        {
+          "id": "interpret",
+          "label": "Understand situation"
+        },
+        {
+          "id": "decide",
+          "label": "Decide by rules"
+        },
+        {
+          "id": "act",
+          "label": "Take action"
+        }
+      ],
+      "wrongHint": "A robot must know what happened before it acts.",
+      "successCopy": "You arranged the basic robot workflow!"
+    },
+    {
+      "id": "robot-find-01",
+      "title": "Find: which parts receive information?",
+      "prompt": "Find the parts that can receive outside information.",
+      "wrongHint": "Is it knowing information or doing an action?",
+      "successCopy": "Correct! These parts help the robot receive information."
+    },
+    {
+      "id": "robot-choice-01",
+      "title": "What do robots not rely on?",
+      "prompt": "Choose the least accurate explanation.",
+      "options": [
+        {
+          "id": "magic",
+          "label": "Magic"
+        },
+        {
+          "id": "sensors-program",
+          "label": "Sensors and programs"
+        },
+        {
+          "id": "wheels-arm",
+          "label": "Wheels and robot arms"
+        }
+      ],
+      "wrongHints": {
+        "sensors-program": "Sensors and programs are key to robot work.",
+        "wheels-arm": "Wheels and arms help robots act."
+      },
+      "successCopy": "Right! Robots do not work by magic."
+    }
+  ],
+  "speakTemplates": [
+    "A robot first uses ____ to receive information.",
+    "A program is like ____ that tells the robot what to do.",
+    "Wheels and robot arms are ____ parts.",
+    "A robot task often goes: ____, ____, ____."
+  ],
+  "parentTips": [
+    "Use home examples like robot vacuums, automatic doors, or voice lights.",
+    "Avoid saying robots truly understand everything; say they process information by rules.",
+    "If interested, ask the child to draw an input-decision-action flow."
+  ],
+  "copy": {
+    "intro": [
+      "Robots do not work by magic.",
+      "They receive information, follow program rules, and act with wheels, lights, or robot arms."
+    ],
+    "keyFacts": [
+      "Sensors help robots receive outside information.",
+      "Programs are like task rules for deciding the next step.",
+      "Action parts let robots move, light up, grab, or make sounds."
+    ],
+    "explainPrompt": "Can you describe a robot process: see, decide, and move?"
+  },
+  "acceptanceCriteria": [
+    "The child can name input, decision, and action.",
+    "The child can distinguish sensors from action parts.",
+    "The child can explain robot work without using magic."
+  ]
+}

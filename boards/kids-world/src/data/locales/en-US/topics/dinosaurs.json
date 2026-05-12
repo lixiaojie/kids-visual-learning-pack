@@ -1,0 +1,337 @@
+{
+  "id": "topic-life-dinosaurs",
+  "slug": "dinosaurs",
+  "title": "Dinosaur and Fossil Detective Station",
+  "subtitle": "How do we learn about dinosaurs from long ago?",
+  "coreQuestion": "Dinosaurs are no longer around, so how do scientists know what they looked like and how they lived?",
+  "learningGoals": [
+    "Recognize different dinosaur body features.",
+    "Know fossils and footprints are evidence about ancient life.",
+    "Begin distinguishing plant-eating, meat-eating, and defensive features."
+  ],
+  "misconceptions": [
+    "All dinosaurs lived at the same time and place.",
+    "All dinosaurs were fierce.",
+    "A fossil always means a complete skeleton."
+  ],
+  "hero": {
+    "title": "Dinosaur and Fossil Detective Station",
+    "kicker": "Life World · Ancient Evidence",
+    "lead": "Dinosaurs are far away in time, but fossils, footprints, and bones leave clues.",
+    "sceneExplanation": "The main scene is a child-friendly natural history exploration: fossils and footprints in the foreground, with a few gentle original dinosaurs in the background for feature observation.",
+    "childPrompt": "Pick up the little brush and find the clues dinosaurs left behind.",
+    "parentPrompt": "Focus on evidence, not monster battles or crowded dinosaur scenes."
+  },
+  "classificationGroups": [
+    {
+      "id": "plant-eaters",
+      "name": "Plant-eating dinosaurs",
+      "childExplanation": "Some dinosaurs had long necks or mouths suited for eating leaves.",
+      "parentNote": "Focus on feature observation, not formal taxonomy.",
+      "representativeObjects": [
+        "sauropod",
+        "triceratops"
+      ],
+      "misconception": "All dinosaurs ate meat."
+    },
+    {
+      "id": "meat-eaters",
+      "name": "Meat-eating dinosaurs",
+      "childExplanation": "Some dinosaurs had sharp teeth and strong back legs.",
+      "parentNote": "Keep it gentle; do not dramatize hunting.",
+      "representativeObjects": [
+        "tyranno"
+      ],
+      "misconception": "Meat-eaters are always villains."
+    },
+    {
+      "id": "defense-bodies",
+      "name": "Bodies for protection",
+      "childExplanation": "Horns, armor plates, and tail clubs may help protection.",
+      "parentNote": "Highlight structure and function.",
+      "representativeObjects": [
+        "triceratops",
+        "ankylosaur"
+      ],
+      "misconception": "Horns are only decoration."
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence left behind",
+      "childExplanation": "Bones, footprints, and fossils tell us about the past.",
+      "parentNote": "Build scientific evidence awareness.",
+      "representativeObjects": [
+        "fossil",
+        "footprint"
+      ],
+      "misconception": "A fossil is a whole dinosaur."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sauropod",
+      "name": "Long-neck dinosaur",
+      "groupId": "plant-eaters",
+      "childExplanation": "A long neck may help it reach high leaves.",
+      "visualHint": "long neck, big body, small head",
+      "commonMisread": "Thinking big always means fierce."
+    },
+    {
+      "id": "triceratops",
+      "name": "Horned dinosaur",
+      "groupId": "defense-bodies",
+      "childExplanation": "Horns and a frill may help protect it.",
+      "visualHint": "three horns and a large frill",
+      "commonMisread": "Thinking horns are just decoration."
+    },
+    {
+      "id": "ankylosaur",
+      "name": "Armored dinosaur",
+      "groupId": "defense-bodies",
+      "childExplanation": "Armor-like plates and a tail club may help defense.",
+      "visualHint": "low body, plates, tail club",
+      "commonMisread": "Mistaking it for a turtle."
+    },
+    {
+      "id": "tyranno",
+      "name": "Toothy meat-eater",
+      "groupId": "meat-eaters",
+      "childExplanation": "Sharp teeth and a strong body suggest it may hunt.",
+      "visualHint": "large head, sharp teeth, strong legs",
+      "commonMisread": "Thinking every meat-eater only attacks."
+    },
+    {
+      "id": "pterosaur",
+      "name": "Flying ancient partner",
+      "groupId": "evidence",
+      "childExplanation": "Pterosaurs were not dinosaurs, but often appear in dinosaur-age scenes.",
+      "visualHint": "wide wings",
+      "commonMisread": "Thinking every flying ancient animal was a dinosaur."
+    },
+    {
+      "id": "fossil",
+      "name": "Fossil",
+      "groupId": "evidence",
+      "childExplanation": "A fossil is an old trace of life kept in rock.",
+      "visualHint": "bone or shell mark in stone",
+      "commonMisread": "Thinking fossils must be complete skeletons."
+    },
+    {
+      "id": "footprint",
+      "name": "Footprint",
+      "groupId": "evidence",
+      "childExplanation": "Footprints can show where animals walked and how big their feet were.",
+      "visualHint": "large print in mud",
+      "commonMisread": "Thinking footprints are not fossil evidence."
+    }
+  ],
+  "mechanism": {
+    "title": "How do we learn like dinosaur detectives?",
+    "steps": [
+      {
+        "id": "find-evidence",
+        "shortTitle": "Find clues",
+        "childExplanation": "Scientists look for bones, teeth, footprints, eggshells, and other clues.",
+        "parentNote": "Conclusions come from evidence."
+      },
+      {
+        "id": "clean-carefully",
+        "shortTitle": "Clean carefully",
+        "childExplanation": "Fossils are precious and must be cleaned slowly with small tools.",
+        "parentNote": "Show patience in science."
+      },
+      {
+        "id": "compare-shape",
+        "shortTitle": "Compare shapes",
+        "childExplanation": "Teeth, legs, horns, and armor help us guess how it lived.",
+        "parentNote": "Structure connects to function."
+      },
+      {
+        "id": "rebuild-story",
+        "shortTitle": "Build the story",
+        "childExplanation": "Many clues together help imagine the animal and its environment.",
+        "parentNote": "Reconstructions are not perfect photos."
+      },
+      {
+        "id": "update-idea",
+        "shortTitle": "Ideas can update",
+        "childExplanation": "New fossils can change scientific ideas.",
+        "parentNote": "Science can revise itself."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "Guessing lifestyle from body features",
+    "steps": [
+      {
+        "id": "teeth",
+        "shortTitle": "Look at teeth",
+        "childExplanation": "Sharp teeth may suit meat; flatter teeth may suit plants.",
+        "parentNote": "Keep the link simple."
+      },
+      {
+        "id": "legs",
+        "shortTitle": "Look at legs",
+        "childExplanation": "Leg shape can suggest how it moved.",
+        "parentNote": "Connect to footprints."
+      },
+      {
+        "id": "armor",
+        "shortTitle": "Look at defense",
+        "childExplanation": "Horns, armor, and tail clubs may help protection.",
+        "parentNote": "Connect to ecosystems, not battles."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "dinosaur-vs-fossil",
+      "title": "Dinosaur vs Fossil",
+      "a": {
+        "name": "Dinosaur",
+        "points": [
+          "was once alive",
+          "had a body and behavior",
+          "lived long ago"
+        ]
+      },
+      "b": {
+        "name": "Fossil",
+        "points": [
+          "is a trace left behind",
+          "may be bone, footprint, or eggshell",
+          "helps us study dinosaurs"
+        ]
+      },
+      "childConclusion": "A fossil is not a living dinosaur; it is evidence."
+    },
+    {
+      "id": "herbivore-vs-carnivore",
+      "title": "Plant-eater vs Meat-eater",
+      "a": {
+        "name": "Plant-eater",
+        "points": [
+          "mouth and teeth suited for plants",
+          "some were very large",
+          "may need protection"
+        ]
+      },
+      "b": {
+        "name": "Meat-eater",
+        "points": [
+          "often has sharp teeth",
+          "may run or bite strongly",
+          "part of an ecosystem"
+        ]
+      },
+      "childConclusion": "What an animal eats can shape its body."
+    },
+    {
+      "id": "bone-vs-footprint",
+      "title": "Bone fossil vs Footprint fossil",
+      "a": {
+        "name": "Bone fossil",
+        "points": [
+          "shows body structure",
+          "may help build a skeleton",
+          "not always complete"
+        ]
+      },
+      "b": {
+        "name": "Footprint fossil",
+        "points": [
+          "shows walking paths",
+          "helps estimate foot size",
+          "may show group movement"
+        ]
+      },
+      "childConclusion": "Different evidence tells different stories."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "dino-find-01",
+      "title": "Find: what evidence did dinosaurs leave?",
+      "prompt": "Find the fossil and footprint.",
+      "wrongHint": "Evidence is a clue left behind, not a walking dinosaur.",
+      "successCopy": "Correct! Fossils and footprints can both be clues."
+    },
+    {
+      "id": "dino-choice-01",
+      "title": "What might sharp teeth suggest?",
+      "prompt": "Choose the most likely explanation.",
+      "options": [
+        {
+          "id": "meat",
+          "label": "May be suited for eating meat"
+        },
+        {
+          "id": "leaf",
+          "label": "Definitely only eats leaves"
+        },
+        {
+          "id": "toy",
+          "label": "Just decoration"
+        }
+      ],
+      "wrongHints": {
+        "leaf": "Plant-eating teeth usually do not need to be so sharp.",
+        "toy": "Body structures often relate to lifestyle."
+      },
+      "successCopy": "Right! Sharp teeth may relate to hunting or eating meat."
+    },
+    {
+      "id": "dino-sequence-01",
+      "title": "How does fossil research happen?",
+      "prompt": "Tap the detective steps in order.",
+      "options": [
+        {
+          "id": "find-evidence",
+          "label": "Find clues"
+        },
+        {
+          "id": "clean-carefully",
+          "label": "Clean carefully"
+        },
+        {
+          "id": "compare-shape",
+          "label": "Compare shapes"
+        },
+        {
+          "id": "rebuild-story",
+          "label": "Build the story"
+        }
+      ],
+      "wrongHint": "Find the clue first, then handle it carefully.",
+      "successCopy": "You completed a paleontology detective workflow!"
+    }
+  ],
+  "speakTemplates": [
+    "I see ____, so it may mean _____.",
+    "A fossil is a clue left by _____.",
+    "This dinosaur may eat _____ because _____.",
+    "Scientists do not just guess; they look at _____."
+  ],
+  "parentTips": [
+    "Frame dinosaurs as natural history and evidence, not monster fighting.",
+    "Use teeth, feet, tail, and horns to guide observation.",
+    "If the child asks who is strongest, ask what helped each dinosaur survive."
+  ],
+  "copy": {
+    "intro": [
+      "Dinosaurs lived a very long time ago.",
+      "We cannot meet them directly, but fossils and footprints let us become detectives."
+    ],
+    "keyFacts": [
+      "Different dinosaurs had different body features.",
+      "Teeth, footprints, bones, and fossils provide clues.",
+      "Not all dinosaurs were fierce or meat-eating."
+    ],
+    "explainPrompt": "Can you use teeth, footprints, or body shape to guess how a dinosaur lived?"
+  },
+  "acceptanceCriteria": [
+    "The child can name at least three dinosaur feature types.",
+    "The child knows fossils are evidence for learning about dinosaurs.",
+    "The child can distinguish dinosaurs from fossil evidence."
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "id": "topic-earth-water-cycle",
+  "slug": "water-cycle",
+  "title": "水循环旅行站",
+  "subtitle": "一滴水会怎样在地球上旅行？",
+  "world": "earth",
+  "priority": "P1",
+  "ageRange": "5-8",
+  "pageType": "cycle-map",
+  "coreQuestion": "水为什么会从海里跑到天上，又变成雨回到地面？",
+  "learningGoals": [
+    "知道水循环包含蒸发、凝结、降水和回流",
+    "理解太阳能推动水从地面和海面变成水汽",
+    "能把云、雨、河流、大海放进同一个循环关系里"
+  ],
+  "misconceptions": [
+    "云是棉花做的",
+    "雨是云里装满水以后漏下来",
+    "水用完就消失了"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/earth/water-cycle/earth-water-cycle-hero-v02.webp",
+      "purpose": "水循环：主视觉",
+      "status": "ready"
+    },
+    "cards": {
+      "path": "/assets/earth/water-cycle/earth-water-cycle-object-icons-v02.webp",
+      "purpose": "水循环：对象/分类图标",
+      "status": "ready"
+    },
+    "mechanism": {
+      "path": "/assets/earth/water-cycle/earth-water-cycle-mechanism-v02.webp",
+      "purpose": "水循环：机制流程图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/earth/water-cycle/earth-water-cycle-compare-v02.webp",
+      "purpose": "水循环：概念对比图",
+      "status": "ready"
+    },
+    "clickTask": {
+      "path": "/assets/earth/water-cycle/earth-water-cycle-click-task-v02.webp",
+      "purpose": "水循环：互动任务背景图",
+      "status": "ready"
+    },
+    "parentGuide": {
+      "path": "/assets/earth/water-cycle/earth-water-cycle-parent-guide-v02.webp",
+      "purpose": "水循环：亲子共读引导图",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "representative-object",
+      "description": "点击对象卡片展开儿童解释和视觉提示"
+    },
+    {
+      "type": "highlight",
+      "target": "classification-group",
+      "description": "点击分类组高亮对应对象"
+    },
+    {
+      "type": "task-feedback",
+      "target": "click-task",
+      "description": "完成选择、寻找或排序任务后显示反馈"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "sequence",
+      "title": "按顺序说出一滴水的旅行路线",
+      "items": [
+        "海面受热",
+        "水汽上升",
+        "云形成",
+        "雨落下",
+        "水流回河流和大海"
+      ]
+    },
+    {
+      "type": "find",
+      "title": "找到让水循环动起来的太阳"
+    },
+    {
+      "type": "explain",
+      "title": "为什么水不是用完就没有了？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "水会在地球上不断旅行。",
+      "太阳、海洋、云、雨、河流和植物都在这场旅行里。"
+    ],
+    "keyFacts": [
+      "太阳让水变成看不见的水汽。",
+      "水汽在天空聚在一起形成云。",
+      "雨水落到地面后，会流进河流、大海，也会被植物使用。"
+    ],
+    "explainPrompt": "你能跟着一滴水，说出它从大海到天空再回来的路线吗？"
+  },
+  "relatedTopics": [
+    "earth-climate-cities",
+    "ecosystem",
+    "moon-phases"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出水循环至少 3 个步骤",
+    "能知道太阳会帮助水蒸发",
+    "能用箭头描述水回到河流或大海"
+  ],
+  "status": "building",
+  "renderPriority": 7,
+  "hero": {
+    "title": "水循环旅行站",
+    "kicker": "地球世界 · 循环地图",
+    "lead": "一滴水会从海面出发，去天空变成云，再变成雨回到地面。",
+    "sceneExplanation": "主视觉是一张环形水滴路径：太阳照到海面，水汽升起，天空形成云，雨水落到山地和植物上，最后沿着河流回到大海。",
+    "childPrompt": "从大海出发，帮一滴水找到回家的路线。",
+    "parentPrompt": "重点让孩子理解“循环”和“变化状态”，不要急着讲复杂气象术语。",
+    "placeholder": {
+      "type": "cycleMap",
+      "asset": "/assets/earth/water-cycle/earth-water-cycle-hero-v02.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "water-places",
+      "name": "水待过的地方",
+      "childExplanation": "水可以在大海、河流、土壤和植物里。",
+      "parentNote": "帮助孩子先建立水在不同地方出现的空间感。",
+      "representativeObjects": [
+        "ocean",
+        "river",
+        "plant"
+      ],
+      "misconception": "水只存在于杯子或水龙头里。"
+    },
+    {
+      "id": "sky-process",
+      "name": "天空里的变化",
+      "childExplanation": "水汽会升到天空，聚成云，再变成雨。",
+      "parentNote": "把蒸发、凝结、降水用儿童语言串起来。",
+      "representativeObjects": [
+        "water-vapor",
+        "cloud",
+        "rain"
+      ],
+      "misconception": "云是棉花，雨是云破了。"
+    },
+    {
+      "id": "energy-driver",
+      "name": "推动旅行的力量",
+      "childExplanation": "太阳给水加一点热，让水可以变成水汽往上跑。",
+      "parentNote": "不讲热力学，只讲太阳提供能量。",
+      "representativeObjects": [
+        "sun"
+      ],
+      "misconception": "水自己突然飞到天空。"
+    },
+    {
+      "id": "return-path",
+      "name": "回到地面的路",
+      "childExplanation": "雨落下来以后，会流进小溪、河流和大海。",
+      "parentNote": "引出地表径流和回流。",
+      "representativeObjects": [
+        "rain",
+        "river",
+        "ocean"
+      ],
+      "misconception": "雨水落下后就不再参与循环。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "太阳",
+      "groupId": "energy-driver",
+      "childExplanation": "太阳把地面和海面的水晒暖，让一部分水变成水汽。",
+      "visualHint": "明亮的圆太阳",
+      "commonMisread": "以为水循环不需要太阳。"
+    },
+    {
+      "id": "ocean",
+      "name": "大海",
+      "groupId": "water-places",
+      "childExplanation": "大海里有很多水，是水循环的重要出发点。",
+      "visualHint": "一大片蓝色水面",
+      "commonMisread": "以为海水不会参与下雨。"
+    },
+    {
+      "id": "water-vapor",
+      "name": "水汽",
+      "groupId": "sky-process",
+      "childExplanation": "水汽很轻，常常看不见，会往天空跑。",
+      "visualHint": "往上飘的透明小线条",
+      "commonMisread": "看不见就以为不存在。"
+    },
+    {
+      "id": "cloud",
+      "name": "云",
+      "groupId": "sky-process",
+      "childExplanation": "云里有很多小水滴或小冰晶。",
+      "visualHint": "白白软软但里面有小水滴",
+      "commonMisread": "以为云是棉花。"
+    },
+    {
+      "id": "rain",
+      "name": "雨",
+      "groupId": "sky-process",
+      "childExplanation": "小水滴变大变重，就会从云里落下来。",
+      "visualHint": "从云下落的小水滴",
+      "commonMisread": "以为雨是云直接碎掉。"
+    },
+    {
+      "id": "river",
+      "name": "河流",
+      "groupId": "return-path",
+      "childExplanation": "雨水会汇成小溪和河流，继续流动。",
+      "visualHint": "弯弯的蓝色水带",
+      "commonMisread": "以为河流的水不会回到大海。"
+    },
+    {
+      "id": "plant",
+      "name": "植物",
+      "groupId": "water-places",
+      "childExplanation": "植物会吸收水，也会把一部分水送回空气里。",
+      "visualHint": "带根的小绿苗",
+      "commonMisread": "以为植物只喝水，不会影响空气里的水。"
+    }
+  ],
+  "mechanism": {
+    "title": "一滴水的循环旅行",
+    "steps": [
+      {
+        "id": "evaporation",
+        "shortTitle": "被太阳晒暖",
+        "childExplanation": "海面和地面的水被太阳晒暖，一部分变成水汽。",
+        "parentNote": "对应蒸发，可解释为水从液体变成看不见的水汽。"
+      },
+      {
+        "id": "rising",
+        "shortTitle": "水汽往上跑",
+        "childExplanation": "轻轻的水汽升到天空，和空气一起移动。",
+        "parentNote": "不展开气流，只讲水汽进入空气。"
+      },
+      {
+        "id": "condensation",
+        "shortTitle": "聚成云",
+        "childExplanation": "水汽遇到冷一点的空气，会聚成很多小水滴，形成云。",
+        "parentNote": "对应凝结，是云的关键形成过程。"
+      },
+      {
+        "id": "precipitation",
+        "shortTitle": "变成雨落下",
+        "childExplanation": "小水滴变大变重，就会变成雨落回地面。",
+        "parentNote": "可扩展为雨、雪、冰雹等降水。"
+      },
+      {
+        "id": "collection",
+        "shortTitle": "流回大海",
+        "childExplanation": "雨水进入土壤、小溪、河流，最后很多水又回到大海。",
+        "parentNote": "建立闭环而不是单向流程。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "植物也参与水循环",
+    "steps": [
+      {
+        "id": "plant-drink",
+        "shortTitle": "根吸水",
+        "childExplanation": "植物的根会从土壤里吸水。",
+        "parentNote": "可联系家里浇花。"
+      },
+      {
+        "id": "plant-release",
+        "shortTitle": "叶子送水汽",
+        "childExplanation": "叶子会把一些水变成水汽送回空气。",
+        "parentNote": "儿童版蒸腾，不要求记名词。"
+      },
+      {
+        "id": "plant-cool",
+        "shortTitle": "让环境更舒服",
+        "childExplanation": "植物多的地方，空气常常更湿润、更凉快。",
+        "parentNote": "连接生态系统与城市气候。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "cloud-vs-cotton",
+      "title": "云 vs 棉花",
+      "a": {
+        "name": "云",
+        "points": [
+          "由许多小水滴或小冰晶组成",
+          "会移动和变化",
+          "可能带来雨雪"
+        ]
+      },
+      "b": {
+        "name": "棉花",
+        "points": [
+          "是一种植物纤维",
+          "可以拿在手里",
+          "不会变成雨"
+        ]
+      },
+      "childConclusion": "云看起来软软的，但不是棉花。"
+    },
+    {
+      "id": "evaporation-vs-boiling",
+      "title": "蒸发 vs 烧开",
+      "a": {
+        "name": "蒸发",
+        "points": [
+          "水慢慢变成水汽",
+          "可以在海面和地面发生",
+          "不一定冒大泡泡"
+        ]
+      },
+      "b": {
+        "name": "烧开",
+        "points": [
+          "水被加热到很热",
+          "会冒泡泡",
+          "通常发生在锅里"
+        ]
+      },
+      "childConclusion": "海水不需要烧开，也能慢慢变成水汽。"
+    },
+    {
+      "id": "river-vs-ocean",
+      "title": "河流 vs 大海",
+      "a": {
+        "name": "河流",
+        "points": [
+          "在陆地上流动",
+          "常常从高处流向低处",
+          "会把水带向湖泊或大海"
+        ]
+      },
+      "b": {
+        "name": "大海",
+        "points": [
+          "非常大",
+          "是很多水聚集的地方",
+          "会被太阳晒出水汽"
+        ]
+      },
+      "childConclusion": "河流和大海连接在同一个循环里。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "water-sequence-01",
+      "type": "sequenceClick",
+      "title": "帮一滴水按顺序旅行",
+      "prompt": "从海面开始，点出水循环路线。",
+      "options": [
+        {
+          "id": "ocean",
+          "label": "大海"
+        },
+        {
+          "id": "water-vapor",
+          "label": "水汽"
+        },
+        {
+          "id": "cloud",
+          "label": "云"
+        },
+        {
+          "id": "rain",
+          "label": "雨"
+        },
+        {
+          "id": "river",
+          "label": "河流"
+        }
+      ],
+      "correctSequence": [
+        "ocean",
+        "water-vapor",
+        "cloud",
+        "rain",
+        "river"
+      ],
+      "wrongHint": "先想一想：水从哪里被太阳晒起来？",
+      "successCopy": "太好了！你帮一滴水完成了循环旅行。"
+    },
+    {
+      "id": "water-find-01",
+      "type": "findTarget",
+      "title": "找一找：谁让水开始往天空跑？",
+      "prompt": "找到推动水循环的重要能量来源。",
+      "targetIds": [
+        "sun"
+      ],
+      "decoyIds": [
+        "cloud",
+        "river",
+        "plant"
+      ],
+      "wrongHint": "它又亮又暖，会把水晒成水汽。",
+      "successCopy": "对！太阳给水循环提供能量。"
+    },
+    {
+      "id": "water-choice-01",
+      "type": "singleChoice",
+      "title": "云主要是什么组成的？",
+      "prompt": "选择最准确的答案。",
+      "options": [
+        {
+          "id": "tiny-water",
+          "label": "很多小水滴或小冰晶"
+        },
+        {
+          "id": "cotton",
+          "label": "棉花"
+        },
+        {
+          "id": "smoke",
+          "label": "烟"
+        }
+      ],
+      "correctOptionId": "tiny-water",
+      "wrongHints": {
+        "cotton": "云看起来像棉花，但不是棉花。",
+        "smoke": "云不是烟，而是和水有关。"
+      },
+      "successCopy": "对！云里有很多小水滴或小冰晶。"
+    }
+  ],
+  "speakTemplates": [
+    "水从____变成____，升到天空。",
+    "云里有很多____。",
+    "雨落下来以后，会流进____。",
+    "水循环不是一条直线，而是一个____。"
+  ],
+  "parentTips": [
+    "可以用洗澡后的镜子、水杯外的小水珠、锅盖上的水珠帮助孩子理解状态变化。",
+    "不要强迫孩子记“蒸发、凝结、降水”术语，先让他能讲完整故事。",
+    "可以让孩子画一条箭头，把太阳、海、云、雨、河连起来。"
+  ]
+}

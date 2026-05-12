@@ -15,7 +15,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-echo "==> skipping PNG pair check (PNGs excluded from repo, only WebP deployed)"
+echo "==> checking local PNG/WebP asset pairs"
+node scripts/check-image-assets.mjs
 
 echo "==> cleaning dist/"
 rm -rf dist

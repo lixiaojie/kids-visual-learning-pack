@@ -1,0 +1,489 @@
+{
+  "id": "topic-body-digestion",
+  "slug": "digestion",
+  "title": "食物旅行队",
+  "subtitle": "一口食物怎样变成身体能用的能量？",
+  "world": "body",
+  "priority": "P1",
+  "ageRange": "5-8",
+  "pageType": "body-route",
+  "coreQuestion": "吃下去的食物在身体里经过哪些地方？",
+  "learningGoals": [
+    "知道消化是一条路线，不是只有胃在工作",
+    "认识嘴巴、食道、胃、小肠、大肠的基本顺序",
+    "理解食物会被分解、吸收，帮助身体获得能量"
+  ],
+  "misconceptions": [
+    "消化只发生在胃里",
+    "食物直接在肚子里消失",
+    "身体里面越真实越科学"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/body/digestion/body-digestion-hero-v02.webp",
+      "purpose": "消化系统：主视觉",
+      "status": "ready"
+    },
+    "cards": {
+      "path": "/assets/body/digestion/body-digestion-object-icons-v02.webp",
+      "purpose": "消化系统：对象/分类图标",
+      "status": "ready"
+    },
+    "mechanism": {
+      "path": "/assets/body/digestion/body-digestion-mechanism-v02.webp",
+      "purpose": "消化系统：机制流程图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/body/digestion/body-digestion-compare-v02.webp",
+      "purpose": "消化系统：概念对比图",
+      "status": "ready"
+    },
+    "clickTask": {
+      "path": "/assets/body/digestion/body-digestion-click-task-v02.webp",
+      "purpose": "消化系统：互动任务背景图",
+      "status": "ready"
+    },
+    "parentGuide": {
+      "path": "/assets/body/digestion/body-digestion-parent-guide-v02.webp",
+      "purpose": "消化系统：亲子共读引导图",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "representative-object",
+      "description": "点击对象卡片展开儿童解释和视觉提示"
+    },
+    {
+      "type": "highlight",
+      "target": "classification-group",
+      "description": "点击分类组高亮对应对象"
+    },
+    {
+      "type": "task-feedback",
+      "target": "click-task",
+      "description": "完成选择、寻找或排序任务后显示反馈"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "sequence",
+      "title": "按顺序排列食物旅行站",
+      "items": [
+        "嘴巴",
+        "食道",
+        "胃",
+        "小肠",
+        "大肠"
+      ]
+    },
+    {
+      "type": "find",
+      "title": "找到主要吸收营养的小肠"
+    },
+    {
+      "type": "explain",
+      "title": "为什么吃饭能让身体有力气？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "食物进入身体后，会像坐上一辆小火车。",
+      "它会经过不同站点，变成身体可以使用的营养和能量。"
+    ],
+    "keyFacts": [
+      "牙齿先把食物咬小。",
+      "食道把食物送到胃。",
+      "小肠负责吸收很多营养。",
+      "大肠整理剩下的东西。"
+    ],
+    "explainPrompt": "你能按顺序说出食物旅行经过的身体站点吗？"
+  },
+  "relatedTopics": [
+    "blood-cells-3d",
+    "immune-system",
+    "heart"
+  ],
+  "acceptanceCriteria": [
+    "孩子能按顺序说出嘴巴、食道、胃、小肠、大肠",
+    "能知道消化不是只有胃在做事",
+    "能用“变小、吸收、变成能量”解释食物旅行"
+  ],
+  "status": "building",
+  "renderPriority": 8,
+  "hero": {
+    "title": "食物旅行队",
+    "kicker": "身体世界 · 路线图",
+    "lead": "食物不是一下子消失，而是沿着身体里的路线慢慢旅行。",
+    "sceneExplanation": "主视觉是一条温和、图标化的身体路线：从嘴巴开始，经食道到胃，再到小肠和大肠，最后把营养变成能量小星星。",
+    "childPrompt": "从嘴巴出发，帮一口食物找到下一站。",
+    "parentPrompt": "这页只建立顺序和功能，不做写实解剖展示。",
+    "placeholder": {
+      "type": "bodyRoute",
+      "asset": "/assets/body/digestion/body-digestion-hero-v02.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "entry",
+      "name": "入口和准备",
+      "childExplanation": "嘴巴和牙齿先把食物变小。",
+      "parentNote": "强调咀嚼是消化的第一步。",
+      "representativeObjects": [
+        "mouth",
+        "teeth",
+        "saliva"
+      ],
+      "misconception": "食物吞下去才开始消化。"
+    },
+    {
+      "id": "transport",
+      "name": "运送通道",
+      "childExplanation": "食道像一条软软的通道，把食物送到胃。",
+      "parentNote": "避免把食道讲成空气通道。",
+      "representativeObjects": [
+        "esophagus"
+      ],
+      "misconception": "食物直接掉进肚子里。"
+    },
+    {
+      "id": "breakdown",
+      "name": "搅拌和分解",
+      "childExplanation": "胃会把食物继续搅拌、变软、变小。",
+      "parentNote": "用搅拌袋或小厨房比喻即可。",
+      "representativeObjects": [
+        "stomach"
+      ],
+      "misconception": "胃一个器官完成全部消化。"
+    },
+    {
+      "id": "absorb-and-sort",
+      "name": "吸收和整理",
+      "childExplanation": "小肠吸收营养，大肠整理剩下的东西。",
+      "parentNote": "强调功能差异，不讲复杂酶和菌群。",
+      "representativeObjects": [
+        "small-intestine",
+        "large-intestine",
+        "energy"
+      ],
+      "misconception": "肠子只是装东西的管子。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "mouth",
+      "name": "嘴巴",
+      "groupId": "entry",
+      "childExplanation": "食物旅行从嘴巴开始。",
+      "visualHint": "张开的友好嘴巴图标",
+      "commonMisread": "以为嘴巴只负责吃，不参与消化。"
+    },
+    {
+      "id": "teeth",
+      "name": "牙齿",
+      "groupId": "entry",
+      "childExplanation": "牙齿把食物咬小，方便后面继续处理。",
+      "visualHint": "圆润白色牙齿",
+      "commonMisread": "随便嚼几下也一样。"
+    },
+    {
+      "id": "saliva",
+      "name": "口水",
+      "groupId": "entry",
+      "childExplanation": "口水会让食物变湿、变软。",
+      "visualHint": "小水滴和食物碎片",
+      "commonMisread": "觉得口水和消化没关系。"
+    },
+    {
+      "id": "esophagus",
+      "name": "食道",
+      "groupId": "transport",
+      "childExplanation": "食道把食物从嘴巴送到胃。",
+      "visualHint": "一条柔和的弯管",
+      "commonMisread": "和气管混在一起。"
+    },
+    {
+      "id": "stomach",
+      "name": "胃",
+      "groupId": "breakdown",
+      "childExplanation": "胃会搅拌食物，让它变得更软更小。",
+      "visualHint": "粉色圆润胃袋",
+      "commonMisread": "以为胃把所有营养都吸收完。"
+    },
+    {
+      "id": "small-intestine",
+      "name": "小肠",
+      "groupId": "absorb-and-sort",
+      "childExplanation": "小肠会吸收很多身体需要的营养。",
+      "visualHint": "细细弯弯的路线",
+      "commonMisread": "以为小肠因为名字小就不重要。"
+    },
+    {
+      "id": "large-intestine",
+      "name": "大肠",
+      "groupId": "absorb-and-sort",
+      "childExplanation": "大肠会整理剩下的东西，也会吸收一些水分。",
+      "visualHint": "更粗的绿色路线",
+      "commonMisread": "以为大肠只负责排出。"
+    },
+    {
+      "id": "energy",
+      "name": "能量",
+      "groupId": "absorb-and-sort",
+      "childExplanation": "身体把营养用来长高、跑跳和思考。",
+      "visualHint": "发光小星星",
+      "commonMisread": "以为食物只是填饱肚子。"
+    }
+  ],
+  "mechanism": {
+    "title": "食物怎样完成身体旅行？",
+    "steps": [
+      {
+        "id": "chew",
+        "shortTitle": "咬小",
+        "childExplanation": "牙齿把食物咬小，口水让食物变湿。",
+        "parentNote": "可提醒慢慢嚼的重要性。"
+      },
+      {
+        "id": "swallow",
+        "shortTitle": "送下去",
+        "childExplanation": "吞咽后，食物沿着食道去胃。",
+        "parentNote": "可用滑梯比喻食道。"
+      },
+      {
+        "id": "mix",
+        "shortTitle": "胃里搅拌",
+        "childExplanation": "胃像一个会动的袋子，把食物搅拌得更细。",
+        "parentNote": "避免真实胃酸细节造成不适。"
+      },
+      {
+        "id": "absorb",
+        "shortTitle": "小肠吸收",
+        "childExplanation": "小肠把有用的营养送给身体。",
+        "parentNote": "这是核心功能点。"
+      },
+      {
+        "id": "sort",
+        "shortTitle": "大肠整理",
+        "childExplanation": "大肠整理剩下的东西，也帮身体留住一些水。",
+        "parentNote": "可简化，不详细讲排泄。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "吃饭为什么让人有力气？",
+    "steps": [
+      {
+        "id": "food-to-small",
+        "shortTitle": "变小",
+        "childExplanation": "大块食物变成身体能处理的小部分。",
+        "parentNote": "从“块”到“营养”的概念过渡。"
+      },
+      {
+        "id": "small-to-body",
+        "shortTitle": "送给身体",
+        "childExplanation": "营养被送到身体各处。",
+        "parentNote": "可和血液主题连接。"
+      },
+      {
+        "id": "body-use",
+        "shortTitle": "身体使用",
+        "childExplanation": "身体用它们跑步、长高、修补和思考。",
+        "parentNote": "不讲代谢路径。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "stomach-vs-route",
+      "title": "只有胃 vs 一条路线",
+      "a": {
+        "name": "只有胃",
+        "points": [
+          "只看到一个站点",
+          "容易忘记嘴巴和肠道",
+          "解释不完整"
+        ]
+      },
+      "b": {
+        "name": "一条路线",
+        "points": [
+          "有入口和出口",
+          "每个器官分工合作",
+          "更接近真实过程"
+        ]
+      },
+      "childConclusion": "消化是一条合作路线，不是胃一个人完成。"
+    },
+    {
+      "id": "small-vs-large-intestine",
+      "title": "小肠 vs 大肠",
+      "a": {
+        "name": "小肠",
+        "points": [
+          "细而长",
+          "吸收很多营养",
+          "非常重要"
+        ]
+      },
+      "b": {
+        "name": "大肠",
+        "points": [
+          "更粗",
+          "整理剩下的东西",
+          "帮助吸收一些水分"
+        ]
+      },
+      "childConclusion": "小肠和大肠名字相似，但任务不同。"
+    },
+    {
+      "id": "food-vs-energy",
+      "title": "食物 vs 能量",
+      "a": {
+        "name": "食物",
+        "points": [
+          "能看见、能咬",
+          "有不同味道",
+          "从嘴巴进入"
+        ]
+      },
+      "b": {
+        "name": "能量",
+        "points": [
+          "帮助身体活动",
+          "看不见但能感受到",
+          "来自食物里的营养"
+        ]
+      },
+      "childConclusion": "吃下去的食物会帮助身体获得能量。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "digestion-sequence-01",
+      "type": "sequenceClick",
+      "title": "按顺序点击食物旅行站",
+      "prompt": "从嘴巴开始，帮食物走完整条路线。",
+      "options": [
+        {
+          "id": "mouth",
+          "label": "嘴巴"
+        },
+        {
+          "id": "esophagus",
+          "label": "食道"
+        },
+        {
+          "id": "stomach",
+          "label": "胃"
+        },
+        {
+          "id": "small-intestine",
+          "label": "小肠"
+        },
+        {
+          "id": "large-intestine",
+          "label": "大肠"
+        }
+      ],
+      "correctSequence": [
+        "mouth",
+        "esophagus",
+        "stomach",
+        "small-intestine",
+        "large-intestine"
+      ],
+      "wrongHint": "先从食物进入身体的地方开始。",
+      "successCopy": "你帮食物完成了身体旅行路线！"
+    },
+    {
+      "id": "digestion-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪里主要吸收营养？",
+      "prompt": "找到负责吸收很多营养的站点。",
+      "targetIds": [
+        "small-intestine"
+      ],
+      "decoyIds": [
+        "mouth",
+        "stomach",
+        "large-intestine"
+      ],
+      "wrongHint": "它名字里有“小”，但其实又长又重要。",
+      "successCopy": "对！小肠会吸收很多身体需要的营养。"
+    },
+    {
+      "id": "digestion-choice-01",
+      "type": "singleChoice",
+      "title": "消化是谁完成的？",
+      "prompt": "选择最准确的答案。",
+      "options": [
+        {
+          "id": "whole-route",
+          "label": "一条路线分工合作"
+        },
+        {
+          "id": "only-stomach",
+          "label": "只有胃"
+        },
+        {
+          "id": "only-mouth",
+          "label": "只有嘴巴"
+        }
+      ],
+      "correctOptionId": "whole-route",
+      "wrongHints": {
+        "only-stomach": "胃很重要，但嘴巴、小肠、大肠也在工作。",
+        "only-mouth": "嘴巴是第一站，但后面还有很多站。"
+      },
+      "successCopy": "对！消化是身体路线一起合作。"
+    }
+  ],
+  "speakTemplates": [
+    "食物先到____，然后经过____。",
+    "胃的任务是____。",
+    "小肠会帮助身体____。",
+    "消化不是只有____，而是____。"
+  ],
+  "parentTips": [
+    "讲消化时保持图标化和温和，不需要展示真实器官照片。",
+    "吃饭时可以用“慢慢嚼是在帮第一站工作”进行生活连接。",
+    "如果孩子问排便，简单说明是身体整理剩下的东西即可。"
+  ]
+}

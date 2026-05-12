@@ -1,0 +1,484 @@
+{
+  "id": "topic-space-moon-phases",
+  "slug": "moon-phases",
+  "title": "月亮变脸观察站",
+  "subtitle": "月亮为什么每天看起来不一样？",
+  "world": "space",
+  "priority": "P1",
+  "ageRange": "5-8",
+  "pageType": "observation-cycle",
+  "coreQuestion": "月亮是真的变形了吗，还是我们看到的亮面不同？",
+  "learningGoals": [
+    "知道月亮自己不发太阳那样的光",
+    "理解月相来自太阳照亮月亮后，我们看到的亮面不同",
+    "能识别新月、弯月、半月、满月等常见月相"
+  ],
+  "misconceptions": [
+    "月亮自己会发光",
+    "月亮每天真的变成不同形状",
+    "月相是地球影子天天挡住月亮"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/space/moon-phases/space-moon-phases-hero-v02.webp",
+      "purpose": "月相变化：主视觉",
+      "status": "ready"
+    },
+    "cards": {
+      "path": "/assets/space/moon-phases/space-moon-phases-object-icons-v02.webp",
+      "purpose": "月相变化：对象/分类图标",
+      "status": "ready"
+    },
+    "mechanism": {
+      "path": "/assets/space/moon-phases/space-moon-phases-mechanism-v02.webp",
+      "purpose": "月相变化：机制流程图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/space/moon-phases/space-moon-phases-compare-v02.webp",
+      "purpose": "月相变化：概念对比图",
+      "status": "ready"
+    },
+    "clickTask": {
+      "path": "/assets/space/moon-phases/space-moon-phases-click-task-v02.webp",
+      "purpose": "月相变化：互动任务背景图",
+      "status": "ready"
+    },
+    "parentGuide": {
+      "path": "/assets/space/moon-phases/space-moon-phases-parent-guide-v02.webp",
+      "purpose": "月相变化：亲子共读引导图",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "representative-object",
+      "description": "点击对象卡片展开儿童解释和视觉提示"
+    },
+    {
+      "type": "highlight",
+      "target": "classification-group",
+      "description": "点击分类组高亮对应对象"
+    },
+    {
+      "type": "task-feedback",
+      "target": "click-task",
+      "description": "完成选择、寻找或排序任务后显示反馈"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "sequence",
+      "title": "按顺序观察月亮从弯到圆再变弯",
+      "items": [
+        "新月",
+        "弯月",
+        "半月",
+        "凸月",
+        "满月"
+      ]
+    },
+    {
+      "type": "find",
+      "title": "找到满月"
+    },
+    {
+      "type": "explain",
+      "title": "月亮为什么不是每天都圆圆的？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "月亮看起来会变脸。",
+      "其实月亮没有真的变形，是我们看到的亮面在变化。"
+    ],
+    "keyFacts": [
+      "太阳照亮月亮。",
+      "月亮绕着地球运动。",
+      "我们在地球上看到月亮亮的部分不同，就形成月相。"
+    ],
+    "explainPrompt": "你能用太阳、地球、月亮说一说为什么会有月相吗？"
+  },
+  "relatedTopics": [
+    "solar-system-overview",
+    "asteroid-belt",
+    "earth-climate-cities"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出月亮不是自己像太阳一样发光",
+    "能识别至少 3 种月相",
+    "能用“看到的亮面不同”解释月相"
+  ],
+  "status": "building",
+  "renderPriority": 9,
+  "hero": {
+    "title": "月亮变脸观察站",
+    "kicker": "宇宙世界 · 观察循环",
+    "lead": "月亮像在变脸，其实是我们看到的亮面变了。",
+    "sceneExplanation": "主视觉是夜晚屋顶观察场景：天空上方展示一条月相弧线，旁边用太阳、地球和月亮的简化关系图说明光从哪里来。",
+    "childPrompt": "找一找：哪一个月亮最圆？哪一个只亮了一小边？",
+    "parentPrompt": "先让孩子观察形状，再引导他理解“亮面”和“位置关系”。",
+    "placeholder": {
+      "type": "orbitObservation",
+      "asset": "/assets/space/moon-phases/space-moon-phases-hero-v02.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "light-source",
+      "name": "光从哪里来",
+      "childExplanation": "太阳照亮月亮，月亮把光反射给我们看。",
+      "parentNote": "儿童版可说月亮像一面反光的小伙伴。",
+      "representativeObjects": [
+        "sun",
+        "moon"
+      ],
+      "misconception": "月亮像太阳一样自己发光。"
+    },
+    {
+      "id": "earth-moon-system",
+      "name": "地球和月亮",
+      "childExplanation": "月亮绕着地球转，我们站在地球上看月亮。",
+      "parentNote": "强调观察者位置。",
+      "representativeObjects": [
+        "earth",
+        "moon"
+      ],
+      "misconception": "月亮只是挂在天空不动。"
+    },
+    {
+      "id": "visible-shapes",
+      "name": "看到的形状",
+      "childExplanation": "我们会看到弯弯的、半圆的、圆圆的月亮。",
+      "parentNote": "形状是亮面比例，不是月球实体变化。",
+      "representativeObjects": [
+        "new-moon",
+        "crescent",
+        "half-moon",
+        "full-moon"
+      ],
+      "misconception": "月亮本体每天变大变小。"
+    },
+    {
+      "id": "observation-tools",
+      "name": "观察工具",
+      "childExplanation": "眼睛、窗户、望远镜都能帮我们观察月亮。",
+      "parentNote": "可带孩子做一周观察记录。",
+      "representativeObjects": [
+        "telescope"
+      ],
+      "misconception": "只有望远镜才能看月相。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "太阳",
+      "groupId": "light-source",
+      "childExplanation": "太阳照亮月亮的一面。",
+      "visualHint": "黄色发光圆球",
+      "commonMisread": "忽略太阳对月相的作用。"
+    },
+    {
+      "id": "earth",
+      "name": "地球",
+      "groupId": "earth-moon-system",
+      "childExplanation": "我们站在地球上看月亮。",
+      "visualHint": "蓝绿色小地球",
+      "commonMisread": "以为观察位置不重要。"
+    },
+    {
+      "id": "moon",
+      "name": "月亮",
+      "groupId": "earth-moon-system",
+      "childExplanation": "月亮绕着地球转，被太阳照亮。",
+      "visualHint": "灰黄小球",
+      "commonMisread": "以为月亮自己发光。"
+    },
+    {
+      "id": "new-moon",
+      "name": "新月",
+      "groupId": "visible-shapes",
+      "childExplanation": "这时我们几乎看不到月亮亮的一面。",
+      "visualHint": "暗暗的小圆",
+      "commonMisread": "以为月亮消失了。"
+    },
+    {
+      "id": "crescent",
+      "name": "弯月",
+      "groupId": "visible-shapes",
+      "childExplanation": "我们只看到一小条亮亮的月亮。",
+      "visualHint": "弯弯香蕉形",
+      "commonMisread": "以为月亮被咬掉了。"
+    },
+    {
+      "id": "half-moon",
+      "name": "半月",
+      "groupId": "visible-shapes",
+      "childExplanation": "我们看到大约一半亮亮的月亮。",
+      "visualHint": "半亮半暗",
+      "commonMisread": "把半月叫成半个月亮。"
+    },
+    {
+      "id": "full-moon",
+      "name": "满月",
+      "groupId": "visible-shapes",
+      "childExplanation": "我们看到整面亮亮的月亮。",
+      "visualHint": "圆圆发光月亮",
+      "commonMisread": "以为只有满月才是月亮。"
+    },
+    {
+      "id": "telescope",
+      "name": "望远镜",
+      "groupId": "observation-tools",
+      "childExplanation": "望远镜可以帮我们看得更清楚。",
+      "visualHint": "蓝色小望远镜",
+      "commonMisread": "以为没有望远镜就不能观察。"
+    }
+  ],
+  "mechanism": {
+    "title": "月相为什么会变化？",
+    "steps": [
+      {
+        "id": "sunlight",
+        "shortTitle": "太阳照亮",
+        "childExplanation": "太阳照到月亮，总会照亮月亮的一部分。",
+        "parentNote": "先建立光源。"
+      },
+      {
+        "id": "moon-orbits",
+        "shortTitle": "月亮绕地球",
+        "childExplanation": "月亮一边绕着地球走，一边被太阳照亮。",
+        "parentNote": "不讲精确周期，先讲运动关系。"
+      },
+      {
+        "id": "viewer-on-earth",
+        "shortTitle": "我们在地球看",
+        "childExplanation": "我们站在地球上，只能看到月亮朝向我们的那一面。",
+        "parentNote": "观察者视角是关键。"
+      },
+      {
+        "id": "lit-part-changes",
+        "shortTitle": "亮面多少不同",
+        "childExplanation": "有时候看到一点亮面，有时候看到半边，有时候看到整面。",
+        "parentNote": "用手电和球可以演示。"
+      },
+      {
+        "id": "cycle-repeat",
+        "shortTitle": "一轮又一轮",
+        "childExplanation": "月相会按顺序变化，然后再重复。",
+        "parentNote": "引出周期观察。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "怎么做月相观察？",
+    "steps": [
+      {
+        "id": "same-time",
+        "shortTitle": "固定时间看",
+        "childExplanation": "每天差不多同一时间看看月亮。",
+        "parentNote": "减少观察混乱。"
+      },
+      {
+        "id": "draw-shape",
+        "shortTitle": "画下形状",
+        "childExplanation": "把看到的亮面形状画下来。",
+        "parentNote": "可做亲子观察表。"
+      },
+      {
+        "id": "compare-week",
+        "shortTitle": "一周后比较",
+        "childExplanation": "看看月亮是不是慢慢变了。",
+        "parentNote": "把经验观察转成科学发现。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "moonlight-vs-sunlight",
+      "title": "月光 vs 太阳光",
+      "a": {
+        "name": "月光",
+        "points": [
+          "看起来柔和",
+          "来自反射太阳光",
+          "不会像太阳那样加热地面"
+        ]
+      },
+      "b": {
+        "name": "太阳光",
+        "points": [
+          "很明亮",
+          "太阳自己发出",
+          "给地球带来光和热"
+        ]
+      },
+      "childConclusion": "月亮不是像太阳一样自己发光。"
+    },
+    {
+      "id": "shape-vs-lit-part",
+      "title": "形状变了 vs 亮面变了",
+      "a": {
+        "name": "形状变了",
+        "points": [
+          "像被咬掉",
+          "这是常见误会",
+          "月亮本体没有每天变形"
+        ]
+      },
+      "b": {
+        "name": "亮面变了",
+        "points": [
+          "看到的发亮部分不同",
+          "和太阳、地球、月亮位置有关",
+          "能形成月相循环"
+        ]
+      },
+      "childConclusion": "月相是看到的亮面不同。"
+    },
+    {
+      "id": "new-vs-full",
+      "title": "新月 vs 满月",
+      "a": {
+        "name": "新月",
+        "points": [
+          "几乎看不到亮面",
+          "不是月亮消失",
+          "仍然在绕地球"
+        ]
+      },
+      "b": {
+        "name": "满月",
+        "points": [
+          "看到整面亮面",
+          "看起来最圆",
+          "适合观察月面阴影"
+        ]
+      },
+      "childConclusion": "新月和满月都是同一个月亮的不同样子。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "moon-sequence-01",
+      "type": "sequenceClick",
+      "title": "按顺序点出从小弯到圆的月亮",
+      "prompt": "从几乎看不见开始，点到满月。",
+      "options": [
+        {
+          "id": "new-moon",
+          "label": "新月"
+        },
+        {
+          "id": "crescent",
+          "label": "弯月"
+        },
+        {
+          "id": "half-moon",
+          "label": "半月"
+        },
+        {
+          "id": "full-moon",
+          "label": "满月"
+        }
+      ],
+      "correctSequence": [
+        "new-moon",
+        "crescent",
+        "half-moon",
+        "full-moon"
+      ],
+      "wrongHint": "先找最暗、几乎看不见的月亮。",
+      "successCopy": "你排出了月亮慢慢变圆的一段旅程。"
+    },
+    {
+      "id": "moon-find-01",
+      "type": "findTarget",
+      "title": "找一找：哪一个是满月？",
+      "prompt": "找到看起来最圆、最亮的月亮。",
+      "targetIds": [
+        "full-moon"
+      ],
+      "decoyIds": [
+        "new-moon",
+        "crescent",
+        "half-moon"
+      ],
+      "wrongHint": "满月是整面都亮起来的样子。",
+      "successCopy": "对！这就是满月。"
+    },
+    {
+      "id": "moon-choice-01",
+      "type": "singleChoice",
+      "title": "月相变化的关键原因是什么？",
+      "prompt": "选择最准确的答案。",
+      "options": [
+        {
+          "id": "lit-part",
+          "label": "看到的亮面不同"
+        },
+        {
+          "id": "moon-bites",
+          "label": "月亮被咬掉"
+        },
+        {
+          "id": "moon-fire",
+          "label": "月亮自己开灯"
+        }
+      ],
+      "correctOptionId": "lit-part",
+      "wrongHints": {
+        "moon-bites": "月亮没有被咬掉，它还是圆圆的球。",
+        "moon-fire": "月亮不是像太阳一样自己发光。"
+      },
+      "successCopy": "对！月相来自我们看到的亮面不同。"
+    }
+  ],
+  "speakTemplates": [
+    "月亮的光主要来自____。",
+    "我们站在____上看月亮。",
+    "月相变化是因为看到的____不同。",
+    "我今天看到的月亮像____。"
+  ],
+  "parentTips": [
+    "可以用手电筒、球和孩子的眼睛模拟太阳、月亮和观察者。",
+    "不要先讲月食，月相不是每天由地球影子造成。",
+    "连续观察比一次讲完更有效，可以每晚画一个小月亮。"
+  ]
+}

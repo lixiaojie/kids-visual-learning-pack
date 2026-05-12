@@ -1,0 +1,504 @@
+{
+  "id": "topic-life-ecosystem",
+  "slug": "ecosystem",
+  "title": "森林池塘生态网",
+  "subtitle": "一片小池塘里，生命怎样互相连接？",
+  "world": "life",
+  "priority": "P1",
+  "ageRange": "5-8",
+  "pageType": "relationship-web",
+  "coreQuestion": "植物、动物、蘑菇、阳光和水之间有什么关系？",
+  "learningGoals": [
+    "认识生态系统包含生产者、消费者、分解者和环境",
+    "理解生命之间不是孤立的，而是通过食物、能量和物质循环连接",
+    "知道分解者会把落叶和遗体变成土壤里的养分"
+  ],
+  "misconceptions": [
+    "生态系统只是一群动物住在一起",
+    "蘑菇和蚯蚓没有用",
+    "食物链只有谁吃谁，不包含阳光、水和土壤"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "ref": "hero"
+    },
+    {
+      "type": "classificationGroups",
+      "ref": "classificationGroups"
+    },
+    {
+      "type": "representativeObjects",
+      "ref": "representativeObjects"
+    },
+    {
+      "type": "mechanismSteps",
+      "ref": "mechanism.steps"
+    },
+    {
+      "type": "comparePairs",
+      "ref": "comparePairs"
+    },
+    {
+      "type": "clickTasks",
+      "ref": "clickTasks"
+    },
+    {
+      "type": "speakTemplates",
+      "ref": "speakTemplates"
+    },
+    {
+      "type": "parentTips",
+      "ref": "parentTips"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/life/ecosystem/life-ecosystem-hero-v02.webp",
+      "purpose": "生态系统：主视觉",
+      "status": "ready"
+    },
+    "cards": {
+      "path": "/assets/life/ecosystem/life-ecosystem-object-icons-v02.webp",
+      "purpose": "生态系统：对象/分类图标",
+      "status": "ready"
+    },
+    "mechanism": {
+      "path": "/assets/life/ecosystem/life-ecosystem-mechanism-v02.webp",
+      "purpose": "生态系统：机制流程图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/life/ecosystem/life-ecosystem-compare-v02.webp",
+      "purpose": "生态系统：概念对比图",
+      "status": "ready"
+    },
+    "clickTask": {
+      "path": "/assets/life/ecosystem/life-ecosystem-click-task-v02.webp",
+      "purpose": "生态系统：互动任务背景图",
+      "status": "ready"
+    },
+    "parentGuide": {
+      "path": "/assets/life/ecosystem/life-ecosystem-parent-guide-v02.webp",
+      "purpose": "生态系统：亲子共读引导图",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "representative-object",
+      "description": "点击对象卡片展开儿童解释和视觉提示"
+    },
+    {
+      "type": "highlight",
+      "target": "classification-group",
+      "description": "点击分类组高亮对应对象"
+    },
+    {
+      "type": "task-feedback",
+      "target": "click-task",
+      "description": "完成选择、寻找或排序任务后显示反馈"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "find",
+      "title": "找到生产者、消费者和分解者"
+    },
+    {
+      "type": "sequence",
+      "title": "说出一条从太阳到植物再到动物的联系"
+    },
+    {
+      "type": "explain",
+      "title": "蘑菇和蚯蚓为什么也重要？"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "池塘边的植物、昆虫、青蛙、小鸟、蘑菇和土壤不是各过各的。",
+      "它们像一张看不见的关系网，互相影响。"
+    ],
+    "keyFacts": [
+      "植物利用阳光生长，是很多生命的食物来源。",
+      "动物会吃植物或其他动物。",
+      "蘑菇、细菌和蚯蚓等分解者帮助把落叶变成养分。",
+      "水、阳光、空气和土壤也是生态系统的一部分。"
+    ],
+    "explainPrompt": "你能从阳光开始，说出池塘边一条生命联系路线吗？"
+  },
+  "relatedTopics": [
+    "animal-classification-tree",
+    "insects-and-spiders",
+    "water-cycle",
+    "dinosaurs"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出生产者、消费者、分解者的基本区别",
+    "能知道阳光、水、土壤也属于环境条件",
+    "能用箭头讲出至少一条生态联系"
+  ],
+  "status": "building",
+  "renderPriority": 12,
+  "hero": {
+    "title": "森林池塘生态网",
+    "kicker": "生命世界 · 关系网络",
+    "lead": "一片小池塘不是只有动物和植物，而是一张互相连接的生命网。",
+    "sceneExplanation": "主视觉是温柔明亮的森林池塘：阳光照到植物，昆虫、青蛙、小鸟、狐狸、蘑菇、蚯蚓、水和土壤用少量箭头连接起来。",
+    "childPrompt": "从太阳出发，找一条生命之间的连接路线。",
+    "parentPrompt": "重点讲“联系”和“循环”，不要做复杂食物网。",
+    "placeholder": {
+      "type": "relationshipWeb",
+      "asset": "/assets/life/ecosystem/life-ecosystem-hero-v02.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "producers",
+      "name": "生产者",
+      "childExplanation": "植物用阳光、水和空气帮助自己生长。",
+      "parentNote": "儿童版可说“自己制造食物的生命”。",
+      "representativeObjects": [
+        "sun",
+        "plant"
+      ],
+      "misconception": "植物只是动物的背景。"
+    },
+    {
+      "id": "consumers",
+      "name": "消费者",
+      "childExplanation": "动物需要吃植物或其他动物来获得能量。",
+      "parentNote": "不渲染捕食，强调能量传递。",
+      "representativeObjects": [
+        "insect",
+        "frog",
+        "bird",
+        "fox"
+      ],
+      "misconception": "动物之间只有打架关系。"
+    },
+    {
+      "id": "decomposers",
+      "name": "分解者",
+      "childExplanation": "蘑菇、蚯蚓和小微生物会帮落叶回到土壤。",
+      "parentNote": "蘑菇并非植物，可简化为分解者伙伴。",
+      "representativeObjects": [
+        "mushroom",
+        "earthworm",
+        "soil"
+      ],
+      "misconception": "分解者没用或很脏。"
+    },
+    {
+      "id": "environment",
+      "name": "环境条件",
+      "childExplanation": "阳光、水、空气和土壤帮助生命生活。",
+      "parentNote": "生态系统包含非生物部分。",
+      "representativeObjects": [
+        "sun",
+        "water",
+        "soil"
+      ],
+      "misconception": "生态系统只包含活的东西。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "sun",
+      "name": "阳光",
+      "groupId": "environment",
+      "childExplanation": "阳光给植物生长的能量。",
+      "visualHint": "温暖的黄色太阳",
+      "commonMisread": "以为阳光和生态系统无关。"
+    },
+    {
+      "id": "plant",
+      "name": "植物",
+      "groupId": "producers",
+      "childExplanation": "植物利用阳光、水和空气生长，也给很多动物提供食物或住处。",
+      "visualHint": "带根的小绿苗",
+      "commonMisread": "以为植物只是不会动的背景。"
+    },
+    {
+      "id": "insect",
+      "name": "昆虫",
+      "groupId": "consumers",
+      "childExplanation": "有些昆虫吃叶子或花蜜，也可能被青蛙、小鸟吃。",
+      "visualHint": "蝴蝶或小甲虫",
+      "commonMisread": "以为昆虫都只是害虫。"
+    },
+    {
+      "id": "frog",
+      "name": "青蛙",
+      "groupId": "consumers",
+      "childExplanation": "青蛙生活在池塘边，会吃一些小昆虫。",
+      "visualHint": "荷叶上的绿色青蛙",
+      "commonMisread": "以为青蛙只和水有关，不在食物关系里。"
+    },
+    {
+      "id": "bird",
+      "name": "小鸟",
+      "groupId": "consumers",
+      "childExplanation": "小鸟可能吃种子、果实或小虫，也会帮助传播种子。",
+      "visualHint": "树枝上的小鸟",
+      "commonMisread": "忽略动物能帮助植物。"
+    },
+    {
+      "id": "fox",
+      "name": "狐狸",
+      "groupId": "consumers",
+      "childExplanation": "狐狸是池塘附近较大的消费者之一。",
+      "visualHint": "温和橙色狐狸",
+      "commonMisread": "只把狐狸看成坏角色。"
+    },
+    {
+      "id": "mushroom",
+      "name": "蘑菇",
+      "groupId": "decomposers",
+      "childExplanation": "蘑菇能帮助分解落叶和枯木。",
+      "visualHint": "红色或棕色小蘑菇",
+      "commonMisread": "以为蘑菇是普通植物。"
+    },
+    {
+      "id": "earthworm",
+      "name": "蚯蚓",
+      "groupId": "decomposers",
+      "childExplanation": "蚯蚓在土里活动，帮助土壤变松。",
+      "visualHint": "土壤里的粉色小蚯蚓",
+      "commonMisread": "觉得蚯蚓只是脏脏的小虫。"
+    },
+    {
+      "id": "water",
+      "name": "水",
+      "groupId": "environment",
+      "childExplanation": "池塘水帮助植物和动物生活。",
+      "visualHint": "蓝色池塘",
+      "commonMisread": "以为水只是场景装饰。"
+    },
+    {
+      "id": "soil",
+      "name": "土壤",
+      "groupId": "environment",
+      "childExplanation": "土壤给植物根部支撑，也保存水和养分。",
+      "visualHint": "带根的土层",
+      "commonMisread": "以为土壤只是泥巴。"
+    }
+  ],
+  "mechanism": {
+    "title": "生态系统怎样连接起来？",
+    "steps": [
+      {
+        "id": "sun-to-plant",
+        "shortTitle": "阳光给植物能量",
+        "childExplanation": "植物利用阳光、水和空气生长。",
+        "parentNote": "对应生产者。"
+      },
+      {
+        "id": "plant-to-animal",
+        "shortTitle": "植物养活动物",
+        "childExplanation": "昆虫或其他动物会吃植物的一部分。",
+        "parentNote": "强调能量从植物开始传递。"
+      },
+      {
+        "id": "animal-to-animal",
+        "shortTitle": "动物互相联系",
+        "childExplanation": "青蛙、小鸟、狐狸等动物也会形成食物关系。",
+        "parentNote": "避免血腥捕食，只讲依赖关系。"
+      },
+      {
+        "id": "life-to-decomposer",
+        "shortTitle": "落叶回到土里",
+        "childExplanation": "落叶、枯枝会被蘑菇、蚯蚓和小微生物慢慢分解。",
+        "parentNote": "分解者是核心。"
+      },
+      {
+        "id": "nutrient-to-plant",
+        "shortTitle": "养分再帮助植物",
+        "childExplanation": "土壤里的养分又能帮助植物继续生长。",
+        "parentNote": "形成循环而非单向链。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "环境也在参与",
+    "steps": [
+      {
+        "id": "water-help",
+        "shortTitle": "水帮助生命",
+        "childExplanation": "植物和动物都需要水。",
+        "parentNote": "连接水循环。"
+      },
+      {
+        "id": "soil-home",
+        "shortTitle": "土壤是家",
+        "childExplanation": "植物扎根在土壤里，很多小生命也住在土里。",
+        "parentNote": "建立栖息地概念。"
+      },
+      {
+        "id": "change-affects",
+        "shortTitle": "环境改变会影响生命",
+        "childExplanation": "如果水变少或植物变少，很多动物都会受影响。",
+        "parentNote": "引出系统性。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "food-chain-vs-ecosystem",
+      "title": "食物链 vs 生态系统",
+      "a": {
+        "name": "食物链",
+        "points": [
+          "像一条线",
+          "讲谁把能量传给谁",
+          "比较简单"
+        ]
+      },
+      "b": {
+        "name": "生态系统",
+        "points": [
+          "像一张网",
+          "包含生命和环境",
+          "关系更多"
+        ]
+      },
+      "childConclusion": "食物链是一条线，生态系统是一张网。"
+    },
+    {
+      "id": "producer-vs-consumer",
+      "title": "生产者 vs 消费者",
+      "a": {
+        "name": "生产者",
+        "points": [
+          "常见代表是植物",
+          "利用阳光生长",
+          "是很多食物关系的开始"
+        ]
+      },
+      "b": {
+        "name": "消费者",
+        "points": [
+          "常见代表是动物",
+          "需要吃东西获得能量",
+          "会和其他生命相连"
+        ]
+      },
+      "childConclusion": "植物和动物在生态系统里的任务不同。"
+    },
+    {
+      "id": "decompose-vs-disappear",
+      "title": "分解 vs 消失",
+      "a": {
+        "name": "分解",
+        "points": [
+          "落叶慢慢变成小部分",
+          "养分回到土壤",
+          "分解者在工作"
+        ]
+      },
+      "b": {
+        "name": "消失",
+        "points": [
+          "好像什么都没有了",
+          "看不到过程",
+          "容易忽略分解者"
+        ]
+      },
+      "childConclusion": "落叶不是凭空消失，而是被分解者帮忙回到循环。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "ecosystem-find-01",
+      "type": "findTarget",
+      "title": "找一找：谁是分解者伙伴？",
+      "prompt": "找到能帮助落叶回到土壤的伙伴。",
+      "targetIds": [
+        "mushroom",
+        "earthworm"
+      ],
+      "decoyIds": [
+        "frog",
+        "fox",
+        "sun"
+      ],
+      "wrongHint": "分解者常常在落叶、枯木和土壤附近工作。",
+      "successCopy": "对！蘑菇和蚯蚓都能帮助分解。"
+    },
+    {
+      "id": "ecosystem-sequence-01",
+      "type": "sequenceClick",
+      "title": "从阳光开始连一条生态路线",
+      "prompt": "按能量和养分联系点出顺序。",
+      "options": [
+        {
+          "id": "sun",
+          "label": "阳光"
+        },
+        {
+          "id": "plant",
+          "label": "植物"
+        },
+        {
+          "id": "insect",
+          "label": "昆虫"
+        },
+        {
+          "id": "frog",
+          "label": "青蛙"
+        },
+        {
+          "id": "soil",
+          "label": "土壤"
+        }
+      ],
+      "correctSequence": [
+        "sun",
+        "plant",
+        "insect",
+        "frog",
+        "soil"
+      ],
+      "wrongHint": "先想想植物从哪里获得生长能量。",
+      "successCopy": "你连出了一条生态联系路线！"
+    },
+    {
+      "id": "ecosystem-choice-01",
+      "type": "singleChoice",
+      "title": "生态系统只包括动物吗？",
+      "prompt": "选择最准确的答案。",
+      "options": [
+        {
+          "id": "no-life-and-environment",
+          "label": "不是，还包括植物、分解者和环境"
+        },
+        {
+          "id": "animals-only",
+          "label": "是，只有动物"
+        },
+        {
+          "id": "plants-only",
+          "label": "是，只有植物"
+        }
+      ],
+      "correctOptionId": "no-life-and-environment",
+      "wrongHints": {
+        "animals-only": "植物、蘑菇、水和土壤也很重要。",
+        "plants-only": "动物、分解者和环境条件也在生态系统里。"
+      },
+      "successCopy": "对！生态系统包含生命和环境。"
+    }
+  ],
+  "speakTemplates": [
+    "生态系统像一张____。",
+    "植物利用____生长。",
+    "分解者会帮助____回到土壤。",
+    "如果____变少，____也可能受影响。"
+  ],
+  "parentTips": [
+    "不要把生态系统讲成复杂食物网，先用 5–6 个对象讲清联系。",
+    "户外散步时可以让孩子找生产者、消费者、分解者和环境条件。",
+    "强调没有“没用”的生命，蘑菇、蚯蚓和土壤都很重要。"
+  ]
+}
