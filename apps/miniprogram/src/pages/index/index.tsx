@@ -7,7 +7,7 @@ import "./index.scss";
 const locale: Locale = "zh-CN";
 const map = getMap(locale, "miniprogram");
 const visibleTopicSlugs = getVisibleTopicSlugs("miniprogram");
-const featuredTopics = visibleTopicSlugs.map((slug) => getTopic(slug, locale)).filter(Boolean).slice(0, 6);
+const featuredTopics = visibleTopicSlugs.map((slug) => getTopic(slug, locale)).filter(Boolean);
 
 function openTopic(slug: string) {
   Taro.navigateTo({ url: `/pages/topic/index?slug=${slug}&locale=${locale}` });

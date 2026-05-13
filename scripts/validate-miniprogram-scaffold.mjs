@@ -20,6 +20,8 @@ const requiredFiles = [
   "src/pages/about/index.tsx",
   "src/pages/about/index.config.ts",
   "src/components/shared/GeneratedImage.tsx",
+  "src/components/topic/ClickTaskCard.tsx",
+  "src/components/topic/InfoList.tsx",
 ];
 const errors = [];
 
@@ -45,8 +47,16 @@ const imageComponent = fs.readFileSync(path.join(appDir, "src/components/shared/
 if (!indexPage.includes("@yutou/kids-content")) {
   errors.push("index page must use @yutou/kids-content");
 }
+if (indexPage.includes("slice(0, 6)")) {
+  errors.push("index page must not truncate the miniprogram visible topic list");
+}
 if (!topicPage.includes("useShareAppMessage") || !topicPage.includes("useShareTimeline")) {
   errors.push("topic page must define friend and timeline share handlers");
+}
+for (const requiredTopicSection of ["ClickTaskCard", "representativeObjects", "comparePairs", "parentTips"]) {
+  if (!topicPage.includes(requiredTopicSection)) {
+    errors.push(`topic page must render ${requiredTopicSection}`);
+  }
 }
 if (!aboutPage.includes("不登录") || !aboutPage.includes("不收集儿童")) {
   errors.push("about page must state the no-login/no-child-data privacy posture");

@@ -59,3 +59,9 @@
   font-size: 29px;
   font-weight: 900;
 }
+
+.task-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

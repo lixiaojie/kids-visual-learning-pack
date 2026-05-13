@@ -8,6 +8,8 @@ import {
   type Topic,
 } from "@yutou/kids-content";
 import { GeneratedImage } from "../../components/shared/GeneratedImage";
+import { ClickTaskCard } from "../../components/topic/ClickTaskCard";
+import { InfoList } from "../../components/topic/InfoList";
 import { TopicSummary } from "../../components/topic/TopicSummary";
 import "./index.scss";
 
@@ -59,6 +61,15 @@ export default function TopicPage() {
         <Text className="section-body">{topic.hero.sceneExplanation}</Text>
       </View>
 
+      <InfoList
+        title={locale === "zh-CN" ? "认识几个代表对象" : "Representative objects"}
+        items={topic.representativeObjects.slice(0, 5).map((item) => ({
+          id: item.id,
+          title: item.name,
+          body: item.childExplanation,
+        }))}
+      />
+
       <View className="section">
         <Text className="section-title">{topic.mechanism.title ?? (locale === "zh-CN" ? "它怎么发生" : "How it works")}</Text>
         {topic.mechanism.steps.slice(0, 4).map((step) => (
@@ -69,7 +80,34 @@ export default function TopicPage() {
         ))}
       </View>
 
+      <InfoList
+        title={locale === "zh-CN" ? "比一比" : "Compare"}
+        items={topic.comparePairs.slice(0, 3).map((pair) => ({
+          id: pair.id,
+          title: pair.title,
+          body: pair.childConclusion,
+        }))}
+      />
+
+      <View className="section">
+        <Text className="section-title">{locale === "zh-CN" ? "点击任务" : "Tap tasks"}</Text>
+        <View className="task-stack">
+          {topic.clickTasks.slice(0, 3).map((task) => (
+            <ClickTaskCard task={task} key={task.id} />
+          ))}
+        </View>
+      </View>
+
       <TopicSummary topic={topic} locale={locale} />
+
+      <InfoList
+        title={locale === "zh-CN" ? "家长可以这样陪聊" : "Parent prompts"}
+        items={topic.parentTips.slice(0, 3).map((tip, index) => ({
+          id: `tip-${index}`,
+          title: `${locale === "zh-CN" ? "提示" : "Prompt"} ${index + 1}`,
+          body: tip,
+        }))}
+      />
     </View>
   );
 }
