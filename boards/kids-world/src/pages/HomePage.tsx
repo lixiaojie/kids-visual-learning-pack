@@ -8,11 +8,13 @@ import { WorldTopicPanel } from "../components/home/WorldTopicPanel";
 
 type Props = { locale: Locale; map: ExplorationMap };
 
-export function HomePage({ locale, map }: Props) {
+type HomePageProps = Props & { notice?: string };
+
+export function HomePage({ locale, map, notice }: HomePageProps) {
   const [selectedWorldId, setSelectedWorldId] = useState("animation");
   const selectedWorld = map.worlds.find((world) => world.id === selectedWorldId) ?? map.worlds[0];
   const knowledgeWorlds = map.worlds.filter((world) => world.id !== "animation");
-  const animationWorld = map.worlds.find((world) => world.id === "animation") ?? map.worlds[0];
+  const animationWorld = map.worlds.find((world) => world.id === "animation");
   const topicPanelRef = useRef<HTMLDivElement>(null);
 
   function handleSelectWorld(id: string) {
@@ -24,8 +26,9 @@ export function HomePage({ locale, map }: Props) {
 
   return (
     <main className="page-shell">
+      {notice ? <p className="route-notice">{notice}</p> : null}
       <HeroSection map={map} locale={locale} />
-      <InterestBand world={animationWorld} />
+      {animationWorld ? <InterestBand world={animationWorld} /> : null}
       <WorldGrid
         worlds={knowledgeWorlds}
         selectedWorldId={selectedWorldId}
@@ -33,7 +36,7 @@ export function HomePage({ locale, map }: Props) {
         map={map}
         locale={locale}
       />
-      <WorldTopicPanel ref={topicPanelRef} world={selectedWorld} map={map} locale={locale} />
+      {selectedWorld ? <WorldTopicPanel ref={topicPanelRef} world={selectedWorld} map={map} locale={locale} /> : null}
     </main>
   );
 }

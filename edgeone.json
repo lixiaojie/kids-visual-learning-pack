@@ -1,0 +1,49 @@
+{
+  "name": "yutou-universe",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build:edgeone",
+  "outputDirectory": "./dist",
+  "nodeVersion": "20.18.0",
+  "headers": [
+    {
+      "source": "/*",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/boards/kids-world/assets/*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/boards/paw-patrol/assets/*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/shared/icons/*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ],
+  "caches": [
+    {
+      "source": "/boards/kids-world/assets/*",
+      "cacheTtl": 31536000
+    },
+    {
+      "source": "/boards/paw-patrol/assets/*",
+      "cacheTtl": 31536000
+    },
+    {
+      "source": "/shared/icons/*",
+      "cacheTtl": 86400
+    }
+  ]
+}

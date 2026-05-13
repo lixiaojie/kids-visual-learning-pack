@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
 
+function resolveSlug(): string | null {
+  const params = new URLSearchParams(window.location.search);
+  const queryTopic = params.get("topic");
+  if (queryTopic) return decodeURIComponent(queryTopic);
+
+  const match = window.location.hash.match(/^#topic\/(.+)$/);
+  return match?.[1] ? decodeURIComponent(match[1]) : null;
+}
+
 export function useHashRoute() {
-  const [hash, setHash] = useState(() => window.location.hash);
+  const [slug, setSlug] = useState(resolveSlug);
 
   useEffect(() => {
     const handler = () => {
-      setHash(window.location.hash);
+      setSlug(resolveSlug());
       window.scrollTo(0, 0);
     };
     window.addEventListener("hashchange", handler);
-    return () => window.removeEventListener("hashchange", handler);
+    window.addEventListener("popstate", handler);
+    return () => {
+      window.removeEventListener("hashchange", handler);
+      window.removeEventListener("popstate", handler);
+    };
   }, []);
 
-  const match = hash.match(/^#topic\/(.+)$/);
-  return match?.[1] ?? null;
+  return slug;
 }

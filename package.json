@@ -5,19 +5,24 @@
   "description": "Multi-theme visual learning dashboards for kids and parent-child reading.",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "bash scripts/build-vercel.sh",
+    "build": "npm run build:static",
+    "build:static": "bash scripts/build-static.sh",
+    "build:edgeone": "npm run build:static",
     "build:kids-world": "vite build boards/kids-world --base=./ --emptyOutDir --outDir ../../dist/kids-world",
     "build:paw": "vite build boards/paw-patrol --base=./ --emptyOutDir --outDir ../../dist/paw-patrol",
     "check:images": "node scripts/check-image-assets.mjs",
+    "check:dist": "node scripts/check-dist.mjs",
+    "generate:site-meta": "node scripts/generate-site-meta.mjs",
     "images:import-prompts": "node scripts/import-kids-world-image-prompts.mjs",
     "images:import-generated-png": "node scripts/import-kids-world-generated-images.mjs",
     "preview:kids-world": "vite preview --host 127.0.0.1 --outDir dist/boards/kids-world",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
     "deploy": "bash scripts/deploy.sh",
-    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs",
+    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs",
     "validate:topics": "node scripts/validate-topics.mjs",
     "validate:i18n": "node scripts/validate-i18n.mjs",
-    "validate:assets": "node scripts/validate-assets.mjs"
+    "validate:assets": "node scripts/validate-assets.mjs",
+    "validate:compliance": "node scripts/validate-compliance.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

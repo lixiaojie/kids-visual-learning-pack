@@ -1,0 +1,30 @@
+{
+  "web-production": {
+    "visibleBoards": ["kids-world"],
+    "hiddenBoards": ["paw-patrol", "spider-verse"],
+    "visibleTopics": "all-render-ready"
+  },
+  "web-preview": {
+    "visibleBoards": ["kids-world", "paw-patrol", "spider-verse"],
+    "hiddenBoards": [],
+    "visibleTopics": "all"
+  },
+  "miniprogram": {
+    "visibleBoards": ["kids-world"],
+    "hiddenBoards": ["paw-patrol", "spider-verse"],
+    "visibleTopics": [
+      "dinosaurs",
+      "ecosystem",
+      "animal-classification-tree",
+      "insects-and-spiders",
+      "solar-system-overview",
+      "moon-phases",
+      "water-cycle",
+      "earth-climate-cities",
+      "robots",
+      "llm-kids-basics",
+      "digestion",
+      "blood-cells-3d"
+    ]
+  }
+}

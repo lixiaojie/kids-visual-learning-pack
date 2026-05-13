@@ -187,6 +187,16 @@ h3,
   padding: clamp(24px, 4vw, 46px) 0 72px;
 }
 
+.route-notice {
+  margin: 0 0 18px;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 16px;
+  background: #fffbeb;
+  color: #92400e;
+  padding: 12px 16px;
+  font-weight: 800;
+}
+
 .home-hero,
 .topic-hero {
   display: grid;
