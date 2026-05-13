@@ -5,6 +5,10 @@ import process from "node:process";
 const root = process.cwd();
 const policyPath = path.join(root, "channel-policy.json");
 const registryPath = path.join(root, "boards/kids-world/src/data/topic-registry.json");
+const requiredDocPaths = [
+  "docs/compliance/wechat-miniprogram-checklist.md",
+  "docs/compliance/content-ip-risk-register.md",
+];
 
 const policy = JSON.parse(fs.readFileSync(policyPath, "utf8"));
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
@@ -18,6 +22,19 @@ const renderReadySlugs = new Set(
 
 const requiredChannels = ["web-production", "web-preview", "miniprogram"];
 const errors = [];
+
+for (const docPath of requiredDocPaths) {
+  const absolutePath = path.join(root, docPath);
+  if (!fs.existsSync(absolutePath)) {
+    errors.push(`Missing compliance document: ${docPath}`);
+    continue;
+  }
+
+  const text = fs.readFileSync(absolutePath, "utf8");
+  if (!text.includes("小程序首版")) {
+    errors.push(`${docPath}: must document 小程序首版 scope`);
+  }
+}
 
 for (const channel of requiredChannels) {
   if (!policy[channel]) {

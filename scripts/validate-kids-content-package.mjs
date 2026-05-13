@@ -1,0 +1,49 @@
+import fs from "node:fs";
+import path from "node:path";
+import process from "node:process";
+
+const root = process.cwd();
+const packageDir = path.join(root, "packages/kids-content");
+const requiredFiles = [
+  "package.json",
+  "tsconfig.json",
+  "src/index.ts",
+  "src/map.ts",
+  "src/media.ts",
+];
+const requiredExports = [
+  "getTopic",
+  "hasTopicData",
+  "getMap",
+  "getVisibleTopicSlugs",
+  "getCdnAssetUrl",
+  "getGeneratedImageUrl",
+  "Topic",
+  "Locale",
+  "ExplorationMap",
+];
+const errors = [];
+
+for (const file of requiredFiles) {
+  if (!fs.existsSync(path.join(packageDir, file))) {
+    errors.push(`Missing kids-content file: ${file}`);
+  }
+}
+
+const indexPath = path.join(packageDir, "src/index.ts");
+const indexSource = fs.existsSync(indexPath) ? fs.readFileSync(indexPath, "utf8") : "";
+for (const exportedName of requiredExports) {
+  if (!indexSource.includes(exportedName)) {
+    errors.push(`packages/kids-content/src/index.ts does not export ${exportedName}`);
+  }
+}
+
+if (errors.length > 0) {
+  console.error("kids-content package validation failed:");
+  for (const error of errors) {
+    console.error(`- ${error}`);
+  }
+  process.exit(1);
+}
+
+console.log(`kids-content package checked: ${requiredFiles.length} files, ${requiredExports.length} exports`);

@@ -18,11 +18,12 @@
     "preview:kids-world": "vite preview --host 127.0.0.1 --outDir dist/boards/kids-world",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
     "deploy": "bash scripts/deploy.sh",
-    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs",
+    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs && npm run validate:kids-content",
     "validate:topics": "node scripts/validate-topics.mjs",
     "validate:i18n": "node scripts/validate-i18n.mjs",
     "validate:assets": "node scripts/validate-assets.mjs",
-    "validate:compliance": "node scripts/validate-compliance.mjs"
+    "validate:compliance": "node scripts/validate-compliance.mjs",
+    "validate:kids-content": "./node_modules/.bin/tsc -p packages/kids-content/tsconfig.json --noEmit && node scripts/validate-kids-content-package.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
