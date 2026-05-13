@@ -13,10 +13,15 @@ type Props = {
 };
 
 export function WorldGrid({ worlds, selectedWorldId, onSelectWorld, map, locale }: Props) {
+  const knowledgeSection = map.sections.find((section) => section.id === "knowledge-worlds") ?? map.sections[0];
+
   return (
     <section className="worlds-section" id="worlds">
-      <SectionHeader title={map.sections[1].title} kicker={locale === "zh-CN" ? "六大知识世界" : "Knowledge Worlds"}>
-        {map.sections[1].description}
+      <SectionHeader
+        title={knowledgeSection?.title ?? (locale === "zh-CN" ? "六大知识世界" : "Knowledge Worlds")}
+        kicker={locale === "zh-CN" ? "六大知识世界" : "Knowledge Worlds"}
+      >
+        {knowledgeSection?.description ?? ""}
       </SectionHeader>
       <div className="world-grid">
         {worlds.map((world) => {

@@ -26,13 +26,11 @@ export function resolveBoardAssetCandidates(path?: string) {
   }
 
   const normalized = path.replace(/^\/+/, "");
-  const candidates = [];
+  const candidates = [primary];
 
   if (typeof window !== "undefined" && window.location.pathname.startsWith("/boards/kids-world/")) {
     candidates.push(`/boards/kids-world/public/${normalized}`);
   }
-
-  candidates.push(primary);
 
   return [...new Set(candidates)];
 }
