@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["@tarojs/taro"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@yutou/kids-content": ["../../packages/kids-content/src/index.ts"],
+      "@yutou/kids-content/*": ["../../packages/kids-content/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "config/**/*.ts"]
+}

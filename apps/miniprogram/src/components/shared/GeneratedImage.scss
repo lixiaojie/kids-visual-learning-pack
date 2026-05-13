@@ -1,0 +1,16 @@
+.generated-image,
+.generated-image-placeholder {
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  border-radius: 18px;
+  background: #f1f5f9;
+}
+
+.generated-image-placeholder {
+  box-sizing: border-box;
+  padding: 28px;
+  color: #64748b;
+  font-size: 28px;
+  text-align: center;
+}

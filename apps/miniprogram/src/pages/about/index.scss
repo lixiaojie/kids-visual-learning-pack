@@ -1,0 +1,27 @@
+.about-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 32px;
+}
+
+.about-title {
+  color: #172033;
+  font-size: 42px;
+  font-weight: 900;
+}
+
+.about-point,
+.about-footer {
+  padding: 22px;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 28px;
+  line-height: 1.6;
+}
+
+.about-footer {
+  background: #f8fafc;
+  color: #64748b;
+}

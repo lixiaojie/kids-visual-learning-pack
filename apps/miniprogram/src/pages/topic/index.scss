@@ -1,0 +1,61 @@
+.topic-page {
+  padding: 28px;
+}
+
+.topic-hero,
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 26px;
+  padding: 24px;
+  border: 2px solid rgba(23, 32, 51, 0.1);
+  border-radius: 22px;
+  background: #ffffff;
+}
+
+.topic-kicker {
+  color: #7c3aed;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.topic-title,
+.missing-title {
+  color: #172033;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.topic-lead,
+.section-body {
+  color: #475569;
+  font-size: 28px;
+  line-height: 1.55;
+}
+
+.topic-image {
+  margin-top: 12px;
+}
+
+.section-title {
+  color: #172033;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.step-title {
+  color: #0f172a;
+  font-size: 29px;
+  font-weight: 900;
+}
