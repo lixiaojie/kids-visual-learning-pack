@@ -1113,7 +1113,7 @@ export function HeroSection({ map, locale }: Props) {
   return (
     <section className="home-hero">
       <div>
-        <p className="kicker">{locale === "zh-CN" ? "芋头世界" : "Yutou World"}</p>
+        <p className="kicker">{locale === "zh-CN" ? "芋头宇宙" : "Yutou World"}</p>
         <h1>{map.homeHero.title}</h1>
         <p>{map.homeHero.childIntro}</p>
         <div className="hero-actions">

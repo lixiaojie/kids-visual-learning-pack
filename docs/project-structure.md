@@ -1,13 +1,13 @@
 # 项目结构说明
 
-这个项目现在按“最高层探索地图 + 多主题可视化看板”组织。根目录负责进入“芋头世界”，每个具体主题放在 `boards/` 下。
+这个项目现在按“最高层探索地图 + 多主题可视化看板”组织。根目录负责进入“芋头宇宙”，每个具体主题放在 `boards/` 下。
 
 ```text
 .
 ├── index.html                  # 所有看板的入口页
 ├── README.md                   # 项目总说明
 ├── boards/
-│   ├── kids-world/            # 芋头世界，最高层入口
+│   ├── kids-world/            # 芋头宇宙，最高层入口
 │   │   ├── index.html
 │   │   ├── structure.test.mjs
 │   │   └── src/               # React + TypeScript 数据驱动看板

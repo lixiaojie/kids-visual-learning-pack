@@ -31,7 +31,7 @@
 ├── index.html                     # 根入口，自动跳转 kids-world
 ├── shared/styles/home.css         # 根页面样式
 ├── boards/
-│   ├── kids-world/                # 芋头世界（主入口，React）
+│   ├── kids-world/                # 芋头宇宙（主入口，React）
 │   │   ├── index.html
 │   │   ├── src/
 │   │   │   ├── App.tsx            # 799 行，含所有组件+数据加载
@@ -64,7 +64,7 @@
 
 ## 4. Board 详细 Spec
 
-### 4.1 Kids World（芋头世界）
+### 4.1 Kids World（芋头宇宙）
 
 **技术**：React + TypeScript，单文件 App.tsx（799 行）
 **路由**：`#topic/{slug}` hash 路由

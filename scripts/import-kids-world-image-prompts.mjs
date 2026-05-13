@@ -101,7 +101,7 @@ if (assets.length < 40) {
 }
 
 const manifest = {
-  project: "芋头世界",
+  project: "芋头宇宙",
   version: "2.1",
   sourcePromptPackage: basename(sourcePath),
   generatedAt: new Date().toISOString(),

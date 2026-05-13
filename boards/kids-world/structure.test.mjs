@@ -1,10 +1,10 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { strict as assert } from "node:assert";
 
 const root = new URL("./", import.meta.url);
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, root), "utf8"));
 const html = readFileSync(new URL("./index.html", root), "utf8");
-const styles = readFileSync(new URL("./src/styles.css", root), "utf8");
+const styles = readFileSync(new URL("./src/styles/styles.css", root), "utf8");
 
 const explorationMap = readJson("./src/data/exploration-map.json");
 const imageManifest = readJson("./src/data/image-generation-manifest.json");
@@ -21,7 +21,7 @@ const topicSlugs = [
   "llm-kids-basics",
 ];
 
-assert.equal(explorationMap.title, "芋头世界");
+assert.equal(explorationMap.title, "芋头宇宙");
 assert.equal(explorationMap.worlds[0].id, "animation");
 assert.equal(explorationMap.worlds.length, 7);
 assert.equal(explorationMap.worlds[0].topicCards[0].href, "boards/spider-verse/index.html");
@@ -29,8 +29,8 @@ assert.equal(explorationMap.worlds[0].topicCards[1].href, "boards/paw-patrol/ind
 assert.deepEqual(i18n.supportedLocales.map((item) => item.locale), ["zh-CN", "en-US"]);
 assert.equal(enHome.statusLegend[0].status, "completed");
 assert.equal(enHome.worlds[0].topicCards[0].cardDescription.includes("growth"), true);
-assert.equal(registry.topics.length, 6);
-assert.equal(imageManifest.project, "芋头世界");
+assert.equal(registry.topics.length, 18);
+assert.equal(imageManifest.project, "芋头宇宙");
 assert.equal(imageManifest.version, "2.1");
 assert.ok(imageManifest.assets.length >= 40, "Image prompt manifest should include the full batch asset list");
 assert.ok(
@@ -69,22 +69,32 @@ for (const slug of topicSlugs) {
 }
 
 assert.ok(existsSync(new URL("./src/App.tsx", root)));
-assert.ok(existsSync(new URL("./src/styles.css", root)));
+assert.ok(existsSync(new URL("./src/styles/styles.css", root)));
 assert.ok(html.includes('name="viewport"'), "Page should define a mobile viewport");
 assert.ok(styles.includes("@media (max-width: 640px)"), "Styles should include a phone breakpoint");
 assert.ok(styles.includes(".mobile-menu-button"), "Header should expose a mobile navigation control");
 assert.ok(styles.includes(".topbar nav.open"), "Mobile navigation should have an open state");
 assert.ok(styles.includes("grid-template-columns: 1fr"), "Mobile layout should collapse dense grids to one column");
-assert.ok(appIncludes("image-generation-manifest.json"), "App should consume the image generation manifest");
-assert.ok(appIncludes("resolveBoardAsset"), "App should resolve board-local asset URLs for subpath deployment");
-assert.ok(appIncludes("boards/kids-world/public"), "App should resolve generated images during root dev-server previews");
-assert.ok(appIncludes("onError"), "App should gracefully fall back when generated assets are not present yet");
-assert.ok(appIncludes("home-hero-image"), "Home hero should render the generated homepage image");
-assert.ok(appIncludes("topic-card-image"), "Topic cards should render generated card images when available");
-assert.ok(appIncludes("generated-scene"), "Topic scene placeholder should switch to generated-image presentation");
+assert.ok(srcIncludes("image-generation-manifest.json"), "App should consume the image generation manifest");
+assert.ok(srcIncludes("resolveBoardAsset"), "App should resolve board-local asset URLs for subpath deployment");
+assert.ok(srcIncludes("boards/kids-world/public"), "App should resolve generated images during root dev-server previews");
+assert.ok(srcIncludes("onError"), "App should gracefully fall back when generated assets are not present yet");
+assert.ok(srcIncludes("home-hero-image"), "Home hero should render the generated homepage image");
+assert.ok(srcIncludes("topic-card-image"), "Topic cards should render generated card images when available");
+assert.ok(srcIncludes("generated-scene"), "Topic scene placeholder should switch to generated-image presentation");
 
 console.log("Kids-world board structure checks passed");
 
-function appIncludes(fragment) {
-  return readFileSync(new URL("./src/App.tsx", root), "utf8").includes(fragment);
+function srcIncludes(fragment) {
+  return collectSourceFiles(new URL("./src/", root)).some((file) => readFileSync(file, "utf8").includes(fragment));
+}
+
+function collectSourceFiles(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const file = new URL(entry.name, `${dir.href}/`);
+    if (entry.isDirectory()) return collectSourceFiles(file);
+    if (!entry.isFile()) return [];
+    const stats = statSync(file);
+    return stats.isFile() && /\.(ts|tsx|css|json)$/.test(entry.name) ? [file] : [];
+  });
 }

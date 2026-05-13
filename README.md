@@ -1,14 +1,14 @@
-# 芋头世界
+# 芋头宇宙
 
 Project slug: `kids-visual-learning-pack`
 
 这是一个独立静态网页项目，不属于 `xiaojie-shares`。
 
-项目用于按不同孩子喜欢的主题制作可视化学习看板，比如蜘蛛宇宙、汪汪队、生命世界、身体世界、宇宙世界等。最高层入口是“芋头世界”，它把已完成的动画主题和数据驱动的知识主题统一组织起来。
+项目用于按不同孩子喜欢的主题制作可视化学习看板，比如蜘蛛宇宙、汪汪队、生命世界、身体世界、宇宙世界等。最高层入口是“芋头宇宙”，它把已完成的动画主题和数据驱动的知识主题统一组织起来。
 
 当前主题：
 
-- `boards/kids-world/`：芋头世界，包含动画世界入口、六大知识世界、6 个首批知识主题、点击式任务和中英文切换。
+- `boards/kids-world/`：芋头宇宙，包含动画世界入口、六大知识世界、6 个首批知识主题、点击式任务和中英文切换。
 - `boards/spider-verse/`：原创蛛网主题亲子故事板，包含 10 个视觉模块和家长讲解附录，覆盖角色、关系、能力、双剧情地图、问题卡、多元故事书、选择、艺术和创作卡，并已接入批量生成的图片素材。
 - `boards/paw-patrol/`：汪汪队任务指挥中心，包含角色分工、地图热点、装备工坊、任务小游戏、流程复述和徽章收集。
 
@@ -97,7 +97,7 @@ npm run check:images
 
 该检查会要求 `boards/**/assets/` 下的图片遵守 PNG/WebP 同名配对规则。
 
-芋头世界的批量生图交接见 [docs/kids-world-image-generation-handoff.md](docs/kids-world-image-generation-handoff.md)。
+芋头宇宙的批量生图交接见 [docs/kids-world-image-generation-handoff.md](docs/kids-world-image-generation-handoff.md)。
 
 ## 版权边界
 

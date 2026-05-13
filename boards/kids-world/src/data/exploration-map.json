@@ -1,6 +1,6 @@
 {
   "id": "xiaoyutou-exploration-map",
-  "title": "芋头世界",
+  "title": "芋头宇宙",
   "subtitle": "从喜欢的故事出发，去认识生命、身体、地球、宇宙、能量和人类创造的系统。",
   "positioning": {
     "animationWorldDecision": "动画世界作为首页的兴趣入口区，视觉上排在第 0 位；不计入六大知识世界。",
@@ -8,7 +8,7 @@
     "homeLearningPromise": "每点亮一张看板，就学会一种认识世界的方法：观察、分类、比较、解释、表达。"
   },
   "homeHero": {
-    "title": "芋头世界",
+    "title": "芋头宇宙",
     "subtitle": "从动画故事出发，点亮真正的世界知识。",
     "childIntro": "今天想先去故事世界玩一玩，还是去看看身体、动物、地球和宇宙怎么工作？",
     "parentIntro": "本系统不是儿童百科页面，而是用统一可视化结构帮助孩子建立分类、机制、比较和表达能力。",

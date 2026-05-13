@@ -41,7 +41,7 @@
 │   ├── styles/home.css                # 根页面样式
 │   └── icons/                         # favicon.ico, icon-*.png, apple-touch-icon.png, og-image.jpg
 ├── boards/
-│   ├── kids-world/                    # 芋头世界（主入口，React）
+│   ├── kids-world/                    # 芋头宇宙（主入口，React）
 │   │   ├── index.html                 # 含 favicon + og:image meta
 │   │   ├── src/
 │   │   │   ├── App.tsx                # 23 行，纯装配
