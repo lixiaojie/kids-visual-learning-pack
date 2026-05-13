@@ -1,6 +1,6 @@
 {
   "id": "xiaoyutou-exploration-map",
-  "title": "Yutou World",
+  "title": "Yutou Verse",
   "subtitle": "Start with favorite stories, then explore life, the body, Earth, space, energy, and human-made systems.",
   "positioning": {
     "animationWorldDecision": "Animation World is the interest gateway on the homepage. Visually it is World 0, but it is not counted as one of the six knowledge worlds.",
@@ -8,7 +8,7 @@
     "homeLearningPromise": "Each board lights up one way to understand the world: observe, classify, compare, explain, and express."
   },
   "homeHero": {
-    "title": "Yutou World",
+    "title": "Yutou Verse",
     "subtitle": "Start from stories, then light up real-world knowledge.",
     "childIntro": "Do you want to visit the story world first, or see how bodies, animals, Earth, and space work?",
     "parentIntro": "This is not a children’s encyclopedia page. It uses a consistent visual structure to build classification, mechanism thinking, comparison, and expression.",

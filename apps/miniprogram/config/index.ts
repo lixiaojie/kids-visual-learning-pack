@@ -1,7 +1,7 @@
 import { defineConfig } from "@tarojs/cli";
 
 export default defineConfig({
-  projectName: "yutou-universe",
+  projectName: "yutou-verse",
   date: "2026-05-13",
   designWidth: 375,
   deviceRatio: {

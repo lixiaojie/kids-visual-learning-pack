@@ -102,7 +102,7 @@ A6. 内容扩展（剩余 6 planned topic）
 
 ```json
 {
-  "name": "yutou-universe",
+  "name": "yutou-verse",
   "installCommand": "npm ci",
   "buildCommand": "npm run build:edgeone",
   "outputDirectory": "./dist",
@@ -225,7 +225,7 @@ echo "==> done"
 ```json
 {
   "siteName": "芋头宇宙",
-  "siteUrl": "https://kids.yutou-universe.cn",
+  "siteUrl": "https://kids.yutou-verse.cn",
   "defaultTitle": "芋头宇宙｜儿童认知可视化学习地图",
   "defaultDescription": "面向孩子和家长共读的可视化认知学习地图。",
   "ogImage": "/shared/icons/og-image.jpg",
@@ -316,7 +316,7 @@ function resolveSlug(): string | null {
 
 | 环境 | 分支 | 域名 | 用途 |
 |------|------|------|------|
-| production | `main` | `https://kids.yutou-universe.cn`（ICP 备案后） | 正式站 |
+| production | `main` | `https://kids.yutou-verse.cn`（ICP 备案后） | 正式站 |
 | preview | `develop` | EdgeOne preview URL | 内测验收 |
 | 自有服务器 | `main` | `https://118.145.242.99/kids/` | 过渡期 + 备用 |
 
@@ -464,14 +464,14 @@ import type { Topic } from "../../../boards/kids-world/src/types/topic";
 | 本地打包 | WebP 放入小程序包（但 2MB 限制） | 不可行（79 张图远超 2MB） |
 
 **CDN 策略**：
-- 图片已在 EdgeOne 站点 `https://kids.yutou-universe.cn/boards/kids-world/assets/`
+- 图片已在 EdgeOne 站点 `https://kids.yutou-verse.cn/boards/kids-world/assets/`
 - 小程序 GeneratedImage 组件直接拼 CDN URL：
 
 ```tsx
 // apps/miniprogram/src/components/shared/GeneratedImage.tsx
 import { Image } from "@tarojs/components";
 
-const CDN_BASE = "https://kids.yutou-universe.cn/boards/kids-world/assets";
+const CDN_BASE = "https://kids.yutou-verse.cn/boards/kids-world/assets";
 
 export function GeneratedImage({ assetPath, className }: { assetPath?: string; className?: string }) {
   if (!assetPath) return null;
@@ -575,7 +575,7 @@ npx @tarojs/cli init apps/miniprogram --template react-ts
 
 ```typescript
 export default {
-  projectName: "yutou-universe-miniprogram",
+  projectName: "yutou-verse-miniprogram",
   designWidth: 750,
   deviceRatio: { 750: 1 },
   sourceRoot: "src",

@@ -17,7 +17,7 @@ export default function IndexPage() {
   return (
     <View className="mini-page">
       <View className="hero">
-        <Text className="eyebrow">Yutou Universe</Text>
+        <Text className="eyebrow">Yutou Verse</Text>
         <Text className="title">{map.homeHero.title}</Text>
         <Text className="intro">{map.homeHero.childIntro}</Text>
       </View>

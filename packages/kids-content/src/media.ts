@@ -1,6 +1,6 @@
 import { generatedAssets } from "../../../boards/kids-world/src/lib/asset-map";
 
-const defaultCdnBase = "https://kids.yutou-universe.cn/boards/kids-world";
+const defaultCdnBase = "https://kids.yutou-verse.cn/boards/kids-world";
 
 function normalizeBase(base: string) {
   return base.replace(/\/+$/, "");

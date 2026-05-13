@@ -7,7 +7,7 @@ import { PageShell } from "./components/layout/PageShell";
 import { HomePage } from "./pages/HomePage";
 import { TopicPage } from "./pages/TopicPage";
 
-const localeStorageKey = "yutou-universe-locale";
+const localeStorageKey = "yutou-verse-locale";
 const supportedLocales: Locale[] = ["zh-CN", "en-US"];
 
 function getInitialLocale(): Locale {

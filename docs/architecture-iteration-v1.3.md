@@ -93,7 +93,7 @@ Part B: 小程序版本（路线由主体类型决定）
 
 ```json
 {
-  "name": "yutou-universe",
+  "name": "yutou-verse",
   "installCommand": "npm ci",
   "buildCommand": "npm run build:edgeone",
   "outputDirectory": "./dist",
@@ -243,7 +243,7 @@ scripts/generate-site-meta.mjs          # 模板 → .generated-html
 ```json
 {
   "siteName": "芋头宇宙",
-  "siteUrl": "https://kids.yutou-universe.cn",
+  "siteUrl": "https://kids.yutou-verse.cn",
   "defaultTitle": "芋头宇宙｜儿童认知可视化学习地图",
   "defaultDescription": "面向孩子和家长共读的可视化认知学习地图。",
   "ogImage": "/shared/icons/og-image.jpg",
@@ -323,7 +323,7 @@ H5:
 
 | 环境 | 分支 | 域名 |
 |------|------|------|
-| production | `main` | `https://kids.yutou-universe.cn`（ICP 后） |
+| production | `main` | `https://kids.yutou-verse.cn`（ICP 后） |
 | preview | `develop` | EdgeOne preview URL |
 | 自有服务器 | `main` | `https://118.145.242.99/kids/`（过渡/备用） |
 
@@ -506,7 +506,7 @@ apps/miniprogram/
 79 张 WebP 远超小程序 2MB 包限制，必须走 CDN：
 
 ```tsx
-const CDN_BASE = "https://kids.yutou-universe.cn/boards/kids-world/assets";
+const CDN_BASE = "https://kids.yutou-verse.cn/boards/kids-world/assets";
 
 export function GeneratedImage({ assetPath, className }: Props) {
   if (!assetPath) return null;
