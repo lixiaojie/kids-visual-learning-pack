@@ -6,6 +6,7 @@ const root = process.cwd();
 const appDir = path.join(root, "apps/miniprogram");
 const requiredFiles = [
   "package.json",
+  "babel.config.js",
   "project.config.json",
   "tsconfig.json",
   "config/index.ts",
@@ -13,6 +14,7 @@ const requiredFiles = [
   "src/app.config.ts",
   "src/app.tsx",
   "src/app.scss",
+  "src/lib/kids-content.ts",
   "src/pages/index/index.tsx",
   "src/pages/index/index.config.ts",
   "src/pages/topic/index.tsx",

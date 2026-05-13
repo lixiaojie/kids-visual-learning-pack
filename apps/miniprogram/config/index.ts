@@ -1,4 +1,7 @@
 import { defineConfig } from "@tarojs/cli";
+import path from "node:path";
+
+const root = path.resolve(__dirname, "../../..");
 
 export default defineConfig({
   projectName: "yutou-verse",
@@ -14,6 +17,9 @@ export default defineConfig({
   outputRoot: "dist",
   framework: "react",
   compiler: "webpack5",
+  alias: {
+    "@yutou/kids-content": path.join(root, "apps/miniprogram/src/lib/kids-content.ts"),
+  },
   mini: {
     postcss: {
       pxtransform: {
