@@ -1,19 +1,19 @@
 {
   "id": "xiaoyutou-exploration-map",
   "title": "芋头宇宙",
-  "subtitle": "从喜欢的故事出发，去认识生命、身体、地球、宇宙、能量和人类创造的系统。",
+  "subtitle": "从真实观察和好奇问题出发，去认识生命、身体、地球、宇宙、能量和人类创造的系统。",
   "positioning": {
-    "animationWorldDecision": "动画世界作为首页的兴趣入口区，视觉上排在第 0 位；不计入六大知识世界。",
-    "reason": "动画主题适合吸引孩子进入，但知识体系需要保持稳定，因此动画世界承担入口、复盘和迁移作用。",
+    "animationWorldDecision": "动画故事只作为可选素材标签和迁移练习，不再承担首页主入口职责。",
+    "reason": "全局导航、世界入口和主题学习需要分层清晰，六大知识世界保持稳定。",
     "homeLearningPromise": "每点亮一张看板，就学会一种认识世界的方法：观察、分类、比较、解释、表达。"
   },
   "homeHero": {
     "title": "芋头宇宙",
-    "subtitle": "从动画故事出发，点亮真正的世界知识。",
-    "childIntro": "今天想先去故事世界玩一玩，还是去看看身体、动物、地球和宇宙怎么工作？",
+    "subtitle": "从一个问题出发，点亮真正的世界知识。",
+    "childIntro": "今天想探索生命、身体、地球、宇宙、能量，还是人类创造的系统？",
     "parentIntro": "本系统不是儿童百科页面，而是用统一可视化结构帮助孩子建立分类、机制、比较和表达能力。",
-    "primaryCTA": "开始探索",
-    "secondaryCTA": "看看已点亮的主题"
+    "primaryCTA": "看六个世界",
+    "secondaryCTA": "看看最近观察"
   },
   "statusLegend": [
     {
@@ -43,14 +43,6 @@
   ],
   "sections": [
     {
-      "id": "interest-entry",
-      "title": "兴趣入口",
-      "description": "孩子喜欢的故事和角色，用来把注意力带到观察、任务、关系和表达上。",
-      "worlds": [
-        "animation"
-      ]
-    },
-    {
       "id": "knowledge-worlds",
       "title": "六大知识世界",
       "description": "稳定的知识地图，帮助孩子把零散兴趣连接成体系化认知。",
@@ -68,7 +60,7 @@
     {
       "id": "animation",
       "order": 0,
-      "type": "interestEntrance",
+      "type": "storyMaterial",
       "name": "动画世界",
       "shortName": "动画",
       "status": "completed",
@@ -79,12 +71,12 @@
       },
       "icon": "sparkles",
       "childOneLiner": "从喜欢的英雄和小队开始，学会看故事、看任务、看角色关系。",
-      "parentNote": "动画世界不是知识分类本身，而是兴趣入口。它把孩子熟悉的角色转化为观察、分类、协作、价值判断和表达训练。",
+      "parentNote": "动画故事不是知识分类本身，只作为可选素材和迁移练习，把孩子熟悉的角色转化为观察、分类、协作、价值判断和表达训练。",
       "entryCard": {
-        "title": "先从喜欢的故事出发",
-        "subtitle": "蜘蛛英雄、汪汪队和更多故事看板。",
-        "cta": "进入动画世界",
-        "badge": "兴趣入口"
+        "title": "故事素材练习",
+        "subtitle": "蜘蛛英雄、汪汪队和更多故事看板可作为迁移练习。",
+        "cta": "查看故事素材",
+        "badge": "迁移练习"
       },
       "topicCards": [
         {

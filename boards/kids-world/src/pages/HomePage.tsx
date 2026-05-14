@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import type { ExplorationMap } from "../types/world";
 import type { Locale } from "../types/topic";
 import { HeroSection } from "../components/home/HeroSection";
-import { InterestBand } from "../components/home/InterestBand";
+import { FeaturedObservation } from "../components/home/FeaturedObservation";
 import { WorldGrid } from "../components/home/WorldGrid";
 import { WorldTopicPanel } from "../components/home/WorldTopicPanel";
 
@@ -11,10 +11,10 @@ type Props = { locale: Locale; map: ExplorationMap };
 type HomePageProps = Props & { notice?: string };
 
 export function HomePage({ locale, map, notice }: HomePageProps) {
-  const [selectedWorldId, setSelectedWorldId] = useState("animation");
-  const selectedWorld = map.worlds.find((world) => world.id === selectedWorldId) ?? map.worlds[0];
-  const knowledgeWorlds = map.worlds.filter((world) => world.id !== "animation");
-  const animationWorld = map.worlds.find((world) => world.id === "animation");
+  const knowledgeWorlds = map.worlds.filter((world) => world.type === "knowledgeWorld");
+  const initialWorldId = knowledgeWorlds.find((world) => world.id === "life")?.id ?? knowledgeWorlds[0]?.id ?? "";
+  const [selectedWorldId, setSelectedWorldId] = useState(initialWorldId);
+  const selectedWorld = knowledgeWorlds.find((world) => world.id === selectedWorldId) ?? knowledgeWorlds[0];
   const topicPanelRef = useRef<HTMLDivElement>(null);
 
   function handleSelectWorld(id: string) {
@@ -28,7 +28,7 @@ export function HomePage({ locale, map, notice }: HomePageProps) {
     <main className="page-shell">
       {notice ? <p className="route-notice">{notice}</p> : null}
       <HeroSection map={map} locale={locale} />
-      {animationWorld ? <InterestBand world={animationWorld} /> : null}
+      <FeaturedObservation map={map} locale={locale} />
       <WorldGrid
         worlds={knowledgeWorlds}
         selectedWorldId={selectedWorldId}

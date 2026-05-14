@@ -17,13 +17,13 @@ export function HeroSection({ map, locale }: Props) {
             <Play size={18} />
             {map.homeHero.primaryCTA}
           </a>
-          <a className="secondary-button" href="#topics">
+          <a className="secondary-button" href="#recent-observation">
             <BadgeCheck size={18} />
             {map.homeHero.secondaryCTA}
           </a>
         </div>
       </div>
-      <aside className="parent-note home-hero-visual">
+      <aside className="parent-note home-hero-visual" id="parent-guide">
         <GeneratedImage alt="" assetId="homepage-exploration-map-hero" className="home-hero-image" />
         <div>
           <BookOpen />

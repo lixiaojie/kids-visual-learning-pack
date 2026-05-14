@@ -18,8 +18,8 @@ const renderReadySlugs = new Set(
 );
 
 function isTopicVisible(slug: string | undefined, policy: ChannelPolicy) {
-  if (!slug) return true;
   if (policy.visibleTopics === "all") return true;
+  if (!slug) return false;
   if (policy.visibleTopics === "all-render-ready") return renderReadySlugs.has(slug);
   return policy.visibleTopics.includes(slug);
 }
@@ -37,7 +37,7 @@ function applyChannelPolicy(map: ExplorationMap, policy: ChannelPolicy): Explora
         (topic) => isTopicVisible(topic.slug, policy) && isBoardHrefVisible(topic.href, policy),
       ),
     }))
-    .filter((world) => world.topicCards.length > 0);
+    .filter((world) => world.type === "knowledgeWorld" || world.topicCards.length > 0);
   const visibleWorldIds = new Set(worlds.map((world) => world.id));
 
   return {

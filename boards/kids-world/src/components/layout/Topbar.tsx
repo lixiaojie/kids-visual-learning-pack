@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Menu, Sparkles } from "lucide-react";
-import { getTopic, type ExplorationMap, type Locale } from "@yutou/kids-content";
+import type { ExplorationMap, Locale } from "@yutou/kids-content";
 import { LocaleToggle } from "../shared/LocaleToggle";
-import { getTopicHref } from "../../lib/asset-resolve";
 
 type Props = {
   map: ExplorationMap;
@@ -12,6 +11,11 @@ type Props = {
 
 export function Topbar({ map, locale, onLocaleChange }: Props) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const navItems = [
+    { href: "#", label: locale === "zh-CN" ? "探索首页" : "Home" },
+    { href: "#worlds", label: locale === "zh-CN" ? "全部世界" : "Worlds" },
+    { href: "#parent-guide", label: locale === "zh-CN" ? "家长说明" : "Parent Guide" },
+  ];
 
   return (
     <header className="topbar">
@@ -26,22 +30,18 @@ export function Topbar({ map, locale, onLocaleChange }: Props) {
         className="mobile-menu-button"
         type="button"
         aria-expanded={mobileNavOpen}
-        aria-controls="topic-nav"
+        aria-controls="global-nav"
         onClick={() => setMobileNavOpen((open) => !open)}
       >
         <Menu size={18} />
-        {locale === "zh-CN" ? "主题" : "Topics"}
+        {locale === "zh-CN" ? "导航" : "Menu"}
       </button>
-      <nav className={mobileNavOpen ? "open" : ""} id="topic-nav">
-        {map.worlds
-          .flatMap((world) => world.topicCards)
-          .filter((topic) => topic.slug)
-          .slice(0, 3)
-          .map((topic) => (
-            <a href={getTopicHref(topic.slug as string)} key={topic.slug} onClick={() => setMobileNavOpen(false)}>
-              {getTopic(topic.slug as string, locale)?.title}
-            </a>
-          ))}
+      <nav aria-label={locale === "zh-CN" ? "全局导航" : "Global navigation"} className={mobileNavOpen ? "open" : ""} id="global-nav">
+        {navItems.map((item) => (
+          <a href={item.href} key={item.href} onClick={() => setMobileNavOpen(false)}>
+            {item.label}
+          </a>
+        ))}
       </nav>
       <LocaleToggle locale={locale} onChange={onLocaleChange} />
     </header>

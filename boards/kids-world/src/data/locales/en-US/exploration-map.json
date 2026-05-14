@@ -1,19 +1,19 @@
 {
   "id": "xiaoyutou-exploration-map",
   "title": "Yutou Verse",
-  "subtitle": "Start with favorite stories, then explore life, the body, Earth, space, energy, and human-made systems.",
+  "subtitle": "Start from real observations and curious questions, then explore life, the body, Earth, space, energy, and human-made systems.",
   "positioning": {
-    "animationWorldDecision": "Animation World is the interest gateway on the homepage. Visually it is World 0, but it is not counted as one of the six knowledge worlds.",
-    "reason": "Animation themes help attract the child into learning, while the knowledge system stays stable. Animation World carries entry, review, and transfer practice.",
+    "animationWorldDecision": "Animation stories are optional material tags and transfer practice, not a primary homepage entry.",
+    "reason": "Global navigation, world entry, and topic learning stay separate so the six knowledge worlds remain stable.",
     "homeLearningPromise": "Each board lights up one way to understand the world: observe, classify, compare, explain, and express."
   },
   "homeHero": {
     "title": "Yutou Verse",
-    "subtitle": "Start from stories, then light up real-world knowledge.",
-    "childIntro": "Do you want to visit the story world first, or see how bodies, animals, Earth, and space work?",
+    "subtitle": "Start from one question, then light up real-world knowledge.",
+    "childIntro": "Do you want to explore life, the body, Earth, space, energy, or human-made systems today?",
     "parentIntro": "This is not a children’s encyclopedia page. It uses a consistent visual structure to build classification, mechanism thinking, comparison, and expression.",
-    "primaryCTA": "Start Exploring",
-    "secondaryCTA": "See Lighted Topics"
+    "primaryCTA": "See Six Worlds",
+    "secondaryCTA": "See Recent Observation"
   },
   "statusLegend": [
     {
@@ -43,14 +43,6 @@
   ],
   "sections": [
     {
-      "id": "interest-entry",
-      "title": "Interest Gateway",
-      "description": "Stories and characters children love help bring attention to observation, tasks, relationships, and expression.",
-      "worlds": [
-        "animation"
-      ]
-    },
-    {
       "id": "knowledge-worlds",
       "title": "Six Knowledge Worlds",
       "description": "A stable knowledge map that connects scattered interests into systematic understanding.",
@@ -68,7 +60,7 @@
     {
       "id": "animation",
       "order": 0,
-      "type": "interestEntrance",
+      "type": "storyMaterial",
       "name": "Animation World",
       "shortName": "Stories",
       "status": "completed",
@@ -79,12 +71,12 @@
       },
       "icon": "sparkles",
       "childOneLiner": "Start with favorite heroes and teams, then learn to notice stories, missions, and character relationships.",
-      "parentNote": "Animation World is not a knowledge category by itself. It is an interest gateway that turns familiar stories into practice in observation, classification, teamwork, value judgment, and expression.",
+      "parentNote": "Animation stories are not a knowledge category by themselves. They are optional material for transfer practice in observation, classification, teamwork, value judgment, and expression.",
       "entryCard": {
-        "title": "Start with favorite stories",
-        "subtitle": "Spider heroes, Paw Patrol, and more story boards.",
-        "cta": "Enter Animation World",
-        "badge": "Interest Gateway"
+        "title": "Story Material Practice",
+        "subtitle": "Spider heroes, Paw Patrol, and more story boards can be used for transfer practice.",
+        "cta": "View Story Materials",
+        "badge": "Transfer Practice"
       },
       "topicCards": [
         {

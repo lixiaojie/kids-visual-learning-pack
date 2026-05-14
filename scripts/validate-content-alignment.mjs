@@ -101,6 +101,31 @@ for (const file of webFiles) {
   }
 }
 
+const topbarPath = path.join(root, "boards/kids-world/src/components/layout/Topbar.tsx");
+const topbarSource = fs.readFileSync(topbarPath, "utf8");
+for (const forbidden of ["getTopic(", "getTopicHref", "topicCards", "topic-nav"]) {
+  if (topbarSource.includes(forbidden)) {
+    errors.push(`Topbar must use stable global navigation, not topic-derived links: ${forbidden}`);
+  }
+}
+for (const required of ["探索首页", "全部世界", "家长说明", "global-nav"]) {
+  if (!topbarSource.includes(required)) {
+    errors.push(`Topbar global navigation is missing ${required}`);
+  }
+}
+
+const homePagePath = path.join(root, "boards/kids-world/src/pages/HomePage.tsx");
+const homePageSource = fs.readFileSync(homePagePath, "utf8");
+if (homePageSource.includes("InterestBand")) {
+  errors.push("HomePage must not render the story interest entrance band");
+}
+if (!homePageSource.includes("FeaturedObservation")) {
+  errors.push("HomePage must render the recent observation entry");
+}
+if (fs.existsSync(path.join(root, "boards/kids-world/src/components/home/InterestBand.tsx"))) {
+  errors.push("Story interest entrance component must be removed from home components");
+}
+
 const miniprogramConfigPath = path.join(root, "apps/miniprogram/config/index.ts");
 const miniprogramConfig = fs.readFileSync(miniprogramConfigPath, "utf8");
 if (miniprogramConfig.includes("apps/miniprogram/src/lib/kids-content")) {
