@@ -166,6 +166,18 @@
           "href": "boards/insects-and-spiders/index.html"
         },
         {
+          "slug": "cicada-life",
+          "title": "The Life of a Cicada",
+          "status": "building",
+          "cardDescription": "Start from a real observation and learn about nymphs, molting, and a life cycle without a pupa.",
+          "learningGoalTags": [
+            "life cycle",
+            "molting",
+            "field observation"
+          ],
+          "href": "boards/cicada-life/index.html"
+        },
+        {
           "slug": "dinosaurs",
           "title": "Dinosaur and Fossil Detective Station",
           "status": "building",

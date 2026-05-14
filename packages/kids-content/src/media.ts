@@ -1,4 +1,4 @@
-import { generatedAssets } from "../../../boards/kids-world/src/lib/asset-map";
+import { generatedAssets } from "./assets";
 
 const defaultCdnBase = "https://kids.yutou-verse.cn/boards/kids-world";
 

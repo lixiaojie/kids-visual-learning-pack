@@ -1,0 +1,376 @@
+{
+  "id": "topic-life-cicada-life",
+  "slug": "cicada-life",
+  "title": "The Life of a Cicada",
+  "subtitle": "From underground nymph to summer singer",
+  "coreQuestion": "Why is this little insect from the soil hurrying up the tree?",
+  "learningGoals": [
+    "Know that a cicada is an insect and its young stage is called a nymph.",
+    "Understand a cicada life cycle as egg, nymph, and adult.",
+    "Know that cicadas do not have a pupa stage like butterflies do.",
+    "Practice quiet observation without touching a molting cicada."
+  ],
+  "misconceptions": [
+    "A cicada nymph is a different animal and will not become a cicada.",
+    "All insects have a pupa stage like butterflies.",
+    "A nymph climbing from soil is just wandering around.",
+    "It is okay to pick up a molting cicada for a closer look."
+  ],
+  "observationContext": {
+    "source": "real-world-observation",
+    "scene": "a summer dusk trail beside tree roots",
+    "trigger": "finding a dark cicada nymph that had just emerged from soil and was looking for a place to molt",
+    "season": "summer",
+    "safetyNote": "Observe quietly. Do not touch or disturb the molting process."
+  },
+  "hero": {
+    "title": "The Life of a Cicada",
+    "kicker": "Life World · Real Observation",
+    "lead": "Start with a dark cicada nymph beside a tree root and discover why it climbs upward before becoming a summer singer.",
+    "sceneExplanation": "The main scene is a summer dusk trail with tree roots, soil, a small emergence hole, and a cicada nymph moving toward bark. Xiao Yutou and his younger brother observe quietly with a flashlight. Hotspots guide children to notice the nymph, the hole, the tree trunk, and the rule: observe without disturbing.",
+    "childPrompt": "Where did the little insect come from? Where is it going?",
+    "parentPrompt": "Let the child describe real clues first, then introduce cicada nymph, molting, and incomplete metamorphosis."
+  },
+  "classificationGroups": [
+    {
+      "id": "insect-basic",
+      "name": "It is an insect",
+      "childExplanation": "A cicada is an insect. A young cicada is called a nymph, and it becomes a winged adult.",
+      "parentNote": "For ages 4-8, focus on cicada as insect and nymph to adult.",
+      "representativeObjects": [
+        "cicadaNymph",
+        "adultCicada"
+      ],
+      "misconception": "A cicada nymph is not a different animal. It is a young cicada."
+    },
+    {
+      "id": "life-cycle",
+      "name": "Life has stages",
+      "childExplanation": "A cicada starts as an egg, grows as a nymph underground, and then molts into an adult.",
+      "parentNote": "Use egg -> nymph -> adult as the main line. Save complicated year counts for later.",
+      "representativeObjects": [
+        "cicadaEggs",
+        "undergroundNymph",
+        "emergingNymph",
+        "adultCicada"
+      ],
+      "misconception": "A cicada is not born ready to fly and does not live only in trees."
+    },
+    {
+      "id": "metamorphosis-type",
+      "name": "A change without a pupa",
+      "childExplanation": "A cicada does not have a pupa like a butterfly. It grows as a nymph and molts into an adult.",
+      "parentNote": "Use incomplete metamorphosis as a comparison idea, not as a term to memorize.",
+      "representativeObjects": [
+        "cicadaShell",
+        "butterflyPupa"
+      ],
+      "misconception": "Not every insect has a pupa stage."
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "cicadaEggs",
+      "name": "Cicada eggs in a twig",
+      "groupId": "life-cycle",
+      "childExplanation": "A cicada lays eggs inside small twigs. The life cycle begins there.",
+      "visualHint": "twig, tiny eggs, starting point",
+      "commonMisread": "Thinking all insect eggs sit on leaves."
+    },
+    {
+      "id": "undergroundNymph",
+      "name": "Underground nymph",
+      "groupId": "life-cycle",
+      "childExplanation": "The young nymph goes into soil and grows near plant roots.",
+      "visualHint": "soil, roots, no wings",
+      "commonMisread": "Thinking young cicadas live on tree branches."
+    },
+    {
+      "id": "emergingNymph",
+      "name": "Emerging nymph",
+      "groupId": "insect-basic",
+      "childExplanation": "A mature nymph comes out of the soil and looks for a tree trunk or another steady place.",
+      "visualHint": "emergence hole, strong front legs, moving to bark",
+      "commonMisread": "Thinking it is lost."
+    },
+    {
+      "id": "treeTrunk",
+      "name": "Tree trunk",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "The trunk helps the nymph grip firmly while it molts.",
+      "visualHint": "rough bark, vertical support",
+      "commonMisread": "Thinking any place is equally good for molting."
+    },
+    {
+      "id": "cicadaShell",
+      "name": "Cicada shell",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "After molting, the old outer shell stays on the bark like a tiny empty case.",
+      "visualHint": "empty shell on bark",
+      "commonMisread": "Thinking the shell is a dead insect."
+    },
+    {
+      "id": "newAdult",
+      "name": "Newly molted adult",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "The new adult is soft at first. Its wings need time to open and harden.",
+      "visualHint": "pale body, transparent wings, hanging near shell",
+      "commonMisread": "Thinking it can fly away immediately."
+    },
+    {
+      "id": "adultCicada",
+      "name": "Adult cicada",
+      "groupId": "insect-basic",
+      "childExplanation": "The adult has wings, sings, mates, and lays eggs so the life cycle can continue.",
+      "visualHint": "transparent wings, branch, summer song",
+      "commonMisread": "Thinking every singing cicada is the same individual."
+    },
+    {
+      "id": "butterflyPupa",
+      "name": "Butterfly pupa",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "A butterfly has a pupa stage. A cicada does not.",
+      "visualHint": "pupa hanging from a twig",
+      "commonMisread": "Thinking a cicada also becomes a pupa."
+    }
+  ],
+  "mechanism": {
+    "title": "How does a cicada grow?",
+    "steps": [
+      {
+        "id": "egg-in-twig",
+        "shortTitle": "Eggs in a twig",
+        "childExplanation": "Cicada eggs are placed inside a small twig.",
+        "parentNote": "Keep the key place: inside a twig."
+      },
+      {
+        "id": "young-nymph-to-soil",
+        "shortTitle": "Nymph enters soil",
+        "childExplanation": "A tiny nymph hatches, falls to the ground, and goes into the soil.",
+        "parentNote": "This connects the tree and underground parts of the cycle."
+      },
+      {
+        "id": "grow-underground",
+        "shortTitle": "Growing underground",
+        "childExplanation": "The nymph grows slowly underground near roots.",
+        "parentNote": "Mention plant sap only if the child asks."
+      },
+      {
+        "id": "emerge-from-soil",
+        "shortTitle": "Coming out in summer",
+        "childExplanation": "A mature nymph climbs out of a small hole and moves toward a tree or plant.",
+        "parentNote": "It is preparing to molt, not wandering."
+      },
+      {
+        "id": "molt-on-trunk",
+        "shortTitle": "Molting on bark",
+        "childExplanation": "It grips the bark, the old shell opens, and the new adult slowly comes out.",
+        "parentNote": "Use gentle language."
+      },
+      {
+        "id": "adult-cycle-again",
+        "shortTitle": "Adult starts the cycle again",
+        "childExplanation": "The adult opens its wings, sings, mates, and lays eggs.",
+        "parentNote": "Keep adult behavior light and simple."
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "Why does the nymph climb a tree?",
+    "steps": [
+      {
+        "id": "find-support",
+        "shortTitle": "Find support",
+        "childExplanation": "A vertical tree trunk gives the nymph a steady place to grip.",
+        "parentNote": "Explain climbing as finding support."
+      },
+      {
+        "id": "hold-body",
+        "shortTitle": "Hold still",
+        "childExplanation": "During molting, the body needs to stay steady.",
+        "parentNote": "No need to discuss failure risks."
+      },
+      {
+        "id": "shell-opens",
+        "shortTitle": "The shell opens",
+        "childExplanation": "The old outer shell opens along the back, and the new body comes out slowly.",
+        "parentNote": "Connect this to finding empty cicada shells."
+      },
+      {
+        "id": "wings-open",
+        "shortTitle": "Wings open and harden",
+        "childExplanation": "The new adult unfolds its wings and waits for its body to harden.",
+        "parentNote": "Remind children not to touch a molting cicada."
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "cicada-vs-butterfly",
+      "title": "Cicada vs Butterfly",
+      "a": {
+        "name": "Cicada",
+        "points": [
+          "egg -> nymph -> adult",
+          "no pupa",
+          "nymph often lives underground"
+        ]
+      },
+      "b": {
+        "name": "Butterfly",
+        "points": [
+          "egg -> larva -> pupa -> adult",
+          "has a pupa",
+          "caterpillar and pupa stages are obvious"
+        ]
+      },
+      "childConclusion": "A cicada has no pupa. A butterfly has a pupa."
+    },
+    {
+      "id": "cicada-vs-dragonfly",
+      "title": "Cicada vs Dragonfly",
+      "a": {
+        "name": "Cicada",
+        "points": [
+          "nymph lives underground",
+          "adult often sings in trees",
+          "no pupa"
+        ]
+      },
+      "b": {
+        "name": "Dragonfly",
+        "points": [
+          "nymph lives in water",
+          "adult flies in the air",
+          "also no pupa"
+        ]
+      },
+      "childConclusion": "Both have no pupa, but their nymphs live in different places."
+    },
+    {
+      "id": "nymph-vs-adult",
+      "title": "Nymph vs Adult",
+      "a": {
+        "name": "Cicada nymph",
+        "points": [
+          "no wings",
+          "climbs and digs",
+          "prepares to molt"
+        ]
+      },
+      "b": {
+        "name": "Adult cicada",
+        "points": [
+          "transparent wings",
+          "can fly",
+          "sings in summer"
+        ]
+      },
+      "childConclusion": "One living thing can look and act different at different stages."
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "cicada-sequence-01",
+      "title": "Put the cicada life cycle in order",
+      "prompt": "Tap the stages in order.",
+      "options": [
+        {
+          "id": "egg",
+          "label": "Egg"
+        },
+        {
+          "id": "undergroundNymph",
+          "label": "Underground nymph"
+        },
+        {
+          "id": "emergingNymph",
+          "label": "Emerging nymph"
+        },
+        {
+          "id": "molting",
+          "label": "Molting"
+        },
+        {
+          "id": "adult",
+          "label": "Adult"
+        }
+      ],
+      "successCopy": "Correct! A cicada starts as an egg, grows underground, then molts into a flying adult.",
+      "wrongHint": "Think: does it live underground before or after it can fly?"
+    },
+    {
+      "id": "cicada-choice-01",
+      "title": "Find a good molting place",
+      "prompt": "Where should the nymph climb to molt?",
+      "options": [
+        {
+          "id": "treeTrunk",
+          "label": "Tree trunk"
+        },
+        {
+          "id": "mud",
+          "label": "Mud"
+        },
+        {
+          "id": "puddle",
+          "label": "Puddle"
+        },
+        {
+          "id": "thinLeaf",
+          "label": "Thin grass blade"
+        }
+      ],
+      "wrongHints": {
+        "mud": "It needs a firm support, not flat mud.",
+        "puddle": "A puddle is not a good molting place.",
+        "thinLeaf": "A thin blade may not be steady enough."
+      },
+      "successCopy": "Yes! A vertical trunk helps the nymph hold still and molt."
+    },
+    {
+      "id": "cicada-identify-01",
+      "title": "Find the cicada shell",
+      "prompt": "Find the empty shell on the bark.",
+      "successCopy": "You found it! A cicada shell is the old outer case left after molting.",
+      "wrongHint": "Look for a small empty shell attached to the bark."
+    },
+    {
+      "id": "cicada-compare-01",
+      "title": "Who has a pupa?",
+      "prompt": "Which one has a pupa stage?",
+      "options": [
+        {
+          "id": "cicada",
+          "label": "Cicada"
+        },
+        {
+          "id": "butterfly",
+          "label": "Butterfly"
+        },
+        {
+          "id": "dragonfly",
+          "label": "Dragonfly"
+        }
+      ],
+      "wrongHints": {
+        "cicada": "A cicada molts from nymph to adult without a pupa.",
+        "dragonfly": "A dragonfly also has no pupa."
+      },
+      "successCopy": "Correct! A butterfly has a pupa, but a cicada does not."
+    }
+  ],
+  "speakTemplates": [
+    "I found a ____.",
+    "It is in the ____ stage.",
+    "It climbs onto a ____ to molt.",
+    "After molting, it becomes a ____.",
+    "A cicada is different from a butterfly because ____."
+  ],
+  "parentTips": [
+    "Let the child describe what they see before naming the stage.",
+    "Connect the page to real observation: where did it come from, and why is it climbing?",
+    "If you see a molting cicada, observe quietly and do not touch it.",
+    "Use three comparison questions: where does it live, how does it change, and does it have a pupa?"
+  ]
+}

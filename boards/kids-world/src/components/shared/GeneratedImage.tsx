@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { generatedAssets } from "../../lib/asset-map";
+import { getGeneratedImageUrl } from "@yutou/kids-content";
 import { resolveBoardAssetCandidates } from "../../lib/asset-resolve";
 
 export function GeneratedImage({
@@ -13,8 +13,8 @@ export function GeneratedImage({
   className: string;
   alt: string;
 }) {
-  const asset = assetId ? generatedAssets[assetId] : undefined;
-  const sources = [asset?.webpPath, asset?.pngPath, fallbackPath]
+  const generatedPath = getGeneratedImageUrl(assetId, "");
+  const sources = [generatedPath, fallbackPath]
     .flatMap((path) => resolveBoardAssetCandidates(path))
     .filter(Boolean);
   const [sourceIndex, setSourceIndex] = useState(0);

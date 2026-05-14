@@ -166,6 +166,18 @@
           "href": "boards/insects-and-spiders/index.html"
         },
         {
+          "slug": "cicada-life",
+          "title": "蝉的一生",
+          "status": "building",
+          "cardDescription": "从真实发现出发，认识蝉若虫、羽化和没有蛹的生命周期。",
+          "learningGoalTags": [
+            "生命周期",
+            "羽化",
+            "自然观察"
+          ],
+          "href": "boards/cicada-life/index.html"
+        },
+        {
           "slug": "dinosaurs",
           "title": "恐龙与化石侦探站",
           "status": "building",

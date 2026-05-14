@@ -65,3 +65,34 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.compare-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.related-link {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.related-link-hover {
+  background: #eef2ff;
+}
+
+.related-title {
+  color: #172033;
+  font-size: 29px;
+  font-weight: 900;
+}

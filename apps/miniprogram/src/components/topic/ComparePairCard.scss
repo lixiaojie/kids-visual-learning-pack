@@ -1,0 +1,59 @@
+.compare-pair-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.compare-pair-title {
+  color: #172033;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.compare-sides {
+  display: flex;
+  gap: 12px;
+}
+
+.compare-side {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 2px solid rgba(23, 32, 51, 0.08);
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.compare-side-name {
+  color: #0f172a;
+  font-size: 27px;
+  font-weight: 900;
+}
+
+.compare-point-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.compare-point {
+  color: #475569;
+  font-size: 24px;
+  line-height: 1.45;
+}
+
+.compare-conclusion {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.45;
+}

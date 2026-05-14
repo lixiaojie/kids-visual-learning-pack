@@ -8,8 +8,8 @@
     "build": "npm run build:static",
     "build:static": "bash scripts/build-static.sh",
     "build:edgeone": "npm run build:static",
-    "build:kids-world": "vite build boards/kids-world --base=./ --emptyOutDir --outDir ../../dist/kids-world",
-    "build:paw": "vite build boards/paw-patrol --base=./ --emptyOutDir --outDir ../../dist/paw-patrol",
+    "build:kids-world": "vite build boards/kids-world --config vite.config.ts --base=./ --emptyOutDir --outDir ../../dist/kids-world",
+    "build:paw": "vite build boards/paw-patrol --config vite.config.ts --base=./ --emptyOutDir --outDir ../../dist/paw-patrol",
     "check:images": "node scripts/check-image-assets.mjs",
     "check:dist": "node scripts/check-dist.mjs",
     "generate:site-meta": "node scripts/generate-site-meta.mjs",
@@ -18,13 +18,14 @@
     "preview:kids-world": "vite preview --host 127.0.0.1 --outDir dist/boards/kids-world",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
     "deploy": "bash scripts/deploy.sh",
-    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs && npm run validate:kids-content && npm run validate:miniprogram",
+    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs && npm run validate:kids-content && npm run validate:miniprogram && npm run validate:alignment",
     "validate:topics": "node scripts/validate-topics.mjs",
     "validate:i18n": "node scripts/validate-i18n.mjs",
     "validate:assets": "node scripts/validate-assets.mjs",
     "validate:compliance": "node scripts/validate-compliance.mjs",
     "validate:kids-content": "./node_modules/.bin/tsc -p packages/kids-content/tsconfig.json --noEmit && node scripts/validate-kids-content-package.mjs",
-    "validate:miniprogram": "node scripts/validate-miniprogram-scaffold.mjs"
+    "validate:miniprogram": "node scripts/validate-miniprogram-scaffold.mjs",
+    "validate:alignment": "node scripts/validate-content-alignment.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

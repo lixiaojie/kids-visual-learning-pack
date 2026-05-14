@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useRouter, useShareAppMessage, useShareTimeline } from "@tarojs/taro";
-import { Text, View } from "@tarojs/components";
+import { Navigator, Text, View } from "@tarojs/components";
 import {
+  getMap,
   getKnowledgeTopicAssetId,
   getTopic,
   type Locale,
@@ -9,6 +10,7 @@ import {
 } from "@yutou/kids-content";
 import { GeneratedImage } from "../../components/shared/GeneratedImage";
 import { ClickTaskCard } from "../../components/topic/ClickTaskCard";
+import { ComparePairCard } from "../../components/topic/ComparePairCard";
 import { InfoList } from "../../components/topic/InfoList";
 import { TopicSummary } from "../../components/topic/TopicSummary";
 import "./index.scss";
@@ -28,6 +30,12 @@ export default function TopicPage() {
   const locale = normalizeLocale(router.params.locale);
   const slug = router.params.slug || "dinosaurs";
   const topic = useMemo(() => getTopic(slug, locale), [slug, locale]);
+  const map = useMemo(() => getMap(locale, "miniprogram"), [locale]);
+  const relatedTopicCards = useMemo(() => {
+    if (!topic) return [];
+    const relatedTopics = new Set(topic.relatedTopics);
+    return map.worlds.flatMap((world) => world.topicCards).filter((card) => card.slug && relatedTopics.has(card.slug));
+  }, [map, topic]);
 
   useShareAppMessage(() => ({
     title: topic ? `芋头宇宙｜${topic.title}` : "芋头宇宙",
@@ -62,8 +70,17 @@ export default function TopicPage() {
       </View>
 
       <InfoList
+        title={locale === "zh-CN" ? "先分成几类" : "Classification groups"}
+        items={topic.classificationGroups.map((group) => ({
+          id: group.id,
+          title: group.name,
+          body: group.parentNote ? `${group.childExplanation}\n${group.parentNote}` : group.childExplanation,
+        }))}
+      />
+
+      <InfoList
         title={locale === "zh-CN" ? "认识几个代表对象" : "Representative objects"}
-        items={topic.representativeObjects.slice(0, 5).map((item) => ({
+        items={topic.representativeObjects.map((item) => ({
           id: item.id,
           title: item.name,
           body: item.childExplanation,
@@ -72,7 +89,7 @@ export default function TopicPage() {
 
       <View className="section">
         <Text className="section-title">{topic.mechanism.title ?? (locale === "zh-CN" ? "它怎么发生" : "How it works")}</Text>
-        {topic.mechanism.steps.slice(0, 4).map((step) => (
+        {topic.mechanism.steps.map((step) => (
           <View className="step" key={step.id}>
             <Text className="step-title">{step.shortTitle}</Text>
             <Text className="section-body">{step.childExplanation}</Text>
@@ -80,19 +97,31 @@ export default function TopicPage() {
         ))}
       </View>
 
-      <InfoList
-        title={locale === "zh-CN" ? "比一比" : "Compare"}
-        items={topic.comparePairs.slice(0, 3).map((pair) => ({
-          id: pair.id,
-          title: pair.title,
-          body: pair.childConclusion,
-        }))}
-      />
+      {topic.secondaryMechanism && (
+        <View className="section">
+          <Text className="section-title">{topic.secondaryMechanism.title}</Text>
+          {topic.secondaryMechanism.steps.map((step) => (
+            <View className="step" key={step.id}>
+              <Text className="step-title">{step.shortTitle}</Text>
+              <Text className="section-body">{step.childExplanation}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      <View className="section">
+        <Text className="section-title">{locale === "zh-CN" ? "比一比" : "Compare"}</Text>
+        <View className="compare-stack">
+          {topic.comparePairs.map((pair) => (
+            <ComparePairCard pair={pair} key={pair.id} />
+          ))}
+        </View>
+      </View>
 
       <View className="section">
         <Text className="section-title">{locale === "zh-CN" ? "点击任务" : "Tap tasks"}</Text>
         <View className="task-stack">
-          {topic.clickTasks.slice(0, 3).map((task) => (
+          {topic.clickTasks.map((task) => (
             <ClickTaskCard task={task} key={task.id} />
           ))}
         </View>
@@ -102,12 +131,31 @@ export default function TopicPage() {
 
       <InfoList
         title={locale === "zh-CN" ? "家长可以这样陪聊" : "Parent prompts"}
-        items={topic.parentTips.slice(0, 3).map((tip, index) => ({
+        items={topic.parentTips.map((tip, index) => ({
           id: `tip-${index}`,
           title: `${locale === "zh-CN" ? "提示" : "Prompt"} ${index + 1}`,
           body: tip,
         }))}
       />
+
+      {relatedTopicCards.length > 0 && (
+        <View className="section">
+          <Text className="section-title">{locale === "zh-CN" ? "接着探索" : "Explore next"}</Text>
+          <View className="related-list">
+            {relatedTopicCards.map((card) => (
+              <Navigator
+                className="related-link"
+                hoverClass="related-link-hover"
+                key={card.slug}
+                url={`/pages/topic/index?slug=${card.slug}&locale=${locale}`}
+              >
+                <Text className="related-title">{card.title}</Text>
+                <Text className="section-body">{card.cardDescription}</Text>
+              </Navigator>
+            ))}
+          </View>
+        </View>
+      )}
     </View>
   );
 }

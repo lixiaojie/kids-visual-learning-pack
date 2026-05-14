@@ -1,9 +1,8 @@
 import { Sparkles } from "lucide-react";
-import type { World } from "../../types/world";
+import { getTopicCardAssetId, type World } from "@yutou/kids-content";
 import { GeneratedImage } from "../shared/GeneratedImage";
 import { SectionHeader } from "../shared/SectionHeader";
 import { getExternalHref } from "../../lib/asset-resolve";
-import { getTopicCardAssetId } from "../../lib/asset-map";
 
 type Props = { world: World };
 

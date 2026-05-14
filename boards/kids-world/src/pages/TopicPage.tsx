@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import type { ExplorationMap } from "../types/world";
-import type { Locale } from "../types/topic";
-import { getTopic } from "../data/loaders/load-topic";
+import { getTopic, type ExplorationMap, type Locale } from "@yutou/kids-content";
 import { SectionHeader } from "../components/shared/SectionHeader";
 import { TopicHero } from "../components/topic/TopicHero";
 import { ClassificationGroups } from "../components/topic/ClassificationGroups";

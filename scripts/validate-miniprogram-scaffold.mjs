@@ -14,7 +14,6 @@ const requiredFiles = [
   "src/app.config.ts",
   "src/app.tsx",
   "src/app.scss",
-  "src/lib/kids-content.ts",
   "src/pages/index/index.tsx",
   "src/pages/index/index.config.ts",
   "src/pages/topic/index.tsx",
@@ -23,6 +22,7 @@ const requiredFiles = [
   "src/pages/about/index.config.ts",
   "src/components/shared/GeneratedImage.tsx",
   "src/components/topic/ClickTaskCard.tsx",
+  "src/components/topic/ComparePairCard.tsx",
   "src/components/topic/InfoList.tsx",
 ];
 const errors = [];
@@ -35,16 +35,25 @@ for (const file of requiredFiles) {
 
 const appConfigPath = path.join(appDir, "src/app.config.ts");
 const appConfig = fs.existsSync(appConfigPath) ? fs.readFileSync(appConfigPath, "utf8") : "";
+const taroConfigPath = path.join(appDir, "config/index.ts");
+const taroConfig = fs.existsSync(taroConfigPath) ? fs.readFileSync(taroConfigPath, "utf8") : "";
 for (const page of ["pages/index/index", "pages/topic/index", "pages/about/index"]) {
   if (!appConfig.includes(page)) {
     errors.push(`src/app.config.ts does not register ${page}`);
   }
+}
+if (taroConfig.includes("src/lib/kids-content") || taroConfig.includes("apps/miniprogram/src/lib/kids-content")) {
+  errors.push("config/index.ts must not alias @yutou/kids-content to an app-local adapter");
+}
+if (fs.existsSync(path.join(appDir, "src/lib/kids-content.ts"))) {
+  errors.push("src/lib/kids-content.ts must not contain a private content runtime");
 }
 
 const indexPage = fs.readFileSync(path.join(appDir, "src/pages/index/index.tsx"), "utf8");
 const topicPage = fs.readFileSync(path.join(appDir, "src/pages/topic/index.tsx"), "utf8");
 const aboutPage = fs.readFileSync(path.join(appDir, "src/pages/about/index.tsx"), "utf8");
 const imageComponent = fs.readFileSync(path.join(appDir, "src/components/shared/GeneratedImage.tsx"), "utf8");
+const clickTaskCard = fs.readFileSync(path.join(appDir, "src/components/topic/ClickTaskCard.tsx"), "utf8");
 
 if (!indexPage.includes("@yutou/kids-content")) {
   errors.push("index page must use @yutou/kids-content");
@@ -55,10 +64,31 @@ if (indexPage.includes("slice(0, 6)")) {
 if (!topicPage.includes("useShareAppMessage") || !topicPage.includes("useShareTimeline")) {
   errors.push("topic page must define friend and timeline share handlers");
 }
-for (const requiredTopicSection of ["ClickTaskCard", "representativeObjects", "comparePairs", "parentTips"]) {
+for (const requiredTaskSupport of [
+  "singleChoice",
+  "findTarget",
+  "sequenceClick",
+  "correctOptionId",
+  "targetIds",
+  "correctSequence",
+  "wrongHints",
+]) {
+  if (!clickTaskCard.includes(requiredTaskSupport)) {
+    errors.push(`ClickTaskCard must support ${requiredTaskSupport}`);
+  }
+}
+for (const requiredTopicSection of ["ClickTaskCard", "ComparePairCard", "representativeObjects", "comparePairs", "parentTips"]) {
   if (!topicPage.includes(requiredTopicSection)) {
     errors.push(`topic page must render ${requiredTopicSection}`);
   }
+}
+for (const requiredTopicSection of ["classificationGroups", "secondaryMechanism", "relatedTopics"]) {
+  if (!topicPage.includes(requiredTopicSection)) {
+    errors.push(`topic page must render ${requiredTopicSection} for section parity`);
+  }
+}
+if (/\.slice\(\s*0\s*,/.test(topicPage)) {
+  errors.push("topic page must not silently truncate topic sections with slice(0, n)");
 }
 if (!aboutPage.includes("不登录") || !aboutPage.includes("不收集儿童")) {
   errors.push("about page must state the no-login/no-child-data privacy posture");

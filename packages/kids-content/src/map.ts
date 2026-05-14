@@ -4,7 +4,7 @@ import explorationMapBase from "../../../boards/kids-world/src/data/exploration-
 import explorationMapEn from "../../../boards/kids-world/src/data/locales/en-US/exploration-map.json";
 import topicRegistry from "../../../boards/kids-world/src/data/topic-registry.json";
 import channelPolicy from "../../../channel-policy.json";
-import { deepMerge } from "../../../boards/kids-world/src/data/loaders/locale-merge";
+import { deepMerge } from "./merge";
 
 export type ContentChannel = keyof typeof channelPolicy;
 

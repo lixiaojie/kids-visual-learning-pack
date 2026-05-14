@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { Menu, Sparkles } from "lucide-react";
-import type { ExplorationMap } from "../../types/world";
-import type { Locale } from "../../types/topic";
+import { getTopic, type ExplorationMap, type Locale } from "@yutou/kids-content";
 import { LocaleToggle } from "../shared/LocaleToggle";
 import { getTopicHref } from "../../lib/asset-resolve";
-import { getTopic } from "../../data/loaders/load-topic";
-import registry from "../../data/topic-registry.json";
 
 type Props = {
   map: ExplorationMap;
@@ -36,11 +33,15 @@ export function Topbar({ map, locale, onLocaleChange }: Props) {
         {locale === "zh-CN" ? "主题" : "Topics"}
       </button>
       <nav className={mobileNavOpen ? "open" : ""} id="topic-nav">
-        {registry.firstBatch.slice(0, 3).map((topicSlug) => (
-          <a href={getTopicHref(topicSlug)} key={topicSlug} onClick={() => setMobileNavOpen(false)}>
-            {getTopic(topicSlug, locale)?.title}
-          </a>
-        ))}
+        {map.worlds
+          .flatMap((world) => world.topicCards)
+          .filter((topic) => topic.slug)
+          .slice(0, 3)
+          .map((topic) => (
+            <a href={getTopicHref(topic.slug as string)} key={topic.slug} onClick={() => setMobileNavOpen(false)}>
+              {getTopic(topic.slug as string, locale)?.title}
+            </a>
+          ))}
       </nav>
       <LocaleToggle locale={locale} onChange={onLocaleChange} />
     </header>

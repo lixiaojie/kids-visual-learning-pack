@@ -25,6 +25,14 @@ export type Topic = {
   coreQuestion: string;
   learningGoals: string[];
   relatedTopics: string[];
+  observationContext?: {
+    source: string;
+    scene: string;
+    trigger: string;
+    season?: string;
+    safetyNote?: string;
+  };
+  cognitiveFocus?: string[];
   hero: {
     title: string;
     kicker: string;

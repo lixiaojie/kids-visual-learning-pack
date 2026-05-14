@@ -1,0 +1,556 @@
+{
+  "id": "topic-life-cicada-life",
+  "slug": "cicada-life",
+  "title": "蝉的一生",
+  "subtitle": "从地下若虫到夏天歌手",
+  "world": "life",
+  "priority": "P0",
+  "ageRange": "4-8",
+  "pageType": "classification-compare-task",
+  "coreQuestion": "这只从土里爬出来的小虫，为什么急着往树上爬？",
+  "learningGoals": [
+    "知道蝉是昆虫，蝉小时候叫若虫",
+    "能按卵、若虫、成虫理解蝉的一生",
+    "知道蝉没有蛹，和蝴蝶的变化方式不同",
+    "学习安静观察，不触碰正在羽化的蝉"
+  ],
+  "misconceptions": [
+    "蝉若虫是另一种虫，不会变成蝉",
+    "所有昆虫都会像蝴蝶一样经过蛹",
+    "蝉从土里出来是在乱爬或找食物",
+    "看到羽化中的蝉可以拿下来仔细看"
+  ],
+  "observationContext": {
+    "source": "real-world-observation",
+    "scene": "夏天傍晚的山路和树根旁",
+    "trigger": "发现一只刚从土里爬出来、正在找地方羽化的黑蚱蝉若虫",
+    "season": "summer",
+    "safetyNote": "保持安静观察，不要触碰，不要打扰羽化过程"
+  },
+  "cognitiveFocus": [
+    "life-cycle",
+    "metamorphosis",
+    "classification",
+    "field-observation",
+    "comparison"
+  ],
+  "modules": [
+    {
+      "type": "hero",
+      "title": "昨天我们遇见了谁？",
+      "assetKey": "hero"
+    },
+    {
+      "type": "lifeCycle",
+      "title": "蝉的一生",
+      "assetKey": "lifeCycle"
+    },
+    {
+      "type": "mechanism",
+      "title": "它怎么变成会飞的蝉？",
+      "assetKey": "molting"
+    },
+    {
+      "type": "compare",
+      "title": "蝉和蝴蝶一样吗？",
+      "assetKey": "compare"
+    },
+    {
+      "type": "task",
+      "title": "你也来当小小观察家",
+      "assetKey": "mission"
+    }
+  ],
+  "assets": {
+    "hero": {
+      "path": "/assets/life/cicada-life/life-cicada-life-hero-v01.webp",
+      "purpose": "主视觉：夏天傍晚山路发现蝉若虫",
+      "status": "ready"
+    },
+    "closeup": {
+      "path": "/assets/life/cicada-life/life-cicada-life-nymph-closeup-v01.webp",
+      "purpose": "若虫近景观察热点",
+      "status": "ready"
+    },
+    "lifeCycle": {
+      "path": "/assets/life/cicada-life/life-cicada-life-lifecycle-v01.webp",
+      "purpose": "生命周期图",
+      "status": "ready"
+    },
+    "molting": {
+      "path": "/assets/life/cicada-life/life-cicada-life-molting-steps-v01.webp",
+      "purpose": "羽化步骤图",
+      "status": "ready"
+    },
+    "choice": {
+      "path": "/assets/life/cicada-life/life-cicada-life-choice-place-v01.webp",
+      "purpose": "选择羽化位置任务图",
+      "status": "ready"
+    },
+    "shell": {
+      "path": "/assets/life/cicada-life/life-cicada-life-spot-shell-v01.webp",
+      "purpose": "找蝉蜕任务图",
+      "status": "ready"
+    },
+    "compare": {
+      "path": "/assets/life/cicada-life/life-cicada-life-compare-butterfly-v01.webp",
+      "purpose": "蝉和蝴蝶变化方式对比图",
+      "status": "ready"
+    },
+    "mission": {
+      "path": "/assets/life/cicada-life/life-cicada-life-task-board-v01.webp",
+      "purpose": "自然观察任务板",
+      "status": "ready"
+    }
+  },
+  "interactions": [
+    {
+      "type": "click-reveal",
+      "target": "hero-hotspots",
+      "description": "点击若虫、出土洞、树干和手电筒，理解观察线索"
+    },
+    {
+      "type": "sequence-click",
+      "target": "life-cycle",
+      "description": "按卵、地下若虫、出土若虫、羽化、成虫排序"
+    },
+    {
+      "type": "single-choice",
+      "target": "molting-place",
+      "description": "帮若虫选择适合羽化的位置"
+    },
+    {
+      "type": "find-target",
+      "target": "cicada-shell",
+      "description": "在树干上找出蝉蜕"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "sequence",
+      "title": "给蝉的一生排排队",
+      "items": [
+        "卵",
+        "地下若虫",
+        "出土若虫",
+        "羽化",
+        "成虫"
+      ]
+    },
+    {
+      "type": "choose",
+      "title": "帮若虫找个好地方",
+      "answer": "树干"
+    },
+    {
+      "type": "identify",
+      "title": "找找蝉蜕"
+    },
+    {
+      "type": "compare",
+      "title": "谁会经过蛹",
+      "answer": "蝴蝶"
+    }
+  ],
+  "copy": {
+    "intro": [
+      "夏天傍晚，我们在树根旁遇见一只刚从土里出来的小虫。",
+      "它不是在乱爬，而是在找一个稳稳的地方完成羽化。"
+    ],
+    "keyFacts": [
+      "蝉小时候叫若虫，很多时间住在地下。",
+      "蝉的一生可以简化成卵、若虫、成虫。",
+      "蝉是不完全变态昆虫，没有蝴蝶那样的蛹。",
+      "看到正在羽化的蝉，要安静观察，不要触碰。"
+    ],
+    "explainPrompt": "你觉得它为什么要往树上爬？"
+  },
+  "relatedTopics": [
+    "insects-and-spiders",
+    "animal-classification-tree",
+    "ecosystem"
+  ],
+  "acceptanceCriteria": [
+    "孩子能说出蝉若虫会羽化成蝉",
+    "孩子能把卵、若虫、成虫排成正确顺序",
+    "孩子知道蝉没有蛹，蝴蝶有蛹",
+    "页面明确提示不触碰、不打扰羽化过程"
+  ],
+  "status": "render-ready",
+  "renderPriority": "P0-life-observation-topic",
+  "hero": {
+    "title": "蝉的一生",
+    "kicker": "生命世界 · 真实观察",
+    "lead": "从树根旁的一只黑蚱蝉若虫开始，看看它为什么急着往树上爬，又怎样变成夏天会唱歌的蝉。",
+    "sceneExplanation": "主视觉是夏天傍晚的山路：树根、泥土、出土洞和一只正在朝树干爬的蝉若虫。小芋头和弟弟拿着手电筒安静观察，页面用热点提醒孩子看若虫、出土洞、树干和“只观察不打扰”。",
+    "childPrompt": "先找找：小虫从哪里出来？它正往哪里爬？",
+    "parentPrompt": "先让孩子描述真实看到的线索，再补充“蝉若虫”“羽化”“不完全变态”这些词。",
+    "placeholder": {
+      "type": "heroObservation",
+      "asset": "/assets/life/cicada-life/life-cicada-life-hero-v01.webp"
+    }
+  },
+  "classificationGroups": [
+    {
+      "id": "insect-basic",
+      "name": "它属于昆虫",
+      "childExplanation": "蝉是昆虫。小时候的蝉叫若虫，长大后会变成有翅膀的成虫。",
+      "parentNote": "4-8 岁阶段抓住“蝉是昆虫、若虫会变成成虫”即可，不展开细分类。",
+      "representativeObjects": [
+        "cicadaNymph",
+        "adultCicada"
+      ],
+      "misconception": "蝉若虫不是另一种虫，它是蝉小时候的样子。"
+    },
+    {
+      "id": "life-cycle",
+      "name": "一生会分阶段",
+      "childExplanation": "蝉从卵开始，若虫在地下长大，最后羽化成成虫。",
+      "parentNote": "用“卵 -> 若虫 -> 成虫”做主线，复杂年限可以先不讲。",
+      "representativeObjects": [
+        "cicadaEggs",
+        "undergroundNymph",
+        "emergingNymph",
+        "adultCicada"
+      ],
+      "misconception": "蝉不是一出生就会飞，也不是一直住在树上。"
+    },
+    {
+      "id": "metamorphosis-type",
+      "name": "没有蛹的变化",
+      "childExplanation": "蝉没有蝴蝶那样的蛹，它从若虫慢慢长大，最后蜕皮羽化。",
+      "parentNote": "这里引入“不完全变态”作为比较线索，不要求孩子背术语。",
+      "representativeObjects": [
+        "cicadaShell",
+        "butterflyPupa"
+      ],
+      "misconception": "不是所有昆虫都会经过蛹。"
+    }
+  ],
+  "representativeObjects": [
+    {
+      "id": "cicadaEggs",
+      "name": "树枝里的蝉卵",
+      "groupId": "life-cycle",
+      "childExplanation": "蝉妈妈会把卵产在小树枝里，新的生命从这里开始。",
+      "visualHint": "小树枝、细小卵粒、起点",
+      "commonMisread": "以为昆虫卵都在叶子表面。"
+    },
+    {
+      "id": "undergroundNymph",
+      "name": "地下若虫",
+      "groupId": "life-cycle",
+      "childExplanation": "小若虫会钻进土里，靠近植物根部慢慢长大。",
+      "visualHint": "土壤、根、没有翅膀",
+      "commonMisread": "以为蝉小时候一直在树上。"
+    },
+    {
+      "id": "emergingNymph",
+      "name": "出土若虫",
+      "groupId": "insect-basic",
+      "childExplanation": "成熟若虫会从土里爬出来，寻找树干或稳稳的地方。",
+      "visualHint": "出土洞、粗壮前足、朝树干爬",
+      "commonMisread": "以为它是在迷路。"
+    },
+    {
+      "id": "treeTrunk",
+      "name": "树干",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "树干能让若虫抓牢身体，帮助它完成最后一次蜕皮。",
+      "visualHint": "粗糙树皮、垂直表面、支撑点",
+      "commonMisread": "以为随便在哪里都能羽化。"
+    },
+    {
+      "id": "cicadaShell",
+      "name": "蝉蜕",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "羽化后，旧外壳会留在树干上，看起来像空空的小壳。",
+      "visualHint": "贴在树皮上的空壳",
+      "commonMisread": "以为蝉蜕是死掉的虫。"
+    },
+    {
+      "id": "newAdult",
+      "name": "刚羽化的蝉",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "刚出来的成虫身体和翅膀很软，需要时间展开、变硬。",
+      "visualHint": "浅色身体、透明翅膀、挂在壳旁",
+      "commonMisread": "以为一出来就能马上飞走。"
+    },
+    {
+      "id": "adultCicada",
+      "name": "成熟成虫",
+      "groupId": "insect-basic",
+      "childExplanation": "成虫有翅膀，会鸣叫、交配、产卵，让生命循环继续。",
+      "visualHint": "透明翅膀、树枝、夏天鸣叫",
+      "commonMisread": "以为会叫的都是同一只蝉。"
+    },
+    {
+      "id": "butterflyPupa",
+      "name": "蝴蝶的蛹",
+      "groupId": "metamorphosis-type",
+      "childExplanation": "蝴蝶会经过蛹，蝉不会。这个不同点很好记。",
+      "visualHint": "挂在枝条上的蛹",
+      "commonMisread": "把蝉也想成会先变成蛹。"
+    }
+  ],
+  "mechanism": {
+    "title": "蝉如何长大",
+    "steps": [
+      {
+        "id": "egg-in-twig",
+        "shortTitle": "卵在树枝里",
+        "childExplanation": "蝉把卵产在小树枝里，新的小生命先藏在枝条中。",
+        "parentNote": "不必展开产卵孔等细节，只保留“树枝里”这个关键位置。"
+      },
+      {
+        "id": "young-nymph-to-soil",
+        "shortTitle": "小若虫进土里",
+        "childExplanation": "小若虫孵化后会落到地面，钻进土里生活。",
+        "parentNote": "这一步帮助孩子把树上和地下连成一个循环。"
+      },
+      {
+        "id": "grow-underground",
+        "shortTitle": "地下慢慢长大",
+        "childExplanation": "若虫在地下靠近植物根部，慢慢长大。",
+        "parentNote": "“吸食植物汁液”可在孩子追问时补充。"
+      },
+      {
+        "id": "emerge-from-soil",
+        "shortTitle": "夏天爬出地面",
+        "childExplanation": "成熟若虫会从小洞里爬出来，朝树干或植物爬去。",
+        "parentNote": "强调这是羽化前的准备，不是迷路。"
+      },
+      {
+        "id": "molt-on-trunk",
+        "shortTitle": "在树干上羽化",
+        "childExplanation": "它抓牢树皮，旧外壳裂开，新成虫慢慢出来。",
+        "parentNote": "用“旧外壳裂开”即可，避免惊吓表达。"
+      },
+      {
+        "id": "adult-cycle-again",
+        "shortTitle": "成虫继续循环",
+        "childExplanation": "成虫展开翅膀，会鸣叫、交配、产卵，下一轮生命又开始了。",
+        "parentNote": "成虫行为用“鸣叫、产卵”轻轻带过即可。"
+      }
+    ]
+  },
+  "secondaryMechanism": {
+    "title": "为什么若虫要爬上树",
+    "steps": [
+      {
+        "id": "find-support",
+        "shortTitle": "找稳稳的地方",
+        "childExplanation": "树干这样的垂直表面，能让若虫抓牢身体。",
+        "parentNote": "把“爬树”解释成寻找支撑点。"
+      },
+      {
+        "id": "hold-body",
+        "shortTitle": "固定身体",
+        "childExplanation": "羽化时身体不能乱晃，它需要牢牢固定在树皮上。",
+        "parentNote": "不展开失败风险。"
+      },
+      {
+        "id": "shell-opens",
+        "shortTitle": "外壳裂开",
+        "childExplanation": "旧外壳从背部裂开，新身体慢慢出来。",
+        "parentNote": "可以和蝉蜕实物观察连接。"
+      },
+      {
+        "id": "wings-open",
+        "shortTitle": "翅膀展开变硬",
+        "childExplanation": "新成虫的翅膀需要展开，身体也要慢慢变硬。",
+        "parentNote": "提醒孩子不要触碰正在羽化的蝉。"
+      }
+    ]
+  },
+  "comparePairs": [
+    {
+      "id": "cicada-vs-butterfly",
+      "title": "蝉 vs 蝴蝶",
+      "a": {
+        "name": "蝉",
+        "points": [
+          "卵 -> 若虫 -> 成虫",
+          "没有蛹",
+          "若虫常住地下"
+        ]
+      },
+      "b": {
+        "name": "蝴蝶",
+        "points": [
+          "卵 -> 幼虫 -> 蛹 -> 成虫",
+          "有蛹",
+          "毛毛虫和蛹很明显"
+        ]
+      },
+      "childConclusion": "蝉没有蛹，蝴蝶有蛹。不是所有昆虫都会经过蛹。"
+    },
+    {
+      "id": "cicada-vs-dragonfly",
+      "title": "蝉 vs 蜻蜓",
+      "a": {
+        "name": "蝉",
+        "points": [
+          "若虫住在地下",
+          "成虫常在树上鸣叫",
+          "没有蛹"
+        ]
+      },
+      "b": {
+        "name": "蜻蜓",
+        "points": [
+          "若虫住在水里",
+          "成虫在空中飞",
+          "也没有蛹"
+        ]
+      },
+      "childConclusion": "蝉和蜻蜓都没有蛹，但小时候住的地方不同。"
+    },
+    {
+      "id": "nymph-vs-adult",
+      "title": "若虫 vs 成虫",
+      "a": {
+        "name": "蝉若虫",
+        "points": [
+          "没有翅膀",
+          "会爬、会钻土",
+          "准备羽化"
+        ]
+      },
+      "b": {
+        "name": "蝉成虫",
+        "points": [
+          "有透明翅膀",
+          "会飞",
+          "夏天会鸣叫"
+        ]
+      },
+      "childConclusion": "同一种生命，在不同阶段样子和本领会变。"
+    }
+  ],
+  "clickTasks": [
+    {
+      "id": "cicada-sequence-01",
+      "type": "sequenceClick",
+      "title": "给蝉的一生排排队",
+      "prompt": "按顺序点出蝉的一生。",
+      "options": [
+        {
+          "id": "egg",
+          "label": "卵"
+        },
+        {
+          "id": "undergroundNymph",
+          "label": "地下若虫"
+        },
+        {
+          "id": "emergingNymph",
+          "label": "出土若虫"
+        },
+        {
+          "id": "molting",
+          "label": "羽化"
+        },
+        {
+          "id": "adult",
+          "label": "成虫"
+        }
+      ],
+      "correctSequence": [
+        "egg",
+        "undergroundNymph",
+        "emergingNymph",
+        "molting",
+        "adult"
+      ],
+      "successCopy": "排对啦！蝉先从卵开始，在地下长大，最后羽化成会飞的成虫。",
+      "wrongHint": "想一想：蝉会先住在地下，还是先飞起来呢？"
+    },
+    {
+      "id": "cicada-choice-01",
+      "type": "singleChoice",
+      "title": "帮若虫找个好地方",
+      "prompt": "若虫刚从土里出来，最适合爬到哪里羽化？",
+      "options": [
+        {
+          "id": "treeTrunk",
+          "label": "树干"
+        },
+        {
+          "id": "mud",
+          "label": "泥地"
+        },
+        {
+          "id": "puddle",
+          "label": "水坑"
+        },
+        {
+          "id": "thinLeaf",
+          "label": "细草叶"
+        }
+      ],
+      "correctOptionId": "treeTrunk",
+      "wrongHints": {
+        "mud": "羽化时身体需要固定，只在泥地上不够稳。",
+        "puddle": "水坑不适合羽化，想想哪里能抓牢。",
+        "thinLeaf": "太细的草叶可能不够稳，树干更合适。"
+      },
+      "successCopy": "答对了！树干这样的垂直表面更适合若虫固定身体，完成羽化。"
+    },
+    {
+      "id": "cicada-identify-01",
+      "type": "findTarget",
+      "title": "找找蝉蜕",
+      "prompt": "找出树干上那个空空的外壳。",
+      "targetIds": [
+        "cicadaShell"
+      ],
+      "decoyIds": [
+        "treeTrunk",
+        "leaf",
+        "pebble"
+      ],
+      "successCopy": "找到了！蝉蜕是若虫羽化后留下来的旧外壳。",
+      "wrongHint": "蝉蜕像一只空空的小壳，常常贴在树干上。"
+    },
+    {
+      "id": "cicada-compare-01",
+      "type": "singleChoice",
+      "title": "谁会经过蛹？",
+      "prompt": "下面谁会经过“蛹”这个阶段？",
+      "options": [
+        {
+          "id": "cicada",
+          "label": "蝉"
+        },
+        {
+          "id": "butterfly",
+          "label": "蝴蝶"
+        },
+        {
+          "id": "dragonfly",
+          "label": "蜻蜓"
+        }
+      ],
+      "correctOptionId": "butterfly",
+      "wrongHints": {
+        "cicada": "蝉没有蛹，它从若虫羽化成成虫。",
+        "dragonfly": "蜻蜓也没有蛹，小时候常住在水里。"
+      },
+      "successCopy": "答对了！蝴蝶会经过蛹，蝉不会。"
+    }
+  ],
+  "speakTemplates": [
+    "我发现了一只____。",
+    "它现在是____阶段。",
+    "它要爬到____上进行羽化。",
+    "羽化以后，它会变成____。",
+    "蝉和蝴蝶不一样，因为____。"
+  ],
+  "parentTips": [
+    "先让孩子用自己的话描述看到的样子，再补充标准名称。",
+    "可以结合真实观察，问孩子：它为什么要从土里出来？为什么要往树上爬？",
+    "如果看到羽化过程，建议安静观察，不要触碰。",
+    "可以用“住在哪里、怎么变化、有没有蛹”三个问题帮助孩子建立比较框架。"
+  ]
+}

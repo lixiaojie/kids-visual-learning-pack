@@ -1,11 +1,14 @@
-import imageManifest from "../data/image-generation-manifest.json";
-import type { GeneratedImageAsset } from "../types/assets";
-import type { TopicCard } from "../types/world";
+import imageManifest from "../../../boards/kids-world/src/data/image-generation-manifest.json";
+import type { GeneratedImageAsset } from "../../../boards/kids-world/src/types/assets";
+import type { TopicCard } from "../../../boards/kids-world/src/types/world";
 
-export const generatedAssets = (imageManifest.assets as GeneratedImageAsset[]).reduce<Record<string, GeneratedImageAsset>>((acc, asset) => {
-  acc[asset.assetId] = asset;
-  return acc;
-}, {});
+export const generatedAssets = (imageManifest.assets as GeneratedImageAsset[]).reduce<Record<string, GeneratedImageAsset>>(
+  (acc, asset) => {
+    acc[asset.assetId] = asset;
+    return acc;
+  },
+  {},
+);
 
 export const topicHeroAssetBySlug: Record<string, string> = {
   "animal-classification-tree": "life-animal-classification-tree-hero",
@@ -23,7 +26,7 @@ export const topicHeroAssetBySlug: Record<string, string> = {
   "water-cycle": "earth-water-cycle-hero",
 };
 
-export const animationTopicAssetByHref: Array<[string, string]> = [
+const animationTopicAssetByHref: Array<[string, string]> = [
   ["spider-verse", "animation-spider-verse-card"],
   ["paw-patrol", "animation-paw-patrol-card"],
 ];
@@ -32,6 +35,6 @@ export function getTopicCardAssetId(topic: TopicCard) {
   return animationTopicAssetByHref.find(([hrefFragment]) => topic.href?.includes(hrefFragment))?.[1];
 }
 
-export function getKnowledgeTopicAssetId(topic: TopicCard) {
+export function getKnowledgeTopicAssetId(topic: Pick<TopicCard, "slug">) {
   return topic.slug ? topicHeroAssetBySlug[topic.slug] : undefined;
 }

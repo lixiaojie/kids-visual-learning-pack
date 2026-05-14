@@ -1,11 +1,10 @@
 import { CheckCircle2 } from "lucide-react";
-import type { Topic } from "../../types/topic";
-import { topicHeroAssetBySlug } from "../../lib/asset-map";
+import { getKnowledgeTopicAssetId, type Topic } from "@yutou/kids-content";
 import { GeneratedImage } from "../shared/GeneratedImage";
 
 function PlaceholderScene({ topic }: { topic: Topic }) {
   const type = topic.hero.placeholder?.type ?? topic.pageType;
-  const assetId = topicHeroAssetBySlug[topic.slug];
+  const assetId = getKnowledgeTopicAssetId({ slug: topic.slug });
   return (
     <div className={`placeholder-scene ${String(type)} ${assetId ? "generated-scene" : ""}`}>
       <GeneratedImage

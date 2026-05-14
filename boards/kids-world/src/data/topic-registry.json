@@ -58,6 +58,21 @@
       }
     },
     {
+      "slug": "cicada-life",
+      "title": "蝉的一生",
+      "world": "life",
+      "priority": "P0",
+      "pageType": "classification-compare-task",
+      "coreQuestion": "这只从土里爬出来的小虫，为什么急着往树上爬？",
+      "status": "render-ready",
+      "uiStatus": "building",
+      "contentStatus": "render-ready",
+      "href": "boards/cicada-life/index.html",
+      "localeSources": {
+        "en-US": "data/locales/en-US/topics/cicada-life.json"
+      }
+    },
+    {
       "slug": "animal-classification-tree",
       "title": "动物生命树",
       "world": "life",

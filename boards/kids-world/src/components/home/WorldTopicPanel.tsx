@@ -1,13 +1,10 @@
 import { forwardRef } from "react";
 import { ChevronRight } from "lucide-react";
-import type { ExplorationMap, World } from "../../types/world";
-import type { Locale } from "../../types/topic";
+import { getKnowledgeTopicAssetId, hasTopicData, type ExplorationMap, type Locale, type World } from "@yutou/kids-content";
 import { GeneratedImage } from "../shared/GeneratedImage";
 import { StatusPill } from "../shared/StatusPill";
 import { SectionHeader } from "../shared/SectionHeader";
 import { getTopicHref } from "../../lib/asset-resolve";
-import { getKnowledgeTopicAssetId } from "../../lib/asset-map";
-import { hasTopicData } from "../../data/loaders/load-topic";
 
 type Props = { world: World; map: ExplorationMap; locale: Locale };
 

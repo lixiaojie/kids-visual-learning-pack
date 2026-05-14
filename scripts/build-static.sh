@@ -15,11 +15,11 @@ rm -rf dist
 mkdir -p dist/boards
 
 echo "==> build kids-world"
-npx vite build boards/kids-world --base=./ --emptyOutDir --outDir ../../dist/boards/kids-world
+npx vite build boards/kids-world --config vite.config.ts --base=./ --emptyOutDir --outDir ../../dist/boards/kids-world
 
 if [ "$CHANNEL" != "web-production" ]; then
   echo "==> build paw-patrol"
-  npx vite build boards/paw-patrol --base=./ --emptyOutDir --outDir ../../dist/boards/paw-patrol
+  npx vite build boards/paw-patrol --config vite.config.ts --base=./ --emptyOutDir --outDir ../../dist/boards/paw-patrol
 fi
 
 echo "==> copy root + shared"
