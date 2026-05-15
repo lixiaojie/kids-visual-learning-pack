@@ -9,6 +9,7 @@ const requiredFiles = [
   "tsconfig.json",
   "src/index.ts",
   "src/assets.ts",
+  "src/evidence.ts",
   "src/map.ts",
   "src/media.ts",
   "src/merge.ts",
@@ -26,6 +27,10 @@ const requiredExports = [
   "Topic",
   "Locale",
   "ExplorationMap",
+  "resolveVisualEvidence",
+  "getTopicEvidenceCoverage",
+  "VisualEvidenceState",
+  "VisualEvidenceBinding",
 ];
 const errors = [];
 

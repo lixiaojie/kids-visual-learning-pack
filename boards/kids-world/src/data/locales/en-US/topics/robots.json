@@ -344,5 +344,707 @@
     "The child can name input, decision, and action.",
     "The child can distinguish sensors from action parts.",
     "The child can explain robot work without using magic."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-sensors",
+      "source": "classificationGroups.sensors",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Receive information",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Sensors are like a robot’s eyes, ears, and buttons. You can spot: Camera, Microphone, Button, Distance sensor.",
+      "markerChips": [
+        {
+          "label": "Camera",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Microphone",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Button",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Distance sensor",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-controller",
+      "source": "classificationGroups.controller",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Decision rules",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "A program tells the robot what to do in different situations. You can spot: Program rules.",
+      "markerChips": [
+        {
+          "label": "Program rules",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-actuators",
+      "source": "classificationGroups.actuators",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Take action",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Wheels, lights, and robot arms let a robot move or show a result. You can spot: Wheel, Light, Robot arm.",
+      "markerChips": [
+        {
+          "label": "Wheel",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Light",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Robot arm",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-feedback",
+      "source": "classificationGroups.feedback",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Check and adjust",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "After acting, a robot can check the result again.",
+      "markerChips": [],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-camera",
+      "source": "representativeObjects.camera",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Camera",
+      "observePrompt": "round lens",
+      "evidenceCopy": "A camera helps a robot see images.",
+      "markerChips": [
+        {
+          "label": "Camera",
+          "meaning": "Thinking the camera is the brain.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-microphone",
+      "source": "representativeObjects.microphone",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Microphone",
+      "observePrompt": "small microphone",
+      "evidenceCopy": "A microphone helps a robot hear sounds.",
+      "markerChips": [
+        {
+          "label": "Microphone",
+          "meaning": "Thinking robots hear without devices.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-button",
+      "source": "representativeObjects.button",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Button",
+      "observePrompt": "red round button",
+      "evidenceCopy": "A button can tell the robot a human choice.",
+      "markerChips": [
+        {
+          "label": "Button",
+          "meaning": "Thinking buttons are decoration.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-distance-sensor",
+      "source": "representativeObjects.distance-sensor",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Distance sensor",
+      "observePrompt": "two small sensor eyes",
+      "evidenceCopy": "It helps a robot know whether something is close in front.",
+      "markerChips": [
+        {
+          "label": "Distance sensor",
+          "meaning": "Thinking it sees exactly like human eyes.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-program",
+      "source": "representativeObjects.program",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Program rules",
+      "observePrompt": "glowing little brain cloud",
+      "evidenceCopy": "A program is like task rules telling the robot what to do.",
+      "markerChips": [
+        {
+          "label": "Program rules",
+          "meaning": "Thinking a program is magic.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-wheel",
+      "source": "representativeObjects.wheel",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Wheel",
+      "observePrompt": "black little tire",
+      "evidenceCopy": "Wheels let the robot move forward, backward, or turn.",
+      "markerChips": [
+        {
+          "label": "Wheel",
+          "meaning": "Thinking wheels alone make a robot.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-light",
+      "source": "representativeObjects.light",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Light",
+      "observePrompt": "yellow glowing lamp",
+      "evidenceCopy": "Lights can show the robot’s current state.",
+      "markerChips": [
+        {
+          "label": "Light",
+          "meaning": "Thinking lights are only decorative.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-robot-arm",
+      "source": "representativeObjects.robot-arm",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Robot arm",
+      "observePrompt": "small arm with claw",
+      "evidenceCopy": "A robot arm can reach, grab, or push things.",
+      "markerChips": [
+        {
+          "label": "Robot arm",
+          "meaning": "Thinking it works exactly like a human hand.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-input",
+      "source": "mechanism.steps.input",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Receive information",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "A camera, microphone, button, or sensor receives information first.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Receive information",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-interpret",
+      "source": "mechanism.steps.interpret",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Understand the situation",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "The robot gives the information to the program to see what is happening.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Understand the situation",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-decide",
+      "source": "mechanism.steps.decide",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Decide by rules",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "The program follows task rules to decide the next step.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Decide by rules",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-act",
+      "source": "mechanism.steps.act",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Take action",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "Wheels, lights, or a robot arm start working.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Take action",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-feedback-loop",
+      "source": "mechanism.steps.feedback-loop",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Check again",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "The robot can check the result and adjust if needed.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Check again",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-sense-wall",
+      "source": "secondaryMechanism.steps.sense-wall",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Detect something close",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "The distance sensor notices something in front.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Detect something close",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-rule-stop",
+      "source": "secondaryMechanism.steps.rule-stop",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Rule says stop",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "The program says: if too close, stop.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Rule says stop",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-wheel-stop",
+      "source": "secondaryMechanism.steps.wheel-stop",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Wheels stop",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "The wheels stop turning so the robot does not bump into it.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Wheels stop",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-sensor-vs-actuator",
+      "source": "comparePairs.sensor-vs-actuator",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Sensor vs Action part",
+      "observePrompt": "Compare visual clues for Sensor and Action part.",
+      "evidenceCopy": "Sensor: receives information; input gateway; camera, microphone, and button can be inputs. Action part: does something; turns a decision into a result; wheels, lights, and arms act. Sensors know; action parts do.",
+      "markerChips": [
+        {
+          "label": "Sensor",
+          "meaning": "receives information",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Action part",
+          "meaning": "does something",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-program-vs-magic",
+      "source": "comparePairs.program-vs-magic",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Program vs Magic",
+      "observePrompt": "Compare visual clues for Program and Magic.",
+      "evidenceCopy": "Program: has rules; can be designed by people; same input often gives same action. Magic: no clear rule; not repeatable; not an engineering explanation. Robots work through programs and parts, not magic.",
+      "markerChips": [
+        {
+          "label": "Program",
+          "meaning": "has rules",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Magic",
+          "meaning": "no clear rule",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-robot-vs-remote-toy",
+      "source": "comparePairs.robot-vs-remote-toy",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Robot vs Remote toy",
+      "observePrompt": "Compare visual clues for Robot and Remote toy.",
+      "evidenceCopy": "Robot: can receive information; can follow rules; may act automatically. Remote toy: mostly follows human remote control; may not judge the environment; simpler movement. Moving is not enough; sensing and rule-based action matter.",
+      "markerChips": [
+        {
+          "label": "Robot",
+          "meaning": "can receive information",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Remote toy",
+          "meaning": "mostly follows human remote control",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-input",
+      "source": "clickTasks.robot-sequence-01.options.input",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Receive information",
+      "observePrompt": "Tap from receiving information to acting.",
+      "evidenceCopy": "Current step: Receive information. Tap from receiving information to acting.",
+      "markerChips": [
+        {
+          "label": "Receive information",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-interpret",
+      "source": "clickTasks.robot-sequence-01.options.interpret",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Understand situation",
+      "observePrompt": "Tap from receiving information to acting.",
+      "evidenceCopy": "Current step: Understand situation. Tap from receiving information to acting.",
+      "markerChips": [
+        {
+          "label": "Understand situation",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-decide",
+      "source": "clickTasks.robot-sequence-01.options.decide",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Decide by rules",
+      "observePrompt": "Tap from receiving information to acting.",
+      "evidenceCopy": "Current step: Decide by rules. Tap from receiving information to acting.",
+      "markerChips": [
+        {
+          "label": "Decide by rules",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-act",
+      "source": "clickTasks.robot-sequence-01.options.act",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Take action",
+      "observePrompt": "Tap from receiving information to acting.",
+      "evidenceCopy": "Current step: Take action. Tap from receiving information to acting.",
+      "markerChips": [
+        {
+          "label": "Take action",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-camera",
+      "source": "clickTasks.robot-find-01.options.camera",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "camera",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "markerChips": [
+        {
+          "label": "camera",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-microphone",
+      "source": "clickTasks.robot-find-01.options.microphone",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "microphone",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "markerChips": [
+        {
+          "label": "microphone",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-button",
+      "source": "clickTasks.robot-find-01.options.button",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "button",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "markerChips": [
+        {
+          "label": "button",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-distance-sensor",
+      "source": "clickTasks.robot-find-01.options.distance-sensor",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "distance sensor",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "markerChips": [
+        {
+          "label": "distance sensor",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-wheel",
+      "source": "clickTasks.robot-find-01.options.wheel",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "wheel",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Is it knowing information or doing an action?",
+      "markerChips": [
+        {
+          "label": "wheel",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-light",
+      "source": "clickTasks.robot-find-01.options.light",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "light",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Is it knowing information or doing an action?",
+      "markerChips": [
+        {
+          "label": "light",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-robot-arm",
+      "source": "clickTasks.robot-find-01.options.robot-arm",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "robot arm",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Is it knowing information or doing an action?",
+      "markerChips": [
+        {
+          "label": "robot arm",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-choice-01-options-magic",
+      "source": "clickTasks.robot-choice-01.options.magic",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Magic",
+      "observePrompt": "Choose the least accurate explanation.",
+      "evidenceCopy": "Right! Robots do not work by magic.",
+      "markerChips": [
+        {
+          "label": "Magic",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-choice-01-options-sensors-program",
+      "source": "clickTasks.robot-choice-01.options.sensors-program",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Sensors and programs",
+      "observePrompt": "Choose the least accurate explanation.",
+      "evidenceCopy": "Sensors and programs are key to robot work.",
+      "markerChips": [
+        {
+          "label": "Sensors and programs",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-choice-01-options-wheels-arm",
+      "source": "clickTasks.robot-choice-01.options.wheels-arm",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Wheels and robot arms",
+      "observePrompt": "Choose the least accurate explanation.",
+      "evidenceCopy": "Wheels and arms help robots act.",
+      "markerChips": [
+        {
+          "label": "Wheels and robot arms",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

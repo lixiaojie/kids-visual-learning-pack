@@ -463,5 +463,692 @@
     "避免说“AI 像人一样思考”或“AI 完全懂了”。",
     "鼓励孩子把模糊问题改写成清楚问题，这是比记技术名词更重要的能力。",
     "建立安全边界：健康、安全、金钱、隐私、作业事实都要再确认。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "human-made-llm-kids-basics-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "human-made-llm-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "four-steps",
+      "assetId": "human-made-llm-four-steps",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "vs-search",
+      "assetId": "human-made-llm-vs-search",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-input",
+      "source": "classificationGroups.input",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "输入",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "你给 AI 的问题、故事或要求，就是输入。 这类里可以看到：问题卡、故事卡。",
+      "markerChips": [
+        {
+          "label": "问题卡",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "故事卡",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-patterns",
+      "source": "classificationGroups.patterns",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "语言规律",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "AI 从很多文字里学到词语和句子的搭配规律。 这类里可以看到：词语网络、规律齿轮。",
+      "markerChips": [
+        {
+          "label": "词语网络",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "规律齿轮",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-context",
+      "source": "classificationGroups.context",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "上下文",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "你前面说过的话，会影响 AI 后面怎么回答。 这类里可以看到：对话气泡。",
+      "markerChips": [
+        {
+          "label": "对话气泡",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-output",
+      "source": "classificationGroups.output",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "输出",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "AI 把词语一步一步接起来，变成回答。 这类里可以看到：回答气泡。",
+      "markerChips": [
+        {
+          "label": "回答气泡",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-check",
+      "source": "classificationGroups.check",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "检查",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "重要问题要找大人或可靠资料再确认。 这类里可以看到：检查徽章。",
+      "markerChips": [
+        {
+          "label": "检查徽章",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-questionCard",
+      "source": "representativeObjects.questionCard",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "问题卡",
+      "observePrompt": "一个带问号的卡片",
+      "evidenceCopy": "问题越清楚，AI 越容易知道你想要什么。",
+      "markerChips": [
+        {
+          "label": "问题卡",
+          "meaning": "问题太短也一定能答好。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-storyCard",
+      "source": "representativeObjects.storyCard",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "故事卡",
+      "observePrompt": "书页和小星星",
+      "evidenceCopy": "你也可以给 AI 一段故事，让它接着写或帮你整理。",
+      "markerChips": [
+        {
+          "label": "故事卡",
+          "meaning": "AI 能自动知道没说出来的背景。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-wordNetwork",
+      "source": "representativeObjects.wordNetwork",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "词语网络",
+      "observePrompt": "发光节点和连线",
+      "evidenceCopy": "很多词语之间有关系，AI 会学习这些关系。",
+      "markerChips": [
+        {
+          "label": "词语网络",
+          "meaning": "把词语网络当成真的人脑。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-patternGears",
+      "source": "representativeObjects.patternGears",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "规律齿轮",
+      "observePrompt": "柔和齿轮和文字碎片",
+      "evidenceCopy": "规律像齿轮一样，把输入变成可能的回答。",
+      "markerChips": [
+        {
+          "label": "规律齿轮",
+          "meaning": "规律就是事实。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-chatBubbles",
+      "source": "representativeObjects.chatBubbles",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "对话气泡",
+      "observePrompt": "连续气泡",
+      "evidenceCopy": "同一句话放在不同对话里，意思可能不一样。",
+      "markerChips": [
+        {
+          "label": "对话气泡",
+          "meaning": "只看最后一句，不看前面说过什么。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-answerBubble",
+      "source": "representativeObjects.answerBubble",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "回答气泡",
+      "observePrompt": "发光回答框",
+      "evidenceCopy": "AI 会把回答组织成句子，说给你听。",
+      "markerChips": [
+        {
+          "label": "回答气泡",
+          "meaning": "回答顺口就一定正确。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-checkBadge",
+      "source": "representativeObjects.checkBadge",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "检查徽章",
+      "observePrompt": "放大镜和对勾",
+      "evidenceCopy": "遇到健康、安全、金钱、学校作业等重要问题，要检查。",
+      "markerChips": [
+        {
+          "label": "检查徽章",
+          "meaning": "AI 说了就不用再问大人。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-read-many",
+      "source": "mechanism.steps.read-many",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "看过很多文字",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "它学习过很多句子、故事和问答。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "看过很多文字",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-learn-patterns",
+      "source": "mechanism.steps.learn-patterns",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "学习语言规律",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "它学会哪些词常常放在一起，什么回答更像一句完整的话。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "学习语言规律",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-read-prompt",
+      "source": "mechanism.steps.read-prompt",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "读你的提示",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "你说得越清楚，它越容易沿着正确方向回答。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "读你的提示",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-generate-answer",
+      "source": "mechanism.steps.generate-answer",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "一步步接出回答",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "它像接龙一样，一个词一个词组织成回答。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "一步步接出回答",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-check-important",
+      "source": "mechanism.steps.check-important",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "重要事情要检查",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "AI 有时会答错，重要问题要找大人或资料确认。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "重要事情要检查",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-ai-vs-search",
+      "source": "comparePairs.ai-vs-search",
+      "visualSlotId": "vs-search",
+      "interactionScope": "local",
+      "evidenceTitle": "大模型 vs 搜索",
+      "observePrompt": "对比 大模型 和 搜索 的图片线索。",
+      "evidenceCopy": "大模型: 根据学到的语言规律组织回答；可以改写、总结、接着写；可能说错。搜索: 帮你找网页和资料；需要自己判断来源；也可能找到不合适信息。AI 和搜索都能帮忙，但都要学会检查。",
+      "markerChips": [
+        {
+          "label": "大模型",
+          "meaning": "根据学到的语言规律组织回答",
+          "emphasis": "primary"
+        },
+        {
+          "label": "搜索",
+          "meaning": "帮你找网页和资料",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-clear-vs-vague-prompt",
+      "source": "comparePairs.clear-vs-vague-prompt",
+      "visualSlotId": "vs-search",
+      "interactionScope": "local",
+      "evidenceTitle": "清楚问题 vs 模糊问题",
+      "observePrompt": "对比 清楚问题 和 模糊问题 的图片线索。",
+      "evidenceCopy": "清楚问题: 说清主题；说清数量；说清想要的方式。模糊问题: 只说“讲讲”；没有范围；容易答偏。问题说得清楚，回答更容易有用。",
+      "markerChips": [
+        {
+          "label": "清楚问题",
+          "meaning": "说清主题",
+          "emphasis": "primary"
+        },
+        {
+          "label": "模糊问题",
+          "meaning": "只说“讲讲”",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-fluent-vs-correct",
+      "source": "comparePairs.fluent-vs-correct",
+      "visualSlotId": "vs-search",
+      "interactionScope": "local",
+      "evidenceTitle": "说得顺 vs 说得对",
+      "observePrompt": "对比 说得顺 和 说得对 的图片线索。",
+      "evidenceCopy": "说得顺: 句子好听；看起来很完整；不一定真实。说得对: 能查到依据；和可靠资料一致；经得起追问。AI 说得很顺，也要检查重要信息。",
+      "markerChips": [
+        {
+          "label": "说得顺",
+          "meaning": "句子好听",
+          "emphasis": "primary"
+        },
+        {
+          "label": "说得对",
+          "meaning": "能查到依据",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-01-options-vague",
+      "source": "clickTasks.llm-single-01.options.vague",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "告诉我动物",
+      "observePrompt": "点出更容易让 AI 帮上忙的问题。",
+      "evidenceCopy": "这个问题太大了。加上数量、场景和想知道的内容，会更清楚。",
+      "markerChips": [
+        {
+          "label": "告诉我动物",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-01-options-clear",
+      "source": "clickTasks.llm-single-01.options.clear",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+      "observePrompt": "点出更容易让 AI 帮上忙的问题。",
+      "evidenceCopy": "对！清楚的问题更像一张好地图。",
+      "markerChips": [
+        {
+          "label": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-02-options-always-true",
+      "source": "clickTasks.llm-single-02.options.always-true",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "一定是真的",
+      "observePrompt": "点出更安全的说法。",
+      "evidenceCopy": "AI 有时会答错，尤其是重要事情。",
+      "markerChips": [
+        {
+          "label": "一定是真的",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-02-options-check-important",
+      "source": "clickTasks.llm-single-02.options.check-important",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "重要事情要再检查",
+      "observePrompt": "点出更安全的说法。",
+      "evidenceCopy": "很好！会使用，也会检查，才是聪明用法。",
+      "markerChips": [
+        {
+          "label": "重要事情要再检查",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-02-options-never-use",
+      "source": "clickTasks.llm-single-02.options.never-use",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "完全不能用",
+      "observePrompt": "点出更安全的说法。",
+      "evidenceCopy": "AI 可以帮忙，但要学会检查和提问。",
+      "markerChips": [
+        {
+          "label": "完全不能用",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-healthQuestion",
+      "source": "clickTasks.llm-find-01.options.healthQuestion",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "healthQuestion",
+      "observePrompt": "找一找：哪些事情需要再确认？",
+      "evidenceCopy": "你找到了需要认真检查的重要问题。",
+      "markerChips": [
+        {
+          "label": "healthQuestion",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-moneyQuestion",
+      "source": "clickTasks.llm-find-01.options.moneyQuestion",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "moneyQuestion",
+      "observePrompt": "找一找：哪些事情需要再确认？",
+      "evidenceCopy": "你找到了需要认真检查的重要问题。",
+      "markerChips": [
+        {
+          "label": "moneyQuestion",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-schoolFact",
+      "source": "clickTasks.llm-find-01.options.schoolFact",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "schoolFact",
+      "observePrompt": "找一找：哪些事情需要再确认？",
+      "evidenceCopy": "你找到了需要认真检查的重要问题。",
+      "markerChips": [
+        {
+          "label": "schoolFact",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-storyIdea",
+      "source": "clickTasks.llm-find-01.options.storyIdea",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "storyIdea",
+      "observePrompt": "找一找：哪些事情需要再确认？",
+      "evidenceCopy": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+      "markerChips": [
+        {
+          "label": "storyIdea",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-nameRobot",
+      "source": "clickTasks.llm-find-01.options.nameRobot",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "nameRobot",
+      "observePrompt": "找一找：哪些事情需要再确认？",
+      "evidenceCopy": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+      "markerChips": [
+        {
+          "label": "nameRobot",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-makeRiddle",
+      "source": "clickTasks.llm-find-01.options.makeRiddle",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "makeRiddle",
+      "observePrompt": "找一找：哪些事情需要再确认？",
+      "evidenceCopy": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+      "markerChips": [
+        {
+          "label": "makeRiddle",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-learn",
+      "source": "clickTasks.llm-sequence-01.options.learn",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "学习很多文字规律",
+      "observePrompt": "按顺序点出大模型回答问题的过程。",
+      "evidenceCopy": "当前步骤：学习很多文字规律。按顺序点出大模型回答问题的过程。",
+      "markerChips": [
+        {
+          "label": "学习很多文字规律",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-prompt",
+      "source": "clickTasks.llm-sequence-01.options.prompt",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "读你的提示",
+      "observePrompt": "按顺序点出大模型回答问题的过程。",
+      "evidenceCopy": "当前步骤：读你的提示。按顺序点出大模型回答问题的过程。",
+      "markerChips": [
+        {
+          "label": "读你的提示",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-answer",
+      "source": "clickTasks.llm-sequence-01.options.answer",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "组织回答",
+      "observePrompt": "按顺序点出大模型回答问题的过程。",
+      "evidenceCopy": "当前步骤：组织回答。按顺序点出大模型回答问题的过程。",
+      "markerChips": [
+        {
+          "label": "组织回答",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-check",
+      "source": "clickTasks.llm-sequence-01.options.check",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "重要问题再检查",
+      "observePrompt": "按顺序点出大模型回答问题的过程。",
+      "evidenceCopy": "当前步骤：重要问题再检查。按顺序点出大模型回答问题的过程。",
+      "markerChips": [
+        {
+          "label": "重要问题再检查",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    }
   ]
 }

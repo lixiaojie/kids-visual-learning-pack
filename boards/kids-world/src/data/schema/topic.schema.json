@@ -181,6 +181,24 @@
       "items": {
         "type": "string"
       }
+    },
+    "visualSlots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/visualSlot"
+      }
+    },
+    "learningFlow": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/learningFlowStage"
+      }
+    },
+    "visualEvidenceBindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/visualEvidenceBinding"
+      }
     }
   },
   "$defs": {
@@ -190,6 +208,162 @@
     "idString": {
       "type": "string",
       "minLength": 1
+    },
+    "visualSlot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "assetId",
+        "target",
+        "role"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "assetId": {
+          "$ref": "#/$defs/idString"
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^(hero|classificationGroups|representativeObjects|mechanism|secondaryMechanism|comparePairs|clickTasks|parentTips)(\\.[A-Za-z0-9_-]+)?$"
+        },
+        "role": {
+          "enum": [
+            "hero",
+            "observation",
+            "process",
+            "compare",
+            "task",
+            "summary"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        }
+      }
+    },
+    "visualEvidenceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source",
+        "visualSlotId",
+        "evidenceTitle",
+        "evidenceCopy"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^(classificationGroups|representativeObjects|comparePairs)\\.[A-Za-z0-9_-]+$|^(mechanism|secondaryMechanism)\\.steps\\.[A-Za-z0-9_-]+$|^clickTasks\\.[A-Za-z0-9_-]+(\\.options\\.[A-Za-z0-9_-]+)?$"
+        },
+        "visualSlotId": {
+          "$ref": "#/$defs/idString"
+        },
+        "interactionScope": {
+          "enum": [
+            "local",
+            "linkedObjects",
+            "linkedEvidence",
+            "flowNavigation"
+          ]
+        },
+        "evidenceTitle": {
+          "type": "string"
+        },
+        "observePrompt": {
+          "type": "string"
+        },
+        "evidenceCopy": {
+          "type": "string"
+        },
+        "markerChips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "meaning"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "meaning": {
+                "type": "string"
+              },
+              "emphasis": {
+                "enum": [
+                  "primary",
+                  "supporting",
+                  "warning"
+                ]
+              }
+            }
+          }
+        },
+        "expectedStatus": {
+          "enum": [
+            "selected",
+            "correct",
+            "wrong",
+            "partial",
+            "complete"
+          ]
+        },
+        "nextPrompt": {
+          "type": "string"
+        },
+        "quality": {
+          "enum": [
+            "curated",
+            "generated",
+            "derived-fallback"
+          ]
+        }
+      }
+    },
+    "learningFlowStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "sectionIds",
+        "childPrompt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sectionIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/idString"
+          }
+        },
+        "visualSlotId": {
+          "type": "string"
+        },
+        "childPrompt": {
+          "type": "string"
+        }
+      }
     },
     "hero": {
       "type": "object",

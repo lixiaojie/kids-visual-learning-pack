@@ -24,6 +24,8 @@ const requiredFiles = [
   "src/components/topic/ClickTaskCard.tsx",
   "src/components/topic/ComparePairCard.tsx",
   "src/components/topic/InfoList.tsx",
+  "src/components/topic/LearningFlowRail.tsx",
+  "src/components/topic/TopicVisual.tsx",
 ];
 const errors = [];
 
@@ -54,6 +56,7 @@ const topicPage = fs.readFileSync(path.join(appDir, "src/pages/topic/index.tsx")
 const aboutPage = fs.readFileSync(path.join(appDir, "src/pages/about/index.tsx"), "utf8");
 const imageComponent = fs.readFileSync(path.join(appDir, "src/components/shared/GeneratedImage.tsx"), "utf8");
 const clickTaskCard = fs.readFileSync(path.join(appDir, "src/components/topic/ClickTaskCard.tsx"), "utf8");
+const topicVisual = fs.readFileSync(path.join(appDir, "src/components/topic/TopicVisual.tsx"), "utf8");
 
 if (!indexPage.includes("@yutou/kids-content")) {
   errors.push("index page must use @yutou/kids-content");
@@ -72,6 +75,8 @@ for (const requiredTaskSupport of [
   "targetIds",
   "correctSequence",
   "wrongHints",
+  "resolveVisualEvidence",
+  "data-evidence-source",
 ]) {
   if (!clickTaskCard.includes(requiredTaskSupport)) {
     errors.push(`ClickTaskCard must support ${requiredTaskSupport}`);
@@ -85,6 +90,21 @@ for (const requiredTopicSection of ["ClickTaskCard", "ComparePairCard", "represe
 for (const requiredTopicSection of ["classificationGroups", "secondaryMechanism", "relatedTopics"]) {
   if (!topicPage.includes(requiredTopicSection)) {
     errors.push(`topic page must render ${requiredTopicSection} for section parity`);
+  }
+}
+for (const requiredTopicFlow of ["LearningFlowRail", "TopicVisual", "getTopicLearningFlow", "getVisualSlotForTarget"]) {
+  if (!topicPage.includes(requiredTopicFlow)) {
+    errors.push(`topic page must support learning flow and visual slots: ${requiredTopicFlow}`);
+  }
+}
+for (const requiredEvidenceWire of ["resolveVisualEvidence", "evidence={", "data-evidence-source"]) {
+  if (!topicPage.includes(requiredEvidenceWire) && !clickTaskCard.includes(requiredEvidenceWire) && !topicVisual.includes(requiredEvidenceWire)) {
+    errors.push(`miniprogram topic UI must wire visual evidence: ${requiredEvidenceWire}`);
+  }
+}
+for (const requiredEvidencePanel of ["evidence-panel", "evidenceTitle", "evidenceCopy", "markerChips"]) {
+  if (!topicVisual.includes(requiredEvidencePanel)) {
+    errors.push(`TopicVisual must render visual evidence panel field: ${requiredEvidencePanel}`);
   }
 }
 if (/\.slice\(\s*0\s*,/.test(topicPage)) {

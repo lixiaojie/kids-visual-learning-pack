@@ -1,10 +1,11 @@
 import { CheckCircle2 } from "lucide-react";
-import { getKnowledgeTopicAssetId, type Topic } from "@yutou/kids-content";
+import { getKnowledgeTopicAssetId, getVisualSlotForTarget, type Topic } from "@yutou/kids-content";
 import { GeneratedImage } from "../shared/GeneratedImage";
 
 function PlaceholderScene({ topic }: { topic: Topic }) {
   const type = topic.hero.placeholder?.type ?? topic.pageType;
-  const assetId = getKnowledgeTopicAssetId({ slug: topic.slug });
+  const heroSlot = getVisualSlotForTarget(topic, "hero");
+  const assetId = heroSlot?.assetId ?? getKnowledgeTopicAssetId({ slug: topic.slug });
   return (
     <div className={`placeholder-scene ${String(type)} ${assetId ? "generated-scene" : ""}`}>
       <GeneratedImage
@@ -24,7 +25,7 @@ function PlaceholderScene({ topic }: { topic: Topic }) {
 
 export function TopicHero({ topic }: { topic: Topic }) {
   return (
-    <section className="topic-hero">
+    <section className="topic-hero" id="topic-hero">
       <div className="topic-hero-copy">
         <p className="kicker">{topic.hero.kicker}</p>
         <h1>{topic.hero.title}</h1>

@@ -126,6 +126,33 @@ if (fs.existsSync(path.join(root, "boards/kids-world/src/components/home/Interes
   errors.push("Story interest entrance component must be removed from home components");
 }
 
+const webTopicPagePath = path.join(root, "boards/kids-world/src/pages/TopicPage.tsx");
+const webTopicPage = fs.readFileSync(webTopicPagePath, "utf8");
+const webTopicComponentSource = [
+  webTopicPage,
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClassificationGroups.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/RepresentativeObjects.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/MechanismSteps.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ComparePairs.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClickTaskCard.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/TopicVisual.tsx"), "utf8"),
+].join("\n");
+for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "TopicVisual"]) {
+  if (!webTopicPage.includes(requiredTopicFlow)) {
+    errors.push(`Web topic page must wire module visuals and learning flow: ${requiredTopicFlow}`);
+  }
+}
+for (const requiredAnchor of ["topic-objects", "topic-mechanism", "topic-compare", "topic-tasks"]) {
+  if (!webTopicComponentSource.includes(requiredAnchor)) {
+    errors.push(`Web topic page must expose learning flow anchor: ${requiredAnchor}`);
+  }
+}
+for (const requiredEvidenceWire of ["resolveVisualEvidence", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
+  if (!webTopicComponentSource.includes(requiredEvidenceWire)) {
+    errors.push(`Web topic components must wire visual evidence behavior: ${requiredEvidenceWire}`);
+  }
+}
+
 const miniprogramConfigPath = path.join(root, "apps/miniprogram/config/index.ts");
 const miniprogramConfig = fs.readFileSync(miniprogramConfigPath, "utf8");
 if (miniprogramConfig.includes("apps/miniprogram/src/lib/kids-content")) {
@@ -134,6 +161,28 @@ if (miniprogramConfig.includes("apps/miniprogram/src/lib/kids-content")) {
 
 const miniprogramTopicPagePath = path.join(root, "apps/miniprogram/src/pages/topic/index.tsx");
 const miniprogramTopicPage = fs.readFileSync(miniprogramTopicPagePath, "utf8");
+const miniprogramEvidenceSource = [
+  miniprogramTopicPage,
+  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ClickTaskCard.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ComparePairCard.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/InfoList.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/TopicVisual.tsx"), "utf8"),
+].join("\n");
+for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "TopicVisual"]) {
+  if (!miniprogramTopicPage.includes(requiredTopicFlow)) {
+    errors.push(`miniprogram topic page must wire module visuals and learning flow: ${requiredTopicFlow}`);
+  }
+}
+for (const requiredAnchor of ["topic-objects", "topic-mechanism", "topic-compare", "topic-tasks"]) {
+  if (!miniprogramTopicPage.includes(requiredAnchor)) {
+    errors.push(`miniprogram topic page must expose learning flow anchor: ${requiredAnchor}`);
+  }
+}
+for (const requiredEvidenceWire of ["resolveVisualEvidence", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
+  if (!miniprogramEvidenceSource.includes(requiredEvidenceWire)) {
+    errors.push(`miniprogram topic components must wire visual evidence behavior: ${requiredEvidenceWire}`);
+  }
+}
 const comparePairCardPath = path.join(root, "apps/miniprogram/src/components/topic/ComparePairCard.tsx");
 const comparePairCardSource = fs.existsSync(comparePairCardPath) ? fs.readFileSync(comparePairCardPath, "utf8") : "";
 if (!miniprogramTopicPage.includes("ComparePairCard")) {
@@ -174,6 +223,28 @@ for (const assetId of packageAssetIds) {
 }
 for (const slug of renderReadySlugs) {
   const topic = readJson(`boards/kids-world/src/data/topics/${slug}.json`);
+  const visualSlots = topic.visualSlots ?? [];
+  const visualEvidenceBindings = topic.visualEvidenceBindings ?? [];
+  const assetCount = Object.keys(topic.assets ?? {}).length;
+
+  if (assetCount > 1 && visualSlots.length <= 1) {
+    errors.push(`${slug} has ${assetCount} topic assets but does not bind module-level visualSlots`);
+  }
+
+  if (visualSlots.length > 0 && !visualSlots.some((slot) => slot.target === "hero")) {
+    errors.push(`${slug} visualSlots must include a hero target`);
+  }
+
+  if (visualEvidenceBindings.length === 0) {
+    errors.push(`${slug} must define visualEvidenceBindings for interactive evidence coverage`);
+  }
+
+  for (const slot of visualSlots) {
+    if (!manifestAssetIds.has(slot.assetId)) {
+      errors.push(`${slug} visualSlot "${slot.id}" references missing manifest assetId: ${slot.assetId}`);
+    }
+  }
+
   for (const [name, asset] of Object.entries(topic.assets ?? {})) {
     if (asset?.path && !manifestWebpPaths.has(asset.path)) {
       errors.push(`${slug} asset "${name}" is missing from image-generation-manifest.json: ${asset.path}`);

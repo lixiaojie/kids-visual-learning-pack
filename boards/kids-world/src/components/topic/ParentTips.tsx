@@ -4,7 +4,7 @@ type Props = { tips: string[]; locale: string };
 
 export function ParentTips({ tips, locale }: Props) {
   return (
-    <article className="panel">
+    <article className="panel" id="topic-parent">
       <SectionHeader title={locale === "zh-CN" ? "家长提示" : "Parent prompts"} />
       <ul className="parent-tips">
         {tips.map((tip) => (

@@ -3,8 +3,14 @@
   flex-direction: column;
   gap: 16px;
   padding: 18px;
+  border: 2px solid transparent;
   border-radius: 18px;
   background: #f8fafc;
+}
+
+.compare-pair-card.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
 }
 
 .compare-pair-title {

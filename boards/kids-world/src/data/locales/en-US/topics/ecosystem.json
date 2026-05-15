@@ -367,5 +367,736 @@
     "The child can tell basic differences among producers, consumers, and decomposers.",
     "The child knows sunlight, water, and soil are environmental conditions.",
     "The child can explain at least one ecosystem connection with arrows."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-producers",
+      "source": "classificationGroups.producers",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Producers",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Plants use sunlight, water, and air to grow. You can spot: Plant.",
+      "markerChips": [
+        {
+          "label": "Plant",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-consumers",
+      "source": "classificationGroups.consumers",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Consumers",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Animals need to eat plants or other animals for energy. You can spot: Insect, Frog, Bird, Fox.",
+      "markerChips": [
+        {
+          "label": "Insect",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Frog",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Bird",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Fox",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-decomposers",
+      "source": "classificationGroups.decomposers",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Decomposers",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Mushrooms, earthworms, and tiny microbes help leaves return to soil. You can spot: Mushroom, Earthworm.",
+      "markerChips": [
+        {
+          "label": "Mushroom",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Earthworm",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-environment",
+      "source": "classificationGroups.environment",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Environment",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Sunlight, water, air, and soil help living things live. You can spot: Sunlight, Water, Soil.",
+      "markerChips": [
+        {
+          "label": "Sunlight",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Water",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Soil",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Sunlight",
+      "observePrompt": "warm yellow sun",
+      "evidenceCopy": "Sunlight gives plants energy to grow.",
+      "markerChips": [
+        {
+          "label": "Sunlight",
+          "meaning": "Thinking sunlight is unrelated to ecosystems.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-plant",
+      "source": "representativeObjects.plant",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Plant",
+      "observePrompt": "small green plant with roots",
+      "evidenceCopy": "Plants use sunlight, water, and air to grow and provide food or shelter.",
+      "markerChips": [
+        {
+          "label": "Plant",
+          "meaning": "Thinking plants are just background.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-insect",
+      "source": "representativeObjects.insect",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Insect",
+      "observePrompt": "butterfly or beetle",
+      "evidenceCopy": "Some insects eat leaves or nectar and may be eaten by frogs or birds.",
+      "markerChips": [
+        {
+          "label": "Insect",
+          "meaning": "Thinking all insects are pests.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-frog",
+      "source": "representativeObjects.frog",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Frog",
+      "observePrompt": "green frog on lily pad",
+      "evidenceCopy": "Frogs live near ponds and eat small insects.",
+      "markerChips": [
+        {
+          "label": "Frog",
+          "meaning": "Thinking frogs are only about water.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-bird",
+      "source": "representativeObjects.bird",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Bird",
+      "observePrompt": "small bird on branch",
+      "evidenceCopy": "Birds may eat seeds, fruit, or insects, and can help spread seeds.",
+      "markerChips": [
+        {
+          "label": "Bird",
+          "meaning": "Forgetting animals can help plants.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-fox",
+      "source": "representativeObjects.fox",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Fox",
+      "observePrompt": "gentle orange fox",
+      "evidenceCopy": "The fox is a larger consumer near the pond.",
+      "markerChips": [
+        {
+          "label": "Fox",
+          "meaning": "Seeing foxes only as bad characters.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mushroom",
+      "source": "representativeObjects.mushroom",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Mushroom",
+      "observePrompt": "small red or brown mushroom",
+      "evidenceCopy": "Mushrooms help break down leaves and dead wood.",
+      "markerChips": [
+        {
+          "label": "Mushroom",
+          "meaning": "Thinking mushrooms are ordinary plants.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-earthworm",
+      "source": "representativeObjects.earthworm",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Earthworm",
+      "observePrompt": "pink worm in soil",
+      "evidenceCopy": "Earthworms move through soil and help loosen it.",
+      "markerChips": [
+        {
+          "label": "Earthworm",
+          "meaning": "Thinking earthworms are only dirty bugs.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-water",
+      "source": "representativeObjects.water",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Water",
+      "observePrompt": "blue pond water",
+      "evidenceCopy": "Pond water helps plants and animals live.",
+      "markerChips": [
+        {
+          "label": "Water",
+          "meaning": "Thinking water is just decoration.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-soil",
+      "source": "representativeObjects.soil",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Soil",
+      "observePrompt": "soil layer with roots",
+      "evidenceCopy": "Soil supports roots and holds water and nutrients.",
+      "markerChips": [
+        {
+          "label": "Soil",
+          "meaning": "Thinking soil is only mud.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-sun-to-plant",
+      "source": "mechanism.steps.sun-to-plant",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Sun feeds plants",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "Plants use sunlight, water, and air to grow.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Sun feeds plants",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-plant-to-animal",
+      "source": "mechanism.steps.plant-to-animal",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Plants feed animals",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "Insects or other animals eat parts of plants.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Plants feed animals",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-animal-to-animal",
+      "source": "mechanism.steps.animal-to-animal",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Animals connect",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "Frogs, birds, and foxes can form food relationships.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Animals connect",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-life-to-decomposer",
+      "source": "mechanism.steps.life-to-decomposer",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Leaves return to soil",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "Leaves and dead wood are slowly broken down by mushrooms, earthworms, and microbes.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Leaves return to soil",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-nutrient-to-plant",
+      "source": "mechanism.steps.nutrient-to-plant",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Nutrients help plants again",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "Nutrients in soil help plants grow again.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Nutrients help plants again",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-water-help",
+      "source": "secondaryMechanism.steps.water-help",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Water helps life",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "Plants and animals need water.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Water helps life",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-soil-home",
+      "source": "secondaryMechanism.steps.soil-home",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Soil is a home",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "Plants root in soil, and many small lives live there.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Soil is a home",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-change-affects",
+      "source": "secondaryMechanism.steps.change-affects",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Change affects life",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "If water or plants decrease, many animals may be affected.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Change affects life",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-food-chain-vs-ecosystem",
+      "source": "comparePairs.food-chain-vs-ecosystem",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Food chain vs Ecosystem",
+      "observePrompt": "Compare visual clues for Food chain and Ecosystem.",
+      "evidenceCopy": "Food chain: like one line; shows energy passing from one to another; simpler. Ecosystem: like a web; includes living things and environment; has more relationships. A food chain is a line; an ecosystem is a web.",
+      "markerChips": [
+        {
+          "label": "Food chain",
+          "meaning": "like one line",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Ecosystem",
+          "meaning": "like a web",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-producer-vs-consumer",
+      "source": "comparePairs.producer-vs-consumer",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Producer vs Consumer",
+      "observePrompt": "Compare visual clues for Producer and Consumer.",
+      "evidenceCopy": "Producer: often plants; uses sunlight to grow; starts many food relationships. Consumer: often animals; needs food for energy; connects with other lives. Plants and animals have different jobs in an ecosystem.",
+      "markerChips": [
+        {
+          "label": "Producer",
+          "meaning": "often plants",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Consumer",
+          "meaning": "often animals",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-decompose-vs-disappear",
+      "source": "comparePairs.decompose-vs-disappear",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Decompose vs Disappear",
+      "observePrompt": "Compare visual clues for Decompose and Disappear.",
+      "evidenceCopy": "Decompose: leaves become smaller parts; nutrients return to soil; decomposers are working. Disappear: seems like nothing is left; process is hidden; decomposers are ignored. Leaves do not vanish; decomposers help return them to the cycle.",
+      "markerChips": [
+        {
+          "label": "Decompose",
+          "meaning": "leaves become smaller parts",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Disappear",
+          "meaning": "seems like nothing is left",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-mushroom",
+      "source": "clickTasks.ecosystem-find-01.options.mushroom",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "mushroom",
+      "observePrompt": "Find the partners that help leaves return to soil.",
+      "evidenceCopy": "Correct! Mushrooms and earthworms help decomposition.",
+      "markerChips": [
+        {
+          "label": "mushroom",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-earthworm",
+      "source": "clickTasks.ecosystem-find-01.options.earthworm",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "earthworm",
+      "observePrompt": "Find the partners that help leaves return to soil.",
+      "evidenceCopy": "Correct! Mushrooms and earthworms help decomposition.",
+      "markerChips": [
+        {
+          "label": "earthworm",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-frog",
+      "source": "clickTasks.ecosystem-find-01.options.frog",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "frog",
+      "observePrompt": "Find the partners that help leaves return to soil.",
+      "evidenceCopy": "Decomposers often work near leaves, dead wood, and soil.",
+      "markerChips": [
+        {
+          "label": "frog",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-fox",
+      "source": "clickTasks.ecosystem-find-01.options.fox",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "fox",
+      "observePrompt": "Find the partners that help leaves return to soil.",
+      "evidenceCopy": "Decomposers often work near leaves, dead wood, and soil.",
+      "markerChips": [
+        {
+          "label": "fox",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-sun",
+      "source": "clickTasks.ecosystem-find-01.options.sun",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "sun",
+      "observePrompt": "Find the partners that help leaves return to soil.",
+      "evidenceCopy": "Decomposers often work near leaves, dead wood, and soil.",
+      "markerChips": [
+        {
+          "label": "sun",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-sun",
+      "source": "clickTasks.ecosystem-sequence-01.options.sun",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Sunlight",
+      "observePrompt": "Tap the energy and nutrient route in order.",
+      "evidenceCopy": "Current step: Sunlight. Tap the energy and nutrient route in order.",
+      "markerChips": [
+        {
+          "label": "Sunlight",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-plant",
+      "source": "clickTasks.ecosystem-sequence-01.options.plant",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Plant",
+      "observePrompt": "Tap the energy and nutrient route in order.",
+      "evidenceCopy": "Current step: Plant. Tap the energy and nutrient route in order.",
+      "markerChips": [
+        {
+          "label": "Plant",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-insect",
+      "source": "clickTasks.ecosystem-sequence-01.options.insect",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Insect",
+      "observePrompt": "Tap the energy and nutrient route in order.",
+      "evidenceCopy": "Current step: Insect. Tap the energy and nutrient route in order.",
+      "markerChips": [
+        {
+          "label": "Insect",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-frog",
+      "source": "clickTasks.ecosystem-sequence-01.options.frog",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Frog",
+      "observePrompt": "Tap the energy and nutrient route in order.",
+      "evidenceCopy": "Current step: Frog. Tap the energy and nutrient route in order.",
+      "markerChips": [
+        {
+          "label": "Frog",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-soil",
+      "source": "clickTasks.ecosystem-sequence-01.options.soil",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Soil",
+      "observePrompt": "Tap the energy and nutrient route in order.",
+      "evidenceCopy": "Current step: Soil. Tap the energy and nutrient route in order.",
+      "markerChips": [
+        {
+          "label": "Soil",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-choice-01-options-no-life-and-environment",
+      "source": "clickTasks.ecosystem-choice-01.options.no-life-and-environment",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "No, it includes plants, decomposers, and environment too",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Right! Ecosystems include living things and environment.",
+      "markerChips": [
+        {
+          "label": "No, it includes plants, decomposers, and environment too",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-choice-01-options-animals-only",
+      "source": "clickTasks.ecosystem-choice-01.options.animals-only",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Yes, only animals",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Plants, mushrooms, water, and soil also matter.",
+      "markerChips": [
+        {
+          "label": "Yes, only animals",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-choice-01-options-plants-only",
+      "source": "clickTasks.ecosystem-choice-01.options.plants-only",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Yes, only plants",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Animals, decomposers, and environmental conditions also matter.",
+      "markerChips": [
+        {
+          "label": "Yes, only plants",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

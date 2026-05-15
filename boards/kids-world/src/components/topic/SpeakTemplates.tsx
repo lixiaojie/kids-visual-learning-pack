@@ -4,7 +4,7 @@ type Props = { templates: string[]; locale: string };
 
 export function SpeakTemplates({ templates, locale }: Props) {
   return (
-    <article className="panel">
+    <article className="panel" id="topic-speak">
       <SectionHeader title={locale === "zh-CN" ? "讲一讲" : "Try explaining"} />
       <div className="speak-list">
         {templates.map((template) => (

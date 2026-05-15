@@ -454,5 +454,628 @@
     "孩子能说出‘血液有不同成员’就已经达到第一层目标。",
     "不要把免疫机制讲得过深，白细胞先解释为保护身体即可。",
     "可结合生活经验：跑步为什么会喘？小伤口为什么会慢慢不流血？"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "body-blood-cells-3d-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "body-blood-cells-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "oxygen-flow",
+      "assetId": "body-blood-cells-oxygen-flow",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "platelet-repair",
+      "assetId": "body-blood-cells-platelet-repair",
+      "target": "secondaryMechanism",
+      "role": "process",
+      "required": true
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-red-blood-cells",
+      "source": "classificationGroups.red-blood-cells",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "红细胞",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "像送氧气的小车，把氧气送到身体各处。 这类里可以看到：红细胞。",
+      "markerChips": [
+        {
+          "label": "红细胞",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-white-blood-cells",
+      "source": "classificationGroups.white-blood-cells",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "白细胞",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "像身体里的守卫，发现入侵者时会帮忙保护身体。 这类里可以看到：白细胞。",
+      "markerChips": [
+        {
+          "label": "白细胞",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-platelets",
+      "source": "classificationGroups.platelets",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "血小板",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "像小小修补队，帮助伤口慢慢止血。 这类里可以看到：血小板。",
+      "markerChips": [
+        {
+          "label": "血小板",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-plasma",
+      "source": "classificationGroups.plasma",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "血浆",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "像身体里的小河水，带着很多成员一起流动。 这类里可以看到：血浆。",
+      "markerChips": [
+        {
+          "label": "血浆",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-red-cell",
+      "source": "representativeObjects.red-cell",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "红细胞",
+      "observePrompt": "红色、扁圆、数量最多",
+      "evidenceCopy": "我负责送氧气。",
+      "markerChips": [
+        {
+          "label": "红细胞",
+          "meaning": "以为所有红色小圆片功能都一样。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-white-cell",
+      "source": "representativeObjects.white-cell",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "白细胞",
+      "observePrompt": "白色或淡色、比红细胞大、数量少",
+      "evidenceCopy": "我负责保护身体。",
+      "markerChips": [
+        {
+          "label": "白细胞",
+          "meaning": "以为白细胞是入侵者。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-platelet",
+      "source": "representativeObjects.platelet",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "血小板",
+      "observePrompt": "小小的碎片状或小圆点",
+      "evidenceCopy": "我会帮忙修补小伤口。",
+      "markerChips": [
+        {
+          "label": "血小板",
+          "meaning": "以为它没有作用。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-plasma",
+      "source": "representativeObjects.plasma",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "血浆",
+      "observePrompt": "淡黄色或透明流动背景",
+      "evidenceCopy": "我带着大家一起流动。",
+      "markerChips": [
+        {
+          "label": "血浆",
+          "meaning": "忽略液体部分。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-get-oxygen",
+      "source": "mechanism.steps.get-oxygen",
+      "visualSlotId": "oxygen-flow",
+      "interactionScope": "local",
+      "evidenceTitle": "肺部取氧",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "我们吸气时，氧气来到肺里。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "肺部取氧",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-red-cell-load",
+      "source": "mechanism.steps.red-cell-load",
+      "visualSlotId": "oxygen-flow",
+      "interactionScope": "local",
+      "evidenceTitle": "红细胞装上氧气",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "红细胞带上氧气，准备出发。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "红细胞装上氧气",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-heart-pump",
+      "source": "mechanism.steps.heart-pump",
+      "visualSlotId": "oxygen-flow",
+      "interactionScope": "local",
+      "evidenceTitle": "心脏推动",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "心脏像水泵，把血液推向全身。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "心脏推动",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-deliver",
+      "source": "mechanism.steps.deliver",
+      "visualSlotId": "oxygen-flow",
+      "interactionScope": "local",
+      "evidenceTitle": "送到身体",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "红细胞把氧气送给需要工作的地方。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "送到身体",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-return",
+      "source": "mechanism.steps.return",
+      "visualSlotId": "oxygen-flow",
+      "interactionScope": "local",
+      "evidenceTitle": "再带回废气",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "血液还会把身体产生的废气带回去。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "再带回废气",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-small-cut",
+      "source": "secondaryMechanism.steps.small-cut",
+      "visualSlotId": "platelet-repair",
+      "interactionScope": "local",
+      "evidenceTitle": "出现小伤口",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "皮肤破了一个小口。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "出现小伤口",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-platelets-arrive",
+      "source": "secondaryMechanism.steps.platelets-arrive",
+      "visualSlotId": "platelet-repair",
+      "interactionScope": "local",
+      "evidenceTitle": "血小板赶来",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "血小板像修补队一样聚过来。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "血小板赶来",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-seal",
+      "source": "secondaryMechanism.steps.seal",
+      "visualSlotId": "platelet-repair",
+      "interactionScope": "local",
+      "evidenceTitle": "帮助封住",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "小口慢慢被封住，血就少流了。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "帮助封住",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-red-vs-white",
+      "source": "comparePairs.red-vs-white",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "红细胞 vs 白细胞",
+      "observePrompt": "对比 红细胞 和 白细胞 的图片线索。",
+      "evidenceCopy": "红细胞: 数量很多；主要送氧气；像运输小车。白细胞: 数量较少；主要保护身体；像守卫队。它们都在血液里，但工作不一样。",
+      "markerChips": [
+        {
+          "label": "红细胞",
+          "meaning": "数量很多",
+          "emphasis": "primary"
+        },
+        {
+          "label": "白细胞",
+          "meaning": "数量较少",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-platelet-vs-red",
+      "source": "comparePairs.platelet-vs-red",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "血小板 vs 红细胞",
+      "observePrompt": "对比 血小板 和 红细胞 的图片线索。",
+      "evidenceCopy": "血小板: 更小；帮助止血；像修补队。红细胞: 更常见；运输氧气；像小车。小小的血小板也有重要工作。",
+      "markerChips": [
+        {
+          "label": "血小板",
+          "meaning": "更小",
+          "emphasis": "primary"
+        },
+        {
+          "label": "红细胞",
+          "meaning": "更常见",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-blood-vs-water",
+      "source": "comparePairs.blood-vs-water",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "血液 vs 红色水",
+      "observePrompt": "对比 血液 和 红色水 的图片线索。",
+      "evidenceCopy": "血液: 有多种成员；会运输和保护；在身体里循环。红色水: 只是液体；没有工作队；不会主动保护身体。血液不是普通红色水。",
+      "markerChips": [
+        {
+          "label": "血液",
+          "meaning": "有多种成员",
+          "emphasis": "primary"
+        },
+        {
+          "label": "红色水",
+          "meaning": "只是液体",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-match-01-options-red-cell",
+      "source": "clickTasks.blood-match-01.options.red-cell",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "红细胞",
+      "observePrompt": "谁最像送氧气的小车？",
+      "evidenceCopy": "对！红细胞负责把氧气送到身体各处。",
+      "markerChips": [
+        {
+          "label": "红细胞",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-match-01-options-white-cell",
+      "source": "clickTasks.blood-match-01.options.white-cell",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "白细胞",
+      "observePrompt": "谁最像送氧气的小车？",
+      "evidenceCopy": "白细胞更像守卫，负责保护身体。",
+      "markerChips": [
+        {
+          "label": "白细胞",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-match-01-options-platelet",
+      "source": "clickTasks.blood-match-01.options.platelet",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "血小板",
+      "observePrompt": "谁最像送氧气的小车？",
+      "evidenceCopy": "血小板更像修补队，帮助止血。",
+      "markerChips": [
+        {
+          "label": "血小板",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-match-02-options-plasma",
+      "source": "clickTasks.blood-match-02.options.plasma",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "血浆",
+      "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
+      "evidenceCopy": "血浆像河水，负责带着大家流动。",
+      "markerChips": [
+        {
+          "label": "血浆",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-match-02-options-white-cell",
+      "source": "clickTasks.blood-match-02.options.white-cell",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "白细胞",
+      "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
+      "evidenceCopy": "观察得很准！白细胞是身体里的守护者。",
+      "markerChips": [
+        {
+          "label": "白细胞",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-match-02-options-red-cell",
+      "source": "clickTasks.blood-match-02.options.red-cell",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "红细胞",
+      "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
+      "evidenceCopy": "红细胞主要送氧气。",
+      "markerChips": [
+        {
+          "label": "红细胞",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-sequence-01-options-lung",
+      "source": "clickTasks.blood-sequence-01.options.lung",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "肺部取氧",
+      "observePrompt": "氧气旅行顺序是什么？",
+      "evidenceCopy": "当前步骤：肺部取氧。氧气旅行顺序是什么？",
+      "markerChips": [
+        {
+          "label": "肺部取氧",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-sequence-01-options-heart",
+      "source": "clickTasks.blood-sequence-01.options.heart",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "心脏推动",
+      "observePrompt": "氧气旅行顺序是什么？",
+      "evidenceCopy": "当前步骤：心脏推动。氧气旅行顺序是什么？",
+      "markerChips": [
+        {
+          "label": "心脏推动",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-sequence-01-options-body",
+      "source": "clickTasks.blood-sequence-01.options.body",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "送到身体",
+      "observePrompt": "氧气旅行顺序是什么？",
+      "evidenceCopy": "当前步骤：送到身体。氧气旅行顺序是什么？",
+      "markerChips": [
+        {
+          "label": "送到身体",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-find-01-options-platelet",
+      "source": "clickTasks.blood-find-01.options.platelet",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "platelet",
+      "observePrompt": "找一找：谁是修补队？",
+      "evidenceCopy": "你找到了小小血小板。",
+      "markerChips": [
+        {
+          "label": "platelet",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-find-01-options-red-cell",
+      "source": "clickTasks.blood-find-01.options.red-cell",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "red cell",
+      "observePrompt": "找一找：谁是修补队？",
+      "evidenceCopy": "修补队通常很小，负责帮助伤口止血。",
+      "markerChips": [
+        {
+          "label": "red cell",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-find-01-options-white-cell",
+      "source": "clickTasks.blood-find-01.options.white-cell",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "white cell",
+      "observePrompt": "找一找：谁是修补队？",
+      "evidenceCopy": "修补队通常很小，负责帮助伤口止血。",
+      "markerChips": [
+        {
+          "label": "white cell",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-blood-find-01-options-plasma",
+      "source": "clickTasks.blood-find-01.options.plasma",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "plasma",
+      "observePrompt": "找一找：谁是修补队？",
+      "evidenceCopy": "修补队通常很小，负责帮助伤口止血。",
+      "markerChips": [
+        {
+          "label": "plasma",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

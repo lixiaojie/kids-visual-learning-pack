@@ -1,6 +1,109 @@
 export type Locale = "zh-CN" | "en-US";
-export type TaskResult = "idle" | "correct" | "wrong";
+export type EvidenceStatus = "idle" | "selected" | "correct" | "wrong" | "partial" | "complete";
+export type TaskResult = EvidenceStatus;
 export type TextMap = Record<string, string>;
+
+export type VisualSlotRole = "hero" | "observation" | "process" | "compare" | "task" | "summary";
+
+export type VisualSlotTarget =
+  | "hero"
+  | "classificationGroups"
+  | "representativeObjects"
+  | "mechanism"
+  | "secondaryMechanism"
+  | "comparePairs"
+  | "clickTasks"
+  | "parentTips"
+  | `classificationGroups.${string}`
+  | `representativeObjects.${string}`
+  | `mechanism.${string}`
+  | `secondaryMechanism.${string}`
+  | `comparePairs.${string}`
+  | `clickTasks.${string}`;
+
+export type EvidenceSourcePath =
+  | `classificationGroups.${string}`
+  | `representativeObjects.${string}`
+  | `mechanism.steps.${string}`
+  | `secondaryMechanism.steps.${string}`
+  | `comparePairs.${string}`
+  | `clickTasks.${string}`
+  | `clickTasks.${string}.options.${string}`;
+
+export type VisualSlot = {
+  id: string;
+  assetId: string;
+  target: VisualSlotTarget;
+  role: VisualSlotRole;
+  required?: boolean;
+  caption?: string;
+  alt?: string;
+};
+
+export type LearningFlowStage = {
+  id: string;
+  label: string;
+  sectionIds: string[];
+  visualSlotId?: string;
+  childPrompt: string;
+};
+
+export type EvidenceMarkerChip = {
+  label: string;
+  meaning: string;
+  emphasis?: "primary" | "supporting" | "warning";
+};
+
+export type VisualEvidenceBinding = {
+  id: string;
+  source: EvidenceSourcePath;
+  visualSlotId: string;
+  interactionScope?: "local" | "linkedObjects" | "linkedEvidence" | "flowNavigation";
+  evidenceTitle: string;
+  observePrompt?: string;
+  evidenceCopy: string;
+  markerChips?: EvidenceMarkerChip[];
+  expectedStatus?: Exclude<EvidenceStatus, "idle">;
+  nextPrompt?: string;
+  quality?: "curated" | "generated" | "derived-fallback";
+};
+
+export type VisualEvidenceState = {
+  source: EvidenceSourcePath;
+  sourceId: string;
+  visualSlotId: string;
+  status: EvidenceStatus;
+  evidenceTitle: string;
+  observePrompt?: string;
+  evidenceCopy: string;
+  selectedLabels?: string[];
+  markerChips?: EvidenceMarkerChip[];
+  explanationLevel?: "child" | "parent";
+  bindingQuality: "explicit" | "derived";
+  nextPrompt?: string;
+};
+
+export type EvidenceResolveContext = {
+  source: EvidenceSourcePath;
+  selectedIds?: string[];
+  result?: EvidenceStatus;
+  locale?: Locale;
+};
+
+export type EvidenceCoverageReport = {
+  slug: string;
+  totalInteractiveSources: number;
+  resolvedEvidenceSources: number;
+  unresolvedSources: string[];
+  explicitBindingCount: number;
+  derivedBindingCount: number;
+  clickTaskOptionCoverage: number;
+  mechanismStepCoverage: number;
+  comparePairCoverage: number;
+  representativeObjectCoverage: number;
+  derivedFallbackRatio: number;
+  pass: boolean;
+};
 
 export type ClickTask = {
   id: string;
@@ -43,6 +146,9 @@ export type Topic = {
     placeholder?: { type?: string; asset?: string };
   };
   assets?: Record<string, { path: string; purpose?: string; status?: string }>;
+  visualSlots?: VisualSlot[];
+  learningFlow?: LearningFlowStage[];
+  visualEvidenceBindings?: VisualEvidenceBinding[];
   classificationGroups: Array<{
     id: string;
     name: string;

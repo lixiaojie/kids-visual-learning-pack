@@ -1,0 +1,62 @@
+.learning-flow-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 18px;
+  border: 2px solid rgba(23, 32, 51, 0.1);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.learning-flow-title {
+  color: #172033;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.learning-flow-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.learning-flow-list {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+}
+
+.learning-flow-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 58px;
+  padding: 0 18px;
+  border: 2px solid rgba(23, 32, 51, 0.12);
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.learning-flow-chip.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
+}
+
+.learning-flow-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #172033;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.learning-flow-label {
+  color: #172033;
+  font-size: 25px;
+  font-weight: 900;
+}

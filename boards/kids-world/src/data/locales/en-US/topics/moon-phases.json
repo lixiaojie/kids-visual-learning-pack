@@ -343,5 +343,654 @@
     "The child can say the Moon does not shine like the Sun by itself.",
     "The child can identify at least three Moon phases.",
     "The child can explain phases as different visible lit parts."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-light-source",
+      "source": "classificationGroups.light-source",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Where light comes from",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The Sun lights the Moon, and the Moon reflects that light to us. You can spot: Sun.",
+      "markerChips": [
+        {
+          "label": "Sun",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-earth-moon-system",
+      "source": "classificationGroups.earth-moon-system",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Earth and Moon",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The Moon travels around Earth, and we look from Earth. You can spot: Earth, Moon.",
+      "markerChips": [
+        {
+          "label": "Earth",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Moon",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-visible-shapes",
+      "source": "classificationGroups.visible-shapes",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Shapes we see",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "We see curved, half, and round-looking Moons. You can spot: New Moon, Crescent Moon, Half Moon, Full Moon.",
+      "markerChips": [
+        {
+          "label": "New Moon",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Crescent Moon",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Half Moon",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Full Moon",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-observation-tools",
+      "source": "classificationGroups.observation-tools",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Observation tools",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Eyes, windows, and telescopes can help us observe the Moon. You can spot: Telescope.",
+      "markerChips": [
+        {
+          "label": "Telescope",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Sun",
+      "observePrompt": "glowing yellow sphere",
+      "evidenceCopy": "The Sun lights one side of the Moon.",
+      "markerChips": [
+        {
+          "label": "Sun",
+          "meaning": "Forgetting the Sun’s role.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-earth",
+      "source": "representativeObjects.earth",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Earth",
+      "observePrompt": "blue-green Earth",
+      "evidenceCopy": "We stand on Earth to look at the Moon.",
+      "markerChips": [
+        {
+          "label": "Earth",
+          "meaning": "Thinking viewpoint does not matter.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-moon",
+      "source": "representativeObjects.moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Moon",
+      "observePrompt": "gray-yellow sphere",
+      "evidenceCopy": "The Moon moves around Earth and is lit by the Sun.",
+      "markerChips": [
+        {
+          "label": "Moon",
+          "meaning": "Thinking the Moon makes its own light.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-new-moon",
+      "source": "representativeObjects.new-moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "New Moon",
+      "observePrompt": "dark small circle",
+      "evidenceCopy": "We can barely see the bright side.",
+      "markerChips": [
+        {
+          "label": "New Moon",
+          "meaning": "Thinking the Moon disappeared.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-crescent",
+      "source": "representativeObjects.crescent",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Crescent Moon",
+      "observePrompt": "banana-like curve",
+      "evidenceCopy": "We see a thin bright edge.",
+      "markerChips": [
+        {
+          "label": "Crescent Moon",
+          "meaning": "Thinking the Moon was bitten.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-half-moon",
+      "source": "representativeObjects.half-moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Half Moon",
+      "observePrompt": "half bright, half dark",
+      "evidenceCopy": "We see about half of the bright side.",
+      "markerChips": [
+        {
+          "label": "Half Moon",
+          "meaning": "Calling it half a Moon.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-full-moon",
+      "source": "representativeObjects.full-moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Full Moon",
+      "observePrompt": "round bright Moon",
+      "evidenceCopy": "We see the whole bright face.",
+      "markerChips": [
+        {
+          "label": "Full Moon",
+          "meaning": "Thinking only a full Moon counts as the Moon.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-telescope",
+      "source": "representativeObjects.telescope",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Telescope",
+      "observePrompt": "blue telescope",
+      "evidenceCopy": "A telescope helps us see more clearly.",
+      "markerChips": [
+        {
+          "label": "Telescope",
+          "meaning": "Thinking observation is impossible without it.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-sunlight",
+      "source": "mechanism.steps.sunlight",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Sun lights it",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "The Sun always lights part of the Moon.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Sun lights it",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-moon-orbits",
+      "source": "mechanism.steps.moon-orbits",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Moon orbits Earth",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "The Moon travels around Earth while sunlight hits it.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Moon orbits Earth",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-viewer-on-earth",
+      "source": "mechanism.steps.viewer-on-earth",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "We watch from Earth",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "We can only see the side of the Moon facing us.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "We watch from Earth",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-lit-part-changes",
+      "source": "mechanism.steps.lit-part-changes",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Different lit parts",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "Sometimes we see a little, half, or all of the lit side.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Different lit parts",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-cycle-repeat",
+      "source": "mechanism.steps.cycle-repeat",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "The cycle repeats",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "The phases change in order and repeat.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "The cycle repeats",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-same-time",
+      "source": "secondaryMechanism.steps.same-time",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Look at a fixed time",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "Try observing at about the same time each day.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Look at a fixed time",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-draw-shape",
+      "source": "secondaryMechanism.steps.draw-shape",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Draw the shape",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "Draw the bright part you see.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Draw the shape",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-compare-week",
+      "source": "secondaryMechanism.steps.compare-week",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Compare after a week",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "Check whether the Moon changed gradually.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Compare after a week",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-moonlight-vs-sunlight",
+      "source": "comparePairs.moonlight-vs-sunlight",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Moonlight vs Sunlight",
+      "observePrompt": "Compare visual clues for Moonlight and Sunlight.",
+      "evidenceCopy": "Moonlight: soft-looking; reflected sunlight; does not warm Earth like the Sun. Sunlight: very bright; made by the Sun; brings light and heat. The Moon does not make light like the Sun.",
+      "markerChips": [
+        {
+          "label": "Moonlight",
+          "meaning": "soft-looking",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Sunlight",
+          "meaning": "very bright",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-shape-vs-lit-part",
+      "source": "comparePairs.shape-vs-lit-part",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Shape changed vs Lit part changed",
+      "observePrompt": "Compare visual clues for Shape changed and Lit part changed.",
+      "evidenceCopy": "Shape changed: looks bitten; common mistake; the Moon body is not reshaping. Lit part changed: we see different bright parts; depends on Sun-Earth-Moon positions; forms the phase cycle. A phase is a different visible lit part.",
+      "markerChips": [
+        {
+          "label": "Shape changed",
+          "meaning": "looks bitten",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Lit part changed",
+          "meaning": "we see different bright parts",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-new-vs-full",
+      "source": "comparePairs.new-vs-full",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "New Moon vs Full Moon",
+      "observePrompt": "Compare visual clues for New Moon and Full Moon.",
+      "evidenceCopy": "New Moon: almost no bright side visible; not disappeared; still orbiting Earth. Full Moon: whole bright side visible; looks roundest; good for observing surface features. New and full Moon are the same Moon at different phases.",
+      "markerChips": [
+        {
+          "label": "New Moon",
+          "meaning": "almost no bright side visible",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Full Moon",
+          "meaning": "whole bright side visible",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-new-moon",
+      "source": "clickTasks.moon-sequence-01.options.new-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "New Moon",
+      "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+      "evidenceCopy": "Current step: New Moon. Start where it is barely visible and tap toward full Moon.",
+      "markerChips": [
+        {
+          "label": "New Moon",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-crescent",
+      "source": "clickTasks.moon-sequence-01.options.crescent",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Crescent Moon",
+      "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+      "evidenceCopy": "Current step: Crescent Moon. Start where it is barely visible and tap toward full Moon.",
+      "markerChips": [
+        {
+          "label": "Crescent Moon",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-half-moon",
+      "source": "clickTasks.moon-sequence-01.options.half-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Half Moon",
+      "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+      "evidenceCopy": "Current step: Half Moon. Start where it is barely visible and tap toward full Moon.",
+      "markerChips": [
+        {
+          "label": "Half Moon",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-full-moon",
+      "source": "clickTasks.moon-sequence-01.options.full-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Full Moon",
+      "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+      "evidenceCopy": "Current step: Full Moon. Start where it is barely visible and tap toward full Moon.",
+      "markerChips": [
+        {
+          "label": "Full Moon",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-full-moon",
+      "source": "clickTasks.moon-find-01.options.full-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "full moon",
+      "observePrompt": "Find the roundest and brightest-looking Moon.",
+      "evidenceCopy": "Correct! That is the full Moon.",
+      "markerChips": [
+        {
+          "label": "full moon",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-new-moon",
+      "source": "clickTasks.moon-find-01.options.new-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "new moon",
+      "observePrompt": "Find the roundest and brightest-looking Moon.",
+      "evidenceCopy": "The full Moon has the whole visible face lit.",
+      "markerChips": [
+        {
+          "label": "new moon",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-crescent",
+      "source": "clickTasks.moon-find-01.options.crescent",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "crescent",
+      "observePrompt": "Find the roundest and brightest-looking Moon.",
+      "evidenceCopy": "The full Moon has the whole visible face lit.",
+      "markerChips": [
+        {
+          "label": "crescent",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-half-moon",
+      "source": "clickTasks.moon-find-01.options.half-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "half moon",
+      "observePrompt": "Find the roundest and brightest-looking Moon.",
+      "evidenceCopy": "The full Moon has the whole visible face lit.",
+      "markerChips": [
+        {
+          "label": "half moon",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-choice-01-options-lit-part",
+      "source": "clickTasks.moon-choice-01.options.lit-part",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "We see different lit parts",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Right! Phases come from different visible lit parts.",
+      "markerChips": [
+        {
+          "label": "We see different lit parts",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-choice-01-options-moon-bites",
+      "source": "clickTasks.moon-choice-01.options.moon-bites",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "The Moon is bitten",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "The Moon was not bitten; it is still a round sphere.",
+      "markerChips": [
+        {
+          "label": "The Moon is bitten",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-choice-01-options-moon-fire",
+      "source": "clickTasks.moon-choice-01.options.moon-fire",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "The Moon turns on its own light",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "The Moon does not make light like the Sun.",
+      "markerChips": [
+        {
+          "label": "The Moon turns on its own light",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

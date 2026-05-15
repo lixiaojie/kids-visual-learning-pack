@@ -8,7 +8,9 @@ const REGISTRY_PATH = "boards/kids-world/src/data/topic-registry.json";
 
 const schema = JSON.parse(readFileSync(SCHEMA_PATH, "utf-8"));
 const registry = JSON.parse(readFileSync(REGISTRY_PATH, "utf-8"));
+const manifest = JSON.parse(readFileSync("boards/kids-world/src/data/image-generation-manifest.json", "utf-8"));
 const registrySlugs = new Set(registry.topics.map((t) => t.slug));
+const manifestAssetIds = new Set((manifest.assets || []).map((asset) => asset.assetId));
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 const validate = ajv.compile(schema);
@@ -77,6 +79,92 @@ for (const file of files) {
         for (const id of task.correctSequence || []) {
           if (!optionIds.has(id)) {
             errors.push(`clickTask "${task.id}": correctSequence id "${id}" not in options`);
+          }
+        }
+      }
+    }
+  }
+
+  // visualSlots referential integrity
+  const visualSlotIds = new Set();
+  if (topic.visualSlots) {
+    const slotIds = topic.visualSlots.map((slot) => slot.id);
+    slotIds.forEach((id) => visualSlotIds.add(id));
+    const duplicateSlotIds = slotIds.filter((id, i) => slotIds.indexOf(id) !== i);
+    if (duplicateSlotIds.length > 0) {
+      errors.push(`duplicate visualSlot IDs: ${duplicateSlotIds.join(", ")}`);
+    }
+
+    for (const slot of topic.visualSlots) {
+      if (!manifestAssetIds.has(slot.assetId)) {
+        errors.push(`visualSlot "${slot.id}": assetId "${slot.assetId}" not in image-generation-manifest`);
+      }
+
+      const [moduleName, itemId] = String(slot.target).split(".");
+      if (itemId) {
+        if (moduleName === "classificationGroups" && !topic.classificationGroups?.some((item) => item.id === itemId)) {
+          errors.push(`visualSlot "${slot.id}": target "${slot.target}" does not match a classificationGroup`);
+        }
+        if (moduleName === "representativeObjects" && !topic.representativeObjects?.some((item) => item.id === itemId)) {
+          errors.push(`visualSlot "${slot.id}": target "${slot.target}" does not match a representativeObject`);
+        }
+        if (moduleName === "mechanism" && !topic.mechanism?.steps?.some((item) => item.id === itemId)) {
+          errors.push(`visualSlot "${slot.id}": target "${slot.target}" does not match a mechanism step`);
+        }
+        if (moduleName === "secondaryMechanism" && !topic.secondaryMechanism?.steps?.some((item) => item.id === itemId)) {
+          errors.push(`visualSlot "${slot.id}": target "${slot.target}" does not match a secondaryMechanism step`);
+        }
+        if (moduleName === "comparePairs" && !topic.comparePairs?.some((item) => item.id === itemId)) {
+          errors.push(`visualSlot "${slot.id}": target "${slot.target}" does not match a comparePair`);
+        }
+        if (moduleName === "clickTasks" && !topic.clickTasks?.some((item) => item.id === itemId)) {
+          errors.push(`visualSlot "${slot.id}": target "${slot.target}" does not match a clickTask`);
+        }
+      }
+    }
+  }
+
+  // visualEvidenceBindings referential integrity
+  if (topic.visualEvidenceBindings) {
+    const bindingIds = topic.visualEvidenceBindings.map((binding) => binding.id);
+    const duplicateBindingIds = bindingIds.filter((id, i) => bindingIds.indexOf(id) !== i);
+    if (duplicateBindingIds.length > 0) {
+      errors.push(`duplicate visualEvidenceBinding IDs: ${duplicateBindingIds.join(", ")}`);
+    }
+
+    for (const binding of topic.visualEvidenceBindings) {
+      if (!visualSlotIds.has(binding.visualSlotId)) {
+        errors.push(`visualEvidenceBinding "${binding.id}": visualSlotId "${binding.visualSlotId}" does not exist`);
+      }
+
+      const source = String(binding.source);
+      const parts = source.split(".");
+      if (parts[0] === "classificationGroups" && !topic.classificationGroups?.some((item) => item.id === parts[1])) {
+        errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a classificationGroup`);
+      }
+      if (parts[0] === "representativeObjects" && !topic.representativeObjects?.some((item) => item.id === parts[1])) {
+        errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a representativeObject`);
+      }
+      if (parts[0] === "mechanism" && parts[1] === "steps" && !topic.mechanism?.steps?.some((item) => item.id === parts[2])) {
+        errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a mechanism step`);
+      }
+      if (parts[0] === "secondaryMechanism" && parts[1] === "steps" && !topic.secondaryMechanism?.steps?.some((item) => item.id === parts[2])) {
+        errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a secondaryMechanism step`);
+      }
+      if (parts[0] === "comparePairs" && !topic.comparePairs?.some((item) => item.id === parts[1])) {
+        errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a comparePair`);
+      }
+      if (parts[0] === "clickTasks") {
+        const task = topic.clickTasks?.find((item) => item.id === parts[1]);
+        if (!task) {
+          errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a clickTask`);
+        }
+        if (task && parts[2] === "options") {
+          const optionIds = new Set(
+            (task.options || [...(task.targetIds || []), ...(task.decoyIds || [])].map((id) => ({ id }))).map((option) => option.id),
+          );
+          if (!optionIds.has(parts[3])) {
+            errors.push(`visualEvidenceBinding "${binding.id}": source "${source}" does not match a clickTask option`);
           }
         }
       }

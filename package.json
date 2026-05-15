@@ -18,11 +18,12 @@
     "preview:kids-world": "vite preview --host 127.0.0.1 --outDir dist/boards/kids-world",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
     "deploy": "bash scripts/deploy.sh",
-    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs && npm run validate:kids-content && npm run validate:miniprogram && npm run validate:alignment",
+    "validate": "node scripts/validate-topics.mjs && node scripts/validate-i18n.mjs && node scripts/validate-assets.mjs && node scripts/validate-compliance.mjs && npm run validate:evidence && npm run validate:kids-content && npm run validate:miniprogram && npm run validate:alignment",
     "validate:topics": "node scripts/validate-topics.mjs",
     "validate:i18n": "node scripts/validate-i18n.mjs",
     "validate:assets": "node scripts/validate-assets.mjs",
     "validate:compliance": "node scripts/validate-compliance.mjs",
+    "validate:evidence": "node scripts/validate-evidence-coverage.mjs",
     "validate:kids-content": "./node_modules/.bin/tsc -p packages/kids-content/tsconfig.json --noEmit && node scripts/validate-kids-content-package.mjs",
     "validate:miniprogram": "node scripts/validate-miniprogram-scaffold.mjs",
     "validate:alignment": "node scripts/validate-content-alignment.mjs"

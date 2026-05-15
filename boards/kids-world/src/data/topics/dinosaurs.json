@@ -464,5 +464,693 @@
     "尽量把恐龙讲成自然历史和科学证据，而不是怪兽战斗。",
     "孩子喜欢恐龙时，可以用“牙齿、脚、尾巴、角”引导观察。",
     "如果问“谁最厉害”，可转成“它靠什么适应生活”。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "life-dinosaurs-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "life-dinosaurs-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "mechanism",
+      "assetId": "life-dinosaurs-mechanism",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "life-dinosaurs-compare",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    },
+    {
+      "id": "click-task",
+      "assetId": "life-dinosaurs-click-task",
+      "target": "clickTasks",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "parent-guide",
+      "assetId": "life-dinosaurs-parent-guide",
+      "target": "parentTips",
+      "role": "summary",
+      "required": false
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-plant-eaters",
+      "source": "classificationGroups.plant-eaters",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "吃植物的恐龙",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "有些恐龙脖子长、嘴巴适合吃叶子。 这类里可以看到：长脖子恐龙。",
+      "markerChips": [
+        {
+          "label": "长脖子恐龙",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-meat-eaters",
+      "source": "classificationGroups.meat-eaters",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "吃肉的恐龙",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "有些恐龙有尖牙和强壮后腿。 这类里可以看到：尖牙肉食恐龙。",
+      "markerChips": [
+        {
+          "label": "尖牙肉食恐龙",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-defense-bodies",
+      "source": "classificationGroups.defense-bodies",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "保护自己的身体",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "角、甲片、尾锤可能帮助恐龙保护自己。 这类里可以看到：角龙、甲龙。",
+      "markerChips": [
+        {
+          "label": "角龙",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "甲龙",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-evidence",
+      "source": "classificationGroups.evidence",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "留下的证据",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "骨头、脚印和化石能告诉我们过去发生过什么。 这类里可以看到：翼龙伙伴、化石、脚印。",
+      "markerChips": [
+        {
+          "label": "翼龙伙伴",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "化石",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "脚印",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sauropod",
+      "source": "representativeObjects.sauropod",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "长脖子恐龙",
+      "observePrompt": "长脖子、大身体、小脑袋",
+      "evidenceCopy": "长长的脖子可能帮助它吃到高处的叶子。",
+      "markerChips": [
+        {
+          "label": "长脖子恐龙",
+          "meaning": "以为大就一定凶。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-triceratops",
+      "source": "representativeObjects.triceratops",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "角龙",
+      "observePrompt": "三个角和大颈盾",
+      "evidenceCopy": "头上的角和颈盾可能帮助它保护自己。",
+      "markerChips": [
+        {
+          "label": "角龙",
+          "meaning": "以为角只是好看。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ankylosaur",
+      "source": "representativeObjects.ankylosaur",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "甲龙",
+      "observePrompt": "低矮身体、甲片、尾锤",
+      "evidenceCopy": "背上像穿了盔甲，尾巴也可能用来防御。",
+      "markerChips": [
+        {
+          "label": "甲龙",
+          "meaning": "把甲龙当成乌龟。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-tyranno",
+      "source": "representativeObjects.tyranno",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "尖牙肉食恐龙",
+      "observePrompt": "大头、尖牙、强壮后腿",
+      "evidenceCopy": "尖牙和强壮身体说明它可能会捕食。",
+      "markerChips": [
+        {
+          "label": "尖牙肉食恐龙",
+          "meaning": "以为所有肉食恐龙都只会攻击。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-pterosaur",
+      "source": "representativeObjects.pterosaur",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "翼龙伙伴",
+      "observePrompt": "张开的翅膀",
+      "evidenceCopy": "翼龙不是恐龙，但常常和恐龙时代一起出现。",
+      "markerChips": [
+        {
+          "label": "翼龙伙伴",
+          "meaning": "以为会飞的古生物都是恐龙。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-fossil",
+      "source": "representativeObjects.fossil",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "化石",
+      "observePrompt": "岩石里的骨头或贝壳纹",
+      "evidenceCopy": "化石是保存在岩石里的古老生命痕迹。",
+      "markerChips": [
+        {
+          "label": "化石",
+          "meaning": "以为化石一定是完整骨架。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-footprint",
+      "source": "representativeObjects.footprint",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "脚印",
+      "observePrompt": "泥地里的大脚印",
+      "evidenceCopy": "脚印能告诉我们动物走过哪里、脚有多大。",
+      "markerChips": [
+        {
+          "label": "脚印",
+          "meaning": "以为脚印不是化石证据。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-find-evidence",
+      "source": "mechanism.steps.find-evidence",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "发现线索",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "科学家会寻找骨头、牙齿、脚印和蛋壳等线索。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "发现线索",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-clean-carefully",
+      "source": "mechanism.steps.clean-carefully",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "小心清理",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "化石很珍贵，要用小刷子慢慢清理。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "小心清理",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-compare-shape",
+      "source": "mechanism.steps.compare-shape",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "比较形状",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "看牙齿、腿、角和甲片，猜它可能怎样生活。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "比较形状",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-rebuild-story",
+      "source": "mechanism.steps.rebuild-story",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "拼出故事",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "把很多线索放在一起，想象它的样子和生活环境。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "拼出故事",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-update-idea",
+      "source": "mechanism.steps.update-idea",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "发现会更新",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "有新化石时，科学家的想法也可能更新。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "发现会更新",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-teeth",
+      "source": "secondaryMechanism.steps.teeth",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "看牙齿",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "尖牙可能适合咬肉，平一点的牙可能适合磨植物。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "看牙齿",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-legs",
+      "source": "secondaryMechanism.steps.legs",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "看腿脚",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "腿的形状能告诉我们它可能怎么走路。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "看腿脚",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-armor",
+      "source": "secondaryMechanism.steps.armor",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "看防御",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "角、甲片和尾锤可能帮助保护自己。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "看防御",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-dinosaur-vs-fossil",
+      "source": "comparePairs.dinosaur-vs-fossil",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "恐龙 vs 化石",
+      "observePrompt": "对比 恐龙 和 化石 的图片线索。",
+      "evidenceCopy": "恐龙: 曾经活着；有身体和行为；生活在很久以前。化石: 是留下的痕迹；可能是骨头、脚印或蛋壳；帮助我们研究恐龙。化石不是活恐龙，而是认识恐龙的证据。",
+      "markerChips": [
+        {
+          "label": "恐龙",
+          "meaning": "曾经活着",
+          "emphasis": "primary"
+        },
+        {
+          "label": "化石",
+          "meaning": "是留下的痕迹",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-herbivore-vs-carnivore",
+      "source": "comparePairs.herbivore-vs-carnivore",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "食草 vs 食肉",
+      "observePrompt": "对比 食草恐龙 和 食肉恐龙 的图片线索。",
+      "evidenceCopy": "食草恐龙: 常有适合吃植物的嘴和牙；有些身体很大；可能需要防御。食肉恐龙: 常有尖牙；可能跑得快或咬合强；也是生态系统的一部分。吃什么会影响身体长什么样。",
+      "markerChips": [
+        {
+          "label": "食草恐龙",
+          "meaning": "常有适合吃植物的嘴和牙",
+          "emphasis": "primary"
+        },
+        {
+          "label": "食肉恐龙",
+          "meaning": "常有尖牙",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-bone-vs-footprint",
+      "source": "comparePairs.bone-vs-footprint",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "骨头化石 vs 脚印化石",
+      "observePrompt": "对比 骨头化石 和 脚印化石 的图片线索。",
+      "evidenceCopy": "骨头化石: 帮助了解身体结构；可能拼出骨架；不一定完整。脚印化石: 帮助了解走路路线；能猜脚大小；可能显示群体活动。不同证据能告诉我们不同事情。",
+      "markerChips": [
+        {
+          "label": "骨头化石",
+          "meaning": "帮助了解身体结构",
+          "emphasis": "primary"
+        },
+        {
+          "label": "脚印化石",
+          "meaning": "帮助了解走路路线",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-fossil",
+      "source": "clickTasks.dino-find-01.options.fossil",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "fossil",
+      "observePrompt": "找到化石和脚印。",
+      "evidenceCopy": "对！化石和脚印都能成为线索。",
+      "markerChips": [
+        {
+          "label": "fossil",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-footprint",
+      "source": "clickTasks.dino-find-01.options.footprint",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "footprint",
+      "observePrompt": "找到化石和脚印。",
+      "evidenceCopy": "对！化石和脚印都能成为线索。",
+      "markerChips": [
+        {
+          "label": "footprint",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-sauropod",
+      "source": "clickTasks.dino-find-01.options.sauropod",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "sauropod",
+      "observePrompt": "找到化石和脚印。",
+      "evidenceCopy": "证据是留下来的线索，不是正在走动的恐龙。",
+      "markerChips": [
+        {
+          "label": "sauropod",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-triceratops",
+      "source": "clickTasks.dino-find-01.options.triceratops",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "triceratops",
+      "observePrompt": "找到化石和脚印。",
+      "evidenceCopy": "证据是留下来的线索，不是正在走动的恐龙。",
+      "markerChips": [
+        {
+          "label": "triceratops",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-pterosaur",
+      "source": "clickTasks.dino-find-01.options.pterosaur",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "pterosaur",
+      "observePrompt": "找到化石和脚印。",
+      "evidenceCopy": "证据是留下来的线索，不是正在走动的恐龙。",
+      "markerChips": [
+        {
+          "label": "pterosaur",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-choice-01-options-meat",
+      "source": "clickTasks.dino-choice-01.options.meat",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "可能适合吃肉",
+      "observePrompt": "选择最可能的解释。",
+      "evidenceCopy": "对！尖牙可能和捕食或吃肉有关。",
+      "markerChips": [
+        {
+          "label": "可能适合吃肉",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-choice-01-options-leaf",
+      "source": "clickTasks.dino-choice-01.options.leaf",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "一定只吃树叶",
+      "observePrompt": "选择最可能的解释。",
+      "evidenceCopy": "吃植物的牙通常不需要那么尖。",
+      "markerChips": [
+        {
+          "label": "一定只吃树叶",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-choice-01-options-toy",
+      "source": "clickTasks.dino-choice-01.options.toy",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "只是装饰",
+      "observePrompt": "选择最可能的解释。",
+      "evidenceCopy": "身体结构常常和生活方式有关。",
+      "markerChips": [
+        {
+          "label": "只是装饰",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-find-evidence",
+      "source": "clickTasks.dino-sequence-01.options.find-evidence",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "发现线索",
+      "observePrompt": "按顺序点出小侦探流程。",
+      "evidenceCopy": "当前步骤：发现线索。按顺序点出小侦探流程。",
+      "markerChips": [
+        {
+          "label": "发现线索",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-clean-carefully",
+      "source": "clickTasks.dino-sequence-01.options.clean-carefully",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "小心清理",
+      "observePrompt": "按顺序点出小侦探流程。",
+      "evidenceCopy": "当前步骤：小心清理。按顺序点出小侦探流程。",
+      "markerChips": [
+        {
+          "label": "小心清理",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-compare-shape",
+      "source": "clickTasks.dino-sequence-01.options.compare-shape",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "比较形状",
+      "observePrompt": "按顺序点出小侦探流程。",
+      "evidenceCopy": "当前步骤：比较形状。按顺序点出小侦探流程。",
+      "markerChips": [
+        {
+          "label": "比较形状",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-rebuild-story",
+      "source": "clickTasks.dino-sequence-01.options.rebuild-story",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "拼出故事",
+      "observePrompt": "按顺序点出小侦探流程。",
+      "evidenceCopy": "当前步骤：拼出故事。按顺序点出小侦探流程。",
+      "markerChips": [
+        {
+          "label": "拼出故事",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    }
   ]
 }

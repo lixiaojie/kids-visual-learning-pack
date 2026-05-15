@@ -450,5 +450,677 @@
     "不要要求孩子背“节肢动物”等术语，先掌握观察线索。",
     "可以追问：你是先看腿，还是先看翅膀？哪个线索更可靠？",
     "本页可以承接蜘蛛宇宙兴趣，也可以跳回动物分类生命树。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "life-insects-and-spiders-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "life-insects-and-spiders-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "life-insects-and-spiders-compare-insect-spider",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-insects",
+      "source": "classificationGroups.insects",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "昆虫",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "昆虫通常有 6 条腿，身体可以看成头、胸、腹几个部分。 这类里可以看到：蝴蝶、蜜蜂、瓢虫、蚂蚁、蜻蜓。",
+      "markerChips": [
+        {
+          "label": "蝴蝶",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蜜蜂",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "瓢虫",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蚂蚁",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-spiders",
+      "source": "classificationGroups.spiders",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蜘蛛",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "蜘蛛通常有 8 条腿，没有昆虫那样的触角。 这类里可以看到：结网蜘蛛、跳蛛。",
+      "markerChips": [
+        {
+          "label": "结网蜘蛛",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "跳蛛",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-otherArthropods",
+      "source": "classificationGroups.otherArthropods",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "其他多脚小动物",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "有些小动物腿很多，比如蜈蚣，它们也不是昆虫。 这类里可以看到：蜈蚣。",
+      "markerChips": [
+        {
+          "label": "蜈蚣",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-butterfly",
+      "source": "representativeObjects.butterfly",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蝴蝶",
+      "observePrompt": "翅膀、触角、6 条腿",
+      "evidenceCopy": "蝴蝶是昆虫，通常有 6 条腿和一对漂亮翅膀。",
+      "markerChips": [
+        {
+          "label": "蝴蝶",
+          "meaning": "只看翅膀，忘记数腿。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-bee",
+      "source": "representativeObjects.bee",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蜜蜂",
+      "observePrompt": "6 条腿、触角、翅膀",
+      "evidenceCopy": "蜜蜂是昆虫，会飞，也会帮花朵传粉。",
+      "markerChips": [
+        {
+          "label": "蜜蜂",
+          "meaning": "以为会飞就是鸟，或只把蝴蝶当昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ladybug",
+      "source": "representativeObjects.ladybug",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "瓢虫",
+      "observePrompt": "红色壳、黑点、6 条腿",
+      "evidenceCopy": "瓢虫是昆虫，圆圆的身体下面有 6 条腿。",
+      "markerChips": [
+        {
+          "label": "瓢虫",
+          "meaning": "身体圆就不像昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ant",
+      "source": "representativeObjects.ant",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蚂蚁",
+      "observePrompt": "触角、6 条腿、身体分段",
+      "evidenceCopy": "蚂蚁是昆虫，虽然大多数工蚁不会飞，但也有 6 条腿。",
+      "markerChips": [
+        {
+          "label": "蚂蚁",
+          "meaning": "不会飞就以为不是昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-dragonfly",
+      "source": "representativeObjects.dragonfly",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蜻蜓",
+      "observePrompt": "透明翅膀、长身体、6 条腿",
+      "evidenceCopy": "蜻蜓是昆虫，有细长身体、透明翅膀和 6 条腿。",
+      "markerChips": [
+        {
+          "label": "蜻蜓",
+          "meaning": "只注意翅膀，不观察腿。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-gardenSpider",
+      "source": "representativeObjects.gardenSpider",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "结网蜘蛛",
+      "observePrompt": "8 条腿、蛛网、没有触角",
+      "evidenceCopy": "蜘蛛会结网，通常有 8 条腿，它不是昆虫。",
+      "markerChips": [
+        {
+          "label": "结网蜘蛛",
+          "meaning": "看到小小的节肢动物就叫昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-jumpingSpider",
+      "source": "representativeObjects.jumpingSpider",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "跳蛛",
+      "observePrompt": "大眼睛、8 条腿、跳跃动作",
+      "evidenceCopy": "跳蛛也是蜘蛛，身体小，但也有 8 条腿。",
+      "markerChips": [
+        {
+          "label": "跳蛛",
+          "meaning": "看起来可爱小巧就当成昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-centipede",
+      "source": "representativeObjects.centipede",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蜈蚣",
+      "observePrompt": "长身体、很多腿",
+      "evidenceCopy": "蜈蚣有很多很多腿，它不是昆虫，也不是蜘蛛。",
+      "markerChips": [
+        {
+          "label": "蜈蚣",
+          "meaning": "腿多就以为是昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-count-legs",
+      "source": "mechanism.steps.count-legs",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "先数腿",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "6 条腿更像昆虫，8 条腿更像蜘蛛，很多腿就要再想想。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "先数腿",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-check-antennae",
+      "source": "mechanism.steps.check-antennae",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看触角",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "很多昆虫有触角，蜘蛛没有昆虫那样的触角。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "看触角",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-check-body",
+      "source": "mechanism.steps.check-body",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看身体分段",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "昆虫身体常分成头、胸、腹；蜘蛛身体看起来不一样。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "看身体分段",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-avoid-wing-rule",
+      "source": "mechanism.steps.avoid-wing-rule",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "不要只看翅膀",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "有翅膀的不一定都一样；不会飞的蚂蚁也是昆虫。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "不要只看翅膀",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-insect-vs-spider",
+      "source": "comparePairs.insect-vs-spider",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "昆虫 vs 蜘蛛",
+      "observePrompt": "对比 昆虫 和 蜘蛛 的图片线索。",
+      "evidenceCopy": "昆虫: 通常 6 条腿；常有触角；身体常分头、胸、腹。蜘蛛: 通常 8 条腿；没有昆虫那样的触角；不是昆虫。先数腿，是分清昆虫和蜘蛛的好办法。",
+      "markerChips": [
+        {
+          "label": "昆虫",
+          "meaning": "通常 6 条腿",
+          "emphasis": "primary"
+        },
+        {
+          "label": "蜘蛛",
+          "meaning": "通常 8 条腿",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-ant-vs-spider",
+      "source": "comparePairs.ant-vs-spider",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "蚂蚁 vs 蜘蛛",
+      "observePrompt": "对比 蚂蚁 和 蜘蛛 的图片线索。",
+      "evidenceCopy": "蚂蚁: 6 条腿；有触角；是昆虫。蜘蛛: 8 条腿；没有触角；不是昆虫。都很小，但腿数和触角不同。",
+      "markerChips": [
+        {
+          "label": "蚂蚁",
+          "meaning": "6 条腿",
+          "emphasis": "primary"
+        },
+        {
+          "label": "蜘蛛",
+          "meaning": "8 条腿",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-centipede-vs-insect",
+      "source": "comparePairs.centipede-vs-insect",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "蜈蚣 vs 昆虫",
+      "observePrompt": "对比 蜈蚣 和 昆虫 的图片线索。",
+      "evidenceCopy": "蜈蚣: 很多腿；长长的身体；不是昆虫。昆虫: 通常 6 条腿；常有触角；身体分段更清楚。腿很多的小动物，也不一定是昆虫。",
+      "markerChips": [
+        {
+          "label": "蜈蚣",
+          "meaning": "很多腿",
+          "emphasis": "primary"
+        },
+        {
+          "label": "昆虫",
+          "meaning": "通常 6 条腿",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-single-01-options-yes-insect",
+      "source": "clickTasks.insects-single-01.options.yes-insect",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "是昆虫，因为它很小",
+      "observePrompt": "点出更准确的说法。",
+      "evidenceCopy": "小不小不是分类线索。再数数蜘蛛有几条腿。",
+      "markerChips": [
+        {
+          "label": "是昆虫，因为它很小",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-single-01-options-no-spider",
+      "source": "clickTasks.insects-single-01.options.no-spider",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "不是昆虫，蜘蛛通常有 8 条腿",
+      "observePrompt": "点出更准确的说法。",
+      "evidenceCopy": "对！蜘蛛不是昆虫，数腿帮你找到了线索。",
+      "markerChips": [
+        {
+          "label": "不是昆虫，蜘蛛通常有 8 条腿",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-single-01-options-depends-fly",
+      "source": "clickTasks.insects-single-01.options.depends-fly",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "会飞才是昆虫",
+      "observePrompt": "点出更准确的说法。",
+      "evidenceCopy": "会不会飞不是唯一线索，蚂蚁不会飞也常常是昆虫。",
+      "markerChips": [
+        {
+          "label": "会飞才是昆虫",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-butterfly",
+      "source": "clickTasks.insects-find-01.options.butterfly",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "butterfly",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+      "markerChips": [
+        {
+          "label": "butterfly",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-bee",
+      "source": "clickTasks.insects-find-01.options.bee",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "bee",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+      "markerChips": [
+        {
+          "label": "bee",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-ladybug",
+      "source": "clickTasks.insects-find-01.options.ladybug",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "ladybug",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+      "markerChips": [
+        {
+          "label": "ladybug",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-ant",
+      "source": "clickTasks.insects-find-01.options.ant",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "ant",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+      "markerChips": [
+        {
+          "label": "ant",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-dragonfly",
+      "source": "clickTasks.insects-find-01.options.dragonfly",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "dragonfly",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+      "markerChips": [
+        {
+          "label": "dragonfly",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-gardenSpider",
+      "source": "clickTasks.insects-find-01.options.gardenSpider",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "gardenSpider",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "再数数腿。昆虫通常是 6 条腿。",
+      "markerChips": [
+        {
+          "label": "gardenSpider",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-find-01-options-centipede",
+      "source": "clickTasks.insects-find-01.options.centipede",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "centipede",
+      "observePrompt": "找一找：哪些是昆虫？",
+      "evidenceCopy": "再数数腿。昆虫通常是 6 条腿。",
+      "markerChips": [
+        {
+          "label": "centipede",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-single-02-options-too-many-legs",
+      "source": "clickTasks.insects-single-02.options.too-many-legs",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "它有很多腿，不是典型 6 条腿的昆虫",
+      "observePrompt": "选择一个最好的理由。",
+      "evidenceCopy": "很好！你没有被“很多腿的小动物”迷惑。",
+      "markerChips": [
+        {
+          "label": "它有很多腿，不是典型 6 条腿的昆虫",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-single-02-options-too-long",
+      "source": "clickTasks.insects-single-02.options.too-long",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "因为它身体太长",
+      "observePrompt": "选择一个最好的理由。",
+      "evidenceCopy": "身体长短不是最重要的分类线索。",
+      "markerChips": [
+        {
+          "label": "因为它身体太长",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-single-02-options-not-flying",
+      "source": "clickTasks.insects-single-02.options.not-flying",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "因为它不会飞",
+      "observePrompt": "选择一个最好的理由。",
+      "evidenceCopy": "不会飞也可能是昆虫，比如蚂蚁。",
+      "markerChips": [
+        {
+          "label": "因为它不会飞",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-sequence-01-options-count",
+      "source": "clickTasks.insects-sequence-01.options.count",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "数腿",
+      "observePrompt": "按顺序点三个观察动作。",
+      "evidenceCopy": "当前步骤：数腿。按顺序点三个观察动作。",
+      "markerChips": [
+        {
+          "label": "数腿",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-sequence-01-options-antennae",
+      "source": "clickTasks.insects-sequence-01.options.antennae",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看触角",
+      "observePrompt": "按顺序点三个观察动作。",
+      "evidenceCopy": "当前步骤：看触角。按顺序点三个观察动作。",
+      "markerChips": [
+        {
+          "label": "看触角",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-insects-sequence-01-options-body",
+      "source": "clickTasks.insects-sequence-01.options.body",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看身体分段",
+      "observePrompt": "按顺序点三个观察动作。",
+      "evidenceCopy": "当前步骤：看身体分段。按顺序点三个观察动作。",
+      "markerChips": [
+        {
+          "label": "看身体分段",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    }
   ]
 }

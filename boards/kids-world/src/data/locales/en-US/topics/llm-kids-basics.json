@@ -324,5 +324,662 @@
     "The child can explain that AI answers from learned patterns.",
     "The child understands that important answers need checking.",
     "The child can improve a vague question into a clearer one."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-input",
+      "source": "classificationGroups.input",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Input",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Your question, story, or request is the input. You can spot: Question card, Story card.",
+      "markerChips": [
+        {
+          "label": "Question card",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Story card",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-patterns",
+      "source": "classificationGroups.patterns",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Language patterns",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "AI learns how words and sentences often go together from lots of text. You can spot: Word network, Pattern gears.",
+      "markerChips": [
+        {
+          "label": "Word network",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Pattern gears",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-context",
+      "source": "classificationGroups.context",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Context",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "What you said earlier can affect what AI says next. You can spot: Chat bubbles.",
+      "markerChips": [
+        {
+          "label": "Chat bubbles",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-output",
+      "source": "classificationGroups.output",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Output",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "AI puts words together step by step into an answer. You can spot: Answer bubble.",
+      "markerChips": [
+        {
+          "label": "Answer bubble",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-check",
+      "source": "classificationGroups.check",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Check",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Important questions should be checked with adults or reliable sources. You can spot: Check badge.",
+      "markerChips": [
+        {
+          "label": "Check badge",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-questionCard",
+      "source": "representativeObjects.questionCard",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Question card",
+      "observePrompt": "a card with a question mark",
+      "evidenceCopy": "The clearer your question is, the easier it is for AI to help.",
+      "markerChips": [
+        {
+          "label": "Question card",
+          "meaning": "Thinking a very short question always works well.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-storyCard",
+      "source": "representativeObjects.storyCard",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Story card",
+      "observePrompt": "book page and small stars",
+      "evidenceCopy": "You can give AI a story and ask it to continue or organize it.",
+      "markerChips": [
+        {
+          "label": "Story card",
+          "meaning": "Thinking AI knows background you did not tell it.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-wordNetwork",
+      "source": "representativeObjects.wordNetwork",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Word network",
+      "observePrompt": "glowing nodes and lines",
+      "evidenceCopy": "Words have relationships. AI learns many of these relationships.",
+      "markerChips": [
+        {
+          "label": "Word network",
+          "meaning": "Thinking the network is a real human brain.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-patternGears",
+      "source": "representativeObjects.patternGears",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Pattern gears",
+      "observePrompt": "soft gears and word pieces",
+      "evidenceCopy": "Patterns help turn input into a possible answer.",
+      "markerChips": [
+        {
+          "label": "Pattern gears",
+          "meaning": "Thinking patterns are the same as facts.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-chatBubbles",
+      "source": "representativeObjects.chatBubbles",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Chat bubbles",
+      "observePrompt": "connected speech bubbles",
+      "evidenceCopy": "The same sentence can mean different things in different conversations.",
+      "markerChips": [
+        {
+          "label": "Chat bubbles",
+          "meaning": "Only looking at the last sentence.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-answerBubble",
+      "source": "representativeObjects.answerBubble",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Answer bubble",
+      "observePrompt": "glowing answer box",
+      "evidenceCopy": "AI organizes its answer into sentences for you.",
+      "markerChips": [
+        {
+          "label": "Answer bubble",
+          "meaning": "Thinking smooth sentences must be true.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-checkBadge",
+      "source": "representativeObjects.checkBadge",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Check badge",
+      "observePrompt": "check mark and small magnifier",
+      "evidenceCopy": "Important answers need checking.",
+      "markerChips": [
+        {
+          "label": "Check badge",
+          "meaning": "Thinking confident words mean correct facts.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-read-many",
+      "source": "mechanism.steps.read-many",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Reads lots of text",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "It has learned from many sentences, stories, and question-answer examples.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Reads lots of text",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-learn-patterns",
+      "source": "mechanism.steps.learn-patterns",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Learns language patterns",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "It learns which words often go together and what a complete answer may look like.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Learns language patterns",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-read-prompt",
+      "source": "mechanism.steps.read-prompt",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Reads your prompt",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "The clearer you are, the easier it is for AI to answer in the right direction.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Reads your prompt",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-generate-answer",
+      "source": "mechanism.steps.generate-answer",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Builds the answer step by step",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "It works like a word-chain game, adding words into an answer.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Builds the answer step by step",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-check-important",
+      "source": "mechanism.steps.check-important",
+      "visualSlotId": "four-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Checks important things",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "AI can be wrong. Important questions need an adult or reliable source.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Checks important things",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-ai-vs-search",
+      "source": "comparePairs.ai-vs-search",
+      "visualSlotId": "vs-search",
+      "interactionScope": "local",
+      "evidenceTitle": "Large language model vs Search",
+      "observePrompt": "Compare visual clues for Large language model and Search.",
+      "evidenceCopy": "Large language model: organizes answers from learned language patterns; can rewrite, summarize, and continue writing; may be wrong. Search: helps find webpages and sources; you still judge the source; may find unsuitable information. AI and search can both help, but we need to check important things.",
+      "markerChips": [
+        {
+          "label": "Large language model",
+          "meaning": "organizes answers from learned language patterns",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Search",
+          "meaning": "helps find webpages and sources",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-clear-vs-vague-prompt",
+      "source": "comparePairs.clear-vs-vague-prompt",
+      "visualSlotId": "vs-search",
+      "interactionScope": "local",
+      "evidenceTitle": "Clear question vs Vague question",
+      "observePrompt": "Compare visual clues for Clear question and Vague question.",
+      "evidenceCopy": "Clear question: says the topic; says the number or scope; says the format wanted. Vague question: only says ‘tell me about’; no range; easy to go off track. Clearer questions make answers more useful.",
+      "markerChips": [
+        {
+          "label": "Clear question",
+          "meaning": "says the topic",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Vague question",
+          "meaning": "only says ‘tell me about’",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-fluent-vs-correct",
+      "source": "comparePairs.fluent-vs-correct",
+      "visualSlotId": "vs-search",
+      "interactionScope": "local",
+      "evidenceTitle": "Smooth answer vs Correct answer",
+      "observePrompt": "Compare visual clues for Smooth answer and Correct answer.",
+      "evidenceCopy": "Smooth answer: sounds nice; looks complete; may not be true. Correct answer: can be checked; matches reliable sources; survives follow-up questions. A smooth AI answer still needs checking if it is important.",
+      "markerChips": [
+        {
+          "label": "Smooth answer",
+          "meaning": "sounds nice",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Correct answer",
+          "meaning": "can be checked",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-01-options-vague",
+      "source": "clickTasks.llm-single-01.options.vague",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Tell me about animals",
+      "observePrompt": "A clear question helps AI answer better.",
+      "evidenceCopy": "This question is too broad. Try saying what kind of answer you want.",
+      "markerChips": [
+        {
+          "label": "Tell me about animals",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-01-options-clear",
+      "source": "clickTasks.llm-single-01.options.clear",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Tell me three forest animals and how they protect themselves",
+      "observePrompt": "A clear question helps AI answer better.",
+      "evidenceCopy": "Right! A clear question gives AI a better direction.",
+      "markerChips": [
+        {
+          "label": "Tell me three forest animals and how they protect themselves",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-02-options-always-true",
+      "source": "clickTasks.llm-single-02.options.always-true",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Yes, AI is always right",
+      "observePrompt": "Choose the safest answer.",
+      "evidenceCopy": "AI can make mistakes. Important things need checking.",
+      "markerChips": [
+        {
+          "label": "Yes, AI is always right",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-02-options-check-important",
+      "source": "clickTasks.llm-single-02.options.check-important",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Important things should be checked again",
+      "observePrompt": "Choose the safest answer.",
+      "evidenceCopy": "Good judgment! AI can help, and important answers should be checked.",
+      "markerChips": [
+        {
+          "label": "Important things should be checked again",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-single-02-options-never-use",
+      "source": "clickTasks.llm-single-02.options.never-use",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "No, so we should never use AI",
+      "observePrompt": "Choose the safest answer.",
+      "evidenceCopy": "AI can help, but we need to use it carefully.",
+      "markerChips": [
+        {
+          "label": "No, so we should never use AI",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-healthQuestion",
+      "source": "clickTasks.llm-find-01.options.healthQuestion",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "healthQuestion",
+      "observePrompt": "Find: which things need checking again?",
+      "evidenceCopy": "You found the careful-use cases. Important facts need checking.",
+      "markerChips": [
+        {
+          "label": "healthQuestion",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-moneyQuestion",
+      "source": "clickTasks.llm-find-01.options.moneyQuestion",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "moneyQuestion",
+      "observePrompt": "Find: which things need checking again?",
+      "evidenceCopy": "You found the careful-use cases. Important facts need checking.",
+      "markerChips": [
+        {
+          "label": "moneyQuestion",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-schoolFact",
+      "source": "clickTasks.llm-find-01.options.schoolFact",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "schoolFact",
+      "observePrompt": "Find: which things need checking again?",
+      "evidenceCopy": "You found the careful-use cases. Important facts need checking.",
+      "markerChips": [
+        {
+          "label": "schoolFact",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-storyIdea",
+      "source": "clickTasks.llm-find-01.options.storyIdea",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "storyIdea",
+      "observePrompt": "Find: which things need checking again?",
+      "evidenceCopy": "Think about health, money, and school facts: these should be checked.",
+      "markerChips": [
+        {
+          "label": "storyIdea",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-nameRobot",
+      "source": "clickTasks.llm-find-01.options.nameRobot",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "nameRobot",
+      "observePrompt": "Find: which things need checking again?",
+      "evidenceCopy": "Think about health, money, and school facts: these should be checked.",
+      "markerChips": [
+        {
+          "label": "nameRobot",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-find-01-options-makeRiddle",
+      "source": "clickTasks.llm-find-01.options.makeRiddle",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "makeRiddle",
+      "observePrompt": "Find: which things need checking again?",
+      "evidenceCopy": "Think about health, money, and school facts: these should be checked.",
+      "markerChips": [
+        {
+          "label": "makeRiddle",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-learn",
+      "source": "clickTasks.llm-sequence-01.options.learn",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Learn from lots of text",
+      "observePrompt": "Tap the steps in order.",
+      "evidenceCopy": "Current step: Learn from lots of text. Tap the steps in order.",
+      "markerChips": [
+        {
+          "label": "Learn from lots of text",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-prompt",
+      "source": "clickTasks.llm-sequence-01.options.prompt",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Read your prompt",
+      "observePrompt": "Tap the steps in order.",
+      "evidenceCopy": "Current step: Read your prompt. Tap the steps in order.",
+      "markerChips": [
+        {
+          "label": "Read your prompt",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-answer",
+      "source": "clickTasks.llm-sequence-01.options.answer",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Build an answer step by step",
+      "observePrompt": "Tap the steps in order.",
+      "evidenceCopy": "Current step: Build an answer step by step. Tap the steps in order.",
+      "markerChips": [
+        {
+          "label": "Build an answer step by step",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-llm-sequence-01-options-check",
+      "source": "clickTasks.llm-sequence-01.options.check",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Check important parts",
+      "observePrompt": "Tap the steps in order.",
+      "evidenceCopy": "Current step: Check important parts. Tap the steps in order.",
+      "markerChips": [
+        {
+          "label": "Check important parts",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    }
   ]
 }

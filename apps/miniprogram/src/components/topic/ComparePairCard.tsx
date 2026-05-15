@@ -1,5 +1,6 @@
 import { Text, View } from "@tarojs/components";
-import type { Topic } from "@yutou/kids-content";
+import type { Locale, Topic, VisualEvidenceState, VisualSlot } from "@yutou/kids-content";
+import { TopicVisual } from "./TopicVisual";
 import "./ComparePairCard.scss";
 
 type ComparePair = Topic["comparePairs"][number];
@@ -19,9 +20,24 @@ function CompareSide({ name, points }: ComparePair["a"]) {
   );
 }
 
-export function ComparePairCard({ pair }: { pair: ComparePair }) {
+export function ComparePairCard({
+  pair,
+  visualSlot,
+  evidence,
+  active,
+  onSelect,
+  locale = "zh-CN",
+}: {
+  pair: ComparePair;
+  visualSlot?: VisualSlot | null;
+  evidence?: VisualEvidenceState | null;
+  active?: boolean;
+  onSelect?: () => void;
+  locale?: Locale;
+}) {
   return (
-    <View className="compare-pair-card">
+    <View className={`compare-pair-card ${active ? "active" : ""}`} onClick={onSelect} data-evidence-source={`comparePairs.${pair.id}`}>
+      <TopicVisual slot={visualSlot} evidence={evidence} fallbackAlt={pair.title} locale={locale} />
       <Text className="compare-pair-title">{pair.title}</Text>
       <View className="compare-sides">
         <CompareSide name={pair.a.name} points={pair.a.points} />

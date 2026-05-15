@@ -478,5 +478,693 @@
     "可以用洗澡后的镜子、水杯外的小水珠、锅盖上的水珠帮助孩子理解状态变化。",
     "不要强迫孩子记“蒸发、凝结、降水”术语，先让他能讲完整故事。",
     "可以让孩子画一条箭头，把太阳、海、云、雨、河连起来。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "earth-water-cycle-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "earth-water-cycle-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "mechanism",
+      "assetId": "earth-water-cycle-mechanism",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "earth-water-cycle-compare",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    },
+    {
+      "id": "click-task",
+      "assetId": "earth-water-cycle-click-task",
+      "target": "clickTasks",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "parent-guide",
+      "assetId": "earth-water-cycle-parent-guide",
+      "target": "parentTips",
+      "role": "summary",
+      "required": false
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-water-places",
+      "source": "classificationGroups.water-places",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "水待过的地方",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "水可以在大海、河流、土壤和植物里。 这类里可以看到：大海、植物。",
+      "markerChips": [
+        {
+          "label": "大海",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "植物",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-sky-process",
+      "source": "classificationGroups.sky-process",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "天空里的变化",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "水汽会升到天空，聚成云，再变成雨。 这类里可以看到：水汽、云、雨。",
+      "markerChips": [
+        {
+          "label": "水汽",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "云",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "雨",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-energy-driver",
+      "source": "classificationGroups.energy-driver",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "推动旅行的力量",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "太阳给水加一点热，让水可以变成水汽往上跑。 这类里可以看到：太阳。",
+      "markerChips": [
+        {
+          "label": "太阳",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-return-path",
+      "source": "classificationGroups.return-path",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "回到地面的路",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "雨落下来以后，会流进小溪、河流和大海。 这类里可以看到：河流。",
+      "markerChips": [
+        {
+          "label": "河流",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "太阳",
+      "observePrompt": "明亮的圆太阳",
+      "evidenceCopy": "太阳把地面和海面的水晒暖，让一部分水变成水汽。",
+      "markerChips": [
+        {
+          "label": "太阳",
+          "meaning": "以为水循环不需要太阳。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ocean",
+      "source": "representativeObjects.ocean",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "大海",
+      "observePrompt": "一大片蓝色水面",
+      "evidenceCopy": "大海里有很多水，是水循环的重要出发点。",
+      "markerChips": [
+        {
+          "label": "大海",
+          "meaning": "以为海水不会参与下雨。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-water-vapor",
+      "source": "representativeObjects.water-vapor",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "水汽",
+      "observePrompt": "往上飘的透明小线条",
+      "evidenceCopy": "水汽很轻，常常看不见，会往天空跑。",
+      "markerChips": [
+        {
+          "label": "水汽",
+          "meaning": "看不见就以为不存在。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cloud",
+      "source": "representativeObjects.cloud",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "云",
+      "observePrompt": "白白软软但里面有小水滴",
+      "evidenceCopy": "云里有很多小水滴或小冰晶。",
+      "markerChips": [
+        {
+          "label": "云",
+          "meaning": "以为云是棉花。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-rain",
+      "source": "representativeObjects.rain",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "雨",
+      "observePrompt": "从云下落的小水滴",
+      "evidenceCopy": "小水滴变大变重，就会从云里落下来。",
+      "markerChips": [
+        {
+          "label": "雨",
+          "meaning": "以为雨是云直接碎掉。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-river",
+      "source": "representativeObjects.river",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "河流",
+      "observePrompt": "弯弯的蓝色水带",
+      "evidenceCopy": "雨水会汇成小溪和河流，继续流动。",
+      "markerChips": [
+        {
+          "label": "河流",
+          "meaning": "以为河流的水不会回到大海。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-plant",
+      "source": "representativeObjects.plant",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "植物",
+      "observePrompt": "带根的小绿苗",
+      "evidenceCopy": "植物会吸收水，也会把一部分水送回空气里。",
+      "markerChips": [
+        {
+          "label": "植物",
+          "meaning": "以为植物只喝水，不会影响空气里的水。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-evaporation",
+      "source": "mechanism.steps.evaporation",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "被太阳晒暖",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "海面和地面的水被太阳晒暖，一部分变成水汽。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "被太阳晒暖",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-rising",
+      "source": "mechanism.steps.rising",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "水汽往上跑",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "轻轻的水汽升到天空，和空气一起移动。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "水汽往上跑",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-condensation",
+      "source": "mechanism.steps.condensation",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "聚成云",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "水汽遇到冷一点的空气，会聚成很多小水滴，形成云。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "聚成云",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-precipitation",
+      "source": "mechanism.steps.precipitation",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "变成雨落下",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "小水滴变大变重，就会变成雨落回地面。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "变成雨落下",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-collection",
+      "source": "mechanism.steps.collection",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "流回大海",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "雨水进入土壤、小溪、河流，最后很多水又回到大海。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "流回大海",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-plant-drink",
+      "source": "secondaryMechanism.steps.plant-drink",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "根吸水",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "植物的根会从土壤里吸水。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "根吸水",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-plant-release",
+      "source": "secondaryMechanism.steps.plant-release",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "叶子送水汽",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "叶子会把一些水变成水汽送回空气。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "叶子送水汽",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-plant-cool",
+      "source": "secondaryMechanism.steps.plant-cool",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "让环境更舒服",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "植物多的地方，空气常常更湿润、更凉快。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "让环境更舒服",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-cloud-vs-cotton",
+      "source": "comparePairs.cloud-vs-cotton",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "云 vs 棉花",
+      "observePrompt": "对比 云 和 棉花 的图片线索。",
+      "evidenceCopy": "云: 由许多小水滴或小冰晶组成；会移动和变化；可能带来雨雪。棉花: 是一种植物纤维；可以拿在手里；不会变成雨。云看起来软软的，但不是棉花。",
+      "markerChips": [
+        {
+          "label": "云",
+          "meaning": "由许多小水滴或小冰晶组成",
+          "emphasis": "primary"
+        },
+        {
+          "label": "棉花",
+          "meaning": "是一种植物纤维",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-evaporation-vs-boiling",
+      "source": "comparePairs.evaporation-vs-boiling",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "蒸发 vs 烧开",
+      "observePrompt": "对比 蒸发 和 烧开 的图片线索。",
+      "evidenceCopy": "蒸发: 水慢慢变成水汽；可以在海面和地面发生；不一定冒大泡泡。烧开: 水被加热到很热；会冒泡泡；通常发生在锅里。海水不需要烧开，也能慢慢变成水汽。",
+      "markerChips": [
+        {
+          "label": "蒸发",
+          "meaning": "水慢慢变成水汽",
+          "emphasis": "primary"
+        },
+        {
+          "label": "烧开",
+          "meaning": "水被加热到很热",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-river-vs-ocean",
+      "source": "comparePairs.river-vs-ocean",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "河流 vs 大海",
+      "observePrompt": "对比 河流 和 大海 的图片线索。",
+      "evidenceCopy": "河流: 在陆地上流动；常常从高处流向低处；会把水带向湖泊或大海。大海: 非常大；是很多水聚集的地方；会被太阳晒出水汽。河流和大海连接在同一个循环里。",
+      "markerChips": [
+        {
+          "label": "河流",
+          "meaning": "在陆地上流动",
+          "emphasis": "primary"
+        },
+        {
+          "label": "大海",
+          "meaning": "非常大",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-ocean",
+      "source": "clickTasks.water-sequence-01.options.ocean",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "大海",
+      "observePrompt": "从海面开始，点出水循环路线。",
+      "evidenceCopy": "当前步骤：大海。从海面开始，点出水循环路线。",
+      "markerChips": [
+        {
+          "label": "大海",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-water-vapor",
+      "source": "clickTasks.water-sequence-01.options.water-vapor",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "水汽",
+      "observePrompt": "从海面开始，点出水循环路线。",
+      "evidenceCopy": "当前步骤：水汽。从海面开始，点出水循环路线。",
+      "markerChips": [
+        {
+          "label": "水汽",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-cloud",
+      "source": "clickTasks.water-sequence-01.options.cloud",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "云",
+      "observePrompt": "从海面开始，点出水循环路线。",
+      "evidenceCopy": "当前步骤：云。从海面开始，点出水循环路线。",
+      "markerChips": [
+        {
+          "label": "云",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-rain",
+      "source": "clickTasks.water-sequence-01.options.rain",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "雨",
+      "observePrompt": "从海面开始，点出水循环路线。",
+      "evidenceCopy": "当前步骤：雨。从海面开始，点出水循环路线。",
+      "markerChips": [
+        {
+          "label": "雨",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-river",
+      "source": "clickTasks.water-sequence-01.options.river",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "河流",
+      "observePrompt": "从海面开始，点出水循环路线。",
+      "evidenceCopy": "当前步骤：河流。从海面开始，点出水循环路线。",
+      "markerChips": [
+        {
+          "label": "河流",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-sun",
+      "source": "clickTasks.water-find-01.options.sun",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "sun",
+      "observePrompt": "找到推动水循环的重要能量来源。",
+      "evidenceCopy": "对！太阳给水循环提供能量。",
+      "markerChips": [
+        {
+          "label": "sun",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-cloud",
+      "source": "clickTasks.water-find-01.options.cloud",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "cloud",
+      "observePrompt": "找到推动水循环的重要能量来源。",
+      "evidenceCopy": "它又亮又暖，会把水晒成水汽。",
+      "markerChips": [
+        {
+          "label": "cloud",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-river",
+      "source": "clickTasks.water-find-01.options.river",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "river",
+      "observePrompt": "找到推动水循环的重要能量来源。",
+      "evidenceCopy": "它又亮又暖，会把水晒成水汽。",
+      "markerChips": [
+        {
+          "label": "river",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-plant",
+      "source": "clickTasks.water-find-01.options.plant",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "plant",
+      "observePrompt": "找到推动水循环的重要能量来源。",
+      "evidenceCopy": "它又亮又暖，会把水晒成水汽。",
+      "markerChips": [
+        {
+          "label": "plant",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-choice-01-options-tiny-water",
+      "source": "clickTasks.water-choice-01.options.tiny-water",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "很多小水滴或小冰晶",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "对！云里有很多小水滴或小冰晶。",
+      "markerChips": [
+        {
+          "label": "很多小水滴或小冰晶",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-choice-01-options-cotton",
+      "source": "clickTasks.water-choice-01.options.cotton",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "棉花",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "云看起来像棉花，但不是棉花。",
+      "markerChips": [
+        {
+          "label": "棉花",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-choice-01-options-smoke",
+      "source": "clickTasks.water-choice-01.options.smoke",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "烟",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "云不是烟，而是和水有关。",
+      "markerChips": [
+        {
+          "label": "烟",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

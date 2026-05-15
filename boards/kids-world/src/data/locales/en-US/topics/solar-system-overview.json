@@ -178,6 +178,12 @@
         "shortTitle": "Small rocks also travel",
         "childExplanation": "Many small rocky objects travel between Mars and Jupiter.",
         "parentNote": "This introduces non-planet Solar System members."
+      },
+      {
+        "id": "outer-planets",
+        "shortTitle": "Outer giant planets",
+        "childExplanation": "Jupiter, Saturn, Uranus, and Neptune travel farther from the Sun.",
+        "parentNote": "Children do not need exact distances yet."
       }
     ]
   },
@@ -324,5 +330,718 @@
     "The child knows the Sun is the central star.",
     "The child can identify Earth, Jupiter, Saturn, and the asteroid belt.",
     "The child can place the asteroid belt between Mars and Jupiter."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-star",
+      "source": "classificationGroups.star",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Star",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The Sun is a star. It makes its own light and heat. You can spot: Sun.",
+      "markerChips": [
+        {
+          "label": "Sun",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-rocky-planets",
+      "source": "classificationGroups.rocky-planets",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Rocky planets",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "These planets are closer to the Sun and have solid rocky surfaces. You can spot: Mercury, Venus, Earth, Mars.",
+      "markerChips": [
+        {
+          "label": "Mercury",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Venus",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Earth",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Mars",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-gas-ice-giants",
+      "source": "classificationGroups.gas-ice-giants",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Giant planets",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "These planets are much bigger and farther from the Sun. You can spot: Jupiter, Saturn, Uranus, Neptune.",
+      "markerChips": [
+        {
+          "label": "Jupiter",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Saturn",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Uranus",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Neptune",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-small-bodies",
+      "source": "classificationGroups.small-bodies",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Asteroid belt",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "A wide area with many small rocky objects between Mars and Jupiter. You can spot: Asteroid belt.",
+      "markerChips": [
+        {
+          "label": "Asteroid belt",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Sun",
+      "observePrompt": "large bright center",
+      "evidenceCopy": "The Sun gives light and heat. Planets go around it.",
+      "markerChips": [
+        {
+          "label": "Sun",
+          "meaning": "Calling the Sun a planet.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mercury",
+      "source": "representativeObjects.mercury",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Mercury",
+      "observePrompt": "small gray planet near the Sun",
+      "evidenceCopy": "Mercury is the closest planet to the Sun.",
+      "markerChips": [
+        {
+          "label": "Mercury",
+          "meaning": "Thinking closest means biggest.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-venus",
+      "source": "representativeObjects.venus",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Venus",
+      "observePrompt": "yellow cloudy planet",
+      "evidenceCopy": "Venus is a rocky planet with thick clouds.",
+      "markerChips": [
+        {
+          "label": "Venus",
+          "meaning": "Thinking it is just like Earth because it is nearby.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-earth",
+      "source": "representativeObjects.earth",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Earth",
+      "observePrompt": "blue and green planet",
+      "evidenceCopy": "Earth is our home planet.",
+      "markerChips": [
+        {
+          "label": "Earth",
+          "meaning": "Thinking Earth is the center of everything.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mars",
+      "source": "representativeObjects.mars",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Mars",
+      "observePrompt": "red planet",
+      "evidenceCopy": "Mars is a rocky planet often shown as red.",
+      "markerChips": [
+        {
+          "label": "Mars",
+          "meaning": "Thinking Mars is always burning hot because it is red.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-asteroid-belt",
+      "source": "representativeObjects.asteroid-belt",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Asteroid belt",
+      "observePrompt": "small dots between Mars and Jupiter",
+      "evidenceCopy": "Many small rocky objects move in this region.",
+      "markerChips": [
+        {
+          "label": "Asteroid belt",
+          "meaning": "Thinking it is a solid ring.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-jupiter",
+      "source": "representativeObjects.jupiter",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Jupiter",
+      "observePrompt": "very large striped planet",
+      "evidenceCopy": "Jupiter is the biggest planet in the Solar System.",
+      "markerChips": [
+        {
+          "label": "Jupiter",
+          "meaning": "Thinking bigger means closer to the Sun.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-saturn",
+      "source": "representativeObjects.saturn",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Saturn",
+      "observePrompt": "rings around planet",
+      "evidenceCopy": "Saturn is famous for its beautiful rings.",
+      "markerChips": [
+        {
+          "label": "Saturn",
+          "meaning": "Thinking Saturn is the only planet with rings.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-uranus",
+      "source": "representativeObjects.uranus",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Uranus",
+      "observePrompt": "pale blue-green planet",
+      "evidenceCopy": "Uranus is a faraway giant planet with a blue-green color.",
+      "markerChips": [
+        {
+          "label": "Uranus",
+          "meaning": "Thinking far planets are small because they look small.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-neptune",
+      "source": "representativeObjects.neptune",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Neptune",
+      "observePrompt": "dark blue planet",
+      "evidenceCopy": "Neptune is a far, deep-blue giant planet.",
+      "markerChips": [
+        {
+          "label": "Neptune",
+          "meaning": "Thinking it is next to Earth because it appears on the same chart.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-center-sun",
+      "source": "mechanism.steps.center-sun",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "The Sun is the center",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "The Sun is the big bright star at the center of the Solar System.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "The Sun is the center",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-orbits",
+      "source": "mechanism.steps.orbits",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Planets follow orbits",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "Each planet travels around the Sun on its own path.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Planets follow orbits",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-inner-planets",
+      "source": "mechanism.steps.inner-planets",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Near and far order",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "Some planets are closer to the Sun, and some are farther away.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Near and far order",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-asteroid-belt",
+      "source": "mechanism.steps.asteroid-belt",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Small rocks also travel",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "Many small rocky objects travel between Mars and Jupiter.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Small rocks also travel",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-outer-planets",
+      "source": "mechanism.steps.outer-planets",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Outer giant planets",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "Jupiter, Saturn, Uranus, and Neptune travel farther from the Sun.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Outer giant planets",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-star-vs-planet",
+      "source": "comparePairs.star-vs-planet",
+      "visualSlotId": "star-vs-planet",
+      "interactionScope": "local",
+      "evidenceTitle": "Star vs Planet",
+      "observePrompt": "Compare visual clues for Star and Planet.",
+      "evidenceCopy": "Star: makes its own light; gives heat; the Sun is a star. Planet: goes around a star; does not make sunlight like the Sun; Earth is a planet. The Sun is a star. Earth is a planet.",
+      "markerChips": [
+        {
+          "label": "Star",
+          "meaning": "makes its own light",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Planet",
+          "meaning": "goes around a star",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-earth-vs-jupiter",
+      "source": "comparePairs.earth-vs-jupiter",
+      "visualSlotId": "star-vs-planet",
+      "interactionScope": "local",
+      "evidenceTitle": "Earth vs Jupiter",
+      "observePrompt": "Compare visual clues for Earth and Jupiter.",
+      "evidenceCopy": "Earth: rocky planet; our home; smaller. Jupiter: giant planet; biggest planet; farther from the Sun. Planets can be very different from each other.",
+      "markerChips": [
+        {
+          "label": "Earth",
+          "meaning": "rocky planet",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Jupiter",
+          "meaning": "giant planet",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-mars-vs-asteroid-belt",
+      "source": "comparePairs.mars-vs-asteroid-belt",
+      "visualSlotId": "star-vs-planet",
+      "interactionScope": "local",
+      "evidenceTitle": "Mars vs Asteroid Belt",
+      "observePrompt": "Compare visual clues for Mars and Asteroid belt.",
+      "evidenceCopy": "Mars: one planet; rocky; has its own orbit. Asteroid belt: many small objects; between Mars and Jupiter; not one planet. The Solar System has planets and many smaller objects too.",
+      "markerChips": [
+        {
+          "label": "Mars",
+          "meaning": "one planet",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Asteroid belt",
+          "meaning": "many small objects",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-mercury",
+      "source": "clickTasks.solar-sequence-01.options.mercury",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Mercury",
+      "observePrompt": "Tap the planets in order from near to far.",
+      "evidenceCopy": "Current step: Mercury. Tap the planets in order from near to far.",
+      "markerChips": [
+        {
+          "label": "Mercury",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-venus",
+      "source": "clickTasks.solar-sequence-01.options.venus",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Venus",
+      "observePrompt": "Tap the planets in order from near to far.",
+      "evidenceCopy": "Current step: Venus. Tap the planets in order from near to far.",
+      "markerChips": [
+        {
+          "label": "Venus",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-earth",
+      "source": "clickTasks.solar-sequence-01.options.earth",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Earth",
+      "observePrompt": "Tap the planets in order from near to far.",
+      "evidenceCopy": "Current step: Earth. Tap the planets in order from near to far.",
+      "markerChips": [
+        {
+          "label": "Earth",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-mars",
+      "source": "clickTasks.solar-sequence-01.options.mars",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "Mars",
+      "observePrompt": "Tap the planets in order from near to far.",
+      "evidenceCopy": "Current step: Mars. Tap the planets in order from near to far.",
+      "markerChips": [
+        {
+          "label": "Mars",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-jupiter",
+      "source": "clickTasks.solar-find-01.options.jupiter",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "jupiter",
+      "observePrompt": "Find: which is the largest planet?",
+      "evidenceCopy": "Correct! Jupiter is the largest planet in the solar system.",
+      "markerChips": [
+        {
+          "label": "jupiter",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-earth",
+      "source": "clickTasks.solar-find-01.options.earth",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "earth",
+      "observePrompt": "Find: which is the largest planet?",
+      "evidenceCopy": "Look for the giant planet with stripes.",
+      "markerChips": [
+        {
+          "label": "earth",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-saturn",
+      "source": "clickTasks.solar-find-01.options.saturn",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "saturn",
+      "observePrompt": "Find: which is the largest planet?",
+      "evidenceCopy": "Look for the giant planet with stripes.",
+      "markerChips": [
+        {
+          "label": "saturn",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-sun",
+      "source": "clickTasks.solar-find-01.options.sun",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "sun",
+      "observePrompt": "Find: which is the largest planet?",
+      "evidenceCopy": "Look for the giant planet with stripes.",
+      "markerChips": [
+        {
+          "label": "sun",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-asteroid-belt",
+      "source": "clickTasks.solar-find-02.options.asteroid-belt",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "asteroid belt",
+      "observePrompt": "Find: where is the asteroid belt?",
+      "evidenceCopy": "You found it! The asteroid belt is between Mars and Jupiter.",
+      "markerChips": [
+        {
+          "label": "asteroid belt",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-mars",
+      "source": "clickTasks.solar-find-02.options.mars",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "mars",
+      "observePrompt": "Find: where is the asteroid belt?",
+      "evidenceCopy": "Look between Mars and Jupiter.",
+      "markerChips": [
+        {
+          "label": "mars",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-jupiter",
+      "source": "clickTasks.solar-find-02.options.jupiter",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "jupiter",
+      "observePrompt": "Find: where is the asteroid belt?",
+      "evidenceCopy": "Look between Mars and Jupiter.",
+      "markerChips": [
+        {
+          "label": "jupiter",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-saturn",
+      "source": "clickTasks.solar-find-02.options.saturn",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "saturn",
+      "observePrompt": "Find: where is the asteroid belt?",
+      "evidenceCopy": "Look between Mars and Jupiter.",
+      "markerChips": [
+        {
+          "label": "saturn",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-choice-01-options-star",
+      "source": "clickTasks.solar-choice-01.options.star",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "A star",
+      "observePrompt": "Choose the most accurate answer.",
+      "evidenceCopy": "Right! The Sun is a star and sits at the center of the solar system.",
+      "markerChips": [
+        {
+          "label": "A star",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-choice-01-options-planet",
+      "source": "clickTasks.solar-choice-01.options.planet",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "A planet",
+      "observePrompt": "Choose the most accurate answer.",
+      "evidenceCopy": "Planets go around stars. The Sun is the star in the center.",
+      "markerChips": [
+        {
+          "label": "A planet",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-choice-01-options-asteroid",
+      "source": "clickTasks.solar-choice-01.options.asteroid",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "An asteroid",
+      "observePrompt": "Choose the most accurate answer.",
+      "evidenceCopy": "Asteroids are much smaller objects.",
+      "markerChips": [
+        {
+          "label": "An asteroid",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

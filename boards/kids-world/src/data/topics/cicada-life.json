@@ -552,5 +552,825 @@
     "可以结合真实观察，问孩子：它为什么要从土里出来？为什么要往树上爬？",
     "如果看到羽化过程，建议安静观察，不要触碰。",
     "可以用“住在哪里、怎么变化、有没有蛹”三个问题帮助孩子建立比较框架。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "life-cicada-life-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "observation",
+      "assetId": "life-cicada-life-nymph-closeup",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "lifecycle",
+      "assetId": "life-cicada-life-lifecycle",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "molting-steps",
+      "assetId": "life-cicada-life-molting-steps",
+      "target": "secondaryMechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "choice-place",
+      "assetId": "life-cicada-life-choice-place",
+      "target": "clickTasks.cicada-choice-01",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "spot-shell",
+      "assetId": "life-cicada-life-spot-shell",
+      "target": "clickTasks.cicada-identify-01",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "compare-butterfly",
+      "assetId": "life-cicada-life-compare-butterfly",
+      "target": "comparePairs.cicada-vs-butterfly",
+      "role": "compare",
+      "required": true
+    },
+    {
+      "id": "task-board",
+      "assetId": "life-cicada-life-task-board",
+      "target": "clickTasks",
+      "role": "task",
+      "required": false
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-insect-basic",
+      "source": "classificationGroups.insect-basic",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "它属于昆虫",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "蝉是昆虫。小时候的蝉叫若虫，长大后会变成有翅膀的成虫。 这类里可以看到：出土若虫、成熟成虫。",
+      "markerChips": [
+        {
+          "label": "出土若虫",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "成熟成虫",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-life-cycle",
+      "source": "classificationGroups.life-cycle",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "一生会分阶段",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "蝉从卵开始，若虫在地下长大，最后羽化成成虫。 这类里可以看到：树枝里的蝉卵、地下若虫。",
+      "markerChips": [
+        {
+          "label": "树枝里的蝉卵",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "地下若虫",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-metamorphosis-type",
+      "source": "classificationGroups.metamorphosis-type",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "没有蛹的变化",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "蝉没有蝴蝶那样的蛹，它从若虫慢慢长大，最后蜕皮羽化。 这类里可以看到：树干、蝉蜕、刚羽化的蝉、蝴蝶的蛹。",
+      "markerChips": [
+        {
+          "label": "树干",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蝉蜕",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "刚羽化的蝉",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蝴蝶的蛹",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cicadaEggs",
+      "source": "representativeObjects.cicadaEggs",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "树枝里的蝉卵",
+      "observePrompt": "小树枝、细小卵粒、起点",
+      "evidenceCopy": "蝉妈妈会把卵产在小树枝里，新的生命从这里开始。",
+      "markerChips": [
+        {
+          "label": "树枝里的蝉卵",
+          "meaning": "以为昆虫卵都在叶子表面。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-undergroundNymph",
+      "source": "representativeObjects.undergroundNymph",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "地下若虫",
+      "observePrompt": "土壤、根、没有翅膀",
+      "evidenceCopy": "小若虫会钻进土里，靠近植物根部慢慢长大。",
+      "markerChips": [
+        {
+          "label": "地下若虫",
+          "meaning": "以为蝉小时候一直在树上。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-emergingNymph",
+      "source": "representativeObjects.emergingNymph",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "出土若虫",
+      "observePrompt": "出土洞、粗壮前足、朝树干爬",
+      "evidenceCopy": "成熟若虫会从土里爬出来，寻找树干或稳稳的地方。",
+      "markerChips": [
+        {
+          "label": "出土若虫",
+          "meaning": "以为它是在迷路。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-treeTrunk",
+      "source": "representativeObjects.treeTrunk",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "树干",
+      "observePrompt": "粗糙树皮、垂直表面、支撑点",
+      "evidenceCopy": "树干能让若虫抓牢身体，帮助它完成最后一次蜕皮。",
+      "markerChips": [
+        {
+          "label": "树干",
+          "meaning": "以为随便在哪里都能羽化。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cicadaShell",
+      "source": "representativeObjects.cicadaShell",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "蝉蜕",
+      "observePrompt": "贴在树皮上的空壳",
+      "evidenceCopy": "羽化后，旧外壳会留在树干上，看起来像空空的小壳。",
+      "markerChips": [
+        {
+          "label": "蝉蜕",
+          "meaning": "以为蝉蜕是死掉的虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-newAdult",
+      "source": "representativeObjects.newAdult",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "刚羽化的蝉",
+      "observePrompt": "浅色身体、透明翅膀、挂在壳旁",
+      "evidenceCopy": "刚出来的成虫身体和翅膀很软，需要时间展开、变硬。",
+      "markerChips": [
+        {
+          "label": "刚羽化的蝉",
+          "meaning": "以为一出来就能马上飞走。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-adultCicada",
+      "source": "representativeObjects.adultCicada",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "成熟成虫",
+      "observePrompt": "透明翅膀、树枝、夏天鸣叫",
+      "evidenceCopy": "成虫有翅膀，会鸣叫、交配、产卵，让生命循环继续。",
+      "markerChips": [
+        {
+          "label": "成熟成虫",
+          "meaning": "以为会叫的都是同一只蝉。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-butterflyPupa",
+      "source": "representativeObjects.butterflyPupa",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "蝴蝶的蛹",
+      "observePrompt": "挂在枝条上的蛹",
+      "evidenceCopy": "蝴蝶会经过蛹，蝉不会。这个不同点很好记。",
+      "markerChips": [
+        {
+          "label": "蝴蝶的蛹",
+          "meaning": "把蝉也想成会先变成蛹。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-egg-in-twig",
+      "source": "mechanism.steps.egg-in-twig",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "卵在树枝里",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "蝉把卵产在小树枝里，新的小生命先藏在枝条中。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "卵在树枝里",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-young-nymph-to-soil",
+      "source": "mechanism.steps.young-nymph-to-soil",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "小若虫进土里",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "小若虫孵化后会落到地面，钻进土里生活。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "小若虫进土里",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-grow-underground",
+      "source": "mechanism.steps.grow-underground",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "地下慢慢长大",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "若虫在地下靠近植物根部，慢慢长大。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "地下慢慢长大",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-emerge-from-soil",
+      "source": "mechanism.steps.emerge-from-soil",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "夏天爬出地面",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "成熟若虫会从小洞里爬出来，朝树干或植物爬去。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "夏天爬出地面",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-molt-on-trunk",
+      "source": "mechanism.steps.molt-on-trunk",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "在树干上羽化",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "它抓牢树皮，旧外壳裂开，新成虫慢慢出来。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "在树干上羽化",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-adult-cycle-again",
+      "source": "mechanism.steps.adult-cycle-again",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "成虫继续循环",
+      "observePrompt": "当前第 6 步，先看这一步发生了什么。",
+      "evidenceCopy": "成虫展开翅膀，会鸣叫、交配、产卵，下一轮生命又开始了。",
+      "markerChips": [
+        {
+          "label": "第 6 步",
+          "meaning": "成虫继续循环",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-find-support",
+      "source": "secondaryMechanism.steps.find-support",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "找稳稳的地方",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "树干这样的垂直表面，能让若虫抓牢身体。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "找稳稳的地方",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-hold-body",
+      "source": "secondaryMechanism.steps.hold-body",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "固定身体",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "羽化时身体不能乱晃，它需要牢牢固定在树皮上。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "固定身体",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-shell-opens",
+      "source": "secondaryMechanism.steps.shell-opens",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "外壳裂开",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "旧外壳从背部裂开，新身体慢慢出来。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "外壳裂开",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-wings-open",
+      "source": "secondaryMechanism.steps.wings-open",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "翅膀展开变硬",
+      "observePrompt": "当前第 4 步，观察这个补充机制。",
+      "evidenceCopy": "新成虫的翅膀需要展开，身体也要慢慢变硬。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "翅膀展开变硬",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-cicada-vs-butterfly",
+      "source": "comparePairs.cicada-vs-butterfly",
+      "visualSlotId": "compare-butterfly",
+      "interactionScope": "local",
+      "evidenceTitle": "蝉 vs 蝴蝶",
+      "observePrompt": "对比 蝉 和 蝴蝶 的图片线索。",
+      "evidenceCopy": "蝉: 卵 -> 若虫 -> 成虫；没有蛹；若虫常住地下。蝴蝶: 卵 -> 幼虫 -> 蛹 -> 成虫；有蛹；毛毛虫和蛹很明显。蝉没有蛹，蝴蝶有蛹。不是所有昆虫都会经过蛹。",
+      "markerChips": [
+        {
+          "label": "蝉",
+          "meaning": "卵 -> 若虫 -> 成虫",
+          "emphasis": "primary"
+        },
+        {
+          "label": "蝴蝶",
+          "meaning": "卵 -> 幼虫 -> 蛹 -> 成虫",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-cicada-vs-dragonfly",
+      "source": "comparePairs.cicada-vs-dragonfly",
+      "visualSlotId": "compare-butterfly",
+      "interactionScope": "local",
+      "evidenceTitle": "蝉 vs 蜻蜓",
+      "observePrompt": "对比 蝉 和 蜻蜓 的图片线索。",
+      "evidenceCopy": "蝉: 若虫住在地下；成虫常在树上鸣叫；没有蛹。蜻蜓: 若虫住在水里；成虫在空中飞；也没有蛹。蝉和蜻蜓都没有蛹，但小时候住的地方不同。",
+      "markerChips": [
+        {
+          "label": "蝉",
+          "meaning": "若虫住在地下",
+          "emphasis": "primary"
+        },
+        {
+          "label": "蜻蜓",
+          "meaning": "若虫住在水里",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-nymph-vs-adult",
+      "source": "comparePairs.nymph-vs-adult",
+      "visualSlotId": "compare-butterfly",
+      "interactionScope": "local",
+      "evidenceTitle": "若虫 vs 成虫",
+      "observePrompt": "对比 蝉若虫 和 蝉成虫 的图片线索。",
+      "evidenceCopy": "蝉若虫: 没有翅膀；会爬、会钻土；准备羽化。蝉成虫: 有透明翅膀；会飞；夏天会鸣叫。同一种生命，在不同阶段样子和本领会变。",
+      "markerChips": [
+        {
+          "label": "蝉若虫",
+          "meaning": "没有翅膀",
+          "emphasis": "primary"
+        },
+        {
+          "label": "蝉成虫",
+          "meaning": "有透明翅膀",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-egg",
+      "source": "clickTasks.cicada-sequence-01.options.egg",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "卵",
+      "observePrompt": "按顺序点出蝉的一生。",
+      "evidenceCopy": "当前步骤：卵。按顺序点出蝉的一生。",
+      "markerChips": [
+        {
+          "label": "卵",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-undergroundNymph",
+      "source": "clickTasks.cicada-sequence-01.options.undergroundNymph",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "地下若虫",
+      "observePrompt": "按顺序点出蝉的一生。",
+      "evidenceCopy": "当前步骤：地下若虫。按顺序点出蝉的一生。",
+      "markerChips": [
+        {
+          "label": "地下若虫",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-emergingNymph",
+      "source": "clickTasks.cicada-sequence-01.options.emergingNymph",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "出土若虫",
+      "observePrompt": "按顺序点出蝉的一生。",
+      "evidenceCopy": "当前步骤：出土若虫。按顺序点出蝉的一生。",
+      "markerChips": [
+        {
+          "label": "出土若虫",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-molting",
+      "source": "clickTasks.cicada-sequence-01.options.molting",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "羽化",
+      "observePrompt": "按顺序点出蝉的一生。",
+      "evidenceCopy": "当前步骤：羽化。按顺序点出蝉的一生。",
+      "markerChips": [
+        {
+          "label": "羽化",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-adult",
+      "source": "clickTasks.cicada-sequence-01.options.adult",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "成虫",
+      "observePrompt": "按顺序点出蝉的一生。",
+      "evidenceCopy": "当前步骤：成虫。按顺序点出蝉的一生。",
+      "markerChips": [
+        {
+          "label": "成虫",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-treeTrunk",
+      "source": "clickTasks.cicada-choice-01.options.treeTrunk",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "树干",
+      "observePrompt": "若虫刚从土里出来，最适合爬到哪里羽化？",
+      "evidenceCopy": "答对了！树干这样的垂直表面更适合若虫固定身体，完成羽化。",
+      "markerChips": [
+        {
+          "label": "树干",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-mud",
+      "source": "clickTasks.cicada-choice-01.options.mud",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "泥地",
+      "observePrompt": "若虫刚从土里出来，最适合爬到哪里羽化？",
+      "evidenceCopy": "羽化时身体需要固定，只在泥地上不够稳。",
+      "markerChips": [
+        {
+          "label": "泥地",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-puddle",
+      "source": "clickTasks.cicada-choice-01.options.puddle",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "水坑",
+      "observePrompt": "若虫刚从土里出来，最适合爬到哪里羽化？",
+      "evidenceCopy": "水坑不适合羽化，想想哪里能抓牢。",
+      "markerChips": [
+        {
+          "label": "水坑",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-thinLeaf",
+      "source": "clickTasks.cicada-choice-01.options.thinLeaf",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "细草叶",
+      "observePrompt": "若虫刚从土里出来，最适合爬到哪里羽化？",
+      "evidenceCopy": "太细的草叶可能不够稳，树干更合适。",
+      "markerChips": [
+        {
+          "label": "细草叶",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-cicadaShell",
+      "source": "clickTasks.cicada-identify-01.options.cicadaShell",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "cicadaShell",
+      "observePrompt": "找出树干上那个空空的外壳。",
+      "evidenceCopy": "找到了！蝉蜕是若虫羽化后留下来的旧外壳。",
+      "markerChips": [
+        {
+          "label": "cicadaShell",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-treeTrunk",
+      "source": "clickTasks.cicada-identify-01.options.treeTrunk",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "treeTrunk",
+      "observePrompt": "找出树干上那个空空的外壳。",
+      "evidenceCopy": "蝉蜕像一只空空的小壳，常常贴在树干上。",
+      "markerChips": [
+        {
+          "label": "treeTrunk",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-leaf",
+      "source": "clickTasks.cicada-identify-01.options.leaf",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "leaf",
+      "observePrompt": "找出树干上那个空空的外壳。",
+      "evidenceCopy": "蝉蜕像一只空空的小壳，常常贴在树干上。",
+      "markerChips": [
+        {
+          "label": "leaf",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-pebble",
+      "source": "clickTasks.cicada-identify-01.options.pebble",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "pebble",
+      "observePrompt": "找出树干上那个空空的外壳。",
+      "evidenceCopy": "蝉蜕像一只空空的小壳，常常贴在树干上。",
+      "markerChips": [
+        {
+          "label": "pebble",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-compare-01-options-cicada",
+      "source": "clickTasks.cicada-compare-01.options.cicada",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "蝉",
+      "observePrompt": "下面谁会经过“蛹”这个阶段？",
+      "evidenceCopy": "蝉没有蛹，它从若虫羽化成成虫。",
+      "markerChips": [
+        {
+          "label": "蝉",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-compare-01-options-butterfly",
+      "source": "clickTasks.cicada-compare-01.options.butterfly",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "蝴蝶",
+      "observePrompt": "下面谁会经过“蛹”这个阶段？",
+      "evidenceCopy": "答对了！蝴蝶会经过蛹，蝉不会。",
+      "markerChips": [
+        {
+          "label": "蝴蝶",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-compare-01-options-dragonfly",
+      "source": "clickTasks.cicada-compare-01.options.dragonfly",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "蜻蜓",
+      "observePrompt": "下面谁会经过“蛹”这个阶段？",
+      "evidenceCopy": "蜻蜓也没有蛹，小时候常住在水里。",
+      "markerChips": [
+        {
+          "label": "蜻蜓",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

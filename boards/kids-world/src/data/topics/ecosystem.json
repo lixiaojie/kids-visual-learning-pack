@@ -500,5 +500,780 @@
     "不要把生态系统讲成复杂食物网，先用 5–6 个对象讲清联系。",
     "户外散步时可以让孩子找生产者、消费者、分解者和环境条件。",
     "强调没有“没用”的生命，蘑菇、蚯蚓和土壤都很重要。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "life-ecosystem-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "life-ecosystem-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "mechanism",
+      "assetId": "life-ecosystem-mechanism",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "life-ecosystem-compare",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    },
+    {
+      "id": "click-task",
+      "assetId": "life-ecosystem-click-task",
+      "target": "clickTasks",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "parent-guide",
+      "assetId": "life-ecosystem-parent-guide",
+      "target": "parentTips",
+      "role": "summary",
+      "required": false
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-producers",
+      "source": "classificationGroups.producers",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "生产者",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "植物用阳光、水和空气帮助自己生长。 这类里可以看到：植物。",
+      "markerChips": [
+        {
+          "label": "植物",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-consumers",
+      "source": "classificationGroups.consumers",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "消费者",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "动物需要吃植物或其他动物来获得能量。 这类里可以看到：昆虫、青蛙、小鸟、狐狸。",
+      "markerChips": [
+        {
+          "label": "昆虫",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "青蛙",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "小鸟",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "狐狸",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-decomposers",
+      "source": "classificationGroups.decomposers",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "分解者",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "蘑菇、蚯蚓和小微生物会帮落叶回到土壤。 这类里可以看到：蘑菇、蚯蚓。",
+      "markerChips": [
+        {
+          "label": "蘑菇",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蚯蚓",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-environment",
+      "source": "classificationGroups.environment",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "环境条件",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "阳光、水、空气和土壤帮助生命生活。 这类里可以看到：阳光、水、土壤。",
+      "markerChips": [
+        {
+          "label": "阳光",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "水",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "土壤",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "阳光",
+      "observePrompt": "温暖的黄色太阳",
+      "evidenceCopy": "阳光给植物生长的能量。",
+      "markerChips": [
+        {
+          "label": "阳光",
+          "meaning": "以为阳光和生态系统无关。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-plant",
+      "source": "representativeObjects.plant",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "植物",
+      "observePrompt": "带根的小绿苗",
+      "evidenceCopy": "植物利用阳光、水和空气生长，也给很多动物提供食物或住处。",
+      "markerChips": [
+        {
+          "label": "植物",
+          "meaning": "以为植物只是不会动的背景。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-insect",
+      "source": "representativeObjects.insect",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "昆虫",
+      "observePrompt": "蝴蝶或小甲虫",
+      "evidenceCopy": "有些昆虫吃叶子或花蜜，也可能被青蛙、小鸟吃。",
+      "markerChips": [
+        {
+          "label": "昆虫",
+          "meaning": "以为昆虫都只是害虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-frog",
+      "source": "representativeObjects.frog",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "青蛙",
+      "observePrompt": "荷叶上的绿色青蛙",
+      "evidenceCopy": "青蛙生活在池塘边，会吃一些小昆虫。",
+      "markerChips": [
+        {
+          "label": "青蛙",
+          "meaning": "以为青蛙只和水有关，不在食物关系里。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-bird",
+      "source": "representativeObjects.bird",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "小鸟",
+      "observePrompt": "树枝上的小鸟",
+      "evidenceCopy": "小鸟可能吃种子、果实或小虫，也会帮助传播种子。",
+      "markerChips": [
+        {
+          "label": "小鸟",
+          "meaning": "忽略动物能帮助植物。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-fox",
+      "source": "representativeObjects.fox",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "狐狸",
+      "observePrompt": "温和橙色狐狸",
+      "evidenceCopy": "狐狸是池塘附近较大的消费者之一。",
+      "markerChips": [
+        {
+          "label": "狐狸",
+          "meaning": "只把狐狸看成坏角色。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mushroom",
+      "source": "representativeObjects.mushroom",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蘑菇",
+      "observePrompt": "红色或棕色小蘑菇",
+      "evidenceCopy": "蘑菇能帮助分解落叶和枯木。",
+      "markerChips": [
+        {
+          "label": "蘑菇",
+          "meaning": "以为蘑菇是普通植物。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-earthworm",
+      "source": "representativeObjects.earthworm",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蚯蚓",
+      "observePrompt": "土壤里的粉色小蚯蚓",
+      "evidenceCopy": "蚯蚓在土里活动，帮助土壤变松。",
+      "markerChips": [
+        {
+          "label": "蚯蚓",
+          "meaning": "觉得蚯蚓只是脏脏的小虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-water",
+      "source": "representativeObjects.water",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "水",
+      "observePrompt": "蓝色池塘",
+      "evidenceCopy": "池塘水帮助植物和动物生活。",
+      "markerChips": [
+        {
+          "label": "水",
+          "meaning": "以为水只是场景装饰。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-soil",
+      "source": "representativeObjects.soil",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "土壤",
+      "observePrompt": "带根的土层",
+      "evidenceCopy": "土壤给植物根部支撑，也保存水和养分。",
+      "markerChips": [
+        {
+          "label": "土壤",
+          "meaning": "以为土壤只是泥巴。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-sun-to-plant",
+      "source": "mechanism.steps.sun-to-plant",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "阳光给植物能量",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "植物利用阳光、水和空气生长。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "阳光给植物能量",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-plant-to-animal",
+      "source": "mechanism.steps.plant-to-animal",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "植物养活动物",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "昆虫或其他动物会吃植物的一部分。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "植物养活动物",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-animal-to-animal",
+      "source": "mechanism.steps.animal-to-animal",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "动物互相联系",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "青蛙、小鸟、狐狸等动物也会形成食物关系。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "动物互相联系",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-life-to-decomposer",
+      "source": "mechanism.steps.life-to-decomposer",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "落叶回到土里",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "落叶、枯枝会被蘑菇、蚯蚓和小微生物慢慢分解。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "落叶回到土里",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-nutrient-to-plant",
+      "source": "mechanism.steps.nutrient-to-plant",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "养分再帮助植物",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "土壤里的养分又能帮助植物继续生长。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "养分再帮助植物",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-water-help",
+      "source": "secondaryMechanism.steps.water-help",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "水帮助生命",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "植物和动物都需要水。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "水帮助生命",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-soil-home",
+      "source": "secondaryMechanism.steps.soil-home",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "土壤是家",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "植物扎根在土壤里，很多小生命也住在土里。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "土壤是家",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-change-affects",
+      "source": "secondaryMechanism.steps.change-affects",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "环境改变会影响生命",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "如果水变少或植物变少，很多动物都会受影响。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "环境改变会影响生命",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-food-chain-vs-ecosystem",
+      "source": "comparePairs.food-chain-vs-ecosystem",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "食物链 vs 生态系统",
+      "observePrompt": "对比 食物链 和 生态系统 的图片线索。",
+      "evidenceCopy": "食物链: 像一条线；讲谁把能量传给谁；比较简单。生态系统: 像一张网；包含生命和环境；关系更多。食物链是一条线，生态系统是一张网。",
+      "markerChips": [
+        {
+          "label": "食物链",
+          "meaning": "像一条线",
+          "emphasis": "primary"
+        },
+        {
+          "label": "生态系统",
+          "meaning": "像一张网",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-producer-vs-consumer",
+      "source": "comparePairs.producer-vs-consumer",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "生产者 vs 消费者",
+      "observePrompt": "对比 生产者 和 消费者 的图片线索。",
+      "evidenceCopy": "生产者: 常见代表是植物；利用阳光生长；是很多食物关系的开始。消费者: 常见代表是动物；需要吃东西获得能量；会和其他生命相连。植物和动物在生态系统里的任务不同。",
+      "markerChips": [
+        {
+          "label": "生产者",
+          "meaning": "常见代表是植物",
+          "emphasis": "primary"
+        },
+        {
+          "label": "消费者",
+          "meaning": "常见代表是动物",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-decompose-vs-disappear",
+      "source": "comparePairs.decompose-vs-disappear",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "分解 vs 消失",
+      "observePrompt": "对比 分解 和 消失 的图片线索。",
+      "evidenceCopy": "分解: 落叶慢慢变成小部分；养分回到土壤；分解者在工作。消失: 好像什么都没有了；看不到过程；容易忽略分解者。落叶不是凭空消失，而是被分解者帮忙回到循环。",
+      "markerChips": [
+        {
+          "label": "分解",
+          "meaning": "落叶慢慢变成小部分",
+          "emphasis": "primary"
+        },
+        {
+          "label": "消失",
+          "meaning": "好像什么都没有了",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-mushroom",
+      "source": "clickTasks.ecosystem-find-01.options.mushroom",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "mushroom",
+      "observePrompt": "找到能帮助落叶回到土壤的伙伴。",
+      "evidenceCopy": "对！蘑菇和蚯蚓都能帮助分解。",
+      "markerChips": [
+        {
+          "label": "mushroom",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-earthworm",
+      "source": "clickTasks.ecosystem-find-01.options.earthworm",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "earthworm",
+      "observePrompt": "找到能帮助落叶回到土壤的伙伴。",
+      "evidenceCopy": "对！蘑菇和蚯蚓都能帮助分解。",
+      "markerChips": [
+        {
+          "label": "earthworm",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-frog",
+      "source": "clickTasks.ecosystem-find-01.options.frog",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "frog",
+      "observePrompt": "找到能帮助落叶回到土壤的伙伴。",
+      "evidenceCopy": "分解者常常在落叶、枯木和土壤附近工作。",
+      "markerChips": [
+        {
+          "label": "frog",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-fox",
+      "source": "clickTasks.ecosystem-find-01.options.fox",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "fox",
+      "observePrompt": "找到能帮助落叶回到土壤的伙伴。",
+      "evidenceCopy": "分解者常常在落叶、枯木和土壤附近工作。",
+      "markerChips": [
+        {
+          "label": "fox",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-find-01-options-sun",
+      "source": "clickTasks.ecosystem-find-01.options.sun",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "sun",
+      "observePrompt": "找到能帮助落叶回到土壤的伙伴。",
+      "evidenceCopy": "分解者常常在落叶、枯木和土壤附近工作。",
+      "markerChips": [
+        {
+          "label": "sun",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-sun",
+      "source": "clickTasks.ecosystem-sequence-01.options.sun",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "阳光",
+      "observePrompt": "按能量和养分联系点出顺序。",
+      "evidenceCopy": "当前步骤：阳光。按能量和养分联系点出顺序。",
+      "markerChips": [
+        {
+          "label": "阳光",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-plant",
+      "source": "clickTasks.ecosystem-sequence-01.options.plant",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "植物",
+      "observePrompt": "按能量和养分联系点出顺序。",
+      "evidenceCopy": "当前步骤：植物。按能量和养分联系点出顺序。",
+      "markerChips": [
+        {
+          "label": "植物",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-insect",
+      "source": "clickTasks.ecosystem-sequence-01.options.insect",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "昆虫",
+      "observePrompt": "按能量和养分联系点出顺序。",
+      "evidenceCopy": "当前步骤：昆虫。按能量和养分联系点出顺序。",
+      "markerChips": [
+        {
+          "label": "昆虫",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-frog",
+      "source": "clickTasks.ecosystem-sequence-01.options.frog",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "青蛙",
+      "observePrompt": "按能量和养分联系点出顺序。",
+      "evidenceCopy": "当前步骤：青蛙。按能量和养分联系点出顺序。",
+      "markerChips": [
+        {
+          "label": "青蛙",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-sequence-01-options-soil",
+      "source": "clickTasks.ecosystem-sequence-01.options.soil",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "土壤",
+      "observePrompt": "按能量和养分联系点出顺序。",
+      "evidenceCopy": "当前步骤：土壤。按能量和养分联系点出顺序。",
+      "markerChips": [
+        {
+          "label": "土壤",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-choice-01-options-no-life-and-environment",
+      "source": "clickTasks.ecosystem-choice-01.options.no-life-and-environment",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "不是，还包括植物、分解者和环境",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "对！生态系统包含生命和环境。",
+      "markerChips": [
+        {
+          "label": "不是，还包括植物、分解者和环境",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-choice-01-options-animals-only",
+      "source": "clickTasks.ecosystem-choice-01.options.animals-only",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "是，只有动物",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "植物、蘑菇、水和土壤也很重要。",
+      "markerChips": [
+        {
+          "label": "是，只有动物",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-ecosystem-choice-01-options-plants-only",
+      "source": "clickTasks.ecosystem-choice-01.options.plants-only",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "是，只有植物",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "动物、分解者和环境条件也在生态系统里。",
+      "markerChips": [
+        {
+          "label": "是，只有植物",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

@@ -347,5 +347,672 @@
     "The child can say mouth, esophagus, stomach, small intestine, large intestine in order.",
     "The child knows digestion is not only the stomach working.",
     "The child can explain food as becoming smaller, absorbed, and used as energy."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-entry",
+      "source": "classificationGroups.entry",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Entry and preparation",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The mouth and teeth make food smaller. You can spot: Mouth, Teeth, Saliva.",
+      "markerChips": [
+        {
+          "label": "Mouth",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Teeth",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Saliva",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-transport",
+      "source": "classificationGroups.transport",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Transport tube",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The esophagus is a soft tube that sends food to the stomach. You can spot: Esophagus.",
+      "markerChips": [
+        {
+          "label": "Esophagus",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-breakdown",
+      "source": "classificationGroups.breakdown",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Mixing and breaking down",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The stomach keeps mixing food so it becomes softer and smaller. You can spot: Stomach.",
+      "markerChips": [
+        {
+          "label": "Stomach",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-absorb-and-sort",
+      "source": "classificationGroups.absorb-and-sort",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Absorb and sort",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The small intestine absorbs nutrients; the large intestine sorts what remains. You can spot: Small intestine, Large intestine, Energy.",
+      "markerChips": [
+        {
+          "label": "Small intestine",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Large intestine",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Energy",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mouth",
+      "source": "representativeObjects.mouth",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Mouth",
+      "observePrompt": "friendly open mouth icon",
+      "evidenceCopy": "The food journey starts in the mouth.",
+      "markerChips": [
+        {
+          "label": "Mouth",
+          "meaning": "Thinking the mouth only eats and does not digest.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-teeth",
+      "source": "representativeObjects.teeth",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Teeth",
+      "observePrompt": "rounded white teeth",
+      "evidenceCopy": "Teeth break food into smaller pieces.",
+      "markerChips": [
+        {
+          "label": "Teeth",
+          "meaning": "Thinking chewing does not matter.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-saliva",
+      "source": "representativeObjects.saliva",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Saliva",
+      "observePrompt": "small drops and food bits",
+      "evidenceCopy": "Saliva makes food wet and soft.",
+      "markerChips": [
+        {
+          "label": "Saliva",
+          "meaning": "Thinking saliva has nothing to do with digestion.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-esophagus",
+      "source": "representativeObjects.esophagus",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Esophagus",
+      "observePrompt": "soft curved tube",
+      "evidenceCopy": "The esophagus carries food from the mouth to the stomach.",
+      "markerChips": [
+        {
+          "label": "Esophagus",
+          "meaning": "Mixing it up with the airway.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-stomach",
+      "source": "representativeObjects.stomach",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Stomach",
+      "observePrompt": "rounded pink stomach",
+      "evidenceCopy": "The stomach mixes food and makes it softer and smaller.",
+      "markerChips": [
+        {
+          "label": "Stomach",
+          "meaning": "Thinking the stomach absorbs all nutrients.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-small-intestine",
+      "source": "representativeObjects.small-intestine",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Small intestine",
+      "observePrompt": "thin winding route",
+      "evidenceCopy": "The small intestine absorbs many nutrients the body needs.",
+      "markerChips": [
+        {
+          "label": "Small intestine",
+          "meaning": "Thinking it is not important because it is called small.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-large-intestine",
+      "source": "representativeObjects.large-intestine",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Large intestine",
+      "observePrompt": "thicker green route",
+      "evidenceCopy": "The large intestine sorts what remains and helps keep some water.",
+      "markerChips": [
+        {
+          "label": "Large intestine",
+          "meaning": "Thinking it only removes waste.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-energy",
+      "source": "representativeObjects.energy",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Energy",
+      "observePrompt": "glowing little stars",
+      "evidenceCopy": "The body uses nutrients to grow, run, jump, and think.",
+      "markerChips": [
+        {
+          "label": "Energy",
+          "meaning": "Thinking food only fills the belly.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-chew",
+      "source": "mechanism.steps.chew",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Chew smaller",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "Teeth break food down and saliva makes it wet.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Chew smaller",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-swallow",
+      "source": "mechanism.steps.swallow",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Send it down",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "After swallowing, food moves through the esophagus to the stomach.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Send it down",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-mix",
+      "source": "mechanism.steps.mix",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Mix in the stomach",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "The stomach is like a moving bag that mixes food.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Mix in the stomach",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-absorb",
+      "source": "mechanism.steps.absorb",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Small intestine absorbs",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "The small intestine sends useful nutrients to the body.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Small intestine absorbs",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-sort",
+      "source": "mechanism.steps.sort",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Large intestine sorts",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "The large intestine sorts what remains and keeps some water.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Large intestine sorts",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-food-to-small",
+      "source": "secondaryMechanism.steps.food-to-small",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Become smaller",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "Big food becomes small parts the body can handle.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Become smaller",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-small-to-body",
+      "source": "secondaryMechanism.steps.small-to-body",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Sent to the body",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "Nutrients are sent to many places in the body.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Sent to the body",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-body-use",
+      "source": "secondaryMechanism.steps.body-use",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Body uses it",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "The body uses them to run, grow, repair, and think.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Body uses it",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-stomach-vs-route",
+      "source": "comparePairs.stomach-vs-route",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Only stomach vs Whole route",
+      "observePrompt": "Compare visual clues for Only stomach and Whole route.",
+      "evidenceCopy": "Only stomach: one station only; forgets mouth and intestines; incomplete explanation. Whole route: has entrance and later stations; organs cooperate; closer to the real process. Digestion is a team route, not a stomach-only job.",
+      "markerChips": [
+        {
+          "label": "Only stomach",
+          "meaning": "one station only",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Whole route",
+          "meaning": "has entrance and later stations",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-small-vs-large-intestine",
+      "source": "comparePairs.small-vs-large-intestine",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Small intestine vs Large intestine",
+      "observePrompt": "Compare visual clues for Small intestine and Large intestine.",
+      "evidenceCopy": "Small intestine: thin and long; absorbs many nutrients; very important. Large intestine: thicker; sorts what remains; helps keep some water. Their names sound similar, but their jobs are different.",
+      "markerChips": [
+        {
+          "label": "Small intestine",
+          "meaning": "thin and long",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Large intestine",
+          "meaning": "thicker",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-food-vs-energy",
+      "source": "comparePairs.food-vs-energy",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Food vs Energy",
+      "observePrompt": "Compare visual clues for Food and Energy.",
+      "evidenceCopy": "Food: can be seen and bitten; has different tastes; enters through the mouth. Energy: helps the body move; cannot be seen but can be felt; comes from nutrients. Food helps the body get energy.",
+      "markerChips": [
+        {
+          "label": "Food",
+          "meaning": "can be seen and bitten",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Energy",
+          "meaning": "helps the body move",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-sequence-01-options-mouth",
+      "source": "clickTasks.digestion-sequence-01.options.mouth",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Mouth",
+      "observePrompt": "Start at the mouth and help food travel the whole route.",
+      "evidenceCopy": "Current step: Mouth. Start at the mouth and help food travel the whole route.",
+      "markerChips": [
+        {
+          "label": "Mouth",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-sequence-01-options-esophagus",
+      "source": "clickTasks.digestion-sequence-01.options.esophagus",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Esophagus",
+      "observePrompt": "Start at the mouth and help food travel the whole route.",
+      "evidenceCopy": "Current step: Esophagus. Start at the mouth and help food travel the whole route.",
+      "markerChips": [
+        {
+          "label": "Esophagus",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-sequence-01-options-stomach",
+      "source": "clickTasks.digestion-sequence-01.options.stomach",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Stomach",
+      "observePrompt": "Start at the mouth and help food travel the whole route.",
+      "evidenceCopy": "Current step: Stomach. Start at the mouth and help food travel the whole route.",
+      "markerChips": [
+        {
+          "label": "Stomach",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-sequence-01-options-small-intestine",
+      "source": "clickTasks.digestion-sequence-01.options.small-intestine",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Small intestine",
+      "observePrompt": "Start at the mouth and help food travel the whole route.",
+      "evidenceCopy": "Current step: Small intestine. Start at the mouth and help food travel the whole route.",
+      "markerChips": [
+        {
+          "label": "Small intestine",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-sequence-01-options-large-intestine",
+      "source": "clickTasks.digestion-sequence-01.options.large-intestine",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Large intestine",
+      "observePrompt": "Start at the mouth and help food travel the whole route.",
+      "evidenceCopy": "Current step: Large intestine. Start at the mouth and help food travel the whole route.",
+      "markerChips": [
+        {
+          "label": "Large intestine",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-find-01-options-small-intestine",
+      "source": "clickTasks.digestion-find-01.options.small-intestine",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "small intestine",
+      "observePrompt": "Find the station that absorbs many nutrients.",
+      "evidenceCopy": "Correct! The small intestine absorbs many nutrients.",
+      "markerChips": [
+        {
+          "label": "small intestine",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-find-01-options-mouth",
+      "source": "clickTasks.digestion-find-01.options.mouth",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "mouth",
+      "observePrompt": "Find the station that absorbs many nutrients.",
+      "evidenceCopy": "It is called small, but it is long and important.",
+      "markerChips": [
+        {
+          "label": "mouth",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-find-01-options-stomach",
+      "source": "clickTasks.digestion-find-01.options.stomach",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "stomach",
+      "observePrompt": "Find the station that absorbs many nutrients.",
+      "evidenceCopy": "It is called small, but it is long and important.",
+      "markerChips": [
+        {
+          "label": "stomach",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-find-01-options-large-intestine",
+      "source": "clickTasks.digestion-find-01.options.large-intestine",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "large intestine",
+      "observePrompt": "Find the station that absorbs many nutrients.",
+      "evidenceCopy": "It is called small, but it is long and important.",
+      "markerChips": [
+        {
+          "label": "large intestine",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-choice-01-options-whole-route",
+      "source": "clickTasks.digestion-choice-01.options.whole-route",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "A whole route working together",
+      "observePrompt": "Choose the most accurate answer.",
+      "evidenceCopy": "Right! Digestion is a route of body parts working together.",
+      "markerChips": [
+        {
+          "label": "A whole route working together",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-choice-01-options-only-stomach",
+      "source": "clickTasks.digestion-choice-01.options.only-stomach",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Only the stomach",
+      "observePrompt": "Choose the most accurate answer.",
+      "evidenceCopy": "The stomach matters, but the mouth and intestines also work.",
+      "markerChips": [
+        {
+          "label": "Only the stomach",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-digestion-choice-01-options-only-mouth",
+      "source": "clickTasks.digestion-choice-01.options.only-mouth",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Only the mouth",
+      "observePrompt": "Choose the most accurate answer.",
+      "evidenceCopy": "The mouth is the first stop, but many stops follow.",
+      "markerChips": [
+        {
+          "label": "Only the mouth",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

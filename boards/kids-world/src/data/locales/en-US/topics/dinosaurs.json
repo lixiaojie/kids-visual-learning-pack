@@ -333,5 +333,649 @@
     "The child can name at least three dinosaur feature types.",
     "The child knows fossils are evidence for learning about dinosaurs.",
     "The child can distinguish dinosaurs from fossil evidence."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-plant-eaters",
+      "source": "classificationGroups.plant-eaters",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Plant-eating dinosaurs",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Some dinosaurs had long necks or mouths suited for eating leaves. You can spot: Long-neck dinosaur.",
+      "markerChips": [
+        {
+          "label": "Long-neck dinosaur",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-meat-eaters",
+      "source": "classificationGroups.meat-eaters",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Meat-eating dinosaurs",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Some dinosaurs had sharp teeth and strong back legs. You can spot: Toothy meat-eater.",
+      "markerChips": [
+        {
+          "label": "Toothy meat-eater",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-defense-bodies",
+      "source": "classificationGroups.defense-bodies",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Bodies for protection",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Horns, armor plates, and tail clubs may help protection. You can spot: Horned dinosaur, Armored dinosaur.",
+      "markerChips": [
+        {
+          "label": "Horned dinosaur",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Armored dinosaur",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-evidence",
+      "source": "classificationGroups.evidence",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Evidence left behind",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Bones, footprints, and fossils tell us about the past. You can spot: Flying ancient partner, Fossil, Footprint.",
+      "markerChips": [
+        {
+          "label": "Flying ancient partner",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Fossil",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Footprint",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sauropod",
+      "source": "representativeObjects.sauropod",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Long-neck dinosaur",
+      "observePrompt": "long neck, big body, small head",
+      "evidenceCopy": "A long neck may help it reach high leaves.",
+      "markerChips": [
+        {
+          "label": "Long-neck dinosaur",
+          "meaning": "Thinking big always means fierce.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-triceratops",
+      "source": "representativeObjects.triceratops",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Horned dinosaur",
+      "observePrompt": "three horns and a large frill",
+      "evidenceCopy": "Horns and a frill may help protect it.",
+      "markerChips": [
+        {
+          "label": "Horned dinosaur",
+          "meaning": "Thinking horns are just decoration.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ankylosaur",
+      "source": "representativeObjects.ankylosaur",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Armored dinosaur",
+      "observePrompt": "low body, plates, tail club",
+      "evidenceCopy": "Armor-like plates and a tail club may help defense.",
+      "markerChips": [
+        {
+          "label": "Armored dinosaur",
+          "meaning": "Mistaking it for a turtle.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-tyranno",
+      "source": "representativeObjects.tyranno",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Toothy meat-eater",
+      "observePrompt": "large head, sharp teeth, strong legs",
+      "evidenceCopy": "Sharp teeth and a strong body suggest it may hunt.",
+      "markerChips": [
+        {
+          "label": "Toothy meat-eater",
+          "meaning": "Thinking every meat-eater only attacks.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-pterosaur",
+      "source": "representativeObjects.pterosaur",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Flying ancient partner",
+      "observePrompt": "wide wings",
+      "evidenceCopy": "Pterosaurs were not dinosaurs, but often appear in dinosaur-age scenes.",
+      "markerChips": [
+        {
+          "label": "Flying ancient partner",
+          "meaning": "Thinking every flying ancient animal was a dinosaur.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-fossil",
+      "source": "representativeObjects.fossil",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Fossil",
+      "observePrompt": "bone or shell mark in stone",
+      "evidenceCopy": "A fossil is an old trace of life kept in rock.",
+      "markerChips": [
+        {
+          "label": "Fossil",
+          "meaning": "Thinking fossils must be complete skeletons.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-footprint",
+      "source": "representativeObjects.footprint",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Footprint",
+      "observePrompt": "large print in mud",
+      "evidenceCopy": "Footprints can show where animals walked and how big their feet were.",
+      "markerChips": [
+        {
+          "label": "Footprint",
+          "meaning": "Thinking footprints are not fossil evidence.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-find-evidence",
+      "source": "mechanism.steps.find-evidence",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Find clues",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "Scientists look for bones, teeth, footprints, eggshells, and other clues.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Find clues",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-clean-carefully",
+      "source": "mechanism.steps.clean-carefully",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Clean carefully",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "Fossils are precious and must be cleaned slowly with small tools.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Clean carefully",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-compare-shape",
+      "source": "mechanism.steps.compare-shape",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Compare shapes",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "Teeth, legs, horns, and armor help us guess how it lived.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Compare shapes",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-rebuild-story",
+      "source": "mechanism.steps.rebuild-story",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Build the story",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "Many clues together help imagine the animal and its environment.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Build the story",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-update-idea",
+      "source": "mechanism.steps.update-idea",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Ideas can update",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "New fossils can change scientific ideas.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Ideas can update",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-teeth",
+      "source": "secondaryMechanism.steps.teeth",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Look at teeth",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "Sharp teeth may suit meat; flatter teeth may suit plants.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Look at teeth",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-legs",
+      "source": "secondaryMechanism.steps.legs",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Look at legs",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "Leg shape can suggest how it moved.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Look at legs",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-armor",
+      "source": "secondaryMechanism.steps.armor",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Look at defense",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "Horns, armor, and tail clubs may help protection.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Look at defense",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-dinosaur-vs-fossil",
+      "source": "comparePairs.dinosaur-vs-fossil",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Dinosaur vs Fossil",
+      "observePrompt": "Compare visual clues for Dinosaur and Fossil.",
+      "evidenceCopy": "Dinosaur: was once alive; had a body and behavior; lived long ago. Fossil: is a trace left behind; may be bone, footprint, or eggshell; helps us study dinosaurs. A fossil is not a living dinosaur; it is evidence.",
+      "markerChips": [
+        {
+          "label": "Dinosaur",
+          "meaning": "was once alive",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Fossil",
+          "meaning": "is a trace left behind",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-herbivore-vs-carnivore",
+      "source": "comparePairs.herbivore-vs-carnivore",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Plant-eater vs Meat-eater",
+      "observePrompt": "Compare visual clues for Plant-eater and Meat-eater.",
+      "evidenceCopy": "Plant-eater: mouth and teeth suited for plants; some were very large; may need protection. Meat-eater: often has sharp teeth; may run or bite strongly; part of an ecosystem. What an animal eats can shape its body.",
+      "markerChips": [
+        {
+          "label": "Plant-eater",
+          "meaning": "mouth and teeth suited for plants",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Meat-eater",
+          "meaning": "often has sharp teeth",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-bone-vs-footprint",
+      "source": "comparePairs.bone-vs-footprint",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Bone fossil vs Footprint fossil",
+      "observePrompt": "Compare visual clues for Bone fossil and Footprint fossil.",
+      "evidenceCopy": "Bone fossil: shows body structure; may help build a skeleton; not always complete. Footprint fossil: shows walking paths; helps estimate foot size; may show group movement. Different evidence tells different stories.",
+      "markerChips": [
+        {
+          "label": "Bone fossil",
+          "meaning": "shows body structure",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Footprint fossil",
+          "meaning": "shows walking paths",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-fossil",
+      "source": "clickTasks.dino-find-01.options.fossil",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "fossil",
+      "observePrompt": "Find the fossil and footprint.",
+      "evidenceCopy": "Correct! Fossils and footprints can both be clues.",
+      "markerChips": [
+        {
+          "label": "fossil",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-footprint",
+      "source": "clickTasks.dino-find-01.options.footprint",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "footprint",
+      "observePrompt": "Find the fossil and footprint.",
+      "evidenceCopy": "Correct! Fossils and footprints can both be clues.",
+      "markerChips": [
+        {
+          "label": "footprint",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-sauropod",
+      "source": "clickTasks.dino-find-01.options.sauropod",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "sauropod",
+      "observePrompt": "Find the fossil and footprint.",
+      "evidenceCopy": "Evidence is a clue left behind, not a walking dinosaur.",
+      "markerChips": [
+        {
+          "label": "sauropod",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-triceratops",
+      "source": "clickTasks.dino-find-01.options.triceratops",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "triceratops",
+      "observePrompt": "Find the fossil and footprint.",
+      "evidenceCopy": "Evidence is a clue left behind, not a walking dinosaur.",
+      "markerChips": [
+        {
+          "label": "triceratops",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-find-01-options-pterosaur",
+      "source": "clickTasks.dino-find-01.options.pterosaur",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "pterosaur",
+      "observePrompt": "Find the fossil and footprint.",
+      "evidenceCopy": "Evidence is a clue left behind, not a walking dinosaur.",
+      "markerChips": [
+        {
+          "label": "pterosaur",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-choice-01-options-meat",
+      "source": "clickTasks.dino-choice-01.options.meat",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "May be suited for eating meat",
+      "observePrompt": "Choose the most likely explanation.",
+      "evidenceCopy": "Right! Sharp teeth may relate to hunting or eating meat.",
+      "markerChips": [
+        {
+          "label": "May be suited for eating meat",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-choice-01-options-leaf",
+      "source": "clickTasks.dino-choice-01.options.leaf",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Definitely only eats leaves",
+      "observePrompt": "Choose the most likely explanation.",
+      "evidenceCopy": "Plant-eating teeth usually do not need to be so sharp.",
+      "markerChips": [
+        {
+          "label": "Definitely only eats leaves",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-choice-01-options-toy",
+      "source": "clickTasks.dino-choice-01.options.toy",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Just decoration",
+      "observePrompt": "Choose the most likely explanation.",
+      "evidenceCopy": "Body structures often relate to lifestyle.",
+      "markerChips": [
+        {
+          "label": "Just decoration",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-find-evidence",
+      "source": "clickTasks.dino-sequence-01.options.find-evidence",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Find clues",
+      "observePrompt": "Tap the detective steps in order.",
+      "evidenceCopy": "Current step: Find clues. Tap the detective steps in order.",
+      "markerChips": [
+        {
+          "label": "Find clues",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-clean-carefully",
+      "source": "clickTasks.dino-sequence-01.options.clean-carefully",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Clean carefully",
+      "observePrompt": "Tap the detective steps in order.",
+      "evidenceCopy": "Current step: Clean carefully. Tap the detective steps in order.",
+      "markerChips": [
+        {
+          "label": "Clean carefully",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-compare-shape",
+      "source": "clickTasks.dino-sequence-01.options.compare-shape",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Compare shapes",
+      "observePrompt": "Tap the detective steps in order.",
+      "evidenceCopy": "Current step: Compare shapes. Tap the detective steps in order.",
+      "markerChips": [
+        {
+          "label": "Compare shapes",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-dino-sequence-01-options-rebuild-story",
+      "source": "clickTasks.dino-sequence-01.options.rebuild-story",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Build the story",
+      "observePrompt": "Tap the detective steps in order.",
+      "evidenceCopy": "Current step: Build the story. Tap the detective steps in order.",
+      "markerChips": [
+        {
+          "label": "Build the story",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    }
   ]
 }

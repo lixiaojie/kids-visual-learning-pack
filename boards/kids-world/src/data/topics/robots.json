@@ -483,5 +483,751 @@
     "可以用家里的扫地机器人、自动门、声控灯做例子。",
     "避免把机器人说成“真的懂一切”，而是说它按规则处理信息。",
     "如果孩子感兴趣，可引导他画一个“输入—判断—行动”的小流程图。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "human-system-robots-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "human-system-robots-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "mechanism",
+      "assetId": "human-system-robots-mechanism",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "human-system-robots-compare",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    },
+    {
+      "id": "click-task",
+      "assetId": "human-system-robots-click-task",
+      "target": "clickTasks",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "parent-guide",
+      "assetId": "human-system-robots-parent-guide",
+      "target": "parentTips",
+      "role": "summary",
+      "required": false
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-sensors",
+      "source": "classificationGroups.sensors",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "接收信息",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "传感器像机器人的眼睛、耳朵和小按钮。 这类里可以看到：摄像头、麦克风、按钮、距离传感器。",
+      "markerChips": [
+        {
+          "label": "摄像头",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "麦克风",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "按钮",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "距离传感器",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-controller",
+      "source": "classificationGroups.controller",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "判断规则",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "程序告诉机器人遇到情况时该怎么做。 这类里可以看到：程序规则。",
+      "markerChips": [
+        {
+          "label": "程序规则",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-actuators",
+      "source": "classificationGroups.actuators",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "做出动作",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "轮子、灯和机械臂让机器人动起来或表达结果。 这类里可以看到：轮子、灯光、机械臂。",
+      "markerChips": [
+        {
+          "label": "轮子",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "灯光",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "机械臂",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-feedback",
+      "source": "classificationGroups.feedback",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "看结果再调整",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "机器人做完动作后，还可以再看看结果。",
+      "markerChips": [],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-camera",
+      "source": "representativeObjects.camera",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "摄像头",
+      "observePrompt": "圆圆镜头",
+      "evidenceCopy": "摄像头可以帮助机器人看到图像。",
+      "markerChips": [
+        {
+          "label": "摄像头",
+          "meaning": "以为摄像头就是机器人的大脑。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-microphone",
+      "source": "representativeObjects.microphone",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "麦克风",
+      "observePrompt": "小话筒",
+      "evidenceCopy": "麦克风可以帮助机器人听到声音。",
+      "markerChips": [
+        {
+          "label": "麦克风",
+          "meaning": "以为机器人不用设备就能听见。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-button",
+      "source": "representativeObjects.button",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "按钮",
+      "observePrompt": "红色圆按钮",
+      "evidenceCopy": "按钮可以把人的选择告诉机器人。",
+      "markerChips": [
+        {
+          "label": "按钮",
+          "meaning": "以为按钮是装饰。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-distance-sensor",
+      "source": "representativeObjects.distance-sensor",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "距离传感器",
+      "observePrompt": "两个小圆眼",
+      "evidenceCopy": "它可以帮机器人知道前面是不是太近了。",
+      "markerChips": [
+        {
+          "label": "距离传感器",
+          "meaning": "以为它真的像眼睛一样看世界。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-program",
+      "source": "representativeObjects.program",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "程序规则",
+      "observePrompt": "发光小脑云",
+      "evidenceCopy": "程序像任务规则，告诉机器人先做什么、后做什么。",
+      "markerChips": [
+        {
+          "label": "程序规则",
+          "meaning": "以为程序就是魔法。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-wheel",
+      "source": "representativeObjects.wheel",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "轮子",
+      "observePrompt": "黑色小轮胎",
+      "evidenceCopy": "轮子让机器人前进、后退或转弯。",
+      "markerChips": [
+        {
+          "label": "轮子",
+          "meaning": "以为有轮子就一定是机器人。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-light",
+      "source": "representativeObjects.light",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "灯光",
+      "observePrompt": "黄色发光灯",
+      "evidenceCopy": "灯光可以告诉我们机器人现在的状态。",
+      "markerChips": [
+        {
+          "label": "灯光",
+          "meaning": "以为灯光只是好看。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-robot-arm",
+      "source": "representativeObjects.robot-arm",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "机械臂",
+      "observePrompt": "有夹爪的小手臂",
+      "evidenceCopy": "机械臂可以伸出去抓取或推动东西。",
+      "markerChips": [
+        {
+          "label": "机械臂",
+          "meaning": "以为机械臂和人的手完全一样。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-input",
+      "source": "mechanism.steps.input",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "接收信息",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "摄像头、麦克风、按钮或传感器先接收到信息。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "接收信息",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-interpret",
+      "source": "mechanism.steps.interpret",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "看懂情况",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "机器人把信息交给程序，看看现在发生了什么。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "看懂情况",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-decide",
+      "source": "mechanism.steps.decide",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "按规则决定",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "程序根据任务规则，决定下一步做什么。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "按规则决定",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-act",
+      "source": "mechanism.steps.act",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "做出动作",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "轮子、灯光或机械臂开始工作。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "做出动作",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-feedback-loop",
+      "source": "mechanism.steps.feedback-loop",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "再检查",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "机器人可以再看看结果，必要时调整动作。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "再检查",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-sense-wall",
+      "source": "secondaryMechanism.steps.sense-wall",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "发现前面近",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "距离传感器发现前面有东西。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "发现前面近",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-rule-stop",
+      "source": "secondaryMechanism.steps.rule-stop",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "规则说停下",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "程序规则告诉机器人：太近就停下。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "规则说停下",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-wheel-stop",
+      "source": "secondaryMechanism.steps.wheel-stop",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "轮子停住",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "轮子停止转动，机器人不撞上去。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "轮子停住",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-sensor-vs-actuator",
+      "source": "comparePairs.sensor-vs-actuator",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "传感器 vs 行动部件",
+      "observePrompt": "对比 传感器 和 行动部件 的图片线索。",
+      "evidenceCopy": "传感器: 接收信息；像机器人的感知入口；摄像头、麦克风、按钮都可以是输入。行动部件: 做出动作；把决定变成结果；轮子、灯、机械臂都可以行动。传感器负责知道，行动部件负责做。",
+      "markerChips": [
+        {
+          "label": "传感器",
+          "meaning": "接收信息",
+          "emphasis": "primary"
+        },
+        {
+          "label": "行动部件",
+          "meaning": "做出动作",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-program-vs-magic",
+      "source": "comparePairs.program-vs-magic",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "程序 vs 魔法",
+      "observePrompt": "对比 程序 和 魔法 的图片线索。",
+      "evidenceCopy": "程序: 有规则；可以被人设计；同样输入常有同样动作。魔法: 说不清规则；无法稳定复现；不是工程解释。机器人靠程序和部件工作，不靠魔法。",
+      "markerChips": [
+        {
+          "label": "程序",
+          "meaning": "有规则",
+          "emphasis": "primary"
+        },
+        {
+          "label": "魔法",
+          "meaning": "说不清规则",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-robot-vs-remote-toy",
+      "source": "comparePairs.robot-vs-remote-toy",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "机器人 vs 遥控玩具",
+      "observePrompt": "对比 机器人 和 遥控玩具 的图片线索。",
+      "evidenceCopy": "机器人: 能接收信息；能按规则判断；可以自动做一些动作。遥控玩具: 主要听人遥控；不一定会判断环境；动作更简单。会动不一定就是机器人，关键看能不能感知和按规则行动。",
+      "markerChips": [
+        {
+          "label": "机器人",
+          "meaning": "能接收信息",
+          "emphasis": "primary"
+        },
+        {
+          "label": "遥控玩具",
+          "meaning": "主要听人遥控",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-input",
+      "source": "clickTasks.robot-sequence-01.options.input",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "接收信息",
+      "observePrompt": "按从接收到行动的顺序点击。",
+      "evidenceCopy": "当前步骤：接收信息。按从接收到行动的顺序点击。",
+      "markerChips": [
+        {
+          "label": "接收信息",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-interpret",
+      "source": "clickTasks.robot-sequence-01.options.interpret",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "看懂情况",
+      "observePrompt": "按从接收到行动的顺序点击。",
+      "evidenceCopy": "当前步骤：看懂情况。按从接收到行动的顺序点击。",
+      "markerChips": [
+        {
+          "label": "看懂情况",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-decide",
+      "source": "clickTasks.robot-sequence-01.options.decide",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "按规则决定",
+      "observePrompt": "按从接收到行动的顺序点击。",
+      "evidenceCopy": "当前步骤：按规则决定。按从接收到行动的顺序点击。",
+      "markerChips": [
+        {
+          "label": "按规则决定",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-sequence-01-options-act",
+      "source": "clickTasks.robot-sequence-01.options.act",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "做出动作",
+      "observePrompt": "按从接收到行动的顺序点击。",
+      "evidenceCopy": "当前步骤：做出动作。按从接收到行动的顺序点击。",
+      "markerChips": [
+        {
+          "label": "做出动作",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-camera",
+      "source": "clickTasks.robot-find-01.options.camera",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "camera",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+      "markerChips": [
+        {
+          "label": "camera",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-microphone",
+      "source": "clickTasks.robot-find-01.options.microphone",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "microphone",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+      "markerChips": [
+        {
+          "label": "microphone",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-button",
+      "source": "clickTasks.robot-find-01.options.button",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "button",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+      "markerChips": [
+        {
+          "label": "button",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-distance-sensor",
+      "source": "clickTasks.robot-find-01.options.distance-sensor",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "distance sensor",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+      "markerChips": [
+        {
+          "label": "distance sensor",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-wheel",
+      "source": "clickTasks.robot-find-01.options.wheel",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "wheel",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作”？",
+      "markerChips": [
+        {
+          "label": "wheel",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-light",
+      "source": "clickTasks.robot-find-01.options.light",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "light",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作”？",
+      "markerChips": [
+        {
+          "label": "light",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-robot-arm",
+      "source": "clickTasks.robot-find-01.options.robot-arm",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "robot arm",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作”？",
+      "markerChips": [
+        {
+          "label": "robot arm",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-choice-01-options-magic",
+      "source": "clickTasks.robot-choice-01.options.magic",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "魔法",
+      "observePrompt": "选择最不准确的解释。",
+      "evidenceCopy": "对！机器人不是靠魔法，而是靠系统部件合作。",
+      "markerChips": [
+        {
+          "label": "魔法",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-choice-01-options-sensors-program",
+      "source": "clickTasks.robot-choice-01.options.sensors-program",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "传感器和程序",
+      "observePrompt": "选择最不准确的解释。",
+      "evidenceCopy": "传感器和程序正是机器人工作的关键。",
+      "markerChips": [
+        {
+          "label": "传感器和程序",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-robot-choice-01-options-wheels-arm",
+      "source": "clickTasks.robot-choice-01.options.wheels-arm",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "轮子和机械臂",
+      "observePrompt": "选择最不准确的解释。",
+      "evidenceCopy": "轮子和机械臂能帮助机器人行动。",
+      "markerChips": [
+        {
+          "label": "轮子和机械臂",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

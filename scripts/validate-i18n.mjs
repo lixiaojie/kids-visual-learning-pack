@@ -12,6 +12,16 @@ const validate = ajv.compile(schema);
 
 // Fields that overlay must NOT modify (structural/logic fields)
 const LOCKED_TASK_FIELDS = ["type", "correctOptionId", "correctSequence", "targetIds", "decoyIds"];
+const LOCKED_EVIDENCE_FIELDS = ["source", "visualSlotId", "expectedStatus"];
+
+function collectStrings(value, prefix = "") {
+  if (typeof value === "string") return [{ path: prefix, value }];
+  if (Array.isArray(value)) return value.flatMap((item, index) => collectStrings(item, `${prefix}[${index}]`));
+  if (value && typeof value === "object") {
+    return Object.entries(value).flatMap(([key, child]) => collectStrings(child, prefix ? `${prefix}.${key}` : key));
+  }
+  return [];
+}
 
 const files = readdirSync(OVERLAYS_DIR).filter((f) => f.endsWith(".json"));
 let totalErrors = 0;
@@ -21,6 +31,12 @@ for (const file of files) {
   const basePath = join(BASE_DIR, file);
   const overlay = JSON.parse(readFileSync(overlayPath, "utf-8"));
   const errors = [];
+
+  for (const item of collectStrings(overlay)) {
+    if (/[\u3400-\u9fff]/.test(item.value)) {
+      errors.push(`${item.path}: en-US overlay contains CJK text`);
+    }
+  }
 
   // Schema validation
   if (!validate(overlay)) {
@@ -74,6 +90,22 @@ for (const file of files) {
         const bStep = base[mechKey].steps[i];
         if (oStep?.id && bStep?.id && oStep.id !== bStep.id) {
           errors.push(`${mechKey}.steps[${i}].id: overlay "${oStep.id}" != base "${bStep.id}"`);
+        }
+      }
+    }
+
+    if (overlay.visualEvidenceBindings) {
+      const baseBindings = new Map((base.visualEvidenceBindings || []).map((binding) => [binding.id, binding]));
+      for (const binding of overlay.visualEvidenceBindings) {
+        const baseBinding = baseBindings.get(binding.id);
+        if (!baseBinding) {
+          errors.push(`visualEvidenceBindings "${binding.id || "?"}": no matching base binding`);
+          continue;
+        }
+        for (const field of LOCKED_EVIDENCE_FIELDS) {
+          if (field in binding && binding[field] !== baseBinding[field]) {
+            errors.push(`visualEvidenceBindings "${binding.id}": locked field "${field}" must match base`);
+          }
         }
       }
     }

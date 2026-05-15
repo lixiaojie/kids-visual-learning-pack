@@ -372,5 +372,767 @@
     "Connect the page to real observation: where did it come from, and why is it climbing?",
     "If you see a molting cicada, observe quietly and do not touch it.",
     "Use three comparison questions: where does it live, how does it change, and does it have a pupa?"
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-insect-basic",
+      "source": "classificationGroups.insect-basic",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "It is an insect",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "A cicada is an insect. A young cicada is called a nymph, and it becomes a winged adult. You can spot: Emerging nymph, Adult cicada.",
+      "markerChips": [
+        {
+          "label": "Emerging nymph",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Adult cicada",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-life-cycle",
+      "source": "classificationGroups.life-cycle",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Life has stages",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "A cicada starts as an egg, grows as a nymph underground, and then molts into an adult. You can spot: Cicada eggs in a twig, Underground nymph.",
+      "markerChips": [
+        {
+          "label": "Cicada eggs in a twig",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Underground nymph",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-metamorphosis-type",
+      "source": "classificationGroups.metamorphosis-type",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "A change without a pupa",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "A cicada does not have a pupa like a butterfly. It grows as a nymph and molts into an adult. You can spot: Tree trunk, Cicada shell, Newly molted adult, Butterfly pupa.",
+      "markerChips": [
+        {
+          "label": "Tree trunk",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Cicada shell",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Newly molted adult",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Butterfly pupa",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cicadaEggs",
+      "source": "representativeObjects.cicadaEggs",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Cicada eggs in a twig",
+      "observePrompt": "twig, tiny eggs, starting point",
+      "evidenceCopy": "A cicada lays eggs inside small twigs. The life cycle begins there.",
+      "markerChips": [
+        {
+          "label": "Cicada eggs in a twig",
+          "meaning": "Thinking all insect eggs sit on leaves.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-undergroundNymph",
+      "source": "representativeObjects.undergroundNymph",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Underground nymph",
+      "observePrompt": "soil, roots, no wings",
+      "evidenceCopy": "The young nymph goes into soil and grows near plant roots.",
+      "markerChips": [
+        {
+          "label": "Underground nymph",
+          "meaning": "Thinking young cicadas live on tree branches.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-emergingNymph",
+      "source": "representativeObjects.emergingNymph",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Emerging nymph",
+      "observePrompt": "emergence hole, strong front legs, moving to bark",
+      "evidenceCopy": "A mature nymph comes out of the soil and looks for a tree trunk or another steady place.",
+      "markerChips": [
+        {
+          "label": "Emerging nymph",
+          "meaning": "Thinking it is lost.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-treeTrunk",
+      "source": "representativeObjects.treeTrunk",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Tree trunk",
+      "observePrompt": "rough bark, vertical support",
+      "evidenceCopy": "The trunk helps the nymph grip firmly while it molts.",
+      "markerChips": [
+        {
+          "label": "Tree trunk",
+          "meaning": "Thinking any place is equally good for molting.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cicadaShell",
+      "source": "representativeObjects.cicadaShell",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Cicada shell",
+      "observePrompt": "empty shell on bark",
+      "evidenceCopy": "After molting, the old outer shell stays on the bark like a tiny empty case.",
+      "markerChips": [
+        {
+          "label": "Cicada shell",
+          "meaning": "Thinking the shell is a dead insect.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-newAdult",
+      "source": "representativeObjects.newAdult",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Newly molted adult",
+      "observePrompt": "pale body, transparent wings, hanging near shell",
+      "evidenceCopy": "The new adult is soft at first. Its wings need time to open and harden.",
+      "markerChips": [
+        {
+          "label": "Newly molted adult",
+          "meaning": "Thinking it can fly away immediately.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-adultCicada",
+      "source": "representativeObjects.adultCicada",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Adult cicada",
+      "observePrompt": "transparent wings, branch, summer song",
+      "evidenceCopy": "The adult has wings, sings, mates, and lays eggs so the life cycle can continue.",
+      "markerChips": [
+        {
+          "label": "Adult cicada",
+          "meaning": "Thinking every singing cicada is the same individual.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-butterflyPupa",
+      "source": "representativeObjects.butterflyPupa",
+      "visualSlotId": "observation",
+      "interactionScope": "local",
+      "evidenceTitle": "Butterfly pupa",
+      "observePrompt": "pupa hanging from a twig",
+      "evidenceCopy": "A butterfly has a pupa stage. A cicada does not.",
+      "markerChips": [
+        {
+          "label": "Butterfly pupa",
+          "meaning": "Thinking a cicada also becomes a pupa.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-egg-in-twig",
+      "source": "mechanism.steps.egg-in-twig",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "Eggs in a twig",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "Cicada eggs are placed inside a small twig.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Eggs in a twig",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-young-nymph-to-soil",
+      "source": "mechanism.steps.young-nymph-to-soil",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "Nymph enters soil",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "A tiny nymph hatches, falls to the ground, and goes into the soil.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Nymph enters soil",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-grow-underground",
+      "source": "mechanism.steps.grow-underground",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "Growing underground",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "The nymph grows slowly underground near roots.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Growing underground",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-emerge-from-soil",
+      "source": "mechanism.steps.emerge-from-soil",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "Coming out in summer",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "A mature nymph climbs out of a small hole and moves toward a tree or plant.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Coming out in summer",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-molt-on-trunk",
+      "source": "mechanism.steps.molt-on-trunk",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "Molting on bark",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "It grips the bark, the old shell opens, and the new adult slowly comes out.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Molting on bark",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-adult-cycle-again",
+      "source": "mechanism.steps.adult-cycle-again",
+      "visualSlotId": "lifecycle",
+      "interactionScope": "local",
+      "evidenceTitle": "Adult starts the cycle again",
+      "observePrompt": "Current step 6. Look at what happens here.",
+      "evidenceCopy": "The adult opens its wings, sings, mates, and lays eggs.",
+      "markerChips": [
+        {
+          "label": "Step 6",
+          "meaning": "Adult starts the cycle again",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-find-support",
+      "source": "secondaryMechanism.steps.find-support",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Find support",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "A vertical tree trunk gives the nymph a steady place to grip.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Find support",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-hold-body",
+      "source": "secondaryMechanism.steps.hold-body",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Hold still",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "During molting, the body needs to stay steady.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Hold still",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-shell-opens",
+      "source": "secondaryMechanism.steps.shell-opens",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "The shell opens",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "The old outer shell opens along the back, and the new body comes out slowly.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "The shell opens",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-wings-open",
+      "source": "secondaryMechanism.steps.wings-open",
+      "visualSlotId": "molting-steps",
+      "interactionScope": "local",
+      "evidenceTitle": "Wings open and harden",
+      "observePrompt": "Current step 4. Observe this supporting mechanism.",
+      "evidenceCopy": "The new adult unfolds its wings and waits for its body to harden.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Wings open and harden",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-cicada-vs-butterfly",
+      "source": "comparePairs.cicada-vs-butterfly",
+      "visualSlotId": "compare-butterfly",
+      "interactionScope": "local",
+      "evidenceTitle": "Cicada vs Butterfly",
+      "observePrompt": "Compare visual clues for Cicada and Butterfly.",
+      "evidenceCopy": "Cicada: egg -> nymph -> adult; no pupa; nymph often lives underground. Butterfly: egg -> larva -> pupa -> adult; has a pupa; caterpillar and pupa stages are obvious. A cicada has no pupa. A butterfly has a pupa.",
+      "markerChips": [
+        {
+          "label": "Cicada",
+          "meaning": "egg -> nymph -> adult",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Butterfly",
+          "meaning": "egg -> larva -> pupa -> adult",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-cicada-vs-dragonfly",
+      "source": "comparePairs.cicada-vs-dragonfly",
+      "visualSlotId": "compare-butterfly",
+      "interactionScope": "local",
+      "evidenceTitle": "Cicada vs Dragonfly",
+      "observePrompt": "Compare visual clues for Cicada and Dragonfly.",
+      "evidenceCopy": "Cicada: nymph lives underground; adult often sings in trees; no pupa. Dragonfly: nymph lives in water; adult flies in the air; also no pupa. Both have no pupa, but their nymphs live in different places.",
+      "markerChips": [
+        {
+          "label": "Cicada",
+          "meaning": "nymph lives underground",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Dragonfly",
+          "meaning": "nymph lives in water",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-nymph-vs-adult",
+      "source": "comparePairs.nymph-vs-adult",
+      "visualSlotId": "compare-butterfly",
+      "interactionScope": "local",
+      "evidenceTitle": "Nymph vs Adult",
+      "observePrompt": "Compare visual clues for Cicada nymph and Adult cicada.",
+      "evidenceCopy": "Cicada nymph: no wings; climbs and digs; prepares to molt. Adult cicada: transparent wings; can fly; sings in summer. One living thing can look and act different at different stages.",
+      "markerChips": [
+        {
+          "label": "Cicada nymph",
+          "meaning": "no wings",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Adult cicada",
+          "meaning": "transparent wings",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-egg",
+      "source": "clickTasks.cicada-sequence-01.options.egg",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Egg",
+      "observePrompt": "Tap the stages in order.",
+      "evidenceCopy": "Current step: Egg. Tap the stages in order.",
+      "markerChips": [
+        {
+          "label": "Egg",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-undergroundNymph",
+      "source": "clickTasks.cicada-sequence-01.options.undergroundNymph",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Underground nymph",
+      "observePrompt": "Tap the stages in order.",
+      "evidenceCopy": "Current step: Underground nymph. Tap the stages in order.",
+      "markerChips": [
+        {
+          "label": "Underground nymph",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-emergingNymph",
+      "source": "clickTasks.cicada-sequence-01.options.emergingNymph",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Emerging nymph",
+      "observePrompt": "Tap the stages in order.",
+      "evidenceCopy": "Current step: Emerging nymph. Tap the stages in order.",
+      "markerChips": [
+        {
+          "label": "Emerging nymph",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-molting",
+      "source": "clickTasks.cicada-sequence-01.options.molting",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Molting",
+      "observePrompt": "Tap the stages in order.",
+      "evidenceCopy": "Current step: Molting. Tap the stages in order.",
+      "markerChips": [
+        {
+          "label": "Molting",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-sequence-01-options-adult",
+      "source": "clickTasks.cicada-sequence-01.options.adult",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Adult",
+      "observePrompt": "Tap the stages in order.",
+      "evidenceCopy": "Current step: Adult. Tap the stages in order.",
+      "markerChips": [
+        {
+          "label": "Adult",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-treeTrunk",
+      "source": "clickTasks.cicada-choice-01.options.treeTrunk",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "Tree trunk",
+      "observePrompt": "Where should the nymph climb to molt?",
+      "evidenceCopy": "Yes! A vertical trunk helps the nymph hold still and molt.",
+      "markerChips": [
+        {
+          "label": "Tree trunk",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-mud",
+      "source": "clickTasks.cicada-choice-01.options.mud",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "Mud",
+      "observePrompt": "Where should the nymph climb to molt?",
+      "evidenceCopy": "It needs a firm support, not flat mud.",
+      "markerChips": [
+        {
+          "label": "Mud",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-puddle",
+      "source": "clickTasks.cicada-choice-01.options.puddle",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "Puddle",
+      "observePrompt": "Where should the nymph climb to molt?",
+      "evidenceCopy": "A puddle is not a good molting place.",
+      "markerChips": [
+        {
+          "label": "Puddle",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-choice-01-options-thinLeaf",
+      "source": "clickTasks.cicada-choice-01.options.thinLeaf",
+      "visualSlotId": "choice-place",
+      "interactionScope": "local",
+      "evidenceTitle": "Thin grass blade",
+      "observePrompt": "Where should the nymph climb to molt?",
+      "evidenceCopy": "A thin blade may not be steady enough.",
+      "markerChips": [
+        {
+          "label": "Thin grass blade",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-cicadaShell",
+      "source": "clickTasks.cicada-identify-01.options.cicadaShell",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "cicadaShell",
+      "observePrompt": "Find the empty shell on the bark.",
+      "evidenceCopy": "You found it! A cicada shell is the old outer case left after molting.",
+      "markerChips": [
+        {
+          "label": "cicadaShell",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-treeTrunk",
+      "source": "clickTasks.cicada-identify-01.options.treeTrunk",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "treeTrunk",
+      "observePrompt": "Find the empty shell on the bark.",
+      "evidenceCopy": "Look for a small empty shell attached to the bark.",
+      "markerChips": [
+        {
+          "label": "treeTrunk",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-leaf",
+      "source": "clickTasks.cicada-identify-01.options.leaf",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "leaf",
+      "observePrompt": "Find the empty shell on the bark.",
+      "evidenceCopy": "Look for a small empty shell attached to the bark.",
+      "markerChips": [
+        {
+          "label": "leaf",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-identify-01-options-pebble",
+      "source": "clickTasks.cicada-identify-01.options.pebble",
+      "visualSlotId": "spot-shell",
+      "interactionScope": "local",
+      "evidenceTitle": "pebble",
+      "observePrompt": "Find the empty shell on the bark.",
+      "evidenceCopy": "Look for a small empty shell attached to the bark.",
+      "markerChips": [
+        {
+          "label": "pebble",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-compare-01-options-cicada",
+      "source": "clickTasks.cicada-compare-01.options.cicada",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Cicada",
+      "observePrompt": "Which one has a pupa stage?",
+      "evidenceCopy": "A cicada molts from nymph to adult without a pupa.",
+      "markerChips": [
+        {
+          "label": "Cicada",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-compare-01-options-butterfly",
+      "source": "clickTasks.cicada-compare-01.options.butterfly",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Butterfly",
+      "observePrompt": "Which one has a pupa stage?",
+      "evidenceCopy": "Correct! A butterfly has a pupa, but a cicada does not.",
+      "markerChips": [
+        {
+          "label": "Butterfly",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-cicada-compare-01-options-dragonfly",
+      "source": "clickTasks.cicada-compare-01.options.dragonfly",
+      "visualSlotId": "task-board",
+      "interactionScope": "local",
+      "evidenceTitle": "Dragonfly",
+      "observePrompt": "Which one has a pupa stage?",
+      "evidenceCopy": "A dragonfly also has no pupa.",
+      "markerChips": [
+        {
+          "label": "Dragonfly",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

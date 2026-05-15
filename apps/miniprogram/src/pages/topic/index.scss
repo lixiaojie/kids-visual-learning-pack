@@ -50,8 +50,14 @@
   flex-direction: column;
   gap: 8px;
   padding: 16px;
+  border: 2px solid transparent;
   border-radius: 16px;
   background: #f8fafc;
+}
+
+.step.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
 }
 
 .step-title {

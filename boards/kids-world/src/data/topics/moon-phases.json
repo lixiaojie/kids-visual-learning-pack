@@ -480,5 +480,698 @@
     "可以用手电筒、球和孩子的眼睛模拟太阳、月亮和观察者。",
     "不要先讲月食，月相不是每天由地球影子造成。",
     "连续观察比一次讲完更有效，可以每晚画一个小月亮。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "space-moon-phases-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "space-moon-phases-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "mechanism",
+      "assetId": "space-moon-phases-mechanism",
+      "target": "mechanism",
+      "role": "process",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "space-moon-phases-compare",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    },
+    {
+      "id": "click-task",
+      "assetId": "space-moon-phases-click-task",
+      "target": "clickTasks",
+      "role": "task",
+      "required": false
+    },
+    {
+      "id": "parent-guide",
+      "assetId": "space-moon-phases-parent-guide",
+      "target": "parentTips",
+      "role": "summary",
+      "required": false
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-light-source",
+      "source": "classificationGroups.light-source",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "光从哪里来",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "太阳照亮月亮，月亮把光反射给我们看。 这类里可以看到：太阳。",
+      "markerChips": [
+        {
+          "label": "太阳",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-earth-moon-system",
+      "source": "classificationGroups.earth-moon-system",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "地球和月亮",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "月亮绕着地球转，我们站在地球上看月亮。 这类里可以看到：地球、月亮。",
+      "markerChips": [
+        {
+          "label": "地球",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "月亮",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-visible-shapes",
+      "source": "classificationGroups.visible-shapes",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "看到的形状",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "我们会看到弯弯的、半圆的、圆圆的月亮。 这类里可以看到：新月、弯月、半月、满月。",
+      "markerChips": [
+        {
+          "label": "新月",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "弯月",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "半月",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "满月",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-observation-tools",
+      "source": "classificationGroups.observation-tools",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "观察工具",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "眼睛、窗户、望远镜都能帮我们观察月亮。 这类里可以看到：望远镜。",
+      "markerChips": [
+        {
+          "label": "望远镜",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "太阳",
+      "observePrompt": "黄色发光圆球",
+      "evidenceCopy": "太阳照亮月亮的一面。",
+      "markerChips": [
+        {
+          "label": "太阳",
+          "meaning": "忽略太阳对月相的作用。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-earth",
+      "source": "representativeObjects.earth",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "地球",
+      "observePrompt": "蓝绿色小地球",
+      "evidenceCopy": "我们站在地球上看月亮。",
+      "markerChips": [
+        {
+          "label": "地球",
+          "meaning": "以为观察位置不重要。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-moon",
+      "source": "representativeObjects.moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "月亮",
+      "observePrompt": "灰黄小球",
+      "evidenceCopy": "月亮绕着地球转，被太阳照亮。",
+      "markerChips": [
+        {
+          "label": "月亮",
+          "meaning": "以为月亮自己发光。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-new-moon",
+      "source": "representativeObjects.new-moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "新月",
+      "observePrompt": "暗暗的小圆",
+      "evidenceCopy": "这时我们几乎看不到月亮亮的一面。",
+      "markerChips": [
+        {
+          "label": "新月",
+          "meaning": "以为月亮消失了。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-crescent",
+      "source": "representativeObjects.crescent",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "弯月",
+      "observePrompt": "弯弯香蕉形",
+      "evidenceCopy": "我们只看到一小条亮亮的月亮。",
+      "markerChips": [
+        {
+          "label": "弯月",
+          "meaning": "以为月亮被咬掉了。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-half-moon",
+      "source": "representativeObjects.half-moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "半月",
+      "observePrompt": "半亮半暗",
+      "evidenceCopy": "我们看到大约一半亮亮的月亮。",
+      "markerChips": [
+        {
+          "label": "半月",
+          "meaning": "把半月叫成半个月亮。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-full-moon",
+      "source": "representativeObjects.full-moon",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "满月",
+      "observePrompt": "圆圆发光月亮",
+      "evidenceCopy": "我们看到整面亮亮的月亮。",
+      "markerChips": [
+        {
+          "label": "满月",
+          "meaning": "以为只有满月才是月亮。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-telescope",
+      "source": "representativeObjects.telescope",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "望远镜",
+      "observePrompt": "蓝色小望远镜",
+      "evidenceCopy": "望远镜可以帮我们看得更清楚。",
+      "markerChips": [
+        {
+          "label": "望远镜",
+          "meaning": "以为没有望远镜就不能观察。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-sunlight",
+      "source": "mechanism.steps.sunlight",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "太阳照亮",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "太阳照到月亮，总会照亮月亮的一部分。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "太阳照亮",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-moon-orbits",
+      "source": "mechanism.steps.moon-orbits",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "月亮绕地球",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "月亮一边绕着地球走，一边被太阳照亮。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "月亮绕地球",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-viewer-on-earth",
+      "source": "mechanism.steps.viewer-on-earth",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "我们在地球看",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "我们站在地球上，只能看到月亮朝向我们的那一面。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "我们在地球看",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-lit-part-changes",
+      "source": "mechanism.steps.lit-part-changes",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "亮面多少不同",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "有时候看到一点亮面，有时候看到半边，有时候看到整面。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "亮面多少不同",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-cycle-repeat",
+      "source": "mechanism.steps.cycle-repeat",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "一轮又一轮",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "月相会按顺序变化，然后再重复。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "一轮又一轮",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-same-time",
+      "source": "secondaryMechanism.steps.same-time",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "固定时间看",
+      "observePrompt": "当前第 1 步，观察这个补充机制。",
+      "evidenceCopy": "每天差不多同一时间看看月亮。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "固定时间看",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-draw-shape",
+      "source": "secondaryMechanism.steps.draw-shape",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "画下形状",
+      "observePrompt": "当前第 2 步，观察这个补充机制。",
+      "evidenceCopy": "把看到的亮面形状画下来。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "画下形状",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-compare-week",
+      "source": "secondaryMechanism.steps.compare-week",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "一周后比较",
+      "observePrompt": "当前第 3 步，观察这个补充机制。",
+      "evidenceCopy": "看看月亮是不是慢慢变了。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "一周后比较",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-moonlight-vs-sunlight",
+      "source": "comparePairs.moonlight-vs-sunlight",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "月光 vs 太阳光",
+      "observePrompt": "对比 月光 和 太阳光 的图片线索。",
+      "evidenceCopy": "月光: 看起来柔和；来自反射太阳光；不会像太阳那样加热地面。太阳光: 很明亮；太阳自己发出；给地球带来光和热。月亮不是像太阳一样自己发光。",
+      "markerChips": [
+        {
+          "label": "月光",
+          "meaning": "看起来柔和",
+          "emphasis": "primary"
+        },
+        {
+          "label": "太阳光",
+          "meaning": "很明亮",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-shape-vs-lit-part",
+      "source": "comparePairs.shape-vs-lit-part",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "形状变了 vs 亮面变了",
+      "observePrompt": "对比 形状变了 和 亮面变了 的图片线索。",
+      "evidenceCopy": "形状变了: 像被咬掉；这是常见误会；月亮本体没有每天变形。亮面变了: 看到的发亮部分不同；和太阳、地球、月亮位置有关；能形成月相循环。月相是看到的亮面不同。",
+      "markerChips": [
+        {
+          "label": "形状变了",
+          "meaning": "像被咬掉",
+          "emphasis": "primary"
+        },
+        {
+          "label": "亮面变了",
+          "meaning": "看到的发亮部分不同",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-new-vs-full",
+      "source": "comparePairs.new-vs-full",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "新月 vs 满月",
+      "observePrompt": "对比 新月 和 满月 的图片线索。",
+      "evidenceCopy": "新月: 几乎看不到亮面；不是月亮消失；仍然在绕地球。满月: 看到整面亮面；看起来最圆；适合观察月面阴影。新月和满月都是同一个月亮的不同样子。",
+      "markerChips": [
+        {
+          "label": "新月",
+          "meaning": "几乎看不到亮面",
+          "emphasis": "primary"
+        },
+        {
+          "label": "满月",
+          "meaning": "看到整面亮面",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-new-moon",
+      "source": "clickTasks.moon-sequence-01.options.new-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "新月",
+      "observePrompt": "从几乎看不见开始，点到满月。",
+      "evidenceCopy": "当前步骤：新月。从几乎看不见开始，点到满月。",
+      "markerChips": [
+        {
+          "label": "新月",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-crescent",
+      "source": "clickTasks.moon-sequence-01.options.crescent",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "弯月",
+      "observePrompt": "从几乎看不见开始，点到满月。",
+      "evidenceCopy": "当前步骤：弯月。从几乎看不见开始，点到满月。",
+      "markerChips": [
+        {
+          "label": "弯月",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-half-moon",
+      "source": "clickTasks.moon-sequence-01.options.half-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "半月",
+      "observePrompt": "从几乎看不见开始，点到满月。",
+      "evidenceCopy": "当前步骤：半月。从几乎看不见开始，点到满月。",
+      "markerChips": [
+        {
+          "label": "半月",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-sequence-01-options-full-moon",
+      "source": "clickTasks.moon-sequence-01.options.full-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "满月",
+      "observePrompt": "从几乎看不见开始，点到满月。",
+      "evidenceCopy": "当前步骤：满月。从几乎看不见开始，点到满月。",
+      "markerChips": [
+        {
+          "label": "满月",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-full-moon",
+      "source": "clickTasks.moon-find-01.options.full-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "full moon",
+      "observePrompt": "找到看起来最圆、最亮的月亮。",
+      "evidenceCopy": "对！这就是满月。",
+      "markerChips": [
+        {
+          "label": "full moon",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-new-moon",
+      "source": "clickTasks.moon-find-01.options.new-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "new moon",
+      "observePrompt": "找到看起来最圆、最亮的月亮。",
+      "evidenceCopy": "满月是整面都亮起来的样子。",
+      "markerChips": [
+        {
+          "label": "new moon",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-crescent",
+      "source": "clickTasks.moon-find-01.options.crescent",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "crescent",
+      "observePrompt": "找到看起来最圆、最亮的月亮。",
+      "evidenceCopy": "满月是整面都亮起来的样子。",
+      "markerChips": [
+        {
+          "label": "crescent",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-find-01-options-half-moon",
+      "source": "clickTasks.moon-find-01.options.half-moon",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "half moon",
+      "observePrompt": "找到看起来最圆、最亮的月亮。",
+      "evidenceCopy": "满月是整面都亮起来的样子。",
+      "markerChips": [
+        {
+          "label": "half moon",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-choice-01-options-lit-part",
+      "source": "clickTasks.moon-choice-01.options.lit-part",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "看到的亮面不同",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "对！月相来自我们看到的亮面不同。",
+      "markerChips": [
+        {
+          "label": "看到的亮面不同",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-choice-01-options-moon-bites",
+      "source": "clickTasks.moon-choice-01.options.moon-bites",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "月亮被咬掉",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "月亮没有被咬掉，它还是圆圆的球。",
+      "markerChips": [
+        {
+          "label": "月亮被咬掉",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-moon-choice-01-options-moon-fire",
+      "source": "clickTasks.moon-choice-01.options.moon-fire",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "月亮自己开灯",
+      "observePrompt": "选择最准确的答案。",
+      "evidenceCopy": "月亮不是像太阳一样自己发光。",
+      "markerChips": [
+        {
+          "label": "月亮自己开灯",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

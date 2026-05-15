@@ -484,5 +484,741 @@
     "太阳系页重点是位置关系，不必要求孩子背完整天文数据。",
     "可以让孩子用玩具球排一排太阳、水星、金星、地球、火星和木星。",
     "如果孩子问冥王星，可说明它现在通常归为矮行星，以后可以单独做一页。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "space-solar-system-overview-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "space-solar-system-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "star-vs-planet",
+      "assetId": "space-solar-system-star-vs-planet",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-star",
+      "source": "classificationGroups.star",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "恒星",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "自己会发光发热的大天体。 这类里可以看到：太阳。",
+      "markerChips": [
+        {
+          "label": "太阳",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-rocky-planets",
+      "source": "classificationGroups.rocky-planets",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "岩石行星",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "离太阳比较近，表面比较像石头世界。 这类里可以看到：水星、金星、地球、火星。",
+      "markerChips": [
+        {
+          "label": "水星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "金星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "地球",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "火星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-gas-ice-giants",
+      "source": "classificationGroups.gas-ice-giants",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "巨行星",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "个头很大，有的像气体巨人，有的很冷很远。 这类里可以看到：木星、土星、天王星、海王星。",
+      "markerChips": [
+        {
+          "label": "木星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "土星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "天王星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "海王星",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-small-bodies",
+      "source": "classificationGroups.small-bodies",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "小天体",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "小行星、彗星等小成员也住在太阳系里。 这类里可以看到：小行星带。",
+      "markerChips": [
+        {
+          "label": "小行星带",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "太阳",
+      "observePrompt": "最大、最亮、在中心",
+      "evidenceCopy": "太阳是太阳系中心，自己会发光发热。",
+      "markerChips": [
+        {
+          "label": "太阳",
+          "meaning": "以为太阳也是行星。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mercury",
+      "source": "representativeObjects.mercury",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "水星",
+      "observePrompt": "最靠近太阳的小圆点",
+      "evidenceCopy": "水星离太阳最近，个头很小。",
+      "markerChips": [
+        {
+          "label": "水星",
+          "meaning": "名字有水但不是水做的。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-venus",
+      "source": "representativeObjects.venus",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "金星",
+      "observePrompt": "黄色或金色、靠近地球轨道内侧",
+      "evidenceCopy": "金星很亮，但表面非常热。",
+      "markerChips": [
+        {
+          "label": "金星",
+          "meaning": "很亮就适合居住。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-earth",
+      "source": "representativeObjects.earth",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "地球",
+      "observePrompt": "蓝绿色",
+      "evidenceCopy": "地球是我们的家，有海洋、陆地和空气。",
+      "markerChips": [
+        {
+          "label": "地球",
+          "meaning": "以为地球在太阳系中心。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-mars",
+      "source": "representativeObjects.mars",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "火星",
+      "observePrompt": "红色小行星",
+      "evidenceCopy": "火星看起来偏红，是地球外侧的邻居。",
+      "markerChips": [
+        {
+          "label": "火星",
+          "meaning": "火星在小行星带外面。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-asteroid-belt",
+      "source": "representativeObjects.asteroid-belt",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "小行星带",
+      "observePrompt": "一圈小颗粒",
+      "evidenceCopy": "很多小石头一样的小天体，主要在火星和木星之间。",
+      "markerChips": [
+        {
+          "label": "小行星带",
+          "meaning": "以为小行星带在太阳系最外面。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-jupiter",
+      "source": "representativeObjects.jupiter",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "木星",
+      "observePrompt": "最大、有条纹",
+      "evidenceCopy": "木星是太阳系最大的行星。",
+      "markerChips": [
+        {
+          "label": "木星",
+          "meaning": "把木星当成恒星。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-saturn",
+      "source": "representativeObjects.saturn",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "土星",
+      "observePrompt": "漂亮的行星环",
+      "evidenceCopy": "土星有非常明显的环。",
+      "markerChips": [
+        {
+          "label": "土星",
+          "meaning": "只有土星有环；其实其他外侧行星也有环，只是不那么明显。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-uranus",
+      "source": "representativeObjects.uranus",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "天王星",
+      "observePrompt": "浅蓝绿色",
+      "evidenceCopy": "天王星离太阳很远，看起来偏蓝绿色。",
+      "markerChips": [
+        {
+          "label": "天王星",
+          "meaning": "和海王星混淆。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-neptune",
+      "source": "representativeObjects.neptune",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "海王星",
+      "observePrompt": "深蓝色、最外侧",
+      "evidenceCopy": "海王星是八大行星中离太阳最远的一颗。",
+      "markerChips": [
+        {
+          "label": "海王星",
+          "meaning": "以为冥王星仍是八大行星之一。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-center-sun",
+      "source": "mechanism.steps.center-sun",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "太阳在中心",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "太阳像太阳系的大灯塔，很多成员围着它转。",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "太阳在中心",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-orbits",
+      "source": "mechanism.steps.orbits",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "行星沿轨道转",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "行星不是乱跑，而是沿着自己的轨道转。",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "行星沿轨道转",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-inner-planets",
+      "source": "mechanism.steps.inner-planets",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "内侧岩石行星",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "水星、金星、地球、火星比较靠近太阳。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "内侧岩石行星",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-asteroid-belt",
+      "source": "mechanism.steps.asteroid-belt",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "中间有小行星带",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "火星和木星之间，有很多小天体。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "中间有小行星带",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-outer-planets",
+      "source": "mechanism.steps.outer-planets",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "外侧巨行星",
+      "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+      "evidenceCopy": "木星、土星、天王星、海王星在更外面。",
+      "markerChips": [
+        {
+          "label": "第 5 步",
+          "meaning": "外侧巨行星",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-star-vs-planet",
+      "source": "comparePairs.star-vs-planet",
+      "visualSlotId": "star-vs-planet",
+      "interactionScope": "local",
+      "evidenceTitle": "恒星 vs 行星",
+      "observePrompt": "对比 恒星 和 行星 的图片线索。",
+      "evidenceCopy": "恒星: 自己发光发热；太阳是恒星；可以是一个系统中心。行星: 围着恒星转；主要反射光；地球是行星。太阳不是行星，地球才是行星。",
+      "markerChips": [
+        {
+          "label": "恒星",
+          "meaning": "自己发光发热",
+          "emphasis": "primary"
+        },
+        {
+          "label": "行星",
+          "meaning": "围着恒星转",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-earth-vs-jupiter",
+      "source": "comparePairs.earth-vs-jupiter",
+      "visualSlotId": "star-vs-planet",
+      "interactionScope": "local",
+      "evidenceTitle": "地球 vs 木星",
+      "observePrompt": "对比 地球 和 木星 的图片线索。",
+      "evidenceCopy": "地球: 岩石行星；我们生活的地方；比木星小很多。木星: 最大行星；外侧巨行星；有明显条纹。行星之间大小和样子差别很大。",
+      "markerChips": [
+        {
+          "label": "地球",
+          "meaning": "岩石行星",
+          "emphasis": "primary"
+        },
+        {
+          "label": "木星",
+          "meaning": "最大行星",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-mars-vs-asteroid-belt",
+      "source": "comparePairs.mars-vs-asteroid-belt",
+      "visualSlotId": "star-vs-planet",
+      "interactionScope": "local",
+      "evidenceTitle": "火星 vs 小行星带",
+      "observePrompt": "对比 火星 和 小行星带 的图片线索。",
+      "evidenceCopy": "火星: 一颗行星；红色；在小行星带内侧。小行星带: 很多小天体；不是一颗行星；在火星和木星之间。小行星带是一片区域，不是一颗大行星。",
+      "markerChips": [
+        {
+          "label": "火星",
+          "meaning": "一颗行星",
+          "emphasis": "primary"
+        },
+        {
+          "label": "小行星带",
+          "meaning": "很多小天体",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-mercury",
+      "source": "clickTasks.solar-sequence-01.options.mercury",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "水星",
+      "observePrompt": "从太阳出发，前四颗行星怎么排？",
+      "evidenceCopy": "当前步骤：水星。从太阳出发，前四颗行星怎么排？",
+      "markerChips": [
+        {
+          "label": "水星",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-venus",
+      "source": "clickTasks.solar-sequence-01.options.venus",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "金星",
+      "observePrompt": "从太阳出发，前四颗行星怎么排？",
+      "evidenceCopy": "当前步骤：金星。从太阳出发，前四颗行星怎么排？",
+      "markerChips": [
+        {
+          "label": "金星",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-earth",
+      "source": "clickTasks.solar-sequence-01.options.earth",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "地球",
+      "observePrompt": "从太阳出发，前四颗行星怎么排？",
+      "evidenceCopy": "当前步骤：地球。从太阳出发，前四颗行星怎么排？",
+      "markerChips": [
+        {
+          "label": "地球",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-sequence-01-options-mars",
+      "source": "clickTasks.solar-sequence-01.options.mars",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "火星",
+      "observePrompt": "从太阳出发，前四颗行星怎么排？",
+      "evidenceCopy": "当前步骤：火星。从太阳出发，前四颗行星怎么排？",
+      "markerChips": [
+        {
+          "label": "火星",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-jupiter",
+      "source": "clickTasks.solar-find-01.options.jupiter",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "jupiter",
+      "observePrompt": "找一找：谁是最大的行星？",
+      "evidenceCopy": "对！木星是太阳系最大的行星。",
+      "markerChips": [
+        {
+          "label": "jupiter",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-earth",
+      "source": "clickTasks.solar-find-01.options.earth",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "earth",
+      "observePrompt": "找一找：谁是最大的行星？",
+      "evidenceCopy": "太阳最大，但它不是行星。最大的行星有明显条纹。",
+      "markerChips": [
+        {
+          "label": "earth",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-saturn",
+      "source": "clickTasks.solar-find-01.options.saturn",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "saturn",
+      "observePrompt": "找一找：谁是最大的行星？",
+      "evidenceCopy": "太阳最大，但它不是行星。最大的行星有明显条纹。",
+      "markerChips": [
+        {
+          "label": "saturn",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-01-options-sun",
+      "source": "clickTasks.solar-find-01.options.sun",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "sun",
+      "observePrompt": "找一找：谁是最大的行星？",
+      "evidenceCopy": "太阳最大，但它不是行星。最大的行星有明显条纹。",
+      "markerChips": [
+        {
+          "label": "sun",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-asteroid-belt",
+      "source": "clickTasks.solar-find-02.options.asteroid-belt",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "asteroid belt",
+      "observePrompt": "找一找：小行星带在哪里？",
+      "evidenceCopy": "你找到了火星和木星之间的小行星带。",
+      "markerChips": [
+        {
+          "label": "asteroid belt",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-mars",
+      "source": "clickTasks.solar-find-02.options.mars",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "mars",
+      "observePrompt": "找一找：小行星带在哪里？",
+      "evidenceCopy": "它不是一颗行星，而是火星和木星之间的一圈小颗粒。",
+      "markerChips": [
+        {
+          "label": "mars",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-jupiter",
+      "source": "clickTasks.solar-find-02.options.jupiter",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "jupiter",
+      "observePrompt": "找一找：小行星带在哪里？",
+      "evidenceCopy": "它不是一颗行星，而是火星和木星之间的一圈小颗粒。",
+      "markerChips": [
+        {
+          "label": "jupiter",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-find-02-options-saturn",
+      "source": "clickTasks.solar-find-02.options.saturn",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "saturn",
+      "observePrompt": "找一找：小行星带在哪里？",
+      "evidenceCopy": "它不是一颗行星，而是火星和木星之间的一圈小颗粒。",
+      "markerChips": [
+        {
+          "label": "saturn",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-choice-01-options-star",
+      "source": "clickTasks.solar-choice-01.options.star",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "恒星",
+      "observePrompt": "太阳是什么？",
+      "evidenceCopy": "对！太阳是一颗恒星。",
+      "markerChips": [
+        {
+          "label": "恒星",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-choice-01-options-planet",
+      "source": "clickTasks.solar-choice-01.options.planet",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "行星",
+      "observePrompt": "太阳是什么？",
+      "evidenceCopy": "行星会围着恒星转，太阳是中心。",
+      "markerChips": [
+        {
+          "label": "行星",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-solar-choice-01-options-asteroid",
+      "source": "clickTasks.solar-choice-01.options.asteroid",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "小行星",
+      "observePrompt": "太阳是什么？",
+      "evidenceCopy": "小行星很小，太阳非常大而且会发光。",
+      "markerChips": [
+        {
+          "label": "小行星",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

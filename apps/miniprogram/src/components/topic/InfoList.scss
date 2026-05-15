@@ -20,8 +20,14 @@
   flex-direction: column;
   gap: 6px;
   padding: 16px;
+  border: 2px solid transparent;
   border-radius: 16px;
   background: #f8fafc;
+}
+
+.info-item.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
 }
 
 .info-item-title {

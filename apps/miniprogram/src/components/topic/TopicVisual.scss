@@ -1,0 +1,89 @@
+.topic-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  margin: 4px 0 14px;
+  border: 2px solid rgba(23, 32, 51, 0.1);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.topic-visual-image {
+  width: 100%;
+  height: 300px;
+}
+
+.topic-visual-caption {
+  padding: 0 14px 14px;
+  color: #64748b;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.evidence-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-top: 2px solid rgba(23, 32, 51, 0.08);
+  background: #f8fafc;
+}
+
+.evidence-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.evidence-title {
+  color: #172033;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.evidence-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.evidence-copy {
+  color: #475569;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+.evidence-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.evidence-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.evidence-chip.warning {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.topic-visual.evidence-correct .evidence-panel,
+.topic-visual.evidence-complete .evidence-panel {
+  background: #f0fdf4;
+}
+
+.topic-visual.evidence-wrong .evidence-panel {
+  background: #fff7ed;
+}

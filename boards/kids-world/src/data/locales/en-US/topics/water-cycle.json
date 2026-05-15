@@ -340,5 +340,649 @@
     "The child can name at least three water-cycle steps.",
     "The child knows the Sun helps water evaporate.",
     "The child can use arrows to show water returning to rivers or the ocean."
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-water-places",
+      "source": "classificationGroups.water-places",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Places water stays",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Water can be in oceans, rivers, soil, and plants. You can spot: Ocean, Plant.",
+      "markerChips": [
+        {
+          "label": "Ocean",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Plant",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-sky-process",
+      "source": "classificationGroups.sky-process",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Changes in the sky",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Water vapor rises, gathers as clouds, and falls as rain. You can spot: Water vapor, Cloud, Rain.",
+      "markerChips": [
+        {
+          "label": "Water vapor",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Cloud",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "Rain",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-energy-driver",
+      "source": "classificationGroups.energy-driver",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "What powers the trip",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "The Sun warms water and helps it become vapor. You can spot: Sun.",
+      "markerChips": [
+        {
+          "label": "Sun",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-return-path",
+      "source": "classificationGroups.return-path",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "The way back down",
+      "observePrompt": "Look for objects that belong to this group.",
+      "evidenceCopy": "Rain flows into streams, rivers, and oceans. You can spot: River.",
+      "markerChips": [
+        {
+          "label": "River",
+          "meaning": "Belongs to this group",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sun",
+      "source": "representativeObjects.sun",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Sun",
+      "observePrompt": "bright round sun",
+      "evidenceCopy": "The Sun warms water on land and sea, turning some of it into vapor.",
+      "markerChips": [
+        {
+          "label": "Sun",
+          "meaning": "Thinking the water cycle does not need the Sun.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ocean",
+      "source": "representativeObjects.ocean",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Ocean",
+      "observePrompt": "wide blue water",
+      "evidenceCopy": "The ocean holds a lot of water and is an important starting point.",
+      "markerChips": [
+        {
+          "label": "Ocean",
+          "meaning": "Thinking seawater never becomes rain.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-water-vapor",
+      "source": "representativeObjects.water-vapor",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Water vapor",
+      "observePrompt": "thin upward wisps",
+      "evidenceCopy": "Water vapor is light and often invisible, so it can rise into the air.",
+      "markerChips": [
+        {
+          "label": "Water vapor",
+          "meaning": "Thinking invisible means not real.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cloud",
+      "source": "representativeObjects.cloud",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Cloud",
+      "observePrompt": "soft cloud with tiny droplets",
+      "evidenceCopy": "A cloud contains many tiny water droplets or ice crystals.",
+      "markerChips": [
+        {
+          "label": "Cloud",
+          "meaning": "Thinking clouds are cotton.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-rain",
+      "source": "representativeObjects.rain",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Rain",
+      "observePrompt": "falling blue drops",
+      "evidenceCopy": "When droplets grow bigger and heavier, they fall as rain.",
+      "markerChips": [
+        {
+          "label": "Rain",
+          "meaning": "Thinking rain means the cloud breaks apart.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-river",
+      "source": "representativeObjects.river",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "River",
+      "observePrompt": "curving blue stream",
+      "evidenceCopy": "Rainwater can gather into streams and rivers.",
+      "markerChips": [
+        {
+          "label": "River",
+          "meaning": "Thinking river water never returns to the sea.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-plant",
+      "source": "representativeObjects.plant",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Plant",
+      "observePrompt": "small green plant with roots",
+      "evidenceCopy": "Plants take in water and can also send some vapor back into the air.",
+      "markerChips": [
+        {
+          "label": "Plant",
+          "meaning": "Thinking plants only drink water.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-evaporation",
+      "source": "mechanism.steps.evaporation",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Warmed by the Sun",
+      "observePrompt": "Current step 1. Look at what happens here.",
+      "evidenceCopy": "The Sun warms water on the ocean and land, and some water becomes vapor.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Warmed by the Sun",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-rising",
+      "source": "mechanism.steps.rising",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Vapor rises",
+      "observePrompt": "Current step 2. Look at what happens here.",
+      "evidenceCopy": "Light water vapor rises into the sky with the air.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Vapor rises",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-condensation",
+      "source": "mechanism.steps.condensation",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Clouds form",
+      "observePrompt": "Current step 3. Look at what happens here.",
+      "evidenceCopy": "When vapor meets cooler air, many tiny droplets gather to form clouds.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Clouds form",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-precipitation",
+      "source": "mechanism.steps.precipitation",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Rain falls",
+      "observePrompt": "Current step 4. Look at what happens here.",
+      "evidenceCopy": "When droplets grow bigger and heavier, they fall back as rain.",
+      "markerChips": [
+        {
+          "label": "Step 4",
+          "meaning": "Rain falls",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-collection",
+      "source": "mechanism.steps.collection",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Water returns",
+      "observePrompt": "Current step 5. Look at what happens here.",
+      "evidenceCopy": "Rain enters soil, streams, rivers, and eventually many drops return to the sea.",
+      "markerChips": [
+        {
+          "label": "Step 5",
+          "meaning": "Water returns",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-plant-drink",
+      "source": "secondaryMechanism.steps.plant-drink",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Roots drink water",
+      "observePrompt": "Current step 1. Observe this supporting mechanism.",
+      "evidenceCopy": "Plant roots take water from the soil.",
+      "markerChips": [
+        {
+          "label": "Step 1",
+          "meaning": "Roots drink water",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-plant-release",
+      "source": "secondaryMechanism.steps.plant-release",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Leaves send vapor",
+      "observePrompt": "Current step 2. Observe this supporting mechanism.",
+      "evidenceCopy": "Leaves can send some water vapor back into the air.",
+      "markerChips": [
+        {
+          "label": "Step 2",
+          "meaning": "Leaves send vapor",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-secondaryMechanism-steps-plant-cool",
+      "source": "secondaryMechanism.steps.plant-cool",
+      "visualSlotId": "mechanism",
+      "interactionScope": "local",
+      "evidenceTitle": "Plants cool places",
+      "observePrompt": "Current step 3. Observe this supporting mechanism.",
+      "evidenceCopy": "Places with more plants often feel cooler and more humid.",
+      "markerChips": [
+        {
+          "label": "Step 3",
+          "meaning": "Plants cool places",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-cloud-vs-cotton",
+      "source": "comparePairs.cloud-vs-cotton",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Cloud vs Cotton",
+      "observePrompt": "Compare visual clues for Cloud and Cotton.",
+      "evidenceCopy": "Cloud: made of tiny droplets or ice crystals; moves and changes; can bring rain or snow. Cotton: plant fiber; can be held in your hand; does not become rain. Clouds look soft, but they are not cotton.",
+      "markerChips": [
+        {
+          "label": "Cloud",
+          "meaning": "made of tiny droplets or ice crystals",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Cotton",
+          "meaning": "plant fiber",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-evaporation-vs-boiling",
+      "source": "comparePairs.evaporation-vs-boiling",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "Evaporation vs Boiling",
+      "observePrompt": "Compare visual clues for Evaporation and Boiling.",
+      "evidenceCopy": "Evaporation: water slowly becomes vapor; can happen on oceans and ground; does not need big bubbles. Boiling: water becomes very hot; bubbles appear; usually happens in a pot. Ocean water can evaporate without boiling.",
+      "markerChips": [
+        {
+          "label": "Evaporation",
+          "meaning": "water slowly becomes vapor",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Boiling",
+          "meaning": "water becomes very hot",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-river-vs-ocean",
+      "source": "comparePairs.river-vs-ocean",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "River vs Ocean",
+      "observePrompt": "Compare visual clues for River and Ocean.",
+      "evidenceCopy": "River: flows across land; often moves downhill; carries water toward lakes or seas. Ocean: very large; holds lots of water; sends vapor upward when warmed. Rivers and oceans are connected in the same cycle.",
+      "markerChips": [
+        {
+          "label": "River",
+          "meaning": "flows across land",
+          "emphasis": "primary"
+        },
+        {
+          "label": "Ocean",
+          "meaning": "very large",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-ocean",
+      "source": "clickTasks.water-sequence-01.options.ocean",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Ocean",
+      "observePrompt": "Start at the sea and tap the water-cycle route.",
+      "evidenceCopy": "Current step: Ocean. Start at the sea and tap the water-cycle route.",
+      "markerChips": [
+        {
+          "label": "Ocean",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-water-vapor",
+      "source": "clickTasks.water-sequence-01.options.water-vapor",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Water vapor",
+      "observePrompt": "Start at the sea and tap the water-cycle route.",
+      "evidenceCopy": "Current step: Water vapor. Start at the sea and tap the water-cycle route.",
+      "markerChips": [
+        {
+          "label": "Water vapor",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-cloud",
+      "source": "clickTasks.water-sequence-01.options.cloud",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Cloud",
+      "observePrompt": "Start at the sea and tap the water-cycle route.",
+      "evidenceCopy": "Current step: Cloud. Start at the sea and tap the water-cycle route.",
+      "markerChips": [
+        {
+          "label": "Cloud",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-rain",
+      "source": "clickTasks.water-sequence-01.options.rain",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Rain",
+      "observePrompt": "Start at the sea and tap the water-cycle route.",
+      "evidenceCopy": "Current step: Rain. Start at the sea and tap the water-cycle route.",
+      "markerChips": [
+        {
+          "label": "Rain",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-sequence-01-options-river",
+      "source": "clickTasks.water-sequence-01.options.river",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "River",
+      "observePrompt": "Start at the sea and tap the water-cycle route.",
+      "evidenceCopy": "Current step: River. Start at the sea and tap the water-cycle route.",
+      "markerChips": [
+        {
+          "label": "River",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-sun",
+      "source": "clickTasks.water-find-01.options.sun",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "sun",
+      "observePrompt": "Find the important energy source.",
+      "evidenceCopy": "Correct! The Sun powers the water cycle.",
+      "markerChips": [
+        {
+          "label": "sun",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-cloud",
+      "source": "clickTasks.water-find-01.options.cloud",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "cloud",
+      "observePrompt": "Find the important energy source.",
+      "evidenceCopy": "It is bright and warm, and it helps water become vapor.",
+      "markerChips": [
+        {
+          "label": "cloud",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-river",
+      "source": "clickTasks.water-find-01.options.river",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "river",
+      "observePrompt": "Find the important energy source.",
+      "evidenceCopy": "It is bright and warm, and it helps water become vapor.",
+      "markerChips": [
+        {
+          "label": "river",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-find-01-options-plant",
+      "source": "clickTasks.water-find-01.options.plant",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "plant",
+      "observePrompt": "Find the important energy source.",
+      "evidenceCopy": "It is bright and warm, and it helps water become vapor.",
+      "markerChips": [
+        {
+          "label": "plant",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-choice-01-options-tiny-water",
+      "source": "clickTasks.water-choice-01.options.tiny-water",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Many tiny droplets or ice crystals",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Right! Clouds contain many tiny droplets or ice crystals.",
+      "markerChips": [
+        {
+          "label": "Many tiny droplets or ice crystals",
+          "meaning": "Current choice",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-choice-01-options-cotton",
+      "source": "clickTasks.water-choice-01.options.cotton",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Cotton",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Clouds look like cotton, but they are not cotton.",
+      "markerChips": [
+        {
+          "label": "Cotton",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-water-choice-01-options-smoke",
+      "source": "clickTasks.water-choice-01.options.smoke",
+      "visualSlotId": "click-task",
+      "interactionScope": "local",
+      "evidenceTitle": "Smoke",
+      "observePrompt": "Choose the best answer.",
+      "evidenceCopy": "Clouds are related to water, not smoke.",
+      "markerChips": [
+        {
+          "label": "Smoke",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    }
   ]
 }

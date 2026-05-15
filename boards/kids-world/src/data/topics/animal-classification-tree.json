@@ -524,5 +524,771 @@
     "不要要求孩子一次记住所有类别，优先让他说出分类依据。",
     "可以追问：你是看哪个线索判断的？还有没有反例？",
     "本页可自然连接到‘昆虫与蜘蛛’和‘恐龙分类’。"
+  ],
+  "visualSlots": [
+    {
+      "id": "hero",
+      "assetId": "life-animal-classification-tree-hero",
+      "target": "hero",
+      "role": "hero",
+      "required": true
+    },
+    {
+      "id": "object-icons",
+      "assetId": "life-animal-classification-tree-object-icons",
+      "target": "representativeObjects",
+      "role": "observation",
+      "required": true
+    },
+    {
+      "id": "compare",
+      "assetId": "life-animal-classification-tree-misconception-compare",
+      "target": "comparePairs",
+      "role": "compare",
+      "required": true
+    }
+  ],
+  "visualEvidenceBindings": [
+    {
+      "id": "evidence-classificationGroups-vertebrates",
+      "source": "classificationGroups.vertebrates",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "脊椎动物",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "身体里有一根重要的骨头柱子，像身体的支架。",
+      "markerChips": [],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-mammals",
+      "source": "classificationGroups.mammals",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "哺乳类",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "很多哺乳动物小时候会喝妈妈的奶，身上常常有毛。 这类里可以看到：猫、鲸鱼、蝙蝠。",
+      "markerChips": [
+        {
+          "label": "猫",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "鲸鱼",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蝙蝠",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-birds",
+      "source": "classificationGroups.birds",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "鸟类",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "鸟类有羽毛，很多鸟会飞，也有一些鸟不太会飞。 这类里可以看到：麻雀、企鹅。",
+      "markerChips": [
+        {
+          "label": "麻雀",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "企鹅",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-fish",
+      "source": "classificationGroups.fish",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "鱼类",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "鱼大多生活在水里，用鳃呼吸。 这类里可以看到：金鱼、鲨鱼。",
+      "markerChips": [
+        {
+          "label": "金鱼",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "鲨鱼",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-reptiles",
+      "source": "classificationGroups.reptiles",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "爬行类",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "爬行类常常有鳞片，很多会贴近地面爬行。 这类里可以看到：蛇、乌龟。",
+      "markerChips": [
+        {
+          "label": "蛇",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "乌龟",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-amphibians",
+      "source": "classificationGroups.amphibians",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "两栖类",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "两栖类小时候常在水里，长大后可以到陆地活动。 这类里可以看到：青蛙。",
+      "markerChips": [
+        {
+          "label": "青蛙",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-classificationGroups-insects",
+      "source": "classificationGroups.insects",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "昆虫",
+      "observePrompt": "看一看哪些对象被归到这一类。",
+      "evidenceCopy": "昆虫通常有 6 条腿，身体分成几段。 这类里可以看到：蝴蝶、蚂蚁。",
+      "markerChips": [
+        {
+          "label": "蝴蝶",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        },
+        {
+          "label": "蚂蚁",
+          "meaning": "属于当前分类",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-cat",
+      "source": "representativeObjects.cat",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "猫",
+      "observePrompt": "毛、四条腿、幼崽喝奶",
+      "evidenceCopy": "猫是哺乳动物，小时候会喝妈妈的奶。",
+      "markerChips": [
+        {
+          "label": "猫",
+          "meaning": "不要只按‘住在家里’来分类。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-whale",
+      "source": "representativeObjects.whale",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "鲸鱼",
+      "observePrompt": "海里生活、用肺呼吸、宝宝喝奶",
+      "evidenceCopy": "鲸鱼住在海里，但它不是鱼，它是哺乳动物。",
+      "markerChips": [
+        {
+          "label": "鲸鱼",
+          "meaning": "看到海里生活就以为是鱼。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-bat",
+      "source": "representativeObjects.bat",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蝙蝠",
+      "observePrompt": "翅膀像皮膜、没有羽毛",
+      "evidenceCopy": "蝙蝠会飞，但它不是鸟，它是哺乳动物。",
+      "markerChips": [
+        {
+          "label": "蝙蝠",
+          "meaning": "会飞就以为是鸟。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-sparrow",
+      "source": "representativeObjects.sparrow",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "麻雀",
+      "observePrompt": "羽毛、鸟喙、翅膀",
+      "evidenceCopy": "麻雀有羽毛，是鸟类。",
+      "markerChips": [
+        {
+          "label": "麻雀",
+          "meaning": "只看会飞，不看羽毛。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-penguin",
+      "source": "representativeObjects.penguin",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "企鹅",
+      "observePrompt": "羽毛、翅膀变成游泳帮手",
+      "evidenceCopy": "企鹅不太会飞，但它有羽毛，仍然是鸟类。",
+      "markerChips": [
+        {
+          "label": "企鹅",
+          "meaning": "不会飞就以为不是鸟。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-goldfish",
+      "source": "representativeObjects.goldfish",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "金鱼",
+      "observePrompt": "鳃、鳍、水中生活",
+      "evidenceCopy": "金鱼住在水里，用鳃呼吸，是鱼类。",
+      "markerChips": [
+        {
+          "label": "金鱼",
+          "meaning": "所有水中动物都算鱼。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-shark",
+      "source": "representativeObjects.shark",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "鲨鱼",
+      "observePrompt": "鳍、鱼形身体",
+      "evidenceCopy": "鲨鱼是鱼类，身体适合在水里游动。",
+      "markerChips": [
+        {
+          "label": "鲨鱼",
+          "meaning": "鲨鱼很大就不像鱼。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-snake",
+      "source": "representativeObjects.snake",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蛇",
+      "observePrompt": "鳞片、贴地移动",
+      "evidenceCopy": "蛇是爬行类，身体常有鳞片。",
+      "markerChips": [
+        {
+          "label": "蛇",
+          "meaning": "没有脚就不知道归哪类。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-turtle",
+      "source": "representativeObjects.turtle",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "乌龟",
+      "observePrompt": "龟壳、鳞片",
+      "evidenceCopy": "乌龟是爬行类，有硬硬的壳。",
+      "markerChips": [
+        {
+          "label": "乌龟",
+          "meaning": "会游泳就以为是鱼。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-frog",
+      "source": "representativeObjects.frog",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "青蛙",
+      "observePrompt": "蝌蚪变青蛙",
+      "evidenceCopy": "青蛙是两栖类，小时候像小蝌蚪，长大后能到陆地。",
+      "markerChips": [
+        {
+          "label": "青蛙",
+          "meaning": "青蛙会跳就随便分类。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-butterfly",
+      "source": "representativeObjects.butterfly",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蝴蝶",
+      "observePrompt": "翅膀、触角、6 条腿",
+      "evidenceCopy": "蝴蝶是昆虫，通常有 6 条腿。",
+      "markerChips": [
+        {
+          "label": "蝴蝶",
+          "meaning": "只看翅膀，不看腿数。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-representativeObjects-ant",
+      "source": "representativeObjects.ant",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "蚂蚁",
+      "observePrompt": "6 条腿、触角",
+      "evidenceCopy": "蚂蚁是昆虫，身体小但分工很强。",
+      "markerChips": [
+        {
+          "label": "蚂蚁",
+          "meaning": "不会飞就以为不是昆虫。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-look-body",
+      "source": "mechanism.steps.look-body",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "先看身体",
+      "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+      "evidenceCopy": "它有羽毛、鳞片、毛，还是 6 条腿？",
+      "markerChips": [
+        {
+          "label": "第 1 步",
+          "meaning": "先看身体",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-look-life",
+      "source": "mechanism.steps.look-life",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "再看生活方式",
+      "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+      "evidenceCopy": "它住在水里、陆地，还是两边都能去？",
+      "markerChips": [
+        {
+          "label": "第 2 步",
+          "meaning": "再看生活方式",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-look-baby",
+      "source": "mechanism.steps.look-baby",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看看宝宝",
+      "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+      "evidenceCopy": "小时候怎么长大，也能帮助分类。",
+      "markerChips": [
+        {
+          "label": "第 3 步",
+          "meaning": "看看宝宝",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-mechanism-steps-avoid-single-clue",
+      "source": "mechanism.steps.avoid-single-clue",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "不要只看一个线索",
+      "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+      "evidenceCopy": "会飞不一定是鸟，住水里不一定是鱼。",
+      "markerChips": [
+        {
+          "label": "第 4 步",
+          "meaning": "不要只看一个线索",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-whale-vs-fish",
+      "source": "comparePairs.whale-vs-fish",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "鲸鱼 vs 鱼",
+      "observePrompt": "对比 鲸鱼 和 鱼 的图片线索。",
+      "evidenceCopy": "鲸鱼: 用肺呼吸；宝宝喝奶；是哺乳类。鱼: 多用鳃呼吸；有鳍；是鱼类。住在海里，不一定就是鱼。",
+      "markerChips": [
+        {
+          "label": "鲸鱼",
+          "meaning": "用肺呼吸",
+          "emphasis": "primary"
+        },
+        {
+          "label": "鱼",
+          "meaning": "多用鳃呼吸",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-bat-vs-bird",
+      "source": "comparePairs.bat-vs-bird",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "蝙蝠 vs 鸟",
+      "observePrompt": "对比 蝙蝠 和 鸟 的图片线索。",
+      "evidenceCopy": "蝙蝠: 没有羽毛；宝宝喝奶；是哺乳类。鸟: 有羽毛；有鸟喙；是鸟类。会飞，不一定就是鸟。",
+      "markerChips": [
+        {
+          "label": "蝙蝠",
+          "meaning": "没有羽毛",
+          "emphasis": "primary"
+        },
+        {
+          "label": "鸟",
+          "meaning": "有羽毛",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-comparePairs-penguin-vs-sparrow",
+      "source": "comparePairs.penguin-vs-sparrow",
+      "visualSlotId": "compare",
+      "interactionScope": "local",
+      "evidenceTitle": "企鹅 vs 麻雀",
+      "observePrompt": "对比 企鹅 和 麻雀 的图片线索。",
+      "evidenceCopy": "企鹅: 不太会飞；有羽毛；是鸟类。麻雀: 会飞；有羽毛；是鸟类。会不会飞，不是判断鸟类的唯一线索。",
+      "markerChips": [
+        {
+          "label": "企鹅",
+          "meaning": "不太会飞",
+          "emphasis": "primary"
+        },
+        {
+          "label": "麻雀",
+          "meaning": "会飞",
+          "emphasis": "supporting"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-classify-01-options-fish",
+      "source": "clickTasks.animal-classify-01.options.fish",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "鱼类",
+      "observePrompt": "点一个分类。",
+      "evidenceCopy": "鲸鱼住在海里，但它用肺呼吸，宝宝会喝奶。",
+      "markerChips": [
+        {
+          "label": "鱼类",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-classify-01-options-mammals",
+      "source": "clickTasks.animal-classify-01.options.mammals",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "哺乳类",
+      "observePrompt": "点一个分类。",
+      "evidenceCopy": "对！鲸鱼是住在海里的哺乳动物。",
+      "markerChips": [
+        {
+          "label": "哺乳类",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-classify-01-options-birds",
+      "source": "clickTasks.animal-classify-01.options.birds",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "鸟类",
+      "observePrompt": "点一个分类。",
+      "evidenceCopy": "鲸鱼不会长羽毛，也不是鸟类。",
+      "markerChips": [
+        {
+          "label": "鸟类",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-classify-02-options-bird",
+      "source": "clickTasks.animal-classify-02.options.bird",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "是鸟，因为会飞",
+      "observePrompt": "点出更准确的说法。",
+      "evidenceCopy": "再看一个线索：蝙蝠没有羽毛。",
+      "markerChips": [
+        {
+          "label": "是鸟，因为会飞",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-classify-02-options-mammal",
+      "source": "clickTasks.animal-classify-02.options.mammal",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "是哺乳类，因为没有羽毛，宝宝喝奶",
+      "observePrompt": "点出更准确的说法。",
+      "evidenceCopy": "很棒！会飞不一定是鸟。",
+      "markerChips": [
+        {
+          "label": "是哺乳类，因为没有羽毛，宝宝喝奶",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "correct",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-find-01-options-sparrow",
+      "source": "clickTasks.animal-find-01.options.sparrow",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "sparrow",
+      "observePrompt": "找一找：谁有羽毛？",
+      "evidenceCopy": "你找到了鸟类的重要线索：羽毛。",
+      "markerChips": [
+        {
+          "label": "sparrow",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-find-01-options-penguin",
+      "source": "clickTasks.animal-find-01.options.penguin",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "penguin",
+      "observePrompt": "找一找：谁有羽毛？",
+      "evidenceCopy": "你找到了鸟类的重要线索：羽毛。",
+      "markerChips": [
+        {
+          "label": "penguin",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-find-01-options-bat",
+      "source": "clickTasks.animal-find-01.options.bat",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "bat",
+      "observePrompt": "找一找：谁有羽毛？",
+      "evidenceCopy": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+      "markerChips": [
+        {
+          "label": "bat",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-find-01-options-butterfly",
+      "source": "clickTasks.animal-find-01.options.butterfly",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "butterfly",
+      "observePrompt": "找一找：谁有羽毛？",
+      "evidenceCopy": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+      "markerChips": [
+        {
+          "label": "butterfly",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-find-01-options-whale",
+      "source": "clickTasks.animal-find-01.options.whale",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "whale",
+      "observePrompt": "找一找：谁有羽毛？",
+      "evidenceCopy": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+      "markerChips": [
+        {
+          "label": "whale",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-sequence-01-options-body",
+      "source": "clickTasks.animal-sequence-01.options.body",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看身体特征",
+      "observePrompt": "按顺序点三个线索。",
+      "evidenceCopy": "当前步骤：看身体特征。按顺序点三个线索。",
+      "markerChips": [
+        {
+          "label": "看身体特征",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-sequence-01-options-life",
+      "source": "clickTasks.animal-sequence-01.options.life",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "看生活方式",
+      "observePrompt": "按顺序点三个线索。",
+      "evidenceCopy": "当前步骤：看生活方式。按顺序点三个线索。",
+      "markerChips": [
+        {
+          "label": "看生活方式",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    },
+    {
+      "id": "evidence-clickTasks-animal-sequence-01-options-compare",
+      "source": "clickTasks.animal-sequence-01.options.compare",
+      "visualSlotId": "hero",
+      "interactionScope": "local",
+      "evidenceTitle": "和容易混淆的动物比一比",
+      "observePrompt": "按顺序点三个线索。",
+      "evidenceCopy": "当前步骤：和容易混淆的动物比一比。按顺序点三个线索。",
+      "markerChips": [
+        {
+          "label": "和容易混淆的动物比一比",
+          "meaning": "当前选择",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "partial",
+      "quality": "generated"
+    }
   ]
 }

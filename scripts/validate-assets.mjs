@@ -6,6 +6,7 @@ const TOPICS_DIR = "boards/kids-world/src/data/topics";
 const ASSETS_ROOT = "boards/kids-world/public/assets";
 
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf-8"));
+const manifestById = new Map((manifest.assets || []).map((asset) => [asset.assetId, asset]));
 let missing = 0;
 let checked = 0;
 
@@ -38,6 +39,23 @@ for (const file of topicFiles) {
     const fullPath = join("boards/kids-world/public", asset.path);
     if (!existsSync(fullPath)) {
       console.log(`❌ ${file} → assets.${key}: ${asset.path} not found`);
+      missing++;
+    }
+  }
+
+  for (const slot of topic.visualSlots || []) {
+    checked++;
+    const manifestAsset = manifestById.get(slot.assetId);
+    if (!manifestAsset) {
+      console.log(`❌ ${file} → visualSlots.${slot.id}: assetId ${slot.assetId} not found in manifest`);
+      missing++;
+      continue;
+    }
+
+    const webpExists = manifestAsset.webpPath && existsSync(join("boards/kids-world/public", manifestAsset.webpPath));
+    const pngExists = manifestAsset.pngPath && existsSync(join("boards/kids-world/public", manifestAsset.pngPath));
+    if (slot.required && !webpExists && !pngExists) {
+      console.log(`❌ ${file} → required visualSlots.${slot.id}: generated image file not found`);
       missing++;
     }
   }
