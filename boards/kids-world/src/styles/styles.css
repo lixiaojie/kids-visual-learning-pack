@@ -719,6 +719,53 @@ h3,
   object-fit: cover;
 }
 
+.topic-visual-image-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-focus-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.visual-focus-region {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  box-shadow: 0 0 0 999px rgba(15, 23, 42, 0.08);
+  opacity: 0.24;
+  transition: opacity 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.visual-focus-region.active {
+  opacity: 1;
+  transform: scale(1.03);
+  border-width: 3px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.65), 0 12px 30px rgba(15, 23, 42, 0.2);
+}
+
+.visual-focus-region.warning.active {
+  border-style: dashed;
+  border-color: rgba(249, 115, 22, 0.9);
+}
+
+.visual-focus-region small {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  max-width: calc(100% - 16px);
+  padding: 4px 8px;
+  overflow-wrap: anywhere;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
 .topic-visual figcaption {
   padding: 9px 11px;
   color: var(--muted);
@@ -961,6 +1008,29 @@ button.compare-card {
 
 .task-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.task-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.task-tabs button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.task-tabs button.active,
+.task-card.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
 }
 
 .task-card.correct {

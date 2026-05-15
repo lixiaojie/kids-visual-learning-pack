@@ -11,6 +11,9 @@ export type {
   TaskResult,
   TextMap,
   Topic,
+  VisualFocus,
+  VisualFocusMode,
+  VisualFocusRegion,
   VisualEvidenceBinding,
   VisualEvidenceState,
   VisualSlot,
@@ -30,9 +33,22 @@ export {
 export { getMap, getVisibleTopicSlugs, type ContentChannel } from "./map";
 export { getCdnAssetUrl, getGeneratedImageUrl } from "./media";
 export {
+  getDefaultEvidenceSourceForStage,
   getTopicLearningFlow,
   getTopicVisualSlots,
   getVisualSlotForTarget,
   getVisualSlotsForRole,
 } from "./visual-slots";
 export { getTopicEvidenceCoverage, resolveVisualEvidence } from "./evidence";
+export {
+  applyTaskOptionClick,
+  createInitialTopicInteractionState,
+  reduceTopicInteractionState,
+  resolveTopicPresentation,
+  syncSelectionFromSource,
+} from "./interaction";
+export type {
+  TopicInteractionAction,
+  TopicInteractionState,
+  TopicPresentation,
+} from "./interaction";

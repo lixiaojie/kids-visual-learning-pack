@@ -1,12 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import {
+  createInitialTopicInteractionState,
   getTopic,
   getTopicLearningFlow,
   getVisualSlotForTarget,
+  reduceTopicInteractionState,
+  resolveTopicPresentation,
   type ExplorationMap,
   type Locale,
   type Topic,
+  type TopicInteractionAction,
+  type VisualEvidenceState,
 } from "@yutou/kids-content";
 import { SectionHeader } from "../components/shared/SectionHeader";
 import { TopicHero } from "../components/topic/TopicHero";
@@ -14,20 +19,28 @@ import { ClassificationGroups } from "../components/topic/ClassificationGroups";
 import { RepresentativeObjects } from "../components/topic/RepresentativeObjects";
 import { MechanismSteps } from "../components/topic/MechanismSteps";
 import { ComparePairs } from "../components/topic/ComparePairs";
-import { ClickTaskCard } from "../components/topic/ClickTaskCard";
+import { ClickTaskDeck } from "../components/topic/ClickTaskDeck";
 import { SpeakTemplates } from "../components/topic/SpeakTemplates";
 import { ParentTips } from "../components/topic/ParentTips";
 import { RelatedTopics } from "../components/topic/RelatedTopics";
 import { LearningFlowRail } from "../components/topic/LearningFlowRail";
-import { TopicVisual } from "../components/topic/TopicVisual";
 
 type Props = { slug: string; locale: Locale; map: ExplorationMap };
 
 function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale; map: ExplorationMap }) {
-  const [activeObjectId, setActiveObjectId] = useState(topic.representativeObjects[0]?.id ?? "");
-  const activeObject = topic.representativeObjects.find((item) => item.id === activeObjectId) ?? topic.representativeObjects[0];
   const flowStages = useMemo(() => getTopicLearningFlow(topic, locale), [topic, locale]);
-  const [activeStageId, setActiveStageId] = useState(flowStages[0]?.id ?? "");
+  const [interactionState, setInteractionState] = useState(() => createInitialTopicInteractionState(topic, locale));
+  const dispatch = useCallback(
+    (action: TopicInteractionAction) => {
+      setInteractionState((current) => reduceTopicInteractionState(topic, locale, current, action));
+    },
+    [topic, locale],
+  );
+  const presentation = useMemo(() => resolveTopicPresentation(topic, interactionState, locale), [topic, interactionState, locale]);
+
+  useEffect(() => {
+    setInteractionState(createInitialTopicInteractionState(topic, locale));
+  }, [topic, locale]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,7 +50,7 @@ function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (!visible) return;
         const stage = flowStages.find((item) => item.sectionIds.includes(visible.target.id));
-        if (stage) setActiveStageId(stage.id);
+        if (stage) dispatch({ type: "SCROLL_STAGE_VISIBLE", stageId: stage.id });
       },
       { rootMargin: "-28% 0px -58% 0px", threshold: [0.1, 0.35, 0.6] },
     );
@@ -48,13 +61,29 @@ function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale
       .filter((section): section is HTMLElement => Boolean(section));
     observedSections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [flowStages]);
+  }, [dispatch, flowStages]);
 
   function handleSelectGroup(groupId: string) {
-    const firstObject = topic.representativeObjects.find((item) => item.groupId === groupId);
-    if (firstObject) setActiveObjectId(firstObject.id);
+    dispatch({ type: "SELECT_CLASSIFICATION_GROUP", groupId });
     document.getElementById("topic-objects")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  function evidenceFor(prefix: string): VisualEvidenceState | null {
+    return presentation.evidence?.source.startsWith(prefix) ? presentation.evidence : null;
+  }
+
+  function slotForEvidence(evidence: VisualEvidenceState | null, fallbackTarget: string) {
+    return evidence
+      ? topic.visualSlots?.find((slot) => slot.id === evidence.visualSlotId) ?? getVisualSlotForTarget(topic, fallbackTarget)
+      : getVisualSlotForTarget(topic, fallbackTarget);
+  }
+
+  const classificationEvidence = evidenceFor("classificationGroups.");
+  const objectEvidence = evidenceFor("representativeObjects.");
+  const mechanismEvidence = evidenceFor("mechanism.steps.");
+  const secondaryEvidence = evidenceFor("secondaryMechanism.steps.");
+  const compareEvidence = evidenceFor("comparePairs.");
+  const activeObjectId = interactionState.activeObjectId ?? topic.representativeObjects[0]?.id ?? "";
 
   return (
     <main className="page-shell topic-page">
@@ -64,7 +93,12 @@ function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale
       </a>
 
       <TopicHero topic={topic} />
-      <LearningFlowRail activeStageId={activeStageId} stages={flowStages} locale={locale} />
+      <LearningFlowRail
+        activeStageId={interactionState.activeStageId}
+        stages={flowStages}
+        locale={locale}
+        onSelectStage={(stageId) => dispatch({ type: "SELECT_STAGE", stageId })}
+      />
 
       <section className="content-grid">
         <article className="panel wide" id="topic-observe">
@@ -76,7 +110,9 @@ function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale
         <ClassificationGroups
           topic={topic}
           groups={topic.classificationGroups}
-          activeGroupId={activeObject?.groupId}
+          activeGroupId={interactionState.activeGroupId ?? topic.classificationGroups[0]?.id}
+          evidence={classificationEvidence}
+          visualSlot={slotForEvidence(classificationEvidence, "classificationGroups")}
           onSelectGroup={handleSelectGroup}
           locale={locale}
         />
@@ -84,35 +120,36 @@ function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale
           topic={topic}
           objects={topic.representativeObjects}
           activeObjectId={activeObjectId}
-          onSelectObject={setActiveObjectId}
-          visualSlot={getVisualSlotForTarget(topic, `representativeObjects.${activeObjectId}`)}
+          onSelectObject={(objectId) => dispatch({ type: "SELECT_REPRESENTATIVE_OBJECT", objectId })}
+          visualSlot={slotForEvidence(objectEvidence, `representativeObjects.${activeObjectId}`)}
+          evidence={objectEvidence}
           locale={locale}
         />
         <MechanismSteps
           topic={topic}
           mechanism={topic.mechanism}
           secondary={topic.secondaryMechanism}
-          mechanismSlot={getVisualSlotForTarget(topic, "mechanism")}
-          secondarySlot={getVisualSlotForTarget(topic, "secondaryMechanism")}
+          activeMechanismStepId={interactionState.activeMechanismStepId ?? topic.mechanism.steps[0]?.id ?? ""}
+          activeSecondaryStepId={interactionState.activeSecondaryStepId ?? topic.secondaryMechanism?.steps[0]?.id ?? ""}
+          onSelectMechanismStep={(stepId) => dispatch({ type: "SELECT_MECHANISM_STEP", stepId })}
+          onSelectSecondaryStep={(stepId) => dispatch({ type: "SELECT_SECONDARY_MECHANISM_STEP", stepId })}
+          mechanismEvidence={mechanismEvidence}
+          secondaryEvidence={secondaryEvidence}
+          mechanismSlot={slotForEvidence(mechanismEvidence, "mechanism")}
+          secondarySlot={slotForEvidence(secondaryEvidence, "secondaryMechanism")}
           locale={locale}
         />
-        <ComparePairs pairs={topic.comparePairs} topic={topic} locale={locale} />
+        <ComparePairs
+          pairs={topic.comparePairs}
+          topic={topic}
+          activePairId={interactionState.activeComparePairId ?? topic.comparePairs[0]?.id ?? ""}
+          evidence={compareEvidence}
+          visualSlot={slotForEvidence(compareEvidence, "comparePairs")}
+          onSelectPair={(pairId) => dispatch({ type: "SELECT_COMPARE_PAIR", pairId })}
+          locale={locale}
+        />
 
-        <article className="panel wide" id="topic-tasks">
-          <SectionHeader title={locale === "zh-CN" ? "点击任务" : "Tap tasks"} kicker={locale === "zh-CN" ? "不计分，多试几次" : "No score pressure"} />
-          <TopicVisual slot={topic.visualSlots?.find((slot) => slot.target === "clickTasks")} fallbackAlt={locale === "zh-CN" ? "任务图" : "Task visual"} locale={locale} />
-          <div className="task-grid">
-            {topic.clickTasks.map((task) => (
-              <ClickTaskCard
-                task={task}
-                topic={topic}
-                key={task.id}
-                locale={locale}
-                visualSlot={topic.visualSlots?.find((slot) => slot.target === `clickTasks.${task.id}`)}
-              />
-            ))}
-          </div>
-        </article>
+        <ClickTaskDeck topic={topic} state={interactionState} presentation={presentation} dispatch={dispatch} locale={locale} />
 
         <SpeakTemplates templates={topic.speakTemplates} locale={locale} />
         <ParentTips tips={topic.parentTips} locale={locale} />

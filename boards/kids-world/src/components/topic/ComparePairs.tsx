@@ -1,24 +1,22 @@
-import { useState } from "react";
-import { resolveVisualEvidence } from "@yutou/kids-content";
-import type { Topic } from "../../types/topic";
+import type { Topic, VisualEvidenceState, VisualSlot } from "../../types/topic";
 import { SectionHeader } from "../shared/SectionHeader";
 import { TopicVisual } from "./TopicVisual";
 
-type Props = { pairs: Topic["comparePairs"]; topic: Topic; locale: string };
+type Props = {
+  pairs: Topic["comparePairs"];
+  topic: Topic;
+  activePairId: string;
+  evidence?: VisualEvidenceState | null;
+  visualSlot?: VisualSlot | null;
+  onSelectPair: (id: string) => void;
+  locale: string;
+};
 
-export function ComparePairs({ pairs, topic, locale }: Props) {
-  const [activePairId, setActivePairId] = useState(pairs[0]?.id ?? "");
-  const activeEvidence = activePairId
-    ? resolveVisualEvidence(topic, { source: `comparePairs.${activePairId}`, result: "selected", locale: locale === "en-US" ? "en-US" : "zh-CN" })
-    : null;
-  const sharedSlot = activeEvidence
-    ? topic.visualSlots?.find((slot) => slot.id === activeEvidence.visualSlotId)
-    : topic.visualSlots?.find((slot) => slot.target === "comparePairs");
-
+export function ComparePairs({ pairs, topic, activePairId, evidence, visualSlot, onSelectPair, locale }: Props) {
   return (
     <article className="panel wide" id="topic-compare">
       <SectionHeader title={locale === "zh-CN" ? "容易混淆" : "Easy mix-ups"} />
-      <TopicVisual slot={sharedSlot} evidence={activeEvidence} fallbackAlt={locale === "zh-CN" ? "对比图" : "Compare visual"} locale={locale === "en-US" ? "en-US" : "zh-CN"} />
+      <TopicVisual slot={visualSlot} evidence={evidence} fallbackAlt={locale === "zh-CN" ? "对比图" : "Compare visual"} locale={locale === "en-US" ? "en-US" : "zh-CN"} />
       <div className="compare-grid">
         {pairs.map((pair) => (
           <button
@@ -26,7 +24,7 @@ export function ComparePairs({ pairs, topic, locale }: Props) {
             key={pair.id}
             type="button"
             data-evidence-source={`comparePairs.${pair.id}`}
-            onClick={() => setActivePairId(pair.id)}
+            onClick={() => onSelectPair(pair.id)}
           >
             <TopicVisual slot={topic.visualSlots?.find((slot) => slot.target === `comparePairs.${pair.id}`)} fallbackAlt={pair.title} locale={locale === "en-US" ? "en-US" : "zh-CN"} />
             <strong>{pair.title}</strong>

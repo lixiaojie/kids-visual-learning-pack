@@ -135,9 +135,10 @@ const webTopicComponentSource = [
   fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/MechanismSteps.tsx"), "utf8"),
   fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ComparePairs.tsx"), "utf8"),
   fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClickTaskCard.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClickTaskDeck.tsx"), "utf8"),
   fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/TopicVisual.tsx"), "utf8"),
 ].join("\n");
-for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "TopicVisual"]) {
+for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "resolveTopicPresentation"]) {
   if (!webTopicPage.includes(requiredTopicFlow)) {
     errors.push(`Web topic page must wire module visuals and learning flow: ${requiredTopicFlow}`);
   }
@@ -147,7 +148,7 @@ for (const requiredAnchor of ["topic-objects", "topic-mechanism", "topic-compare
     errors.push(`Web topic page must expose learning flow anchor: ${requiredAnchor}`);
   }
 }
-for (const requiredEvidenceWire of ["resolveVisualEvidence", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
+for (const requiredEvidenceWire of ["resolveTopicPresentation", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
   if (!webTopicComponentSource.includes(requiredEvidenceWire)) {
     errors.push(`Web topic components must wire visual evidence behavior: ${requiredEvidenceWire}`);
   }
@@ -164,21 +165,22 @@ const miniprogramTopicPage = fs.readFileSync(miniprogramTopicPagePath, "utf8");
 const miniprogramEvidenceSource = [
   miniprogramTopicPage,
   fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ClickTaskCard.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ClickTaskDeck.tsx"), "utf8"),
   fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ComparePairCard.tsx"), "utf8"),
   fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/InfoList.tsx"), "utf8"),
   fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/TopicVisual.tsx"), "utf8"),
 ].join("\n");
-for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "TopicVisual"]) {
+for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "resolveTopicPresentation"]) {
   if (!miniprogramTopicPage.includes(requiredTopicFlow)) {
     errors.push(`miniprogram topic page must wire module visuals and learning flow: ${requiredTopicFlow}`);
   }
 }
 for (const requiredAnchor of ["topic-objects", "topic-mechanism", "topic-compare", "topic-tasks"]) {
-  if (!miniprogramTopicPage.includes(requiredAnchor)) {
+  if (!miniprogramEvidenceSource.includes(requiredAnchor)) {
     errors.push(`miniprogram topic page must expose learning flow anchor: ${requiredAnchor}`);
   }
 }
-for (const requiredEvidenceWire of ["resolveVisualEvidence", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
+for (const requiredEvidenceWire of ["resolveTopicPresentation", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
   if (!miniprogramEvidenceSource.includes(requiredEvidenceWire)) {
     errors.push(`miniprogram topic components must wire visual evidence behavior: ${requiredEvidenceWire}`);
   }

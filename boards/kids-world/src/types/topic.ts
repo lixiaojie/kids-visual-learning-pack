@@ -3,6 +3,34 @@ export type EvidenceStatus = "idle" | "selected" | "correct" | "wrong" | "partia
 export type TaskResult = EvidenceStatus;
 export type TextMap = Record<string, string>;
 
+export type VisualFocusMode = "whole-image" | "hotspot" | "group" | "path-step" | "sequence-progress";
+
+export type VisualFocusRegion = {
+  id: string;
+  label?: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  emphasis?: "primary" | "supporting" | "warning";
+};
+
+export type VisualFocus = {
+  mode: VisualFocusMode;
+  regions?: VisualFocusRegion[];
+  activeRegionIds?: string[];
+  dimOthers?: boolean;
+  progress?: {
+    current: number;
+    total: number;
+  };
+  zoom?: {
+    x: number;
+    y: number;
+    scale: number;
+  };
+};
+
 export type VisualSlotRole = "hero" | "observation" | "process" | "compare" | "task" | "summary";
 
 export type VisualSlotTarget =
@@ -46,6 +74,7 @@ export type LearningFlowStage = {
   sectionIds: string[];
   visualSlotId?: string;
   childPrompt: string;
+  defaultEvidenceSource?: EvidenceSourcePath;
 };
 
 export type EvidenceMarkerChip = {
@@ -66,6 +95,7 @@ export type VisualEvidenceBinding = {
   expectedStatus?: Exclude<EvidenceStatus, "idle">;
   nextPrompt?: string;
   quality?: "curated" | "generated" | "derived-fallback";
+  focus?: VisualFocus;
 };
 
 export type VisualEvidenceState = {
@@ -81,6 +111,7 @@ export type VisualEvidenceState = {
   explanationLevel?: "child" | "parent";
   bindingQuality: "explicit" | "derived";
   nextPrompt?: string;
+  focus?: VisualFocus;
 };
 
 export type EvidenceResolveContext = {

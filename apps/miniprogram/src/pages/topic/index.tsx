@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useShareAppMessage, useShareTimeline } from "@tarojs/taro";
 import { Navigator, Text, View } from "@tarojs/components";
 import {
@@ -7,12 +7,15 @@ import {
   getTopic,
   getTopicLearningFlow,
   getVisualSlotForTarget,
-  resolveVisualEvidence,
+  createInitialTopicInteractionState,
+  reduceTopicInteractionState,
+  resolveTopicPresentation,
   type Locale,
   type Topic,
+  type TopicInteractionAction,
 } from "@yutou/kids-content";
 import { GeneratedImage } from "../../components/shared/GeneratedImage";
-import { ClickTaskCard } from "../../components/topic/ClickTaskCard";
+import { ClickTaskDeck } from "../../components/topic/ClickTaskDeck";
 import { ComparePairCard } from "../../components/topic/ComparePairCard";
 import { InfoList } from "../../components/topic/InfoList";
 import { LearningFlowRail } from "../../components/topic/LearningFlowRail";
@@ -27,7 +30,7 @@ function normalizeLocale(locale: string | undefined): Locale {
 }
 
 function getHeroAssetId(topic: Topic) {
-  return getVisualSlotForTarget(topic, "hero")?.assetId ?? getKnowledgeTopicAssetId({ slug: topic.slug, title: topic.title, status: "building", cardDescription: "" });
+  return getVisualSlotForTarget(topic, "hero")?.assetId ?? getKnowledgeTopicAssetId({ slug: topic.slug });
 }
 
 export default function TopicPage() {
@@ -37,12 +40,18 @@ export default function TopicPage() {
   const topic = useMemo(() => getTopic(slug, locale), [slug, locale]);
   const map = useMemo(() => getMap(locale, "miniprogram"), [locale]);
   const flowStages = useMemo(() => (topic ? getTopicLearningFlow(topic, locale) : []), [topic, locale]);
-  const [activeStageId, setActiveStageId] = useState(flowStages[0]?.id ?? "");
-  const [activeGroupId, setActiveGroupId] = useState("");
-  const [activeObjectId, setActiveObjectId] = useState("");
-  const [activeMechanismStepId, setActiveMechanismStepId] = useState("");
-  const [activeSecondaryStepId, setActiveSecondaryStepId] = useState("");
-  const [activeComparePairId, setActiveComparePairId] = useState("");
+  const [interactionState, setInteractionState] = useState(() => (topic ? createInitialTopicInteractionState(topic, locale) : null));
+  const dispatch = useCallback(
+    (action: TopicInteractionAction) => {
+      if (!topic) return;
+      setInteractionState((current) => reduceTopicInteractionState(topic, locale, current ?? createInitialTopicInteractionState(topic, locale), action));
+    },
+    [topic, locale],
+  );
+  const presentation = useMemo(
+    () => (topic && interactionState ? resolveTopicPresentation(topic, interactionState, locale) : null),
+    [interactionState, locale, topic],
+  );
   const relatedTopicCards = useMemo(() => {
     if (!topic) return [];
     const relatedTopics = new Set(topic.relatedTopics);
@@ -59,6 +68,10 @@ export default function TopicPage() {
     query: `slug=${slug}&locale=${locale}`,
   }));
 
+  useEffect(() => {
+    if (topic) setInteractionState(createInitialTopicInteractionState(topic, locale));
+  }, [locale, topic]);
+
   if (!topic) {
     return (
       <View className="topic-page">
@@ -67,26 +80,16 @@ export default function TopicPage() {
     );
   }
 
-  const selectedGroupId = activeGroupId || topic.classificationGroups[0]?.id || "";
-  const selectedObjectId = activeObjectId || topic.representativeObjects[0]?.id || "";
-  const selectedMechanismStepId = activeMechanismStepId || topic.mechanism.steps[0]?.id || "";
-  const selectedSecondaryStepId = activeSecondaryStepId || topic.secondaryMechanism?.steps[0]?.id || "";
-  const selectedComparePairId = activeComparePairId || topic.comparePairs[0]?.id || "";
-  const groupEvidence = selectedGroupId
-    ? resolveVisualEvidence(topic, { source: `classificationGroups.${selectedGroupId}`, result: "selected", locale })
-    : null;
-  const objectEvidence = selectedObjectId
-    ? resolveVisualEvidence(topic, { source: `representativeObjects.${selectedObjectId}`, result: "selected", locale })
-    : null;
-  const mechanismEvidence = selectedMechanismStepId
-    ? resolveVisualEvidence(topic, { source: `mechanism.steps.${selectedMechanismStepId}`, result: "selected", locale })
-    : null;
-  const secondaryEvidence = selectedSecondaryStepId
-    ? resolveVisualEvidence(topic, { source: `secondaryMechanism.steps.${selectedSecondaryStepId}`, result: "selected", locale })
-    : null;
-  const compareEvidence = selectedComparePairId
-    ? resolveVisualEvidence(topic, { source: `comparePairs.${selectedComparePairId}`, result: "selected", locale })
-    : null;
+  const selectedGroupId = interactionState?.activeGroupId || topic.classificationGroups[0]?.id || "";
+  const selectedObjectId = interactionState?.activeObjectId || topic.representativeObjects[0]?.id || "";
+  const selectedMechanismStepId = interactionState?.activeMechanismStepId || topic.mechanism.steps[0]?.id || "";
+  const selectedSecondaryStepId = interactionState?.activeSecondaryStepId || topic.secondaryMechanism?.steps[0]?.id || "";
+  const selectedComparePairId = interactionState?.activeComparePairId || topic.comparePairs[0]?.id || "";
+  const groupEvidence = presentation?.evidence?.source.startsWith("classificationGroups.") ? presentation.evidence : null;
+  const objectEvidence = presentation?.evidence?.source.startsWith("representativeObjects.") ? presentation.evidence : null;
+  const mechanismEvidence = presentation?.evidence?.source.startsWith("mechanism.steps.") ? presentation.evidence : null;
+  const secondaryEvidence = presentation?.evidence?.source.startsWith("secondaryMechanism.steps.") ? presentation.evidence : null;
+  const compareEvidence = presentation?.evidence?.source.startsWith("comparePairs.") ? presentation.evidence : null;
   const slotFromEvidence = (visualSlotId?: string) => topic.visualSlots?.find((slot) => slot.id === visualSlotId);
 
   return (
@@ -98,7 +101,12 @@ export default function TopicPage() {
         <GeneratedImage assetId={getHeroAssetId(topic)} alt={topic.title} className="topic-image" />
       </View>
 
-      <LearningFlowRail activeStageId={activeStageId} stages={flowStages} locale={locale} onSelectStage={setActiveStageId} />
+      <LearningFlowRail
+        activeStageId={interactionState?.activeStageId ?? flowStages[0]?.id ?? ""}
+        stages={flowStages}
+        locale={locale}
+        onSelectStage={(stageId) => dispatch({ type: "SELECT_STAGE", stageId })}
+      />
 
       <View className="section" id="topic-observe">
         <Text className="section-title">{locale === "zh-CN" ? "先观察" : "Observe"}</Text>
@@ -112,9 +120,7 @@ export default function TopicPage() {
           activeId={selectedGroupId}
           evidencePrefix="classificationGroups"
           onSelect={(id) => {
-            setActiveGroupId(id);
-            const firstObject = topic.representativeObjects.find((object) => object.groupId === id);
-            if (firstObject) setActiveObjectId(firstObject.id);
+            dispatch({ type: "SELECT_CLASSIFICATION_GROUP", groupId: id });
           }}
           items={topic.classificationGroups.map((group) => ({
             id: group.id,
@@ -130,7 +136,7 @@ export default function TopicPage() {
           title={locale === "zh-CN" ? "认识几个代表对象" : "Representative objects"}
           activeId={selectedObjectId}
           evidencePrefix="representativeObjects"
-          onSelect={setActiveObjectId}
+          onSelect={(objectId) => dispatch({ type: "SELECT_REPRESENTATIVE_OBJECT", objectId })}
           items={topic.representativeObjects.map((item) => ({
             id: item.id,
             title: item.name,
@@ -143,7 +149,7 @@ export default function TopicPage() {
         <Text className="section-title">{topic.mechanism.title ?? (locale === "zh-CN" ? "它怎么发生" : "How it works")}</Text>
         <TopicVisual slot={slotFromEvidence(mechanismEvidence?.visualSlotId) ?? getVisualSlotForTarget(topic, "mechanism")} evidence={mechanismEvidence} fallbackAlt={topic.mechanism.title} locale={locale} />
         {topic.mechanism.steps.map((step) => (
-          <View className={`step ${selectedMechanismStepId === step.id ? "active" : ""}`} key={step.id} onClick={() => setActiveMechanismStepId(step.id)} data-evidence-source={`mechanism.steps.${step.id}`}>
+          <View className={`step ${selectedMechanismStepId === step.id ? "active" : ""}`} key={step.id} onClick={() => dispatch({ type: "SELECT_MECHANISM_STEP", stepId: step.id })} data-evidence-source={`mechanism.steps.${step.id}`}>
             <Text className="step-title">{step.shortTitle}</Text>
             <Text className="section-body">{step.childExplanation}</Text>
           </View>
@@ -155,7 +161,7 @@ export default function TopicPage() {
           <Text className="section-title">{topic.secondaryMechanism.title}</Text>
           <TopicVisual slot={slotFromEvidence(secondaryEvidence?.visualSlotId) ?? getVisualSlotForTarget(topic, "secondaryMechanism")} evidence={secondaryEvidence} fallbackAlt={topic.secondaryMechanism.title} locale={locale} />
           {topic.secondaryMechanism.steps.map((step) => (
-            <View className={`step ${selectedSecondaryStepId === step.id ? "active" : ""}`} key={step.id} onClick={() => setActiveSecondaryStepId(step.id)} data-evidence-source={`secondaryMechanism.steps.${step.id}`}>
+            <View className={`step ${selectedSecondaryStepId === step.id ? "active" : ""}`} key={step.id} onClick={() => dispatch({ type: "SELECT_SECONDARY_MECHANISM_STEP", stepId: step.id })} data-evidence-source={`secondaryMechanism.steps.${step.id}`}>
               <Text className="step-title">{step.shortTitle}</Text>
               <Text className="section-body">{step.childExplanation}</Text>
             </View>
@@ -174,22 +180,14 @@ export default function TopicPage() {
               visualSlot={topic.visualSlots?.find((slot) => slot.target === `comparePairs.${pair.id}`)}
               active={selectedComparePairId === pair.id}
               evidence={selectedComparePairId === pair.id ? compareEvidence : null}
-              onSelect={() => setActiveComparePairId(pair.id)}
+              onSelect={() => dispatch({ type: "SELECT_COMPARE_PAIR", pairId: pair.id })}
               locale={locale}
             />
           ))}
         </View>
       </View>
 
-      <View className="section" id="topic-tasks">
-        <Text className="section-title">{locale === "zh-CN" ? "点击任务" : "Tap tasks"}</Text>
-        <TopicVisual slot={topic.visualSlots?.find((slot) => slot.target === "clickTasks")} fallbackAlt={locale === "zh-CN" ? "任务图" : "Task visual"} locale={locale} />
-        <View className="task-stack">
-          {topic.clickTasks.map((task) => (
-            <ClickTaskCard task={task} topic={topic} locale={locale} key={task.id} visualSlot={topic.visualSlots?.find((slot) => slot.target === `clickTasks.${task.id}`)} />
-          ))}
-        </View>
-      </View>
+      {interactionState && presentation ? <ClickTaskDeck topic={topic} state={interactionState} presentation={presentation} dispatch={dispatch} locale={locale} /> : null}
 
       <View id="topic-speak">
         <TopicSummary topic={topic} locale={locale} />

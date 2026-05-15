@@ -8,6 +8,7 @@ import type {
   Topic,
   VisualEvidenceBinding,
   VisualEvidenceState,
+  VisualFocus,
   VisualSlot,
 } from "../../../boards/kids-world/src/types/topic";
 
@@ -148,6 +149,77 @@ function taskResultForOption(task: ClickTask, optionId: string, selectedIds: str
   return "selected";
 }
 
+function deriveFocusForSource(topic: Topic, source: EvidenceSourcePath, selectedIds: string[] = []): VisualFocus | undefined {
+  const id = sourceId(source);
+
+  if (source.startsWith("mechanism.steps.")) {
+    const index = topic.mechanism.steps.findIndex((item) => item.id === id);
+    return {
+      mode: "path-step",
+      activeRegionIds: [id],
+      progress: index >= 0 ? { current: index + 1, total: topic.mechanism.steps.length } : undefined,
+    };
+  }
+
+  if (source.startsWith("secondaryMechanism.steps.")) {
+    const steps = topic.secondaryMechanism?.steps ?? [];
+    const index = steps.findIndex((item) => item.id === id);
+    return {
+      mode: "path-step",
+      activeRegionIds: [id],
+      progress: index >= 0 ? { current: index + 1, total: steps.length } : undefined,
+    };
+  }
+
+  if (source.startsWith("classificationGroups.")) {
+    return {
+      mode: "group",
+      activeRegionIds: topic.representativeObjects
+        .filter((object) => object.groupId === id)
+        .map((object) => object.id),
+      dimOthers: true,
+    };
+  }
+
+  if (source.startsWith("representativeObjects.")) {
+    return {
+      mode: "hotspot",
+      activeRegionIds: [id],
+      dimOthers: true,
+    };
+  }
+
+  if (source.startsWith("comparePairs.")) {
+    return {
+      mode: "whole-image",
+      activeRegionIds: [id],
+    };
+  }
+
+  if (source.startsWith("clickTasks.")) {
+    const taskId = taskIdFromOptionSource(source);
+    const task = taskId ? topic.clickTasks.find((item) => item.id === taskId) : topic.clickTasks.find((item) => item.id === id);
+    if (task?.type === "sequenceClick") {
+      return {
+        mode: "sequence-progress",
+        activeRegionIds: selectedIds.length > 0 ? selectedIds : [id],
+        progress: selectedIds.length > 0 ? { current: selectedIds.length, total: task.correctSequence?.length ?? selectedIds.length } : undefined,
+      };
+    }
+
+    return {
+      mode: "hotspot",
+      activeRegionIds: [id],
+      dimOthers: true,
+    };
+  }
+
+  return {
+    mode: "whole-image",
+    activeRegionIds: [id],
+  };
+}
+
 function derivedCopy(topic: Topic, source: EvidenceSourcePath, selectedIds: string[], locale: Locale) {
   const id = sourceId(source);
 
@@ -257,6 +329,7 @@ export function resolveVisualEvidence(topic: Topic, context: EvidenceResolveCont
       markerChips: binding.markerChips,
       bindingQuality: "explicit",
       nextPrompt: binding.nextPrompt,
+      focus: binding.focus ?? deriveFocusForSource(topic, context.source, context.selectedIds ?? []),
     };
   }
 
@@ -270,6 +343,7 @@ export function resolveVisualEvidence(topic: Topic, context: EvidenceResolveCont
     status: context.result ?? "selected",
     ...copy,
     bindingQuality: "derived",
+    focus: deriveFocusForSource(topic, context.source, context.selectedIds ?? []),
   };
 }
 

@@ -332,6 +332,124 @@
             "generated",
             "derived-fallback"
           ]
+        },
+        "focus": {
+          "$ref": "#/$defs/visualFocus"
+        }
+      }
+    },
+    "visualFocus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "whole-image",
+            "hotspot",
+            "group",
+            "path-step",
+            "sequence-progress"
+          ]
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/visualFocusRegion"
+          }
+        },
+        "activeRegionIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/idString"
+          }
+        },
+        "dimOthers": {
+          "type": "boolean"
+        },
+        "progress": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "current",
+            "total"
+          ],
+          "properties": {
+            "current": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            }
+          }
+        },
+        "zoom": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "scale"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "scale": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "visualFocusRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "label": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "emphasis": {
+          "enum": [
+            "primary",
+            "supporting",
+            "warning"
+          ]
         }
       }
     },
@@ -362,6 +480,10 @@
         },
         "childPrompt": {
           "type": "string"
+        },
+        "defaultEvidenceSource": {
+          "type": "string",
+          "pattern": "^(classificationGroups|representativeObjects|comparePairs)\\.[A-Za-z0-9_-]+$|^(mechanism|secondaryMechanism)\\.steps\\.[A-Za-z0-9_-]+$|^clickTasks\\.[A-Za-z0-9_-]+(\\.options\\.[A-Za-z0-9_-]+)?$"
         }
       }
     },

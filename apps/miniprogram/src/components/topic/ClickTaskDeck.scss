@@ -1,0 +1,22 @@
+.click-task-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.click-task-tab {
+  max-width: 100%;
+  padding: 12px 18px;
+  border: 2px solid rgba(23, 32, 51, 0.12);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #172033;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.click-task-tab.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
+  color: #3730a3;
+}

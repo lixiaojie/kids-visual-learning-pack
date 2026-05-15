@@ -22,6 +22,7 @@ const requiredFiles = [
   "src/pages/about/index.config.ts",
   "src/components/shared/GeneratedImage.tsx",
   "src/components/topic/ClickTaskCard.tsx",
+  "src/components/topic/ClickTaskDeck.tsx",
   "src/components/topic/ComparePairCard.tsx",
   "src/components/topic/InfoList.tsx",
   "src/components/topic/LearningFlowRail.tsx",
@@ -56,7 +57,9 @@ const topicPage = fs.readFileSync(path.join(appDir, "src/pages/topic/index.tsx")
 const aboutPage = fs.readFileSync(path.join(appDir, "src/pages/about/index.tsx"), "utf8");
 const imageComponent = fs.readFileSync(path.join(appDir, "src/components/shared/GeneratedImage.tsx"), "utf8");
 const clickTaskCard = fs.readFileSync(path.join(appDir, "src/components/topic/ClickTaskCard.tsx"), "utf8");
+const clickTaskDeck = fs.readFileSync(path.join(appDir, "src/components/topic/ClickTaskDeck.tsx"), "utf8");
 const topicVisual = fs.readFileSync(path.join(appDir, "src/components/topic/TopicVisual.tsx"), "utf8");
+const interactionSource = fs.readFileSync(path.join(root, "packages/kids-content/src/interaction.ts"), "utf8");
 
 if (!indexPage.includes("@yutou/kids-content")) {
   errors.push("index page must use @yutou/kids-content");
@@ -75,14 +78,15 @@ for (const requiredTaskSupport of [
   "targetIds",
   "correctSequence",
   "wrongHints",
-  "resolveVisualEvidence",
+  "resolveTopicPresentation",
   "data-evidence-source",
 ]) {
-  if (!clickTaskCard.includes(requiredTaskSupport)) {
-    errors.push(`ClickTaskCard must support ${requiredTaskSupport}`);
+  const supportSource = `${clickTaskCard}\n${clickTaskDeck}\n${topicPage}\n${interactionSource}`;
+  if (!supportSource.includes(requiredTaskSupport)) {
+    errors.push(`miniprogram controlled task flow must support ${requiredTaskSupport}`);
   }
 }
-for (const requiredTopicSection of ["ClickTaskCard", "ComparePairCard", "representativeObjects", "comparePairs", "parentTips"]) {
+for (const requiredTopicSection of ["ClickTaskDeck", "ComparePairCard", "representativeObjects", "comparePairs", "parentTips"]) {
   if (!topicPage.includes(requiredTopicSection)) {
     errors.push(`topic page must render ${requiredTopicSection}`);
   }
@@ -97,8 +101,8 @@ for (const requiredTopicFlow of ["LearningFlowRail", "TopicVisual", "getTopicLea
     errors.push(`topic page must support learning flow and visual slots: ${requiredTopicFlow}`);
   }
 }
-for (const requiredEvidenceWire of ["resolveVisualEvidence", "evidence={", "data-evidence-source"]) {
-  if (!topicPage.includes(requiredEvidenceWire) && !clickTaskCard.includes(requiredEvidenceWire) && !topicVisual.includes(requiredEvidenceWire)) {
+for (const requiredEvidenceWire of ["resolveTopicPresentation", "evidence={", "data-evidence-source"]) {
+  if (!topicPage.includes(requiredEvidenceWire) && !clickTaskCard.includes(requiredEvidenceWire) && !clickTaskDeck.includes(requiredEvidenceWire) && !topicVisual.includes(requiredEvidenceWire)) {
     errors.push(`miniprogram topic UI must wire visual evidence: ${requiredEvidenceWire}`);
   }
 }

@@ -4,9 +4,10 @@ type Props = {
   activeStageId: string;
   stages: LearningFlowStage[];
   locale: Locale;
+  onSelectStage: (stageId: string) => void;
 };
 
-export function LearningFlowRail({ activeStageId, stages, locale }: Props) {
+export function LearningFlowRail({ activeStageId, stages, locale, onSelectStage }: Props) {
   function scrollToStage(stage: LearningFlowStage) {
     const section = stage.sectionIds.map((id) => document.getElementById(id)).find(Boolean);
     section?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -19,7 +20,10 @@ export function LearningFlowRail({ activeStageId, stages, locale }: Props) {
           className={activeStageId === stage.id ? "active" : ""}
           key={stage.id}
           type="button"
-          onClick={() => scrollToStage(stage)}
+          onClick={() => {
+            onSelectStage(stage.id);
+            scrollToStage(stage);
+          }}
         >
           <span>{index + 1}</span>
           <strong>{stage.label}</strong>

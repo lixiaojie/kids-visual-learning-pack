@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { resolveVisualEvidence } from "@yutou/kids-content";
-import type { Topic, VisualSlot } from "../../types/topic";
+import type { Topic, VisualEvidenceState, VisualSlot } from "../../types/topic";
 import { SectionHeader } from "../shared/SectionHeader";
 import { TopicVisual } from "./TopicVisual";
 
@@ -8,6 +6,12 @@ type Props = {
   topic: Topic;
   mechanism: Topic["mechanism"];
   secondary?: Topic["secondaryMechanism"];
+  activeMechanismStepId: string;
+  activeSecondaryStepId: string;
+  onSelectMechanismStep: (id: string) => void;
+  onSelectSecondaryStep: (id: string) => void;
+  mechanismEvidence?: VisualEvidenceState | null;
+  secondaryEvidence?: VisualEvidenceState | null;
   mechanismSlot?: VisualSlot | null;
   secondarySlot?: VisualSlot | null;
   locale: string;
@@ -43,31 +47,33 @@ function StepRow({
   );
 }
 
-export function MechanismSteps({ topic, mechanism, secondary, mechanismSlot, secondarySlot, locale }: Props) {
-  const [activeMechanismStepId, setActiveMechanismStepId] = useState(mechanism.steps[0]?.id ?? "");
-  const [activeSecondaryStepId, setActiveSecondaryStepId] = useState(secondary?.steps[0]?.id ?? "");
+export function MechanismSteps({
+  mechanism,
+  secondary,
+  activeMechanismStepId,
+  activeSecondaryStepId,
+  onSelectMechanismStep,
+  onSelectSecondaryStep,
+  mechanismEvidence,
+  secondaryEvidence,
+  mechanismSlot,
+  secondarySlot,
+  locale,
+}: Props) {
   const normalizedLocale = locale === "en-US" ? "en-US" : "zh-CN";
-  const mechanismEvidence = activeMechanismStepId
-    ? resolveVisualEvidence(topic, { source: `mechanism.steps.${activeMechanismStepId}`, result: "selected", locale: normalizedLocale })
-    : null;
-  const mechanismEvidenceSlot = mechanismEvidence ? topic.visualSlots?.find((slot) => slot.id === mechanismEvidence.visualSlotId) : mechanismSlot;
-  const secondaryEvidence = activeSecondaryStepId
-    ? resolveVisualEvidence(topic, { source: `secondaryMechanism.steps.${activeSecondaryStepId}`, result: "selected", locale: normalizedLocale })
-    : null;
-  const secondaryEvidenceSlot = secondaryEvidence ? topic.visualSlots?.find((slot) => slot.id === secondaryEvidence.visualSlotId) : secondarySlot;
 
   return (
     <>
       <article className="panel wide" id="topic-mechanism">
         <SectionHeader title={mechanism.title ?? (locale === "zh-CN" ? "机制步骤" : "How it works")} />
-        <TopicVisual slot={mechanismEvidenceSlot ?? mechanismSlot} evidence={mechanismEvidence} fallbackAlt={mechanism.title ?? (locale === "zh-CN" ? "机制图" : "Process visual")} locale={normalizedLocale} />
-        <StepRow steps={mechanism.steps} activeStepId={activeMechanismStepId} onSelectStep={setActiveMechanismStepId} sourcePrefix="mechanism.steps" />
+        <TopicVisual slot={mechanismSlot} evidence={mechanismEvidence} fallbackAlt={mechanism.title ?? (locale === "zh-CN" ? "机制图" : "Process visual")} locale={normalizedLocale} />
+        <StepRow steps={mechanism.steps} activeStepId={activeMechanismStepId} onSelectStep={onSelectMechanismStep} sourcePrefix="mechanism.steps" />
       </article>
       {secondary && (
         <article className="panel wide" id="topic-secondary-mechanism">
           <SectionHeader title={secondary.title} />
-          <TopicVisual slot={secondaryEvidenceSlot ?? secondarySlot} evidence={secondaryEvidence} fallbackAlt={secondary.title} locale={normalizedLocale} />
-          <StepRow steps={secondary.steps} activeStepId={activeSecondaryStepId} onSelectStep={setActiveSecondaryStepId} sourcePrefix="secondaryMechanism.steps" />
+          <TopicVisual slot={secondarySlot} evidence={secondaryEvidence} fallbackAlt={secondary.title} locale={normalizedLocale} />
+          <StepRow steps={secondary.steps} activeStepId={activeSecondaryStepId} onSelectStep={onSelectSecondaryStep} sourcePrefix="secondaryMechanism.steps" />
         </article>
       )}
     </>

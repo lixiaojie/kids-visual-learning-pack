@@ -1,5 +1,5 @@
 import { Text, View } from "@tarojs/components";
-import type { Locale, VisualEvidenceState, VisualSlot } from "@yutou/kids-content";
+import type { Locale, VisualEvidenceState, VisualFocus, VisualSlot } from "@yutou/kids-content";
 import { GeneratedImage } from "../shared/GeneratedImage";
 import "./TopicVisual.scss";
 
@@ -29,13 +29,43 @@ const statusLabels: Record<Locale, Record<VisualEvidenceState["status"], string>
   },
 };
 
+function FocusOverlay({ focus }: { focus?: VisualFocus }) {
+  if (!focus?.regions?.length) return null;
+  const activeRegionIds = new Set(focus.activeRegionIds ?? []);
+
+  return (
+    <View className={`visual-focus-overlay focus-${focus.mode}`}>
+      {focus.regions.map((region) => {
+        const isActive = activeRegionIds.size === 0 || activeRegionIds.has(region.id);
+        return (
+          <View
+            className={`visual-focus-region ${isActive ? "active" : "inactive"} ${region.emphasis ?? "primary"}`}
+            key={region.id}
+            style={{
+              left: `${region.x * 100}%`,
+              top: `${region.y * 100}%`,
+              width: `${region.width * 100}%`,
+              height: `${region.height * 100}%`,
+            }}
+          >
+            {isActive && region.label ? <Text className="visual-focus-label">{region.label}</Text> : null}
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 export function TopicVisual({ slot, evidence, fallbackAlt, locale = "zh-CN" }: Props) {
   if (!slot) return null;
   const labels = statusLabels[locale];
 
   return (
     <View className={`topic-visual ${evidence ? `evidence-${evidence.status}` : ""}`}>
-      <GeneratedImage assetId={slot.assetId} alt={slot.alt ?? slot.caption ?? fallbackAlt} className="topic-visual-image" />
+      <View className="topic-visual-image-wrap">
+        <GeneratedImage assetId={slot.assetId} alt={slot.alt ?? slot.caption ?? fallbackAlt} className="topic-visual-image" />
+        <FocusOverlay focus={evidence?.focus} />
+      </View>
       {slot.caption ? <Text className="topic-visual-caption">{slot.caption}</Text> : null}
       {evidence ? (
         <View className="evidence-panel">

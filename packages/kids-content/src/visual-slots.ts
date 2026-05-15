@@ -1,4 +1,12 @@
-import type { LearningFlowStage, Locale, Topic, VisualSlot, VisualSlotRole, VisualSlotTarget } from "../../../boards/kids-world/src/types/topic";
+import type {
+  EvidenceSourcePath,
+  LearningFlowStage,
+  Locale,
+  Topic,
+  VisualSlot,
+  VisualSlotRole,
+  VisualSlotTarget,
+} from "../../../boards/kids-world/src/types/topic";
 
 const zhFlowCopy = {
   observe: ["发现它", "我们先看看它在哪里出现。"],
@@ -25,6 +33,7 @@ function stage(
   locale: Locale,
   sectionIds: string[],
   visualSlotId?: string,
+  defaultEvidenceSource?: EvidenceSourcePath,
 ): LearningFlowStage {
   const copy = locale === "zh-CN" ? zhFlowCopy[id] : enFlowCopy[id];
   return {
@@ -33,6 +42,7 @@ function stage(
     sectionIds,
     visualSlotId,
     childPrompt: copy[1],
+    defaultEvidenceSource,
   };
 }
 
@@ -56,6 +66,35 @@ export function getVisualSlotsForRole(topic: Pick<Topic, "visualSlots">, role: V
   return getTopicVisualSlots(topic).filter((slot) => slot.role === role);
 }
 
+export function getDefaultEvidenceSourceForStage(topic: Topic, stageId: string): EvidenceSourcePath | undefined {
+  if (stageId === "classify") {
+    const first = topic.classificationGroups[0];
+    return first ? (`classificationGroups.${first.id}` as EvidenceSourcePath) : undefined;
+  }
+
+  if (stageId === "inspect") {
+    const first = topic.representativeObjects[0];
+    return first ? (`representativeObjects.${first.id}` as EvidenceSourcePath) : undefined;
+  }
+
+  if (stageId === "trace") {
+    const first = topic.mechanism.steps[0];
+    return first ? (`mechanism.steps.${first.id}` as EvidenceSourcePath) : undefined;
+  }
+
+  if (stageId === "compare") {
+    const first = topic.comparePairs[0];
+    return first ? (`comparePairs.${first.id}` as EvidenceSourcePath) : undefined;
+  }
+
+  if (stageId === "tasks") {
+    const first = topic.clickTasks[0];
+    return first ? (`clickTasks.${first.id}` as EvidenceSourcePath) : undefined;
+  }
+
+  return undefined;
+}
+
 export function getTopicLearningFlow(topic: Topic, locale: Locale): LearningFlowStage[] {
   if (topic.learningFlow?.length) return topic.learningFlow;
 
@@ -63,17 +102,17 @@ export function getTopicLearningFlow(topic: Topic, locale: Locale): LearningFlow
   const slotForTarget = (target: VisualSlotTarget) => slots.find((slot) => slot.target === target)?.id;
   const stages: LearningFlowStage[] = [
     stage("observe", locale, ["topic-hero", "topic-observe"], slotForTarget("hero")),
-    stage("classify", locale, ["topic-classification"], slotForTarget("classificationGroups")),
-    stage("inspect", locale, ["topic-objects"], slotForTarget("representativeObjects")),
-    stage("trace", locale, ["topic-mechanism", "topic-secondary-mechanism"], slotForTarget("mechanism")),
+    stage("classify", locale, ["topic-classification"], slotForTarget("classificationGroups"), getDefaultEvidenceSourceForStage(topic, "classify")),
+    stage("inspect", locale, ["topic-objects"], slotForTarget("representativeObjects"), getDefaultEvidenceSourceForStage(topic, "inspect")),
+    stage("trace", locale, ["topic-mechanism", "topic-secondary-mechanism"], slotForTarget("mechanism"), getDefaultEvidenceSourceForStage(topic, "trace")),
   ];
 
   if (topic.comparePairs.length > 0) {
-    stages.push(stage("compare", locale, ["topic-compare"], slotForTarget("comparePairs")));
+    stages.push(stage("compare", locale, ["topic-compare"], slotForTarget("comparePairs"), getDefaultEvidenceSourceForStage(topic, "compare")));
   }
 
   if (topic.clickTasks.length > 0) {
-    stages.push(stage("tasks", locale, ["topic-tasks"], slotForTarget("clickTasks")));
+    stages.push(stage("tasks", locale, ["topic-tasks"], slotForTarget("clickTasks"), getDefaultEvidenceSourceForStage(topic, "tasks")));
   }
 
   stages.push(stage("next", locale, ["topic-speak", "topic-parent", "topic-related"], undefined));

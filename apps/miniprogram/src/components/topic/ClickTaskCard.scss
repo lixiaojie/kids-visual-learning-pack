@@ -8,6 +8,11 @@
   background: #ffffff;
 }
 
+.click-task.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
+}
+
 .click-task.correct {
   border-color: rgba(34, 197, 94, 0.38);
   background: #f0fdf4;
