@@ -40,6 +40,39 @@ export {
   getVisualSlotsForRole,
 } from "./visual-slots";
 export { getTopicEvidenceCoverage, resolveVisualEvidence } from "./evidence";
+export { hasVisualFocusDifference, normalizeFocus, parseFocus } from "./focus";
+export {
+  findNodeBySource,
+  getStageById,
+  getTopicInteractionGraph,
+  taskResultForOption,
+} from "./interaction-graph";
+export type {
+  EvidenceBinding,
+  FocusMode,
+  MainFlowStage,
+  MainFlowStageId,
+  SecondaryNode,
+  SecondaryNodeKind,
+  SubflowContainer,
+  SubflowKind,
+  TopicInteractionGraph,
+  VisualBinding,
+} from "./interaction-graph";
+export {
+  getDefaultActivePath,
+  interactionReducer,
+  resolveActivePath,
+  resolveActivePathBySource,
+  resolvePresentation,
+} from "./interaction-state";
+export type {
+  ActiveInteractionPath,
+  InteractionAction,
+  InteractionPresentation,
+} from "./interaction-state";
+export { validateInteractionGraph } from "./interaction-validation";
+export type { InteractionGraphIssue, InteractionGraphValidationReport } from "./interaction-validation";
 export {
   applyTaskOptionClick,
   createInitialTopicInteractionState,

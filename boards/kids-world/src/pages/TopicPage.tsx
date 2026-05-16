@@ -146,6 +146,7 @@ function TopicPageContent({ topic, locale, map }: { topic: Topic; locale: Locale
           evidence={compareEvidence}
           visualSlot={slotForEvidence(compareEvidence, "comparePairs")}
           onSelectPair={(pairId) => dispatch({ type: "SELECT_COMPARE_PAIR", pairId })}
+          onSelectSide={(pairId, side) => dispatch({ type: "SELECT_COMPARE_SIDE", pairId, side })}
           locale={locale}
         />
 

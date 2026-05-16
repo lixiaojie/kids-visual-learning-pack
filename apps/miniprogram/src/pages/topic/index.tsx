@@ -181,6 +181,7 @@ export default function TopicPage() {
               active={selectedComparePairId === pair.id}
               evidence={selectedComparePairId === pair.id ? compareEvidence : null}
               onSelect={() => dispatch({ type: "SELECT_COMPARE_PAIR", pairId: pair.id })}
+              onSelectSide={(side) => dispatch({ type: "SELECT_COMPARE_SIDE", pairId: pair.id, side })}
               locale={locale}
             />
           ))}

@@ -10,6 +10,11 @@ const requiredFiles = [
   "src/index.ts",
   "src/assets.ts",
   "src/evidence.ts",
+  "src/focus.ts",
+  "src/interaction-graph.ts",
+  "src/interaction-state.ts",
+  "src/interaction-validation.ts",
+  "src/interaction.ts",
   "src/map.ts",
   "src/media.ts",
   "src/merge.ts",
@@ -31,6 +36,13 @@ const requiredExports = [
   "getTopicEvidenceCoverage",
   "VisualEvidenceState",
   "VisualEvidenceBinding",
+  "getTopicInteractionGraph",
+  "getDefaultActivePath",
+  "resolveActivePath",
+  "resolvePresentation",
+  "validateInteractionGraph",
+  "ActiveInteractionPath",
+  "TopicInteractionGraph",
 ];
 const errors = [];
 

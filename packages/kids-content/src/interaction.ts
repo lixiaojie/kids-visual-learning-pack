@@ -8,10 +8,19 @@ import type {
   VisualSlot,
 } from "../../../boards/kids-world/src/types/topic";
 import { resolveVisualEvidence } from "./evidence";
-import { getDefaultEvidenceSourceForStage, getTopicLearningFlow } from "./visual-slots";
+import { getTopicInteractionGraph } from "./interaction-graph";
+import {
+  getDefaultActivePath,
+  interactionReducer as reduceInteractionPath,
+  resolveActivePath,
+  resolveActivePathBySource,
+  resolvePresentation as resolveGraphPresentation,
+  type ActiveInteractionPath,
+} from "./interaction-state";
 
 export type TopicInteractionState = {
   activeStageId: string;
+  activePath?: ActiveInteractionPath;
   activeEvidenceSource?: EvidenceSourcePath;
   activeVisualSlotId?: string;
   activeGroupId?: string;
@@ -44,6 +53,7 @@ export type TopicInteractionAction =
   | { type: "SELECT_MECHANISM_STEP"; stepId: string; now?: number }
   | { type: "SELECT_SECONDARY_MECHANISM_STEP"; stepId: string; now?: number }
   | { type: "SELECT_COMPARE_PAIR"; pairId: string; now?: number }
+  | { type: "SELECT_COMPARE_SIDE"; pairId: string; side: "a" | "b"; now?: number }
   | { type: "SELECT_CLICK_TASK"; taskId: string; now?: number }
   | { type: "CLICK_TASK_OPTION"; taskId: string; optionId: string; now?: number };
 
@@ -61,6 +71,74 @@ function stageIdForSource(source?: EvidenceSourcePath): string | undefined {
   if (source.startsWith("comparePairs.")) return "compare";
   if (source.startsWith("clickTasks.")) return "tasks";
   return undefined;
+}
+
+function asEvidenceSource(source?: string | null): EvidenceSourcePath | undefined {
+  if (!source) return undefined;
+  if (
+    source.startsWith("classificationGroups.") ||
+    source.startsWith("representativeObjects.") ||
+    source.startsWith("mechanism.steps.") ||
+    source.startsWith("secondaryMechanism.steps.") ||
+    source.startsWith("comparePairs.") ||
+    source.startsWith("clickTasks.")
+  ) {
+    return source as EvidenceSourcePath;
+  }
+  return undefined;
+}
+
+function syncSelectionFromPath(topic: Topic, state: TopicInteractionState, activePath: ActiveInteractionPath): TopicInteractionState {
+  const source = activePath.source ?? undefined;
+  const sourceParts = source?.split(".") ?? [];
+  const activeStageId = activePath.stageId;
+  const activeEvidenceSource = asEvidenceSource(source);
+  let next: TopicInteractionState = {
+    ...state,
+    activePath,
+    activeStageId,
+    activeEvidenceSource,
+  };
+
+  if (!source) return next;
+
+  if (source.startsWith("classificationGroups.")) {
+    const groupId = sourceParts[1];
+    return {
+      ...next,
+      activeGroupId: groupId,
+      activeObjectId: activePath.nodeId ?? topic.representativeObjects.find((item) => item.groupId === groupId)?.id ?? next.activeObjectId,
+    };
+  }
+
+  if (source.startsWith("representativeObjects.")) {
+    const objectId = sourceParts[1];
+    const object = topic.representativeObjects.find((item) => item.id === objectId);
+    return {
+      ...next,
+      activeObjectId: objectId,
+      activeGroupId: object?.groupId ?? next.activeGroupId,
+    };
+  }
+
+  if (source.startsWith("mechanism.steps.")) {
+    return { ...next, activeMechanismStepId: sourceParts[2] };
+  }
+
+  if (source.startsWith("secondaryMechanism.steps.")) {
+    return { ...next, activeSecondaryStepId: sourceParts[2] };
+  }
+
+  if (source.startsWith("comparePairs.")) {
+    const pairId = source.slice("comparePairs.".length).split("#")[0];
+    return { ...next, activeComparePairId: pairId };
+  }
+
+  if (source.startsWith("clickTasks.")) {
+    return { ...next, activeTaskId: sourceParts[1] };
+  }
+
+  return next;
 }
 
 export function getTaskOptions(task: ClickTask): Array<{ id: string; label: string }> {
@@ -127,23 +205,16 @@ export function syncSelectionFromSource(topic: Topic, state: TopicInteractionSta
 }
 
 export function createInitialTopicInteractionState(topic: Topic, locale: Locale): TopicInteractionState {
-  const stages = getTopicLearningFlow(topic, locale);
-  const firstStage = stages[0];
-  const firstInteractiveStage = stages.find((item) => item.defaultEvidenceSource);
-  const activeStageId = firstStage?.id ?? "";
-  const activeEvidenceSource =
-    firstStage?.defaultEvidenceSource ??
-    firstInteractiveStage?.defaultEvidenceSource ??
-    getDefaultEvidenceSourceForStage(topic, firstInteractiveStage?.id ?? activeStageId);
-
-  return syncSelectionFromSource(topic, {
-    activeStageId,
-    activeEvidenceSource,
+  const graph = getTopicInteractionGraph(topic, locale);
+  const activePath = getDefaultActivePath(graph);
+  return syncSelectionFromPath(topic, {
+    activeStageId: activePath.stageId,
+    activePath,
     taskSelectedIds: {},
     taskResults: {},
     taskMessages: {},
     lastIntent: "init",
-  });
+  }, activePath);
 }
 
 export function applyTaskOptionClick(
@@ -196,16 +267,22 @@ export function applyTaskOptionClick(
     }
   }
 
-  return syncSelectionFromSource(topic, {
+  const graph = getTopicInteractionGraph(topic, locale);
+  const activePath = reduceInteractionPath(
+    graph,
+    state.activePath ?? getDefaultActivePath(graph, "tasks"),
+    { type: "markTaskResult", taskId, optionId, status: nextResult },
+  );
+
+  return syncSelectionFromPath(topic, {
     ...state,
     activeTaskId: taskId,
-    activeEvidenceSource: `clickTasks.${taskId}.options.${optionId}` as EvidenceSourcePath,
     taskSelectedIds: { ...state.taskSelectedIds, [taskId]: nextSelected },
     taskResults: { ...state.taskResults, [taskId]: nextResult },
     taskMessages: { ...state.taskMessages, [taskId]: message },
     lastIntent: "task",
     lockedUntil: now + interactionLockMs,
-  });
+  }, activePath);
 }
 
 export function reduceTopicInteractionState(
@@ -215,6 +292,8 @@ export function reduceTopicInteractionState(
   action: TopicInteractionAction,
 ): TopicInteractionState {
   const now = "now" in action && action.now ? action.now : Date.now();
+  const graph = getTopicInteractionGraph(topic, locale);
+  const currentPath = state.activePath ?? getDefaultActivePath(graph);
 
   if (action.type === "RESET_TOPIC") {
     return createInitialTopicInteractionState(action.topic, action.locale);
@@ -222,78 +301,73 @@ export function reduceTopicInteractionState(
 
   if (action.type === "SCROLL_STAGE_VISIBLE") {
     if (state.lockedUntil && now < state.lockedUntil) return state;
-    return { ...state, activeStageId: action.stageId, lastIntent: "scroll" };
+    const activePath = reduceInteractionPath(graph, currentPath, { type: "selectStage", stageId: action.stageId as never });
+    return syncSelectionFromPath(topic, { ...state, activeStageId: action.stageId, lastIntent: "scroll" }, activePath);
   }
 
   if (action.type === "SELECT_STAGE") {
-    const source = getDefaultEvidenceSourceForStage(topic, action.stageId);
-    return syncSelectionFromSource(topic, {
+    const activePath = reduceInteractionPath(graph, currentPath, { type: "selectStage", stageId: action.stageId as never });
+    return syncSelectionFromPath(topic, {
       ...state,
       activeStageId: action.stageId,
-      activeEvidenceSource: source ?? state.activeEvidenceSource,
       lastIntent: "flow",
       lockedUntil: now + interactionLockMs,
-    });
+    }, activePath);
   }
 
   if (action.type === "SELECT_EVIDENCE_SOURCE") {
-    return syncSelectionFromSource(topic, {
+    const activePath = resolveActivePathBySource(graph, action.source);
+    return syncSelectionFromPath(topic, {
       ...state,
-      activeEvidenceSource: action.source,
       lastIntent: "control",
       lockedUntil: now + interactionLockMs,
-    });
+    }, activePath);
   }
 
   if (action.type === "SELECT_CLASSIFICATION_GROUP") {
-    return reduceTopicInteractionState(topic, locale, state, {
-      type: "SELECT_EVIDENCE_SOURCE",
-      source: `classificationGroups.${action.groupId}` as EvidenceSourcePath,
-      now,
-    });
+    const activePath = resolveActivePath(graph, { stageId: "classify", subflowId: action.groupId });
+    return syncSelectionFromPath(topic, { ...state, lastIntent: "control", lockedUntil: now + interactionLockMs }, activePath);
   }
 
   if (action.type === "SELECT_REPRESENTATIVE_OBJECT") {
-    return reduceTopicInteractionState(topic, locale, state, {
-      type: "SELECT_EVIDENCE_SOURCE",
-      source: `representativeObjects.${action.objectId}` as EvidenceSourcePath,
-      now,
+    const object = topic.representativeObjects.find((item) => item.id === action.objectId);
+    const activePath = resolveActivePath(graph, {
+      stageId: "inspect",
+      subflowId: object?.groupId,
+      nodeId: action.objectId,
     });
+    return syncSelectionFromPath(topic, { ...state, lastIntent: "control", lockedUntil: now + interactionLockMs }, activePath);
   }
 
   if (action.type === "SELECT_MECHANISM_STEP") {
-    return reduceTopicInteractionState(topic, locale, state, {
-      type: "SELECT_EVIDENCE_SOURCE",
-      source: `mechanism.steps.${action.stepId}` as EvidenceSourcePath,
-      now,
-    });
+    const activePath = resolveActivePath(graph, { stageId: "trace", subflowId: "mechanism", nodeId: action.stepId });
+    return syncSelectionFromPath(topic, { ...state, lastIntent: "control", lockedUntil: now + interactionLockMs }, activePath);
   }
 
   if (action.type === "SELECT_SECONDARY_MECHANISM_STEP") {
-    return reduceTopicInteractionState(topic, locale, state, {
-      type: "SELECT_EVIDENCE_SOURCE",
-      source: `secondaryMechanism.steps.${action.stepId}` as EvidenceSourcePath,
-      now,
-    });
+    const activePath = resolveActivePath(graph, { stageId: "trace", subflowId: "secondaryMechanism", nodeId: action.stepId });
+    return syncSelectionFromPath(topic, { ...state, lastIntent: "control", lockedUntil: now + interactionLockMs }, activePath);
   }
 
   if (action.type === "SELECT_COMPARE_PAIR") {
-    return reduceTopicInteractionState(topic, locale, state, {
-      type: "SELECT_EVIDENCE_SOURCE",
-      source: `comparePairs.${action.pairId}` as EvidenceSourcePath,
-      now,
-    });
+    const activePath = resolveActivePath(graph, { stageId: "compare", subflowId: action.pairId });
+    return syncSelectionFromPath(topic, { ...state, lastIntent: "control", lockedUntil: now + interactionLockMs }, activePath);
+  }
+
+  if (action.type === "SELECT_COMPARE_SIDE") {
+    const activePath = resolveActivePath(graph, { stageId: "compare", subflowId: action.pairId, nodeId: action.side });
+    return syncSelectionFromPath(topic, { ...state, lastIntent: "control", lockedUntil: now + interactionLockMs }, activePath);
   }
 
   if (action.type === "SELECT_CLICK_TASK") {
-    return syncSelectionFromSource(topic, {
+    const activePath = resolveActivePath(graph, { stageId: "tasks", subflowId: action.taskId });
+    return syncSelectionFromPath(topic, {
       ...state,
       activeStageId: "tasks",
       activeTaskId: action.taskId,
-      activeEvidenceSource: `clickTasks.${action.taskId}` as EvidenceSourcePath,
       lastIntent: "task",
       lockedUntil: now + interactionLockMs,
-    });
+    }, activePath);
   }
 
   if (action.type === "CLICK_TASK_OPTION") {
@@ -304,25 +378,56 @@ export function reduceTopicInteractionState(
 }
 
 export function resolveTopicPresentation(topic: Topic, state: TopicInteractionState, locale: Locale): TopicPresentation {
+  const graph = getTopicInteractionGraph(topic, locale);
+  const activePath = state.activePath ?? getDefaultActivePath(graph);
+  const graphPresentation = resolveGraphPresentation(graph, activePath);
   const taskId = state.activeTaskId;
   const selectedIds = taskId ? state.taskSelectedIds[taskId] ?? [] : [];
   const result = taskId ? state.taskResults[taskId] : undefined;
-  const evidence = state.activeEvidenceSource
-    ? resolveVisualEvidence(topic, {
-        source: state.activeEvidenceSource,
-        selectedIds,
-        result,
-        locale,
-      })
-    : null;
-  const visualSlot = evidence ? topic.visualSlots?.find((slot) => slot.id === evidence.visualSlotId) ?? null : null;
+  const activeSource = activePath.source ?? state.activeEvidenceSource;
+  const evidenceSource = asEvidenceSource(activeSource);
+  let evidence: VisualEvidenceState | null = null;
+
+  if (evidenceSource?.includes("#")) {
+    const baseSource = evidenceSource.split("#")[0] as EvidenceSourcePath;
+    const baseEvidence = resolveVisualEvidence(topic, { source: baseSource, selectedIds, result, locale });
+    if (baseEvidence && graphPresentation.evidence) {
+      evidence = {
+        ...baseEvidence,
+        source: evidenceSource,
+        sourceId: evidenceSource.split("#")[1] ?? baseEvidence.sourceId,
+        status: activePath.status ?? result ?? baseEvidence.status,
+        evidenceTitle: graphPresentation.evidence.title,
+        evidenceCopy: graphPresentation.evidence.copy ?? baseEvidence.evidenceCopy,
+        selectedLabels: [graphPresentation.evidence.title],
+        focus: {
+          ...baseEvidence.focus,
+          mode: "compare-side",
+          activeRegionIds: activePath.activeRegionIds,
+          dimOthers: true,
+        },
+      };
+    }
+  } else if (evidenceSource) {
+    evidence = resolveVisualEvidence(topic, {
+      source: evidenceSource,
+      selectedIds,
+      result: activePath.status ?? result,
+      locale,
+    });
+  }
+
+  const visualSlot =
+    (activePath.visualSlotId ? topic.visualSlots?.find((slot) => slot.id === activePath.visualSlotId) : null) ??
+    (evidence ? topic.visualSlots?.find((slot) => slot.id === evidence.visualSlotId) ?? null : null);
 
   return {
     state: {
       ...state,
+      activePath,
       activeVisualSlotId: visualSlot?.id ?? state.activeVisualSlotId,
     },
-    activeStageId: state.activeStageId,
+    activeStageId: activePath.stageId,
     evidence,
     visualSlot,
   };

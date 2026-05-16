@@ -3,7 +3,18 @@ export type EvidenceStatus = "idle" | "selected" | "correct" | "wrong" | "partia
 export type TaskResult = EvidenceStatus;
 export type TextMap = Record<string, string>;
 
-export type VisualFocusMode = "whole-image" | "hotspot" | "group" | "path-step" | "sequence-progress";
+export type VisualFocusMode =
+  | "whole-image"
+  | "whole"
+  | "hotspot"
+  | "group"
+  | "path-step"
+  | "sequence-progress"
+  | "compare-side"
+  | "task-option"
+  | "zoom"
+  | "callout"
+  | "none";
 
 export type VisualFocusRegion = {
   id: string;
@@ -55,6 +66,8 @@ export type EvidenceSourcePath =
   | `mechanism.steps.${string}`
   | `secondaryMechanism.steps.${string}`
   | `comparePairs.${string}`
+  | `comparePairs.${string}#a`
+  | `comparePairs.${string}#b`
   | `clickTasks.${string}`
   | `clickTasks.${string}.options.${string}`;
 

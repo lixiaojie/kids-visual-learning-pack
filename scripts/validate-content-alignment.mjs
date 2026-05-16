@@ -22,10 +22,6 @@ function relative(filePath) {
   return path.relative(root, filePath);
 }
 
-function withoutQuotes(source) {
-  return source.replace(/(["'`]).*?\1/g, "");
-}
-
 const topicRegistry = readJson("boards/kids-world/src/data/topic-registry.json");
 const channelPolicy = readJson("channel-policy.json");
 const imageManifest = readJson("boards/kids-world/src/data/image-generation-manifest.json");
@@ -76,7 +72,7 @@ for (const forbidden of forbiddenPackageImports) {
     errors.push(`packages/kids-content imports Web runtime or loader code: ${forbidden}`);
   }
 }
-if (/\b(fs|path)\b/.test(withoutQuotes(packageSource))) {
+if (/(from\s+["'](?:node:)?(?:fs|path)["']|require\(["'](?:node:)?(?:fs|path)["']\))/.test(packageSource)) {
   errors.push("packages/kids-content must not use Node-only fs/path APIs at runtime");
 }
 for (const slug of renderReadySlugs) {

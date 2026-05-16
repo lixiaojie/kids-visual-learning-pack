@@ -5,9 +5,15 @@ import "./ComparePairCard.scss";
 
 type ComparePair = Topic["comparePairs"][number];
 
-function CompareSide({ name, points }: ComparePair["a"]) {
+function CompareSide({
+  name,
+  points,
+  onSelect,
+}: ComparePair["a"] & {
+  onSelect?: (event: { stopPropagation?: () => void }) => void;
+}) {
   return (
-    <View className="compare-side">
+    <View className="compare-side" onClick={onSelect}>
       <Text className="compare-side-name">{name}</Text>
       <View className="compare-point-list">
         {points.map((point) => (
@@ -26,6 +32,7 @@ export function ComparePairCard({
   evidence,
   active,
   onSelect,
+  onSelectSide,
   locale = "zh-CN",
 }: {
   pair: ComparePair;
@@ -33,6 +40,7 @@ export function ComparePairCard({
   evidence?: VisualEvidenceState | null;
   active?: boolean;
   onSelect?: () => void;
+  onSelectSide?: (side: "a" | "b") => void;
   locale?: Locale;
 }) {
   return (
@@ -40,8 +48,22 @@ export function ComparePairCard({
       <TopicVisual slot={visualSlot} evidence={evidence} fallbackAlt={pair.title} locale={locale} />
       <Text className="compare-pair-title">{pair.title}</Text>
       <View className="compare-sides">
-        <CompareSide name={pair.a.name} points={pair.a.points} />
-        <CompareSide name={pair.b.name} points={pair.b.points} />
+        <CompareSide
+          name={pair.a.name}
+          points={pair.a.points}
+          onSelect={(event) => {
+            event.stopPropagation?.();
+            onSelectSide?.("a");
+          }}
+        />
+        <CompareSide
+          name={pair.b.name}
+          points={pair.b.points}
+          onSelect={(event) => {
+            event.stopPropagation?.();
+            onSelectSide?.("b");
+          }}
+        />
       </View>
       <Text className="compare-conclusion">{pair.childConclusion}</Text>
     </View>
