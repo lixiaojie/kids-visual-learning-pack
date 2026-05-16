@@ -20,37 +20,39 @@ export function ClickTaskDeck({ topic, state, presentation, dispatch, locale }: 
       topic.visualSlots?.find((slot) => slot.target === "clickTasks");
 
   return (
-    <article className="panel wide" id="topic-tasks">
+    <article className="panel wide interaction-panel" id="topic-tasks">
       <SectionHeader title={locale === "zh-CN" ? "点击任务" : "Tap tasks"} kicker={locale === "zh-CN" ? "不计分，多试几次" : "No score pressure"} />
       <TopicVisual slot={taskVisualSlot} evidence={taskEvidence} fallbackAlt={locale === "zh-CN" ? "任务图" : "Task visual"} locale={locale} />
-      <div className="task-tabs" role="tablist" aria-label={locale === "zh-CN" ? "点击任务列表" : "Tap task list"}>
-        {topic.clickTasks.map((task) => (
-          <button
-            className={activeTaskId === task.id ? "active" : ""}
-            key={task.id}
-            type="button"
-            onClick={() => dispatch({ type: "SELECT_CLICK_TASK", taskId: task.id })}
-          >
-            {task.title}
-          </button>
-        ))}
-      </div>
-      <div className="task-grid">
-        {topic.clickTasks
-          .filter((task) => task.id === activeTaskId)
-          .map((task) => (
-            <ClickTaskCard
-              active
+      <div className="interaction-controls">
+        <div className="task-tabs" role="tablist" aria-label={locale === "zh-CN" ? "点击任务列表" : "Tap task list"}>
+          {topic.clickTasks.map((task) => (
+            <button
+              className={activeTaskId === task.id ? "active" : ""}
               key={task.id}
-              task={task}
-              locale={locale}
-              selectedIds={state.taskSelectedIds[task.id] ?? []}
-              result={state.taskResults[task.id] ?? "idle"}
-              message={state.taskMessages[task.id]}
-              onSelectTask={(taskId) => dispatch({ type: "SELECT_CLICK_TASK", taskId })}
-              onClickOption={(taskId, optionId) => dispatch({ type: "CLICK_TASK_OPTION", taskId, optionId })}
-            />
+              type="button"
+              onClick={() => dispatch({ type: "SELECT_CLICK_TASK", taskId: task.id })}
+            >
+              {task.title}
+            </button>
           ))}
+        </div>
+        <div className="task-grid">
+          {topic.clickTasks
+            .filter((task) => task.id === activeTaskId)
+            .map((task) => (
+              <ClickTaskCard
+                active
+                key={task.id}
+                task={task}
+                locale={locale}
+                selectedIds={state.taskSelectedIds[task.id] ?? []}
+                result={state.taskResults[task.id] ?? "idle"}
+                message={state.taskMessages[task.id]}
+                onSelectTask={(taskId) => dispatch({ type: "SELECT_CLICK_TASK", taskId })}
+                onClickOption={(taskId, optionId) => dispatch({ type: "CLICK_TASK_OPTION", taskId, optionId })}
+              />
+            ))}
+        </div>
       </div>
     </article>
   );

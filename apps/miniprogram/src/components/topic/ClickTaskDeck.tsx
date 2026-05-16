@@ -21,7 +21,7 @@ export function ClickTaskDeck({ topic, state, presentation, dispatch, locale }: 
       topic.visualSlots?.find((slot) => slot.target === "clickTasks");
 
   return (
-    <View className="section" id="topic-tasks">
+    <View className="section interaction-panel" id="topic-tasks">
       <Text className="section-title">{locale === "zh-CN" ? "点击任务" : "Tap tasks"}</Text>
       <TopicVisual slot={taskVisualSlot} evidence={taskEvidence} fallbackAlt={locale === "zh-CN" ? "任务图" : "Task visual"} locale={locale} />
       <View className="click-task-tabs">

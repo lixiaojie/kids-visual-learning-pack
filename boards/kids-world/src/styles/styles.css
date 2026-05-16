@@ -700,6 +700,34 @@ h3,
 
 .panel.wide { grid-column: 1 / -1; }
 
+.interaction-panel {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.95fr) minmax(0, 1.05fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.interaction-panel > .section-head {
+  grid-column: 1 / -1;
+}
+
+.interaction-panel > .topic-visual {
+  position: sticky;
+  top: 220px;
+  margin-bottom: 0;
+}
+
+.interaction-controls {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.interaction-panel .group-list,
+.interaction-panel .object-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .topic-visual {
   overflow: hidden;
   margin: 0 0 14px;
@@ -928,7 +956,7 @@ h3,
 }
 
 .step-row {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .step-card,
@@ -980,7 +1008,7 @@ button.step-card {
 }
 
 .compare-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 button.compare-card {
@@ -1007,7 +1035,7 @@ button.compare-card {
 }
 
 .task-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .task-tabs {
@@ -1134,8 +1162,13 @@ button.compare-card {
   .home-hero,
   .topic-hero,
   .featured-observation-card,
-  .content-grid {
+  .content-grid,
+  .interaction-panel {
     grid-template-columns: 1fr;
+  }
+
+  .interaction-panel > .topic-visual {
+    position: static;
   }
 
   .world-grid,

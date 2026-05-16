@@ -31,8 +31,8 @@
       "representativeObjects": [
         "camera",
         "microphone",
-        "button",
-        "distance-sensor"
+        "distance-sensor",
+        "button"
       ],
       "misconception": "Robots know the outside world without sensing."
     },
@@ -49,12 +49,10 @@
     {
       "id": "actuators",
       "name": "Take action",
-      "childExplanation": "Wheels, lights, and robot arms let a robot move or show a result.",
+      "childExplanation": "Wheels and the robot arm help the robot move, grab, or push things.",
       "parentNote": "No need to use the term actuator first.",
       "representativeObjects": [
-        "wheel",
-        "light",
-        "robot-arm"
+        "wheel-arm"
       ],
       "misconception": "Lighting and moving are the same ability."
     },
@@ -88,20 +86,20 @@
       "commonMisread": "Thinking robots hear without devices."
     },
     {
-      "id": "button",
-      "name": "Button",
-      "groupId": "sensors",
-      "childExplanation": "A button can tell the robot a human choice.",
-      "visualHint": "red round button",
-      "commonMisread": "Thinking buttons are decoration."
-    },
-    {
       "id": "distance-sensor",
       "name": "Distance sensor",
       "groupId": "sensors",
       "childExplanation": "It helps a robot know whether something is close in front.",
       "visualHint": "two small sensor eyes",
       "commonMisread": "Thinking it sees exactly like human eyes."
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "groupId": "sensors",
+      "childExplanation": "A button can tell the robot a human choice.",
+      "visualHint": "red round button",
+      "commonMisread": "Thinking buttons are decoration."
     },
     {
       "id": "program",
@@ -112,28 +110,12 @@
       "commonMisread": "Thinking a program is magic."
     },
     {
-      "id": "wheel",
-      "name": "Wheel",
+      "id": "wheel-arm",
+      "name": "Wheels and robot arm",
       "groupId": "actuators",
-      "childExplanation": "Wheels let the robot move forward, backward, or turn.",
-      "visualHint": "black little tire",
-      "commonMisread": "Thinking wheels alone make a robot."
-    },
-    {
-      "id": "light",
-      "name": "Light",
-      "groupId": "actuators",
-      "childExplanation": "Lights can show the robot’s current state.",
-      "visualHint": "yellow glowing lamp",
-      "commonMisread": "Thinking lights are only decorative."
-    },
-    {
-      "id": "robot-arm",
-      "name": "Robot arm",
-      "groupId": "actuators",
-      "childExplanation": "A robot arm can reach, grab, or push things.",
-      "visualHint": "small arm with claw",
-      "commonMisread": "Thinking it works exactly like a human hand."
+      "childExplanation": "Wheels help the robot move, and the robot arm helps it grab or push things.",
+      "visualHint": "Wheel plus gripper",
+      "commonMisread": "Thinking every moving part is sensing information."
     }
   ],
   "mechanism": {
@@ -160,7 +142,7 @@
       {
         "id": "act",
         "shortTitle": "Take action",
-        "childExplanation": "Wheels, lights, or a robot arm start working.",
+        "childExplanation": "Wheels or the robot arm start working and turn the decision into action.",
         "parentNote": "This maps to actuator/output."
       },
       {
@@ -289,8 +271,34 @@
       "id": "robot-find-01",
       "title": "Find: which parts receive information?",
       "prompt": "Find the parts that can receive outside information.",
-      "wrongHint": "Is it knowing information or doing an action?",
-      "successCopy": "Correct! These parts help the robot receive information."
+      "wrongHint": "Ask: is it knowing information, acting, or following rules?",
+      "successCopy": "Yes. These parts help the robot receive information.",
+      "options": [
+        {
+          "id": "camera",
+          "label": "Camera"
+        },
+        {
+          "id": "microphone",
+          "label": "Microphone"
+        },
+        {
+          "id": "distance-sensor",
+          "label": "Distance sensor"
+        },
+        {
+          "id": "button",
+          "label": "Button"
+        },
+        {
+          "id": "program",
+          "label": "Program rules"
+        },
+        {
+          "id": "wheel-arm",
+          "label": "Wheels and robot arm"
+        }
+      ]
     },
     {
       "id": "robot-choice-01",
@@ -384,73 +392,57 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
           "camera",
           "microphone",
-          "button",
-          "distance-sensor"
+          "distance-sensor",
+          "button"
         ],
         "dimOthers": true
       }
@@ -473,71 +465,55 @@
       "expectedStatus": "selected",
       "quality": "generated",
       "focus": {
-        "mode": "group",
+        "mode": "hotspot",
         "regions": [
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -574,77 +550,59 @@
       "expectedStatus": "selected",
       "quality": "generated",
       "focus": {
-        "mode": "group",
+        "mode": "hotspot",
         "regions": [
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
-          "wheel",
-          "light",
-          "robot-arm"
+          "wheel-arm"
         ],
         "dimOthers": true
       }
@@ -666,70 +624,53 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
-          "camera",
           "distance-sensor",
           "program"
         ],
@@ -759,66 +700,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -850,66 +775,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -941,66 +850,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -1032,66 +925,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -1123,343 +1000,54 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
           "program"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-representativeObjects-wheel",
-      "source": "representativeObjects.wheel",
-      "visualSlotId": "object-icons",
-      "interactionScope": "local",
-      "evidenceTitle": "Wheel",
-      "observePrompt": "black little tire",
-      "evidenceCopy": "Wheels let the robot move forward, backward, or turn.",
-      "markerChips": [
-        {
-          "label": "Wheel",
-          "meaning": "Thinking wheels alone make a robot.",
-          "emphasis": "primary"
-        }
-      ],
-      "expectedStatus": "selected",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "wheel"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-representativeObjects-light",
-      "source": "representativeObjects.light",
-      "visualSlotId": "object-icons",
-      "interactionScope": "local",
-      "evidenceTitle": "Light",
-      "observePrompt": "yellow glowing lamp",
-      "evidenceCopy": "Lights can show the robot’s current state.",
-      "markerChips": [
-        {
-          "label": "Light",
-          "meaning": "Thinking lights are only decorative.",
-          "emphasis": "primary"
-        }
-      ],
-      "expectedStatus": "selected",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "light"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-representativeObjects-robot-arm",
-      "source": "representativeObjects.robot-arm",
-      "visualSlotId": "object-icons",
-      "interactionScope": "local",
-      "evidenceTitle": "Robot arm",
-      "observePrompt": "small arm with claw",
-      "evidenceCopy": "A robot arm can reach, grab, or push things.",
-      "markerChips": [
-        {
-          "label": "Robot arm",
-          "meaning": "Thinking it works exactly like a human hand.",
-          "emphasis": "primary"
-        }
-      ],
-      "expectedStatus": "selected",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "robot-arm"
         ],
         "dimOthers": true
       }
@@ -2457,14 +2045,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-camera",
       "source": "clickTasks.robot-find-01.options.camera",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "camera",
+      "evidenceTitle": "Camera",
       "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "evidenceCopy": "Yes. These parts help the robot receive information.",
       "markerChips": [
         {
-          "label": "camera",
+          "label": "Camera",
           "meaning": "Current choice",
           "emphasis": "primary"
         }
@@ -2477,66 +2065,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -2548,14 +2120,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-microphone",
       "source": "clickTasks.robot-find-01.options.microphone",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "microphone",
+      "evidenceTitle": "Microphone",
       "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "evidenceCopy": "Yes. These parts help the robot receive information.",
       "markerChips": [
         {
-          "label": "microphone",
+          "label": "Microphone",
           "meaning": "Current choice",
           "emphasis": "primary"
         }
@@ -2568,66 +2140,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -2639,14 +2195,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-button",
       "source": "clickTasks.robot-find-01.options.button",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "button",
+      "evidenceTitle": "Button",
       "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "evidenceCopy": "Yes. These parts help the robot receive information.",
       "markerChips": [
         {
-          "label": "button",
+          "label": "Button",
           "meaning": "Current choice",
           "emphasis": "primary"
         }
@@ -2659,66 +2215,50 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -2730,14 +2270,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-distance-sensor",
       "source": "clickTasks.robot-find-01.options.distance-sensor",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "distance sensor",
+      "evidenceTitle": "Distance sensor",
       "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Correct! These parts help the robot receive information.",
+      "evidenceCopy": "Yes. These parts help the robot receive information.",
       "markerChips": [
         {
-          "label": "distance sensor",
+          "label": "Distance sensor",
           "meaning": "Current choice",
           "emphasis": "primary"
         }
@@ -2750,346 +2290,54 @@
           {
             "id": "camera",
             "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
           "distance-sensor"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-clickTasks-robot-find-01-options-wheel",
-      "source": "clickTasks.robot-find-01.options.wheel",
-      "visualSlotId": "click-task",
-      "interactionScope": "local",
-      "evidenceTitle": "wheel",
-      "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Is it knowing information or doing an action?",
-      "markerChips": [
-        {
-          "label": "wheel",
-          "meaning": "Look again",
-          "emphasis": "warning"
-        }
-      ],
-      "expectedStatus": "wrong",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18,
-            "emphasis": "warning"
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "wheel"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-clickTasks-robot-find-01-options-light",
-      "source": "clickTasks.robot-find-01.options.light",
-      "visualSlotId": "click-task",
-      "interactionScope": "local",
-      "evidenceTitle": "light",
-      "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Is it knowing information or doing an action?",
-      "markerChips": [
-        {
-          "label": "light",
-          "meaning": "Look again",
-          "emphasis": "warning"
-        }
-      ],
-      "expectedStatus": "wrong",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18,
-            "emphasis": "warning"
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "light"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-clickTasks-robot-find-01-options-robot-arm",
-      "source": "clickTasks.robot-find-01.options.robot-arm",
-      "visualSlotId": "click-task",
-      "interactionScope": "local",
-      "evidenceTitle": "robot arm",
-      "observePrompt": "Find the parts that can receive outside information.",
-      "evidenceCopy": "Is it knowing information or doing an action?",
-      "markerChips": [
-        {
-          "label": "robot arm",
-          "meaning": "Look again",
-          "emphasis": "warning"
-        }
-      ],
-      "expectedStatus": "wrong",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "Camera",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "Microphone",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "Button",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "Distance sensor",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "Program rules",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "Wheel",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "Light",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "Robot arm",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18,
-            "emphasis": "warning"
-          }
-        ],
-        "activeRegionIds": [
-          "robot-arm"
         ],
         "dimOthers": true
       }
@@ -3252,6 +2500,233 @@
         ],
         "activeRegionIds": [
           "wheels-arm"
+        ],
+        "dimOthers": true
+      }
+    },
+    {
+      "id": "evidence-representativeObjects-wheel-arm",
+      "source": "representativeObjects.wheel-arm",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "Wheels and robot arm",
+      "observePrompt": "Wheel plus gripper",
+      "evidenceCopy": "Wheels help the robot move, and the robot arm helps it grab or push things.",
+      "markerChips": [
+        {
+          "label": "Wheels and robot arm",
+          "meaning": "Thinking every moving part is sensing information.",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "regions": [
+          {
+            "id": "camera",
+            "label": "Camera",
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "microphone",
+            "label": "Microphone",
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
+          },
+          {
+            "id": "distance-sensor",
+            "label": "Distance sensor",
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "program",
+            "label": "Program rules",
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
+          }
+        ],
+        "activeRegionIds": [
+          "wheel-arm"
+        ],
+        "dimOthers": true
+      }
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-program",
+      "source": "clickTasks.robot-find-01.options.program",
+      "visualSlotId": "robot-find-object-cards",
+      "interactionScope": "local",
+      "evidenceTitle": "Program rules",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Ask: is it knowing information, acting, or following rules?",
+      "markerChips": [
+        {
+          "label": "Program rules",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "regions": [
+          {
+            "id": "camera",
+            "label": "Camera",
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "microphone",
+            "label": "Microphone",
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
+          },
+          {
+            "id": "distance-sensor",
+            "label": "Distance sensor",
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "program",
+            "label": "Program rules",
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25,
+            "emphasis": "warning"
+          },
+          {
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
+          }
+        ],
+        "activeRegionIds": [
+          "program"
+        ],
+        "dimOthers": true
+      }
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-wheel-arm",
+      "source": "clickTasks.robot-find-01.options.wheel-arm",
+      "visualSlotId": "robot-find-object-cards",
+      "interactionScope": "local",
+      "evidenceTitle": "Wheels and robot arm",
+      "observePrompt": "Find the parts that can receive outside information.",
+      "evidenceCopy": "Ask: is it knowing information, acting, or following rules?",
+      "markerChips": [
+        {
+          "label": "Wheels and robot arm",
+          "meaning": "Look again",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "regions": [
+          {
+            "id": "camera",
+            "label": "Camera",
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "microphone",
+            "label": "Microphone",
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
+          },
+          {
+            "id": "distance-sensor",
+            "label": "Distance sensor",
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "Button",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "program",
+            "label": "Program rules",
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "wheel-arm",
+            "label": "Wheels and robot arm",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25,
+            "emphasis": "warning"
+          }
+        ],
+        "activeRegionIds": [
+          "wheel-arm"
         ],
         "dimOthers": true
       }

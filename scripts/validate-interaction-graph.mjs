@@ -27,6 +27,19 @@ for (const file of [
 
 const robots = readJson("boards/kids-world/src/data/topics/robots.json");
 const bindings = new Map((robots.visualEvidenceBindings ?? []).map((binding) => [binding.source, binding]));
+const robotObjectIds = robots.representativeObjects.map((object) => object.id);
+const expectedRobotObjectIds = ["camera", "microphone", "distance-sensor", "button", "program", "wheel-arm"];
+if (robotObjectIds.join("|") !== expectedRobotObjectIds.join("|")) {
+  errors.push(`robots object cards must match the 6-card visual: expected ${expectedRobotObjectIds.join(", ")}, got ${robotObjectIds.join(", ")}`);
+}
+const robotFindTask = robots.clickTasks.find((task) => task.id === "robot-find-01");
+const robotFindOptions = [...(robotFindTask?.targetIds ?? []), ...(robotFindTask?.decoyIds ?? [])];
+if (robotFindOptions.join("|") !== expectedRobotObjectIds.join("|")) {
+  errors.push(`robots robot-find-01 options must match object cards: expected ${expectedRobotObjectIds.join(", ")}, got ${robotFindOptions.join(", ")}`);
+}
+if (!robots.visualSlots?.some((slot) => slot.id === "robot-find-object-cards" && slot.assetId === "human-system-robots-object-icons")) {
+  errors.push("robots robot-find-01 must use the 6-card object visual slot");
+}
 
 function checkRobotsSource(source, expectedSlot, expectedMode, expectedRegions) {
   const binding = bindings.get(source);
@@ -50,6 +63,8 @@ checkRobotsSource("mechanism.steps.input", "mechanism", "path-step", ["input"]);
 checkRobotsSource("mechanism.steps.decide", "mechanism", "path-step", ["decide"]);
 checkRobotsSource("secondaryMechanism.steps.sense-wall", "mechanism", "path-step", ["input"]);
 checkRobotsSource("clickTasks.robot-sequence-01.options.act", "click-task", "sequence-progress", ["act"]);
+checkRobotsSource("representativeObjects.wheel-arm", "object-icons", "hotspot", ["wheel-arm"]);
+checkRobotsSource("clickTasks.robot-find-01.options.wheel-arm", "robot-find-object-cards", "hotspot", ["wheel-arm"]);
 
 for (const source of ["comparePairs.robot-vs-remote-toy", "comparePairs.sensor-vs-actuator"]) {
   const binding = bindings.get(source);

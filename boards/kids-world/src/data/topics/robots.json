@@ -166,8 +166,8 @@
       "representativeObjects": [
         "camera",
         "microphone",
-        "button",
-        "distance-sensor"
+        "distance-sensor",
+        "button"
       ],
       "misconception": "机器人不用感知就知道外面发生什么。"
     },
@@ -184,12 +184,10 @@
     {
       "id": "actuators",
       "name": "做出动作",
-      "childExplanation": "轮子、灯和机械臂让机器人动起来或表达结果。",
+      "childExplanation": "轮子和机械臂让机器人移动、抓取或推动东西。",
       "parentNote": "行动部件也叫执行器，儿童版不用术语。",
       "representativeObjects": [
-        "wheel",
-        "light",
-        "robot-arm"
+        "wheel-arm"
       ],
       "misconception": "发光和转动都是同一种能力。"
     },
@@ -223,20 +221,20 @@
       "commonMisread": "以为机器人不用设备就能听见。"
     },
     {
-      "id": "button",
-      "name": "按钮",
-      "groupId": "sensors",
-      "childExplanation": "按钮可以把人的选择告诉机器人。",
-      "visualHint": "红色圆按钮",
-      "commonMisread": "以为按钮是装饰。"
-    },
-    {
       "id": "distance-sensor",
       "name": "距离传感器",
       "groupId": "sensors",
       "childExplanation": "它可以帮机器人知道前面是不是太近了。",
       "visualHint": "两个小圆眼",
       "commonMisread": "以为它真的像眼睛一样看世界。"
+    },
+    {
+      "id": "button",
+      "name": "按钮",
+      "groupId": "sensors",
+      "childExplanation": "按钮可以把人的选择告诉机器人。",
+      "visualHint": "红色圆按钮",
+      "commonMisread": "以为按钮是装饰。"
     },
     {
       "id": "program",
@@ -247,28 +245,12 @@
       "commonMisread": "以为程序就是魔法。"
     },
     {
-      "id": "wheel",
-      "name": "轮子",
+      "id": "wheel-arm",
       "groupId": "actuators",
-      "childExplanation": "轮子让机器人前进、后退或转弯。",
-      "visualHint": "黑色小轮胎",
-      "commonMisread": "以为有轮子就一定是机器人。"
-    },
-    {
-      "id": "light",
-      "name": "灯光",
-      "groupId": "actuators",
-      "childExplanation": "灯光可以告诉我们机器人现在的状态。",
-      "visualHint": "黄色发光灯",
-      "commonMisread": "以为灯光只是好看。"
-    },
-    {
-      "id": "robot-arm",
-      "name": "机械臂",
-      "groupId": "actuators",
-      "childExplanation": "机械臂可以伸出去抓取或推动东西。",
-      "visualHint": "有夹爪的小手臂",
-      "commonMisread": "以为机械臂和人的手完全一样。"
+      "name": "轮子和机械臂",
+      "childExplanation": "轮子让机器人移动，机械臂让机器人抓取或推动东西。",
+      "visualHint": "轮子加夹爪",
+      "commonMisread": "以为会动的零件都在接收信息。"
     }
   ],
   "mechanism": {
@@ -295,7 +277,7 @@
       {
         "id": "act",
         "shortTitle": "做出动作",
-        "childExplanation": "轮子、灯光或机械臂开始工作。",
+        "childExplanation": "轮子或机械臂开始工作，把决定变成动作。",
         "parentNote": "对应 actuator / output。"
       },
       {
@@ -435,16 +417,41 @@
       "targetIds": [
         "camera",
         "microphone",
-        "button",
-        "distance-sensor"
+        "distance-sensor",
+        "button"
       ],
       "decoyIds": [
-        "wheel",
-        "light",
-        "robot-arm"
+        "program",
+        "wheel-arm"
       ],
-      "wrongHint": "想一想：它是在“知道信息”，还是在“做动作”？",
-      "successCopy": "对！这些都可以帮助机器人接收信息。"
+      "wrongHint": "想一想：它是在“知道信息”，还是在“做动作/按规则”？",
+      "successCopy": "对！这些都可以帮助机器人接收信息。",
+      "options": [
+        {
+          "id": "camera",
+          "label": "摄像头"
+        },
+        {
+          "id": "microphone",
+          "label": "麦克风"
+        },
+        {
+          "id": "distance-sensor",
+          "label": "距离传感器"
+        },
+        {
+          "id": "button",
+          "label": "按钮"
+        },
+        {
+          "id": "program",
+          "label": "程序规则"
+        },
+        {
+          "id": "wheel-arm",
+          "label": "轮子和机械臂"
+        }
+      ]
     },
     {
       "id": "robot-choice-01",
@@ -521,6 +528,13 @@
       "required": false
     },
     {
+      "id": "robot-find-object-cards",
+      "assetId": "human-system-robots-object-icons",
+      "target": "clickTasks.robot-find-01",
+      "role": "task",
+      "required": false
+    },
+    {
       "id": "parent-guide",
       "assetId": "human-system-robots-parent-guide",
       "target": "parentTips",
@@ -567,73 +581,57 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
           "camera",
           "microphone",
-          "button",
-          "distance-sensor"
+          "distance-sensor",
+          "button"
         ],
         "dimOthers": true
       }
@@ -656,71 +654,55 @@
       "expectedStatus": "selected",
       "quality": "generated",
       "focus": {
-        "mode": "group",
+        "mode": "hotspot",
         "regions": [
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -757,77 +739,59 @@
       "expectedStatus": "selected",
       "quality": "generated",
       "focus": {
-        "mode": "group",
+        "mode": "hotspot",
         "regions": [
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
-          "wheel",
-          "light",
-          "robot-arm"
+          "wheel-arm"
         ],
         "dimOthers": true
       }
@@ -849,70 +813,53 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
-          "camera",
           "distance-sensor",
           "program"
         ],
@@ -942,66 +889,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -1033,66 +964,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -1124,66 +1039,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -1215,66 +1114,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -1306,343 +1189,54 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
           "program"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-representativeObjects-wheel",
-      "source": "representativeObjects.wheel",
-      "visualSlotId": "object-icons",
-      "interactionScope": "local",
-      "evidenceTitle": "轮子",
-      "observePrompt": "黑色小轮胎",
-      "evidenceCopy": "轮子让机器人前进、后退或转弯。",
-      "markerChips": [
-        {
-          "label": "轮子",
-          "meaning": "以为有轮子就一定是机器人。",
-          "emphasis": "primary"
-        }
-      ],
-      "expectedStatus": "selected",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "wheel"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-representativeObjects-light",
-      "source": "representativeObjects.light",
-      "visualSlotId": "object-icons",
-      "interactionScope": "local",
-      "evidenceTitle": "灯光",
-      "observePrompt": "黄色发光灯",
-      "evidenceCopy": "灯光可以告诉我们机器人现在的状态。",
-      "markerChips": [
-        {
-          "label": "灯光",
-          "meaning": "以为灯光只是好看。",
-          "emphasis": "primary"
-        }
-      ],
-      "expectedStatus": "selected",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "light"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-representativeObjects-robot-arm",
-      "source": "representativeObjects.robot-arm",
-      "visualSlotId": "object-icons",
-      "interactionScope": "local",
-      "evidenceTitle": "机械臂",
-      "observePrompt": "有夹爪的小手臂",
-      "evidenceCopy": "机械臂可以伸出去抓取或推动东西。",
-      "markerChips": [
-        {
-          "label": "机械臂",
-          "meaning": "以为机械臂和人的手完全一样。",
-          "emphasis": "primary"
-        }
-      ],
-      "expectedStatus": "selected",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "robot-arm"
         ],
         "dimOthers": true
       }
@@ -2640,14 +2234,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-camera",
       "source": "clickTasks.robot-find-01.options.camera",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "camera",
+      "evidenceTitle": "摄像头",
       "observePrompt": "找到可以接收外界信息的部件。",
       "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
       "markerChips": [
         {
-          "label": "camera",
+          "label": "摄像头",
           "meaning": "当前选择",
           "emphasis": "primary"
         }
@@ -2660,66 +2254,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -2731,14 +2309,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-microphone",
       "source": "clickTasks.robot-find-01.options.microphone",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "microphone",
+      "evidenceTitle": "麦克风",
       "observePrompt": "找到可以接收外界信息的部件。",
       "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
       "markerChips": [
         {
-          "label": "microphone",
+          "label": "麦克风",
           "meaning": "当前选择",
           "emphasis": "primary"
         }
@@ -2751,66 +2329,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -2822,14 +2384,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-button",
       "source": "clickTasks.robot-find-01.options.button",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "button",
+      "evidenceTitle": "按钮",
       "observePrompt": "找到可以接收外界信息的部件。",
       "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
       "markerChips": [
         {
-          "label": "button",
+          "label": "按钮",
           "meaning": "当前选择",
           "emphasis": "primary"
         }
@@ -2842,66 +2404,50 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
@@ -2913,14 +2459,14 @@
     {
       "id": "evidence-clickTasks-robot-find-01-options-distance-sensor",
       "source": "clickTasks.robot-find-01.options.distance-sensor",
-      "visualSlotId": "click-task",
+      "visualSlotId": "robot-find-object-cards",
       "interactionScope": "local",
-      "evidenceTitle": "distance sensor",
+      "evidenceTitle": "距离传感器",
       "observePrompt": "找到可以接收外界信息的部件。",
       "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
       "markerChips": [
         {
-          "label": "distance sensor",
+          "label": "距离传感器",
           "meaning": "当前选择",
           "emphasis": "primary"
         }
@@ -2933,346 +2479,54 @@
           {
             "id": "camera",
             "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
           },
           {
             "id": "microphone",
             "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
           },
           {
             "id": "distance-sensor",
             "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
             "id": "program",
             "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
           },
           {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
           }
         ],
         "activeRegionIds": [
           "distance-sensor"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-clickTasks-robot-find-01-options-wheel",
-      "source": "clickTasks.robot-find-01.options.wheel",
-      "visualSlotId": "click-task",
-      "interactionScope": "local",
-      "evidenceTitle": "wheel",
-      "observePrompt": "找到可以接收外界信息的部件。",
-      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作”？",
-      "markerChips": [
-        {
-          "label": "wheel",
-          "meaning": "需要再观察",
-          "emphasis": "warning"
-        }
-      ],
-      "expectedStatus": "wrong",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18,
-            "emphasis": "warning"
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "wheel"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-clickTasks-robot-find-01-options-light",
-      "source": "clickTasks.robot-find-01.options.light",
-      "visualSlotId": "click-task",
-      "interactionScope": "local",
-      "evidenceTitle": "light",
-      "observePrompt": "找到可以接收外界信息的部件。",
-      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作”？",
-      "markerChips": [
-        {
-          "label": "light",
-          "meaning": "需要再观察",
-          "emphasis": "warning"
-        }
-      ],
-      "expectedStatus": "wrong",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18,
-            "emphasis": "warning"
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          }
-        ],
-        "activeRegionIds": [
-          "light"
-        ],
-        "dimOthers": true
-      }
-    },
-    {
-      "id": "evidence-clickTasks-robot-find-01-options-robot-arm",
-      "source": "clickTasks.robot-find-01.options.robot-arm",
-      "visualSlotId": "click-task",
-      "interactionScope": "local",
-      "evidenceTitle": "robot arm",
-      "observePrompt": "找到可以接收外界信息的部件。",
-      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作”？",
-      "markerChips": [
-        {
-          "label": "robot arm",
-          "meaning": "需要再观察",
-          "emphasis": "warning"
-        }
-      ],
-      "expectedStatus": "wrong",
-      "quality": "generated",
-      "focus": {
-        "mode": "hotspot",
-        "regions": [
-          {
-            "id": "camera",
-            "label": "摄像头",
-            "x": 0.1,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "microphone",
-            "label": "麦克风",
-            "x": 0.4,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "button",
-            "label": "按钮",
-            "x": 0.7,
-            "y": 0.16,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "distance-sensor",
-            "label": "距离传感器",
-            "x": 0.1,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "program",
-            "label": "程序规则",
-            "x": 0.4,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "wheel",
-            "label": "轮子",
-            "x": 0.7,
-            "y": 0.43,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "light",
-            "label": "灯光",
-            "x": 0.24,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18
-          },
-          {
-            "id": "robot-arm",
-            "label": "机械臂",
-            "x": 0.55,
-            "y": 0.7,
-            "width": 0.18,
-            "height": 0.18,
-            "emphasis": "warning"
-          }
-        ],
-        "activeRegionIds": [
-          "robot-arm"
         ],
         "dimOthers": true
       }
@@ -3435,6 +2689,233 @@
         ],
         "activeRegionIds": [
           "wheels-arm"
+        ],
+        "dimOthers": true
+      }
+    },
+    {
+      "id": "evidence-representativeObjects-wheel-arm",
+      "source": "representativeObjects.wheel-arm",
+      "visualSlotId": "object-icons",
+      "interactionScope": "local",
+      "evidenceTitle": "轮子和机械臂",
+      "observePrompt": "轮子加夹爪",
+      "evidenceCopy": "轮子让机器人移动，机械臂让机器人抓取或推动东西。",
+      "markerChips": [
+        {
+          "label": "轮子和机械臂",
+          "meaning": "以为会动的零件都在接收信息。",
+          "emphasis": "primary"
+        }
+      ],
+      "expectedStatus": "selected",
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "regions": [
+          {
+            "id": "camera",
+            "label": "摄像头",
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "microphone",
+            "label": "麦克风",
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
+          },
+          {
+            "id": "distance-sensor",
+            "label": "距离传感器",
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "program",
+            "label": "程序规则",
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
+          }
+        ],
+        "activeRegionIds": [
+          "wheel-arm"
+        ],
+        "dimOthers": true
+      }
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-program",
+      "source": "clickTasks.robot-find-01.options.program",
+      "visualSlotId": "robot-find-object-cards",
+      "interactionScope": "local",
+      "evidenceTitle": "程序规则",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作/按规则”？",
+      "markerChips": [
+        {
+          "label": "程序规则",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "regions": [
+          {
+            "id": "camera",
+            "label": "摄像头",
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "microphone",
+            "label": "麦克风",
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
+          },
+          {
+            "id": "distance-sensor",
+            "label": "距离传感器",
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "program",
+            "label": "程序规则",
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25,
+            "emphasis": "warning"
+          },
+          {
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25
+          }
+        ],
+        "activeRegionIds": [
+          "program"
+        ],
+        "dimOthers": true
+      }
+    },
+    {
+      "id": "evidence-clickTasks-robot-find-01-options-wheel-arm",
+      "source": "clickTasks.robot-find-01.options.wheel-arm",
+      "visualSlotId": "robot-find-object-cards",
+      "interactionScope": "local",
+      "evidenceTitle": "轮子和机械臂",
+      "observePrompt": "找到可以接收外界信息的部件。",
+      "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作/按规则”？",
+      "markerChips": [
+        {
+          "label": "轮子和机械臂",
+          "meaning": "需要再观察",
+          "emphasis": "warning"
+        }
+      ],
+      "expectedStatus": "wrong",
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "regions": [
+          {
+            "id": "camera",
+            "label": "摄像头",
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "microphone",
+            "label": "麦克风",
+            "x": 0.38,
+            "y": 0.1,
+            "width": 0.22,
+            "height": 0.28
+          },
+          {
+            "id": "distance-sensor",
+            "label": "距离传感器",
+            "x": 0.63,
+            "y": 0.1,
+            "width": 0.24,
+            "height": 0.28
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "x": 0.14,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "program",
+            "label": "程序规则",
+            "x": 0.39,
+            "y": 0.4,
+            "width": 0.22,
+            "height": 0.25
+          },
+          {
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "x": 0.64,
+            "y": 0.4,
+            "width": 0.24,
+            "height": 0.25,
+            "emphasis": "warning"
+          }
+        ],
+        "activeRegionIds": [
+          "wheel-arm"
         ],
         "dimOthers": true
       }

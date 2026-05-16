@@ -113,7 +113,7 @@ export default function TopicPage() {
         <Text className="section-body">{topic.hero.sceneExplanation}</Text>
       </View>
 
-      <View id="topic-classification">
+      <View className="section interaction-panel" id="topic-classification">
         <TopicVisual slot={slotFromEvidence(groupEvidence?.visualSlotId)} evidence={groupEvidence} fallbackAlt={locale === "zh-CN" ? "分类证据图" : "Classification evidence"} locale={locale} />
         <InfoList
           title={locale === "zh-CN" ? "先分成几类" : "Classification groups"}
@@ -130,7 +130,7 @@ export default function TopicPage() {
         />
       </View>
 
-      <View id="topic-objects">
+      <View className="section interaction-panel" id="topic-objects">
         <TopicVisual slot={slotFromEvidence(objectEvidence?.visualSlotId) ?? getVisualSlotForTarget(topic, "representativeObjects")} evidence={objectEvidence} fallbackAlt={locale === "zh-CN" ? "代表对象观察图" : "Representative object visual"} locale={locale} />
         <InfoList
           title={locale === "zh-CN" ? "认识几个代表对象" : "Representative objects"}
@@ -145,7 +145,7 @@ export default function TopicPage() {
         />
       </View>
 
-      <View className="section" id="topic-mechanism">
+      <View className="section interaction-panel" id="topic-mechanism">
         <Text className="section-title">{topic.mechanism.title ?? (locale === "zh-CN" ? "它怎么发生" : "How it works")}</Text>
         <TopicVisual slot={slotFromEvidence(mechanismEvidence?.visualSlotId) ?? getVisualSlotForTarget(topic, "mechanism")} evidence={mechanismEvidence} fallbackAlt={topic.mechanism.title} locale={locale} />
         {topic.mechanism.steps.map((step) => (
@@ -157,7 +157,7 @@ export default function TopicPage() {
       </View>
 
       {topic.secondaryMechanism && (
-        <View className="section" id="topic-secondary-mechanism">
+        <View className="section interaction-panel" id="topic-secondary-mechanism">
           <Text className="section-title">{topic.secondaryMechanism.title}</Text>
           <TopicVisual slot={slotFromEvidence(secondaryEvidence?.visualSlotId) ?? getVisualSlotForTarget(topic, "secondaryMechanism")} evidence={secondaryEvidence} fallbackAlt={topic.secondaryMechanism.title} locale={locale} />
           {topic.secondaryMechanism.steps.map((step) => (
@@ -169,7 +169,7 @@ export default function TopicPage() {
         </View>
       )}
 
-      <View className="section" id="topic-compare">
+      <View className="section interaction-panel" id="topic-compare">
         <Text className="section-title">{locale === "zh-CN" ? "比一比" : "Compare"}</Text>
         <TopicVisual slot={slotFromEvidence(compareEvidence?.visualSlotId) ?? topic.visualSlots?.find((slot) => slot.target === "comparePairs")} evidence={compareEvidence} fallbackAlt={locale === "zh-CN" ? "对比图" : "Compare visual"} locale={locale} />
         <View className="compare-stack">

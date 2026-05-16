@@ -64,16 +64,20 @@ export function MechanismSteps({
 
   return (
     <>
-      <article className="panel wide" id="topic-mechanism">
+      <article className="panel wide interaction-panel" id="topic-mechanism">
         <SectionHeader title={mechanism.title ?? (locale === "zh-CN" ? "机制步骤" : "How it works")} />
         <TopicVisual slot={mechanismSlot} evidence={mechanismEvidence} fallbackAlt={mechanism.title ?? (locale === "zh-CN" ? "机制图" : "Process visual")} locale={normalizedLocale} />
-        <StepRow steps={mechanism.steps} activeStepId={activeMechanismStepId} onSelectStep={onSelectMechanismStep} sourcePrefix="mechanism.steps" />
+        <div className="interaction-controls">
+          <StepRow steps={mechanism.steps} activeStepId={activeMechanismStepId} onSelectStep={onSelectMechanismStep} sourcePrefix="mechanism.steps" />
+        </div>
       </article>
       {secondary && (
-        <article className="panel wide" id="topic-secondary-mechanism">
+        <article className="panel wide interaction-panel" id="topic-secondary-mechanism">
           <SectionHeader title={secondary.title} />
           <TopicVisual slot={secondarySlot} evidence={secondaryEvidence} fallbackAlt={secondary.title} locale={normalizedLocale} />
-          <StepRow steps={secondary.steps} activeStepId={activeSecondaryStepId} onSelectStep={onSelectSecondaryStep} sourcePrefix="secondaryMechanism.steps" />
+          <div className="interaction-controls">
+            <StepRow steps={secondary.steps} activeStepId={activeSecondaryStepId} onSelectStep={onSelectSecondaryStep} sourcePrefix="secondaryMechanism.steps" />
+          </div>
         </article>
       )}
     </>

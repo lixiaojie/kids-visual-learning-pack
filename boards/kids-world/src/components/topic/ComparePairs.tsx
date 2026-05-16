@@ -15,10 +15,10 @@ type Props = {
 
 export function ComparePairs({ pairs, topic, activePairId, evidence, visualSlot, onSelectPair, onSelectSide, locale }: Props) {
   return (
-    <article className="panel wide" id="topic-compare">
+    <article className="panel wide interaction-panel" id="topic-compare">
       <SectionHeader title={locale === "zh-CN" ? "容易混淆" : "Easy mix-ups"} />
       <TopicVisual slot={visualSlot} evidence={evidence} fallbackAlt={locale === "zh-CN" ? "对比图" : "Compare visual"} locale={locale === "en-US" ? "en-US" : "zh-CN"} />
-      <div className="compare-grid">
+      <div className="compare-grid interaction-controls">
         {pairs.map((pair) => (
           <div
             className={activePairId === pair.id ? "compare-card active" : "compare-card"}
