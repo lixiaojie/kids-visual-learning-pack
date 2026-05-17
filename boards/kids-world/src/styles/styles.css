@@ -1187,8 +1187,8 @@ button.compare-card {
 
 @media (max-width: 640px) {
   .page-shell {
-    width: min(100% - 18px, 1240px);
-    padding-top: 14px;
+    width: min(100% - 14px, 1240px);
+    padding-top: 12px;
     padding-bottom: 46px;
   }
 
@@ -1235,6 +1235,11 @@ button.compare-card {
     border-radius: 18px;
   }
 
+  .panel {
+    padding: 14px;
+    border-width: 2px;
+  }
+
   .home-hero h1,
   .topic-hero h1 {
     font-size: 38px;
@@ -1268,6 +1273,98 @@ button.compare-card {
     width: 100%;
   }
 
+  .learning-flow-rail {
+    position: static;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .learning-flow-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .learning-flow-rail button {
+    grid-template-columns: auto 1fr;
+    min-width: 128px;
+    max-width: 148px;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .learning-flow-rail button small {
+    display: none;
+  }
+
+  .learning-flow-rail strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .interaction-panel {
+    gap: 10px;
+  }
+
+  .interaction-panel > .topic-visual {
+    position: sticky;
+    top: 76px;
+    z-index: 10;
+    border-radius: 14px;
+    box-shadow: 0 12px 24px rgba(23, 32, 51, 0.12);
+  }
+
+  .interaction-panel .topic-visual-image {
+    max-height: 30vh;
+  }
+
+  .interaction-panel .evidence-panel {
+    max-height: 24vh;
+    overflow: auto;
+    padding: 10px;
+  }
+
+  .interaction-panel .evidence-heading {
+    align-items: flex-start;
+  }
+
+  .interaction-panel .evidence-heading strong,
+  .interaction-panel .evidence-panel p {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .interaction-panel .evidence-chip {
+    font-size: 11px;
+  }
+
+  .interaction-panel .group-card,
+  .interaction-panel .object-card,
+  .interaction-panel .step-card,
+  .interaction-panel .compare-card,
+  .interaction-panel .task-card {
+    padding: 11px;
+    border-radius: 14px;
+  }
+
+  .interaction-panel .object-card {
+    min-height: 0;
+  }
+
+  .interaction-panel .task-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .interaction-panel .task-tabs button {
+    flex: 0 0 auto;
+    max-width: 220px;
+    white-space: nowrap;
+  }
+
   .world-grid,
   .topic-card-grid,
   .compare-grid,
@@ -1279,7 +1376,4 @@ button.compare-card {
     grid-template-columns: 1fr;
   }
 
-  .learning-flow-rail {
-    position: static;
-  }
 }

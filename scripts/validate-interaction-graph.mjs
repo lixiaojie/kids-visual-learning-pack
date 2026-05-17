@@ -77,11 +77,61 @@ const registry = readJson("boards/kids-world/src/data/topic-registry.json");
 const slugs = registry.topics
   .filter((topic) => topic.status === "render-ready" || topic.contentStatus === "render-ready")
   .map((topic) => topic.slug);
+const evidenceRuntime = fs.readFileSync(path.join(root, "packages/kids-content/src/evidence.ts"), "utf8");
+for (const requiredRuntimeHelper of ["withFocusRegions", "preferredBindingSlot", "objectRegions", "taskOptionRegions", "compareRegions"]) {
+  if (!evidenceRuntime.includes(requiredRuntimeHelper)) {
+    errors.push(`shared evidence runtime must include ${requiredRuntimeHelper} for robots-style interaction alignment`);
+  }
+}
+
+function taskOptions(task) {
+  return task.options ?? [...(task.targetIds ?? []), ...(task.decoyIds ?? [])].map((id) => ({ id, label: id.replace(/-/g, " ") }));
+}
+
+function requireBinding(topic, source) {
+  const binding = topic.visualEvidenceBindings?.find((item) => item.source === source);
+  if (!binding) errors.push(`${topic.slug} missing visual evidence binding for ${source}`);
+  return binding;
+}
 
 for (const slug of slugs) {
   const topic = readJson(`boards/kids-world/src/data/topics/${slug}.json`);
   if (!topic.visualSlots?.some((slot) => slot.target === "hero")) warnings.push(`${slug} has no hero visual slot`);
   if (!topic.clickTasks?.length) warnings.push(`${slug} has no clickTasks for tasks stage`);
+  const objectIds = new Set(topic.representativeObjects.map((object) => object.id));
+
+  for (const group of topic.classificationGroups) {
+    requireBinding(topic, `classificationGroups.${group.id}`);
+  }
+  for (const object of topic.representativeObjects) {
+    const binding = requireBinding(topic, `representativeObjects.${object.id}`);
+    if (binding && !topic.visualSlots?.some((slot) => slot.id === binding.visualSlotId && (slot.target === "representativeObjects" || slot.target === `representativeObjects.${object.id}`))) {
+      errors.push(`${slug} representative object ${object.id} must use a representativeObjects visual slot`);
+    }
+  }
+  for (const step of topic.mechanism.steps) {
+    requireBinding(topic, `mechanism.steps.${step.id}`);
+  }
+  for (const step of topic.secondaryMechanism?.steps ?? []) {
+    requireBinding(topic, `secondaryMechanism.steps.${step.id}`);
+  }
+  for (const pair of topic.comparePairs) {
+    requireBinding(topic, `comparePairs.${pair.id}`);
+  }
+  for (const task of topic.clickTasks) {
+    const options = taskOptions(task);
+    for (const option of options) {
+      const source = `clickTasks.${task.id}.options.${option.id}`;
+      requireBinding(topic, source);
+      if (task.type === "findTarget" && objectIds.has(option.id)) {
+        const exactSlot = topic.visualSlots?.find((slot) => slot.target === `clickTasks.${task.id}`);
+        const objectSlot = topic.visualSlots?.find((slot) => slot.target === "representativeObjects");
+        if (!exactSlot && !objectSlot) {
+          errors.push(`${slug} findTarget ${task.id}.${option.id} needs a task-specific or representativeObjects visual slot`);
+        }
+      }
+    }
+  }
 }
 
 if (errors.length > 0) {

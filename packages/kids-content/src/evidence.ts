@@ -36,6 +36,11 @@ function taskIdFromOptionSource(source: EvidenceSourcePath): string | null {
   return match?.[1] ?? null;
 }
 
+function optionIdFromSource(source: EvidenceSourcePath): string {
+  const parts = source.split(".");
+  return parts[parts.length - 1] ?? source;
+}
+
 function parentSource(source: EvidenceSourcePath): EvidenceSourcePath | null {
   const taskId = taskIdFromOptionSource(source);
   return taskId ? (`clickTasks.${taskId}` as EvidenceSourcePath) : null;
@@ -122,6 +127,15 @@ function findBinding(topic: Topic, source: EvidenceSourcePath): VisualEvidenceBi
   if (exact) return exact;
   const parent = parentSource(source);
   return parent ? topic.visualEvidenceBindings?.find((binding) => binding.source === parent) ?? null : null;
+}
+
+function taskForOptionSource(topic: Topic, source: EvidenceSourcePath): ClickTask | null {
+  const taskId = taskIdFromOptionSource(source);
+  return taskId ? topic.clickTasks.find((task) => task.id === taskId) ?? null : null;
+}
+
+function representativeObjectIds(topic: Topic): Set<string> {
+  return new Set(topic.representativeObjects.map((object) => object.id));
 }
 
 function taskOptions(task: ClickTask): Array<{ id: string; label: string }> {
@@ -220,6 +234,125 @@ function deriveFocusForSource(topic: Topic, source: EvidenceSourcePath, selected
   };
 }
 
+function gridRegions(
+  ids: string[],
+  labelForId: (id: string) => string | undefined,
+  options: { columns?: number; top?: number; left?: number; width?: number; height?: number } = {},
+): NonNullable<VisualFocus["regions"]> {
+  const columns = options.columns ?? (ids.length <= 4 ? 2 : ids.length <= 6 ? 3 : 4);
+  const rows = Math.max(1, Math.ceil(ids.length / columns));
+  const left = options.left ?? 0.06;
+  const top = options.top ?? 0.1;
+  const totalWidth = options.width ?? 0.88;
+  const totalHeight = options.height ?? 0.72;
+  const cellWidth = totalWidth / columns;
+  const cellHeight = totalHeight / rows;
+  return ids.map((id, index) => {
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    return {
+      id,
+      label: labelForId(id),
+      x: left + column * cellWidth + cellWidth * 0.08,
+      y: top + row * cellHeight + cellHeight * 0.08,
+      width: cellWidth * 0.84,
+      height: cellHeight * 0.84,
+    };
+  });
+}
+
+function objectRegions(topic: Topic): NonNullable<VisualFocus["regions"]> {
+  return gridRegions(
+    topic.representativeObjects.map((object) => object.id),
+    (id) => topic.representativeObjects.find((object) => object.id === id)?.name,
+  );
+}
+
+function taskOptionRegions(task: ClickTask): NonNullable<VisualFocus["regions"]> {
+  const options = taskOptions(task);
+  return gridRegions(options.map((option) => option.id), (id) => options.find((option) => option.id === id)?.label, {
+    columns: options.length <= 4 ? 2 : 3,
+    top: 0.14,
+    height: 0.66,
+  });
+}
+
+function mechanismRegions(topic: Topic, source: EvidenceSourcePath): NonNullable<VisualFocus["regions"]> {
+  const steps = source.startsWith("secondaryMechanism.steps.") ? topic.secondaryMechanism?.steps ?? [] : topic.mechanism.steps;
+  return gridRegions(steps.map((step) => step.id), (id) => steps.find((step) => step.id === id)?.shortTitle, {
+    columns: steps.length,
+    top: 0.22,
+    left: 0.05,
+    width: 0.9,
+    height: 0.46,
+  });
+}
+
+function compareRegions(): NonNullable<VisualFocus["regions"]> {
+  return [
+    { id: "left", label: "A", x: 0.08, y: 0.2, width: 0.36, height: 0.6 },
+    { id: "right", label: "B", x: 0.56, y: 0.2, width: 0.36, height: 0.6 },
+  ];
+}
+
+function withFocusRegions(topic: Topic, source: EvidenceSourcePath, focus: VisualFocus | undefined, selectedIds: string[] = []): VisualFocus | undefined {
+  if (!focus) return focus;
+  if (focus.regions?.length) return focus;
+
+  if (source.startsWith("classificationGroups.") || source.startsWith("representativeObjects.")) {
+    return { ...focus, regions: objectRegions(topic) };
+  }
+
+  if (source.startsWith("mechanism.steps.") || source.startsWith("secondaryMechanism.steps.")) {
+    return { ...focus, regions: mechanismRegions(topic, source) };
+  }
+
+  if (source.startsWith("comparePairs.")) {
+    const activeRegionIds = focus.activeRegionIds?.some((id) => id === "left" || id === "right")
+      ? focus.activeRegionIds
+      : ["left", "right"];
+    return { ...focus, mode: "group", regions: compareRegions(), activeRegionIds };
+  }
+
+  if (source.startsWith("clickTasks.")) {
+    const task = taskForOptionSource(topic, source);
+    if (!task) return focus;
+    const optionId = optionIdFromSource(source);
+    const objectIds = representativeObjectIds(topic);
+    if (task.type === "findTarget" && objectIds.has(optionId)) {
+      return {
+        ...focus,
+        mode: "hotspot",
+        regions: objectRegions(topic),
+        activeRegionIds: [optionId],
+      };
+    }
+    return {
+      ...focus,
+      regions: taskOptionRegions(task),
+      activeRegionIds: selectedIds.length > 0 ? selectedIds : focus.activeRegionIds,
+    };
+  }
+
+  return focus;
+}
+
+function preferredBindingSlot(topic: Topic, source: EvidenceSourcePath, bindingSlot: VisualSlot | null): VisualSlot | null {
+  if (!source.includes(".options.")) return bindingSlot;
+  const task = taskForOptionSource(topic, source);
+  if (task?.type !== "findTarget") return bindingSlot;
+  const taskSlot = firstSlot(topic, [(slot) => slot.target === `clickTasks.${task.id}`]);
+  if (taskSlot) return taskSlot;
+  const optionId = optionIdFromSource(source);
+  if (representativeObjectIds(topic).has(optionId)) {
+    return firstSlot(topic, [
+      (slot) => slot.role === "observation" && slot.target === "representativeObjects",
+      (slot) => slot.target === "representativeObjects",
+    ]) ?? bindingSlot;
+  }
+  return bindingSlot;
+}
+
 function derivedCopy(topic: Topic, source: EvidenceSourcePath, selectedIds: string[], locale: Locale) {
   const id = sourceId(source);
 
@@ -313,10 +446,12 @@ export function resolveVisualEvidence(topic: Topic, context: EvidenceResolveCont
   const locale = context.locale ?? defaultLocale;
   const binding = findBinding(topic, context.source);
   const bindingSlot = binding ? findSlotById(topic, binding.visualSlotId) : null;
-  const slot = bindingSlot ?? resolveSlotForSource(topic, context.source);
+  const slot = preferredBindingSlot(topic, context.source, bindingSlot) ?? resolveSlotForSource(topic, context.source);
   if (!slot) return null;
+  const selectedIds = context.selectedIds ?? [];
 
   if (binding) {
+    const focus = withFocusRegions(topic, context.source, binding.focus ?? deriveFocusForSource(topic, context.source, selectedIds), selectedIds);
     return {
       source: context.source,
       sourceId: sourceId(context.source),
@@ -329,12 +464,13 @@ export function resolveVisualEvidence(topic: Topic, context: EvidenceResolveCont
       markerChips: binding.markerChips,
       bindingQuality: "explicit",
       nextPrompt: binding.nextPrompt,
-      focus: binding.focus ?? deriveFocusForSource(topic, context.source, context.selectedIds ?? []),
+      focus,
     };
   }
 
-  const copy = derivedCopy(topic, context.source, context.selectedIds ?? [], locale);
+  const copy = derivedCopy(topic, context.source, selectedIds, locale);
   if (!copy) return null;
+  const focus = withFocusRegions(topic, context.source, deriveFocusForSource(topic, context.source, selectedIds), selectedIds);
 
   return {
     source: context.source,
@@ -343,7 +479,7 @@ export function resolveVisualEvidence(topic: Topic, context: EvidenceResolveCont
     status: context.result ?? "selected",
     ...copy,
     bindingQuality: "derived",
-    focus: deriveFocusForSource(topic, context.source, context.selectedIds ?? []),
+    focus,
   };
 }
 
