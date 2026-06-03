@@ -40,6 +40,11 @@ export {
   getVisualSlotsForRole,
 } from "./visual-slots";
 export { getTopicEvidenceCoverage, resolveVisualEvidence } from "./evidence";
+export { materializeVisualEvidenceFocus } from "./focus-materialization";
+export type {
+  MaterializeVisualEvidenceFocusOptions,
+  MaterializeVisualEvidenceFocusResult,
+} from "./focus-materialization";
 export { hasVisualFocusDifference, normalizeFocus, parseFocus } from "./focus";
 export {
   findNodeBySource,

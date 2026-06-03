@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { getTopic, normalizeTopicInteraction } from "../packages/kids-content/src/index";
+import { getTopic, materializeVisualEvidenceFocus, normalizeTopicInteraction } from "../packages/kids-content/src/index";
 
 const topic = getTopic("cicada-life", "zh-CN");
 assert.ok(topic, "cicada-life topic should exist");
@@ -56,8 +56,8 @@ const strictViewModel = normalizeTopicInteraction(topic, {
 });
 
 assert.ok(
-  strictViewModel.diagnostics.errors.some((error) => error.includes("missing focus region (derived)")),
-  "strict diagnostics should expose current derived focus-region gaps before cicada-life migration",
+  strictViewModel.diagnostics.errors.length === 0,
+  `cicada-life strict diagnostics should pass after focus migration: ${strictViewModel.diagnostics.errors.join("; ")}`,
 );
 assert.ok(Array.isArray(strictViewModel.diagnostics.warnings));
 
@@ -79,6 +79,21 @@ assert.ok(
   missingFocusViewModel.diagnostics.errors.some((error) => error === "tasks/cicada-sequence-01/egg missing focus region (derived)"),
   "strict diagnostics should report explicit bindings that lack focus regions",
 );
+
+const materializedTopic = structuredClone(topic);
+for (const binding of materializedTopic.visualEvidenceBindings ?? []) {
+  delete binding.focus;
+}
+const materialized = materializeVisualEvidenceFocus(materializedTopic, { locale: "zh-CN" });
+assert.ok(materialized.changed > 0, "focus materialization should fill bindings that lack focus");
+assert.deepEqual(materialized.missingSources, []);
+const materializedViewModel = normalizeTopicInteraction(materialized.topic, {
+  locale: "zh-CN",
+  mode: "production",
+  platform: "web",
+  strictEvidence: true,
+});
+assert.deepEqual(materializedViewModel.diagnostics.errors, []);
 
 const enTopic = getTopic("cicada-life", "en-US");
 assert.ok(enTopic, "cicada-life English topic should exist");

@@ -270,7 +270,7 @@
       "childExplanation": "蝉是昆虫。小时候的蝉叫若虫，长大后会变成有翅膀的成虫。",
       "parentNote": "4-8 岁阶段抓住“蝉是昆虫、若虫会变成成虫”即可，不展开细分类。",
       "representativeObjects": [
-        "cicadaNymph",
+        "emergingNymph",
         "adultCicada"
       ],
       "misconception": "蝉若虫不是另一种虫，它是蝉小时候的样子。"
@@ -295,7 +295,7 @@
       "parentNote": "这里引入“不完全变态”作为比较线索，不要求孩子背术语。",
       "representativeObjects": [
         "cicadaShell",
-        "butterflyPupa"
+        "newAdult"
       ],
       "misconception": "不是所有昆虫都会经过蛹。"
     }
@@ -583,6 +583,24 @@
         "leaf",
         "pebble"
       ],
+      "options": [
+        {
+          "id": "cicadaShell",
+          "label": "蝉蜕"
+        },
+        {
+          "id": "treeTrunk",
+          "label": "树干"
+        },
+        {
+          "id": "leaf",
+          "label": "叶子"
+        },
+        {
+          "id": "pebble",
+          "label": "小石子"
+        }
+      ],
       "successCopy": "找到了！蝉蜕是若虫羽化后留下来的旧外壳。",
       "wrongHint": "蝉蜕像一只空空的小壳，常常贴在树干上。"
     },
@@ -649,6 +667,13 @@
       "required": true
     },
     {
+      "id": "lifecycle-task",
+      "assetId": "life-cicada-life-lifecycle",
+      "target": "clickTasks.cicada-sequence-01",
+      "role": "task",
+      "required": false
+    },
+    {
       "id": "molting-steps",
       "assetId": "life-cicada-life-molting-steps",
       "target": "secondaryMechanism",
@@ -677,6 +702,13 @@
       "required": true
     },
     {
+      "id": "compare-butterfly-task",
+      "assetId": "life-cicada-life-compare-butterfly",
+      "target": "clickTasks.cicada-compare-01",
+      "role": "task",
+      "required": false
+    },
+    {
       "id": "task-board",
       "assetId": "life-cicada-life-task-board",
       "target": "clickTasks",
@@ -688,7 +720,7 @@
     {
       "id": "evidence-classificationGroups-insect-basic",
       "source": "classificationGroups.insect-basic",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "它属于昆虫",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -706,12 +738,86 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "group",
+        "activeRegionIds": [
+          "emergingNymph",
+          "adultCicada"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-classificationGroups-life-cycle",
       "source": "classificationGroups.life-cycle",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "一生会分阶段",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -729,12 +835,86 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "group",
+        "activeRegionIds": [
+          "cicadaEggs",
+          "undergroundNymph"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-classificationGroups-metamorphosis-type",
       "source": "classificationGroups.metamorphosis-type",
-      "visualSlotId": "observation",
+      "visualSlotId": "molting-steps",
       "interactionScope": "local",
       "evidenceTitle": "没有蛹的变化",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -762,12 +942,88 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "group",
+        "activeRegionIds": [
+          "treeTrunk",
+          "cicadaShell",
+          "newAdult",
+          "butterflyPupa"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-cicadaEggs",
       "source": "representativeObjects.cicadaEggs",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "树枝里的蝉卵",
       "observePrompt": "小树枝、细小卵粒、起点",
@@ -780,12 +1036,85 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "cicadaEggs"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-undergroundNymph",
       "source": "representativeObjects.undergroundNymph",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "地下若虫",
       "observePrompt": "土壤、根、没有翅膀",
@@ -798,7 +1127,80 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "undergroundNymph"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-emergingNymph",
@@ -816,7 +1218,80 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "emergingNymph"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-treeTrunk",
@@ -834,12 +1309,85 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "treeTrunk"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-cicadaShell",
       "source": "representativeObjects.cicadaShell",
-      "visualSlotId": "observation",
+      "visualSlotId": "spot-shell",
       "interactionScope": "local",
       "evidenceTitle": "蝉蜕",
       "observePrompt": "贴在树皮上的空壳",
@@ -852,12 +1400,85 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "cicadaShell"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-newAdult",
       "source": "representativeObjects.newAdult",
-      "visualSlotId": "observation",
+      "visualSlotId": "molting-steps",
       "interactionScope": "local",
       "evidenceTitle": "刚羽化的蝉",
       "observePrompt": "浅色身体、透明翅膀、挂在壳旁",
@@ -870,12 +1491,85 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "newAdult"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-adultCicada",
       "source": "representativeObjects.adultCicada",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "成熟成虫",
       "observePrompt": "透明翅膀、树枝、夏天鸣叫",
@@ -888,12 +1582,85 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "adultCicada"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-representativeObjects-butterflyPupa",
       "source": "representativeObjects.butterflyPupa",
-      "visualSlotId": "observation",
+      "visualSlotId": "compare-butterfly",
       "interactionScope": "local",
       "evidenceTitle": "蝴蝶的蛹",
       "observePrompt": "挂在枝条上的蛹",
@@ -906,7 +1673,80 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "butterflyPupa"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-mechanism-steps-egg-in-twig",
@@ -924,7 +1764,67 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "egg-in-twig"
+        ],
+        "progress": {
+          "current": 1,
+          "total": 6
+        },
+        "regions": [
+          {
+            "id": "egg-in-twig",
+            "label": "卵在树枝里",
+            "x": 0.062,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "young-nymph-to-soil",
+            "label": "小若虫进土里",
+            "x": 0.212,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "grow-underground",
+            "label": "地下慢慢长大",
+            "x": 0.362,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "emerge-from-soil",
+            "label": "夏天爬出地面",
+            "x": 0.512,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "molt-on-trunk",
+            "label": "在树干上羽化",
+            "x": 0.662,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "adult-cycle-again",
+            "label": "成虫继续循环",
+            "x": 0.812,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-mechanism-steps-young-nymph-to-soil",
@@ -942,7 +1842,67 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "young-nymph-to-soil"
+        ],
+        "progress": {
+          "current": 2,
+          "total": 6
+        },
+        "regions": [
+          {
+            "id": "egg-in-twig",
+            "label": "卵在树枝里",
+            "x": 0.062,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "young-nymph-to-soil",
+            "label": "小若虫进土里",
+            "x": 0.212,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "grow-underground",
+            "label": "地下慢慢长大",
+            "x": 0.362,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "emerge-from-soil",
+            "label": "夏天爬出地面",
+            "x": 0.512,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "molt-on-trunk",
+            "label": "在树干上羽化",
+            "x": 0.662,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "adult-cycle-again",
+            "label": "成虫继续循环",
+            "x": 0.812,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-mechanism-steps-grow-underground",
@@ -960,7 +1920,67 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "grow-underground"
+        ],
+        "progress": {
+          "current": 3,
+          "total": 6
+        },
+        "regions": [
+          {
+            "id": "egg-in-twig",
+            "label": "卵在树枝里",
+            "x": 0.062,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "young-nymph-to-soil",
+            "label": "小若虫进土里",
+            "x": 0.212,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "grow-underground",
+            "label": "地下慢慢长大",
+            "x": 0.362,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "emerge-from-soil",
+            "label": "夏天爬出地面",
+            "x": 0.512,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "molt-on-trunk",
+            "label": "在树干上羽化",
+            "x": 0.662,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "adult-cycle-again",
+            "label": "成虫继续循环",
+            "x": 0.812,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-mechanism-steps-emerge-from-soil",
@@ -978,7 +1998,67 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "emerge-from-soil"
+        ],
+        "progress": {
+          "current": 4,
+          "total": 6
+        },
+        "regions": [
+          {
+            "id": "egg-in-twig",
+            "label": "卵在树枝里",
+            "x": 0.062,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "young-nymph-to-soil",
+            "label": "小若虫进土里",
+            "x": 0.212,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "grow-underground",
+            "label": "地下慢慢长大",
+            "x": 0.362,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "emerge-from-soil",
+            "label": "夏天爬出地面",
+            "x": 0.512,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "molt-on-trunk",
+            "label": "在树干上羽化",
+            "x": 0.662,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "adult-cycle-again",
+            "label": "成虫继续循环",
+            "x": 0.812,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-mechanism-steps-molt-on-trunk",
@@ -996,7 +2076,67 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "molt-on-trunk"
+        ],
+        "progress": {
+          "current": 5,
+          "total": 6
+        },
+        "regions": [
+          {
+            "id": "egg-in-twig",
+            "label": "卵在树枝里",
+            "x": 0.062,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "young-nymph-to-soil",
+            "label": "小若虫进土里",
+            "x": 0.212,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "grow-underground",
+            "label": "地下慢慢长大",
+            "x": 0.362,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "emerge-from-soil",
+            "label": "夏天爬出地面",
+            "x": 0.512,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "molt-on-trunk",
+            "label": "在树干上羽化",
+            "x": 0.662,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "adult-cycle-again",
+            "label": "成虫继续循环",
+            "x": 0.812,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-mechanism-steps-adult-cycle-again",
@@ -1014,7 +2154,67 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "adult-cycle-again"
+        ],
+        "progress": {
+          "current": 6,
+          "total": 6
+        },
+        "regions": [
+          {
+            "id": "egg-in-twig",
+            "label": "卵在树枝里",
+            "x": 0.062,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "young-nymph-to-soil",
+            "label": "小若虫进土里",
+            "x": 0.212,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "grow-underground",
+            "label": "地下慢慢长大",
+            "x": 0.362,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "emerge-from-soil",
+            "label": "夏天爬出地面",
+            "x": 0.512,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "molt-on-trunk",
+            "label": "在树干上羽化",
+            "x": 0.662,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          },
+          {
+            "id": "adult-cycle-again",
+            "label": "成虫继续循环",
+            "x": 0.812,
+            "y": 0.2568,
+            "width": 0.126,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-secondaryMechanism-steps-find-support",
@@ -1032,7 +2232,51 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "find-support"
+        ],
+        "progress": {
+          "current": 1,
+          "total": 4
+        },
+        "regions": [
+          {
+            "id": "find-support",
+            "label": "找稳稳的地方",
+            "x": 0.068,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "hold-body",
+            "label": "固定身体",
+            "x": 0.293,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "shell-opens",
+            "label": "外壳裂开",
+            "x": 0.518,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "wings-open",
+            "label": "翅膀展开变硬",
+            "x": 0.743,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-secondaryMechanism-steps-hold-body",
@@ -1050,7 +2294,51 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "hold-body"
+        ],
+        "progress": {
+          "current": 2,
+          "total": 4
+        },
+        "regions": [
+          {
+            "id": "find-support",
+            "label": "找稳稳的地方",
+            "x": 0.068,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "hold-body",
+            "label": "固定身体",
+            "x": 0.293,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "shell-opens",
+            "label": "外壳裂开",
+            "x": 0.518,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "wings-open",
+            "label": "翅膀展开变硬",
+            "x": 0.743,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-secondaryMechanism-steps-shell-opens",
@@ -1068,7 +2356,51 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "shell-opens"
+        ],
+        "progress": {
+          "current": 3,
+          "total": 4
+        },
+        "regions": [
+          {
+            "id": "find-support",
+            "label": "找稳稳的地方",
+            "x": 0.068,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "hold-body",
+            "label": "固定身体",
+            "x": 0.293,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "shell-opens",
+            "label": "外壳裂开",
+            "x": 0.518,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "wings-open",
+            "label": "翅膀展开变硬",
+            "x": 0.743,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-secondaryMechanism-steps-wings-open",
@@ -1086,7 +2418,51 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "path-step",
+        "activeRegionIds": [
+          "wings-open"
+        ],
+        "progress": {
+          "current": 4,
+          "total": 4
+        },
+        "regions": [
+          {
+            "id": "find-support",
+            "label": "找稳稳的地方",
+            "x": 0.068,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "hold-body",
+            "label": "固定身体",
+            "x": 0.293,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "shell-opens",
+            "label": "外壳裂开",
+            "x": 0.518,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          },
+          {
+            "id": "wings-open",
+            "label": "翅膀展开变硬",
+            "x": 0.743,
+            "y": 0.2568,
+            "width": 0.189,
+            "height": 0.3864
+          }
+        ]
+      }
     },
     {
       "id": "evidence-comparePairs-cicada-vs-butterfly",
@@ -1109,7 +2485,32 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "group",
+        "activeRegionIds": [
+          "left",
+          "right"
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "label": "A",
+            "x": 0.08,
+            "y": 0.2,
+            "width": 0.36,
+            "height": 0.6
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "x": 0.56,
+            "y": 0.2,
+            "width": 0.36,
+            "height": 0.6
+          }
+        ]
+      }
     },
     {
       "id": "evidence-comparePairs-cicada-vs-dragonfly",
@@ -1132,7 +2533,32 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "group",
+        "activeRegionIds": [
+          "left",
+          "right"
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "label": "A",
+            "x": 0.08,
+            "y": 0.2,
+            "width": 0.36,
+            "height": 0.6
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "x": 0.56,
+            "y": 0.2,
+            "width": 0.36,
+            "height": 0.6
+          }
+        ]
+      }
     },
     {
       "id": "evidence-comparePairs-nymph-vs-adult",
@@ -1155,12 +2581,37 @@
         }
       ],
       "expectedStatus": "selected",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "group",
+        "activeRegionIds": [
+          "left",
+          "right"
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "label": "A",
+            "x": 0.08,
+            "y": 0.2,
+            "width": 0.36,
+            "height": 0.6
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "x": 0.56,
+            "y": 0.2,
+            "width": 0.36,
+            "height": 0.6
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-egg",
       "source": "clickTasks.cicada-sequence-01.options.egg",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "卵",
       "observePrompt": "按顺序点出蝉的一生。",
@@ -1173,12 +2624,60 @@
         }
       ],
       "expectedStatus": "partial",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "sequence-progress",
+        "activeRegionIds": [
+          "egg"
+        ],
+        "regions": [
+          {
+            "id": "egg",
+            "label": "卵",
+            "x": 0.0835,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.3768,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.6701,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "molting",
+            "label": "羽化",
+            "x": 0.0835,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "adult",
+            "label": "成虫",
+            "x": 0.3768,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-undergroundNymph",
       "source": "clickTasks.cicada-sequence-01.options.undergroundNymph",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "地下若虫",
       "observePrompt": "按顺序点出蝉的一生。",
@@ -1191,12 +2690,60 @@
         }
       ],
       "expectedStatus": "partial",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "sequence-progress",
+        "activeRegionIds": [
+          "undergroundNymph"
+        ],
+        "regions": [
+          {
+            "id": "egg",
+            "label": "卵",
+            "x": 0.0835,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.3768,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.6701,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "molting",
+            "label": "羽化",
+            "x": 0.0835,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "adult",
+            "label": "成虫",
+            "x": 0.3768,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-emergingNymph",
       "source": "clickTasks.cicada-sequence-01.options.emergingNymph",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "出土若虫",
       "observePrompt": "按顺序点出蝉的一生。",
@@ -1209,12 +2756,60 @@
         }
       ],
       "expectedStatus": "partial",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "sequence-progress",
+        "activeRegionIds": [
+          "emergingNymph"
+        ],
+        "regions": [
+          {
+            "id": "egg",
+            "label": "卵",
+            "x": 0.0835,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.3768,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.6701,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "molting",
+            "label": "羽化",
+            "x": 0.0835,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "adult",
+            "label": "成虫",
+            "x": 0.3768,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-molting",
       "source": "clickTasks.cicada-sequence-01.options.molting",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "羽化",
       "observePrompt": "按顺序点出蝉的一生。",
@@ -1227,12 +2822,60 @@
         }
       ],
       "expectedStatus": "partial",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "sequence-progress",
+        "activeRegionIds": [
+          "molting"
+        ],
+        "regions": [
+          {
+            "id": "egg",
+            "label": "卵",
+            "x": 0.0835,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.3768,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.6701,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "molting",
+            "label": "羽化",
+            "x": 0.0835,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "adult",
+            "label": "成虫",
+            "x": 0.3768,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-adult",
       "source": "clickTasks.cicada-sequence-01.options.adult",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "成虫",
       "observePrompt": "按顺序点出蝉的一生。",
@@ -1245,7 +2888,55 @@
         }
       ],
       "expectedStatus": "partial",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "sequence-progress",
+        "activeRegionIds": [
+          "adult"
+        ],
+        "regions": [
+          {
+            "id": "egg",
+            "label": "卵",
+            "x": 0.0835,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.3768,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.6701,
+            "y": 0.1664,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "molting",
+            "label": "羽化",
+            "x": 0.0835,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          },
+          {
+            "id": "adult",
+            "label": "成虫",
+            "x": 0.3768,
+            "y": 0.4964,
+            "width": 0.2464,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-choice-01-options-treeTrunk",
@@ -1263,7 +2954,48 @@
         }
       ],
       "expectedStatus": "correct",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "treeTrunk"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "mud",
+            "label": "泥地",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "puddle",
+            "label": "水坑",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "thinLeaf",
+            "label": "细草叶",
+            "x": 0.5352,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-choice-01-options-mud",
@@ -1281,7 +3013,48 @@
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "mud"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "mud",
+            "label": "泥地",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "puddle",
+            "label": "水坑",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "thinLeaf",
+            "label": "细草叶",
+            "x": 0.5352,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-choice-01-options-puddle",
@@ -1299,7 +3072,48 @@
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "puddle"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "mud",
+            "label": "泥地",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "puddle",
+            "label": "水坑",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "thinLeaf",
+            "label": "细草叶",
+            "x": 0.5352,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-choice-01-options-thinLeaf",
@@ -1317,84 +3131,353 @@
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "thinLeaf"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "mud",
+            "label": "泥地",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "puddle",
+            "label": "水坑",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "thinLeaf",
+            "label": "细草叶",
+            "x": 0.5352,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-identify-01-options-cicadaShell",
       "source": "clickTasks.cicada-identify-01.options.cicadaShell",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "cicadaShell",
+      "evidenceTitle": "蝉蜕",
       "observePrompt": "找出树干上那个空空的外壳。",
       "evidenceCopy": "找到了！蝉蜕是若虫羽化后留下来的旧外壳。",
       "markerChips": [
         {
-          "label": "cicadaShell",
+          "label": "蝉蜕",
           "meaning": "当前选择",
           "emphasis": "primary"
         }
       ],
       "expectedStatus": "partial",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "cicadaShell"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-identify-01-options-treeTrunk",
       "source": "clickTasks.cicada-identify-01.options.treeTrunk",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "treeTrunk",
+      "evidenceTitle": "树干",
       "observePrompt": "找出树干上那个空空的外壳。",
       "evidenceCopy": "蝉蜕像一只空空的小壳，常常贴在树干上。",
       "markerChips": [
         {
-          "label": "treeTrunk",
+          "label": "树干",
           "meaning": "需要再观察",
           "emphasis": "warning"
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "treeTrunk"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaEggs",
+            "label": "树枝里的蝉卵",
+            "x": 0.0776,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "undergroundNymph",
+            "label": "地下若虫",
+            "x": 0.2976,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "emergingNymph",
+            "label": "出土若虫",
+            "x": 0.5176,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.7376,
+            "y": 0.1288,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0776,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "newAdult",
+            "label": "刚羽化的蝉",
+            "x": 0.2976,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "adultCicada",
+            "label": "成熟成虫",
+            "x": 0.5176,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          },
+          {
+            "id": "butterflyPupa",
+            "label": "蝴蝶的蛹",
+            "x": 0.7376,
+            "y": 0.4888,
+            "width": 0.1848,
+            "height": 0.3024
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-identify-01-options-leaf",
       "source": "clickTasks.cicada-identify-01.options.leaf",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "leaf",
+      "evidenceTitle": "叶子",
       "observePrompt": "找出树干上那个空空的外壳。",
       "evidenceCopy": "蝉蜕像一只空空的小壳，常常贴在树干上。",
       "markerChips": [
         {
-          "label": "leaf",
+          "label": "叶子",
           "meaning": "需要再观察",
           "emphasis": "warning"
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "leaf"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "leaf",
+            "label": "叶子",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "pebble",
+            "label": "小石子",
+            "x": 0.5352,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-identify-01-options-pebble",
       "source": "clickTasks.cicada-identify-01.options.pebble",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "pebble",
+      "evidenceTitle": "小石子",
       "observePrompt": "找出树干上那个空空的外壳。",
       "evidenceCopy": "蝉蜕像一只空空的小壳，常常贴在树干上。",
       "markerChips": [
         {
-          "label": "pebble",
+          "label": "小石子",
           "meaning": "需要再观察",
           "emphasis": "warning"
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "pebble"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicadaShell",
+            "label": "蝉蜕",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "treeTrunk",
+            "label": "树干",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "leaf",
+            "label": "叶子",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "pebble",
+            "label": "小石子",
+            "x": 0.5352,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-compare-01-options-cicada",
       "source": "clickTasks.cicada-compare-01.options.cicada",
-      "visualSlotId": "task-board",
+      "visualSlotId": "compare-butterfly-task",
       "interactionScope": "local",
       "evidenceTitle": "蝉",
       "observePrompt": "下面谁会经过“蛹”这个阶段？",
@@ -1407,12 +3490,45 @@
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "cicada"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicada",
+            "label": "蝉",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "dragonfly",
+            "label": "蜻蜓",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-compare-01-options-butterfly",
       "source": "clickTasks.cicada-compare-01.options.butterfly",
-      "visualSlotId": "task-board",
+      "visualSlotId": "compare-butterfly-task",
       "interactionScope": "local",
       "evidenceTitle": "蝴蝶",
       "observePrompt": "下面谁会经过“蛹”这个阶段？",
@@ -1425,12 +3541,45 @@
         }
       ],
       "expectedStatus": "correct",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "butterfly"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicada",
+            "label": "蝉",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "dragonfly",
+            "label": "蜻蜓",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     },
     {
       "id": "evidence-clickTasks-cicada-compare-01-options-dragonfly",
       "source": "clickTasks.cicada-compare-01.options.dragonfly",
-      "visualSlotId": "task-board",
+      "visualSlotId": "compare-butterfly-task",
       "interactionScope": "local",
       "evidenceTitle": "蜻蜓",
       "observePrompt": "下面谁会经过“蛹”这个阶段？",
@@ -1443,7 +3592,40 @@
         }
       ],
       "expectedStatus": "wrong",
-      "quality": "generated"
+      "quality": "generated",
+      "focus": {
+        "mode": "hotspot",
+        "activeRegionIds": [
+          "dragonfly"
+        ],
+        "dimOthers": true,
+        "regions": [
+          {
+            "id": "cicada",
+            "label": "蝉",
+            "x": 0.0952,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "x": 0.5352,
+            "y": 0.1664,
+            "width": 0.3696,
+            "height": 0.2772
+          },
+          {
+            "id": "dragonfly",
+            "label": "蜻蜓",
+            "x": 0.0952,
+            "y": 0.4964,
+            "width": 0.3696,
+            "height": 0.2772
+          }
+        ]
+      }
     }
   ]
 }

@@ -75,7 +75,7 @@
       "childExplanation": "A cicada is an insect. A young cicada is called a nymph, and it becomes a winged adult.",
       "parentNote": "For ages 4-8, focus on cicada as insect and nymph to adult.",
       "representativeObjects": [
-        "cicadaNymph",
+        "emergingNymph",
         "adultCicada"
       ],
       "misconception": "A cicada nymph is not a different animal. It is a young cicada."
@@ -100,7 +100,7 @@
       "parentNote": "Use incomplete metamorphosis as a comparison idea, not as a term to memorize.",
       "representativeObjects": [
         "cicadaShell",
-        "butterflyPupa"
+        "newAdult"
       ],
       "misconception": "Not every insect has a pupa stage."
     }
@@ -369,6 +369,24 @@
       "id": "cicada-identify-01",
       "title": "Find the cicada shell",
       "prompt": "Find the empty shell on the bark.",
+      "options": [
+        {
+          "id": "cicadaShell",
+          "label": "Cicada shell"
+        },
+        {
+          "id": "treeTrunk",
+          "label": "Tree trunk"
+        },
+        {
+          "id": "leaf",
+          "label": "Leaf"
+        },
+        {
+          "id": "pebble",
+          "label": "Pebble"
+        }
+      ],
       "successCopy": "You found it! A cicada shell is the old outer case left after molting.",
       "wrongHint": "Look for a small empty shell attached to the bark."
     },
@@ -414,7 +432,7 @@
     {
       "id": "evidence-classificationGroups-insect-basic",
       "source": "classificationGroups.insect-basic",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "It is an insect",
       "observePrompt": "Look for objects that belong to this group.",
@@ -437,7 +455,7 @@
     {
       "id": "evidence-classificationGroups-life-cycle",
       "source": "classificationGroups.life-cycle",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "Life has stages",
       "observePrompt": "Look for objects that belong to this group.",
@@ -460,7 +478,7 @@
     {
       "id": "evidence-classificationGroups-metamorphosis-type",
       "source": "classificationGroups.metamorphosis-type",
-      "visualSlotId": "observation",
+      "visualSlotId": "molting-steps",
       "interactionScope": "local",
       "evidenceTitle": "A change without a pupa",
       "observePrompt": "Look for objects that belong to this group.",
@@ -493,7 +511,7 @@
     {
       "id": "evidence-representativeObjects-cicadaEggs",
       "source": "representativeObjects.cicadaEggs",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "Cicada eggs in a twig",
       "observePrompt": "twig, tiny eggs, starting point",
@@ -511,7 +529,7 @@
     {
       "id": "evidence-representativeObjects-undergroundNymph",
       "source": "representativeObjects.undergroundNymph",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "Underground nymph",
       "observePrompt": "soil, roots, no wings",
@@ -565,7 +583,7 @@
     {
       "id": "evidence-representativeObjects-cicadaShell",
       "source": "representativeObjects.cicadaShell",
-      "visualSlotId": "observation",
+      "visualSlotId": "spot-shell",
       "interactionScope": "local",
       "evidenceTitle": "Cicada shell",
       "observePrompt": "empty shell on bark",
@@ -583,7 +601,7 @@
     {
       "id": "evidence-representativeObjects-newAdult",
       "source": "representativeObjects.newAdult",
-      "visualSlotId": "observation",
+      "visualSlotId": "molting-steps",
       "interactionScope": "local",
       "evidenceTitle": "Newly molted adult",
       "observePrompt": "pale body, transparent wings, hanging near shell",
@@ -601,7 +619,7 @@
     {
       "id": "evidence-representativeObjects-adultCicada",
       "source": "representativeObjects.adultCicada",
-      "visualSlotId": "observation",
+      "visualSlotId": "lifecycle",
       "interactionScope": "local",
       "evidenceTitle": "Adult cicada",
       "observePrompt": "transparent wings, branch, summer song",
@@ -619,7 +637,7 @@
     {
       "id": "evidence-representativeObjects-butterflyPupa",
       "source": "representativeObjects.butterflyPupa",
-      "visualSlotId": "observation",
+      "visualSlotId": "compare-butterfly",
       "interactionScope": "local",
       "evidenceTitle": "Butterfly pupa",
       "observePrompt": "pupa hanging from a twig",
@@ -886,7 +904,7 @@
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-egg",
       "source": "clickTasks.cicada-sequence-01.options.egg",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "Egg",
       "observePrompt": "Tap the stages in order.",
@@ -904,7 +922,7 @@
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-undergroundNymph",
       "source": "clickTasks.cicada-sequence-01.options.undergroundNymph",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "Underground nymph",
       "observePrompt": "Tap the stages in order.",
@@ -922,7 +940,7 @@
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-emergingNymph",
       "source": "clickTasks.cicada-sequence-01.options.emergingNymph",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "Emerging nymph",
       "observePrompt": "Tap the stages in order.",
@@ -940,7 +958,7 @@
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-molting",
       "source": "clickTasks.cicada-sequence-01.options.molting",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "Molting",
       "observePrompt": "Tap the stages in order.",
@@ -958,7 +976,7 @@
     {
       "id": "evidence-clickTasks-cicada-sequence-01-options-adult",
       "source": "clickTasks.cicada-sequence-01.options.adult",
-      "visualSlotId": "task-board",
+      "visualSlotId": "lifecycle-task",
       "interactionScope": "local",
       "evidenceTitle": "Adult",
       "observePrompt": "Tap the stages in order.",
@@ -1050,12 +1068,12 @@
       "source": "clickTasks.cicada-identify-01.options.cicadaShell",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "cicadaShell",
+      "evidenceTitle": "Cicada shell",
       "observePrompt": "Find the empty shell on the bark.",
       "evidenceCopy": "You found it! A cicada shell is the old outer case left after molting.",
       "markerChips": [
         {
-          "label": "cicadaShell",
+          "label": "Cicada shell",
           "meaning": "Current choice",
           "emphasis": "primary"
         }
@@ -1068,12 +1086,12 @@
       "source": "clickTasks.cicada-identify-01.options.treeTrunk",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "treeTrunk",
+      "evidenceTitle": "Tree trunk",
       "observePrompt": "Find the empty shell on the bark.",
       "evidenceCopy": "Look for a small empty shell attached to the bark.",
       "markerChips": [
         {
-          "label": "treeTrunk",
+          "label": "Tree trunk",
           "meaning": "Look again",
           "emphasis": "warning"
         }
@@ -1086,12 +1104,12 @@
       "source": "clickTasks.cicada-identify-01.options.leaf",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "leaf",
+      "evidenceTitle": "Leaf",
       "observePrompt": "Find the empty shell on the bark.",
       "evidenceCopy": "Look for a small empty shell attached to the bark.",
       "markerChips": [
         {
-          "label": "leaf",
+          "label": "Leaf",
           "meaning": "Look again",
           "emphasis": "warning"
         }
@@ -1104,12 +1122,12 @@
       "source": "clickTasks.cicada-identify-01.options.pebble",
       "visualSlotId": "spot-shell",
       "interactionScope": "local",
-      "evidenceTitle": "pebble",
+      "evidenceTitle": "Pebble",
       "observePrompt": "Find the empty shell on the bark.",
       "evidenceCopy": "Look for a small empty shell attached to the bark.",
       "markerChips": [
         {
-          "label": "pebble",
+          "label": "Pebble",
           "meaning": "Look again",
           "emphasis": "warning"
         }
@@ -1120,7 +1138,7 @@
     {
       "id": "evidence-clickTasks-cicada-compare-01-options-cicada",
       "source": "clickTasks.cicada-compare-01.options.cicada",
-      "visualSlotId": "task-board",
+      "visualSlotId": "compare-butterfly-task",
       "interactionScope": "local",
       "evidenceTitle": "Cicada",
       "observePrompt": "Which one has a pupa stage?",
@@ -1138,7 +1156,7 @@
     {
       "id": "evidence-clickTasks-cicada-compare-01-options-butterfly",
       "source": "clickTasks.cicada-compare-01.options.butterfly",
-      "visualSlotId": "task-board",
+      "visualSlotId": "compare-butterfly-task",
       "interactionScope": "local",
       "evidenceTitle": "Butterfly",
       "observePrompt": "Which one has a pupa stage?",
@@ -1156,7 +1174,7 @@
     {
       "id": "evidence-clickTasks-cicada-compare-01-options-dragonfly",
       "source": "clickTasks.cicada-compare-01.options.dragonfly",
-      "visualSlotId": "task-board",
+      "visualSlotId": "compare-butterfly-task",
       "interactionScope": "local",
       "evidenceTitle": "Dragonfly",
       "observePrompt": "Which one has a pupa stage?",
