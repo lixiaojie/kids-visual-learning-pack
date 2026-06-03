@@ -18,16 +18,17 @@ assert.deepEqual(
   viewModel.stages.map((stage) => ({
     id: stage.id,
     quality: stage.quality,
+    label: stage.label,
     blocks: stage.blocks.map((block) => block.kind),
   })),
   [
-    { id: "observe", quality: "fallback", blocks: ["hero"] },
-    { id: "classify", quality: "fallback", blocks: ["classification", "classification", "classification"] },
-    { id: "inspect", quality: "fallback", blocks: ["objects", "objects", "objects"] },
-    { id: "trace", quality: "fallback", blocks: ["mechanism", "mechanism"] },
-    { id: "compare", quality: "fallback", blocks: ["compare", "compare", "compare"] },
-    { id: "tasks", quality: "fallback", blocks: ["task", "task", "task", "task"] },
-    { id: "next", quality: "fallback", blocks: ["speak", "parent", "related"] },
+    { id: "observe", quality: "authored", label: "真实发现", blocks: ["hero"] },
+    { id: "classify", quality: "authored", label: "认出若虫", blocks: ["classification", "classification", "classification"] },
+    { id: "inspect", quality: "authored", label: "生命周期", blocks: ["objects", "objects", "objects"] },
+    { id: "trace", quality: "authored", label: "羽化过程", blocks: ["mechanism", "mechanism"] },
+    { id: "compare", quality: "authored", label: "易混比较", blocks: ["compare", "compare", "compare"] },
+    { id: "tasks", quality: "authored", label: "观察任务", blocks: ["task", "task", "task", "task"] },
+    { id: "next", quality: "authored", label: "复述延伸", blocks: ["speak", "parent", "related"] },
   ],
 );
 
@@ -77,6 +78,26 @@ const missingFocusViewModel = normalizeTopicInteraction(missingFocusTopic, {
 assert.ok(
   missingFocusViewModel.diagnostics.errors.some((error) => error === "tasks/cicada-sequence-01/egg missing focus region (derived)"),
   "strict diagnostics should report explicit bindings that lack focus regions",
+);
+
+const enTopic = getTopic("cicada-life", "en-US");
+assert.ok(enTopic, "cicada-life English topic should exist");
+const enViewModel = normalizeTopicInteraction(enTopic, {
+  locale: "en-US",
+  mode: "dev",
+  platform: "web",
+});
+assert.deepEqual(
+  enViewModel.stages.map((stage) => stage.label),
+  [
+    "Real Discovery",
+    "Recognize the Nymph",
+    "Life Cycle",
+    "Molting Process",
+    "Common Mix-ups",
+    "Observation Tasks",
+    "Retell and Extend",
+  ],
 );
 
 console.log("normalize topic interaction view model checks passed");

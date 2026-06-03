@@ -23,6 +23,43 @@
     "season": "summer",
     "safetyNote": "Observe quietly. Do not touch or disturb the molting process."
   },
+  "learningFlow": [
+    {
+      "id": "observe",
+      "label": "Real Discovery",
+      "childPrompt": "Start with the real clue beside the tree roots: where did this little insect come from, and where is it going?"
+    },
+    {
+      "id": "classify",
+      "label": "Recognize the Nymph",
+      "childPrompt": "Notice that this is not a random little insect. It is a young cicada."
+    },
+    {
+      "id": "inspect",
+      "label": "Life Cycle",
+      "childPrompt": "Connect eggs, nymphs, shells, and adults into one growth path."
+    },
+    {
+      "id": "trace",
+      "label": "Molting Process",
+      "childPrompt": "Trace how it moves from underground life to molting on a tree trunk."
+    },
+    {
+      "id": "compare",
+      "label": "Common Mix-ups",
+      "childPrompt": "Compare cicadas with butterflies and dragonflies: who has a pupa, and where do young stages live?"
+    },
+    {
+      "id": "tasks",
+      "label": "Observation Tasks",
+      "childPrompt": "Now try tapping and deciding for yourself: which clues matter most?"
+    },
+    {
+      "id": "next",
+      "label": "Retell and Extend",
+      "childPrompt": "Use your own words to tell what a cicada goes through, then explore related topics."
+    }
+  ],
   "hero": {
     "title": "The Life of a Cicada",
     "kicker": "Life World · Real Observation",

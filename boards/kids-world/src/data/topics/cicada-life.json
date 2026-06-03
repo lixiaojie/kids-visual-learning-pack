@@ -34,6 +34,79 @@
     "field-observation",
     "comparison"
   ],
+  "learningFlow": [
+    {
+      "id": "observe",
+      "label": "真实发现",
+      "sectionIds": [
+        "topic-hero",
+        "topic-observe"
+      ],
+      "visualSlotId": "hero",
+      "childPrompt": "先从树根旁的真实发现开始：这只小虫从哪里来，正要去哪里？"
+    },
+    {
+      "id": "classify",
+      "label": "认出若虫",
+      "sectionIds": [
+        "topic-classification"
+      ],
+      "visualSlotId": "observation",
+      "childPrompt": "认出它不是陌生小虫，而是蝉小时候的样子。",
+      "defaultEvidenceSource": "classificationGroups.insect-basic"
+    },
+    {
+      "id": "inspect",
+      "label": "生命周期",
+      "sectionIds": [
+        "topic-objects"
+      ],
+      "visualSlotId": "observation",
+      "childPrompt": "把卵、若虫、蝉蜕和成虫这些线索连成一条成长路线。",
+      "defaultEvidenceSource": "representativeObjects.cicadaEggs"
+    },
+    {
+      "id": "trace",
+      "label": "羽化过程",
+      "sectionIds": [
+        "topic-mechanism",
+        "topic-secondary-mechanism"
+      ],
+      "visualSlotId": "lifecycle",
+      "childPrompt": "按顺序追踪它怎样从地下生活走到树干上羽化。",
+      "defaultEvidenceSource": "mechanism.steps.egg-in-twig"
+    },
+    {
+      "id": "compare",
+      "label": "易混比较",
+      "sectionIds": [
+        "topic-compare"
+      ],
+      "visualSlotId": "compare-butterfly",
+      "childPrompt": "把蝉和蝴蝶、蜻蜓放在一起，找出有没有蛹、小时候住哪里的差别。",
+      "defaultEvidenceSource": "comparePairs.cicada-vs-butterfly"
+    },
+    {
+      "id": "tasks",
+      "label": "观察任务",
+      "sectionIds": [
+        "topic-tasks"
+      ],
+      "visualSlotId": "task-board",
+      "childPrompt": "现在试着自己点一点评一评：哪些线索最关键？",
+      "defaultEvidenceSource": "clickTasks.cicada-sequence-01"
+    },
+    {
+      "id": "next",
+      "label": "复述延伸",
+      "sectionIds": [
+        "topic-speak",
+        "topic-parent",
+        "topic-related"
+      ],
+      "childPrompt": "用自己的话讲一讲蝉经历了什么，再看看相关主题。"
+    }
+  ],
   "modules": [
     {
       "type": "hero",
