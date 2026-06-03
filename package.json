@@ -15,6 +15,7 @@
     "generate:site-meta": "node scripts/generate-site-meta.mjs",
     "images:import-prompts": "node scripts/import-kids-world-image-prompts.mjs",
     "images:import-generated-png": "node scripts/import-kids-world-generated-images.mjs",
+    "test:topic-interaction": "sucrase-node scripts/normalize-topic-interaction.test.ts",
     "preview:kids-world": "vite preview --host 127.0.0.1 --outDir dist/boards/kids-world",
     "preview:paw": "vite preview --host 127.0.0.1 --outDir dist/paw-patrol",
     "deploy": "bash scripts/deploy.sh",
@@ -27,7 +28,7 @@
     "validate:interaction-flow": "node scripts/validate-interaction-flow.mjs",
     "validate:evidence-focus": "node scripts/validate-evidence-focus.mjs",
     "validate:interaction-graph": "node scripts/validate-interaction-graph.mjs",
-    "validate:kids-content": "./node_modules/.bin/tsc -p packages/kids-content/tsconfig.json --noEmit && node scripts/validate-kids-content-package.mjs",
+    "validate:kids-content": "./node_modules/.bin/tsc -p packages/kids-content/tsconfig.json --noEmit && node scripts/validate-kids-content-package.mjs && npm run test:topic-interaction",
     "validate:miniprogram": "node scripts/validate-miniprogram-scaffold.mjs",
     "validate:alignment": "node scripts/validate-content-alignment.mjs"
   },

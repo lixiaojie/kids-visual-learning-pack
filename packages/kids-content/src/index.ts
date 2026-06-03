@@ -85,3 +85,16 @@ export type {
   TopicInteractionState,
   TopicPresentation,
 } from "./interaction";
+export { normalizeTopicInteraction } from "./normalize-topic-interaction";
+export type {
+  EvidenceResolution,
+  InteractionBlockKind,
+  InteractionBlockViewModel,
+  InteractionDiagnostics,
+  NodeViewModel,
+  NormalizeTopicInteractionOptions,
+  StageViewModel,
+  TopicInteractionViewModel,
+  VisualRegionViewModel,
+  VisualViewModel,
+} from "./normalize-topic-interaction";
