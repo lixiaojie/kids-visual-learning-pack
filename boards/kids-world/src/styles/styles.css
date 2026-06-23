@@ -1719,6 +1719,10 @@ button.compare-card {
     left: 0;
   }
 
+  .app-shell-topic .page-shell {
+    padding-top: 76px;
+  }
+
   .brand > svg {
     width: 40px;
     height: 40px;

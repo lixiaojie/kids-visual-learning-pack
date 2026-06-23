@@ -10,10 +10,17 @@ type Props = {
   isTopicPage?: boolean;
 };
 
+type HiddenHeaderProps = {
+  "aria-hidden"?: true;
+  inert?: "";
+};
+
 export function Topbar({ map, locale, onLocaleChange, isTopicPage }: Props) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [topbarHidden, setTopbarHidden] = useState(false);
   const lastScrollY = useRef(0);
+  const hiddenTabIndex = topbarHidden ? -1 : undefined;
+  const hiddenHeaderProps: HiddenHeaderProps = topbarHidden ? { "aria-hidden": true, inert: "" } : {};
   const navItems = [
     { href: "#", label: locale === "zh-CN" ? "探索首页" : "Home" },
     { href: "#worlds", label: locale === "zh-CN" ? "全部世界" : "Worlds" },
@@ -44,6 +51,7 @@ export function Topbar({ map, locale, onLocaleChange, isTopicPage }: Props) {
       }
 
       if (nextY > 80 && delta > 8) {
+        setMobileNavOpen(false);
         setTopbarHidden(true);
       } else if (nextY < 24 || delta < -8) {
         setTopbarHidden(false);
@@ -62,8 +70,8 @@ export function Topbar({ map, locale, onLocaleChange, isTopicPage }: Props) {
   }, [isTopicPage, mobileNavOpen]);
 
   return (
-    <header className={topbarHidden ? "topbar topbar-hidden" : "topbar"} data-topic-page={isTopicPage ? "true" : undefined}>
-      <a className="brand" href="#">
+    <header className={topbarHidden ? "topbar topbar-hidden" : "topbar"} data-topic-page={isTopicPage ? "true" : undefined} {...hiddenHeaderProps}>
+      <a className="brand" href="#" tabIndex={hiddenTabIndex}>
         <Sparkles />
         <span>
           <strong>{map.title}</strong>
@@ -75,6 +83,7 @@ export function Topbar({ map, locale, onLocaleChange, isTopicPage }: Props) {
         type="button"
         aria-expanded={mobileNavOpen}
         aria-controls="global-nav"
+        tabIndex={hiddenTabIndex}
         onClick={() => {
           setTopbarHidden(false);
           setMobileNavOpen((open) => !open);
@@ -85,7 +94,7 @@ export function Topbar({ map, locale, onLocaleChange, isTopicPage }: Props) {
       </button>
       <nav aria-label={locale === "zh-CN" ? "全局导航" : "Global navigation"} className={mobileNavOpen ? "open" : ""} id="global-nav">
         {navItems.map((item) => (
-          <a href={item.href} key={item.href} onClick={() => setMobileNavOpen(false)}>
+          <a href={item.href} key={item.href} tabIndex={hiddenTabIndex} onClick={() => setMobileNavOpen(false)}>
             {item.label}
           </a>
         ))}
