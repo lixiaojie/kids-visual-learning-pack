@@ -23,25 +23,51 @@ const findClosingBrace = (source, openBraceIndex) => {
   return -1;
 };
 
+const cssBlocksInMedia = (source, mediaQuery) => {
+  const blocks = [];
+  const mediaLabel = `@media ${mediaQuery}`;
+  let searchStart = 0;
+
+  while (searchStart < source.length) {
+    const mediaStart = source.indexOf(mediaLabel, searchStart);
+
+    if (mediaStart < 0) {
+      break;
+    }
+
+    const mediaOpenBrace = source.indexOf("{", mediaStart);
+    assert.ok(mediaOpenBrace >= 0, `Expected @media ${mediaQuery} to contain a block`);
+
+    const mediaCloseBrace = findClosingBrace(source, mediaOpenBrace);
+    assert.ok(mediaCloseBrace > mediaOpenBrace, `Expected @media ${mediaQuery} to close`);
+
+    blocks.push(source.slice(mediaOpenBrace + 1, mediaCloseBrace));
+    searchStart = mediaCloseBrace + 1;
+  }
+
+  assert.ok(blocks.length > 0, `Expected @media ${mediaQuery} to exist`);
+
+  return blocks;
+};
+
 const cssRuleInMedia = (source, mediaQuery, selector) => {
-  const mediaStart = source.indexOf(`@media ${mediaQuery}`);
-  assert.ok(mediaStart >= 0, `Expected @media ${mediaQuery} to exist`);
+  const rulePattern = new RegExp(`${escapeRegExp(selector)}\\s*{`);
 
-  const mediaOpenBrace = source.indexOf("{", mediaStart);
-  assert.ok(mediaOpenBrace >= 0, `Expected @media ${mediaQuery} to contain a block`);
+  for (const mediaBlock of cssBlocksInMedia(source, mediaQuery)) {
+    const ruleMatch = rulePattern.exec(mediaBlock);
 
-  const mediaCloseBrace = findClosingBrace(source, mediaOpenBrace);
-  assert.ok(mediaCloseBrace > mediaOpenBrace, `Expected @media ${mediaQuery} to close`);
+    if (!ruleMatch) {
+      continue;
+    }
 
-  const mediaBlock = source.slice(mediaOpenBrace + 1, mediaCloseBrace);
-  const ruleMatch = new RegExp(`${escapeRegExp(selector)}\\s*{`).exec(mediaBlock);
-  assert.ok(ruleMatch, `Expected ${selector} inside @media ${mediaQuery}`);
+    const ruleOpenBrace = mediaBlock.indexOf("{", ruleMatch.index);
+    const ruleCloseBrace = findClosingBrace(mediaBlock, ruleOpenBrace);
+    assert.ok(ruleCloseBrace > ruleOpenBrace, `Expected ${selector} rule to close inside @media ${mediaQuery}`);
 
-  const ruleOpenBrace = mediaBlock.indexOf("{", ruleMatch.index);
-  const ruleCloseBrace = findClosingBrace(mediaBlock, ruleOpenBrace);
-  assert.ok(ruleCloseBrace > ruleOpenBrace, `Expected ${selector} rule to close inside @media ${mediaQuery}`);
+    return mediaBlock.slice(ruleOpenBrace + 1, ruleCloseBrace);
+  }
 
-  return mediaBlock.slice(ruleOpenBrace + 1, ruleCloseBrace);
+  assert.fail(`Expected ${selector} inside @media ${mediaQuery}`);
 };
 
 const webTopicPage = read("boards/kids-world/src/pages/TopicPage.tsx");
