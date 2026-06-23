@@ -8,12 +8,13 @@ type Props = {
   onLocaleChange: (locale: Locale) => void;
   map: ExplorationMap;
   children: ReactNode;
+  isTopicPage?: boolean;
 };
 
-export function PageShell({ locale, onLocaleChange, map, children }: Props) {
+export function PageShell({ locale, onLocaleChange, map, children, isTopicPage }: Props) {
   return (
-    <div className="app-shell">
-      <Topbar map={map} locale={locale} onLocaleChange={onLocaleChange} />
+    <div className={isTopicPage ? "app-shell app-shell-topic" : "app-shell"}>
+      <Topbar map={map} locale={locale} onLocaleChange={onLocaleChange} isTopicPage={isTopicPage} />
       {children}
     </div>
   );

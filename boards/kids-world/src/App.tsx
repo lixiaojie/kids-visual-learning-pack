@@ -35,7 +35,7 @@ export function App() {
   }, [locale]);
 
   return (
-    <PageShell locale={locale} onLocaleChange={setLocale} map={map}>
+    <PageShell locale={locale} onLocaleChange={setLocale} map={map} isTopicPage={Boolean(visibleTopicSlug)}>
       {visibleTopicSlug ? (
         <TopicPage slug={visibleTopicSlug} locale={locale} map={map} />
       ) : (
