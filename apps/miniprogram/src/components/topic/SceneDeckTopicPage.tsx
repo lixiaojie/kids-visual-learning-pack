@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Text, View } from "@tarojs/components";
+import { usePageScroll } from "@tarojs/taro";
 import {
   createInitialSceneInteractionState,
   normalizeTopicToSceneDeck,
@@ -26,11 +27,23 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
   const presentation = useMemo(() => resolveScenePresentation(deck, state), [deck, state]);
   const activeScene = presentation.activeScene;
   const [sceneNavOpen, setSceneNavOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     setState(createInitialSceneInteractionState(deck));
     setSceneNavOpen(false);
+    lastScrollY.current = 0;
   }, [deck]);
+
+  usePageScroll((event) => {
+    const nextY = event.scrollTop;
+    const delta = nextY - lastScrollY.current;
+    lastScrollY.current = nextY;
+
+    if (sceneNavOpen && delta > 8) {
+      setSceneNavOpen(false);
+    }
+  });
 
   function dispatch(action: SceneInteractionAction) {
     setState((current) => reduceSceneInteractionState(deck, current, action));

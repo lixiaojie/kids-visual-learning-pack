@@ -1186,6 +1186,16 @@ h3,
     padding-bottom: 0;
   }
 
+  .app-shell-topic .topbar {
+    position: fixed;
+    right: 0;
+    left: 0;
+  }
+
+  .app-shell-topic .page-shell {
+    padding-top: 76px;
+  }
+
   .scene-deck-page .back-link,
   .scene-deck-hero {
     display: none;
@@ -1834,16 +1844,6 @@ button.compare-card {
 
   .topbar {
     padding: 10px 9px;
-  }
-
-  .app-shell-topic .topbar {
-    position: fixed;
-    right: 0;
-    left: 0;
-  }
-
-  .app-shell-topic .page-shell {
-    padding-top: 76px;
   }
 
   .brand > svg {

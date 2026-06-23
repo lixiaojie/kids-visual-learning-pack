@@ -28,6 +28,7 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
   const [state, setState] = useState<SceneInteractionState>(() => createInitialSceneInteractionState(deck));
   const [sceneNavOpen, setSceneNavOpen] = useState(false);
   const sceneNavToggleRef = useRef<HTMLButtonElement | null>(null);
+  const lastScrollY = useRef(0);
   const presentation = useMemo(() => resolveScenePresentation(deck, state), [deck, state]);
   const activeScene = presentation.activeScene;
 
@@ -35,6 +36,28 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
     setState(createInitialSceneInteractionState(deck));
     setSceneNavOpen(false);
   }, [deck]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !sceneNavOpen) return;
+
+    lastScrollY.current = window.scrollY;
+
+    const handleScroll = () => {
+      const nextY = window.scrollY;
+      const delta = nextY - lastScrollY.current;
+      lastScrollY.current = nextY;
+
+      if (delta > 8) {
+        setSceneNavOpen(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [sceneNavOpen]);
 
   function dispatch(action: SceneInteractionAction) {
     setState((current) => reduceSceneInteractionState(deck, current, action));

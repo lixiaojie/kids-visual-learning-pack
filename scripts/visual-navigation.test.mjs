@@ -70,6 +70,19 @@ const cssRuleInMedia = (source, mediaQuery, selector) => {
   assert.fail(`Expected ${selector} inside @media ${mediaQuery}`);
 };
 
+const jsBlockAfter = (source, token) => {
+  const tokenStart = source.indexOf(token);
+  assert.ok(tokenStart >= 0, `Expected JavaScript token ${token}`);
+
+  const openBrace = source.indexOf("{", tokenStart);
+  assert.ok(openBrace >= 0, `Expected JavaScript token ${token} to open a block`);
+
+  const closeBrace = findClosingBrace(source, openBrace);
+  assert.ok(closeBrace > openBrace, `Expected JavaScript token ${token} to close`);
+
+  return source.slice(openBrace + 1, closeBrace);
+};
+
 const webTopicPage = read("boards/kids-world/src/pages/TopicPage.tsx");
 const webSceneDeck = read("boards/kids-world/src/components/topic/SceneDeckTopicPage.tsx");
 const webTopbar = read("boards/kids-world/src/components/layout/Topbar.tsx");
@@ -163,10 +176,23 @@ assert.ok(webSceneDeck.includes("scene-panel-summary"), "Web scene deck must ren
 {
   const mobileSceneNavShellRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".scene-deck-nav-shell");
   const mobileSceneCopyRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".scene-deck-copy");
+  const mobileTopicTopbarRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .topbar");
+  const mobileTopicPageOffsetRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .page-shell");
 
   assert.match(mobileSceneNavShellRule, /position:\s*fixed;/s, "Web mobile scene navigation must float outside normal page layout");
   assert.match(mobileSceneCopyRule, /overflow:\s*visible;/s, "Web mobile scene copy must not use nested scrolling as the primary layout");
   assert.match(mobileSceneCopyRule, /max-height:\s*none;/s, "Web mobile scene copy must not inherit a capped workbench height");
+  assert.match(mobileTopicTopbarRule, /position:\s*fixed;/s, "Web topic topbar fixed positioning must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicPageOffsetRule, /padding-top:\s*76px;/s, "Web topic page top offset must cover the full scene-deck mobile breakpoint");
+}
+{
+  const webScrollCollapseHandler = jsBlockAfter(webSceneDeck, "const handleScroll = () =>");
+
+  assert.ok(webSceneDeck.includes("lastScrollY"), "Web scene deck must track scroll direction for collapsing expanded scene navigation");
+  assert.ok(webSceneDeck.includes('window.addEventListener("scroll", handleScroll, { passive: true })'), "Web scene deck must listen for page scroll to collapse expanded scene navigation");
+  assert.match(webScrollCollapseHandler, /delta\s*>\s*8/s, "Web scene deck scroll collapse must use a deliberate downward-scroll threshold");
+  assert.match(webScrollCollapseHandler, /setSceneNavOpen\(false\)/s, "Web scene deck downward scroll must close expanded scene navigation");
+  assert.ok(!webScrollCollapseHandler.includes("SELECT_SCENE"), "Web scene deck scroll collapse must not switch scenes");
 }
 assert.match(webStyles, /\.scene-visual-frame\s*{[^}]*aspect-ratio:\s*16\s*\/\s*9;/s, "Web scene visual must keep a stable inspectable frame");
 assert.match(webStyles, /\.evidence-panel\s*{[^}]*display:\s*none;/s, "Web evidence panel must not be visible over the image");
@@ -201,7 +227,16 @@ assert.ok(!miniSceneDeck.includes('<Text className="step-title">{step.shortTitle
 assert.ok(!miniClickTaskDeck.includes("<Text>{task.title}</Text>"), "Mini Program task navigation buttons must only show numbers");
 assert.ok(miniSceneDeck.includes("scene-evidence-card"), "Mini Program scene deck must expose related evidence text outside switch buttons");
 assert.match(miniTopicVisualStyles, /\.evidence-panel\s*{[^}]*display:\s*none;/s, "Mini Program evidence panel must not be visible over the image");
-assert.ok(!miniTopicPage.includes("usePageScroll"), "Mini Program scene-deck runtime must not depend on scroll-driven stage switching");
+{
+  const miniScrollCollapseHandler = jsBlockAfter(miniSceneDeck, "usePageScroll((event) =>");
+
+  assert.ok(!miniTopicPage.includes("usePageScroll"), "Mini Program topic runtime must not depend on scroll-driven stage switching");
+  assert.ok(miniSceneDeck.includes("usePageScroll"), "Mini Program scene deck must use page scroll to collapse expanded scene navigation");
+  assert.match(miniScrollCollapseHandler, /scrollTop/s, "Mini Program scene deck scroll collapse must inspect page scroll position");
+  assert.match(miniScrollCollapseHandler, /delta\s*>\s*8/s, "Mini Program scene deck scroll collapse must use a deliberate downward-scroll threshold");
+  assert.match(miniScrollCollapseHandler, /setSceneNavOpen\(false\)/s, "Mini Program scene deck downward scroll must close expanded scene navigation");
+  assert.ok(!miniScrollCollapseHandler.includes("SELECT_SCENE"), "Mini Program scene deck scroll collapse must not switch scenes");
+}
 assert.match(miniLearningFlowStyles, /\.learning-flow-wrap\s*{[^}]*top:\s*0;/s, "Mini Program stage navigation must stay at the top");
 assert.match(miniLearningFlowStyles, /\.learning-flow-wrap\.collapsed[\s\S]*?\.learning-flow-current\s*{[^}]*display:\s*block;/s, "Mini Program collapsed stage navigation must show the current stage");
 assert.ok(!miniInfoList.includes("<ScrollView"), "Mini Program content navigation lists must show all switch buttons on screen");
