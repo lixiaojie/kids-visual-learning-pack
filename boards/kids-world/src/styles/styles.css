@@ -1190,6 +1190,28 @@ h3,
     position: fixed;
     right: 0;
     left: 0;
+    padding: 10px 9px;
+  }
+
+  .app-shell-topic .brand > svg {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .app-shell-topic .brand strong {
+    font-size: 18px;
+  }
+
+  .app-shell-topic .brand small {
+    max-width: 58vw;
+    font-size: 11px;
+  }
+
+  .app-shell-topic .mobile-menu-button {
+    min-height: 40px;
+    padding: 0 12px;
   }
 
   .app-shell-topic .page-shell {

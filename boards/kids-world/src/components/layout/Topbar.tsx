@@ -50,7 +50,7 @@ export function Topbar({ map, locale, onLocaleChange, isTopicPage }: Props) {
         return;
       }
 
-      if (nextY > 80 && delta > 8) {
+      if (nextY > 24 && delta > 8) {
         setMobileNavOpen(false);
         setTopbarHidden(true);
       } else if (nextY < 24 || delta < -8) {

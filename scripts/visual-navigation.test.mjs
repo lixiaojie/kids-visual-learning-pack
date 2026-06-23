@@ -178,12 +178,30 @@ assert.ok(webSceneDeck.includes("scene-panel-summary"), "Web scene deck must ren
   const mobileSceneCopyRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".scene-deck-copy");
   const mobileTopicTopbarRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .topbar");
   const mobileTopicPageOffsetRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .page-shell");
+  const mobileTopicBrandIconRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .brand > svg");
+  const mobileTopicBrandTitleRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .brand strong");
+  const mobileTopicBrandSubtitleRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .brand small");
+  const mobileTopicMenuButtonRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".app-shell-topic .mobile-menu-button");
 
   assert.match(mobileSceneNavShellRule, /position:\s*fixed;/s, "Web mobile scene navigation must float outside normal page layout");
   assert.match(mobileSceneCopyRule, /overflow:\s*visible;/s, "Web mobile scene copy must not use nested scrolling as the primary layout");
   assert.match(mobileSceneCopyRule, /max-height:\s*none;/s, "Web mobile scene copy must not inherit a capped workbench height");
   assert.match(mobileTopicTopbarRule, /position:\s*fixed;/s, "Web topic topbar fixed positioning must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicTopbarRule, /padding:\s*10px\s+9px;/s, "Web topic topbar compact padding must cover the full scene-deck mobile breakpoint");
   assert.match(mobileTopicPageOffsetRule, /padding-top:\s*76px;/s, "Web topic page top offset must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicBrandIconRule, /width:\s*40px;/s, "Web topic brand icon compact width must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicBrandIconRule, /height:\s*40px;/s, "Web topic brand icon compact height must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicBrandTitleRule, /font-size:\s*18px;/s, "Web topic brand title compact size must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicBrandSubtitleRule, /max-width:\s*58vw;/s, "Web topic brand subtitle compact width must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicBrandSubtitleRule, /font-size:\s*11px;/s, "Web topic brand subtitle compact size must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicMenuButtonRule, /min-height:\s*40px;/s, "Web topic menu button compact height must cover the full scene-deck mobile breakpoint");
+  assert.match(mobileTopicMenuButtonRule, /padding:\s*0\s+12px;/s, "Web topic menu button compact padding must cover the full scene-deck mobile breakpoint");
+}
+{
+  const webTopbarScrollHandler = jsBlockAfter(webTopbar, "const handleScroll = () =>");
+
+  assert.match(webTopbarScrollHandler, /nextY\s*>\s*24\s*&&\s*delta\s*>\s*8/s, "Web topic topbar must hide on short mobile pages after modest downward scroll");
+  assert.ok(!/nextY\s*>\s*80\s*&&\s*delta\s*>\s*8/s.test(webTopbarScrollHandler), "Web topic topbar hide threshold must not exceed short mobile page scroll range");
 }
 {
   const webScrollCollapseHandler = jsBlockAfter(webSceneDeck, "const handleScroll = () =>");
