@@ -3,6 +3,47 @@ import { strict as assert } from "node:assert";
 
 const read = (file) => readFileSync(file, "utf8");
 
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const findClosingBrace = (source, openBraceIndex) => {
+  let depth = 0;
+
+  for (let index = openBraceIndex; index < source.length; index += 1) {
+    if (source[index] === "{") {
+      depth += 1;
+    } else if (source[index] === "}") {
+      depth -= 1;
+
+      if (depth === 0) {
+        return index;
+      }
+    }
+  }
+
+  return -1;
+};
+
+const cssRuleInMedia = (source, mediaQuery, selector) => {
+  const mediaStart = source.indexOf(`@media ${mediaQuery}`);
+  assert.ok(mediaStart >= 0, `Expected @media ${mediaQuery} to exist`);
+
+  const mediaOpenBrace = source.indexOf("{", mediaStart);
+  assert.ok(mediaOpenBrace >= 0, `Expected @media ${mediaQuery} to contain a block`);
+
+  const mediaCloseBrace = findClosingBrace(source, mediaOpenBrace);
+  assert.ok(mediaCloseBrace > mediaOpenBrace, `Expected @media ${mediaQuery} to close`);
+
+  const mediaBlock = source.slice(mediaOpenBrace + 1, mediaCloseBrace);
+  const ruleMatch = new RegExp(`${escapeRegExp(selector)}\\s*{`).exec(mediaBlock);
+  assert.ok(ruleMatch, `Expected ${selector} inside @media ${mediaQuery}`);
+
+  const ruleOpenBrace = mediaBlock.indexOf("{", ruleMatch.index);
+  const ruleCloseBrace = findClosingBrace(mediaBlock, ruleOpenBrace);
+  assert.ok(ruleCloseBrace > ruleOpenBrace, `Expected ${selector} rule to close inside @media ${mediaQuery}`);
+
+  return mediaBlock.slice(ruleOpenBrace + 1, ruleCloseBrace);
+};
+
 const webTopicPage = read("boards/kids-world/src/pages/TopicPage.tsx");
 const webSceneDeck = read("boards/kids-world/src/components/topic/SceneDeckTopicPage.tsx");
 const webTopbar = read("boards/kids-world/src/components/layout/Topbar.tsx");
@@ -93,8 +134,14 @@ assert.ok(webSceneDeck.includes("scene-panel-deck"), "Web scene deck must render
 assert.ok(webSceneDeck.includes("scene-panel-evidence"), "Web scene deck must group evidence copy and image in one mobile panel");
 assert.ok(webSceneDeck.includes("scene-panel-task"), "Web scene deck must render task content as a scene panel");
 assert.ok(webSceneDeck.includes("scene-panel-summary"), "Web scene deck must render speak prompts and parent tips as a scene panel");
-assert.match(webStyles, /@media \(max-width: 760px\)[\s\S]*?\.scene-deck-nav-shell\s*{[^}]*position:\s*fixed;/s, "Web mobile scene navigation must float outside normal page layout");
-assert.match(webStyles, /@media \(max-width: 760px\)[\s\S]*?\.scene-deck-copy\s*{(?![^}]*overflow-y:\s*auto)[^}]*}/s, "Web mobile scene copy must not use nested scrolling as the primary layout");
+{
+  const mobileSceneNavShellRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".scene-deck-nav-shell");
+  const mobileSceneCopyRule = cssRuleInMedia(webStyles, "(max-width: 760px)", ".scene-deck-copy");
+
+  assert.match(mobileSceneNavShellRule, /position:\s*fixed;/s, "Web mobile scene navigation must float outside normal page layout");
+  assert.match(mobileSceneCopyRule, /overflow:\s*visible;/s, "Web mobile scene copy must not use nested scrolling as the primary layout");
+  assert.match(mobileSceneCopyRule, /max-height:\s*none;/s, "Web mobile scene copy must not inherit a capped workbench height");
+}
 assert.match(webStyles, /\.scene-visual-frame\s*{[^}]*aspect-ratio:\s*16\s*\/\s*9;/s, "Web scene visual must keep a stable inspectable frame");
 assert.match(webStyles, /\.evidence-panel\s*{[^}]*display:\s*none;/s, "Web evidence panel must not be visible over the image");
 assert.match(miniGeneratedImage, /mode="widthFix"/, "Mini Program generated images must use widthFix for full evidence visuals");
