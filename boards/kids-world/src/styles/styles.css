@@ -1193,10 +1193,10 @@ h3,
 
   .scene-deck-nav-shell {
     position: fixed;
-    top: 10px;
+    top: 72px;
     right: 12px;
     left: 12px;
-    z-index: 35;
+    z-index: 25;
     gap: 8px;
     pointer-events: none;
   }
@@ -1279,7 +1279,7 @@ h3,
 
   .scene-panel {
     min-height: 100svh;
-    padding: 74px 14px 24px;
+    padding: 132px 14px 24px;
   }
 
   .scene-panel-evidence {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import {
   createInitialSceneInteractionState,
@@ -27,6 +27,7 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
   const deck = useMemo(() => normalizeTopicToSceneDeck(topic, { locale }), [topic, locale]);
   const [state, setState] = useState<SceneInteractionState>(() => createInitialSceneInteractionState(deck));
   const [sceneNavOpen, setSceneNavOpen] = useState(false);
+  const sceneNavToggleRef = useRef<HTMLButtonElement | null>(null);
   const presentation = useMemo(() => resolveScenePresentation(deck, state), [deck, state]);
   const activeScene = presentation.activeScene;
 
@@ -38,9 +39,13 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
   function dispatch(action: SceneInteractionAction) {
     setState((current) => reduceSceneInteractionState(deck, current, action));
     if (action.type === "SELECT_SCENE") {
+      const shouldRestoreSceneNavFocus = sceneNavOpen;
       setSceneNavOpen(false);
       if (typeof window !== "undefined" && typeof document !== "undefined") {
         window.requestAnimationFrame(() => {
+          if (shouldRestoreSceneNavFocus) {
+            sceneNavToggleRef.current?.focus({ preventScroll: true });
+          }
           document.querySelector(".scene-panel-evidence")?.scrollIntoView({ block: "start", behavior: "smooth" });
         });
       }
@@ -62,6 +67,7 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
 
       <div className={sceneNavOpen ? "scene-deck-nav-shell expanded" : "scene-deck-nav-shell"}>
         <button
+          ref={sceneNavToggleRef}
           className="scene-nav-toggle"
           type="button"
           aria-controls="scene-deck-nav"
@@ -77,6 +83,7 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
               className={scene.id === activeScene.id ? "active" : ""}
               key={scene.id}
               type="button"
+              aria-current={scene.id === activeScene.id ? "true" : undefined}
               onClick={() => dispatch({ type: "SELECT_SCENE", sceneId: scene.id })}
             >
               <span>{scene.order}</span>
@@ -131,6 +138,7 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
               <GeneratedImage assetId={activeScene.visual.assetId} alt={activeScene.visual.alt} className="scene-visual-image" />
               <div className="scene-region-layer" aria-hidden="true">
                 {activeScene.visual.regions.map((region) => {
+                  if (!region.bounds) return null;
                   const isActive = presentation.activeEvidence?.regionIds.includes(region.id);
                   return (
                     <span
