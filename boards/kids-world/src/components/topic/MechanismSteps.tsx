@@ -29,18 +29,17 @@ function StepRow({
   sourcePrefix: "mechanism.steps" | "secondaryMechanism.steps";
 }) {
   return (
-    <div className="step-row">
+    <div className="step-row node-strip">
       {steps.map((step, index) => (
         <button
-          className={activeStepId === step.id ? "step-card active" : "step-card"}
+          className={activeStepId === step.id ? "step-card node-button active" : "step-card node-button"}
           key={step.id}
           type="button"
           data-evidence-source={`${sourcePrefix}.${step.id}`}
           onClick={() => onSelectStep(step.id)}
         >
-          <span>{index + 1}</span>
-          <strong>{step.shortTitle}</strong>
-          <small>{step.childExplanation}</small>
+          <span className="node-index">{index + 1}</span>
+          <strong className="node-label">{step.shortTitle}</strong>
         </button>
       ))}
     </div>
@@ -61,23 +60,39 @@ export function MechanismSteps({
   locale,
 }: Props) {
   const normalizedLocale = locale === "en-US" ? "en-US" : "zh-CN";
+  const activeMechanismStep = mechanism.steps.find((step) => step.id === activeMechanismStepId) ?? mechanism.steps[0];
+  const activeSecondaryStep = secondary?.steps.find((step) => step.id === activeSecondaryStepId) ?? secondary?.steps[0];
+  const mechanismVisualSupport = activeMechanismStep
+    ? {
+        title: activeMechanismStep.shortTitle,
+        body: activeMechanismStep.childExplanation,
+        note: activeMechanismStep.parentNote,
+      }
+    : null;
+  const secondaryVisualSupport = activeSecondaryStep
+    ? {
+        title: activeSecondaryStep.shortTitle,
+        body: activeSecondaryStep.childExplanation,
+        note: activeSecondaryStep.parentNote,
+      }
+    : null;
 
   return (
     <>
       <article className="panel wide interaction-panel" id="topic-mechanism">
         <SectionHeader title={mechanism.title ?? (locale === "zh-CN" ? "机制步骤" : "How it works")} />
-        <TopicVisual slot={mechanismSlot} evidence={mechanismEvidence} fallbackAlt={mechanism.title ?? (locale === "zh-CN" ? "机制图" : "Process visual")} locale={normalizedLocale} />
         <div className="interaction-controls">
           <StepRow steps={mechanism.steps} activeStepId={activeMechanismStepId} onSelectStep={onSelectMechanismStep} sourcePrefix="mechanism.steps" />
         </div>
+        <TopicVisual slot={mechanismSlot} evidence={mechanismEvidence} fallbackAlt={mechanism.title ?? (locale === "zh-CN" ? "机制图" : "Process visual")} locale={normalizedLocale} visualSupport={mechanismVisualSupport} />
       </article>
       {secondary && (
         <article className="panel wide interaction-panel" id="topic-secondary-mechanism">
           <SectionHeader title={secondary.title} />
-          <TopicVisual slot={secondarySlot} evidence={secondaryEvidence} fallbackAlt={secondary.title} locale={normalizedLocale} />
           <div className="interaction-controls">
             <StepRow steps={secondary.steps} activeStepId={activeSecondaryStepId} onSelectStep={onSelectSecondaryStep} sourcePrefix="secondaryMechanism.steps" />
           </div>
+          <TopicVisual slot={secondarySlot} evidence={secondaryEvidence} fallbackAlt={secondary.title} locale={normalizedLocale} visualSupport={secondaryVisualSupport} />
         </article>
       )}
     </>

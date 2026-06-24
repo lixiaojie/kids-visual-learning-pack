@@ -2731,5 +2731,559 @@
         "dimOthers": true
       }
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Do robots use magic, or do sensors, programs, and action parts work together?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a friendly robot workbench: inputs such as camera, microphone, button, and distance sensor on the left; a program-thinking cloud in the center; lights, wheels, and a robot arm as outputs on the right."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-sensors",
+          "label": "Receive information",
+          "evidenceTitle": "Receive information",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Sensors are like a robot’s eyes, ears, and buttons. You can spot: Camera, Microphone, Button, Distance sensor.",
+          "markerChips": [
+            "Camera",
+            "Microphone",
+            "Button",
+            "Distance sensor"
+          ]
+        },
+        {
+          "id": "focus-camera",
+          "label": "Camera",
+          "evidenceTitle": "Camera",
+          "observePrompt": "round lens",
+          "evidenceCopy": "A camera helps a robot see images.",
+          "markerChips": [
+            "Camera"
+          ]
+        },
+        {
+          "id": "focus-microphone",
+          "label": "Microphone",
+          "evidenceTitle": "Microphone",
+          "observePrompt": "small microphone",
+          "evidenceCopy": "A microphone helps a robot hear sounds.",
+          "markerChips": [
+            "Microphone"
+          ]
+        },
+        {
+          "id": "focus-distance-sensor",
+          "label": "Distance sensor",
+          "evidenceTitle": "Distance sensor",
+          "observePrompt": "two small sensor eyes",
+          "evidenceCopy": "It helps a robot know whether something is close in front.",
+          "markerChips": [
+            "Distance sensor"
+          ]
+        },
+        {
+          "id": "focus-button",
+          "label": "Button",
+          "evidenceTitle": "Button",
+          "observePrompt": "red round button",
+          "evidenceCopy": "A button can tell the robot a human choice.",
+          "markerChips": [
+            "Button"
+          ]
+        },
+        {
+          "id": "focus-program",
+          "label": "Program rules",
+          "evidenceTitle": "Program rules",
+          "observePrompt": "glowing little brain cloud",
+          "evidenceCopy": "A program is like task rules telling the robot what to do.",
+          "markerChips": [
+            "Program rules"
+          ]
+        },
+        {
+          "id": "focus-wheel-arm",
+          "label": "Wheels and robot arm",
+          "evidenceTitle": "Wheels and robot arm",
+          "observePrompt": "Wheel plus gripper",
+          "evidenceCopy": "Wheels help the robot move, and the robot arm helps it grab or push things.",
+          "markerChips": [
+            "Wheels and robot arm"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Camera: A camera helps a robot see images.",
+            "Microphone: A microphone helps a robot hear sounds.",
+            "Distance sensor: It helps a robot know whether something is close in front.",
+            "Button: A button can tell the robot a human choice.",
+            "Program rules: A program is like task rules telling the robot what to do.",
+            "Wheels and robot arm: Wheels help the robot move, and the robot arm helps it grab or push things."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-input",
+          "label": "Receive information",
+          "evidenceTitle": "Receive information",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "A camera, microphone, button, or sensor receives information first.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-interpret",
+          "label": "Understand the situation",
+          "evidenceTitle": "Understand the situation",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "The robot gives the information to the program to see what is happening.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-decide",
+          "label": "Decide by rules",
+          "evidenceTitle": "Decide by rules",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "The program follows task rules to decide the next step.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-act",
+          "label": "Take action",
+          "evidenceTitle": "Take action",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Wheels, lights, or a robot arm start working.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-feedback-loop",
+          "label": "Check again",
+          "evidenceTitle": "Check again",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "The robot can check the result and adjust if needed.",
+          "markerChips": [
+            "Step 5"
+          ]
+        },
+        {
+          "id": "focus-sense-wall",
+          "label": "Detect something close",
+          "evidenceTitle": "Detect something close",
+          "observePrompt": "Current step 1. Observe this supporting mechanism.",
+          "evidenceCopy": "The distance sensor notices something in front.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-rule-stop",
+          "label": "Rule says stop",
+          "evidenceTitle": "Rule says stop",
+          "observePrompt": "Current step 2. Observe this supporting mechanism.",
+          "evidenceCopy": "The program says: if too close, stop.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-wheel-stop",
+          "label": "Wheels stop",
+          "evidenceTitle": "Wheels stop",
+          "observePrompt": "Current step 3. Observe this supporting mechanism.",
+          "evidenceCopy": "The wheels stop turning so the robot does not bump into it.",
+          "markerChips": [
+            "Step 3"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How does a robot complete a task?",
+          "items": [
+            "Receive information: A camera, microphone, button, or sensor receives information first.",
+            "Understand the situation: The robot gives the information to the program to see what is happening.",
+            "Decide by rules: The program follows task rules to decide the next step.",
+            "Take action: Wheels or the robot arm start working and turn the decision into action.",
+            "Check again: The robot can check the result and adjust if needed."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-sensor-vs-actuator",
+          "label": "Sensor vs Action part",
+          "evidenceTitle": "Sensor vs Action part",
+          "observePrompt": "Compare visual clues for Sensor and Action part.",
+          "evidenceCopy": "Sensor: receives information; input gateway; camera, microphone, and button can be inputs. Action part: does something; turns a decision into a result; wheels, lights, and arms act. Sensors know; action parts do.",
+          "markerChips": [
+            "Sensor",
+            "Action part"
+          ]
+        },
+        {
+          "id": "focus-program-vs-magic",
+          "label": "Program vs Magic",
+          "evidenceTitle": "Program vs Magic",
+          "observePrompt": "Compare visual clues for Program and Magic.",
+          "evidenceCopy": "Program: has rules; can be designed by people; same input often gives same action. Magic: no clear rule; not repeatable; not an engineering explanation. Robots work through programs and parts, not magic.",
+          "markerChips": [
+            "Program",
+            "Magic"
+          ]
+        },
+        {
+          "id": "focus-robot-vs-remote-toy",
+          "label": "Robot vs Remote toy",
+          "evidenceTitle": "Robot vs Remote toy",
+          "observePrompt": "Compare visual clues for Robot and Remote toy.",
+          "evidenceCopy": "Robot: can receive information; can follow rules; may act automatically. Remote toy: mostly follows human remote control; may not judge the environment; simpler movement. Moving is not enough; sensing and rule-based action matter.",
+          "markerChips": [
+            "Robot",
+            "Remote toy"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Sensor vs Action part: Sensors know; action parts do.",
+            "Program vs Magic: Robots work through programs and parts, not magic.",
+            "Robot vs Remote toy: Moving is not enough; sensing and rule-based action matter."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-input",
+          "label": "Receive information",
+          "evidenceTitle": "Receive information",
+          "observePrompt": "Tap from receiving information to acting.",
+          "evidenceCopy": "Current step: Receive information. Tap from receiving information to acting.",
+          "markerChips": [
+            "Receive information"
+          ]
+        },
+        {
+          "id": "focus-interpret",
+          "label": "Understand situation",
+          "evidenceTitle": "Understand situation",
+          "observePrompt": "Tap from receiving information to acting.",
+          "evidenceCopy": "Current step: Understand situation. Tap from receiving information to acting.",
+          "markerChips": [
+            "Understand situation"
+          ]
+        },
+        {
+          "id": "focus-decide",
+          "label": "Decide by rules",
+          "evidenceTitle": "Decide by rules",
+          "observePrompt": "Tap from receiving information to acting.",
+          "evidenceCopy": "Current step: Decide by rules. Tap from receiving information to acting.",
+          "markerChips": [
+            "Decide by rules"
+          ]
+        },
+        {
+          "id": "focus-act",
+          "label": "Take action",
+          "evidenceTitle": "Take action",
+          "observePrompt": "Tap from receiving information to acting.",
+          "evidenceCopy": "Current step: Take action. Tap from receiving information to acting.",
+          "markerChips": [
+            "Take action"
+          ]
+        },
+        {
+          "id": "focus-camera",
+          "label": "Camera",
+          "evidenceTitle": "Camera",
+          "observePrompt": "Find the parts that can receive outside information.",
+          "evidenceCopy": "Yes. These parts help the robot receive information.",
+          "markerChips": [
+            "Camera"
+          ]
+        },
+        {
+          "id": "focus-microphone",
+          "label": "Microphone",
+          "evidenceTitle": "Microphone",
+          "observePrompt": "Find the parts that can receive outside information.",
+          "evidenceCopy": "Yes. These parts help the robot receive information.",
+          "markerChips": [
+            "Microphone"
+          ]
+        },
+        {
+          "id": "focus-distance-sensor",
+          "label": "Distance sensor",
+          "evidenceTitle": "Distance sensor",
+          "observePrompt": "Find the parts that can receive outside information.",
+          "evidenceCopy": "Yes. These parts help the robot receive information.",
+          "markerChips": [
+            "Distance sensor"
+          ]
+        },
+        {
+          "id": "focus-button",
+          "label": "Button",
+          "evidenceTitle": "Button",
+          "observePrompt": "Find the parts that can receive outside information.",
+          "evidenceCopy": "Yes. These parts help the robot receive information.",
+          "markerChips": [
+            "Button"
+          ]
+        },
+        {
+          "id": "focus-program",
+          "label": "Program rules",
+          "evidenceTitle": "Program rules",
+          "observePrompt": "Find the parts that can receive outside information.",
+          "evidenceCopy": "Ask: is it knowing information, acting, or following rules?",
+          "markerChips": [
+            "Program rules"
+          ]
+        },
+        {
+          "id": "focus-wheel-arm",
+          "label": "Wheels and robot arm",
+          "evidenceTitle": "Wheels and robot arm",
+          "observePrompt": "Find the parts that can receive outside information.",
+          "evidenceCopy": "Ask: is it knowing information, acting, or following rules?",
+          "markerChips": [
+            "Wheels and robot arm"
+          ]
+        },
+        {
+          "id": "focus-magic",
+          "label": "Magic",
+          "evidenceTitle": "Magic",
+          "observePrompt": "Choose the least accurate explanation.",
+          "evidenceCopy": "Right! Robots do not work by magic.",
+          "markerChips": [
+            "Magic"
+          ]
+        },
+        {
+          "id": "focus-sensors-program",
+          "label": "Sensors and programs",
+          "evidenceTitle": "Sensors and programs",
+          "observePrompt": "Choose the least accurate explanation.",
+          "evidenceCopy": "Sensors and programs are key to robot work.",
+          "markerChips": [
+            "Sensors and programs"
+          ]
+        },
+        {
+          "id": "focus-wheels-arm",
+          "label": "Wheels and robot arms",
+          "evidenceTitle": "Wheels and robot arms",
+          "observePrompt": "Choose the least accurate explanation.",
+          "evidenceCopy": "Wheels and arms help robots act.",
+          "markerChips": [
+            "Wheels and robot arms"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Tap from receiving information to acting."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "robot-sequence-01",
+          "title": "What is the order of a robot task?",
+          "prompt": "Tap from receiving information to acting.",
+          "options": [
+            {
+              "id": "input",
+              "label": "Receive information"
+            },
+            {
+              "id": "interpret",
+              "label": "Understand situation"
+            },
+            {
+              "id": "decide",
+              "label": "Decide by rules"
+            },
+            {
+              "id": "act",
+              "label": "Take action"
+            }
+          ],
+          "feedback": {
+            "correct": "You arranged the basic robot workflow!",
+            "wrong": "A robot must know what happened before it acts.",
+            "partial": "Tap from receiving information to acting.",
+            "complete": "You arranged the basic robot workflow!"
+          }
+        },
+        {
+          "id": "robot-find-01",
+          "title": "Find: which parts receive information?",
+          "prompt": "Find the parts that can receive outside information.",
+          "options": [
+            {
+              "id": "camera",
+              "label": "Camera"
+            },
+            {
+              "id": "microphone",
+              "label": "Microphone"
+            },
+            {
+              "id": "distance-sensor",
+              "label": "Distance sensor"
+            },
+            {
+              "id": "button",
+              "label": "Button"
+            },
+            {
+              "id": "program",
+              "label": "Program rules"
+            },
+            {
+              "id": "wheel-arm",
+              "label": "Wheels and robot arm"
+            }
+          ],
+          "feedback": {
+            "correct": "Yes. These parts help the robot receive information.",
+            "wrong": "Ask: is it knowing information, acting, or following rules?",
+            "partial": "Find the parts that can receive outside information.",
+            "complete": "Yes. These parts help the robot receive information."
+          }
+        },
+        {
+          "id": "robot-choice-01",
+          "title": "What do robots not rely on?",
+          "prompt": "Choose the least accurate explanation.",
+          "options": [
+            {
+              "id": "magic",
+              "label": "Magic"
+            },
+            {
+              "id": "sensors-program",
+              "label": "Sensors and programs"
+            },
+            {
+              "id": "wheels-arm",
+              "label": "Wheels and robot arms"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! Robots do not work by magic.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the least accurate explanation.",
+            "complete": "Right! Robots do not work by magic."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-camera",
+          "label": "Camera",
+          "evidenceTitle": "Camera",
+          "observePrompt": "round lens",
+          "evidenceCopy": "A camera helps a robot see images.",
+          "markerChips": [
+            "Camera"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "A robot first uses ____ to receive information.",
+            "A program is like ____ that tells the robot what to do.",
+            "Wheels and robot arms are ____ parts.",
+            "A robot task often goes: ____, ____, ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "A robot first uses ____ to receive information.",
+        "A program is like ____ that tells the robot what to do.",
+        "Wheels and robot arms are ____ parts.",
+        "A robot task often goes: ____, ____, ____."
+      ],
+      "parentTips": [
+        "Use home examples like robot vacuums, automatic doors, or voice lights.",
+        "Avoid saying robots truly understand everything; say they process information by rules.",
+        "If interested, ask the child to draw an input-decision-action flow."
+      ]
+    }
   ]
 }

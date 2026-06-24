@@ -483,6 +483,20 @@
       "target": "secondaryMechanism",
       "role": "process",
       "required": true
+    },
+    {
+      "id": "white-cell-guard",
+      "assetId": "body-blood-cells-white-cell-guard",
+      "role": "task",
+      "target": "clickTasks.blood-match-02",
+      "required": false
+    },
+    {
+      "id": "blood-overview",
+      "assetId": "body-blood-cells-3d-hero",
+      "role": "compare",
+      "target": "comparePairs.blood-vs-water",
+      "required": false
     }
   ],
   "visualEvidenceBindings": [
@@ -777,7 +791,7 @@
     {
       "id": "evidence-comparePairs-red-vs-white",
       "source": "comparePairs.red-vs-white",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "红细胞 vs 白细胞",
       "observePrompt": "对比 红细胞 和 白细胞 的图片线索。",
@@ -800,7 +814,7 @@
     {
       "id": "evidence-comparePairs-platelet-vs-red",
       "source": "comparePairs.platelet-vs-red",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "血小板 vs 红细胞",
       "observePrompt": "对比 血小板 和 红细胞 的图片线索。",
@@ -823,7 +837,7 @@
     {
       "id": "evidence-comparePairs-blood-vs-water",
       "source": "comparePairs.blood-vs-water",
-      "visualSlotId": "hero",
+      "visualSlotId": "blood-overview",
       "interactionScope": "local",
       "evidenceTitle": "血液 vs 红色水",
       "observePrompt": "对比 血液 和 红色水 的图片线索。",
@@ -846,7 +860,7 @@
     {
       "id": "evidence-clickTasks-blood-match-01-options-red-cell",
       "source": "clickTasks.blood-match-01.options.red-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "红细胞",
       "observePrompt": "谁最像送氧气的小车？",
@@ -864,7 +878,7 @@
     {
       "id": "evidence-clickTasks-blood-match-01-options-white-cell",
       "source": "clickTasks.blood-match-01.options.white-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "白细胞",
       "observePrompt": "谁最像送氧气的小车？",
@@ -882,7 +896,7 @@
     {
       "id": "evidence-clickTasks-blood-match-01-options-platelet",
       "source": "clickTasks.blood-match-01.options.platelet",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "血小板",
       "observePrompt": "谁最像送氧气的小车？",
@@ -900,7 +914,7 @@
     {
       "id": "evidence-clickTasks-blood-match-02-options-plasma",
       "source": "clickTasks.blood-match-02.options.plasma",
-      "visualSlotId": "hero",
+      "visualSlotId": "white-cell-guard",
       "interactionScope": "local",
       "evidenceTitle": "血浆",
       "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
@@ -918,7 +932,7 @@
     {
       "id": "evidence-clickTasks-blood-match-02-options-white-cell",
       "source": "clickTasks.blood-match-02.options.white-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "white-cell-guard",
       "interactionScope": "local",
       "evidenceTitle": "白细胞",
       "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
@@ -936,7 +950,7 @@
     {
       "id": "evidence-clickTasks-blood-match-02-options-red-cell",
       "source": "clickTasks.blood-match-02.options.red-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "white-cell-guard",
       "interactionScope": "local",
       "evidenceTitle": "红细胞",
       "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
@@ -954,7 +968,7 @@
     {
       "id": "evidence-clickTasks-blood-sequence-01-options-lung",
       "source": "clickTasks.blood-sequence-01.options.lung",
-      "visualSlotId": "hero",
+      "visualSlotId": "oxygen-flow",
       "interactionScope": "local",
       "evidenceTitle": "肺部取氧",
       "observePrompt": "氧气旅行顺序是什么？",
@@ -972,7 +986,7 @@
     {
       "id": "evidence-clickTasks-blood-sequence-01-options-heart",
       "source": "clickTasks.blood-sequence-01.options.heart",
-      "visualSlotId": "hero",
+      "visualSlotId": "oxygen-flow",
       "interactionScope": "local",
       "evidenceTitle": "心脏推动",
       "observePrompt": "氧气旅行顺序是什么？",
@@ -990,7 +1004,7 @@
     {
       "id": "evidence-clickTasks-blood-sequence-01-options-body",
       "source": "clickTasks.blood-sequence-01.options.body",
-      "visualSlotId": "hero",
+      "visualSlotId": "oxygen-flow",
       "interactionScope": "local",
       "evidenceTitle": "送到身体",
       "observePrompt": "氧气旅行顺序是什么？",
@@ -1008,7 +1022,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-platelet",
       "source": "clickTasks.blood-find-01.options.platelet",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "platelet",
       "observePrompt": "找一找：谁是修补队？",
@@ -1026,7 +1040,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-red-cell",
       "source": "clickTasks.blood-find-01.options.red-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "red cell",
       "observePrompt": "找一找：谁是修补队？",
@@ -1044,7 +1058,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-white-cell",
       "source": "clickTasks.blood-find-01.options.white-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "white cell",
       "observePrompt": "找一找：谁是修补队？",
@@ -1062,7 +1076,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-plasma",
       "source": "clickTasks.blood-find-01.options.plasma",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "plasma",
       "observePrompt": "找一找：谁是修补队？",
@@ -1076,6 +1090,1390 @@
       ],
       "expectedStatus": "wrong",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "血液为什么能帮助身体工作？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-blood-cells-3d-scene-entry",
+        "assetId": "body-blood-cells-3d-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "页面左侧是一个温和的血管微观通道：红细胞像扁扁的小圆盘在运输氧气，白细胞数量少但更大，像守护者；血小板更小，负责修补伤口；血浆像河水一样带着大家流动。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-blood-cells-3d-scene-classify",
+        "assetId": "body-blood-cells-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "red-cell",
+            "label": "红细胞",
+            "required": true
+          },
+          {
+            "id": "white-cell",
+            "label": "白细胞",
+            "required": true
+          },
+          {
+            "id": "platelet",
+            "label": "血小板",
+            "required": true
+          },
+          {
+            "id": "plasma",
+            "label": "血浆",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "red-cell",
+            "entityIds": [
+              "red-cell"
+            ],
+            "label": "红细胞",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 129,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "white-cell",
+            "entityIds": [
+              "white-cell"
+            ],
+            "label": "白细胞",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 129,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "platelet",
+            "entityIds": [
+              "platelet"
+            ],
+            "label": "血小板",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 489,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "plasma",
+            "entityIds": [
+              "plasma"
+            ],
+            "label": "血浆",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 489,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-red-blood-cells",
+          "source": "classificationGroups.red-blood-cells",
+          "label": "红细胞",
+          "regionIds": [
+            "red-cell"
+          ],
+          "entityIds": [
+            "red-cell"
+          ],
+          "evidenceTitle": "红细胞",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "像送氧气的小车，把氧气送到身体各处。 这类里可以看到：红细胞。",
+          "markerChips": [
+            "红细胞"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-red-cell",
+          "source": "representativeObjects.red-cell",
+          "label": "红细胞",
+          "regionIds": [
+            "red-cell"
+          ],
+          "entityIds": [
+            "red-cell"
+          ],
+          "evidenceTitle": "红细胞",
+          "observePrompt": "红色、扁圆、数量最多",
+          "evidenceCopy": "我负责送氧气。",
+          "markerChips": [
+            "红细胞"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-white-cell",
+          "source": "representativeObjects.white-cell",
+          "label": "白细胞",
+          "regionIds": [
+            "white-cell"
+          ],
+          "entityIds": [
+            "white-cell"
+          ],
+          "evidenceTitle": "白细胞",
+          "observePrompt": "白色或淡色、比红细胞大、数量少",
+          "evidenceCopy": "我负责保护身体。",
+          "markerChips": [
+            "白细胞"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-platelet",
+          "source": "representativeObjects.platelet",
+          "label": "血小板",
+          "regionIds": [
+            "platelet"
+          ],
+          "entityIds": [
+            "platelet"
+          ],
+          "evidenceTitle": "血小板",
+          "observePrompt": "小小的碎片状或小圆点",
+          "evidenceCopy": "我会帮忙修补小伤口。",
+          "markerChips": [
+            "血小板"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-plasma",
+          "source": "representativeObjects.plasma",
+          "label": "血浆",
+          "regionIds": [
+            "plasma"
+          ],
+          "entityIds": [
+            "plasma"
+          ],
+          "evidenceTitle": "血浆",
+          "observePrompt": "淡黄色或透明流动背景",
+          "evidenceCopy": "我带着大家一起流动。",
+          "markerChips": [
+            "血浆"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "红细胞: 我负责送氧气。",
+            "白细胞: 我负责保护身体。",
+            "血小板: 我会帮忙修补小伤口。",
+            "血浆: 我带着大家一起流动。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-blood-cells-3d-scene-process",
+        "assetId": "body-blood-cells-oxygen-flow",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "get-oxygen",
+            "label": "肺部取氧",
+            "required": true
+          },
+          {
+            "id": "red-cell-load",
+            "label": "红细胞装上氧气",
+            "required": true
+          },
+          {
+            "id": "heart-pump",
+            "label": "心脏推动",
+            "required": true
+          },
+          {
+            "id": "deliver",
+            "label": "送到身体",
+            "required": true
+          },
+          {
+            "id": "return",
+            "label": "再带回废气",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "get-oxygen",
+            "entityIds": [
+              "get-oxygen"
+            ],
+            "label": "肺部取氧",
+            "shape": "rect",
+            "bounds": {
+              "x": 55,
+              "y": 115,
+              "w": 240,
+              "h": 330
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "red-cell-load",
+            "entityIds": [
+              "red-cell-load"
+            ],
+            "label": "红细胞装上氧气",
+            "shape": "rect",
+            "bounds": {
+              "x": 720,
+              "y": 165,
+              "w": 190,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "heart-pump",
+            "entityIds": [
+              "heart-pump"
+            ],
+            "label": "心脏推动",
+            "shape": "rect",
+            "bounds": {
+              "x": 420,
+              "y": 115,
+              "w": 230,
+              "h": 330
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "deliver",
+            "entityIds": [
+              "deliver"
+            ],
+            "label": "送到身体",
+            "shape": "rect",
+            "bounds": {
+              "x": 735,
+              "y": 520,
+              "w": 180,
+              "h": 320
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "return",
+            "entityIds": [
+              "return"
+            ],
+            "label": "再带回废气",
+            "shape": "rect",
+            "bounds": {
+              "x": 90,
+              "y": 595,
+              "w": 190,
+              "h": 250
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-get-oxygen",
+          "source": "mechanism.steps.get-oxygen",
+          "label": "肺部取氧",
+          "regionIds": [
+            "get-oxygen"
+          ],
+          "entityIds": [
+            "get-oxygen"
+          ],
+          "evidenceTitle": "肺部取氧",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "我们吸气时，氧气来到肺里。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-red-cell-load",
+          "source": "mechanism.steps.red-cell-load",
+          "label": "红细胞装上氧气",
+          "regionIds": [
+            "red-cell-load"
+          ],
+          "entityIds": [
+            "red-cell-load"
+          ],
+          "evidenceTitle": "红细胞装上氧气",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "红细胞带上氧气，准备出发。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-heart-pump",
+          "source": "mechanism.steps.heart-pump",
+          "label": "心脏推动",
+          "regionIds": [
+            "heart-pump"
+          ],
+          "entityIds": [
+            "heart-pump"
+          ],
+          "evidenceTitle": "心脏推动",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "心脏像水泵，把血液推向全身。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-deliver",
+          "source": "mechanism.steps.deliver",
+          "label": "送到身体",
+          "regionIds": [
+            "deliver"
+          ],
+          "entityIds": [
+            "deliver"
+          ],
+          "evidenceTitle": "送到身体",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "红细胞把氧气送给需要工作的地方。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-return",
+          "source": "mechanism.steps.return",
+          "label": "再带回废气",
+          "regionIds": [
+            "return"
+          ],
+          "entityIds": [
+            "return"
+          ],
+          "evidenceTitle": "再带回废气",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "血液还会把身体产生的废气带回去。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "氧气怎么送到身体各处？",
+          "items": [
+            "肺部取氧: 我们吸气时，氧气来到肺里。",
+            "红细胞装上氧气: 红细胞带上氧气，准备出发。",
+            "心脏推动: 心脏像水泵，把血液推向全身。",
+            "送到身体: 红细胞把氧气送给需要工作的地方。",
+            "再带回废气: 血液还会把身体产生的废气带回去。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-blood-cells-3d-scene-compare",
+        "assetId": "body-blood-cells-3d-hero",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-red-vs-white",
+          "source": "comparePairs.red-vs-white",
+          "label": "红细胞 vs 白细胞",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "红细胞 vs 白细胞",
+          "observePrompt": "对比 红细胞 和 白细胞 的图片线索。",
+          "evidenceCopy": "红细胞: 数量很多；主要送氧气；像运输小车。白细胞: 数量较少；主要保护身体；像守卫队。它们都在血液里，但工作不一样。",
+          "markerChips": [
+            "红细胞",
+            "白细胞"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-platelet-vs-red",
+          "source": "comparePairs.platelet-vs-red",
+          "label": "血小板 vs 红细胞",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "血小板 vs 红细胞",
+          "observePrompt": "对比 血小板 和 红细胞 的图片线索。",
+          "evidenceCopy": "血小板: 更小；帮助止血；像修补队。红细胞: 更常见；运输氧气；像小车。小小的血小板也有重要工作。",
+          "markerChips": [
+            "血小板",
+            "红细胞"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-blood-vs-water",
+          "source": "comparePairs.blood-vs-water",
+          "label": "血液 vs 红色水",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "血液 vs 红色水",
+          "observePrompt": "对比 血液 和 红色水 的图片线索。",
+          "evidenceCopy": "血液: 有多种成员；会运输和保护；在身体里循环。红色水: 只是液体；没有工作队；不会主动保护身体。血液不是普通红色水。",
+          "markerChips": [
+            "血液",
+            "红色水"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "红细胞 vs 白细胞: 它们都在血液里，但工作不一样。",
+            "血小板 vs 红细胞: 小小的血小板也有重要工作。",
+            "血液 vs 红色水: 血液不是普通红色水。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-blood-cells-3d-scene-task",
+        "assetId": "body-blood-cells-3d-hero",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "red-cell",
+            "label": "红细胞",
+            "required": true
+          },
+          {
+            "id": "white-cell",
+            "label": "白细胞",
+            "required": true
+          },
+          {
+            "id": "platelet",
+            "label": "血小板",
+            "required": true
+          },
+          {
+            "id": "plasma",
+            "label": "血浆",
+            "required": true
+          },
+          {
+            "id": "lung",
+            "label": "肺部取氧",
+            "required": true
+          },
+          {
+            "id": "heart",
+            "label": "心脏推动",
+            "required": true
+          },
+          {
+            "id": "body",
+            "label": "送到身体",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "red-cell",
+            "entityIds": [
+              "red-cell"
+            ],
+            "label": "红细胞",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "white-cell",
+            "entityIds": [
+              "white-cell"
+            ],
+            "label": "白细胞",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "platelet",
+            "entityIds": [
+              "platelet"
+            ],
+            "label": "血小板",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "plasma",
+            "entityIds": [
+              "plasma"
+            ],
+            "label": "血浆",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "lung",
+            "entityIds": [
+              "lung"
+            ],
+            "label": "肺部取氧",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "heart",
+            "entityIds": [
+              "heart"
+            ],
+            "label": "心脏推动",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "body",
+            "entityIds": [
+              "body"
+            ],
+            "label": "送到身体",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-red-cell",
+          "source": "clickTasks.blood-match-01.options.red-cell",
+          "label": "红细胞",
+          "regionIds": [
+            "red-cell"
+          ],
+          "entityIds": [
+            "red-cell"
+          ],
+          "evidenceTitle": "红细胞",
+          "observePrompt": "谁最像送氧气的小车？",
+          "evidenceCopy": "对！红细胞负责把氧气送到身体各处。",
+          "markerChips": [
+            "红细胞"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-white-cell",
+          "source": "clickTasks.blood-match-01.options.white-cell",
+          "label": "白细胞",
+          "regionIds": [
+            "white-cell"
+          ],
+          "entityIds": [
+            "white-cell"
+          ],
+          "evidenceTitle": "白细胞",
+          "observePrompt": "谁最像送氧气的小车？",
+          "evidenceCopy": "白细胞更像守卫，负责保护身体。",
+          "markerChips": [
+            "白细胞"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-platelet",
+          "source": "clickTasks.blood-match-01.options.platelet",
+          "label": "血小板",
+          "regionIds": [
+            "platelet"
+          ],
+          "entityIds": [
+            "platelet"
+          ],
+          "evidenceTitle": "血小板",
+          "observePrompt": "谁最像送氧气的小车？",
+          "evidenceCopy": "血小板更像修补队，帮助止血。",
+          "markerChips": [
+            "血小板"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-plasma",
+          "source": "clickTasks.blood-match-02.options.plasma",
+          "label": "血浆",
+          "regionIds": [
+            "plasma"
+          ],
+          "entityIds": [
+            "plasma"
+          ],
+          "evidenceTitle": "血浆",
+          "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
+          "evidenceCopy": "血浆像河水，负责带着大家流动。",
+          "markerChips": [
+            "血浆"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-white-cell",
+          "source": "clickTasks.blood-match-02.options.white-cell",
+          "label": "白细胞",
+          "regionIds": [
+            "white-cell"
+          ],
+          "entityIds": [
+            "white-cell"
+          ],
+          "evidenceTitle": "白细胞",
+          "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
+          "evidenceCopy": "观察得很准！白细胞是身体里的守护者。",
+          "markerChips": [
+            "白细胞"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-red-cell",
+          "source": "clickTasks.blood-match-02.options.red-cell",
+          "label": "红细胞",
+          "regionIds": [
+            "red-cell"
+          ],
+          "entityIds": [
+            "red-cell"
+          ],
+          "evidenceTitle": "红细胞",
+          "observePrompt": "身体遇到入侵者时，谁来帮忙保护？",
+          "evidenceCopy": "红细胞主要送氧气。",
+          "markerChips": [
+            "红细胞"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-lung",
+          "source": "clickTasks.blood-sequence-01.options.lung",
+          "label": "肺部取氧",
+          "regionIds": [
+            "lung"
+          ],
+          "entityIds": [
+            "lung"
+          ],
+          "evidenceTitle": "肺部取氧",
+          "observePrompt": "氧气旅行顺序是什么？",
+          "evidenceCopy": "当前步骤：肺部取氧。氧气旅行顺序是什么？",
+          "markerChips": [
+            "肺部取氧"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-heart",
+          "source": "clickTasks.blood-sequence-01.options.heart",
+          "label": "心脏推动",
+          "regionIds": [
+            "heart"
+          ],
+          "entityIds": [
+            "heart"
+          ],
+          "evidenceTitle": "心脏推动",
+          "observePrompt": "氧气旅行顺序是什么？",
+          "evidenceCopy": "当前步骤：心脏推动。氧气旅行顺序是什么？",
+          "markerChips": [
+            "心脏推动"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-body",
+          "source": "clickTasks.blood-sequence-01.options.body",
+          "label": "送到身体",
+          "regionIds": [
+            "body"
+          ],
+          "entityIds": [
+            "body"
+          ],
+          "evidenceTitle": "送到身体",
+          "observePrompt": "氧气旅行顺序是什么？",
+          "evidenceCopy": "当前步骤：送到身体。氧气旅行顺序是什么？",
+          "markerChips": [
+            "送到身体"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-platelet",
+          "source": "clickTasks.blood-find-01.options.platelet",
+          "label": "platelet",
+          "regionIds": [
+            "platelet"
+          ],
+          "entityIds": [
+            "platelet"
+          ],
+          "evidenceTitle": "platelet",
+          "observePrompt": "找一找：谁是修补队？",
+          "evidenceCopy": "你找到了小小血小板。",
+          "markerChips": [
+            "platelet"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-red-cell",
+          "source": "clickTasks.blood-find-01.options.red-cell",
+          "label": "red cell",
+          "regionIds": [
+            "red-cell"
+          ],
+          "entityIds": [
+            "red-cell"
+          ],
+          "evidenceTitle": "red cell",
+          "observePrompt": "找一找：谁是修补队？",
+          "evidenceCopy": "修补队通常很小，负责帮助伤口止血。",
+          "markerChips": [
+            "red cell"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-white-cell",
+          "source": "clickTasks.blood-find-01.options.white-cell",
+          "label": "white cell",
+          "regionIds": [
+            "white-cell"
+          ],
+          "entityIds": [
+            "white-cell"
+          ],
+          "evidenceTitle": "white cell",
+          "observePrompt": "找一找：谁是修补队？",
+          "evidenceCopy": "修补队通常很小，负责帮助伤口止血。",
+          "markerChips": [
+            "white cell"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-plasma",
+          "source": "clickTasks.blood-find-01.options.plasma",
+          "label": "plasma",
+          "regionIds": [
+            "plasma"
+          ],
+          "entityIds": [
+            "plasma"
+          ],
+          "evidenceTitle": "plasma",
+          "observePrompt": "找一找：谁是修补队？",
+          "evidenceCopy": "修补队通常很小，负责帮助伤口止血。",
+          "markerChips": [
+            "plasma"
+          ],
+          "expectedStatus": "wrong"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "谁最像送氧气的小车？"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "blood-match-01",
+          "type": "singleChoice",
+          "title": "谁最像送氧气的小车？",
+          "prompt": "谁最像送氧气的小车？",
+          "source": "clickTasks.blood-match-01",
+          "options": [
+            {
+              "id": "red-cell",
+              "label": "红细胞",
+              "source": "clickTasks.blood-match-01.options.red-cell",
+              "regionIds": [
+                "red-cell"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "white-cell",
+              "label": "白细胞",
+              "source": "clickTasks.blood-match-01.options.white-cell",
+              "regionIds": [
+                "white-cell"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "platelet",
+              "label": "血小板",
+              "source": "clickTasks.blood-match-01.options.platelet",
+              "regionIds": [
+                "platelet"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "red-cell"
+          ],
+          "decoyRegionIds": [
+            "white-cell",
+            "platelet"
+          ],
+          "feedback": {
+            "correct": "对！红细胞负责把氧气送到身体各处。",
+            "wrong": "再观察一下试试看。",
+            "partial": "谁最像送氧气的小车？",
+            "complete": "对！红细胞负责把氧气送到身体各处。"
+          }
+        },
+        {
+          "id": "blood-match-02",
+          "type": "singleChoice",
+          "title": "身体遇到入侵者时，谁来帮忙保护？",
+          "prompt": "身体遇到入侵者时，谁来帮忙保护？",
+          "source": "clickTasks.blood-match-02",
+          "options": [
+            {
+              "id": "plasma",
+              "label": "血浆",
+              "source": "clickTasks.blood-match-02.options.plasma",
+              "regionIds": [
+                "plasma"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "white-cell",
+              "label": "白细胞",
+              "source": "clickTasks.blood-match-02.options.white-cell",
+              "regionIds": [
+                "white-cell"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "red-cell",
+              "label": "红细胞",
+              "source": "clickTasks.blood-match-02.options.red-cell",
+              "regionIds": [
+                "red-cell"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "white-cell"
+          ],
+          "decoyRegionIds": [
+            "plasma",
+            "red-cell"
+          ],
+          "feedback": {
+            "correct": "观察得很准！白细胞是身体里的守护者。",
+            "wrong": "再观察一下试试看。",
+            "partial": "身体遇到入侵者时，谁来帮忙保护？",
+            "complete": "观察得很准！白细胞是身体里的守护者。"
+          }
+        },
+        {
+          "id": "blood-sequence-01",
+          "type": "sequenceClick",
+          "title": "氧气旅行顺序是什么？",
+          "prompt": "氧气旅行顺序是什么？",
+          "source": "clickTasks.blood-sequence-01",
+          "options": [
+            {
+              "id": "lung",
+              "label": "肺部取氧",
+              "source": "clickTasks.blood-sequence-01.options.lung",
+              "regionIds": [
+                "lung"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "heart",
+              "label": "心脏推动",
+              "source": "clickTasks.blood-sequence-01.options.heart",
+              "regionIds": [
+                "heart"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "body",
+              "label": "送到身体",
+              "source": "clickTasks.blood-sequence-01.options.body",
+              "regionIds": [
+                "body"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "lung",
+            "heart",
+            "body"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "lung",
+            "heart",
+            "body"
+          ],
+          "feedback": {
+            "correct": "你完成了一次红细胞送氧气任务。",
+            "wrong": "先想想：氧气是从哪里进入身体的？",
+            "partial": "氧气旅行顺序是什么？",
+            "complete": "你完成了一次红细胞送氧气任务。"
+          }
+        },
+        {
+          "id": "blood-find-01",
+          "type": "findTarget",
+          "title": "找一找：谁是修补队？",
+          "prompt": "找一找：谁是修补队？",
+          "source": "clickTasks.blood-find-01",
+          "options": [
+            {
+              "id": "platelet",
+              "label": "platelet",
+              "source": "clickTasks.blood-find-01.options.platelet",
+              "regionIds": [
+                "platelet"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "red-cell",
+              "label": "red cell",
+              "source": "clickTasks.blood-find-01.options.red-cell",
+              "regionIds": [
+                "red-cell"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "white-cell",
+              "label": "white cell",
+              "source": "clickTasks.blood-find-01.options.white-cell",
+              "regionIds": [
+                "white-cell"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "plasma",
+              "label": "plasma",
+              "source": "clickTasks.blood-find-01.options.plasma",
+              "regionIds": [
+                "plasma"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "platelet"
+          ],
+          "decoyRegionIds": [
+            "red-cell",
+            "white-cell",
+            "plasma"
+          ],
+          "feedback": {
+            "correct": "你找到了小小血小板。",
+            "wrong": "修补队通常很小，负责帮助伤口止血。",
+            "partial": "找一找：谁是修补队？",
+            "complete": "你找到了小小血小板。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-blood-cells-3d-scene-summary",
+        "assetId": "body-blood-cells-3d-hero",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "red-cell",
+            "label": "红细胞",
+            "required": true
+          },
+          {
+            "id": "white-cell",
+            "label": "白细胞",
+            "required": true
+          },
+          {
+            "id": "platelet",
+            "label": "血小板",
+            "required": true
+          },
+          {
+            "id": "plasma",
+            "label": "血浆",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "red-cell",
+            "entityIds": [
+              "red-cell"
+            ],
+            "label": "红细胞",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 129,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "white-cell",
+            "entityIds": [
+              "white-cell"
+            ],
+            "label": "白细胞",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 129,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "platelet",
+            "entityIds": [
+              "platelet"
+            ],
+            "label": "血小板",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 489,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "plasma",
+            "entityIds": [
+              "plasma"
+            ],
+            "label": "血浆",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 489,
+              "w": 370,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-red-cell",
+          "source": "representativeObjects.red-cell",
+          "label": "红细胞",
+          "regionIds": [
+            "red-cell"
+          ],
+          "entityIds": [
+            "red-cell"
+          ],
+          "evidenceTitle": "红细胞",
+          "observePrompt": "红色、扁圆、数量最多",
+          "evidenceCopy": "我负责送氧气。",
+          "markerChips": [
+            "红细胞"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "血液里有____、____和____。",
+            "红细胞像____，它负责____。",
+            "白细胞像____，它负责____。",
+            "如果没有____，身体可能会____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "血液里有____、____和____。",
+        "红细胞像____，它负责____。",
+        "白细胞像____，它负责____。",
+        "如果没有____，身体可能会____。"
+      ],
+      "parentTips": [
+        "孩子能说出‘血液有不同成员’就已经达到第一层目标。",
+        "不要把免疫机制讲得过深，白细胞先解释为保护身体即可。",
+        "可结合生活经验：跑步为什么会喘？小伤口为什么会慢慢不流血？"
+      ]
     }
   ]
 }

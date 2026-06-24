@@ -472,6 +472,13 @@
       "target": "comparePairs",
       "role": "compare",
       "required": true
+    },
+    {
+      "id": "observation-steps",
+      "assetId": "life-insects-and-spiders-observation-steps",
+      "role": "process",
+      "target": "mechanism",
+      "required": true
     }
   ],
   "visualEvidenceBindings": [
@@ -696,7 +703,7 @@
     {
       "id": "evidence-mechanism-steps-count-legs",
       "source": "mechanism.steps.count-legs",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "先数腿",
       "observePrompt": "当前第 1 步，先看这一步发生了什么。",
@@ -714,7 +721,7 @@
     {
       "id": "evidence-mechanism-steps-check-antennae",
       "source": "mechanism.steps.check-antennae",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "看触角",
       "observePrompt": "当前第 2 步，先看这一步发生了什么。",
@@ -732,7 +739,7 @@
     {
       "id": "evidence-mechanism-steps-check-body",
       "source": "mechanism.steps.check-body",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "看身体分段",
       "observePrompt": "当前第 3 步，先看这一步发生了什么。",
@@ -750,7 +757,7 @@
     {
       "id": "evidence-mechanism-steps-avoid-wing-rule",
       "source": "mechanism.steps.avoid-wing-rule",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "不要只看翅膀",
       "observePrompt": "当前第 4 步，先看这一步发生了什么。",
@@ -837,7 +844,7 @@
     {
       "id": "evidence-clickTasks-insects-single-01-options-yes-insect",
       "source": "clickTasks.insects-single-01.options.yes-insect",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "是昆虫，因为它很小",
       "observePrompt": "点出更准确的说法。",
@@ -855,7 +862,7 @@
     {
       "id": "evidence-clickTasks-insects-single-01-options-no-spider",
       "source": "clickTasks.insects-single-01.options.no-spider",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "不是昆虫，蜘蛛通常有 8 条腿",
       "observePrompt": "点出更准确的说法。",
@@ -873,7 +880,7 @@
     {
       "id": "evidence-clickTasks-insects-single-01-options-depends-fly",
       "source": "clickTasks.insects-single-01.options.depends-fly",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "会飞才是昆虫",
       "observePrompt": "点出更准确的说法。",
@@ -891,7 +898,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-butterfly",
       "source": "clickTasks.insects-find-01.options.butterfly",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "butterfly",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -909,7 +916,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-bee",
       "source": "clickTasks.insects-find-01.options.bee",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "bee",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -927,7 +934,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-ladybug",
       "source": "clickTasks.insects-find-01.options.ladybug",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "ladybug",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -945,7 +952,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-ant",
       "source": "clickTasks.insects-find-01.options.ant",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "ant",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -963,7 +970,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-dragonfly",
       "source": "clickTasks.insects-find-01.options.dragonfly",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "dragonfly",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -981,7 +988,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-gardenSpider",
       "source": "clickTasks.insects-find-01.options.gardenSpider",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "gardenSpider",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -999,7 +1006,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-centipede",
       "source": "clickTasks.insects-find-01.options.centipede",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "centipede",
       "observePrompt": "找一找：哪些是昆虫？",
@@ -1017,7 +1024,7 @@
     {
       "id": "evidence-clickTasks-insects-single-02-options-too-many-legs",
       "source": "clickTasks.insects-single-02.options.too-many-legs",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "它有很多腿，不是典型 6 条腿的昆虫",
       "observePrompt": "选择一个最好的理由。",
@@ -1035,7 +1042,7 @@
     {
       "id": "evidence-clickTasks-insects-single-02-options-too-long",
       "source": "clickTasks.insects-single-02.options.too-long",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "因为它身体太长",
       "observePrompt": "选择一个最好的理由。",
@@ -1053,7 +1060,7 @@
     {
       "id": "evidence-clickTasks-insects-single-02-options-not-flying",
       "source": "clickTasks.insects-single-02.options.not-flying",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "因为它不会飞",
       "observePrompt": "选择一个最好的理由。",
@@ -1071,7 +1078,7 @@
     {
       "id": "evidence-clickTasks-insects-sequence-01-options-count",
       "source": "clickTasks.insects-sequence-01.options.count",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "数腿",
       "observePrompt": "按顺序点三个观察动作。",
@@ -1089,7 +1096,7 @@
     {
       "id": "evidence-clickTasks-insects-sequence-01-options-antennae",
       "source": "clickTasks.insects-sequence-01.options.antennae",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "看触角",
       "observePrompt": "按顺序点三个观察动作。",
@@ -1107,7 +1114,7 @@
     {
       "id": "evidence-clickTasks-insects-sequence-01-options-body",
       "source": "clickTasks.insects-sequence-01.options.body",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "看身体分段",
       "observePrompt": "按顺序点三个观察动作。",
@@ -1121,6 +1128,1880 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "昆虫和蜘蛛有什么不同？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-insects-and-spiders-scene-entry",
+        "assetId": "life-insects-and-spiders-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 55,
+              "y": 95,
+              "w": 890,
+              "h": 750
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "页面主视觉是一个放大镜观察台：草叶、石头和小花之间分布着蝴蝶、蜜蜂、瓢虫、蚂蚁、蜻蜓、蜘蛛、蜈蚣等对象。点击每个小动物时，页面高亮它的腿数、触角和身体分段。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-insects-and-spiders-scene-classify",
+        "assetId": "life-insects-and-spiders-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "required": true
+          },
+          {
+            "id": "bee",
+            "label": "蜜蜂",
+            "required": true
+          },
+          {
+            "id": "ladybug",
+            "label": "瓢虫",
+            "required": true
+          },
+          {
+            "id": "ant",
+            "label": "蚂蚁",
+            "required": true
+          },
+          {
+            "id": "dragonfly",
+            "label": "蜻蜓",
+            "required": true
+          },
+          {
+            "id": "gardenSpider",
+            "label": "结网蜘蛛",
+            "required": true
+          },
+          {
+            "id": "jumpingSpider",
+            "label": "跳蛛",
+            "required": true
+          },
+          {
+            "id": "centipede",
+            "label": "蜈蚣",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "butterfly",
+            "entityIds": [
+              "butterfly"
+            ],
+            "label": "蝴蝶",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bee",
+            "entityIds": [
+              "bee"
+            ],
+            "label": "蜜蜂",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ladybug",
+            "entityIds": [
+              "ladybug"
+            ],
+            "label": "瓢虫",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ant",
+            "entityIds": [
+              "ant"
+            ],
+            "label": "蚂蚁",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "dragonfly",
+            "entityIds": [
+              "dragonfly"
+            ],
+            "label": "蜻蜓",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "gardenSpider",
+            "entityIds": [
+              "gardenSpider"
+            ],
+            "label": "结网蜘蛛",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "jumpingSpider",
+            "entityIds": [
+              "jumpingSpider"
+            ],
+            "label": "跳蛛",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "centipede",
+            "entityIds": [
+              "centipede"
+            ],
+            "label": "蜈蚣",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-insects",
+          "source": "classificationGroups.insects",
+          "label": "昆虫",
+          "regionIds": [
+            "butterfly",
+            "bee",
+            "ladybug",
+            "ant",
+            "dragonfly"
+          ],
+          "entityIds": [
+            "butterfly",
+            "bee",
+            "ladybug",
+            "ant",
+            "dragonfly"
+          ],
+          "evidenceTitle": "昆虫",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "昆虫通常有 6 条腿，身体可以看成头、胸、腹几个部分。 这类里可以看到：蝴蝶、蜜蜂、瓢虫、蚂蚁、蜻蜓。",
+          "markerChips": [
+            "蝴蝶",
+            "蜜蜂",
+            "瓢虫",
+            "蚂蚁"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-butterfly",
+          "source": "representativeObjects.butterfly",
+          "label": "蝴蝶",
+          "regionIds": [
+            "butterfly"
+          ],
+          "entityIds": [
+            "butterfly"
+          ],
+          "evidenceTitle": "蝴蝶",
+          "observePrompt": "翅膀、触角、6 条腿",
+          "evidenceCopy": "蝴蝶是昆虫，通常有 6 条腿和一对漂亮翅膀。",
+          "markerChips": [
+            "蝴蝶"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-bee",
+          "source": "representativeObjects.bee",
+          "label": "蜜蜂",
+          "regionIds": [
+            "bee"
+          ],
+          "entityIds": [
+            "bee"
+          ],
+          "evidenceTitle": "蜜蜂",
+          "observePrompt": "6 条腿、触角、翅膀",
+          "evidenceCopy": "蜜蜂是昆虫，会飞，也会帮花朵传粉。",
+          "markerChips": [
+            "蜜蜂"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-ladybug",
+          "source": "representativeObjects.ladybug",
+          "label": "瓢虫",
+          "regionIds": [
+            "ladybug"
+          ],
+          "entityIds": [
+            "ladybug"
+          ],
+          "evidenceTitle": "瓢虫",
+          "observePrompt": "红色壳、黑点、6 条腿",
+          "evidenceCopy": "瓢虫是昆虫，圆圆的身体下面有 6 条腿。",
+          "markerChips": [
+            "瓢虫"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-ant",
+          "source": "representativeObjects.ant",
+          "label": "蚂蚁",
+          "regionIds": [
+            "ant"
+          ],
+          "entityIds": [
+            "ant"
+          ],
+          "evidenceTitle": "蚂蚁",
+          "observePrompt": "触角、6 条腿、身体分段",
+          "evidenceCopy": "蚂蚁是昆虫，虽然大多数工蚁不会飞，但也有 6 条腿。",
+          "markerChips": [
+            "蚂蚁"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-dragonfly",
+          "source": "representativeObjects.dragonfly",
+          "label": "蜻蜓",
+          "regionIds": [
+            "dragonfly"
+          ],
+          "entityIds": [
+            "dragonfly"
+          ],
+          "evidenceTitle": "蜻蜓",
+          "observePrompt": "透明翅膀、长身体、6 条腿",
+          "evidenceCopy": "蜻蜓是昆虫，有细长身体、透明翅膀和 6 条腿。",
+          "markerChips": [
+            "蜻蜓"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-gardenSpider",
+          "source": "representativeObjects.gardenSpider",
+          "label": "结网蜘蛛",
+          "regionIds": [
+            "gardenSpider"
+          ],
+          "entityIds": [
+            "gardenSpider"
+          ],
+          "evidenceTitle": "结网蜘蛛",
+          "observePrompt": "8 条腿、蛛网、没有触角",
+          "evidenceCopy": "蜘蛛会结网，通常有 8 条腿，它不是昆虫。",
+          "markerChips": [
+            "结网蜘蛛"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-jumpingSpider",
+          "source": "representativeObjects.jumpingSpider",
+          "label": "跳蛛",
+          "regionIds": [
+            "jumpingSpider"
+          ],
+          "entityIds": [
+            "jumpingSpider"
+          ],
+          "evidenceTitle": "跳蛛",
+          "observePrompt": "大眼睛、8 条腿、跳跃动作",
+          "evidenceCopy": "跳蛛也是蜘蛛，身体小，但也有 8 条腿。",
+          "markerChips": [
+            "跳蛛"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-centipede",
+          "source": "representativeObjects.centipede",
+          "label": "蜈蚣",
+          "regionIds": [
+            "centipede"
+          ],
+          "entityIds": [
+            "centipede"
+          ],
+          "evidenceTitle": "蜈蚣",
+          "observePrompt": "长身体、很多腿",
+          "evidenceCopy": "蜈蚣有很多很多腿，它不是昆虫，也不是蜘蛛。",
+          "markerChips": [
+            "蜈蚣"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "蝴蝶: 蝴蝶是昆虫，通常有 6 条腿和一对漂亮翅膀。",
+            "蜜蜂: 蜜蜂是昆虫，会飞，也会帮花朵传粉。",
+            "瓢虫: 瓢虫是昆虫，圆圆的身体下面有 6 条腿。",
+            "蚂蚁: 蚂蚁是昆虫，虽然大多数工蚁不会飞，但也有 6 条腿。",
+            "蜻蜓: 蜻蜓是昆虫，有细长身体、透明翅膀和 6 条腿。",
+            "结网蜘蛛: 蜘蛛会结网，通常有 8 条腿，它不是昆虫。",
+            "跳蛛: 跳蛛也是蜘蛛，身体小，但也有 8 条腿。",
+            "蜈蚣: 蜈蚣有很多很多腿，它不是昆虫，也不是蜘蛛。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-insects-and-spiders-scene-process",
+        "assetId": "life-insects-and-spiders-observation-steps",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "count-legs",
+            "label": "先数腿",
+            "required": true
+          },
+          {
+            "id": "check-antennae",
+            "label": "看触角",
+            "required": true
+          },
+          {
+            "id": "check-body",
+            "label": "看身体分段",
+            "required": true
+          },
+          {
+            "id": "avoid-wing-rule",
+            "label": "不要只看翅膀",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "count-legs",
+            "entityIds": [
+              "count-legs"
+            ],
+            "label": "先数腿",
+            "shape": "rect",
+            "bounds": {
+              "x": 68,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "check-antennae",
+            "entityIds": [
+              "check-antennae"
+            ],
+            "label": "看触角",
+            "shape": "rect",
+            "bounds": {
+              "x": 293,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "check-body",
+            "entityIds": [
+              "check-body"
+            ],
+            "label": "看身体分段",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "avoid-wing-rule",
+            "entityIds": [
+              "avoid-wing-rule"
+            ],
+            "label": "不要只看翅膀",
+            "shape": "rect",
+            "bounds": {
+              "x": 743,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-count-legs",
+          "source": "mechanism.steps.count-legs",
+          "label": "先数腿",
+          "regionIds": [
+            "count-legs"
+          ],
+          "entityIds": [
+            "count-legs"
+          ],
+          "evidenceTitle": "先数腿",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "6 条腿更像昆虫，8 条腿更像蜘蛛，很多腿就要再想想。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-check-antennae",
+          "source": "mechanism.steps.check-antennae",
+          "label": "看触角",
+          "regionIds": [
+            "check-antennae"
+          ],
+          "entityIds": [
+            "check-antennae"
+          ],
+          "evidenceTitle": "看触角",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "很多昆虫有触角，蜘蛛没有昆虫那样的触角。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-check-body",
+          "source": "mechanism.steps.check-body",
+          "label": "看身体分段",
+          "regionIds": [
+            "check-body"
+          ],
+          "entityIds": [
+            "check-body"
+          ],
+          "evidenceTitle": "看身体分段",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "昆虫身体常分成头、胸、腹；蜘蛛身体看起来不一样。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-avoid-wing-rule",
+          "source": "mechanism.steps.avoid-wing-rule",
+          "label": "不要只看翅膀",
+          "regionIds": [
+            "avoid-wing-rule"
+          ],
+          "entityIds": [
+            "avoid-wing-rule"
+          ],
+          "evidenceTitle": "不要只看翅膀",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "有翅膀的不一定都一样；不会飞的蚂蚁也是昆虫。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "小侦探怎么分辨？",
+          "items": [
+            "先数腿: 6 条腿更像昆虫，8 条腿更像蜘蛛，很多腿就要再想想。",
+            "看触角: 很多昆虫有触角，蜘蛛没有昆虫那样的触角。",
+            "看身体分段: 昆虫身体常分成头、胸、腹；蜘蛛身体看起来不一样。",
+            "不要只看翅膀: 有翅膀的不一定都一样；不会飞的蚂蚁也是昆虫。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-insects-and-spiders-scene-compare",
+        "assetId": "life-insects-and-spiders-compare-insect-spider",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-insect-vs-spider",
+          "source": "comparePairs.insect-vs-spider",
+          "label": "昆虫 vs 蜘蛛",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "昆虫 vs 蜘蛛",
+          "observePrompt": "对比 昆虫 和 蜘蛛 的图片线索。",
+          "evidenceCopy": "昆虫: 通常 6 条腿；常有触角；身体常分头、胸、腹。蜘蛛: 通常 8 条腿；没有昆虫那样的触角；不是昆虫。先数腿，是分清昆虫和蜘蛛的好办法。",
+          "markerChips": [
+            "昆虫",
+            "蜘蛛"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-ant-vs-spider",
+          "source": "comparePairs.ant-vs-spider",
+          "label": "蚂蚁 vs 蜘蛛",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "蚂蚁 vs 蜘蛛",
+          "observePrompt": "对比 蚂蚁 和 蜘蛛 的图片线索。",
+          "evidenceCopy": "蚂蚁: 6 条腿；有触角；是昆虫。蜘蛛: 8 条腿；没有触角；不是昆虫。都很小，但腿数和触角不同。",
+          "markerChips": [
+            "蚂蚁",
+            "蜘蛛"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-centipede-vs-insect",
+          "source": "comparePairs.centipede-vs-insect",
+          "label": "蜈蚣 vs 昆虫",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "蜈蚣 vs 昆虫",
+          "observePrompt": "对比 蜈蚣 和 昆虫 的图片线索。",
+          "evidenceCopy": "蜈蚣: 很多腿；长长的身体；不是昆虫。昆虫: 通常 6 条腿；常有触角；身体分段更清楚。腿很多的小动物，也不一定是昆虫。",
+          "markerChips": [
+            "蜈蚣",
+            "昆虫"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "昆虫 vs 蜘蛛: 先数腿，是分清昆虫和蜘蛛的好办法。",
+            "蚂蚁 vs 蜘蛛: 都很小，但腿数和触角不同。",
+            "蜈蚣 vs 昆虫: 腿很多的小动物，也不一定是昆虫。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-insects-and-spiders-scene-task",
+        "assetId": "life-insects-and-spiders-hero",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "yes-insect",
+            "label": "是昆虫，因为它很小",
+            "required": true
+          },
+          {
+            "id": "no-spider",
+            "label": "不是昆虫，蜘蛛通常有 8 条腿",
+            "required": true
+          },
+          {
+            "id": "depends-fly",
+            "label": "会飞才是昆虫",
+            "required": true
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "required": true
+          },
+          {
+            "id": "bee",
+            "label": "蜜蜂",
+            "required": true
+          },
+          {
+            "id": "ladybug",
+            "label": "瓢虫",
+            "required": true
+          },
+          {
+            "id": "ant",
+            "label": "蚂蚁",
+            "required": true
+          },
+          {
+            "id": "dragonfly",
+            "label": "蜻蜓",
+            "required": true
+          },
+          {
+            "id": "gardenSpider",
+            "label": "结网蜘蛛",
+            "required": true
+          },
+          {
+            "id": "jumpingSpider",
+            "label": "跳蛛",
+            "required": true
+          },
+          {
+            "id": "centipede",
+            "label": "蜈蚣",
+            "required": true
+          },
+          {
+            "id": "too-many-legs",
+            "label": "它有很多腿，不是典型 6 条腿的昆虫",
+            "required": true
+          },
+          {
+            "id": "too-long",
+            "label": "因为它身体太长",
+            "required": true
+          },
+          {
+            "id": "not-flying",
+            "label": "因为它不会飞",
+            "required": true
+          },
+          {
+            "id": "count",
+            "label": "数腿",
+            "required": true
+          },
+          {
+            "id": "antennae",
+            "label": "看触角",
+            "required": true
+          },
+          {
+            "id": "body",
+            "label": "看身体分段",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "yes-insect",
+            "entityIds": [
+              "yes-insect"
+            ],
+            "label": "是昆虫，因为它很小",
+            "shape": "rect",
+            "bounds": {
+              "x": 60,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "no-spider",
+            "entityIds": [
+              "no-spider"
+            ],
+            "label": "不是昆虫，蜘蛛通常有 8 条腿",
+            "shape": "rect",
+            "bounds": {
+              "x": 285,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "depends-fly",
+            "entityIds": [
+              "depends-fly"
+            ],
+            "label": "会飞才是昆虫",
+            "shape": "rect",
+            "bounds": {
+              "x": 60,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "butterfly",
+            "entityIds": [
+              "butterfly"
+            ],
+            "label": "蝴蝶",
+            "shape": "rect",
+            "bounds": {
+              "x": 60,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bee",
+            "entityIds": [
+              "bee"
+            ],
+            "label": "蜜蜂",
+            "shape": "rect",
+            "bounds": {
+              "x": 285,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ladybug",
+            "entityIds": [
+              "ladybug"
+            ],
+            "label": "瓢虫",
+            "shape": "rect",
+            "bounds": {
+              "x": 510,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ant",
+            "entityIds": [
+              "ant"
+            ],
+            "label": "蚂蚁",
+            "shape": "rect",
+            "bounds": {
+              "x": 735,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "dragonfly",
+            "entityIds": [
+              "dragonfly"
+            ],
+            "label": "蜻蜓",
+            "shape": "rect",
+            "bounds": {
+              "x": 60,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "gardenSpider",
+            "entityIds": [
+              "gardenSpider"
+            ],
+            "label": "结网蜘蛛",
+            "shape": "rect",
+            "bounds": {
+              "x": 285,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "jumpingSpider",
+            "entityIds": [
+              "jumpingSpider"
+            ],
+            "label": "跳蛛",
+            "shape": "rect",
+            "bounds": {
+              "x": 510,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "centipede",
+            "entityIds": [
+              "centipede"
+            ],
+            "label": "蜈蚣",
+            "shape": "rect",
+            "bounds": {
+              "x": 735,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "too-many-legs",
+            "entityIds": [
+              "too-many-legs"
+            ],
+            "label": "它有很多腿，不是典型 6 条腿的昆虫",
+            "shape": "rect",
+            "bounds": {
+              "x": 245,
+              "y": 705,
+              "w": 120,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "too-long",
+            "entityIds": [
+              "too-long"
+            ],
+            "label": "因为它身体太长",
+            "shape": "rect",
+            "bounds": {
+              "x": 660,
+              "y": 705,
+              "w": 145,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "not-flying",
+            "entityIds": [
+              "not-flying"
+            ],
+            "label": "因为它不会飞",
+            "shape": "rect",
+            "bounds": {
+              "x": 735,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "count",
+            "entityIds": [
+              "count"
+            ],
+            "label": "数腿",
+            "shape": "rect",
+            "bounds": {
+              "x": 245,
+              "y": 705,
+              "w": 120,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "antennae",
+            "entityIds": [
+              "antennae"
+            ],
+            "label": "看触角",
+            "shape": "rect",
+            "bounds": {
+              "x": 380,
+              "y": 705,
+              "w": 120,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "body",
+            "entityIds": [
+              "body"
+            ],
+            "label": "看身体分段",
+            "shape": "rect",
+            "bounds": {
+              "x": 515,
+              "y": 705,
+              "w": 120,
+              "h": 165
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-yes-insect",
+          "source": "clickTasks.insects-single-01.options.yes-insect",
+          "label": "是昆虫，因为它很小",
+          "regionIds": [
+            "yes-insect"
+          ],
+          "entityIds": [
+            "yes-insect"
+          ],
+          "evidenceTitle": "是昆虫，因为它很小",
+          "observePrompt": "点出更准确的说法。",
+          "evidenceCopy": "小不小不是分类线索。再数数蜘蛛有几条腿。",
+          "markerChips": [
+            "是昆虫，因为它很小"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-no-spider",
+          "source": "clickTasks.insects-single-01.options.no-spider",
+          "label": "不是昆虫，蜘蛛通常有 8 条腿",
+          "regionIds": [
+            "no-spider"
+          ],
+          "entityIds": [
+            "no-spider"
+          ],
+          "evidenceTitle": "不是昆虫，蜘蛛通常有 8 条腿",
+          "observePrompt": "点出更准确的说法。",
+          "evidenceCopy": "对！蜘蛛不是昆虫，数腿帮你找到了线索。",
+          "markerChips": [
+            "不是昆虫，蜘蛛通常有 8 条腿"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-depends-fly",
+          "source": "clickTasks.insects-single-01.options.depends-fly",
+          "label": "会飞才是昆虫",
+          "regionIds": [
+            "depends-fly"
+          ],
+          "entityIds": [
+            "depends-fly"
+          ],
+          "evidenceTitle": "会飞才是昆虫",
+          "observePrompt": "点出更准确的说法。",
+          "evidenceCopy": "会不会飞不是唯一线索，蚂蚁不会飞也常常是昆虫。",
+          "markerChips": [
+            "会飞才是昆虫"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-butterfly",
+          "source": "clickTasks.insects-find-01.options.butterfly",
+          "label": "butterfly",
+          "regionIds": [
+            "butterfly"
+          ],
+          "entityIds": [
+            "butterfly"
+          ],
+          "evidenceTitle": "butterfly",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+          "markerChips": [
+            "butterfly"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-bee",
+          "source": "clickTasks.insects-find-01.options.bee",
+          "label": "bee",
+          "regionIds": [
+            "bee"
+          ],
+          "entityIds": [
+            "bee"
+          ],
+          "evidenceTitle": "bee",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+          "markerChips": [
+            "bee"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-ladybug",
+          "source": "clickTasks.insects-find-01.options.ladybug",
+          "label": "ladybug",
+          "regionIds": [
+            "ladybug"
+          ],
+          "entityIds": [
+            "ladybug"
+          ],
+          "evidenceTitle": "ladybug",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+          "markerChips": [
+            "ladybug"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-ant",
+          "source": "clickTasks.insects-find-01.options.ant",
+          "label": "ant",
+          "regionIds": [
+            "ant"
+          ],
+          "entityIds": [
+            "ant"
+          ],
+          "evidenceTitle": "ant",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+          "markerChips": [
+            "ant"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-dragonfly",
+          "source": "clickTasks.insects-find-01.options.dragonfly",
+          "label": "dragonfly",
+          "regionIds": [
+            "dragonfly"
+          ],
+          "entityIds": [
+            "dragonfly"
+          ],
+          "evidenceTitle": "dragonfly",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+          "markerChips": [
+            "dragonfly"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-gardenSpider",
+          "source": "clickTasks.insects-find-01.options.gardenSpider",
+          "label": "gardenSpider",
+          "regionIds": [
+            "gardenSpider"
+          ],
+          "entityIds": [
+            "gardenSpider"
+          ],
+          "evidenceTitle": "gardenSpider",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "再数数腿。昆虫通常是 6 条腿。",
+          "markerChips": [
+            "gardenSpider"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-centipede",
+          "source": "clickTasks.insects-find-01.options.centipede",
+          "label": "centipede",
+          "regionIds": [
+            "centipede"
+          ],
+          "entityIds": [
+            "centipede"
+          ],
+          "evidenceTitle": "centipede",
+          "observePrompt": "找一找：哪些是昆虫？",
+          "evidenceCopy": "再数数腿。昆虫通常是 6 条腿。",
+          "markerChips": [
+            "centipede"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-too-many-legs",
+          "source": "clickTasks.insects-single-02.options.too-many-legs",
+          "label": "它有很多腿，不是典型 6 条腿的昆虫",
+          "regionIds": [
+            "too-many-legs"
+          ],
+          "entityIds": [
+            "too-many-legs"
+          ],
+          "evidenceTitle": "它有很多腿，不是典型 6 条腿的昆虫",
+          "observePrompt": "选择一个最好的理由。",
+          "evidenceCopy": "很好！你没有被“很多腿的小动物”迷惑。",
+          "markerChips": [
+            "它有很多腿，不是典型 6 条腿的昆虫"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-too-long",
+          "source": "clickTasks.insects-single-02.options.too-long",
+          "label": "因为它身体太长",
+          "regionIds": [
+            "too-long"
+          ],
+          "entityIds": [
+            "too-long"
+          ],
+          "evidenceTitle": "因为它身体太长",
+          "observePrompt": "选择一个最好的理由。",
+          "evidenceCopy": "身体长短不是最重要的分类线索。",
+          "markerChips": [
+            "因为它身体太长"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-not-flying",
+          "source": "clickTasks.insects-single-02.options.not-flying",
+          "label": "因为它不会飞",
+          "regionIds": [
+            "not-flying"
+          ],
+          "entityIds": [
+            "not-flying"
+          ],
+          "evidenceTitle": "因为它不会飞",
+          "observePrompt": "选择一个最好的理由。",
+          "evidenceCopy": "不会飞也可能是昆虫，比如蚂蚁。",
+          "markerChips": [
+            "因为它不会飞"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-count",
+          "source": "clickTasks.insects-sequence-01.options.count",
+          "label": "数腿",
+          "regionIds": [
+            "count"
+          ],
+          "entityIds": [
+            "count"
+          ],
+          "evidenceTitle": "数腿",
+          "observePrompt": "按顺序点三个观察动作。",
+          "evidenceCopy": "当前步骤：数腿。按顺序点三个观察动作。",
+          "markerChips": [
+            "数腿"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-antennae",
+          "source": "clickTasks.insects-sequence-01.options.antennae",
+          "label": "看触角",
+          "regionIds": [
+            "antennae"
+          ],
+          "entityIds": [
+            "antennae"
+          ],
+          "evidenceTitle": "看触角",
+          "observePrompt": "按顺序点三个观察动作。",
+          "evidenceCopy": "当前步骤：看触角。按顺序点三个观察动作。",
+          "markerChips": [
+            "看触角"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-body",
+          "source": "clickTasks.insects-sequence-01.options.body",
+          "label": "看身体分段",
+          "regionIds": [
+            "body"
+          ],
+          "entityIds": [
+            "body"
+          ],
+          "evidenceTitle": "看身体分段",
+          "observePrompt": "按顺序点三个观察动作。",
+          "evidenceCopy": "当前步骤：看身体分段。按顺序点三个观察动作。",
+          "markerChips": [
+            "看身体分段"
+          ],
+          "expectedStatus": "partial"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "点出更准确的说法。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "insects-single-01",
+          "type": "singleChoice",
+          "title": "蜘蛛是昆虫吗？",
+          "prompt": "点出更准确的说法。",
+          "source": "clickTasks.insects-single-01",
+          "options": [
+            {
+              "id": "yes-insect",
+              "label": "是昆虫，因为它很小",
+              "source": "clickTasks.insects-single-01.options.yes-insect",
+              "regionIds": [
+                "yes-insect"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "no-spider",
+              "label": "不是昆虫，蜘蛛通常有 8 条腿",
+              "source": "clickTasks.insects-single-01.options.no-spider",
+              "regionIds": [
+                "no-spider"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "depends-fly",
+              "label": "会飞才是昆虫",
+              "source": "clickTasks.insects-single-01.options.depends-fly",
+              "regionIds": [
+                "depends-fly"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "no-spider"
+          ],
+          "decoyRegionIds": [
+            "yes-insect",
+            "depends-fly"
+          ],
+          "feedback": {
+            "correct": "对！蜘蛛不是昆虫，数腿帮你找到了线索。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点出更准确的说法。",
+            "complete": "对！蜘蛛不是昆虫，数腿帮你找到了线索。"
+          }
+        },
+        {
+          "id": "insects-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪些是昆虫？",
+          "prompt": "找一找：哪些是昆虫？",
+          "source": "clickTasks.insects-find-01",
+          "options": [
+            {
+              "id": "butterfly",
+              "label": "butterfly",
+              "source": "clickTasks.insects-find-01.options.butterfly",
+              "regionIds": [
+                "butterfly"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "bee",
+              "label": "bee",
+              "source": "clickTasks.insects-find-01.options.bee",
+              "regionIds": [
+                "bee"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "ladybug",
+              "label": "ladybug",
+              "source": "clickTasks.insects-find-01.options.ladybug",
+              "regionIds": [
+                "ladybug"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "ant",
+              "label": "ant",
+              "source": "clickTasks.insects-find-01.options.ant",
+              "regionIds": [
+                "ant"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "dragonfly",
+              "label": "dragonfly",
+              "source": "clickTasks.insects-find-01.options.dragonfly",
+              "regionIds": [
+                "dragonfly"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "gardenSpider",
+              "label": "gardenSpider",
+              "source": "clickTasks.insects-find-01.options.gardenSpider",
+              "regionIds": [
+                "gardenSpider"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "centipede",
+              "label": "centipede",
+              "source": "clickTasks.insects-find-01.options.centipede",
+              "regionIds": [
+                "centipede"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "butterfly",
+            "bee",
+            "ladybug",
+            "ant",
+            "dragonfly"
+          ],
+          "decoyRegionIds": [
+            "gardenSpider",
+            "centipede"
+          ],
+          "feedback": {
+            "correct": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。",
+            "wrong": "再数数腿。昆虫通常是 6 条腿。",
+            "partial": "找一找：哪些是昆虫？",
+            "complete": "小侦探完成任务！你找到了 6 条腿的昆虫朋友。"
+          }
+        },
+        {
+          "id": "insects-single-02",
+          "type": "singleChoice",
+          "title": "蜈蚣为什么不是昆虫？",
+          "prompt": "选择一个最好的理由。",
+          "source": "clickTasks.insects-single-02",
+          "options": [
+            {
+              "id": "too-many-legs",
+              "label": "它有很多腿，不是典型 6 条腿的昆虫",
+              "source": "clickTasks.insects-single-02.options.too-many-legs",
+              "regionIds": [
+                "too-many-legs"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "too-long",
+              "label": "因为它身体太长",
+              "source": "clickTasks.insects-single-02.options.too-long",
+              "regionIds": [
+                "too-long"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "not-flying",
+              "label": "因为它不会飞",
+              "source": "clickTasks.insects-single-02.options.not-flying",
+              "regionIds": [
+                "not-flying"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "too-many-legs"
+          ],
+          "decoyRegionIds": [
+            "too-long",
+            "not-flying"
+          ],
+          "feedback": {
+            "correct": "很好！你没有被“很多腿的小动物”迷惑。",
+            "wrong": "再观察一下试试看。",
+            "partial": "选择一个最好的理由。",
+            "complete": "很好！你没有被“很多腿的小动物”迷惑。"
+          }
+        },
+        {
+          "id": "insects-sequence-01",
+          "type": "sequenceClick",
+          "title": "小侦探观察顺序",
+          "prompt": "按顺序点三个观察动作。",
+          "source": "clickTasks.insects-sequence-01",
+          "options": [
+            {
+              "id": "count",
+              "label": "数腿",
+              "source": "clickTasks.insects-sequence-01.options.count",
+              "regionIds": [
+                "count"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "antennae",
+              "label": "看触角",
+              "source": "clickTasks.insects-sequence-01.options.antennae",
+              "regionIds": [
+                "antennae"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "body",
+              "label": "看身体分段",
+              "source": "clickTasks.insects-sequence-01.options.body",
+              "regionIds": [
+                "body"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "count",
+            "antennae",
+            "body"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "count",
+            "antennae",
+            "body"
+          ],
+          "feedback": {
+            "correct": "你学会了小侦探的观察顺序。",
+            "wrong": "先从最容易观察的腿数开始。",
+            "partial": "按顺序点三个观察动作。",
+            "complete": "你学会了小侦探的观察顺序。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-insects-and-spiders-scene-summary",
+        "assetId": "life-insects-and-spiders-hero",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "required": true
+          },
+          {
+            "id": "bee",
+            "label": "蜜蜂",
+            "required": true
+          },
+          {
+            "id": "ladybug",
+            "label": "瓢虫",
+            "required": true
+          },
+          {
+            "id": "ant",
+            "label": "蚂蚁",
+            "required": true
+          },
+          {
+            "id": "dragonfly",
+            "label": "蜻蜓",
+            "required": true
+          },
+          {
+            "id": "gardenSpider",
+            "label": "结网蜘蛛",
+            "required": true
+          },
+          {
+            "id": "jumpingSpider",
+            "label": "跳蛛",
+            "required": true
+          },
+          {
+            "id": "centipede",
+            "label": "蜈蚣",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "butterfly",
+            "entityIds": [
+              "butterfly"
+            ],
+            "label": "蝴蝶",
+            "shape": "rect",
+            "bounds": {
+              "x": 60,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bee",
+            "entityIds": [
+              "bee"
+            ],
+            "label": "蜜蜂",
+            "shape": "rect",
+            "bounds": {
+              "x": 285,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ladybug",
+            "entityIds": [
+              "ladybug"
+            ],
+            "label": "瓢虫",
+            "shape": "rect",
+            "bounds": {
+              "x": 510,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ant",
+            "entityIds": [
+              "ant"
+            ],
+            "label": "蚂蚁",
+            "shape": "rect",
+            "bounds": {
+              "x": 735,
+              "y": 120,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "dragonfly",
+            "entityIds": [
+              "dragonfly"
+            ],
+            "label": "蜻蜓",
+            "shape": "rect",
+            "bounds": {
+              "x": 60,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "gardenSpider",
+            "entityIds": [
+              "gardenSpider"
+            ],
+            "label": "结网蜘蛛",
+            "shape": "rect",
+            "bounds": {
+              "x": 285,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "jumpingSpider",
+            "entityIds": [
+              "jumpingSpider"
+            ],
+            "label": "跳蛛",
+            "shape": "rect",
+            "bounds": {
+              "x": 510,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "centipede",
+            "entityIds": [
+              "centipede"
+            ],
+            "label": "蜈蚣",
+            "shape": "rect",
+            "bounds": {
+              "x": 735,
+              "y": 405,
+              "w": 215,
+              "h": 260
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-butterfly",
+          "source": "representativeObjects.butterfly",
+          "label": "蝴蝶",
+          "regionIds": [
+            "butterfly"
+          ],
+          "entityIds": [
+            "butterfly"
+          ],
+          "evidenceTitle": "蝴蝶",
+          "observePrompt": "翅膀、触角、6 条腿",
+          "evidenceCopy": "蝴蝶是昆虫，通常有 6 条腿和一对漂亮翅膀。",
+          "markerChips": [
+            "蝴蝶"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "我觉得____是____，因为它有____条腿。",
+            "____看起来像昆虫，但它其实不是，因为____。",
+            "我今天学会：不能只看____，还要看____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "我觉得____是____，因为它有____条腿。",
+        "____看起来像昆虫，但它其实不是，因为____。",
+        "我今天学会：不能只看____，还要看____。"
+      ],
+      "parentTips": [
+        "不要要求孩子背“节肢动物”等术语，先掌握观察线索。",
+        "可以追问：你是先看腿，还是先看翅膀？哪个线索更可靠？",
+        "本页可以承接蜘蛛宇宙兴趣，也可以跳回动物分类生命树。"
+      ]
     }
   ]
 }

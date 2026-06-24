@@ -474,13 +474,27 @@
       "target": "mechanism",
       "role": "process",
       "required": true
+    },
+    {
+      "id": "zone-icons",
+      "assetId": "earth-climate-zone-icons",
+      "role": "observation",
+      "target": "classificationGroups",
+      "required": true
+    },
+    {
+      "id": "life-compare",
+      "assetId": "earth-climate-life-compare",
+      "role": "compare",
+      "target": "comparePairs.hot-wet-vs-hot-dry",
+      "required": false
     }
   ],
   "visualEvidenceBindings": [
     {
       "id": "evidence-classificationGroups-tropical",
       "source": "classificationGroups.tropical",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "热带",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -498,7 +512,7 @@
     {
       "id": "evidence-classificationGroups-subtropical",
       "source": "classificationGroups.subtropical",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "温暖湿润地区",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -516,7 +530,7 @@
     {
       "id": "evidence-classificationGroups-temperate",
       "source": "classificationGroups.temperate",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "温带",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -539,7 +553,7 @@
     {
       "id": "evidence-classificationGroups-dryHot",
       "source": "classificationGroups.dryHot",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "干热地区",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -557,7 +571,7 @@
     {
       "id": "evidence-classificationGroups-cold",
       "source": "classificationGroups.cold",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "寒冷地区",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -755,7 +769,7 @@
     {
       "id": "evidence-comparePairs-singapore-vs-reykjavik",
       "source": "comparePairs.singapore-vs-reykjavik",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "新加坡 vs 雷克雅未克",
       "observePrompt": "对比 新加坡 和 雷克雅未克 的图片线索。",
@@ -778,7 +792,7 @@
     {
       "id": "evidence-comparePairs-shenzhen-vs-beijing",
       "source": "comparePairs.shenzhen-vs-beijing",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "深圳 vs 北京",
       "observePrompt": "对比 深圳 和 北京 的图片线索。",
@@ -801,7 +815,7 @@
     {
       "id": "evidence-comparePairs-hot-wet-vs-hot-dry",
       "source": "comparePairs.hot-wet-vs-hot-dry",
-      "visualSlotId": "hero",
+      "visualSlotId": "life-compare",
       "interactionScope": "local",
       "evidenceTitle": "湿热 vs 干热",
       "observePrompt": "对比 湿热 和 干热 的图片线索。",
@@ -824,7 +838,7 @@
     {
       "id": "evidence-clickTasks-earth-single-01-options-singapore",
       "source": "clickTasks.earth-single-01.options.singapore",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "新加坡",
       "observePrompt": "点一个城市。",
@@ -842,7 +856,7 @@
     {
       "id": "evidence-clickTasks-earth-single-01-options-beijing",
       "source": "clickTasks.earth-single-01.options.beijing",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "北京",
       "observePrompt": "点一个城市。",
@@ -860,7 +874,7 @@
     {
       "id": "evidence-clickTasks-earth-single-01-options-reykjavik",
       "source": "clickTasks.earth-single-01.options.reykjavik",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "雷克雅未克",
       "observePrompt": "点一个城市。",
@@ -878,7 +892,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-beijing",
       "source": "clickTasks.earth-find-01.options.beijing",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "beijing",
       "observePrompt": "找一找：哪些城市更适合带厚外套？",
@@ -896,7 +910,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-reykjavik",
       "source": "clickTasks.earth-find-01.options.reykjavik",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "reykjavik",
       "observePrompt": "找一找：哪些城市更适合带厚外套？",
@@ -914,7 +928,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-singapore",
       "source": "clickTasks.earth-find-01.options.singapore",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "singapore",
       "observePrompt": "找一找：哪些城市更适合带厚外套？",
@@ -932,7 +946,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-shenzhen",
       "source": "clickTasks.earth-find-01.options.shenzhen",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "shenzhen",
       "observePrompt": "找一找：哪些城市更适合带厚外套？",
@@ -950,7 +964,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-cairo",
       "source": "clickTasks.earth-find-01.options.cairo",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "cairo",
       "observePrompt": "找一找：哪些城市更适合带厚外套？",
@@ -968,7 +982,7 @@
     {
       "id": "evidence-clickTasks-earth-single-02-options-closer-sun",
       "source": "clickTasks.earth-single-02.options.closer-sun",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "因为离太阳特别近",
       "observePrompt": "点出更好的解释。",
@@ -986,7 +1000,7 @@
     {
       "id": "evidence-clickTasks-earth-single-02-options-direct-light",
       "source": "clickTasks.earth-single-02.options.direct-light",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "因为阳光照得更直接",
       "observePrompt": "点出更好的解释。",
@@ -1004,7 +1018,7 @@
     {
       "id": "evidence-clickTasks-earth-single-02-options-more-cities",
       "source": "clickTasks.earth-single-02.options.more-cities",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "因为城市更多",
       "observePrompt": "点出更好的解释。",
@@ -1022,7 +1036,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-ball",
       "source": "clickTasks.earth-sequence-01.options.ball",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "地球是球",
       "observePrompt": "按顺序点出原因链。",
@@ -1040,7 +1054,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-sunlight",
       "source": "clickTasks.earth-sequence-01.options.sunlight",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "阳光照法不同",
       "observePrompt": "按顺序点出原因链。",
@@ -1058,7 +1072,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-bands",
       "source": "clickTasks.earth-sequence-01.options.bands",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "形成冷热带",
       "observePrompt": "按顺序点出原因链。",
@@ -1076,7 +1090,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-life",
       "source": "clickTasks.earth-sequence-01.options.life",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "生活方式不同",
       "observePrompt": "按顺序点出原因链。",
@@ -1090,6 +1104,1644 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "为什么世界上有些地方热，有些地方冷？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-earth-climate-cities-scene-entry",
+        "assetId": "earth-climate-cities-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 70,
+              "y": 75,
+              "w": 860,
+              "h": 720
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "页面主视觉是一个儿童化地球仪，横向用三条柔和色带表示热带、温带、寒带。城市卡片分布在不同区域，点击城市时显示天气印象、衣着建议和生活场景。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-earth-climate-cities-scene-classify",
+        "assetId": "earth-climate-city-cards",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "singapore",
+            "label": "新加坡",
+            "required": true
+          },
+          {
+            "id": "shenzhen",
+            "label": "深圳",
+            "required": true
+          },
+          {
+            "id": "beijing",
+            "label": "北京",
+            "required": true
+          },
+          {
+            "id": "london",
+            "label": "伦敦",
+            "required": true
+          },
+          {
+            "id": "cairo",
+            "label": "开罗",
+            "required": true
+          },
+          {
+            "id": "reykjavik",
+            "label": "雷克雅未克",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "singapore",
+            "entityIds": [
+              "singapore"
+            ],
+            "label": "新加坡",
+            "shape": "rect",
+            "bounds": {
+              "x": 83,
+              "y": 129,
+              "w": 246,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "shenzhen",
+            "entityIds": [
+              "shenzhen"
+            ],
+            "label": "深圳",
+            "shape": "rect",
+            "bounds": {
+              "x": 377,
+              "y": 129,
+              "w": 246,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "beijing",
+            "entityIds": [
+              "beijing"
+            ],
+            "label": "北京",
+            "shape": "rect",
+            "bounds": {
+              "x": 670,
+              "y": 129,
+              "w": 246,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "london",
+            "entityIds": [
+              "london"
+            ],
+            "label": "伦敦",
+            "shape": "rect",
+            "bounds": {
+              "x": 83,
+              "y": 489,
+              "w": 246,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cairo",
+            "entityIds": [
+              "cairo"
+            ],
+            "label": "开罗",
+            "shape": "rect",
+            "bounds": {
+              "x": 377,
+              "y": 489,
+              "w": 246,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "reykjavik",
+            "entityIds": [
+              "reykjavik"
+            ],
+            "label": "雷克雅未克",
+            "shape": "rect",
+            "bounds": {
+              "x": 670,
+              "y": 489,
+              "w": 246,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-tropical",
+          "source": "classificationGroups.tropical",
+          "label": "热带",
+          "regionIds": [
+            "singapore"
+          ],
+          "entityIds": [
+            "singapore"
+          ],
+          "evidenceTitle": "热带",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "靠近赤道，阳光更直接，很多地方一年都比较热。 这类里可以看到：新加坡。",
+          "markerChips": [
+            "新加坡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-singapore",
+          "source": "representativeObjects.singapore",
+          "label": "新加坡",
+          "regionIds": [
+            "singapore"
+          ],
+          "entityIds": [
+            "singapore"
+          ],
+          "evidenceTitle": "新加坡",
+          "observePrompt": "短袖、雨伞、热带植物",
+          "evidenceCopy": "新加坡靠近赤道，常常很热，也常常下雨。",
+          "markerChips": [
+            "新加坡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-shenzhen",
+          "source": "representativeObjects.shenzhen",
+          "label": "深圳",
+          "regionIds": [
+            "shenzhen"
+          ],
+          "entityIds": [
+            "shenzhen"
+          ],
+          "evidenceTitle": "深圳",
+          "observePrompt": "城市、高楼、湿热夏天",
+          "evidenceCopy": "深圳很多时候比较暖和，夏天会很热，也会有很多雨。",
+          "markerChips": [
+            "深圳"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-beijing",
+          "source": "representativeObjects.beijing",
+          "label": "北京",
+          "regionIds": [
+            "beijing"
+          ],
+          "entityIds": [
+            "beijing"
+          ],
+          "evidenceTitle": "北京",
+          "observePrompt": "夏天短袖、冬天厚外套",
+          "evidenceCopy": "北京四季比较明显，夏天热，冬天冷。",
+          "markerChips": [
+            "北京"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-london",
+          "source": "representativeObjects.london",
+          "label": "伦敦",
+          "regionIds": [
+            "london"
+          ],
+          "entityIds": [
+            "london"
+          ],
+          "evidenceTitle": "伦敦",
+          "observePrompt": "雨伞、河流、温和天气",
+          "evidenceCopy": "伦敦也在温带，天气常常比较温和，雨天印象很强。",
+          "markerChips": [
+            "伦敦"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-cairo",
+          "source": "representativeObjects.cairo",
+          "label": "开罗",
+          "regionIds": [
+            "cairo"
+          ],
+          "entityIds": [
+            "cairo"
+          ],
+          "evidenceTitle": "开罗",
+          "observePrompt": "沙漠、太阳、轻薄衣服",
+          "evidenceCopy": "开罗附近有很干热的沙漠环境，白天阳光很强。",
+          "markerChips": [
+            "开罗"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-reykjavik",
+          "source": "representativeObjects.reykjavik",
+          "label": "雷克雅未克",
+          "regionIds": [
+            "reykjavik"
+          ],
+          "entityIds": [
+            "reykjavik"
+          ],
+          "evidenceTitle": "雷克雅未克",
+          "observePrompt": "厚外套、冷风、北方城市",
+          "evidenceCopy": "雷克雅未克在很北的地方，天气常常比较冷。",
+          "markerChips": [
+            "雷克雅未克"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "新加坡: 新加坡靠近赤道，常常很热，也常常下雨。",
+            "深圳: 深圳很多时候比较暖和，夏天会很热，也会有很多雨。",
+            "北京: 北京四季比较明显，夏天热，冬天冷。",
+            "伦敦: 伦敦也在温带，天气常常比较温和，雨天印象很强。",
+            "开罗: 开罗附近有很干热的沙漠环境，白天阳光很强。",
+            "雷克雅未克: 雷克雅未克在很北的地方，天气常常比较冷。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-earth-climate-cities-scene-process",
+        "assetId": "earth-climate-sun-angle-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "earth-ball",
+            "label": "地球是球",
+            "required": true
+          },
+          {
+            "id": "sunlight-angle",
+            "label": "阳光照法不同",
+            "required": true
+          },
+          {
+            "id": "climate-bands",
+            "label": "形成冷热带",
+            "required": true
+          },
+          {
+            "id": "life-changes",
+            "label": "生活也不同",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "earth-ball",
+            "entityIds": [
+              "earth-ball"
+            ],
+            "label": "地球是球",
+            "shape": "rect",
+            "bounds": {
+              "x": 68,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sunlight-angle",
+            "entityIds": [
+              "sunlight-angle"
+            ],
+            "label": "阳光照法不同",
+            "shape": "rect",
+            "bounds": {
+              "x": 293,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "climate-bands",
+            "entityIds": [
+              "climate-bands"
+            ],
+            "label": "形成冷热带",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "life-changes",
+            "entityIds": [
+              "life-changes"
+            ],
+            "label": "生活也不同",
+            "shape": "rect",
+            "bounds": {
+              "x": 743,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-earth-ball",
+          "source": "mechanism.steps.earth-ball",
+          "label": "地球是球",
+          "regionIds": [
+            "earth-ball"
+          ],
+          "entityIds": [
+            "earth-ball"
+          ],
+          "evidenceTitle": "地球是球",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "地球不是一张平纸，而是一个大球。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sunlight-angle",
+          "source": "mechanism.steps.sunlight-angle",
+          "label": "阳光照法不同",
+          "regionIds": [
+            "sunlight-angle"
+          ],
+          "entityIds": [
+            "sunlight-angle"
+          ],
+          "evidenceTitle": "阳光照法不同",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "太阳照到地球不同地方的方式不一样。赤道附近更直接，两极附近更斜。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-climate-bands",
+          "source": "mechanism.steps.climate-bands",
+          "label": "形成冷热带",
+          "regionIds": [
+            "climate-bands"
+          ],
+          "entityIds": [
+            "climate-bands"
+          ],
+          "evidenceTitle": "形成冷热带",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "所以地球上会有热带、温带、寒带。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-life-changes",
+          "source": "mechanism.steps.life-changes",
+          "label": "生活也不同",
+          "regionIds": [
+            "life-changes"
+          ],
+          "entityIds": [
+            "life-changes"
+          ],
+          "evidenceTitle": "生活也不同",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "气候会影响衣服、植物、动物和房子的样子。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "为什么有的地方热，有的地方冷？",
+          "items": [
+            "地球是球: 地球不是一张平纸，而是一个大球。",
+            "阳光照法不同: 太阳照到地球不同地方的方式不一样。赤道附近更直接，两极附近更斜。",
+            "形成冷热带: 所以地球上会有热带、温带、寒带。",
+            "生活也不同: 气候会影响衣服、植物、动物和房子的样子。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-earth-climate-cities-scene-compare",
+        "assetId": "earth-climate-cities-hero",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 70,
+              "y": 100,
+              "w": 430,
+              "h": 650
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 500,
+              "y": 100,
+              "w": 430,
+              "h": 650
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-singapore-vs-reykjavik",
+          "source": "comparePairs.singapore-vs-reykjavik",
+          "label": "新加坡 vs 雷克雅未克",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "新加坡 vs 雷克雅未克",
+          "observePrompt": "对比 新加坡 和 雷克雅未克 的图片线索。",
+          "evidenceCopy": "新加坡: 靠近赤道；常常炎热；常见热带植物。雷克雅未克: 很靠北；常常较冷；需要更厚衣服。城市在地球上的位置，会影响冷热感受。",
+          "markerChips": [
+            "新加坡",
+            "雷克雅未克"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-shenzhen-vs-beijing",
+          "source": "comparePairs.shenzhen-vs-beijing",
+          "label": "深圳 vs 北京",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "深圳 vs 北京",
+          "observePrompt": "对比 深圳 和 北京 的图片线索。",
+          "evidenceCopy": "深圳: 更靠南；很多时候暖和湿润；夏天很热。北京: 更靠北；四季更明显；冬天更冷。同一个国家里，不同城市的气候也会不同。",
+          "markerChips": [
+            "深圳",
+            "北京"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-hot-wet-vs-hot-dry",
+          "source": "comparePairs.hot-wet-vs-hot-dry",
+          "label": "湿热 vs 干热",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "湿热 vs 干热",
+          "observePrompt": "对比 湿热 和 干热 的图片线索。",
+          "evidenceCopy": "湿热: 热；雨多；植物茂盛。干热: 热；雨少；常见沙漠景观。都是热，也可以很不一样。",
+          "markerChips": [
+            "湿热",
+            "干热"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "新加坡 vs 雷克雅未克: 城市在地球上的位置，会影响冷热感受。",
+            "深圳 vs 北京: 同一个国家里，不同城市的气候也会不同。",
+            "湿热 vs 干热: 都是热，也可以很不一样。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-earth-climate-cities-scene-task",
+        "assetId": "earth-climate-cities-hero",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "singapore",
+            "label": "新加坡",
+            "required": true
+          },
+          {
+            "id": "beijing",
+            "label": "北京",
+            "required": true
+          },
+          {
+            "id": "reykjavik",
+            "label": "雷克雅未克",
+            "required": true
+          },
+          {
+            "id": "shenzhen",
+            "label": "深圳",
+            "required": true
+          },
+          {
+            "id": "london",
+            "label": "伦敦",
+            "required": true
+          },
+          {
+            "id": "cairo",
+            "label": "开罗",
+            "required": true
+          },
+          {
+            "id": "closer-sun",
+            "label": "因为离太阳特别近",
+            "required": true
+          },
+          {
+            "id": "direct-light",
+            "label": "因为阳光照得更直接",
+            "required": true
+          },
+          {
+            "id": "more-cities",
+            "label": "因为城市更多",
+            "required": true
+          },
+          {
+            "id": "ball",
+            "label": "地球是球",
+            "required": true
+          },
+          {
+            "id": "sunlight",
+            "label": "阳光照法不同",
+            "required": true
+          },
+          {
+            "id": "bands",
+            "label": "形成冷热带",
+            "required": true
+          },
+          {
+            "id": "life",
+            "label": "生活方式不同",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "singapore",
+            "entityIds": [
+              "singapore"
+            ],
+            "label": "新加坡",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 90,
+              "w": 280,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "beijing",
+            "entityIds": [
+              "beijing"
+            ],
+            "label": "北京",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 90,
+              "w": 275,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "reykjavik",
+            "entityIds": [
+              "reykjavik"
+            ],
+            "label": "雷克雅未克",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 455,
+              "w": 275,
+              "h": 290
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "shenzhen",
+            "entityIds": [
+              "shenzhen"
+            ],
+            "label": "深圳",
+            "shape": "rect",
+            "bounds": {
+              "x": 370,
+              "y": 90,
+              "w": 260,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "london",
+            "entityIds": [
+              "london"
+            ],
+            "label": "伦敦",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 455,
+              "w": 280,
+              "h": 290
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cairo",
+            "entityIds": [
+              "cairo"
+            ],
+            "label": "开罗",
+            "shape": "rect",
+            "bounds": {
+              "x": 370,
+              "y": 455,
+              "w": 260,
+              "h": 290
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "closer-sun",
+            "entityIds": [
+              "closer-sun"
+            ],
+            "label": "因为离太阳特别近",
+            "shape": "rect",
+            "bounds": {
+              "x": 465,
+              "y": 790,
+              "w": 70,
+              "h": 80
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "direct-light",
+            "entityIds": [
+              "direct-light"
+            ],
+            "label": "因为阳光照得更直接",
+            "shape": "rect",
+            "bounds": {
+              "x": 420,
+              "y": 315,
+              "w": 180,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "more-cities",
+            "entityIds": [
+              "more-cities"
+            ],
+            "label": "因为城市更多",
+            "shape": "rect",
+            "bounds": {
+              "x": 370,
+              "y": 90,
+              "w": 260,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ball",
+            "entityIds": [
+              "ball"
+            ],
+            "label": "地球是球",
+            "shape": "rect",
+            "bounds": {
+              "x": 420,
+              "y": 315,
+              "w": 180,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sunlight",
+            "entityIds": [
+              "sunlight"
+            ],
+            "label": "阳光照法不同",
+            "shape": "rect",
+            "bounds": {
+              "x": 465,
+              "y": 790,
+              "w": 70,
+              "h": 80
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bands",
+            "entityIds": [
+              "bands"
+            ],
+            "label": "形成冷热带",
+            "shape": "rect",
+            "bounds": {
+              "x": 420,
+              "y": 315,
+              "w": 180,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "life",
+            "entityIds": [
+              "life"
+            ],
+            "label": "生活方式不同",
+            "shape": "rect",
+            "bounds": {
+              "x": 740,
+              "y": 785,
+              "w": 80,
+              "h": 85
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-singapore",
+          "source": "clickTasks.earth-single-01.options.singapore",
+          "label": "新加坡",
+          "regionIds": [
+            "singapore"
+          ],
+          "entityIds": [
+            "singapore"
+          ],
+          "evidenceTitle": "新加坡",
+          "observePrompt": "点一个城市。",
+          "evidenceCopy": "对！新加坡靠近赤道，常常比较热。",
+          "markerChips": [
+            "新加坡"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-beijing",
+          "source": "clickTasks.earth-single-01.options.beijing",
+          "label": "北京",
+          "regionIds": [
+            "beijing"
+          ],
+          "entityIds": [
+            "beijing"
+          ],
+          "evidenceTitle": "北京",
+          "observePrompt": "点一个城市。",
+          "evidenceCopy": "北京在更北的温带，不是最靠近赤道。",
+          "markerChips": [
+            "北京"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-reykjavik",
+          "source": "clickTasks.earth-single-01.options.reykjavik",
+          "label": "雷克雅未克",
+          "regionIds": [
+            "reykjavik"
+          ],
+          "entityIds": [
+            "reykjavik"
+          ],
+          "evidenceTitle": "雷克雅未克",
+          "observePrompt": "点一个城市。",
+          "evidenceCopy": "雷克雅未克在很北的地方，离赤道很远。",
+          "markerChips": [
+            "雷克雅未克"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-beijing",
+          "source": "clickTasks.earth-find-01.options.beijing",
+          "label": "beijing",
+          "regionIds": [
+            "beijing"
+          ],
+          "entityIds": [
+            "beijing"
+          ],
+          "evidenceTitle": "beijing",
+          "observePrompt": "找一找：哪些城市更适合带厚外套？",
+          "evidenceCopy": "很好！你开始把城市位置和衣着联系起来了。",
+          "markerChips": [
+            "beijing"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-reykjavik",
+          "source": "clickTasks.earth-find-01.options.reykjavik",
+          "label": "reykjavik",
+          "regionIds": [
+            "reykjavik"
+          ],
+          "entityIds": [
+            "reykjavik"
+          ],
+          "evidenceTitle": "reykjavik",
+          "observePrompt": "找一找：哪些城市更适合带厚外套？",
+          "evidenceCopy": "很好！你开始把城市位置和衣着联系起来了。",
+          "markerChips": [
+            "reykjavik"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-singapore",
+          "source": "clickTasks.earth-find-01.options.singapore",
+          "label": "singapore",
+          "regionIds": [
+            "singapore"
+          ],
+          "entityIds": [
+            "singapore"
+          ],
+          "evidenceTitle": "singapore",
+          "observePrompt": "找一找：哪些城市更适合带厚外套？",
+          "evidenceCopy": "想一想，哪些地方冬天或常年会更冷？",
+          "markerChips": [
+            "singapore"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-shenzhen",
+          "source": "clickTasks.earth-find-01.options.shenzhen",
+          "label": "shenzhen",
+          "regionIds": [
+            "shenzhen"
+          ],
+          "entityIds": [
+            "shenzhen"
+          ],
+          "evidenceTitle": "shenzhen",
+          "observePrompt": "找一找：哪些城市更适合带厚外套？",
+          "evidenceCopy": "想一想，哪些地方冬天或常年会更冷？",
+          "markerChips": [
+            "shenzhen"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-cairo",
+          "source": "clickTasks.earth-find-01.options.cairo",
+          "label": "cairo",
+          "regionIds": [
+            "cairo"
+          ],
+          "entityIds": [
+            "cairo"
+          ],
+          "evidenceTitle": "cairo",
+          "observePrompt": "找一找：哪些城市更适合带厚外套？",
+          "evidenceCopy": "想一想，哪些地方冬天或常年会更冷？",
+          "markerChips": [
+            "cairo"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-closer-sun",
+          "source": "clickTasks.earth-single-02.options.closer-sun",
+          "label": "因为离太阳特别近",
+          "regionIds": [
+            "closer-sun"
+          ],
+          "entityIds": [
+            "closer-sun"
+          ],
+          "evidenceTitle": "因为离太阳特别近",
+          "observePrompt": "点出更好的解释。",
+          "evidenceCopy": "地球不同地方到太阳的距离差别不是主要原因。",
+          "markerChips": [
+            "因为离太阳特别近"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-direct-light",
+          "source": "clickTasks.earth-single-02.options.direct-light",
+          "label": "因为阳光照得更直接",
+          "regionIds": [
+            "direct-light"
+          ],
+          "entityIds": [
+            "direct-light"
+          ],
+          "evidenceTitle": "因为阳光照得更直接",
+          "observePrompt": "点出更好的解释。",
+          "evidenceCopy": "对！阳光照得更直接，通常会更热。",
+          "markerChips": [
+            "因为阳光照得更直接"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-more-cities",
+          "source": "clickTasks.earth-single-02.options.more-cities",
+          "label": "因为城市更多",
+          "regionIds": [
+            "more-cities"
+          ],
+          "entityIds": [
+            "more-cities"
+          ],
+          "evidenceTitle": "因为城市更多",
+          "observePrompt": "点出更好的解释。",
+          "evidenceCopy": "城市多少不会决定太阳怎么照。",
+          "markerChips": [
+            "因为城市更多"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-ball",
+          "source": "clickTasks.earth-sequence-01.options.ball",
+          "label": "地球是球",
+          "regionIds": [
+            "ball"
+          ],
+          "entityIds": [
+            "ball"
+          ],
+          "evidenceTitle": "地球是球",
+          "observePrompt": "按顺序点出原因链。",
+          "evidenceCopy": "当前步骤：地球是球。按顺序点出原因链。",
+          "markerChips": [
+            "地球是球"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-sunlight",
+          "source": "clickTasks.earth-sequence-01.options.sunlight",
+          "label": "阳光照法不同",
+          "regionIds": [
+            "sunlight"
+          ],
+          "entityIds": [
+            "sunlight"
+          ],
+          "evidenceTitle": "阳光照法不同",
+          "observePrompt": "按顺序点出原因链。",
+          "evidenceCopy": "当前步骤：阳光照法不同。按顺序点出原因链。",
+          "markerChips": [
+            "阳光照法不同"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-bands",
+          "source": "clickTasks.earth-sequence-01.options.bands",
+          "label": "形成冷热带",
+          "regionIds": [
+            "bands"
+          ],
+          "entityIds": [
+            "bands"
+          ],
+          "evidenceTitle": "形成冷热带",
+          "observePrompt": "按顺序点出原因链。",
+          "evidenceCopy": "当前步骤：形成冷热带。按顺序点出原因链。",
+          "markerChips": [
+            "形成冷热带"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-life",
+          "source": "clickTasks.earth-sequence-01.options.life",
+          "label": "生活方式不同",
+          "regionIds": [
+            "life"
+          ],
+          "entityIds": [
+            "life"
+          ],
+          "evidenceTitle": "生活方式不同",
+          "observePrompt": "按顺序点出原因链。",
+          "evidenceCopy": "当前步骤：生活方式不同。按顺序点出原因链。",
+          "markerChips": [
+            "生活方式不同"
+          ],
+          "expectedStatus": "partial"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "点一个城市。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "earth-single-01",
+          "type": "singleChoice",
+          "title": "哪个城市最靠近赤道？",
+          "prompt": "点一个城市。",
+          "source": "clickTasks.earth-single-01",
+          "options": [
+            {
+              "id": "singapore",
+              "label": "新加坡",
+              "source": "clickTasks.earth-single-01.options.singapore",
+              "regionIds": [
+                "singapore"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "beijing",
+              "label": "北京",
+              "source": "clickTasks.earth-single-01.options.beijing",
+              "regionIds": [
+                "beijing"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "reykjavik",
+              "label": "雷克雅未克",
+              "source": "clickTasks.earth-single-01.options.reykjavik",
+              "regionIds": [
+                "reykjavik"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "singapore"
+          ],
+          "decoyRegionIds": [
+            "beijing",
+            "reykjavik"
+          ],
+          "feedback": {
+            "correct": "对！新加坡靠近赤道，常常比较热。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点一个城市。",
+            "complete": "对！新加坡靠近赤道，常常比较热。"
+          }
+        },
+        {
+          "id": "earth-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪些城市更适合带厚外套？",
+          "prompt": "找一找：哪些城市更适合带厚外套？",
+          "source": "clickTasks.earth-find-01",
+          "options": [
+            {
+              "id": "beijing",
+              "label": "beijing",
+              "source": "clickTasks.earth-find-01.options.beijing",
+              "regionIds": [
+                "beijing"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "reykjavik",
+              "label": "reykjavik",
+              "source": "clickTasks.earth-find-01.options.reykjavik",
+              "regionIds": [
+                "reykjavik"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "singapore",
+              "label": "singapore",
+              "source": "clickTasks.earth-find-01.options.singapore",
+              "regionIds": [
+                "singapore"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "shenzhen",
+              "label": "shenzhen",
+              "source": "clickTasks.earth-find-01.options.shenzhen",
+              "regionIds": [
+                "shenzhen"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "cairo",
+              "label": "cairo",
+              "source": "clickTasks.earth-find-01.options.cairo",
+              "regionIds": [
+                "cairo"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "beijing",
+            "reykjavik"
+          ],
+          "decoyRegionIds": [
+            "singapore",
+            "shenzhen",
+            "cairo"
+          ],
+          "feedback": {
+            "correct": "很好！你开始把城市位置和衣着联系起来了。",
+            "wrong": "想一想，哪些地方冬天或常年会更冷？",
+            "partial": "找一找：哪些城市更适合带厚外套？",
+            "complete": "很好！你开始把城市位置和衣着联系起来了。"
+          }
+        },
+        {
+          "id": "earth-single-02",
+          "type": "singleChoice",
+          "title": "为什么赤道附近常常更热？",
+          "prompt": "点出更好的解释。",
+          "source": "clickTasks.earth-single-02",
+          "options": [
+            {
+              "id": "closer-sun",
+              "label": "因为离太阳特别近",
+              "source": "clickTasks.earth-single-02.options.closer-sun",
+              "regionIds": [
+                "closer-sun"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "direct-light",
+              "label": "因为阳光照得更直接",
+              "source": "clickTasks.earth-single-02.options.direct-light",
+              "regionIds": [
+                "direct-light"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "more-cities",
+              "label": "因为城市更多",
+              "source": "clickTasks.earth-single-02.options.more-cities",
+              "regionIds": [
+                "more-cities"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "direct-light"
+          ],
+          "decoyRegionIds": [
+            "closer-sun",
+            "more-cities"
+          ],
+          "feedback": {
+            "correct": "对！阳光照得更直接，通常会更热。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点出更好的解释。",
+            "complete": "对！阳光照得更直接，通常会更热。"
+          }
+        },
+        {
+          "id": "earth-sequence-01",
+          "type": "sequenceClick",
+          "title": "冷热带形成顺序",
+          "prompt": "按顺序点出原因链。",
+          "source": "clickTasks.earth-sequence-01",
+          "options": [
+            {
+              "id": "ball",
+              "label": "地球是球",
+              "source": "clickTasks.earth-sequence-01.options.ball",
+              "regionIds": [
+                "ball"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "sunlight",
+              "label": "阳光照法不同",
+              "source": "clickTasks.earth-sequence-01.options.sunlight",
+              "regionIds": [
+                "sunlight"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "bands",
+              "label": "形成冷热带",
+              "source": "clickTasks.earth-sequence-01.options.bands",
+              "regionIds": [
+                "bands"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "life",
+              "label": "生活方式不同",
+              "source": "clickTasks.earth-sequence-01.options.life",
+              "regionIds": [
+                "life"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "ball",
+            "sunlight",
+            "bands",
+            "life"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "ball",
+            "sunlight",
+            "bands",
+            "life"
+          ],
+          "feedback": {
+            "correct": "你连起了一条地球气候小线索！",
+            "wrong": "先从“地球是什么形状”开始想。",
+            "partial": "按顺序点出原因链。",
+            "complete": "你连起了一条地球气候小线索！"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-earth-climate-cities-scene-summary",
+        "assetId": "earth-climate-cities-hero",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "singapore",
+            "label": "新加坡",
+            "required": true
+          },
+          {
+            "id": "shenzhen",
+            "label": "深圳",
+            "required": true
+          },
+          {
+            "id": "beijing",
+            "label": "北京",
+            "required": true
+          },
+          {
+            "id": "london",
+            "label": "伦敦",
+            "required": true
+          },
+          {
+            "id": "cairo",
+            "label": "开罗",
+            "required": true
+          },
+          {
+            "id": "reykjavik",
+            "label": "雷克雅未克",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "singapore",
+            "entityIds": [
+              "singapore"
+            ],
+            "label": "新加坡",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 90,
+              "w": 280,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "shenzhen",
+            "entityIds": [
+              "shenzhen"
+            ],
+            "label": "深圳",
+            "shape": "rect",
+            "bounds": {
+              "x": 370,
+              "y": 90,
+              "w": 260,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "beijing",
+            "entityIds": [
+              "beijing"
+            ],
+            "label": "北京",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 90,
+              "w": 275,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "london",
+            "entityIds": [
+              "london"
+            ],
+            "label": "伦敦",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 455,
+              "w": 280,
+              "h": 290
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cairo",
+            "entityIds": [
+              "cairo"
+            ],
+            "label": "开罗",
+            "shape": "rect",
+            "bounds": {
+              "x": 370,
+              "y": 455,
+              "w": 260,
+              "h": 290
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "reykjavik",
+            "entityIds": [
+              "reykjavik"
+            ],
+            "label": "雷克雅未克",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 455,
+              "w": 275,
+              "h": 290
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-singapore",
+          "source": "representativeObjects.singapore",
+          "label": "新加坡",
+          "regionIds": [
+            "singapore"
+          ],
+          "entityIds": [
+            "singapore"
+          ],
+          "evidenceTitle": "新加坡",
+          "observePrompt": "短袖、雨伞、热带植物",
+          "evidenceCopy": "新加坡靠近赤道，常常很热，也常常下雨。",
+          "markerChips": [
+            "新加坡"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "____在地球上比较靠____，所以那里常常比较____。",
+            "如果我去____，我可能要带____，因为____。",
+            "我今天发现：同样是热，也可能有____和____的不同。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "____在地球上比较靠____，所以那里常常比较____。",
+        "如果我去____，我可能要带____，因为____。",
+        "我今天发现：同样是热，也可能有____和____的不同。"
+      ],
+      "parentTips": [
+        "不要纠结精确气候类型，先让孩子建立地球空间感。",
+        "可用手电筒照球演示太阳照射角度。",
+        "家长追问可落到生活：穿什么、住什么、植物有什么不同。"
+      ]
     }
   ]
 }

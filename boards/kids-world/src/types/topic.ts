@@ -149,6 +149,139 @@ export type EvidenceCoverageReport = {
   pass: boolean;
 };
 
+export type SceneType =
+  | "entry-scene"
+  | "taxonomy-map"
+  | "object-gallery"
+  | "process-path"
+  | "system-flow"
+  | "compare-split"
+  | "scale-map"
+  | "spatial-map"
+  | "task-board"
+  | "summary-talk";
+
+export type LayoutPreset =
+  | "single-focus-scene"
+  | "taxonomy-map"
+  | "object-gallery"
+  | "process-path"
+  | "system-flow"
+  | "compare-split"
+  | "task-board"
+  | "summary-talk";
+
+export type SceneEvidenceSource = string;
+
+export type SceneVisualEntity = {
+  id: string;
+  label: string;
+  required?: boolean;
+};
+
+export type SceneCompositionZone = {
+  id: string;
+  label: string;
+  purpose:
+    | "main-subject"
+    | "supporting-object"
+    | "path"
+    | "compare-left"
+    | "compare-right"
+    | "task-target"
+    | "safe-text-free-area";
+  preferredBounds: { x: number; y: number; w: number; h: number };
+  requiredEntities: string[];
+};
+
+export type SceneVisualRegion = {
+  id: string;
+  entityIds: string[];
+  label: string;
+  shape: "rect" | "circle" | "polygon" | "path";
+  bounds?: { x: number; y: number; w: number; h: number };
+  points?: Array<{ x: number; y: number }>;
+  zIndex?: number;
+  minTapSize?: number;
+};
+
+export type SceneVisualPlan = {
+  id: string;
+  assetId: string;
+  layoutPreset: LayoutPreset;
+  imageRole: "hero" | "scene" | "process" | "compare" | "task" | "summary";
+  aspectRatio: "16:9" | "4:3" | "1:1" | "3:4";
+  compositionZones: SceneCompositionZone[];
+  visualEntities: SceneVisualEntity[];
+  regions: SceneVisualRegion[];
+};
+
+export type FocusItem = {
+  id: string;
+  source: SceneEvidenceSource;
+  label: string;
+  shortLabel?: string;
+  regionIds: string[];
+  entityIds: string[];
+  evidenceTitle: string;
+  observePrompt: string;
+  evidenceCopy: string;
+  markerChips?: string[];
+  expectedStatus?: "notice" | "correct" | "wrong" | "partial" | "complete";
+  nextPrompt?: string;
+};
+
+export type ContentBlock = {
+  id: string;
+  type: "short-explanation" | "detail-list" | "compare-summary" | "prompt-list";
+  title?: string;
+  body?: string;
+  items?: string[];
+};
+
+export type SceneTaskOption = {
+  id: string;
+  label: string;
+  source: SceneEvidenceSource;
+  regionIds: string[];
+  isCorrect?: boolean;
+  notVisualReason?: string;
+};
+
+export type SceneTask = {
+  id: string;
+  type: "singleChoice" | "findTarget" | "sequenceClick";
+  title: string;
+  prompt: string;
+  source: SceneEvidenceSource;
+  options: SceneTaskOption[];
+  targetRegionIds?: string[];
+  decoyRegionIds?: string[];
+  correctSequence?: string[];
+  feedback: {
+    correct: string;
+    wrong: string;
+    partial?: string;
+    complete?: string;
+  };
+};
+
+export type LearningScene = {
+  id: string;
+  order: number;
+  sceneType: SceneType;
+  title: string;
+  kidQuestion: string;
+  parentGoal?: string;
+  estimatedMinutes?: number;
+  visualPlan: SceneVisualPlan;
+  focusItems: FocusItem[];
+  contentBlocks: ContentBlock[];
+  tasks?: SceneTask[];
+  speakPrompts?: string[];
+  parentTips?: string[];
+};
+
 export type ClickTask = {
   id: string;
   type: "singleChoice" | "findTarget" | "sequenceClick" | string;
@@ -192,6 +325,7 @@ export type Topic = {
   assets?: Record<string, { path: string; purpose?: string; status?: string }>;
   visualSlots?: VisualSlot[];
   learningFlow?: LearningFlowStage[];
+  learningScenes?: LearningScene[];
   visualEvidenceBindings?: VisualEvidenceBinding[];
   classificationGroups: Array<{
     id: string;

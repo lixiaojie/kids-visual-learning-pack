@@ -977,5 +977,523 @@
       "expectedStatus": "partial",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Dinosaurs are no longer around, so how do scientists know what they looked like and how they lived?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a child-friendly natural history exploration: fossils and footprints in the foreground, with a few gentle original dinosaurs in the background for feature observation."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-plant-eaters",
+          "label": "Plant-eating dinosaurs",
+          "evidenceTitle": "Plant-eating dinosaurs",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Some dinosaurs had long necks or mouths suited for eating leaves. You can spot: Long-neck dinosaur.",
+          "markerChips": [
+            "Long-neck dinosaur"
+          ]
+        },
+        {
+          "id": "focus-sauropod",
+          "label": "Long-neck dinosaur",
+          "evidenceTitle": "Long-neck dinosaur",
+          "observePrompt": "long neck, big body, small head",
+          "evidenceCopy": "A long neck may help it reach high leaves.",
+          "markerChips": [
+            "Long-neck dinosaur"
+          ]
+        },
+        {
+          "id": "focus-triceratops",
+          "label": "Horned dinosaur",
+          "evidenceTitle": "Horned dinosaur",
+          "observePrompt": "three horns and a large frill",
+          "evidenceCopy": "Horns and a frill may help protect it.",
+          "markerChips": [
+            "Horned dinosaur"
+          ]
+        },
+        {
+          "id": "focus-ankylosaur",
+          "label": "Armored dinosaur",
+          "evidenceTitle": "Armored dinosaur",
+          "observePrompt": "low body, plates, tail club",
+          "evidenceCopy": "Armor-like plates and a tail club may help defense.",
+          "markerChips": [
+            "Armored dinosaur"
+          ]
+        },
+        {
+          "id": "focus-tyranno",
+          "label": "Toothy meat-eater",
+          "evidenceTitle": "Toothy meat-eater",
+          "observePrompt": "large head, sharp teeth, strong legs",
+          "evidenceCopy": "Sharp teeth and a strong body suggest it may hunt.",
+          "markerChips": [
+            "Toothy meat-eater"
+          ]
+        },
+        {
+          "id": "focus-pterosaur",
+          "label": "Flying ancient partner",
+          "evidenceTitle": "Flying ancient partner",
+          "observePrompt": "wide wings",
+          "evidenceCopy": "Pterosaurs were not dinosaurs, but often appear in dinosaur-age scenes.",
+          "markerChips": [
+            "Flying ancient partner"
+          ]
+        },
+        {
+          "id": "focus-fossil",
+          "label": "Fossil",
+          "evidenceTitle": "Fossil",
+          "observePrompt": "bone or shell mark in stone",
+          "evidenceCopy": "A fossil is an old trace of life kept in rock.",
+          "markerChips": [
+            "Fossil"
+          ]
+        },
+        {
+          "id": "focus-footprint",
+          "label": "Footprint",
+          "evidenceTitle": "Footprint",
+          "observePrompt": "large print in mud",
+          "evidenceCopy": "Footprints can show where animals walked and how big their feet were.",
+          "markerChips": [
+            "Footprint"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Long-neck dinosaur: A long neck may help it reach high leaves.",
+            "Horned dinosaur: Horns and a frill may help protect it.",
+            "Armored dinosaur: Armor-like plates and a tail club may help defense.",
+            "Toothy meat-eater: Sharp teeth and a strong body suggest it may hunt.",
+            "Flying ancient partner: Pterosaurs were not dinosaurs, but often appear in dinosaur-age scenes.",
+            "Fossil: A fossil is an old trace of life kept in rock.",
+            "Footprint: Footprints can show where animals walked and how big their feet were."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-find-evidence",
+          "label": "Find clues",
+          "evidenceTitle": "Find clues",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "Scientists look for bones, teeth, footprints, eggshells, and other clues.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-clean-carefully",
+          "label": "Clean carefully",
+          "evidenceTitle": "Clean carefully",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Fossils are precious and must be cleaned slowly with small tools.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-compare-shape",
+          "label": "Compare shapes",
+          "evidenceTitle": "Compare shapes",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "Teeth, legs, horns, and armor help us guess how it lived.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-rebuild-story",
+          "label": "Build the story",
+          "evidenceTitle": "Build the story",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Many clues together help imagine the animal and its environment.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-update-idea",
+          "label": "Ideas can update",
+          "evidenceTitle": "Ideas can update",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "New fossils can change scientific ideas.",
+          "markerChips": [
+            "Step 5"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How do we learn like dinosaur detectives?",
+          "items": [
+            "Find clues: Scientists look for bones, teeth, footprints, eggshells, and other clues.",
+            "Clean carefully: Fossils are precious and must be cleaned slowly with small tools.",
+            "Compare shapes: Teeth, legs, horns, and armor help us guess how it lived.",
+            "Build the story: Many clues together help imagine the animal and its environment.",
+            "Ideas can update: New fossils can change scientific ideas."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-dinosaur-vs-fossil",
+          "label": "Dinosaur vs Fossil",
+          "evidenceTitle": "Dinosaur vs Fossil",
+          "observePrompt": "Compare visual clues for Dinosaur and Fossil.",
+          "evidenceCopy": "Dinosaur: was once alive; had a body and behavior; lived long ago. Fossil: is a trace left behind; may be bone, footprint, or eggshell; helps us study dinosaurs. A fossil is not a living dinosaur; it is evidence.",
+          "markerChips": [
+            "Dinosaur",
+            "Fossil"
+          ]
+        },
+        {
+          "id": "focus-herbivore-vs-carnivore",
+          "label": "Plant-eater vs Meat-eater",
+          "evidenceTitle": "Plant-eater vs Meat-eater",
+          "observePrompt": "Compare visual clues for Plant-eater and Meat-eater.",
+          "evidenceCopy": "Plant-eater: mouth and teeth suited for plants; some were very large; may need protection. Meat-eater: often has sharp teeth; may run or bite strongly; part of an ecosystem. What an animal eats can shape its body.",
+          "markerChips": [
+            "Plant-eater",
+            "Meat-eater"
+          ]
+        },
+        {
+          "id": "focus-bone-vs-footprint",
+          "label": "Bone fossil vs Footprint fossil",
+          "evidenceTitle": "Bone fossil vs Footprint fossil",
+          "observePrompt": "Compare visual clues for Bone fossil and Footprint fossil.",
+          "evidenceCopy": "Bone fossil: shows body structure; may help build a skeleton; not always complete. Footprint fossil: shows walking paths; helps estimate foot size; may show group movement. Different evidence tells different stories.",
+          "markerChips": [
+            "Bone fossil",
+            "Footprint fossil"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Dinosaur vs Fossil: A fossil is not a living dinosaur; it is evidence.",
+            "Plant-eater vs Meat-eater: What an animal eats can shape its body.",
+            "Bone fossil vs Footprint fossil: Different evidence tells different stories."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-fossil",
+          "label": "fossil",
+          "evidenceTitle": "fossil",
+          "observePrompt": "Find the fossil and footprint.",
+          "evidenceCopy": "Correct! Fossils and footprints can both be clues.",
+          "markerChips": [
+            "fossil"
+          ]
+        },
+        {
+          "id": "focus-footprint",
+          "label": "footprint",
+          "evidenceTitle": "footprint",
+          "observePrompt": "Find the fossil and footprint.",
+          "evidenceCopy": "Correct! Fossils and footprints can both be clues.",
+          "markerChips": [
+            "footprint"
+          ]
+        },
+        {
+          "id": "focus-sauropod",
+          "label": "sauropod",
+          "evidenceTitle": "sauropod",
+          "observePrompt": "Find the fossil and footprint.",
+          "evidenceCopy": "Evidence is a clue left behind, not a walking dinosaur.",
+          "markerChips": [
+            "sauropod"
+          ]
+        },
+        {
+          "id": "focus-triceratops",
+          "label": "triceratops",
+          "evidenceTitle": "triceratops",
+          "observePrompt": "Find the fossil and footprint.",
+          "evidenceCopy": "Evidence is a clue left behind, not a walking dinosaur.",
+          "markerChips": [
+            "triceratops"
+          ]
+        },
+        {
+          "id": "focus-pterosaur",
+          "label": "pterosaur",
+          "evidenceTitle": "pterosaur",
+          "observePrompt": "Find the fossil and footprint.",
+          "evidenceCopy": "Evidence is a clue left behind, not a walking dinosaur.",
+          "markerChips": [
+            "pterosaur"
+          ]
+        },
+        {
+          "id": "focus-meat",
+          "label": "May be suited for eating meat",
+          "evidenceTitle": "May be suited for eating meat",
+          "observePrompt": "Choose the most likely explanation.",
+          "evidenceCopy": "Right! Sharp teeth may relate to hunting or eating meat.",
+          "markerChips": [
+            "May be suited for eating meat"
+          ]
+        },
+        {
+          "id": "focus-leaf",
+          "label": "Definitely only eats leaves",
+          "evidenceTitle": "Definitely only eats leaves",
+          "observePrompt": "Choose the most likely explanation.",
+          "evidenceCopy": "Plant-eating teeth usually do not need to be so sharp.",
+          "markerChips": [
+            "Definitely only eats leaves"
+          ]
+        },
+        {
+          "id": "focus-toy",
+          "label": "Just decoration",
+          "evidenceTitle": "Just decoration",
+          "observePrompt": "Choose the most likely explanation.",
+          "evidenceCopy": "Body structures often relate to lifestyle.",
+          "markerChips": [
+            "Just decoration"
+          ]
+        },
+        {
+          "id": "focus-find-evidence",
+          "label": "Find clues",
+          "evidenceTitle": "Find clues",
+          "observePrompt": "Tap the detective steps in order.",
+          "evidenceCopy": "Current step: Find clues. Tap the detective steps in order.",
+          "markerChips": [
+            "Find clues"
+          ]
+        },
+        {
+          "id": "focus-clean-carefully",
+          "label": "Clean carefully",
+          "evidenceTitle": "Clean carefully",
+          "observePrompt": "Tap the detective steps in order.",
+          "evidenceCopy": "Current step: Clean carefully. Tap the detective steps in order.",
+          "markerChips": [
+            "Clean carefully"
+          ]
+        },
+        {
+          "id": "focus-compare-shape",
+          "label": "Compare shapes",
+          "evidenceTitle": "Compare shapes",
+          "observePrompt": "Tap the detective steps in order.",
+          "evidenceCopy": "Current step: Compare shapes. Tap the detective steps in order.",
+          "markerChips": [
+            "Compare shapes"
+          ]
+        },
+        {
+          "id": "focus-rebuild-story",
+          "label": "Build the story",
+          "evidenceTitle": "Build the story",
+          "observePrompt": "Tap the detective steps in order.",
+          "evidenceCopy": "Current step: Build the story. Tap the detective steps in order.",
+          "markerChips": [
+            "Build the story"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Find the fossil and footprint."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "dino-find-01",
+          "title": "Find: what evidence did dinosaurs leave?",
+          "prompt": "Find the fossil and footprint.",
+          "options": [
+            {
+              "id": "fossil",
+              "label": "fossil"
+            },
+            {
+              "id": "footprint",
+              "label": "footprint"
+            },
+            {
+              "id": "sauropod",
+              "label": "sauropod"
+            },
+            {
+              "id": "triceratops",
+              "label": "triceratops"
+            },
+            {
+              "id": "pterosaur",
+              "label": "pterosaur"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! Fossils and footprints can both be clues.",
+            "wrong": "Evidence is a clue left behind, not a walking dinosaur.",
+            "partial": "Find the fossil and footprint.",
+            "complete": "Correct! Fossils and footprints can both be clues."
+          }
+        },
+        {
+          "id": "dino-choice-01",
+          "title": "What might sharp teeth suggest?",
+          "prompt": "Choose the most likely explanation.",
+          "options": [
+            {
+              "id": "meat",
+              "label": "May be suited for eating meat"
+            },
+            {
+              "id": "leaf",
+              "label": "Definitely only eats leaves"
+            },
+            {
+              "id": "toy",
+              "label": "Just decoration"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! Sharp teeth may relate to hunting or eating meat.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the most likely explanation.",
+            "complete": "Right! Sharp teeth may relate to hunting or eating meat."
+          }
+        },
+        {
+          "id": "dino-sequence-01",
+          "title": "How does fossil research happen?",
+          "prompt": "Tap the detective steps in order.",
+          "options": [
+            {
+              "id": "find-evidence",
+              "label": "Find clues"
+            },
+            {
+              "id": "clean-carefully",
+              "label": "Clean carefully"
+            },
+            {
+              "id": "compare-shape",
+              "label": "Compare shapes"
+            },
+            {
+              "id": "rebuild-story",
+              "label": "Build the story"
+            }
+          ],
+          "feedback": {
+            "correct": "You completed a paleontology detective workflow!",
+            "wrong": "Find the clue first, then handle it carefully.",
+            "partial": "Tap the detective steps in order.",
+            "complete": "You completed a paleontology detective workflow!"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-sauropod",
+          "label": "Long-neck dinosaur",
+          "evidenceTitle": "Long-neck dinosaur",
+          "observePrompt": "long neck, big body, small head",
+          "evidenceCopy": "A long neck may help it reach high leaves.",
+          "markerChips": [
+            "Long-neck dinosaur"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "I see ____, so it may mean _____.",
+            "A fossil is a clue left by _____.",
+            "This dinosaur may eat _____ because _____.",
+            "Scientists do not just guess; they look at _____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "I see ____, so it may mean _____.",
+        "A fossil is a clue left by _____.",
+        "This dinosaur may eat _____ because _____.",
+        "Scientists do not just guess; they look at _____."
+      ],
+      "parentTips": [
+        "Frame dinosaurs as natural history and evidence, not monster fighting.",
+        "Use teeth, feet, tail, and horns to guide observation.",
+        "If the child asks who is strongest, ask what helped each dinosaur survive."
+      ]
+    }
   ]
 }

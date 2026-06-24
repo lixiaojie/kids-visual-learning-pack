@@ -1152,5 +1152,1660 @@
       "expectedStatus": "partial",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "恐龙已经不在身边了，科学家怎么知道它们的样子和生活？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-dinosaurs-scene-entry",
+        "assetId": "life-dinosaurs-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "主视觉是儿童友好的自然历史探索场景：前景是化石和脚印，背景是几类温和的原创恐龙，用身体特征帮助孩子观察分类。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-dinosaurs-scene-classify",
+        "assetId": "life-dinosaurs-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sauropod",
+            "label": "长脖子恐龙",
+            "required": true
+          },
+          {
+            "id": "triceratops",
+            "label": "角龙",
+            "required": true
+          },
+          {
+            "id": "ankylosaur",
+            "label": "甲龙",
+            "required": true
+          },
+          {
+            "id": "tyranno",
+            "label": "尖牙肉食恐龙",
+            "required": true
+          },
+          {
+            "id": "pterosaur",
+            "label": "翼龙伙伴",
+            "required": true
+          },
+          {
+            "id": "fossil",
+            "label": "化石",
+            "required": true
+          },
+          {
+            "id": "footprint",
+            "label": "脚印",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sauropod",
+            "entityIds": [
+              "sauropod"
+            ],
+            "label": "长脖子恐龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "triceratops",
+            "entityIds": [
+              "triceratops"
+            ],
+            "label": "角龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ankylosaur",
+            "entityIds": [
+              "ankylosaur"
+            ],
+            "label": "甲龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "tyranno",
+            "entityIds": [
+              "tyranno"
+            ],
+            "label": "尖牙肉食恐龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "pterosaur",
+            "entityIds": [
+              "pterosaur"
+            ],
+            "label": "翼龙伙伴",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "fossil",
+            "entityIds": [
+              "fossil"
+            ],
+            "label": "化石",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "footprint",
+            "entityIds": [
+              "footprint"
+            ],
+            "label": "脚印",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-plant-eaters",
+          "source": "classificationGroups.plant-eaters",
+          "label": "吃植物的恐龙",
+          "regionIds": [
+            "sauropod"
+          ],
+          "entityIds": [
+            "sauropod"
+          ],
+          "evidenceTitle": "吃植物的恐龙",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "有些恐龙脖子长、嘴巴适合吃叶子。 这类里可以看到：长脖子恐龙。",
+          "markerChips": [
+            "长脖子恐龙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sauropod",
+          "source": "representativeObjects.sauropod",
+          "label": "长脖子恐龙",
+          "regionIds": [
+            "sauropod"
+          ],
+          "entityIds": [
+            "sauropod"
+          ],
+          "evidenceTitle": "长脖子恐龙",
+          "observePrompt": "长脖子、大身体、小脑袋",
+          "evidenceCopy": "长长的脖子可能帮助它吃到高处的叶子。",
+          "markerChips": [
+            "长脖子恐龙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-triceratops",
+          "source": "representativeObjects.triceratops",
+          "label": "角龙",
+          "regionIds": [
+            "triceratops"
+          ],
+          "entityIds": [
+            "triceratops"
+          ],
+          "evidenceTitle": "角龙",
+          "observePrompt": "三个角和大颈盾",
+          "evidenceCopy": "头上的角和颈盾可能帮助它保护自己。",
+          "markerChips": [
+            "角龙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-ankylosaur",
+          "source": "representativeObjects.ankylosaur",
+          "label": "甲龙",
+          "regionIds": [
+            "ankylosaur"
+          ],
+          "entityIds": [
+            "ankylosaur"
+          ],
+          "evidenceTitle": "甲龙",
+          "observePrompt": "低矮身体、甲片、尾锤",
+          "evidenceCopy": "背上像穿了盔甲，尾巴也可能用来防御。",
+          "markerChips": [
+            "甲龙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-tyranno",
+          "source": "representativeObjects.tyranno",
+          "label": "尖牙肉食恐龙",
+          "regionIds": [
+            "tyranno"
+          ],
+          "entityIds": [
+            "tyranno"
+          ],
+          "evidenceTitle": "尖牙肉食恐龙",
+          "observePrompt": "大头、尖牙、强壮后腿",
+          "evidenceCopy": "尖牙和强壮身体说明它可能会捕食。",
+          "markerChips": [
+            "尖牙肉食恐龙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-pterosaur",
+          "source": "representativeObjects.pterosaur",
+          "label": "翼龙伙伴",
+          "regionIds": [
+            "pterosaur"
+          ],
+          "entityIds": [
+            "pterosaur"
+          ],
+          "evidenceTitle": "翼龙伙伴",
+          "observePrompt": "张开的翅膀",
+          "evidenceCopy": "翼龙不是恐龙，但常常和恐龙时代一起出现。",
+          "markerChips": [
+            "翼龙伙伴"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-fossil",
+          "source": "representativeObjects.fossil",
+          "label": "化石",
+          "regionIds": [
+            "fossil"
+          ],
+          "entityIds": [
+            "fossil"
+          ],
+          "evidenceTitle": "化石",
+          "observePrompt": "岩石里的骨头或贝壳纹",
+          "evidenceCopy": "化石是保存在岩石里的古老生命痕迹。",
+          "markerChips": [
+            "化石"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-footprint",
+          "source": "representativeObjects.footprint",
+          "label": "脚印",
+          "regionIds": [
+            "footprint"
+          ],
+          "entityIds": [
+            "footprint"
+          ],
+          "evidenceTitle": "脚印",
+          "observePrompt": "泥地里的大脚印",
+          "evidenceCopy": "脚印能告诉我们动物走过哪里、脚有多大。",
+          "markerChips": [
+            "脚印"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "长脖子恐龙: 长长的脖子可能帮助它吃到高处的叶子。",
+            "角龙: 头上的角和颈盾可能帮助它保护自己。",
+            "甲龙: 背上像穿了盔甲，尾巴也可能用来防御。",
+            "尖牙肉食恐龙: 尖牙和强壮身体说明它可能会捕食。",
+            "翼龙伙伴: 翼龙不是恐龙，但常常和恐龙时代一起出现。",
+            "化石: 化石是保存在岩石里的古老生命痕迹。",
+            "脚印: 脚印能告诉我们动物走过哪里、脚有多大。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-dinosaurs-scene-process",
+        "assetId": "life-dinosaurs-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "find-evidence",
+            "label": "发现线索",
+            "required": true
+          },
+          {
+            "id": "clean-carefully",
+            "label": "小心清理",
+            "required": true
+          },
+          {
+            "id": "compare-shape",
+            "label": "比较形状",
+            "required": true
+          },
+          {
+            "id": "rebuild-story",
+            "label": "拼出故事",
+            "required": true
+          },
+          {
+            "id": "update-idea",
+            "label": "发现会更新",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "find-evidence",
+            "entityIds": [
+              "find-evidence"
+            ],
+            "label": "发现线索",
+            "shape": "rect",
+            "bounds": {
+              "x": 20,
+              "y": 150,
+              "w": 170,
+              "h": 580
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "clean-carefully",
+            "entityIds": [
+              "clean-carefully"
+            ],
+            "label": "小心清理",
+            "shape": "rect",
+            "bounds": {
+              "x": 610,
+              "y": 150,
+              "w": 170,
+              "h": 580
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "compare-shape",
+            "entityIds": [
+              "compare-shape"
+            ],
+            "label": "比较形状",
+            "shape": "rect",
+            "bounds": {
+              "x": 400,
+              "y": 150,
+              "w": 190,
+              "h": 580
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "rebuild-story",
+            "entityIds": [
+              "rebuild-story"
+            ],
+            "label": "拼出故事",
+            "shape": "rect",
+            "bounds": {
+              "x": 805,
+              "y": 150,
+              "w": 170,
+              "h": 580
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "update-idea",
+            "entityIds": [
+              "update-idea"
+            ],
+            "label": "发现会更新",
+            "shape": "rect",
+            "bounds": {
+              "x": 210,
+              "y": 150,
+              "w": 170,
+              "h": 580
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-find-evidence",
+          "source": "mechanism.steps.find-evidence",
+          "label": "发现线索",
+          "regionIds": [
+            "find-evidence"
+          ],
+          "entityIds": [
+            "find-evidence"
+          ],
+          "evidenceTitle": "发现线索",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "科学家会寻找骨头、牙齿、脚印和蛋壳等线索。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-clean-carefully",
+          "source": "mechanism.steps.clean-carefully",
+          "label": "小心清理",
+          "regionIds": [
+            "clean-carefully"
+          ],
+          "entityIds": [
+            "clean-carefully"
+          ],
+          "evidenceTitle": "小心清理",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "化石很珍贵，要用小刷子慢慢清理。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-compare-shape",
+          "source": "mechanism.steps.compare-shape",
+          "label": "比较形状",
+          "regionIds": [
+            "compare-shape"
+          ],
+          "entityIds": [
+            "compare-shape"
+          ],
+          "evidenceTitle": "比较形状",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "看牙齿、腿、角和甲片，猜它可能怎样生活。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-rebuild-story",
+          "source": "mechanism.steps.rebuild-story",
+          "label": "拼出故事",
+          "regionIds": [
+            "rebuild-story"
+          ],
+          "entityIds": [
+            "rebuild-story"
+          ],
+          "evidenceTitle": "拼出故事",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "把很多线索放在一起，想象它的样子和生活环境。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-update-idea",
+          "source": "mechanism.steps.update-idea",
+          "label": "发现会更新",
+          "regionIds": [
+            "update-idea"
+          ],
+          "entityIds": [
+            "update-idea"
+          ],
+          "evidenceTitle": "发现会更新",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "有新化石时，科学家的想法也可能更新。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "怎样像小侦探一样认识恐龙？",
+          "items": [
+            "发现线索: 科学家会寻找骨头、牙齿、脚印和蛋壳等线索。",
+            "小心清理: 化石很珍贵，要用小刷子慢慢清理。",
+            "比较形状: 看牙齿、腿、角和甲片，猜它可能怎样生活。",
+            "拼出故事: 把很多线索放在一起，想象它的样子和生活环境。",
+            "发现会更新: 有新化石时，科学家的想法也可能更新。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-dinosaurs-scene-compare",
+        "assetId": "life-dinosaurs-compare",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-dinosaur-vs-fossil",
+          "source": "comparePairs.dinosaur-vs-fossil",
+          "label": "恐龙 vs 化石",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "恐龙 vs 化石",
+          "observePrompt": "对比 恐龙 和 化石 的图片线索。",
+          "evidenceCopy": "恐龙: 曾经活着；有身体和行为；生活在很久以前。化石: 是留下的痕迹；可能是骨头、脚印或蛋壳；帮助我们研究恐龙。化石不是活恐龙，而是认识恐龙的证据。",
+          "markerChips": [
+            "恐龙",
+            "化石"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-herbivore-vs-carnivore",
+          "source": "comparePairs.herbivore-vs-carnivore",
+          "label": "食草 vs 食肉",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "食草 vs 食肉",
+          "observePrompt": "对比 食草恐龙 和 食肉恐龙 的图片线索。",
+          "evidenceCopy": "食草恐龙: 常有适合吃植物的嘴和牙；有些身体很大；可能需要防御。食肉恐龙: 常有尖牙；可能跑得快或咬合强；也是生态系统的一部分。吃什么会影响身体长什么样。",
+          "markerChips": [
+            "食草恐龙",
+            "食肉恐龙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-bone-vs-footprint",
+          "source": "comparePairs.bone-vs-footprint",
+          "label": "骨头化石 vs 脚印化石",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "骨头化石 vs 脚印化石",
+          "observePrompt": "对比 骨头化石 和 脚印化石 的图片线索。",
+          "evidenceCopy": "骨头化石: 帮助了解身体结构；可能拼出骨架；不一定完整。脚印化石: 帮助了解走路路线；能猜脚大小；可能显示群体活动。不同证据能告诉我们不同事情。",
+          "markerChips": [
+            "骨头化石",
+            "脚印化石"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "恐龙 vs 化石: 化石不是活恐龙，而是认识恐龙的证据。",
+            "食草 vs 食肉: 吃什么会影响身体长什么样。",
+            "骨头化石 vs 脚印化石: 不同证据能告诉我们不同事情。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-dinosaurs-scene-task",
+        "assetId": "life-dinosaurs-click-task",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sauropod",
+            "label": "长脖子恐龙",
+            "required": true
+          },
+          {
+            "id": "triceratops",
+            "label": "角龙",
+            "required": true
+          },
+          {
+            "id": "ankylosaur",
+            "label": "甲龙",
+            "required": true
+          },
+          {
+            "id": "tyranno",
+            "label": "尖牙肉食恐龙",
+            "required": true
+          },
+          {
+            "id": "pterosaur",
+            "label": "翼龙伙伴",
+            "required": true
+          },
+          {
+            "id": "fossil",
+            "label": "化石",
+            "required": true
+          },
+          {
+            "id": "footprint",
+            "label": "脚印",
+            "required": true
+          },
+          {
+            "id": "meat",
+            "label": "可能适合吃肉",
+            "required": true
+          },
+          {
+            "id": "leaf",
+            "label": "一定只吃树叶",
+            "required": true
+          },
+          {
+            "id": "toy",
+            "label": "只是装饰",
+            "required": true
+          },
+          {
+            "id": "find-evidence",
+            "label": "发现线索",
+            "required": true
+          },
+          {
+            "id": "clean-carefully",
+            "label": "小心清理",
+            "required": true
+          },
+          {
+            "id": "compare-shape",
+            "label": "比较形状",
+            "required": true
+          },
+          {
+            "id": "rebuild-story",
+            "label": "拼出故事",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sauropod",
+            "entityIds": [
+              "sauropod"
+            ],
+            "label": "长脖子恐龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 55,
+              "y": 80,
+              "w": 235,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "triceratops",
+            "entityIds": [
+              "triceratops"
+            ],
+            "label": "角龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 300,
+              "y": 80,
+              "w": 235,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ankylosaur",
+            "entityIds": [
+              "ankylosaur"
+            ],
+            "label": "甲龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 80,
+              "w": 230,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "tyranno",
+            "entityIds": [
+              "tyranno"
+            ],
+            "label": "尖牙肉食恐龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 760,
+              "y": 80,
+              "w": 215,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "pterosaur",
+            "entityIds": [
+              "pterosaur"
+            ],
+            "label": "翼龙伙伴",
+            "shape": "rect",
+            "bounds": {
+              "x": 55,
+              "y": 395,
+              "w": 270,
+              "h": 240
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "fossil",
+            "entityIds": [
+              "fossil"
+            ],
+            "label": "化石",
+            "shape": "rect",
+            "bounds": {
+              "x": 345,
+              "y": 400,
+              "w": 255,
+              "h": 240
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "footprint",
+            "entityIds": [
+              "footprint"
+            ],
+            "label": "脚印",
+            "shape": "rect",
+            "bounds": {
+              "x": 620,
+              "y": 400,
+              "w": 310,
+              "h": 240
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "meat",
+            "entityIds": [
+              "meat"
+            ],
+            "label": "可能适合吃肉",
+            "shape": "rect",
+            "bounds": {
+              "x": 195,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "leaf",
+            "entityIds": [
+              "leaf"
+            ],
+            "label": "一定只吃树叶",
+            "shape": "rect",
+            "bounds": {
+              "x": 315,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "toy",
+            "entityIds": [
+              "toy"
+            ],
+            "label": "只是装饰",
+            "shape": "rect",
+            "bounds": {
+              "x": 800,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "find-evidence",
+            "entityIds": [
+              "find-evidence"
+            ],
+            "label": "发现线索",
+            "shape": "rect",
+            "bounds": {
+              "x": 435,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "clean-carefully",
+            "entityIds": [
+              "clean-carefully"
+            ],
+            "label": "小心清理",
+            "shape": "rect",
+            "bounds": {
+              "x": 555,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "compare-shape",
+            "entityIds": [
+              "compare-shape"
+            ],
+            "label": "比较形状",
+            "shape": "rect",
+            "bounds": {
+              "x": 675,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "rebuild-story",
+            "entityIds": [
+              "rebuild-story"
+            ],
+            "label": "拼出故事",
+            "shape": "rect",
+            "bounds": {
+              "x": 800,
+              "y": 685,
+              "w": 115,
+              "h": 165
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-fossil",
+          "source": "clickTasks.dino-find-01.options.fossil",
+          "label": "fossil",
+          "regionIds": [
+            "fossil"
+          ],
+          "entityIds": [
+            "fossil"
+          ],
+          "evidenceTitle": "fossil",
+          "observePrompt": "找到化石和脚印。",
+          "evidenceCopy": "对！化石和脚印都能成为线索。",
+          "markerChips": [
+            "fossil"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-footprint",
+          "source": "clickTasks.dino-find-01.options.footprint",
+          "label": "footprint",
+          "regionIds": [
+            "footprint"
+          ],
+          "entityIds": [
+            "footprint"
+          ],
+          "evidenceTitle": "footprint",
+          "observePrompt": "找到化石和脚印。",
+          "evidenceCopy": "对！化石和脚印都能成为线索。",
+          "markerChips": [
+            "footprint"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-sauropod",
+          "source": "clickTasks.dino-find-01.options.sauropod",
+          "label": "sauropod",
+          "regionIds": [
+            "sauropod"
+          ],
+          "entityIds": [
+            "sauropod"
+          ],
+          "evidenceTitle": "sauropod",
+          "observePrompt": "找到化石和脚印。",
+          "evidenceCopy": "证据是留下来的线索，不是正在走动的恐龙。",
+          "markerChips": [
+            "sauropod"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-triceratops",
+          "source": "clickTasks.dino-find-01.options.triceratops",
+          "label": "triceratops",
+          "regionIds": [
+            "triceratops"
+          ],
+          "entityIds": [
+            "triceratops"
+          ],
+          "evidenceTitle": "triceratops",
+          "observePrompt": "找到化石和脚印。",
+          "evidenceCopy": "证据是留下来的线索，不是正在走动的恐龙。",
+          "markerChips": [
+            "triceratops"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-pterosaur",
+          "source": "clickTasks.dino-find-01.options.pterosaur",
+          "label": "pterosaur",
+          "regionIds": [
+            "pterosaur"
+          ],
+          "entityIds": [
+            "pterosaur"
+          ],
+          "evidenceTitle": "pterosaur",
+          "observePrompt": "找到化石和脚印。",
+          "evidenceCopy": "证据是留下来的线索，不是正在走动的恐龙。",
+          "markerChips": [
+            "pterosaur"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-meat",
+          "source": "clickTasks.dino-choice-01.options.meat",
+          "label": "可能适合吃肉",
+          "regionIds": [
+            "meat"
+          ],
+          "entityIds": [
+            "meat"
+          ],
+          "evidenceTitle": "可能适合吃肉",
+          "observePrompt": "选择最可能的解释。",
+          "evidenceCopy": "对！尖牙可能和捕食或吃肉有关。",
+          "markerChips": [
+            "可能适合吃肉"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-leaf",
+          "source": "clickTasks.dino-choice-01.options.leaf",
+          "label": "一定只吃树叶",
+          "regionIds": [
+            "leaf"
+          ],
+          "entityIds": [
+            "leaf"
+          ],
+          "evidenceTitle": "一定只吃树叶",
+          "observePrompt": "选择最可能的解释。",
+          "evidenceCopy": "吃植物的牙通常不需要那么尖。",
+          "markerChips": [
+            "一定只吃树叶"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-toy",
+          "source": "clickTasks.dino-choice-01.options.toy",
+          "label": "只是装饰",
+          "regionIds": [
+            "toy"
+          ],
+          "entityIds": [
+            "toy"
+          ],
+          "evidenceTitle": "只是装饰",
+          "observePrompt": "选择最可能的解释。",
+          "evidenceCopy": "身体结构常常和生活方式有关。",
+          "markerChips": [
+            "只是装饰"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-find-evidence",
+          "source": "clickTasks.dino-sequence-01.options.find-evidence",
+          "label": "发现线索",
+          "regionIds": [
+            "find-evidence"
+          ],
+          "entityIds": [
+            "find-evidence"
+          ],
+          "evidenceTitle": "发现线索",
+          "observePrompt": "按顺序点出小侦探流程。",
+          "evidenceCopy": "当前步骤：发现线索。按顺序点出小侦探流程。",
+          "markerChips": [
+            "发现线索"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-clean-carefully",
+          "source": "clickTasks.dino-sequence-01.options.clean-carefully",
+          "label": "小心清理",
+          "regionIds": [
+            "clean-carefully"
+          ],
+          "entityIds": [
+            "clean-carefully"
+          ],
+          "evidenceTitle": "小心清理",
+          "observePrompt": "按顺序点出小侦探流程。",
+          "evidenceCopy": "当前步骤：小心清理。按顺序点出小侦探流程。",
+          "markerChips": [
+            "小心清理"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-compare-shape",
+          "source": "clickTasks.dino-sequence-01.options.compare-shape",
+          "label": "比较形状",
+          "regionIds": [
+            "compare-shape"
+          ],
+          "entityIds": [
+            "compare-shape"
+          ],
+          "evidenceTitle": "比较形状",
+          "observePrompt": "按顺序点出小侦探流程。",
+          "evidenceCopy": "当前步骤：比较形状。按顺序点出小侦探流程。",
+          "markerChips": [
+            "比较形状"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-rebuild-story",
+          "source": "clickTasks.dino-sequence-01.options.rebuild-story",
+          "label": "拼出故事",
+          "regionIds": [
+            "rebuild-story"
+          ],
+          "entityIds": [
+            "rebuild-story"
+          ],
+          "evidenceTitle": "拼出故事",
+          "observePrompt": "按顺序点出小侦探流程。",
+          "evidenceCopy": "当前步骤：拼出故事。按顺序点出小侦探流程。",
+          "markerChips": [
+            "拼出故事"
+          ],
+          "expectedStatus": "partial"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "找到化石和脚印。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "dino-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪些是恐龙留下的证据？",
+          "prompt": "找到化石和脚印。",
+          "source": "clickTasks.dino-find-01",
+          "options": [
+            {
+              "id": "fossil",
+              "label": "fossil",
+              "source": "clickTasks.dino-find-01.options.fossil",
+              "regionIds": [
+                "fossil"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "footprint",
+              "label": "footprint",
+              "source": "clickTasks.dino-find-01.options.footprint",
+              "regionIds": [
+                "footprint"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "sauropod",
+              "label": "sauropod",
+              "source": "clickTasks.dino-find-01.options.sauropod",
+              "regionIds": [
+                "sauropod"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "triceratops",
+              "label": "triceratops",
+              "source": "clickTasks.dino-find-01.options.triceratops",
+              "regionIds": [
+                "triceratops"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "pterosaur",
+              "label": "pterosaur",
+              "source": "clickTasks.dino-find-01.options.pterosaur",
+              "regionIds": [
+                "pterosaur"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "fossil",
+            "footprint"
+          ],
+          "decoyRegionIds": [
+            "sauropod",
+            "triceratops",
+            "pterosaur"
+          ],
+          "feedback": {
+            "correct": "对！化石和脚印都能成为线索。",
+            "wrong": "证据是留下来的线索，不是正在走动的恐龙。",
+            "partial": "找到化石和脚印。",
+            "complete": "对！化石和脚印都能成为线索。"
+          }
+        },
+        {
+          "id": "dino-choice-01",
+          "type": "singleChoice",
+          "title": "看到尖牙，可能说明什么？",
+          "prompt": "选择最可能的解释。",
+          "source": "clickTasks.dino-choice-01",
+          "options": [
+            {
+              "id": "meat",
+              "label": "可能适合吃肉",
+              "source": "clickTasks.dino-choice-01.options.meat",
+              "regionIds": [
+                "meat"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "leaf",
+              "label": "一定只吃树叶",
+              "source": "clickTasks.dino-choice-01.options.leaf",
+              "regionIds": [
+                "leaf"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "toy",
+              "label": "只是装饰",
+              "source": "clickTasks.dino-choice-01.options.toy",
+              "regionIds": [
+                "toy"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "meat"
+          ],
+          "decoyRegionIds": [
+            "leaf",
+            "toy"
+          ],
+          "feedback": {
+            "correct": "对！尖牙可能和捕食或吃肉有关。",
+            "wrong": "再观察一下试试看。",
+            "partial": "选择最可能的解释。",
+            "complete": "对！尖牙可能和捕食或吃肉有关。"
+          }
+        },
+        {
+          "id": "dino-sequence-01",
+          "type": "sequenceClick",
+          "title": "化石研究怎么做？",
+          "prompt": "按顺序点出小侦探流程。",
+          "source": "clickTasks.dino-sequence-01",
+          "options": [
+            {
+              "id": "find-evidence",
+              "label": "发现线索",
+              "source": "clickTasks.dino-sequence-01.options.find-evidence",
+              "regionIds": [
+                "find-evidence"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "clean-carefully",
+              "label": "小心清理",
+              "source": "clickTasks.dino-sequence-01.options.clean-carefully",
+              "regionIds": [
+                "clean-carefully"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "compare-shape",
+              "label": "比较形状",
+              "source": "clickTasks.dino-sequence-01.options.compare-shape",
+              "regionIds": [
+                "compare-shape"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "rebuild-story",
+              "label": "拼出故事",
+              "source": "clickTasks.dino-sequence-01.options.rebuild-story",
+              "regionIds": [
+                "rebuild-story"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "find-evidence",
+            "clean-carefully",
+            "compare-shape",
+            "rebuild-story"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "find-evidence",
+            "clean-carefully",
+            "compare-shape",
+            "rebuild-story"
+          ],
+          "feedback": {
+            "correct": "你完成了一次古生物小侦探流程！",
+            "wrong": "先找到线索，再小心处理。",
+            "partial": "按顺序点出小侦探流程。",
+            "complete": "你完成了一次古生物小侦探流程！"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-dinosaurs-scene-summary",
+        "assetId": "life-dinosaurs-parent-guide",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sauropod",
+            "label": "长脖子恐龙",
+            "required": true
+          },
+          {
+            "id": "triceratops",
+            "label": "角龙",
+            "required": true
+          },
+          {
+            "id": "ankylosaur",
+            "label": "甲龙",
+            "required": true
+          },
+          {
+            "id": "tyranno",
+            "label": "尖牙肉食恐龙",
+            "required": true
+          },
+          {
+            "id": "pterosaur",
+            "label": "翼龙伙伴",
+            "required": true
+          },
+          {
+            "id": "fossil",
+            "label": "化石",
+            "required": true
+          },
+          {
+            "id": "footprint",
+            "label": "脚印",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sauropod",
+            "entityIds": [
+              "sauropod"
+            ],
+            "label": "长脖子恐龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "triceratops",
+            "entityIds": [
+              "triceratops"
+            ],
+            "label": "角龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ankylosaur",
+            "entityIds": [
+              "ankylosaur"
+            ],
+            "label": "甲龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "tyranno",
+            "entityIds": [
+              "tyranno"
+            ],
+            "label": "尖牙肉食恐龙",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "pterosaur",
+            "entityIds": [
+              "pterosaur"
+            ],
+            "label": "翼龙伙伴",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "fossil",
+            "entityIds": [
+              "fossil"
+            ],
+            "label": "化石",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "footprint",
+            "entityIds": [
+              "footprint"
+            ],
+            "label": "脚印",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-sauropod",
+          "source": "representativeObjects.sauropod",
+          "label": "长脖子恐龙",
+          "regionIds": [
+            "sauropod"
+          ],
+          "entityIds": [
+            "sauropod"
+          ],
+          "evidenceTitle": "长脖子恐龙",
+          "observePrompt": "长脖子、大身体、小脑袋",
+          "evidenceCopy": "长长的脖子可能帮助它吃到高处的叶子。",
+          "markerChips": [
+            "长脖子恐龙"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "我看到____，它可能说明____。",
+            "化石是____留下的线索。",
+            "这种恐龙可能吃____，因为____。",
+            "科学家不是猜的，而是看____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "我看到____，它可能说明____。",
+        "化石是____留下的线索。",
+        "这种恐龙可能吃____，因为____。",
+        "科学家不是猜的，而是看____。"
+      ],
+      "parentTips": [
+        "尽量把恐龙讲成自然历史和科学证据，而不是怪兽战斗。",
+        "孩子喜欢恐龙时，可以用“牙齿、脚、尾巴、角”引导观察。",
+        "如果问“谁最厉害”，可转成“它靠什么适应生活”。"
+      ]
+    }
   ]
 }

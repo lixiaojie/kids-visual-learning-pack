@@ -1,28 +1,39 @@
 .info-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 26px;
-  padding: 24px;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px;
   border: 2px solid rgba(23, 32, 51, 0.1);
-  border-radius: 22px;
-  background: #ffffff;
+  border-radius: 16px;
+  background: #f8fafc;
 }
 
 .info-list-title {
-  color: #172033;
-  font-size: 34px;
-  font-weight: 900;
+  color: #475569;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.info-list-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 10px;
+  padding-bottom: 2px;
 }
 
 .info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 16px;
-  border: 2px solid transparent;
-  border-radius: 16px;
-  background: #f8fafc;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 8px 10px;
+  border: 2px solid rgba(23, 32, 51, 0.08);
+  border-radius: 14px;
+  background: #ffffff;
+  text-align: left;
+  white-space: normal;
 }
 
 .info-item.active {
@@ -30,14 +41,54 @@
   background: #eef2ff;
 }
 
-.info-item-title {
-  color: #0f172a;
-  font-size: 29px;
-  font-weight: 900;
+.info-item-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #172033;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
 }
 
-.info-item-body {
+.info-item.active .info-item-index {
+  background: #4f46e5;
+}
+
+.info-item-label {
+  display: block;
+  width: 100%;
+  color: #0f172a;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.25;
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.info-support-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 112px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.info-support-title {
+  color: #172033;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.info-support-body {
   color: #475569;
-  font-size: 26px;
-  line-height: 1.5;
+  font-size: 21px;
+  line-height: 1.4;
 }

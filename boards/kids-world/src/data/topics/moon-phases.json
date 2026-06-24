@@ -1173,5 +1173,1631 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "月亮是真的变形了吗，还是我们看到的亮面不同？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-moon-phases-scene-entry",
+        "assetId": "space-moon-phases-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "主视觉是夜晚屋顶观察场景：天空上方展示一条月相弧线，旁边用太阳、地球和月亮的简化关系图说明光从哪里来。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-moon-phases-scene-classify",
+        "assetId": "space-moon-phases-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sun",
+            "label": "太阳",
+            "required": true
+          },
+          {
+            "id": "earth",
+            "label": "地球",
+            "required": true
+          },
+          {
+            "id": "moon",
+            "label": "月亮",
+            "required": true
+          },
+          {
+            "id": "new-moon",
+            "label": "新月",
+            "required": true
+          },
+          {
+            "id": "crescent",
+            "label": "弯月",
+            "required": true
+          },
+          {
+            "id": "half-moon",
+            "label": "半月",
+            "required": true
+          },
+          {
+            "id": "full-moon",
+            "label": "满月",
+            "required": true
+          },
+          {
+            "id": "telescope",
+            "label": "望远镜",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sun",
+            "entityIds": [
+              "sun"
+            ],
+            "label": "太阳",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "earth",
+            "entityIds": [
+              "earth"
+            ],
+            "label": "地球",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moon",
+            "entityIds": [
+              "moon"
+            ],
+            "label": "月亮",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "new-moon",
+            "entityIds": [
+              "new-moon"
+            ],
+            "label": "新月",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "crescent",
+            "entityIds": [
+              "crescent"
+            ],
+            "label": "弯月",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "half-moon",
+            "entityIds": [
+              "half-moon"
+            ],
+            "label": "半月",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "full-moon",
+            "entityIds": [
+              "full-moon"
+            ],
+            "label": "满月",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "telescope",
+            "entityIds": [
+              "telescope"
+            ],
+            "label": "望远镜",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-light-source",
+          "source": "classificationGroups.light-source",
+          "label": "光从哪里来",
+          "regionIds": [
+            "sun"
+          ],
+          "entityIds": [
+            "sun"
+          ],
+          "evidenceTitle": "光从哪里来",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "太阳照亮月亮，月亮把光反射给我们看。 这类里可以看到：太阳。",
+          "markerChips": [
+            "太阳"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sun",
+          "source": "representativeObjects.sun",
+          "label": "太阳",
+          "regionIds": [
+            "sun"
+          ],
+          "entityIds": [
+            "sun"
+          ],
+          "evidenceTitle": "太阳",
+          "observePrompt": "黄色发光圆球",
+          "evidenceCopy": "太阳照亮月亮的一面。",
+          "markerChips": [
+            "太阳"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-earth",
+          "source": "representativeObjects.earth",
+          "label": "地球",
+          "regionIds": [
+            "earth"
+          ],
+          "entityIds": [
+            "earth"
+          ],
+          "evidenceTitle": "地球",
+          "observePrompt": "蓝绿色小地球",
+          "evidenceCopy": "我们站在地球上看月亮。",
+          "markerChips": [
+            "地球"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-moon",
+          "source": "representativeObjects.moon",
+          "label": "月亮",
+          "regionIds": [
+            "moon"
+          ],
+          "entityIds": [
+            "moon"
+          ],
+          "evidenceTitle": "月亮",
+          "observePrompt": "灰黄小球",
+          "evidenceCopy": "月亮绕着地球转，被太阳照亮。",
+          "markerChips": [
+            "月亮"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-new-moon",
+          "source": "representativeObjects.new-moon",
+          "label": "新月",
+          "regionIds": [
+            "new-moon"
+          ],
+          "entityIds": [
+            "new-moon"
+          ],
+          "evidenceTitle": "新月",
+          "observePrompt": "暗暗的小圆",
+          "evidenceCopy": "这时我们几乎看不到月亮亮的一面。",
+          "markerChips": [
+            "新月"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-crescent",
+          "source": "representativeObjects.crescent",
+          "label": "弯月",
+          "regionIds": [
+            "crescent"
+          ],
+          "entityIds": [
+            "crescent"
+          ],
+          "evidenceTitle": "弯月",
+          "observePrompt": "弯弯香蕉形",
+          "evidenceCopy": "我们只看到一小条亮亮的月亮。",
+          "markerChips": [
+            "弯月"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-half-moon",
+          "source": "representativeObjects.half-moon",
+          "label": "半月",
+          "regionIds": [
+            "half-moon"
+          ],
+          "entityIds": [
+            "half-moon"
+          ],
+          "evidenceTitle": "半月",
+          "observePrompt": "半亮半暗",
+          "evidenceCopy": "我们看到大约一半亮亮的月亮。",
+          "markerChips": [
+            "半月"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-full-moon",
+          "source": "representativeObjects.full-moon",
+          "label": "满月",
+          "regionIds": [
+            "full-moon"
+          ],
+          "entityIds": [
+            "full-moon"
+          ],
+          "evidenceTitle": "满月",
+          "observePrompt": "圆圆发光月亮",
+          "evidenceCopy": "我们看到整面亮亮的月亮。",
+          "markerChips": [
+            "满月"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-telescope",
+          "source": "representativeObjects.telescope",
+          "label": "望远镜",
+          "regionIds": [
+            "telescope"
+          ],
+          "entityIds": [
+            "telescope"
+          ],
+          "evidenceTitle": "望远镜",
+          "observePrompt": "蓝色小望远镜",
+          "evidenceCopy": "望远镜可以帮我们看得更清楚。",
+          "markerChips": [
+            "望远镜"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "太阳: 太阳照亮月亮的一面。",
+            "地球: 我们站在地球上看月亮。",
+            "月亮: 月亮绕着地球转，被太阳照亮。",
+            "新月: 这时我们几乎看不到月亮亮的一面。",
+            "弯月: 我们只看到一小条亮亮的月亮。",
+            "半月: 我们看到大约一半亮亮的月亮。",
+            "满月: 我们看到整面亮亮的月亮。",
+            "望远镜: 望远镜可以帮我们看得更清楚。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-moon-phases-scene-process",
+        "assetId": "space-moon-phases-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sunlight",
+            "label": "太阳照亮",
+            "required": true
+          },
+          {
+            "id": "moon-orbits",
+            "label": "月亮绕地球",
+            "required": true
+          },
+          {
+            "id": "viewer-on-earth",
+            "label": "我们在地球看",
+            "required": true
+          },
+          {
+            "id": "lit-part-changes",
+            "label": "亮面多少不同",
+            "required": true
+          },
+          {
+            "id": "cycle-repeat",
+            "label": "一轮又一轮",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sunlight",
+            "entityIds": [
+              "sunlight"
+            ],
+            "label": "太阳照亮",
+            "shape": "rect",
+            "bounds": {
+              "x": 25,
+              "y": 285,
+              "w": 230,
+              "h": 360
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moon-orbits",
+            "entityIds": [
+              "moon-orbits"
+            ],
+            "label": "月亮绕地球",
+            "shape": "rect",
+            "bounds": {
+              "x": 300,
+              "y": 90,
+              "w": 570,
+              "h": 750
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "viewer-on-earth",
+            "entityIds": [
+              "viewer-on-earth"
+            ],
+            "label": "我们在地球看",
+            "shape": "rect",
+            "bounds": {
+              "x": 470,
+              "y": 360,
+              "w": 185,
+              "h": 245
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "lit-part-changes",
+            "entityIds": [
+              "lit-part-changes"
+            ],
+            "label": "亮面多少不同",
+            "shape": "rect",
+            "bounds": {
+              "x": 330,
+              "y": 85,
+              "w": 530,
+              "h": 760
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cycle-repeat",
+            "entityIds": [
+              "cycle-repeat"
+            ],
+            "label": "一轮又一轮",
+            "shape": "rect",
+            "bounds": {
+              "x": 305,
+              "y": 80,
+              "w": 590,
+              "h": 770
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-sunlight",
+          "source": "mechanism.steps.sunlight",
+          "label": "太阳照亮",
+          "regionIds": [
+            "sunlight"
+          ],
+          "entityIds": [
+            "sunlight"
+          ],
+          "evidenceTitle": "太阳照亮",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "太阳照到月亮，总会照亮月亮的一部分。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-moon-orbits",
+          "source": "mechanism.steps.moon-orbits",
+          "label": "月亮绕地球",
+          "regionIds": [
+            "moon-orbits"
+          ],
+          "entityIds": [
+            "moon-orbits"
+          ],
+          "evidenceTitle": "月亮绕地球",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "月亮一边绕着地球走，一边被太阳照亮。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-viewer-on-earth",
+          "source": "mechanism.steps.viewer-on-earth",
+          "label": "我们在地球看",
+          "regionIds": [
+            "viewer-on-earth"
+          ],
+          "entityIds": [
+            "viewer-on-earth"
+          ],
+          "evidenceTitle": "我们在地球看",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "我们站在地球上，只能看到月亮朝向我们的那一面。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-lit-part-changes",
+          "source": "mechanism.steps.lit-part-changes",
+          "label": "亮面多少不同",
+          "regionIds": [
+            "lit-part-changes"
+          ],
+          "entityIds": [
+            "lit-part-changes"
+          ],
+          "evidenceTitle": "亮面多少不同",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "有时候看到一点亮面，有时候看到半边，有时候看到整面。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-cycle-repeat",
+          "source": "mechanism.steps.cycle-repeat",
+          "label": "一轮又一轮",
+          "regionIds": [
+            "cycle-repeat"
+          ],
+          "entityIds": [
+            "cycle-repeat"
+          ],
+          "evidenceTitle": "一轮又一轮",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "月相会按顺序变化，然后再重复。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "月相为什么会变化？",
+          "items": [
+            "太阳照亮: 太阳照到月亮，总会照亮月亮的一部分。",
+            "月亮绕地球: 月亮一边绕着地球走，一边被太阳照亮。",
+            "我们在地球看: 我们站在地球上，只能看到月亮朝向我们的那一面。",
+            "亮面多少不同: 有时候看到一点亮面，有时候看到半边，有时候看到整面。",
+            "一轮又一轮: 月相会按顺序变化，然后再重复。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-moon-phases-scene-compare",
+        "assetId": "space-moon-phases-compare",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-moonlight-vs-sunlight",
+          "source": "comparePairs.moonlight-vs-sunlight",
+          "label": "月光 vs 太阳光",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "月光 vs 太阳光",
+          "observePrompt": "对比 月光 和 太阳光 的图片线索。",
+          "evidenceCopy": "月光: 看起来柔和；来自反射太阳光；不会像太阳那样加热地面。太阳光: 很明亮；太阳自己发出；给地球带来光和热。月亮不是像太阳一样自己发光。",
+          "markerChips": [
+            "月光",
+            "太阳光"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-shape-vs-lit-part",
+          "source": "comparePairs.shape-vs-lit-part",
+          "label": "形状变了 vs 亮面变了",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "形状变了 vs 亮面变了",
+          "observePrompt": "对比 形状变了 和 亮面变了 的图片线索。",
+          "evidenceCopy": "形状变了: 像被咬掉；这是常见误会；月亮本体没有每天变形。亮面变了: 看到的发亮部分不同；和太阳、地球、月亮位置有关；能形成月相循环。月相是看到的亮面不同。",
+          "markerChips": [
+            "形状变了",
+            "亮面变了"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-new-vs-full",
+          "source": "comparePairs.new-vs-full",
+          "label": "新月 vs 满月",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "新月 vs 满月",
+          "observePrompt": "对比 新月 和 满月 的图片线索。",
+          "evidenceCopy": "新月: 几乎看不到亮面；不是月亮消失；仍然在绕地球。满月: 看到整面亮面；看起来最圆；适合观察月面阴影。新月和满月都是同一个月亮的不同样子。",
+          "markerChips": [
+            "新月",
+            "满月"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "月光 vs 太阳光: 月亮不是像太阳一样自己发光。",
+            "形状变了 vs 亮面变了: 月相是看到的亮面不同。",
+            "新月 vs 满月: 新月和满月都是同一个月亮的不同样子。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-moon-phases-scene-task",
+        "assetId": "space-moon-phases-click-task",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "new-moon",
+            "label": "新月",
+            "required": true
+          },
+          {
+            "id": "crescent",
+            "label": "弯月",
+            "required": true
+          },
+          {
+            "id": "half-moon",
+            "label": "半月",
+            "required": true
+          },
+          {
+            "id": "full-moon",
+            "label": "满月",
+            "required": true
+          },
+          {
+            "id": "sun",
+            "label": "太阳",
+            "required": true
+          },
+          {
+            "id": "earth",
+            "label": "地球",
+            "required": true
+          },
+          {
+            "id": "moon",
+            "label": "月亮",
+            "required": true
+          },
+          {
+            "id": "telescope",
+            "label": "望远镜",
+            "required": true
+          },
+          {
+            "id": "lit-part",
+            "label": "看到的亮面不同",
+            "required": true
+          },
+          {
+            "id": "moon-bites",
+            "label": "月亮被咬掉",
+            "required": true
+          },
+          {
+            "id": "moon-fire",
+            "label": "月亮自己开灯",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "new-moon",
+            "entityIds": [
+              "new-moon"
+            ],
+            "label": "新月",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "crescent",
+            "entityIds": [
+              "crescent"
+            ],
+            "label": "弯月",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "half-moon",
+            "entityIds": [
+              "half-moon"
+            ],
+            "label": "半月",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "full-moon",
+            "entityIds": [
+              "full-moon"
+            ],
+            "label": "满月",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sun",
+            "entityIds": [
+              "sun"
+            ],
+            "label": "太阳",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "earth",
+            "entityIds": [
+              "earth"
+            ],
+            "label": "地球",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moon",
+            "entityIds": [
+              "moon"
+            ],
+            "label": "月亮",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "telescope",
+            "entityIds": [
+              "telescope"
+            ],
+            "label": "望远镜",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "lit-part",
+            "entityIds": [
+              "lit-part"
+            ],
+            "label": "看到的亮面不同",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moon-bites",
+            "entityIds": [
+              "moon-bites"
+            ],
+            "label": "月亮被咬掉",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moon-fire",
+            "entityIds": [
+              "moon-fire"
+            ],
+            "label": "月亮自己开灯",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-new-moon",
+          "source": "clickTasks.moon-sequence-01.options.new-moon",
+          "label": "新月",
+          "regionIds": [
+            "new-moon"
+          ],
+          "entityIds": [
+            "new-moon"
+          ],
+          "evidenceTitle": "新月",
+          "observePrompt": "从几乎看不见开始，点到满月。",
+          "evidenceCopy": "当前步骤：新月。从几乎看不见开始，点到满月。",
+          "markerChips": [
+            "新月"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-crescent",
+          "source": "clickTasks.moon-sequence-01.options.crescent",
+          "label": "弯月",
+          "regionIds": [
+            "crescent"
+          ],
+          "entityIds": [
+            "crescent"
+          ],
+          "evidenceTitle": "弯月",
+          "observePrompt": "从几乎看不见开始，点到满月。",
+          "evidenceCopy": "当前步骤：弯月。从几乎看不见开始，点到满月。",
+          "markerChips": [
+            "弯月"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-half-moon",
+          "source": "clickTasks.moon-sequence-01.options.half-moon",
+          "label": "半月",
+          "regionIds": [
+            "half-moon"
+          ],
+          "entityIds": [
+            "half-moon"
+          ],
+          "evidenceTitle": "半月",
+          "observePrompt": "从几乎看不见开始，点到满月。",
+          "evidenceCopy": "当前步骤：半月。从几乎看不见开始，点到满月。",
+          "markerChips": [
+            "半月"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-full-moon",
+          "source": "clickTasks.moon-sequence-01.options.full-moon",
+          "label": "满月",
+          "regionIds": [
+            "full-moon"
+          ],
+          "entityIds": [
+            "full-moon"
+          ],
+          "evidenceTitle": "满月",
+          "observePrompt": "从几乎看不见开始，点到满月。",
+          "evidenceCopy": "当前步骤：满月。从几乎看不见开始，点到满月。",
+          "markerChips": [
+            "满月"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-full-moon",
+          "source": "clickTasks.moon-find-01.options.full-moon",
+          "label": "full moon",
+          "regionIds": [
+            "full-moon"
+          ],
+          "entityIds": [
+            "full-moon"
+          ],
+          "evidenceTitle": "full moon",
+          "observePrompt": "找到看起来最圆、最亮的月亮。",
+          "evidenceCopy": "对！这就是满月。",
+          "markerChips": [
+            "full moon"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-new-moon",
+          "source": "clickTasks.moon-find-01.options.new-moon",
+          "label": "new moon",
+          "regionIds": [
+            "new-moon"
+          ],
+          "entityIds": [
+            "new-moon"
+          ],
+          "evidenceTitle": "new moon",
+          "observePrompt": "找到看起来最圆、最亮的月亮。",
+          "evidenceCopy": "满月是整面都亮起来的样子。",
+          "markerChips": [
+            "new moon"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-crescent",
+          "source": "clickTasks.moon-find-01.options.crescent",
+          "label": "crescent",
+          "regionIds": [
+            "crescent"
+          ],
+          "entityIds": [
+            "crescent"
+          ],
+          "evidenceTitle": "crescent",
+          "observePrompt": "找到看起来最圆、最亮的月亮。",
+          "evidenceCopy": "满月是整面都亮起来的样子。",
+          "markerChips": [
+            "crescent"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-half-moon",
+          "source": "clickTasks.moon-find-01.options.half-moon",
+          "label": "half moon",
+          "regionIds": [
+            "half-moon"
+          ],
+          "entityIds": [
+            "half-moon"
+          ],
+          "evidenceTitle": "half moon",
+          "observePrompt": "找到看起来最圆、最亮的月亮。",
+          "evidenceCopy": "满月是整面都亮起来的样子。",
+          "markerChips": [
+            "half moon"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-lit-part",
+          "source": "clickTasks.moon-choice-01.options.lit-part",
+          "label": "看到的亮面不同",
+          "regionIds": [
+            "lit-part"
+          ],
+          "entityIds": [
+            "lit-part"
+          ],
+          "evidenceTitle": "看到的亮面不同",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "对！月相来自我们看到的亮面不同。",
+          "markerChips": [
+            "看到的亮面不同"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-moon-bites",
+          "source": "clickTasks.moon-choice-01.options.moon-bites",
+          "label": "月亮被咬掉",
+          "regionIds": [
+            "moon-bites"
+          ],
+          "entityIds": [
+            "moon-bites"
+          ],
+          "evidenceTitle": "月亮被咬掉",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "月亮没有被咬掉，它还是圆圆的球。",
+          "markerChips": [
+            "月亮被咬掉"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-moon-fire",
+          "source": "clickTasks.moon-choice-01.options.moon-fire",
+          "label": "月亮自己开灯",
+          "regionIds": [
+            "moon-fire"
+          ],
+          "entityIds": [
+            "moon-fire"
+          ],
+          "evidenceTitle": "月亮自己开灯",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "月亮不是像太阳一样自己发光。",
+          "markerChips": [
+            "月亮自己开灯"
+          ],
+          "expectedStatus": "wrong"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "从几乎看不见开始，点到满月。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "moon-sequence-01",
+          "type": "sequenceClick",
+          "title": "按顺序点出从小弯到圆的月亮",
+          "prompt": "从几乎看不见开始，点到满月。",
+          "source": "clickTasks.moon-sequence-01",
+          "options": [
+            {
+              "id": "new-moon",
+              "label": "新月",
+              "source": "clickTasks.moon-sequence-01.options.new-moon",
+              "regionIds": [
+                "new-moon"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "crescent",
+              "label": "弯月",
+              "source": "clickTasks.moon-sequence-01.options.crescent",
+              "regionIds": [
+                "crescent"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "half-moon",
+              "label": "半月",
+              "source": "clickTasks.moon-sequence-01.options.half-moon",
+              "regionIds": [
+                "half-moon"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "full-moon",
+              "label": "满月",
+              "source": "clickTasks.moon-sequence-01.options.full-moon",
+              "regionIds": [
+                "full-moon"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "new-moon",
+            "crescent",
+            "half-moon",
+            "full-moon"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "new-moon",
+            "crescent",
+            "half-moon",
+            "full-moon"
+          ],
+          "feedback": {
+            "correct": "你排出了月亮慢慢变圆的一段旅程。",
+            "wrong": "先找最暗、几乎看不见的月亮。",
+            "partial": "从几乎看不见开始，点到满月。",
+            "complete": "你排出了月亮慢慢变圆的一段旅程。"
+          }
+        },
+        {
+          "id": "moon-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪一个是满月？",
+          "prompt": "找到看起来最圆、最亮的月亮。",
+          "source": "clickTasks.moon-find-01",
+          "options": [
+            {
+              "id": "full-moon",
+              "label": "full moon",
+              "source": "clickTasks.moon-find-01.options.full-moon",
+              "regionIds": [
+                "full-moon"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "new-moon",
+              "label": "new moon",
+              "source": "clickTasks.moon-find-01.options.new-moon",
+              "regionIds": [
+                "new-moon"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "crescent",
+              "label": "crescent",
+              "source": "clickTasks.moon-find-01.options.crescent",
+              "regionIds": [
+                "crescent"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "half-moon",
+              "label": "half moon",
+              "source": "clickTasks.moon-find-01.options.half-moon",
+              "regionIds": [
+                "half-moon"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "full-moon"
+          ],
+          "decoyRegionIds": [
+            "new-moon",
+            "crescent",
+            "half-moon"
+          ],
+          "feedback": {
+            "correct": "对！这就是满月。",
+            "wrong": "满月是整面都亮起来的样子。",
+            "partial": "找到看起来最圆、最亮的月亮。",
+            "complete": "对！这就是满月。"
+          }
+        },
+        {
+          "id": "moon-choice-01",
+          "type": "singleChoice",
+          "title": "月相变化的关键原因是什么？",
+          "prompt": "选择最准确的答案。",
+          "source": "clickTasks.moon-choice-01",
+          "options": [
+            {
+              "id": "lit-part",
+              "label": "看到的亮面不同",
+              "source": "clickTasks.moon-choice-01.options.lit-part",
+              "regionIds": [
+                "lit-part"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "moon-bites",
+              "label": "月亮被咬掉",
+              "source": "clickTasks.moon-choice-01.options.moon-bites",
+              "regionIds": [
+                "moon-bites"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "moon-fire",
+              "label": "月亮自己开灯",
+              "source": "clickTasks.moon-choice-01.options.moon-fire",
+              "regionIds": [
+                "moon-fire"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "lit-part"
+          ],
+          "decoyRegionIds": [
+            "moon-bites",
+            "moon-fire"
+          ],
+          "feedback": {
+            "correct": "对！月相来自我们看到的亮面不同。",
+            "wrong": "再观察一下试试看。",
+            "partial": "选择最准确的答案。",
+            "complete": "对！月相来自我们看到的亮面不同。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-moon-phases-scene-summary",
+        "assetId": "space-moon-phases-parent-guide",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sun",
+            "label": "太阳",
+            "required": true
+          },
+          {
+            "id": "earth",
+            "label": "地球",
+            "required": true
+          },
+          {
+            "id": "moon",
+            "label": "月亮",
+            "required": true
+          },
+          {
+            "id": "new-moon",
+            "label": "新月",
+            "required": true
+          },
+          {
+            "id": "crescent",
+            "label": "弯月",
+            "required": true
+          },
+          {
+            "id": "half-moon",
+            "label": "半月",
+            "required": true
+          },
+          {
+            "id": "full-moon",
+            "label": "满月",
+            "required": true
+          },
+          {
+            "id": "telescope",
+            "label": "望远镜",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sun",
+            "entityIds": [
+              "sun"
+            ],
+            "label": "太阳",
+            "shape": "rect",
+            "bounds": {
+              "x": 425,
+              "y": 755,
+              "w": 120,
+              "h": 150
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "earth",
+            "entityIds": [
+              "earth"
+            ],
+            "label": "地球",
+            "shape": "rect",
+            "bounds": {
+              "x": 510,
+              "y": 675,
+              "w": 105,
+              "h": 140
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moon",
+            "entityIds": [
+              "moon"
+            ],
+            "label": "月亮",
+            "shape": "rect",
+            "bounds": {
+              "x": 615,
+              "y": 740,
+              "w": 70,
+              "h": 80
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "new-moon",
+            "entityIds": [
+              "new-moon"
+            ],
+            "label": "新月",
+            "shape": "rect",
+            "bounds": {
+              "x": 325,
+              "y": 720,
+              "w": 85,
+              "h": 95
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "crescent",
+            "entityIds": [
+              "crescent"
+            ],
+            "label": "弯月",
+            "shape": "rect",
+            "bounds": {
+              "x": 385,
+              "y": 675,
+              "w": 85,
+              "h": 100
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "half-moon",
+            "entityIds": [
+              "half-moon"
+            ],
+            "label": "半月",
+            "shape": "rect",
+            "bounds": {
+              "x": 470,
+              "y": 635,
+              "w": 85,
+              "h": 105
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "full-moon",
+            "entityIds": [
+              "full-moon"
+            ],
+            "label": "满月",
+            "shape": "rect",
+            "bounds": {
+              "x": 35,
+              "y": 40,
+              "w": 145,
+              "h": 165
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "telescope",
+            "entityIds": [
+              "telescope"
+            ],
+            "label": "望远镜",
+            "shape": "rect",
+            "bounds": {
+              "x": 0,
+              "y": 325,
+              "w": 145,
+              "h": 335
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-sun",
+          "source": "representativeObjects.sun",
+          "label": "太阳",
+          "regionIds": [
+            "sun"
+          ],
+          "entityIds": [
+            "sun"
+          ],
+          "evidenceTitle": "太阳",
+          "observePrompt": "黄色发光圆球",
+          "evidenceCopy": "太阳照亮月亮的一面。",
+          "markerChips": [
+            "太阳"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "月亮的光主要来自____。",
+            "我们站在____上看月亮。",
+            "月相变化是因为看到的____不同。",
+            "我今天看到的月亮像____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "月亮的光主要来自____。",
+        "我们站在____上看月亮。",
+        "月相变化是因为看到的____不同。",
+        "我今天看到的月亮像____。"
+      ],
+      "parentTips": [
+        "可以用手电筒、球和孩子的眼睛模拟太阳、月亮和观察者。",
+        "不要先讲月食，月相不是每天由地球影子造成。",
+        "连续观察比一次讲完更有效，可以每晚画一个小月亮。"
+      ]
+    }
   ]
 }

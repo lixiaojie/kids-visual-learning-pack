@@ -533,7 +533,7 @@
     {
       "id": "evidence-mechanism-steps-count-legs",
       "source": "mechanism.steps.count-legs",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Count the legs",
       "observePrompt": "Current step 1. Look at what happens here.",
@@ -551,7 +551,7 @@
     {
       "id": "evidence-mechanism-steps-check-antennae",
       "source": "mechanism.steps.check-antennae",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Look for antennae",
       "observePrompt": "Current step 2. Look at what happens here.",
@@ -569,7 +569,7 @@
     {
       "id": "evidence-mechanism-steps-check-body",
       "source": "mechanism.steps.check-body",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Look at body parts",
       "observePrompt": "Current step 3. Look at what happens here.",
@@ -587,7 +587,7 @@
     {
       "id": "evidence-mechanism-steps-avoid-wing-rule",
       "source": "mechanism.steps.avoid-wing-rule",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Do not only look for wings",
       "observePrompt": "Current step 4. Look at what happens here.",
@@ -674,7 +674,7 @@
     {
       "id": "evidence-clickTasks-insects-single-01-options-yes-insect",
       "source": "clickTasks.insects-single-01.options.yes-insect",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "Yes, because it is small",
       "observePrompt": "Tap the more accurate answer.",
@@ -692,7 +692,7 @@
     {
       "id": "evidence-clickTasks-insects-single-01-options-no-spider",
       "source": "clickTasks.insects-single-01.options.no-spider",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "No. A spider usually has 8 legs",
       "observePrompt": "Tap the more accurate answer.",
@@ -710,7 +710,7 @@
     {
       "id": "evidence-clickTasks-insects-single-01-options-depends-fly",
       "source": "clickTasks.insects-single-01.options.depends-fly",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "Only animals that fly are insects",
       "observePrompt": "Tap the more accurate answer.",
@@ -728,7 +728,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-butterfly",
       "source": "clickTasks.insects-find-01.options.butterfly",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "butterfly",
       "observePrompt": "Find: which ones are insects?",
@@ -746,7 +746,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-bee",
       "source": "clickTasks.insects-find-01.options.bee",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "bee",
       "observePrompt": "Find: which ones are insects?",
@@ -764,7 +764,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-ladybug",
       "source": "clickTasks.insects-find-01.options.ladybug",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "ladybug",
       "observePrompt": "Find: which ones are insects?",
@@ -782,7 +782,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-ant",
       "source": "clickTasks.insects-find-01.options.ant",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "ant",
       "observePrompt": "Find: which ones are insects?",
@@ -800,7 +800,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-dragonfly",
       "source": "clickTasks.insects-find-01.options.dragonfly",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "dragonfly",
       "observePrompt": "Find: which ones are insects?",
@@ -818,7 +818,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-gardenSpider",
       "source": "clickTasks.insects-find-01.options.gardenSpider",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "gardenSpider",
       "observePrompt": "Find: which ones are insects?",
@@ -836,7 +836,7 @@
     {
       "id": "evidence-clickTasks-insects-find-01-options-centipede",
       "source": "clickTasks.insects-find-01.options.centipede",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "centipede",
       "observePrompt": "Find: which ones are insects?",
@@ -854,7 +854,7 @@
     {
       "id": "evidence-clickTasks-insects-single-02-options-too-many-legs",
       "source": "clickTasks.insects-single-02.options.too-many-legs",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "It has many legs, not the typical 6 legs of an insect",
       "observePrompt": "Choose the best reason.",
@@ -872,7 +872,7 @@
     {
       "id": "evidence-clickTasks-insects-single-02-options-too-long",
       "source": "clickTasks.insects-single-02.options.too-long",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "Because its body is too long",
       "observePrompt": "Choose the best reason.",
@@ -890,7 +890,7 @@
     {
       "id": "evidence-clickTasks-insects-single-02-options-not-flying",
       "source": "clickTasks.insects-single-02.options.not-flying",
-      "visualSlotId": "hero",
+      "visualSlotId": "compare",
       "interactionScope": "local",
       "evidenceTitle": "Because it cannot fly",
       "observePrompt": "Choose the best reason.",
@@ -908,7 +908,7 @@
     {
       "id": "evidence-clickTasks-insects-sequence-01-options-count",
       "source": "clickTasks.insects-sequence-01.options.count",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Count legs",
       "observePrompt": "Tap the three observation steps in order.",
@@ -926,7 +926,7 @@
     {
       "id": "evidence-clickTasks-insects-sequence-01-options-antennae",
       "source": "clickTasks.insects-sequence-01.options.antennae",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Check antennae",
       "observePrompt": "Tap the three observation steps in order.",
@@ -944,7 +944,7 @@
     {
       "id": "evidence-clickTasks-insects-sequence-01-options-body",
       "source": "clickTasks.insects-sequence-01.options.body",
-      "visualSlotId": "hero",
+      "visualSlotId": "observation-steps",
       "interactionScope": "local",
       "evidenceTitle": "Check body parts",
       "observePrompt": "Tap the three observation steps in order.",
@@ -958,6 +958,594 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "How are insects and spiders different?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a magnifying-glass observation table: butterflies, bees, ladybugs, ants, dragonflies, spiders, and centipedes hide among grass, stones, and flowers. When a child taps an animal, the page highlights leg count, antennae, and body sections."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-insects",
+          "label": "Insects",
+          "evidenceTitle": "Insects",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Insects usually have six legs, antennae, and three main body parts. You can spot: Butterfly, Bee, Ladybug, Ant, Dragonfly.",
+          "markerChips": [
+            "Butterfly",
+            "Bee",
+            "Ladybug",
+            "Ant"
+          ]
+        },
+        {
+          "id": "focus-butterfly",
+          "label": "Butterfly",
+          "evidenceTitle": "Butterfly",
+          "observePrompt": "wings, antennae, six legs",
+          "evidenceCopy": "A butterfly is an insect with six legs and antennae.",
+          "markerChips": [
+            "Butterfly"
+          ]
+        },
+        {
+          "id": "focus-bee",
+          "label": "Bee",
+          "evidenceTitle": "Bee",
+          "observePrompt": "striped body, wings, antennae",
+          "evidenceCopy": "A bee is an insect. It has six legs and antennae.",
+          "markerChips": [
+            "Bee"
+          ]
+        },
+        {
+          "id": "focus-ladybug",
+          "label": "Ladybug",
+          "evidenceTitle": "Ladybug",
+          "observePrompt": "round red shell, spots, six legs",
+          "evidenceCopy": "A ladybug is an insect with six legs.",
+          "markerChips": [
+            "Ladybug"
+          ]
+        },
+        {
+          "id": "focus-ant",
+          "label": "Ant",
+          "evidenceTitle": "Ant",
+          "observePrompt": "six legs, antennae, small body",
+          "evidenceCopy": "An ant is an insect even though it usually does not fly.",
+          "markerChips": [
+            "Ant"
+          ]
+        },
+        {
+          "id": "focus-dragonfly",
+          "label": "Dragonfly",
+          "evidenceTitle": "Dragonfly",
+          "observePrompt": "long body, wings, six legs",
+          "evidenceCopy": "A dragonfly is an insect with six legs and long wings.",
+          "markerChips": [
+            "Dragonfly"
+          ]
+        },
+        {
+          "id": "focus-gardenSpider",
+          "label": "Jumping spider",
+          "evidenceTitle": "Jumping spider",
+          "observePrompt": "eight legs, big eyes, no antennae",
+          "evidenceCopy": "A jumping spider has eight legs and is not an insect.",
+          "markerChips": [
+            "Jumping spider"
+          ]
+        },
+        {
+          "id": "focus-jumpingSpider",
+          "label": "Web spider",
+          "evidenceTitle": "Web spider",
+          "observePrompt": "web, eight legs, no antennae",
+          "evidenceCopy": "This spider has eight legs and can make a web.",
+          "markerChips": [
+            "Web spider"
+          ]
+        },
+        {
+          "id": "focus-centipede",
+          "label": "Centipede",
+          "evidenceTitle": "Centipede",
+          "observePrompt": "long body, many legs",
+          "evidenceCopy": "A centipede has many legs. It is not an insect or a spider.",
+          "markerChips": [
+            "Centipede"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Butterfly: A butterfly is an insect with six legs and antennae.",
+            "Bee: A bee is an insect. It has six legs and antennae.",
+            "Ladybug: A ladybug is an insect with six legs.",
+            "Ant: An ant is an insect even though it usually does not fly.",
+            "Dragonfly: A dragonfly is an insect with six legs and long wings.",
+            "Jumping spider: A jumping spider has eight legs and is not an insect.",
+            "Web spider: This spider has eight legs and can make a web.",
+            "Centipede: A centipede has many legs. It is not an insect or a spider."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-count-legs",
+          "label": "Count the legs",
+          "evidenceTitle": "Count the legs",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "Six legs often points to an insect. Eight legs often points to a spider.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-check-antennae",
+          "label": "Look for antennae",
+          "evidenceTitle": "Look for antennae",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Insects usually have antennae. Spiders do not.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-check-body",
+          "label": "Look at body parts",
+          "evidenceTitle": "Look at body parts",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "Insects have head, chest, and belly parts. Spiders look different.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-avoid-wing-rule",
+          "label": "Do not only look for wings",
+          "evidenceTitle": "Do not only look for wings",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Some insects fly, but some insects do not fly.",
+          "markerChips": [
+            "Step 4"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How do we identify small animals?",
+          "items": [
+            "Count the legs: Six legs often points to an insect. Eight legs often points to a spider.",
+            "Look for antennae: Insects usually have antennae. Spiders do not.",
+            "Look at body parts: Insects have head, chest, and belly parts. Spiders look different.",
+            "Do not only look for wings: Some insects fly, but some insects do not fly."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-insect-vs-spider",
+          "label": "Insect vs Spider",
+          "evidenceTitle": "Insect vs Spider",
+          "observePrompt": "Compare visual clues for Insect and Spider.",
+          "evidenceCopy": "Insect: usually six legs; usually has antennae; three main body parts. Spider: usually eight legs; no antennae; not an insect. Counting legs is a good first clue.",
+          "markerChips": [
+            "Insect",
+            "Spider"
+          ]
+        },
+        {
+          "id": "focus-ant-vs-spider",
+          "label": "Ant vs Spider",
+          "evidenceTitle": "Ant vs Spider",
+          "observePrompt": "Compare visual clues for Ant and Spider.",
+          "evidenceCopy": "Ant: six legs; antennae; insect. Spider: eight legs; no antennae; spider. Both are small, but they are not the same kind.",
+          "markerChips": [
+            "Ant",
+            "Spider"
+          ]
+        },
+        {
+          "id": "focus-centipede-vs-insect",
+          "label": "Butterfly vs Centipede",
+          "evidenceTitle": "Butterfly vs Centipede",
+          "observePrompt": "Compare visual clues for Butterfly and Centipede.",
+          "evidenceCopy": "Butterfly: six legs; antennae; insect. Centipede: many legs; long body; not an insect. Many legs does not mean insect.",
+          "markerChips": [
+            "Butterfly",
+            "Centipede"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Insect vs Spider: Counting legs is a good first clue.",
+            "Ant vs Spider: Both are small, but they are not the same kind.",
+            "Butterfly vs Centipede: Many legs does not mean insect."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-yes-insect",
+          "label": "Yes, because it is small",
+          "evidenceTitle": "Yes, because it is small",
+          "observePrompt": "Tap the more accurate answer.",
+          "evidenceCopy": "Being small is not the clue. Count how many legs the spider has.",
+          "markerChips": [
+            "Yes, because it is small"
+          ]
+        },
+        {
+          "id": "focus-no-spider",
+          "label": "No. A spider usually has 8 legs",
+          "evidenceTitle": "No. A spider usually has 8 legs",
+          "observePrompt": "Tap the more accurate answer.",
+          "evidenceCopy": "Right! A spider is not an insect. Counting legs helped you find the clue.",
+          "markerChips": [
+            "No. A spider usually has 8 legs"
+          ]
+        },
+        {
+          "id": "focus-depends-fly",
+          "label": "Only animals that fly are insects",
+          "evidenceTitle": "Only animals that fly are insects",
+          "observePrompt": "Tap the more accurate answer.",
+          "evidenceCopy": "Flying is not the only clue. Ants usually do not fly, but they are insects.",
+          "markerChips": [
+            "Only animals that fly are insects"
+          ]
+        },
+        {
+          "id": "focus-butterfly",
+          "label": "butterfly",
+          "evidenceTitle": "butterfly",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Detective mission complete! You found the six-legged insect friends.",
+          "markerChips": [
+            "butterfly"
+          ]
+        },
+        {
+          "id": "focus-bee",
+          "label": "bee",
+          "evidenceTitle": "bee",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Detective mission complete! You found the six-legged insect friends.",
+          "markerChips": [
+            "bee"
+          ]
+        },
+        {
+          "id": "focus-ladybug",
+          "label": "ladybug",
+          "evidenceTitle": "ladybug",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Detective mission complete! You found the six-legged insect friends.",
+          "markerChips": [
+            "ladybug"
+          ]
+        },
+        {
+          "id": "focus-ant",
+          "label": "ant",
+          "evidenceTitle": "ant",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Detective mission complete! You found the six-legged insect friends.",
+          "markerChips": [
+            "ant"
+          ]
+        },
+        {
+          "id": "focus-dragonfly",
+          "label": "dragonfly",
+          "evidenceTitle": "dragonfly",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Detective mission complete! You found the six-legged insect friends.",
+          "markerChips": [
+            "dragonfly"
+          ]
+        },
+        {
+          "id": "focus-gardenSpider",
+          "label": "gardenSpider",
+          "evidenceTitle": "gardenSpider",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Count the legs again. Insects usually have 6 legs.",
+          "markerChips": [
+            "gardenSpider"
+          ]
+        },
+        {
+          "id": "focus-centipede",
+          "label": "centipede",
+          "evidenceTitle": "centipede",
+          "observePrompt": "Find: which ones are insects?",
+          "evidenceCopy": "Count the legs again. Insects usually have 6 legs.",
+          "markerChips": [
+            "centipede"
+          ]
+        },
+        {
+          "id": "focus-too-many-legs",
+          "label": "It has many legs, not the typical 6 legs of an insect",
+          "evidenceTitle": "It has many legs, not the typical 6 legs of an insect",
+          "observePrompt": "Choose the best reason.",
+          "evidenceCopy": "Great! You were not fooled by “an animal with many legs.”",
+          "markerChips": [
+            "It has many legs, not the typical 6 legs of an insect"
+          ]
+        },
+        {
+          "id": "focus-too-long",
+          "label": "Because its body is too long",
+          "evidenceTitle": "Because its body is too long",
+          "observePrompt": "Choose the best reason.",
+          "evidenceCopy": "Body length is not the most important classification clue.",
+          "markerChips": [
+            "Because its body is too long"
+          ]
+        },
+        {
+          "id": "focus-not-flying",
+          "label": "Because it cannot fly",
+          "evidenceTitle": "Because it cannot fly",
+          "observePrompt": "Choose the best reason.",
+          "evidenceCopy": "An animal can be an insect even if it cannot fly, such as an ant.",
+          "markerChips": [
+            "Because it cannot fly"
+          ]
+        },
+        {
+          "id": "focus-count",
+          "label": "Count legs",
+          "evidenceTitle": "Count legs",
+          "observePrompt": "Tap the three observation steps in order.",
+          "evidenceCopy": "Current step: Count legs. Tap the three observation steps in order.",
+          "markerChips": [
+            "Count legs"
+          ]
+        },
+        {
+          "id": "focus-antennae",
+          "label": "Check antennae",
+          "evidenceTitle": "Check antennae",
+          "observePrompt": "Tap the three observation steps in order.",
+          "evidenceCopy": "Current step: Check antennae. Tap the three observation steps in order.",
+          "markerChips": [
+            "Check antennae"
+          ]
+        },
+        {
+          "id": "focus-body",
+          "label": "Check body parts",
+          "evidenceTitle": "Check body parts",
+          "observePrompt": "Tap the three observation steps in order.",
+          "evidenceCopy": "Current step: Check body parts. Tap the three observation steps in order.",
+          "markerChips": [
+            "Check body parts"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Tap the more accurate answer."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "insects-single-01",
+          "title": "Is a spider an insect?",
+          "prompt": "Tap the more accurate answer.",
+          "options": [
+            {
+              "id": "yes-insect",
+              "label": "Yes, because it is small"
+            },
+            {
+              "id": "no-spider",
+              "label": "No. A spider usually has 8 legs"
+            },
+            {
+              "id": "depends-fly",
+              "label": "Only animals that fly are insects"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! A spider is not an insect. Counting legs helped you find the clue.",
+            "wrong": "Look again and try once more.",
+            "partial": "Tap the more accurate answer.",
+            "complete": "Right! A spider is not an insect. Counting legs helped you find the clue."
+          }
+        },
+        {
+          "id": "insects-find-01",
+          "title": "Find: which ones are insects?",
+          "prompt": "Find: which ones are insects?",
+          "options": [
+            {
+              "id": "butterfly",
+              "label": "butterfly"
+            },
+            {
+              "id": "bee",
+              "label": "bee"
+            },
+            {
+              "id": "ladybug",
+              "label": "ladybug"
+            },
+            {
+              "id": "ant",
+              "label": "ant"
+            },
+            {
+              "id": "dragonfly",
+              "label": "dragonfly"
+            },
+            {
+              "id": "gardenSpider",
+              "label": "gardenSpider"
+            },
+            {
+              "id": "centipede",
+              "label": "centipede"
+            }
+          ],
+          "feedback": {
+            "correct": "Detective mission complete! You found the six-legged insect friends.",
+            "wrong": "Count the legs again. Insects usually have 6 legs.",
+            "partial": "Find: which ones are insects?",
+            "complete": "Detective mission complete! You found the six-legged insect friends."
+          }
+        },
+        {
+          "id": "insects-single-02",
+          "title": "Why is a centipede not an insect?",
+          "prompt": "Choose the best reason.",
+          "options": [
+            {
+              "id": "too-many-legs",
+              "label": "It has many legs, not the typical 6 legs of an insect"
+            },
+            {
+              "id": "too-long",
+              "label": "Because its body is too long"
+            },
+            {
+              "id": "not-flying",
+              "label": "Because it cannot fly"
+            }
+          ],
+          "feedback": {
+            "correct": "Great! You were not fooled by “an animal with many legs.”",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the best reason.",
+            "complete": "Great! You were not fooled by “an animal with many legs.”"
+          }
+        },
+        {
+          "id": "insects-sequence-01",
+          "title": "Little detective observation order",
+          "prompt": "Tap the three observation steps in order.",
+          "options": [
+            {
+              "id": "count",
+              "label": "Count legs"
+            },
+            {
+              "id": "antennae",
+              "label": "Check antennae"
+            },
+            {
+              "id": "body",
+              "label": "Check body parts"
+            }
+          ],
+          "feedback": {
+            "correct": "You learned the little detective’s observation order.",
+            "wrong": "Start with the easiest clue to see: the number of legs.",
+            "partial": "Tap the three observation steps in order.",
+            "complete": "You learned the little detective’s observation order."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-butterfly",
+          "label": "Butterfly",
+          "evidenceTitle": "Butterfly",
+          "observePrompt": "wings, antennae, six legs",
+          "evidenceCopy": "A butterfly is an insect with six legs and antennae.",
+          "markerChips": [
+            "Butterfly"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "I think ____ is an insect because it has ____.",
+            "I think ____ is a spider because it has ____.",
+            "____ looks small, but I need to check ____ before I classify it."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "I think ____ is an insect because it has ____.",
+        "I think ____ is a spider because it has ____.",
+        "____ looks small, but I need to check ____ before I classify it."
+      ],
+      "parentTips": [
+        "Keep the tone curious, not scary. Avoid making spiders or insects frightening.",
+        "Ask the child to point to the clue: legs, antennae, or body parts.",
+        "This page can connect to the animal classification tree and to ecology later."
+      ]
     }
   ]
 }

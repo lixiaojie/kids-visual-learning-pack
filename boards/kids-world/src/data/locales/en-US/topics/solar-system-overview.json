@@ -617,7 +617,7 @@
     {
       "id": "evidence-mechanism-steps-center-sun",
       "source": "mechanism.steps.center-sun",
-      "visualSlotId": "hero",
+      "visualSlotId": "solar-overview",
       "interactionScope": "local",
       "evidenceTitle": "The Sun is the center",
       "observePrompt": "Current step 1. Look at what happens here.",
@@ -635,7 +635,7 @@
     {
       "id": "evidence-mechanism-steps-orbits",
       "source": "mechanism.steps.orbits",
-      "visualSlotId": "hero",
+      "visualSlotId": "solar-overview",
       "interactionScope": "local",
       "evidenceTitle": "Planets follow orbits",
       "observePrompt": "Current step 2. Look at what happens here.",
@@ -653,7 +653,7 @@
     {
       "id": "evidence-mechanism-steps-inner-planets",
       "source": "mechanism.steps.inner-planets",
-      "visualSlotId": "hero",
+      "visualSlotId": "inner-planets-sequence",
       "interactionScope": "local",
       "evidenceTitle": "Near and far order",
       "observePrompt": "Current step 3. Look at what happens here.",
@@ -671,7 +671,7 @@
     {
       "id": "evidence-mechanism-steps-asteroid-belt",
       "source": "mechanism.steps.asteroid-belt",
-      "visualSlotId": "hero",
+      "visualSlotId": "asteroid-belt",
       "interactionScope": "local",
       "evidenceTitle": "Small rocks also travel",
       "observePrompt": "Current step 4. Look at what happens here.",
@@ -689,7 +689,7 @@
     {
       "id": "evidence-mechanism-steps-outer-planets",
       "source": "mechanism.steps.outer-planets",
-      "visualSlotId": "hero",
+      "visualSlotId": "solar-overview",
       "interactionScope": "local",
       "evidenceTitle": "Outer giant planets",
       "observePrompt": "Current step 5. Look at what happens here.",
@@ -776,7 +776,7 @@
     {
       "id": "evidence-clickTasks-solar-sequence-01-options-mercury",
       "source": "clickTasks.solar-sequence-01.options.mercury",
-      "visualSlotId": "hero",
+      "visualSlotId": "inner-planets-sequence",
       "interactionScope": "local",
       "evidenceTitle": "Mercury",
       "observePrompt": "Tap the planets in order from near to far.",
@@ -794,7 +794,7 @@
     {
       "id": "evidence-clickTasks-solar-sequence-01-options-venus",
       "source": "clickTasks.solar-sequence-01.options.venus",
-      "visualSlotId": "hero",
+      "visualSlotId": "inner-planets-sequence",
       "interactionScope": "local",
       "evidenceTitle": "Venus",
       "observePrompt": "Tap the planets in order from near to far.",
@@ -812,7 +812,7 @@
     {
       "id": "evidence-clickTasks-solar-sequence-01-options-earth",
       "source": "clickTasks.solar-sequence-01.options.earth",
-      "visualSlotId": "hero",
+      "visualSlotId": "inner-planets-sequence",
       "interactionScope": "local",
       "evidenceTitle": "Earth",
       "observePrompt": "Tap the planets in order from near to far.",
@@ -830,7 +830,7 @@
     {
       "id": "evidence-clickTasks-solar-sequence-01-options-mars",
       "source": "clickTasks.solar-sequence-01.options.mars",
-      "visualSlotId": "hero",
+      "visualSlotId": "inner-planets-sequence",
       "interactionScope": "local",
       "evidenceTitle": "Mars",
       "observePrompt": "Tap the planets in order from near to far.",
@@ -848,7 +848,7 @@
     {
       "id": "evidence-clickTasks-solar-find-01-options-jupiter",
       "source": "clickTasks.solar-find-01.options.jupiter",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "jupiter",
       "observePrompt": "Find: which is the largest planet?",
@@ -866,7 +866,7 @@
     {
       "id": "evidence-clickTasks-solar-find-01-options-earth",
       "source": "clickTasks.solar-find-01.options.earth",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "earth",
       "observePrompt": "Find: which is the largest planet?",
@@ -884,7 +884,7 @@
     {
       "id": "evidence-clickTasks-solar-find-01-options-saturn",
       "source": "clickTasks.solar-find-01.options.saturn",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "saturn",
       "observePrompt": "Find: which is the largest planet?",
@@ -902,7 +902,7 @@
     {
       "id": "evidence-clickTasks-solar-find-01-options-sun",
       "source": "clickTasks.solar-find-01.options.sun",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "sun",
       "observePrompt": "Find: which is the largest planet?",
@@ -920,7 +920,7 @@
     {
       "id": "evidence-clickTasks-solar-find-02-options-asteroid-belt",
       "source": "clickTasks.solar-find-02.options.asteroid-belt",
-      "visualSlotId": "hero",
+      "visualSlotId": "asteroid-belt",
       "interactionScope": "local",
       "evidenceTitle": "asteroid belt",
       "observePrompt": "Find: where is the asteroid belt?",
@@ -938,7 +938,7 @@
     {
       "id": "evidence-clickTasks-solar-find-02-options-mars",
       "source": "clickTasks.solar-find-02.options.mars",
-      "visualSlotId": "hero",
+      "visualSlotId": "asteroid-belt",
       "interactionScope": "local",
       "evidenceTitle": "mars",
       "observePrompt": "Find: where is the asteroid belt?",
@@ -956,7 +956,7 @@
     {
       "id": "evidence-clickTasks-solar-find-02-options-jupiter",
       "source": "clickTasks.solar-find-02.options.jupiter",
-      "visualSlotId": "hero",
+      "visualSlotId": "asteroid-belt",
       "interactionScope": "local",
       "evidenceTitle": "jupiter",
       "observePrompt": "Find: where is the asteroid belt?",
@@ -974,7 +974,7 @@
     {
       "id": "evidence-clickTasks-solar-find-02-options-saturn",
       "source": "clickTasks.solar-find-02.options.saturn",
-      "visualSlotId": "hero",
+      "visualSlotId": "asteroid-belt",
       "interactionScope": "local",
       "evidenceTitle": "saturn",
       "observePrompt": "Find: where is the asteroid belt?",
@@ -992,7 +992,7 @@
     {
       "id": "evidence-clickTasks-solar-choice-01-options-star",
       "source": "clickTasks.solar-choice-01.options.star",
-      "visualSlotId": "hero",
+      "visualSlotId": "star-vs-planet",
       "interactionScope": "local",
       "evidenceTitle": "A star",
       "observePrompt": "Choose the most accurate answer.",
@@ -1010,7 +1010,7 @@
     {
       "id": "evidence-clickTasks-solar-choice-01-options-planet",
       "source": "clickTasks.solar-choice-01.options.planet",
-      "visualSlotId": "hero",
+      "visualSlotId": "star-vs-planet",
       "interactionScope": "local",
       "evidenceTitle": "A planet",
       "observePrompt": "Choose the most accurate answer.",
@@ -1028,7 +1028,7 @@
     {
       "id": "evidence-clickTasks-solar-choice-01-options-asteroid",
       "source": "clickTasks.solar-choice-01.options.asteroid",
-      "visualSlotId": "hero",
+      "visualSlotId": "asteroid-belt",
       "interactionScope": "local",
       "evidenceTitle": "An asteroid",
       "observePrompt": "Choose the most accurate answer.",
@@ -1042,6 +1042,612 @@
       ],
       "expectedStatus": "wrong",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Who lives in the Solar System?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a clickable orbit map: the Sun sits in the center or on the left, eight planets are arranged by distance from the Sun, and the asteroid belt appears as a ring of small rocks between Mars and Jupiter. When a planet is clicked, its orbit and card light up."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-star",
+          "label": "Star",
+          "evidenceTitle": "Star",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "The Sun is a star. It makes its own light and heat. You can spot: Sun.",
+          "markerChips": [
+            "Sun"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "Sun",
+          "evidenceTitle": "Sun",
+          "observePrompt": "large bright center",
+          "evidenceCopy": "The Sun gives light and heat. Planets go around it.",
+          "markerChips": [
+            "Sun"
+          ]
+        },
+        {
+          "id": "focus-mercury",
+          "label": "Mercury",
+          "evidenceTitle": "Mercury",
+          "observePrompt": "small gray planet near the Sun",
+          "evidenceCopy": "Mercury is the closest planet to the Sun.",
+          "markerChips": [
+            "Mercury"
+          ]
+        },
+        {
+          "id": "focus-venus",
+          "label": "Venus",
+          "evidenceTitle": "Venus",
+          "observePrompt": "yellow cloudy planet",
+          "evidenceCopy": "Venus is a rocky planet with thick clouds.",
+          "markerChips": [
+            "Venus"
+          ]
+        },
+        {
+          "id": "focus-earth",
+          "label": "Earth",
+          "evidenceTitle": "Earth",
+          "observePrompt": "blue and green planet",
+          "evidenceCopy": "Earth is our home planet.",
+          "markerChips": [
+            "Earth"
+          ]
+        },
+        {
+          "id": "focus-mars",
+          "label": "Mars",
+          "evidenceTitle": "Mars",
+          "observePrompt": "red planet",
+          "evidenceCopy": "Mars is a rocky planet often shown as red.",
+          "markerChips": [
+            "Mars"
+          ]
+        },
+        {
+          "id": "focus-asteroid-belt",
+          "label": "Asteroid belt",
+          "evidenceTitle": "Asteroid belt",
+          "observePrompt": "small dots between Mars and Jupiter",
+          "evidenceCopy": "Many small rocky objects move in this region.",
+          "markerChips": [
+            "Asteroid belt"
+          ]
+        },
+        {
+          "id": "focus-jupiter",
+          "label": "Jupiter",
+          "evidenceTitle": "Jupiter",
+          "observePrompt": "very large striped planet",
+          "evidenceCopy": "Jupiter is the biggest planet in the Solar System.",
+          "markerChips": [
+            "Jupiter"
+          ]
+        },
+        {
+          "id": "focus-saturn",
+          "label": "Saturn",
+          "evidenceTitle": "Saturn",
+          "observePrompt": "rings around planet",
+          "evidenceCopy": "Saturn is famous for its beautiful rings.",
+          "markerChips": [
+            "Saturn"
+          ]
+        },
+        {
+          "id": "focus-uranus",
+          "label": "Uranus",
+          "evidenceTitle": "Uranus",
+          "observePrompt": "pale blue-green planet",
+          "evidenceCopy": "Uranus is a faraway giant planet with a blue-green color.",
+          "markerChips": [
+            "Uranus"
+          ]
+        },
+        {
+          "id": "focus-neptune",
+          "label": "Neptune",
+          "evidenceTitle": "Neptune",
+          "observePrompt": "dark blue planet",
+          "evidenceCopy": "Neptune is a far, deep-blue giant planet.",
+          "markerChips": [
+            "Neptune"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Sun: The Sun gives light and heat. Planets go around it.",
+            "Mercury: Mercury is the closest planet to the Sun.",
+            "Venus: Venus is a rocky planet with thick clouds.",
+            "Earth: Earth is our home planet.",
+            "Mars: Mars is a rocky planet often shown as red.",
+            "Asteroid belt: Many small rocky objects move in this region.",
+            "Jupiter: Jupiter is the biggest planet in the Solar System.",
+            "Saturn: Saturn is famous for its beautiful rings.",
+            "Uranus: Uranus is a faraway giant planet with a blue-green color.",
+            "Neptune: Neptune is a far, deep-blue giant planet."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-center-sun",
+          "label": "The Sun is the center",
+          "evidenceTitle": "The Sun is the center",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "The Sun is the big bright star at the center of the Solar System.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-orbits",
+          "label": "Planets follow orbits",
+          "evidenceTitle": "Planets follow orbits",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Each planet travels around the Sun on its own path.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-inner-planets",
+          "label": "Near and far order",
+          "evidenceTitle": "Near and far order",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "Some planets are closer to the Sun, and some are farther away.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-asteroid-belt",
+          "label": "Small rocks also travel",
+          "evidenceTitle": "Small rocks also travel",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Many small rocky objects travel between Mars and Jupiter.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-outer-planets",
+          "label": "Outer giant planets",
+          "evidenceTitle": "Outer giant planets",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "Jupiter, Saturn, Uranus, and Neptune travel farther from the Sun.",
+          "markerChips": [
+            "Step 5"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How do planets move?",
+          "items": [
+            "The Sun is the center: The Sun is the big bright star at the center of the Solar System.",
+            "Planets follow orbits: Each planet travels around the Sun on its own path.",
+            "Near and far order: Some planets are closer to the Sun, and some are farther away.",
+            "Small rocks also travel: Many small rocky objects travel between Mars and Jupiter.",
+            "Outer giant planets: Jupiter, Saturn, Uranus, and Neptune travel farther from the Sun."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-star-vs-planet",
+          "label": "Star vs Planet",
+          "evidenceTitle": "Star vs Planet",
+          "observePrompt": "Compare visual clues for Star and Planet.",
+          "evidenceCopy": "Star: makes its own light; gives heat; the Sun is a star. Planet: goes around a star; does not make sunlight like the Sun; Earth is a planet. The Sun is a star. Earth is a planet.",
+          "markerChips": [
+            "Star",
+            "Planet"
+          ]
+        },
+        {
+          "id": "focus-earth-vs-jupiter",
+          "label": "Earth vs Jupiter",
+          "evidenceTitle": "Earth vs Jupiter",
+          "observePrompt": "Compare visual clues for Earth and Jupiter.",
+          "evidenceCopy": "Earth: rocky planet; our home; smaller. Jupiter: giant planet; biggest planet; farther from the Sun. Planets can be very different from each other.",
+          "markerChips": [
+            "Earth",
+            "Jupiter"
+          ]
+        },
+        {
+          "id": "focus-mars-vs-asteroid-belt",
+          "label": "Mars vs Asteroid Belt",
+          "evidenceTitle": "Mars vs Asteroid Belt",
+          "observePrompt": "Compare visual clues for Mars and Asteroid belt.",
+          "evidenceCopy": "Mars: one planet; rocky; has its own orbit. Asteroid belt: many small objects; between Mars and Jupiter; not one planet. The Solar System has planets and many smaller objects too.",
+          "markerChips": [
+            "Mars",
+            "Asteroid belt"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Star vs Planet: The Sun is a star. Earth is a planet.",
+            "Earth vs Jupiter: Planets can be very different from each other.",
+            "Mars vs Asteroid Belt: The Solar System has planets and many smaller objects too."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-mercury",
+          "label": "Mercury",
+          "evidenceTitle": "Mercury",
+          "observePrompt": "Tap the planets in order from near to far.",
+          "evidenceCopy": "Current step: Mercury. Tap the planets in order from near to far.",
+          "markerChips": [
+            "Mercury"
+          ]
+        },
+        {
+          "id": "focus-venus",
+          "label": "Venus",
+          "evidenceTitle": "Venus",
+          "observePrompt": "Tap the planets in order from near to far.",
+          "evidenceCopy": "Current step: Venus. Tap the planets in order from near to far.",
+          "markerChips": [
+            "Venus"
+          ]
+        },
+        {
+          "id": "focus-earth",
+          "label": "Earth",
+          "evidenceTitle": "Earth",
+          "observePrompt": "Tap the planets in order from near to far.",
+          "evidenceCopy": "Current step: Earth. Tap the planets in order from near to far.",
+          "markerChips": [
+            "Earth"
+          ]
+        },
+        {
+          "id": "focus-mars",
+          "label": "Mars",
+          "evidenceTitle": "Mars",
+          "observePrompt": "Tap the planets in order from near to far.",
+          "evidenceCopy": "Current step: Mars. Tap the planets in order from near to far.",
+          "markerChips": [
+            "Mars"
+          ]
+        },
+        {
+          "id": "focus-jupiter",
+          "label": "jupiter",
+          "evidenceTitle": "jupiter",
+          "observePrompt": "Find: which is the largest planet?",
+          "evidenceCopy": "Correct! Jupiter is the largest planet in the solar system.",
+          "markerChips": [
+            "jupiter"
+          ]
+        },
+        {
+          "id": "focus-earth",
+          "label": "earth",
+          "evidenceTitle": "earth",
+          "observePrompt": "Find: which is the largest planet?",
+          "evidenceCopy": "Look for the giant planet with stripes.",
+          "markerChips": [
+            "earth"
+          ]
+        },
+        {
+          "id": "focus-saturn",
+          "label": "saturn",
+          "evidenceTitle": "saturn",
+          "observePrompt": "Find: which is the largest planet?",
+          "evidenceCopy": "Look for the giant planet with stripes.",
+          "markerChips": [
+            "saturn"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "sun",
+          "evidenceTitle": "sun",
+          "observePrompt": "Find: which is the largest planet?",
+          "evidenceCopy": "Look for the giant planet with stripes.",
+          "markerChips": [
+            "sun"
+          ]
+        },
+        {
+          "id": "focus-asteroid-belt",
+          "label": "asteroid belt",
+          "evidenceTitle": "asteroid belt",
+          "observePrompt": "Find: where is the asteroid belt?",
+          "evidenceCopy": "You found it! The asteroid belt is between Mars and Jupiter.",
+          "markerChips": [
+            "asteroid belt"
+          ]
+        },
+        {
+          "id": "focus-mars",
+          "label": "mars",
+          "evidenceTitle": "mars",
+          "observePrompt": "Find: where is the asteroid belt?",
+          "evidenceCopy": "Look between Mars and Jupiter.",
+          "markerChips": [
+            "mars"
+          ]
+        },
+        {
+          "id": "focus-jupiter",
+          "label": "jupiter",
+          "evidenceTitle": "jupiter",
+          "observePrompt": "Find: where is the asteroid belt?",
+          "evidenceCopy": "Look between Mars and Jupiter.",
+          "markerChips": [
+            "jupiter"
+          ]
+        },
+        {
+          "id": "focus-saturn",
+          "label": "saturn",
+          "evidenceTitle": "saturn",
+          "observePrompt": "Find: where is the asteroid belt?",
+          "evidenceCopy": "Look between Mars and Jupiter.",
+          "markerChips": [
+            "saturn"
+          ]
+        },
+        {
+          "id": "focus-star",
+          "label": "A star",
+          "evidenceTitle": "A star",
+          "observePrompt": "Choose the most accurate answer.",
+          "evidenceCopy": "Right! The Sun is a star and sits at the center of the solar system.",
+          "markerChips": [
+            "A star"
+          ]
+        },
+        {
+          "id": "focus-planet",
+          "label": "A planet",
+          "evidenceTitle": "A planet",
+          "observePrompt": "Choose the most accurate answer.",
+          "evidenceCopy": "Planets go around stars. The Sun is the star in the center.",
+          "markerChips": [
+            "A planet"
+          ]
+        },
+        {
+          "id": "focus-asteroid",
+          "label": "An asteroid",
+          "evidenceTitle": "An asteroid",
+          "observePrompt": "Choose the most accurate answer.",
+          "evidenceCopy": "Asteroids are much smaller objects.",
+          "markerChips": [
+            "An asteroid"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Tap the planets in order from near to far."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "solar-sequence-01",
+          "title": "Starting from the Sun, what are the first four planets?",
+          "prompt": "Tap the planets in order from near to far.",
+          "options": [
+            {
+              "id": "mercury",
+              "label": "Mercury"
+            },
+            {
+              "id": "venus",
+              "label": "Venus"
+            },
+            {
+              "id": "earth",
+              "label": "Earth"
+            },
+            {
+              "id": "mars",
+              "label": "Mars"
+            }
+          ],
+          "feedback": {
+            "correct": "Great! You found the first four planet neighbors.",
+            "wrong": "Start with the planet closest to the Sun.",
+            "partial": "Tap the planets in order from near to far.",
+            "complete": "Great! You found the first four planet neighbors."
+          }
+        },
+        {
+          "id": "solar-find-01",
+          "title": "Find: which is the largest planet?",
+          "prompt": "Find: which is the largest planet?",
+          "options": [
+            {
+              "id": "jupiter",
+              "label": "jupiter"
+            },
+            {
+              "id": "earth",
+              "label": "earth"
+            },
+            {
+              "id": "saturn",
+              "label": "saturn"
+            },
+            {
+              "id": "sun",
+              "label": "sun"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! Jupiter is the largest planet in the solar system.",
+            "wrong": "Look for the giant planet with stripes.",
+            "partial": "Find: which is the largest planet?",
+            "complete": "Correct! Jupiter is the largest planet in the solar system."
+          }
+        },
+        {
+          "id": "solar-find-02",
+          "title": "Find: where is the asteroid belt?",
+          "prompt": "Find: where is the asteroid belt?",
+          "options": [
+            {
+              "id": "asteroid-belt",
+              "label": "asteroid belt"
+            },
+            {
+              "id": "mars",
+              "label": "mars"
+            },
+            {
+              "id": "jupiter",
+              "label": "jupiter"
+            },
+            {
+              "id": "saturn",
+              "label": "saturn"
+            }
+          ],
+          "feedback": {
+            "correct": "You found it! The asteroid belt is between Mars and Jupiter.",
+            "wrong": "Look between Mars and Jupiter.",
+            "partial": "Find: where is the asteroid belt?",
+            "complete": "You found it! The asteroid belt is between Mars and Jupiter."
+          }
+        },
+        {
+          "id": "solar-choice-01",
+          "title": "What is the Sun?",
+          "prompt": "Choose the most accurate answer.",
+          "options": [
+            {
+              "id": "star",
+              "label": "A star"
+            },
+            {
+              "id": "planet",
+              "label": "A planet"
+            },
+            {
+              "id": "asteroid",
+              "label": "An asteroid"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! The Sun is a star and sits at the center of the solar system.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the most accurate answer.",
+            "complete": "Right! The Sun is a star and sits at the center of the solar system."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-sun",
+          "label": "Sun",
+          "evidenceTitle": "Sun",
+          "observePrompt": "large bright center",
+          "evidenceCopy": "The Sun gives light and heat. Planets go around it.",
+          "markerChips": [
+            "Sun"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "The Sun is a ____ because it ____.",
+            "Earth is the ____ planet from the Sun.",
+            "The asteroid belt is between ____ and ____.",
+            "I found out that planets can be ____ or ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "The Sun is a ____ because it ____.",
+        "Earth is the ____ planet from the Sun.",
+        "The asteroid belt is between ____ and ____.",
+        "I found out that planets can be ____ or ____."
+      ],
+      "parentTips": [
+        "Do not focus on exact sizes and distances first; focus on positions and relationships.",
+        "Use the orbit map to ask: what is closer, what is farther, what is between?",
+        "This topic can connect to Moon phases, day and night, and space exploration."
+      ]
     }
   ]
 }

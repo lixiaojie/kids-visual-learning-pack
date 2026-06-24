@@ -1,22 +1,57 @@
 .click-task-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 8px;
 }
 
 .click-task-tab {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 46px;
   max-width: 100%;
-  padding: 12px 18px;
+  padding: 8px 10px;
   border: 2px solid rgba(23, 32, 51, 0.12);
-  border-radius: 999px;
+  border-radius: 12px;
   background: #ffffff;
   color: #172033;
-  font-size: 25px;
-  font-weight: 900;
+  text-align: left;
 }
 
 .click-task-tab.active {
   border-color: #4f46e5;
   background: #eef2ff;
   color: #3730a3;
+}
+
+.click-task-tab-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #172033;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.click-task-tab.active .click-task-tab-index {
+  background: #4f46e5;
+}
+
+.click-task-tab-label {
+  display: block;
+  width: 100%;
+  color: #172033;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.25;
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }

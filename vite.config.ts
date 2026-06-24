@@ -9,8 +9,15 @@ export default defineConfig({
   plugins: [react()],
   base: "./",
   resolve: {
-    alias: {
-      "@yutou/kids-content": path.resolve(rootDir, "packages/kids-content/src/index.ts"),
-    },
+    alias: [
+      {
+        find: /^@yutou\/kids-content$/,
+        replacement: path.resolve(rootDir, "packages/kids-content/src/index.ts"),
+      },
+      {
+        find: /^@yutou\/kids-content\/(.*)$/,
+        replacement: path.resolve(rootDir, "packages/kids-content/src/$1"),
+      },
+    ],
   },
 });

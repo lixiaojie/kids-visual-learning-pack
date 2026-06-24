@@ -7,6 +7,11 @@ type Props = {
   className?: string;
   fallbackAlt?: string;
   locale?: Locale;
+  visualSupport?: {
+    title?: string;
+    body?: string;
+    note?: string;
+  } | null;
 };
 
 const statusLabels: Record<Locale, Record<VisualEvidenceState["status"], string>> = {
@@ -55,12 +60,22 @@ function FocusOverlay({ focus }: { focus?: VisualFocus }) {
   );
 }
 
-export function TopicVisual({ slot, evidence, className = "", fallbackAlt, locale = "zh-CN" }: Props) {
+export function TopicVisual({ slot, evidence, className = "", fallbackAlt, locale = "zh-CN", visualSupport }: Props) {
   if (!slot) return null;
   const labels = statusLabels[locale];
+  const selectedLabelCopy = evidence?.selectedLabels?.length
+    ? `${locale === "zh-CN" ? "已选：" : "Selected: "}${evidence.selectedLabels.join(locale === "zh-CN" ? "、" : ", ")}`
+    : "";
 
   return (
     <figure className={`topic-visual ${evidence ? `evidence-${evidence.status}` : ""} ${className}`.trim()} data-evidence-source={evidence?.source}>
+      {visualSupport ? (
+        <div className="visual-support-text">
+          {visualSupport.title ? <strong>{visualSupport.title}</strong> : null}
+          {visualSupport.body ? <p>{visualSupport.body}</p> : null}
+          {visualSupport.note ? <small>{visualSupport.note}</small> : null}
+        </div>
+      ) : null}
       <div className="topic-visual-image-wrap">
         <GeneratedImage
           alt={slot.alt ?? slot.caption ?? fallbackAlt ?? ""}
@@ -68,34 +83,31 @@ export function TopicVisual({ slot, evidence, className = "", fallbackAlt, local
           className="topic-visual-image"
         />
         <FocusOverlay focus={evidence?.focus} />
+        {evidence ? (
+          <div className="evidence-panel" data-testid="evidence-panel">
+            <div className="evidence-heading">
+              <strong>{evidence.evidenceTitle}</strong>
+              <span>{labels[evidence.status]}</span>
+            </div>
+            <div className="evidence-details sr-only">
+              {evidence.observePrompt ? <p>{evidence.observePrompt}</p> : null}
+              {selectedLabelCopy ? <p>{selectedLabelCopy}</p> : null}
+              {evidence.markerChips?.length ? (
+                <div className="evidence-chips">
+                  {evidence.markerChips.map((chip) => (
+                    <span className={`evidence-chip ${chip.emphasis ?? "supporting"}`} key={`${chip.label}-${chip.meaning}`} title={chip.meaning}>
+                      {chip.label}
+                      <small>{chip.meaning}</small>
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+              <p>{evidence.evidenceCopy}</p>
+            </div>
+          </div>
+        ) : null}
       </div>
       {slot.caption ? <figcaption>{slot.caption}</figcaption> : null}
-      {evidence ? (
-        <div className="evidence-panel" data-testid="evidence-panel">
-          <div className="evidence-heading">
-            <strong>{evidence.evidenceTitle}</strong>
-            <span>{labels[evidence.status]}</span>
-          </div>
-          {evidence.observePrompt ? <p>{evidence.observePrompt}</p> : null}
-          {evidence.selectedLabels?.length ? (
-            <p>
-              {locale === "zh-CN" ? "已选：" : "Selected: "}
-              {evidence.selectedLabels.join(locale === "zh-CN" ? "、" : ", ")}
-            </p>
-          ) : null}
-          {evidence.markerChips?.length ? (
-            <div className="evidence-chips">
-              {evidence.markerChips.map((chip) => (
-                <span className={`evidence-chip ${chip.emphasis ?? "supporting"}`} key={`${chip.label}-${chip.meaning}`} title={chip.meaning}>
-                  {chip.label}
-                  <small>{chip.meaning}</small>
-                </span>
-              ))}
-            </div>
-          ) : null}
-          <p>{evidence.evidenceCopy}</p>
-        </div>
-      ) : null}
     </figure>
   );
 }

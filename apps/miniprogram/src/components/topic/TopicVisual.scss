@@ -1,7 +1,8 @@
 .topic-visual {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 0;
   overflow: hidden;
   margin: 4px 0 14px;
   border: 2px solid rgba(23, 32, 51, 0.1);
@@ -11,11 +12,14 @@
 
 .topic-visual-image {
   width: 100%;
-  height: 300px;
+  height: auto;
+  max-height: 720px;
 }
 
 .topic-visual-image-wrap {
   position: relative;
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
 }
 
@@ -54,7 +58,7 @@
   background: rgba(255, 255, 255, 0.92);
   color: #172033;
   font-size: 21px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .topic-visual-caption {
@@ -65,13 +69,37 @@
   line-height: 1.45;
 }
 
-.evidence-panel {
+.visual-support-text {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-  border-top: 2px solid rgba(23, 32, 51, 0.08);
+  align-self: stretch;
+  gap: 6px;
+  min-height: 132px;
+  padding: 14px;
+  border-bottom: 2px solid rgba(23, 32, 51, 0.08);
   background: #f8fafc;
+}
+
+.visual-support-title {
+  color: #172033;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.visual-support-body,
+.visual-support-note {
+  color: #475569;
+  font-size: 22px;
+  line-height: 1.45;
+}
+
+.visual-support-note {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.evidence-panel {
+  display: none;
 }
 
 .evidence-heading {
@@ -82,18 +110,26 @@
 }
 
 .evidence-title {
-  color: #172033;
-  font-size: 28px;
-  font-weight: 900;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .evidence-status {
-  padding: 6px 12px;
+  flex: 0 0 auto;
+  padding: 5px 10px;
   border-radius: 999px;
-  background: #dbeafe;
-  color: #1d4ed8;
-  font-size: 22px;
-  font-weight: 900;
+  background: rgba(255, 255, 255, 0.92);
+  color: #172033;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.evidence-detail {
+  display: none;
 }
 
 .evidence-copy {
@@ -114,7 +150,7 @@
   background: #eef2ff;
   color: #3730a3;
   font-size: 23px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .evidence-chip.warning {
@@ -124,9 +160,9 @@
 
 .topic-visual.evidence-correct .evidence-panel,
 .topic-visual.evidence-complete .evidence-panel {
-  background: #f0fdf4;
+  background: rgba(22, 101, 52, 0.82);
 }
 
 .topic-visual.evidence-wrong .evidence-panel {
-  background: #fff7ed;
+  background: rgba(154, 52, 18, 0.84);
 }

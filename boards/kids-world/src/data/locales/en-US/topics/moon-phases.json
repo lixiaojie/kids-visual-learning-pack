@@ -992,5 +992,520 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Does the Moon really change shape, or do we see different lit parts?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The scene shows a gentle rooftop observation at night, an arc of Moon phases, and a simple Sun–Earth–Moon relationship diagram explaining where light comes from."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-light-source",
+          "label": "Where light comes from",
+          "evidenceTitle": "Where light comes from",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "The Sun lights the Moon, and the Moon reflects that light to us. You can spot: Sun.",
+          "markerChips": [
+            "Sun"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "Sun",
+          "evidenceTitle": "Sun",
+          "observePrompt": "glowing yellow sphere",
+          "evidenceCopy": "The Sun lights one side of the Moon.",
+          "markerChips": [
+            "Sun"
+          ]
+        },
+        {
+          "id": "focus-earth",
+          "label": "Earth",
+          "evidenceTitle": "Earth",
+          "observePrompt": "blue-green Earth",
+          "evidenceCopy": "We stand on Earth to look at the Moon.",
+          "markerChips": [
+            "Earth"
+          ]
+        },
+        {
+          "id": "focus-moon",
+          "label": "Moon",
+          "evidenceTitle": "Moon",
+          "observePrompt": "gray-yellow sphere",
+          "evidenceCopy": "The Moon moves around Earth and is lit by the Sun.",
+          "markerChips": [
+            "Moon"
+          ]
+        },
+        {
+          "id": "focus-new-moon",
+          "label": "New Moon",
+          "evidenceTitle": "New Moon",
+          "observePrompt": "dark small circle",
+          "evidenceCopy": "We can barely see the bright side.",
+          "markerChips": [
+            "New Moon"
+          ]
+        },
+        {
+          "id": "focus-crescent",
+          "label": "Crescent Moon",
+          "evidenceTitle": "Crescent Moon",
+          "observePrompt": "banana-like curve",
+          "evidenceCopy": "We see a thin bright edge.",
+          "markerChips": [
+            "Crescent Moon"
+          ]
+        },
+        {
+          "id": "focus-half-moon",
+          "label": "Half Moon",
+          "evidenceTitle": "Half Moon",
+          "observePrompt": "half bright, half dark",
+          "evidenceCopy": "We see about half of the bright side.",
+          "markerChips": [
+            "Half Moon"
+          ]
+        },
+        {
+          "id": "focus-full-moon",
+          "label": "Full Moon",
+          "evidenceTitle": "Full Moon",
+          "observePrompt": "round bright Moon",
+          "evidenceCopy": "We see the whole bright face.",
+          "markerChips": [
+            "Full Moon"
+          ]
+        },
+        {
+          "id": "focus-telescope",
+          "label": "Telescope",
+          "evidenceTitle": "Telescope",
+          "observePrompt": "blue telescope",
+          "evidenceCopy": "A telescope helps us see more clearly.",
+          "markerChips": [
+            "Telescope"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Sun: The Sun lights one side of the Moon.",
+            "Earth: We stand on Earth to look at the Moon.",
+            "Moon: The Moon moves around Earth and is lit by the Sun.",
+            "New Moon: We can barely see the bright side.",
+            "Crescent Moon: We see a thin bright edge.",
+            "Half Moon: We see about half of the bright side.",
+            "Full Moon: We see the whole bright face.",
+            "Telescope: A telescope helps us see more clearly."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-sunlight",
+          "label": "Sun lights it",
+          "evidenceTitle": "Sun lights it",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "The Sun always lights part of the Moon.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-moon-orbits",
+          "label": "Moon orbits Earth",
+          "evidenceTitle": "Moon orbits Earth",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "The Moon travels around Earth while sunlight hits it.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-viewer-on-earth",
+          "label": "We watch from Earth",
+          "evidenceTitle": "We watch from Earth",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "We can only see the side of the Moon facing us.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-lit-part-changes",
+          "label": "Different lit parts",
+          "evidenceTitle": "Different lit parts",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Sometimes we see a little, half, or all of the lit side.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-cycle-repeat",
+          "label": "The cycle repeats",
+          "evidenceTitle": "The cycle repeats",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "The phases change in order and repeat.",
+          "markerChips": [
+            "Step 5"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "Why do Moon phases change?",
+          "items": [
+            "Sun lights it: The Sun always lights part of the Moon.",
+            "Moon orbits Earth: The Moon travels around Earth while sunlight hits it.",
+            "We watch from Earth: We can only see the side of the Moon facing us.",
+            "Different lit parts: Sometimes we see a little, half, or all of the lit side.",
+            "The cycle repeats: The phases change in order and repeat."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-moonlight-vs-sunlight",
+          "label": "Moonlight vs Sunlight",
+          "evidenceTitle": "Moonlight vs Sunlight",
+          "observePrompt": "Compare visual clues for Moonlight and Sunlight.",
+          "evidenceCopy": "Moonlight: soft-looking; reflected sunlight; does not warm Earth like the Sun. Sunlight: very bright; made by the Sun; brings light and heat. The Moon does not make light like the Sun.",
+          "markerChips": [
+            "Moonlight",
+            "Sunlight"
+          ]
+        },
+        {
+          "id": "focus-shape-vs-lit-part",
+          "label": "Shape changed vs Lit part changed",
+          "evidenceTitle": "Shape changed vs Lit part changed",
+          "observePrompt": "Compare visual clues for Shape changed and Lit part changed.",
+          "evidenceCopy": "Shape changed: looks bitten; common mistake; the Moon body is not reshaping. Lit part changed: we see different bright parts; depends on Sun-Earth-Moon positions; forms the phase cycle. A phase is a different visible lit part.",
+          "markerChips": [
+            "Shape changed",
+            "Lit part changed"
+          ]
+        },
+        {
+          "id": "focus-new-vs-full",
+          "label": "New Moon vs Full Moon",
+          "evidenceTitle": "New Moon vs Full Moon",
+          "observePrompt": "Compare visual clues for New Moon and Full Moon.",
+          "evidenceCopy": "New Moon: almost no bright side visible; not disappeared; still orbiting Earth. Full Moon: whole bright side visible; looks roundest; good for observing surface features. New and full Moon are the same Moon at different phases.",
+          "markerChips": [
+            "New Moon",
+            "Full Moon"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Moonlight vs Sunlight: The Moon does not make light like the Sun.",
+            "Shape changed vs Lit part changed: A phase is a different visible lit part.",
+            "New Moon vs Full Moon: New and full Moon are the same Moon at different phases."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-new-moon",
+          "label": "New Moon",
+          "evidenceTitle": "New Moon",
+          "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+          "evidenceCopy": "Current step: New Moon. Start where it is barely visible and tap toward full Moon.",
+          "markerChips": [
+            "New Moon"
+          ]
+        },
+        {
+          "id": "focus-crescent",
+          "label": "Crescent Moon",
+          "evidenceTitle": "Crescent Moon",
+          "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+          "evidenceCopy": "Current step: Crescent Moon. Start where it is barely visible and tap toward full Moon.",
+          "markerChips": [
+            "Crescent Moon"
+          ]
+        },
+        {
+          "id": "focus-half-moon",
+          "label": "Half Moon",
+          "evidenceTitle": "Half Moon",
+          "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+          "evidenceCopy": "Current step: Half Moon. Start where it is barely visible and tap toward full Moon.",
+          "markerChips": [
+            "Half Moon"
+          ]
+        },
+        {
+          "id": "focus-full-moon",
+          "label": "Full Moon",
+          "evidenceTitle": "Full Moon",
+          "observePrompt": "Start where it is barely visible and tap toward full Moon.",
+          "evidenceCopy": "Current step: Full Moon. Start where it is barely visible and tap toward full Moon.",
+          "markerChips": [
+            "Full Moon"
+          ]
+        },
+        {
+          "id": "focus-full-moon",
+          "label": "full moon",
+          "evidenceTitle": "full moon",
+          "observePrompt": "Find the roundest and brightest-looking Moon.",
+          "evidenceCopy": "Correct! That is the full Moon.",
+          "markerChips": [
+            "full moon"
+          ]
+        },
+        {
+          "id": "focus-new-moon",
+          "label": "new moon",
+          "evidenceTitle": "new moon",
+          "observePrompt": "Find the roundest and brightest-looking Moon.",
+          "evidenceCopy": "The full Moon has the whole visible face lit.",
+          "markerChips": [
+            "new moon"
+          ]
+        },
+        {
+          "id": "focus-crescent",
+          "label": "crescent",
+          "evidenceTitle": "crescent",
+          "observePrompt": "Find the roundest and brightest-looking Moon.",
+          "evidenceCopy": "The full Moon has the whole visible face lit.",
+          "markerChips": [
+            "crescent"
+          ]
+        },
+        {
+          "id": "focus-half-moon",
+          "label": "half moon",
+          "evidenceTitle": "half moon",
+          "observePrompt": "Find the roundest and brightest-looking Moon.",
+          "evidenceCopy": "The full Moon has the whole visible face lit.",
+          "markerChips": [
+            "half moon"
+          ]
+        },
+        {
+          "id": "focus-lit-part",
+          "label": "We see different lit parts",
+          "evidenceTitle": "We see different lit parts",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Right! Phases come from different visible lit parts.",
+          "markerChips": [
+            "We see different lit parts"
+          ]
+        },
+        {
+          "id": "focus-moon-bites",
+          "label": "The Moon is bitten",
+          "evidenceTitle": "The Moon is bitten",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "The Moon was not bitten; it is still a round sphere.",
+          "markerChips": [
+            "The Moon is bitten"
+          ]
+        },
+        {
+          "id": "focus-moon-fire",
+          "label": "The Moon turns on its own light",
+          "evidenceTitle": "The Moon turns on its own light",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "The Moon does not make light like the Sun.",
+          "markerChips": [
+            "The Moon turns on its own light"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Start where it is barely visible and tap toward full Moon."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "moon-sequence-01",
+          "title": "Tap the Moon from thin to full",
+          "prompt": "Start where it is barely visible and tap toward full Moon.",
+          "options": [
+            {
+              "id": "new-moon",
+              "label": "New Moon"
+            },
+            {
+              "id": "crescent",
+              "label": "Crescent Moon"
+            },
+            {
+              "id": "half-moon",
+              "label": "Half Moon"
+            },
+            {
+              "id": "full-moon",
+              "label": "Full Moon"
+            }
+          ],
+          "feedback": {
+            "correct": "You arranged part of the Moon’s journey toward full Moon.",
+            "wrong": "Start with the darkest, hardest-to-see Moon.",
+            "partial": "Start where it is barely visible and tap toward full Moon.",
+            "complete": "You arranged part of the Moon’s journey toward full Moon."
+          }
+        },
+        {
+          "id": "moon-find-01",
+          "title": "Find: which one is the full Moon?",
+          "prompt": "Find the roundest and brightest-looking Moon.",
+          "options": [
+            {
+              "id": "full-moon",
+              "label": "full moon"
+            },
+            {
+              "id": "new-moon",
+              "label": "new moon"
+            },
+            {
+              "id": "crescent",
+              "label": "crescent"
+            },
+            {
+              "id": "half-moon",
+              "label": "half moon"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! That is the full Moon.",
+            "wrong": "The full Moon has the whole visible face lit.",
+            "partial": "Find the roundest and brightest-looking Moon.",
+            "complete": "Correct! That is the full Moon."
+          }
+        },
+        {
+          "id": "moon-choice-01",
+          "title": "What mainly causes Moon phases?",
+          "prompt": "Choose the best answer.",
+          "options": [
+            {
+              "id": "lit-part",
+              "label": "We see different lit parts"
+            },
+            {
+              "id": "moon-bites",
+              "label": "The Moon is bitten"
+            },
+            {
+              "id": "moon-fire",
+              "label": "The Moon turns on its own light"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! Phases come from different visible lit parts.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the best answer.",
+            "complete": "Right! Phases come from different visible lit parts."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-sun",
+          "label": "Sun",
+          "evidenceTitle": "Sun",
+          "observePrompt": "glowing yellow sphere",
+          "evidenceCopy": "The Sun lights one side of the Moon.",
+          "markerChips": [
+            "Sun"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "Moonlight mostly comes from _____.",
+            "We stand on _____ to observe the Moon.",
+            "Moon phases change because we see different _____.",
+            "Tonight the Moon looks like _____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "Moonlight mostly comes from _____.",
+        "We stand on _____ to observe the Moon.",
+        "Moon phases change because we see different _____.",
+        "Tonight the Moon looks like _____."
+      ],
+      "parentTips": [
+        "Use a flashlight, a ball, and the child’s eyes to model Sun, Moon, and observer.",
+        "Do not begin with lunar eclipses; phases are not caused by Earth’s shadow every night.",
+        "Observing over several nights works better than explaining everything at once."
+      ]
+    }
   ]
 }

@@ -13,26 +13,35 @@ type Props = {
 };
 
 export function ClassificationGroups({ groups, activeGroupId, evidence, visualSlot, onSelectGroup, locale }: Props) {
+  const activeGroup = groups.find((group) => group.id === activeGroupId) ?? groups[0];
+  const visualSupport = activeGroup
+    ? {
+        title: activeGroup.name,
+        body: activeGroup.childExplanation,
+        note: activeGroup.parentNote,
+      }
+    : null;
+
   return (
     <article className="panel interaction-panel" id="topic-classification">
       <SectionHeader title={locale === "zh-CN" ? "分类线索" : "Sorting clues"} />
-      <TopicVisual slot={visualSlot} evidence={evidence} fallbackAlt={locale === "zh-CN" ? "分类证据图" : "Classification evidence"} locale={locale === "en-US" ? "en-US" : "zh-CN"} />
       <div className="interaction-controls">
-        <div className="group-list">
-          {groups.map((group) => (
+        <div className="group-list node-strip">
+          {groups.map((group, index) => (
             <button
-              className={activeGroupId === group.id ? "group-card active" : "group-card"}
+              className={activeGroupId === group.id ? "group-card node-button active" : "group-card node-button"}
               key={group.id}
               type="button"
               data-evidence-source={`classificationGroups.${group.id}`}
               onClick={() => onSelectGroup?.(group.id)}
             >
-              <strong>{group.name}</strong>
-              <span>{group.childExplanation}</span>
+              <span className="node-index">{index + 1}</span>
+              <strong className="node-label">{group.name}</strong>
             </button>
           ))}
         </div>
       </div>
+      <TopicVisual slot={visualSlot} evidence={evidence} fallbackAlt={locale === "zh-CN" ? "分类证据图" : "Classification evidence"} locale={locale === "en-US" ? "en-US" : "zh-CN"} visualSupport={visualSupport} />
     </article>
   );
 }

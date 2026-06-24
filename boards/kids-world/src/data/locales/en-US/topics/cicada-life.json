@@ -31,33 +31,290 @@
     },
     {
       "id": "classify",
-      "label": "Recognize the Nymph",
-      "childPrompt": "Notice that this is not a random little insect. It is a young cicada."
-    },
-    {
-      "id": "inspect",
-      "label": "Life Cycle",
-      "childPrompt": "Connect eggs, nymphs, shells, and adults into one growth path."
+      "label": "Recognize It",
+      "childPrompt": "Recognize the nymph first, then connect eggs, nymphs, shells, and adults."
     },
     {
       "id": "trace",
-      "label": "Molting Process",
+      "label": "Watch Change",
       "childPrompt": "Trace how it moves from underground life to molting on a tree trunk."
     },
     {
       "id": "compare",
-      "label": "Common Mix-ups",
-      "childPrompt": "Compare cicadas with butterflies and dragonflies: who has a pupa, and where do young stages live?"
-    },
-    {
-      "id": "tasks",
-      "label": "Observation Tasks",
-      "childPrompt": "Now try tapping and deciding for yourself: which clues matter most?"
+      "label": "Compare",
+      "childPrompt": "Compare easy mix-ups first, then use tap tasks to check the key clues."
     },
     {
       "id": "next",
       "label": "Retell and Extend",
       "childPrompt": "Use your own words to tell what a cicada goes through, then explore related topics."
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry-ground",
+      "title": "First Look",
+      "kidQuestion": "Why did the cicada baby come out of the soil?",
+      "parentGoal": "Connect the real observation with a nymph getting ready to molt.",
+      "focusItems": [
+        {
+          "id": "focus-emerging-nymph",
+          "label": "Emerging nymph",
+          "evidenceTitle": "It is not a flying cicada yet",
+          "observePrompt": "Look at its body and wings. Does it look like an adult?",
+          "evidenceCopy": "This is a cicada nymph. After it comes out of the soil, it looks for a steady place to molt."
+        },
+        {
+          "id": "focus-tree-trunk",
+          "label": "Tree trunk",
+          "evidenceTitle": "The trunk is a steady support",
+          "observePrompt": "Why is bark better than mud for staying still?",
+          "evidenceCopy": "Rough bark helps the nymph grip tightly so it does not fall while molting."
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "body": "A cicada is not born ready to fly. It lives underground as a young nymph, then comes out when it is ready."
+        }
+      ]
+    },
+    {
+      "id": "scene-life-map",
+      "title": "Recognize It",
+      "kidQuestion": "How are eggs, nymphs, shells, and adults connected?",
+      "parentGoal": "Use one life map to connect objects with life stages.",
+      "focusItems": [
+        {
+          "id": "focus-life-cycle",
+          "label": "Life has stages",
+          "evidenceTitle": "Egg, nymph, and adult connect in one line",
+          "observePrompt": "Find the objects that belong to a cicada life cycle.",
+          "evidenceCopy": "A cicada starts as an egg, grows underground as a nymph, comes out, molts, and becomes an adult."
+        },
+        {
+          "id": "focus-cicada-eggs",
+          "label": "Cicada eggs",
+          "evidenceTitle": "Life begins with eggs inside a twig",
+          "observePrompt": "Where are the eggs hidden?",
+          "evidenceCopy": "A cicada lays eggs inside small twigs. The life cycle starts there."
+        },
+        {
+          "id": "focus-underground-nymph",
+          "label": "Underground nymph",
+          "evidenceTitle": "The nymph grows underground",
+          "observePrompt": "Look for soil and root clues.",
+          "evidenceCopy": "The young nymph goes into the soil and grows slowly near plant roots."
+        },
+        {
+          "id": "focus-cicada-shell",
+          "label": "Cicada shell",
+          "evidenceTitle": "The shell is the old outer case",
+          "observePrompt": "Does it look like a tiny empty case?",
+          "evidenceCopy": "After molting, the old outer shell stays on the bark. That is the cicada shell."
+        },
+        {
+          "id": "focus-adult-cicada",
+          "label": "Adult cicada",
+          "evidenceTitle": "The adult has wings and sings in summer",
+          "observePrompt": "How is the adult different from the nymph?",
+          "evidenceCopy": "The adult has transparent wings. It sings, mates, lays eggs, and starts the cycle again."
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-life-map",
+          "body": "Remember the main line: egg -> nymph -> adult. A cicada shell is the old case left after molting, not another dead insect."
+        }
+      ]
+    },
+    {
+      "id": "scene-molting-path",
+      "title": "Watch Change",
+      "kidQuestion": "How does it change from a nymph into a flying cicada?",
+      "parentGoal": "Help the child understand that molting needs support, quiet, and time.",
+      "focusItems": [
+        {
+          "id": "focus-find-support",
+          "label": "Find support",
+          "evidenceTitle": "First, find steady support",
+          "observePrompt": "Why is it climbing the tree trunk?",
+          "evidenceCopy": "A vertical trunk gives the nymph a steady place to hold during molting."
+        },
+        {
+          "id": "focus-hold-body",
+          "label": "Hold still",
+          "evidenceTitle": "The body needs to stay still",
+          "observePrompt": "What might happen if it is disturbed now?",
+          "evidenceCopy": "During molting, the body is soft and needs to hold still on the bark."
+        },
+        {
+          "id": "focus-split-shell",
+          "label": "Split shell",
+          "evidenceTitle": "The old shell opens slowly",
+          "observePrompt": "Where does the new body come out?",
+          "evidenceCopy": "The old shell splits open, and the new adult slowly comes out."
+        },
+        {
+          "id": "focus-stretch-wings",
+          "label": "Stretch wings",
+          "evidenceTitle": "The new wings need time",
+          "observePrompt": "Can it fly away right away?",
+          "evidenceCopy": "A newly molted cicada is soft. Its wings need time to open and harden."
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-molting",
+          "body": "Molting does not happen in one instant. The nymph finds support, holds still, opens the old shell, and stretches its wings."
+        }
+      ]
+    },
+    {
+      "id": "scene-compare-pupa",
+      "title": "Compare",
+      "kidQuestion": "How are cicada and butterfly changes different?",
+      "parentGoal": "Make the key difference clear: cicadas do not have a pupa stage, butterflies do.",
+      "focusItems": [
+        {
+          "id": "focus-cicada-vs-butterfly",
+          "label": "Cicada and butterfly",
+          "evidenceTitle": "Cicadas have no pupa, butterflies do",
+          "observePrompt": "Compare the two change paths.",
+          "evidenceCopy": "A cicada molts from nymph to adult without a pupa. A butterfly has a pupa stage before becoming an adult."
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "body": "Not every insect has a pupa like a butterfly. A cicada's key change is molting from nymph to adult."
+        }
+      ]
+    },
+    {
+      "id": "scene-observation-tasks",
+      "title": "Try It",
+      "kidQuestion": "Can you use the clues to decide?",
+      "parentGoal": "Use finding, ordering, and choosing to check real understanding.",
+      "focusItems": [
+        {
+          "id": "focus-task-board",
+          "label": "Choose a molting place",
+          "evidenceTitle": "The tree trunk is best for molting",
+          "observePrompt": "Find a place where the nymph can hold tightly.",
+          "evidenceCopy": "A tree trunk is rough and steady, so it helps the nymph hold on while molting."
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-tasks",
+          "body": "When you try a task, stay in this scene. The task board highlights the clue you selected."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "cicada-sequence-01",
+          "title": "Put the cicada life cycle in order",
+          "prompt": "Tap in order: egg, underground nymph, emerging nymph, molting, adult.",
+          "options": [
+            { "id": "egg", "label": "Egg" },
+            { "id": "undergroundNymph", "label": "Underground nymph" },
+            { "id": "emergingNymph", "label": "Emerging nymph" },
+            { "id": "molting", "label": "Molting" },
+            { "id": "adult", "label": "Adult" }
+          ],
+          "feedback": {
+            "correct": "Correct order! A cicada starts as an egg, grows as a nymph, molts, and becomes an adult.",
+            "wrong": "Start with the egg, then think about whether the nymph is underground before it can fly.",
+            "partial": "Yes. Keep looking for the next step.",
+            "complete": "You got it! That is a cicada life cycle."
+          }
+        },
+        {
+          "id": "cicada-choice-01",
+          "title": "Choose a good molting place",
+          "prompt": "Where should the nymph go when it is ready to molt?",
+          "options": [
+            { "id": "treeTrunk", "label": "Tree trunk" },
+            { "id": "mud", "label": "Mud" },
+            { "id": "puddle", "label": "Puddle" },
+            { "id": "thinLeaf", "label": "Thin grass blade" }
+          ],
+          "feedback": {
+            "correct": "Yes. The tree trunk is steady, so the nymph can hold on while molting.",
+            "wrong": "Think again: the body needs to hold still during molting. Which place is steadiest?"
+          }
+        },
+        {
+          "id": "cicada-identify-01",
+          "title": "Find the cicada shell",
+          "prompt": "Find the cicada shell on the task board.",
+          "options": [
+            { "id": "cicadaShell", "label": "Cicada shell" },
+            { "id": "treeTrunk", "label": "Tree trunk" },
+            { "id": "leaf", "label": "Leaf" },
+            { "id": "pebble", "label": "Pebble" }
+          ],
+          "feedback": {
+            "correct": "Found it! The shell is the old outer case left after molting.",
+            "wrong": "A cicada shell looks like a tiny empty case, often stuck on bark.",
+            "partial": "You found one clue. Keep observing.",
+            "complete": "Found it! The cicada shell is the old case the nymph left behind."
+          }
+        },
+        {
+          "id": "cicada-compare-01",
+          "title": "Who has a pupa stage?",
+          "prompt": "Which one has a pupa stage?",
+          "options": [
+            { "id": "cicada", "label": "Cicada" },
+            { "id": "butterfly", "label": "Butterfly" },
+            { "id": "dragonfly", "label": "Dragonfly" }
+          ],
+          "feedback": {
+            "correct": "Correct! A butterfly has a pupa stage. A cicada does not.",
+            "wrong": "Compare again: a cicada molts from nymph to adult, while a butterfly has a pupa."
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-summary-talk",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain a cicada life cycle to your parent?",
+      "parentGoal": "Use speaking prompts to connect observation, stages, comparison, and safety.",
+      "focusItems": [
+        {
+          "id": "focus-summary-cycle",
+          "label": "Retell the main line",
+          "evidenceTitle": "Tell it in order",
+          "observePrompt": "Start with the egg and continue in your own words.",
+          "evidenceCopy": "A cicada starts as an egg, grows underground as a nymph, comes out to molt, and becomes an adult."
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "items": [
+            "I found a ____.",
+            "It is in the ____ stage.",
+            "It climbs onto a ____ to molt.",
+            "A cicada is different from a butterfly because ____."
+          ]
+        }
+      ],
+      "speakPrompts": [
+        "I found a ____.",
+        "It is in the ____ stage.",
+        "It climbs onto a ____ to molt.",
+        "After molting, it becomes a ____.",
+        "A cicada is different from a butterfly because ____."
+      ],
+      "parentTips": [
+        "Let the child describe what they see first, then add the standard names.",
+        "If you see molting in real life, observe quietly and do not touch.",
+        "Use three questions: where does it live, how does it change, and does it have a pupa?"
+      ]
     }
   ],
   "hero": {

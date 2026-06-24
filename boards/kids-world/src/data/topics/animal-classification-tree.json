@@ -546,13 +546,27 @@
       "target": "comparePairs",
       "role": "compare",
       "required": true
+    },
+    {
+      "id": "group-icons",
+      "assetId": "life-animal-classification-tree-group-icons",
+      "role": "observation",
+      "target": "classificationGroups",
+      "required": true
+    },
+    {
+      "id": "mechanism",
+      "assetId": "life-animal-classification-tree-mechanism",
+      "role": "process",
+      "target": "mechanism",
+      "required": true
     }
   ],
   "visualEvidenceBindings": [
     {
       "id": "evidence-classificationGroups-vertebrates",
       "source": "classificationGroups.vertebrates",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "脊椎动物",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -564,7 +578,7 @@
     {
       "id": "evidence-classificationGroups-mammals",
       "source": "classificationGroups.mammals",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "哺乳类",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -592,7 +606,7 @@
     {
       "id": "evidence-classificationGroups-birds",
       "source": "classificationGroups.birds",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "鸟类",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -615,7 +629,7 @@
     {
       "id": "evidence-classificationGroups-fish",
       "source": "classificationGroups.fish",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "鱼类",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -638,7 +652,7 @@
     {
       "id": "evidence-classificationGroups-reptiles",
       "source": "classificationGroups.reptiles",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "爬行类",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -661,7 +675,7 @@
     {
       "id": "evidence-classificationGroups-amphibians",
       "source": "classificationGroups.amphibians",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "两栖类",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -679,7 +693,7 @@
     {
       "id": "evidence-classificationGroups-insects",
       "source": "classificationGroups.insects",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "昆虫",
       "observePrompt": "看一看哪些对象被归到这一类。",
@@ -918,7 +932,7 @@
     {
       "id": "evidence-mechanism-steps-look-body",
       "source": "mechanism.steps.look-body",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "先看身体",
       "observePrompt": "当前第 1 步，先看这一步发生了什么。",
@@ -936,7 +950,7 @@
     {
       "id": "evidence-mechanism-steps-look-life",
       "source": "mechanism.steps.look-life",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "再看生活方式",
       "observePrompt": "当前第 2 步，先看这一步发生了什么。",
@@ -954,7 +968,7 @@
     {
       "id": "evidence-mechanism-steps-look-baby",
       "source": "mechanism.steps.look-baby",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "看看宝宝",
       "observePrompt": "当前第 3 步，先看这一步发生了什么。",
@@ -972,7 +986,7 @@
     {
       "id": "evidence-mechanism-steps-avoid-single-clue",
       "source": "mechanism.steps.avoid-single-clue",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "不要只看一个线索",
       "observePrompt": "当前第 4 步，先看这一步发生了什么。",
@@ -1059,7 +1073,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-01-options-fish",
       "source": "clickTasks.animal-classify-01.options.fish",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "鱼类",
       "observePrompt": "点一个分类。",
@@ -1077,7 +1091,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-01-options-mammals",
       "source": "clickTasks.animal-classify-01.options.mammals",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "哺乳类",
       "observePrompt": "点一个分类。",
@@ -1095,7 +1109,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-01-options-birds",
       "source": "clickTasks.animal-classify-01.options.birds",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "鸟类",
       "observePrompt": "点一个分类。",
@@ -1113,7 +1127,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-02-options-bird",
       "source": "clickTasks.animal-classify-02.options.bird",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "是鸟，因为会飞",
       "observePrompt": "点出更准确的说法。",
@@ -1131,7 +1145,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-02-options-mammal",
       "source": "clickTasks.animal-classify-02.options.mammal",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "是哺乳类，因为没有羽毛，宝宝喝奶",
       "observePrompt": "点出更准确的说法。",
@@ -1149,7 +1163,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-sparrow",
       "source": "clickTasks.animal-find-01.options.sparrow",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "sparrow",
       "observePrompt": "找一找：谁有羽毛？",
@@ -1167,7 +1181,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-penguin",
       "source": "clickTasks.animal-find-01.options.penguin",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "penguin",
       "observePrompt": "找一找：谁有羽毛？",
@@ -1185,7 +1199,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-bat",
       "source": "clickTasks.animal-find-01.options.bat",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "bat",
       "observePrompt": "找一找：谁有羽毛？",
@@ -1203,7 +1217,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-butterfly",
       "source": "clickTasks.animal-find-01.options.butterfly",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "butterfly",
       "observePrompt": "找一找：谁有羽毛？",
@@ -1221,7 +1235,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-whale",
       "source": "clickTasks.animal-find-01.options.whale",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "whale",
       "observePrompt": "找一找：谁有羽毛？",
@@ -1239,7 +1253,7 @@
     {
       "id": "evidence-clickTasks-animal-sequence-01-options-body",
       "source": "clickTasks.animal-sequence-01.options.body",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "看身体特征",
       "observePrompt": "按顺序点三个线索。",
@@ -1257,7 +1271,7 @@
     {
       "id": "evidence-clickTasks-animal-sequence-01-options-life",
       "source": "clickTasks.animal-sequence-01.options.life",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "看生活方式",
       "observePrompt": "按顺序点三个线索。",
@@ -1275,7 +1289,7 @@
     {
       "id": "evidence-clickTasks-animal-sequence-01-options-compare",
       "source": "clickTasks.animal-sequence-01.options.compare",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "和容易混淆的动物比一比",
       "observePrompt": "按顺序点三个线索。",
@@ -1289,6 +1303,2097 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "动物可以怎么分？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-animal-classification-tree-scene-entry",
+        "assetId": "life-animal-classification-tree-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "页面左侧展示一棵分层生命树：树根是“动物”，第一层分成“有脊椎”和“无脊椎”，再向外分出哺乳类、鸟类、鱼类、爬行类、两栖类、昆虫等分支。孩子点击动物卡片时，对应分支发亮。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-animal-classification-tree-scene-classify",
+        "assetId": "life-animal-classification-tree-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "cat",
+            "label": "猫",
+            "required": true
+          },
+          {
+            "id": "whale",
+            "label": "鲸鱼",
+            "required": true
+          },
+          {
+            "id": "bat",
+            "label": "蝙蝠",
+            "required": true
+          },
+          {
+            "id": "sparrow",
+            "label": "麻雀",
+            "required": true
+          },
+          {
+            "id": "penguin",
+            "label": "企鹅",
+            "required": true
+          },
+          {
+            "id": "goldfish",
+            "label": "金鱼",
+            "required": true
+          },
+          {
+            "id": "shark",
+            "label": "鲨鱼",
+            "required": true
+          },
+          {
+            "id": "snake",
+            "label": "蛇",
+            "required": true
+          },
+          {
+            "id": "turtle",
+            "label": "乌龟",
+            "required": true
+          },
+          {
+            "id": "frog",
+            "label": "青蛙",
+            "required": true
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "required": true
+          },
+          {
+            "id": "ant",
+            "label": "蚂蚁",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "cat",
+            "entityIds": [
+              "cat"
+            ],
+            "label": "猫",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "whale",
+            "entityIds": [
+              "whale"
+            ],
+            "label": "鲸鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bat",
+            "entityIds": [
+              "bat"
+            ],
+            "label": "蝙蝠",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sparrow",
+            "entityIds": [
+              "sparrow"
+            ],
+            "label": "麻雀",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "penguin",
+            "entityIds": [
+              "penguin"
+            ],
+            "label": "企鹅",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "goldfish",
+            "entityIds": [
+              "goldfish"
+            ],
+            "label": "金鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "shark",
+            "entityIds": [
+              "shark"
+            ],
+            "label": "鲨鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "snake",
+            "entityIds": [
+              "snake"
+            ],
+            "label": "蛇",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "turtle",
+            "entityIds": [
+              "turtle"
+            ],
+            "label": "乌龟",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "frog",
+            "entityIds": [
+              "frog"
+            ],
+            "label": "青蛙",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "butterfly",
+            "entityIds": [
+              "butterfly"
+            ],
+            "label": "蝴蝶",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ant",
+            "entityIds": [
+              "ant"
+            ],
+            "label": "蚂蚁",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-vertebrates",
+          "source": "classificationGroups.vertebrates",
+          "label": "脊椎动物",
+          "regionIds": [
+            "cat",
+            "whale",
+            "bat",
+            "sparrow",
+            "penguin",
+            "goldfish",
+            "shark",
+            "snake",
+            "turtle",
+            "frog"
+          ],
+          "entityIds": [
+            "cat",
+            "whale",
+            "bat",
+            "sparrow",
+            "penguin",
+            "goldfish",
+            "shark",
+            "snake",
+            "turtle",
+            "frog"
+          ],
+          "evidenceTitle": "脊椎动物",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "身体里有一根重要的骨头柱子，像身体的支架。",
+          "markerChips": [],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-cat",
+          "source": "representativeObjects.cat",
+          "label": "猫",
+          "regionIds": [
+            "cat"
+          ],
+          "entityIds": [
+            "cat"
+          ],
+          "evidenceTitle": "猫",
+          "observePrompt": "毛、四条腿、幼崽喝奶",
+          "evidenceCopy": "猫是哺乳动物，小时候会喝妈妈的奶。",
+          "markerChips": [
+            "猫"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-whale",
+          "source": "representativeObjects.whale",
+          "label": "鲸鱼",
+          "regionIds": [
+            "whale"
+          ],
+          "entityIds": [
+            "whale"
+          ],
+          "evidenceTitle": "鲸鱼",
+          "observePrompt": "海里生活、用肺呼吸、宝宝喝奶",
+          "evidenceCopy": "鲸鱼住在海里，但它不是鱼，它是哺乳动物。",
+          "markerChips": [
+            "鲸鱼"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-bat",
+          "source": "representativeObjects.bat",
+          "label": "蝙蝠",
+          "regionIds": [
+            "bat"
+          ],
+          "entityIds": [
+            "bat"
+          ],
+          "evidenceTitle": "蝙蝠",
+          "observePrompt": "翅膀像皮膜、没有羽毛",
+          "evidenceCopy": "蝙蝠会飞，但它不是鸟，它是哺乳动物。",
+          "markerChips": [
+            "蝙蝠"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sparrow",
+          "source": "representativeObjects.sparrow",
+          "label": "麻雀",
+          "regionIds": [
+            "sparrow"
+          ],
+          "entityIds": [
+            "sparrow"
+          ],
+          "evidenceTitle": "麻雀",
+          "observePrompt": "羽毛、鸟喙、翅膀",
+          "evidenceCopy": "麻雀有羽毛，是鸟类。",
+          "markerChips": [
+            "麻雀"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-penguin",
+          "source": "representativeObjects.penguin",
+          "label": "企鹅",
+          "regionIds": [
+            "penguin"
+          ],
+          "entityIds": [
+            "penguin"
+          ],
+          "evidenceTitle": "企鹅",
+          "observePrompt": "羽毛、翅膀变成游泳帮手",
+          "evidenceCopy": "企鹅不太会飞，但它有羽毛，仍然是鸟类。",
+          "markerChips": [
+            "企鹅"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-goldfish",
+          "source": "representativeObjects.goldfish",
+          "label": "金鱼",
+          "regionIds": [
+            "goldfish"
+          ],
+          "entityIds": [
+            "goldfish"
+          ],
+          "evidenceTitle": "金鱼",
+          "observePrompt": "鳃、鳍、水中生活",
+          "evidenceCopy": "金鱼住在水里，用鳃呼吸，是鱼类。",
+          "markerChips": [
+            "金鱼"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-shark",
+          "source": "representativeObjects.shark",
+          "label": "鲨鱼",
+          "regionIds": [
+            "shark"
+          ],
+          "entityIds": [
+            "shark"
+          ],
+          "evidenceTitle": "鲨鱼",
+          "observePrompt": "鳍、鱼形身体",
+          "evidenceCopy": "鲨鱼是鱼类，身体适合在水里游动。",
+          "markerChips": [
+            "鲨鱼"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-snake",
+          "source": "representativeObjects.snake",
+          "label": "蛇",
+          "regionIds": [
+            "snake"
+          ],
+          "entityIds": [
+            "snake"
+          ],
+          "evidenceTitle": "蛇",
+          "observePrompt": "鳞片、贴地移动",
+          "evidenceCopy": "蛇是爬行类，身体常有鳞片。",
+          "markerChips": [
+            "蛇"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-turtle",
+          "source": "representativeObjects.turtle",
+          "label": "乌龟",
+          "regionIds": [
+            "turtle"
+          ],
+          "entityIds": [
+            "turtle"
+          ],
+          "evidenceTitle": "乌龟",
+          "observePrompt": "龟壳、鳞片",
+          "evidenceCopy": "乌龟是爬行类，有硬硬的壳。",
+          "markerChips": [
+            "乌龟"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-frog",
+          "source": "representativeObjects.frog",
+          "label": "青蛙",
+          "regionIds": [
+            "frog"
+          ],
+          "entityIds": [
+            "frog"
+          ],
+          "evidenceTitle": "青蛙",
+          "observePrompt": "蝌蚪变青蛙",
+          "evidenceCopy": "青蛙是两栖类，小时候像小蝌蚪，长大后能到陆地。",
+          "markerChips": [
+            "青蛙"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-butterfly",
+          "source": "representativeObjects.butterfly",
+          "label": "蝴蝶",
+          "regionIds": [
+            "butterfly"
+          ],
+          "entityIds": [
+            "butterfly"
+          ],
+          "evidenceTitle": "蝴蝶",
+          "observePrompt": "翅膀、触角、6 条腿",
+          "evidenceCopy": "蝴蝶是昆虫，通常有 6 条腿。",
+          "markerChips": [
+            "蝴蝶"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-ant",
+          "source": "representativeObjects.ant",
+          "label": "蚂蚁",
+          "regionIds": [
+            "ant"
+          ],
+          "entityIds": [
+            "ant"
+          ],
+          "evidenceTitle": "蚂蚁",
+          "observePrompt": "6 条腿、触角",
+          "evidenceCopy": "蚂蚁是昆虫，身体小但分工很强。",
+          "markerChips": [
+            "蚂蚁"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "猫: 猫是哺乳动物，小时候会喝妈妈的奶。",
+            "鲸鱼: 鲸鱼住在海里，但它不是鱼，它是哺乳动物。",
+            "蝙蝠: 蝙蝠会飞，但它不是鸟，它是哺乳动物。",
+            "麻雀: 麻雀有羽毛，是鸟类。",
+            "企鹅: 企鹅不太会飞，但它有羽毛，仍然是鸟类。",
+            "金鱼: 金鱼住在水里，用鳃呼吸，是鱼类。",
+            "鲨鱼: 鲨鱼是鱼类，身体适合在水里游动。",
+            "蛇: 蛇是爬行类，身体常有鳞片。",
+            "乌龟: 乌龟是爬行类，有硬硬的壳。",
+            "青蛙: 青蛙是两栖类，小时候像小蝌蚪，长大后能到陆地。",
+            "蝴蝶: 蝴蝶是昆虫，通常有 6 条腿。",
+            "蚂蚁: 蚂蚁是昆虫，身体小但分工很强。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-animal-classification-tree-scene-process",
+        "assetId": "life-animal-classification-tree-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "look-body",
+            "label": "先看身体",
+            "required": true
+          },
+          {
+            "id": "look-life",
+            "label": "再看生活方式",
+            "required": true
+          },
+          {
+            "id": "look-baby",
+            "label": "看看宝宝",
+            "required": true
+          },
+          {
+            "id": "avoid-single-clue",
+            "label": "不要只看一个线索",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "look-body",
+            "entityIds": [
+              "look-body"
+            ],
+            "label": "先看身体",
+            "shape": "rect",
+            "bounds": {
+              "x": 68,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "look-life",
+            "entityIds": [
+              "look-life"
+            ],
+            "label": "再看生活方式",
+            "shape": "rect",
+            "bounds": {
+              "x": 293,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "look-baby",
+            "entityIds": [
+              "look-baby"
+            ],
+            "label": "看看宝宝",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "avoid-single-clue",
+            "entityIds": [
+              "avoid-single-clue"
+            ],
+            "label": "不要只看一个线索",
+            "shape": "rect",
+            "bounds": {
+              "x": 743,
+              "y": 257,
+              "w": 189,
+              "h": 386
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-look-body",
+          "source": "mechanism.steps.look-body",
+          "label": "先看身体",
+          "regionIds": [
+            "look-body"
+          ],
+          "entityIds": [
+            "look-body"
+          ],
+          "evidenceTitle": "先看身体",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "它有羽毛、鳞片、毛，还是 6 条腿？",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-look-life",
+          "source": "mechanism.steps.look-life",
+          "label": "再看生活方式",
+          "regionIds": [
+            "look-life"
+          ],
+          "entityIds": [
+            "look-life"
+          ],
+          "evidenceTitle": "再看生活方式",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "它住在水里、陆地，还是两边都能去？",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-look-baby",
+          "source": "mechanism.steps.look-baby",
+          "label": "看看宝宝",
+          "regionIds": [
+            "look-baby"
+          ],
+          "entityIds": [
+            "look-baby"
+          ],
+          "evidenceTitle": "看看宝宝",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "小时候怎么长大，也能帮助分类。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-avoid-single-clue",
+          "source": "mechanism.steps.avoid-single-clue",
+          "label": "不要只看一个线索",
+          "regionIds": [
+            "avoid-single-clue"
+          ],
+          "entityIds": [
+            "avoid-single-clue"
+          ],
+          "evidenceTitle": "不要只看一个线索",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "会飞不一定是鸟，住水里不一定是鱼。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "分类时看什么线索？",
+          "items": [
+            "先看身体: 它有羽毛、鳞片、毛，还是 6 条腿？",
+            "再看生活方式: 它住在水里、陆地，还是两边都能去？",
+            "看看宝宝: 小时候怎么长大，也能帮助分类。",
+            "不要只看一个线索: 会飞不一定是鸟，住水里不一定是鱼。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-animal-classification-tree-scene-compare",
+        "assetId": "life-animal-classification-tree-misconception-compare",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-whale-vs-fish",
+          "source": "comparePairs.whale-vs-fish",
+          "label": "鲸鱼 vs 鱼",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "鲸鱼 vs 鱼",
+          "observePrompt": "对比 鲸鱼 和 鱼 的图片线索。",
+          "evidenceCopy": "鲸鱼: 用肺呼吸；宝宝喝奶；是哺乳类。鱼: 多用鳃呼吸；有鳍；是鱼类。住在海里，不一定就是鱼。",
+          "markerChips": [
+            "鲸鱼",
+            "鱼"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-bat-vs-bird",
+          "source": "comparePairs.bat-vs-bird",
+          "label": "蝙蝠 vs 鸟",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "蝙蝠 vs 鸟",
+          "observePrompt": "对比 蝙蝠 和 鸟 的图片线索。",
+          "evidenceCopy": "蝙蝠: 没有羽毛；宝宝喝奶；是哺乳类。鸟: 有羽毛；有鸟喙；是鸟类。会飞，不一定就是鸟。",
+          "markerChips": [
+            "蝙蝠",
+            "鸟"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-penguin-vs-sparrow",
+          "source": "comparePairs.penguin-vs-sparrow",
+          "label": "企鹅 vs 麻雀",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "企鹅 vs 麻雀",
+          "observePrompt": "对比 企鹅 和 麻雀 的图片线索。",
+          "evidenceCopy": "企鹅: 不太会飞；有羽毛；是鸟类。麻雀: 会飞；有羽毛；是鸟类。会不会飞，不是判断鸟类的唯一线索。",
+          "markerChips": [
+            "企鹅",
+            "麻雀"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "鲸鱼 vs 鱼: 住在海里，不一定就是鱼。",
+            "蝙蝠 vs 鸟: 会飞，不一定就是鸟。",
+            "企鹅 vs 麻雀: 会不会飞，不是判断鸟类的唯一线索。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-animal-classification-tree-scene-task",
+        "assetId": "life-animal-classification-tree-hero",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "fish",
+            "label": "鱼类",
+            "required": true
+          },
+          {
+            "id": "mammals",
+            "label": "哺乳类",
+            "required": true
+          },
+          {
+            "id": "birds",
+            "label": "鸟类",
+            "required": true
+          },
+          {
+            "id": "bird",
+            "label": "是鸟，因为会飞",
+            "required": true
+          },
+          {
+            "id": "mammal",
+            "label": "是哺乳类，因为没有羽毛，宝宝喝奶",
+            "required": true
+          },
+          {
+            "id": "cat",
+            "label": "猫",
+            "required": true
+          },
+          {
+            "id": "whale",
+            "label": "鲸鱼",
+            "required": true
+          },
+          {
+            "id": "bat",
+            "label": "蝙蝠",
+            "required": true
+          },
+          {
+            "id": "sparrow",
+            "label": "麻雀",
+            "required": true
+          },
+          {
+            "id": "penguin",
+            "label": "企鹅",
+            "required": true
+          },
+          {
+            "id": "goldfish",
+            "label": "金鱼",
+            "required": true
+          },
+          {
+            "id": "shark",
+            "label": "鲨鱼",
+            "required": true
+          },
+          {
+            "id": "snake",
+            "label": "蛇",
+            "required": true
+          },
+          {
+            "id": "turtle",
+            "label": "乌龟",
+            "required": true
+          },
+          {
+            "id": "frog",
+            "label": "青蛙",
+            "required": true
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "required": true
+          },
+          {
+            "id": "ant",
+            "label": "蚂蚁",
+            "required": true
+          },
+          {
+            "id": "body",
+            "label": "看身体特征",
+            "required": true
+          },
+          {
+            "id": "life",
+            "label": "看生活方式",
+            "required": true
+          },
+          {
+            "id": "compare",
+            "label": "和容易混淆的动物比一比",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "fish",
+            "entityIds": [
+              "fish"
+            ],
+            "label": "鱼类",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "mammals",
+            "entityIds": [
+              "mammals"
+            ],
+            "label": "哺乳类",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "birds",
+            "entityIds": [
+              "birds"
+            ],
+            "label": "鸟类",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bird",
+            "entityIds": [
+              "bird"
+            ],
+            "label": "是鸟，因为会飞",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 193,
+              "w": 370,
+              "h": 554
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "mammal",
+            "entityIds": [
+              "mammal"
+            ],
+            "label": "是哺乳类，因为没有羽毛，宝宝喝奶",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 193,
+              "w": 370,
+              "h": 554
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cat",
+            "entityIds": [
+              "cat"
+            ],
+            "label": "猫",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "whale",
+            "entityIds": [
+              "whale"
+            ],
+            "label": "鲸鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bat",
+            "entityIds": [
+              "bat"
+            ],
+            "label": "蝙蝠",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sparrow",
+            "entityIds": [
+              "sparrow"
+            ],
+            "label": "麻雀",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "penguin",
+            "entityIds": [
+              "penguin"
+            ],
+            "label": "企鹅",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "goldfish",
+            "entityIds": [
+              "goldfish"
+            ],
+            "label": "金鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "shark",
+            "entityIds": [
+              "shark"
+            ],
+            "label": "鲨鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "snake",
+            "entityIds": [
+              "snake"
+            ],
+            "label": "蛇",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "turtle",
+            "entityIds": [
+              "turtle"
+            ],
+            "label": "乌龟",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "frog",
+            "entityIds": [
+              "frog"
+            ],
+            "label": "青蛙",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "butterfly",
+            "entityIds": [
+              "butterfly"
+            ],
+            "label": "蝴蝶",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ant",
+            "entityIds": [
+              "ant"
+            ],
+            "label": "蚂蚁",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "body",
+            "entityIds": [
+              "body"
+            ],
+            "label": "看身体特征",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "life",
+            "entityIds": [
+              "life"
+            ],
+            "label": "看生活方式",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 166,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "compare",
+            "entityIds": [
+              "compare"
+            ],
+            "label": "和容易混淆的动物比一比",
+            "shape": "rect",
+            "bounds": {
+              "x": 95,
+              "y": 496,
+              "w": 370,
+              "h": 277
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-fish",
+          "source": "clickTasks.animal-classify-01.options.fish",
+          "label": "鱼类",
+          "regionIds": [
+            "fish"
+          ],
+          "entityIds": [
+            "fish"
+          ],
+          "evidenceTitle": "鱼类",
+          "observePrompt": "点一个分类。",
+          "evidenceCopy": "鲸鱼住在海里，但它用肺呼吸，宝宝会喝奶。",
+          "markerChips": [
+            "鱼类"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-mammals",
+          "source": "clickTasks.animal-classify-01.options.mammals",
+          "label": "哺乳类",
+          "regionIds": [
+            "mammals"
+          ],
+          "entityIds": [
+            "mammals"
+          ],
+          "evidenceTitle": "哺乳类",
+          "observePrompt": "点一个分类。",
+          "evidenceCopy": "对！鲸鱼是住在海里的哺乳动物。",
+          "markerChips": [
+            "哺乳类"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-birds",
+          "source": "clickTasks.animal-classify-01.options.birds",
+          "label": "鸟类",
+          "regionIds": [
+            "birds"
+          ],
+          "entityIds": [
+            "birds"
+          ],
+          "evidenceTitle": "鸟类",
+          "observePrompt": "点一个分类。",
+          "evidenceCopy": "鲸鱼不会长羽毛，也不是鸟类。",
+          "markerChips": [
+            "鸟类"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-bird",
+          "source": "clickTasks.animal-classify-02.options.bird",
+          "label": "是鸟，因为会飞",
+          "regionIds": [
+            "bird"
+          ],
+          "entityIds": [
+            "bird"
+          ],
+          "evidenceTitle": "是鸟，因为会飞",
+          "observePrompt": "点出更准确的说法。",
+          "evidenceCopy": "再看一个线索：蝙蝠没有羽毛。",
+          "markerChips": [
+            "是鸟，因为会飞"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-mammal",
+          "source": "clickTasks.animal-classify-02.options.mammal",
+          "label": "是哺乳类，因为没有羽毛，宝宝喝奶",
+          "regionIds": [
+            "mammal"
+          ],
+          "entityIds": [
+            "mammal"
+          ],
+          "evidenceTitle": "是哺乳类，因为没有羽毛，宝宝喝奶",
+          "observePrompt": "点出更准确的说法。",
+          "evidenceCopy": "很棒！会飞不一定是鸟。",
+          "markerChips": [
+            "是哺乳类，因为没有羽毛，宝宝喝奶"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-sparrow",
+          "source": "clickTasks.animal-find-01.options.sparrow",
+          "label": "sparrow",
+          "regionIds": [
+            "sparrow"
+          ],
+          "entityIds": [
+            "sparrow"
+          ],
+          "evidenceTitle": "sparrow",
+          "observePrompt": "找一找：谁有羽毛？",
+          "evidenceCopy": "你找到了鸟类的重要线索：羽毛。",
+          "markerChips": [
+            "sparrow"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-penguin",
+          "source": "clickTasks.animal-find-01.options.penguin",
+          "label": "penguin",
+          "regionIds": [
+            "penguin"
+          ],
+          "entityIds": [
+            "penguin"
+          ],
+          "evidenceTitle": "penguin",
+          "observePrompt": "找一找：谁有羽毛？",
+          "evidenceCopy": "你找到了鸟类的重要线索：羽毛。",
+          "markerChips": [
+            "penguin"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-bat",
+          "source": "clickTasks.animal-find-01.options.bat",
+          "label": "bat",
+          "regionIds": [
+            "bat"
+          ],
+          "entityIds": [
+            "bat"
+          ],
+          "evidenceTitle": "bat",
+          "observePrompt": "找一找：谁有羽毛？",
+          "evidenceCopy": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+          "markerChips": [
+            "bat"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-butterfly",
+          "source": "clickTasks.animal-find-01.options.butterfly",
+          "label": "butterfly",
+          "regionIds": [
+            "butterfly"
+          ],
+          "entityIds": [
+            "butterfly"
+          ],
+          "evidenceTitle": "butterfly",
+          "observePrompt": "找一找：谁有羽毛？",
+          "evidenceCopy": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+          "markerChips": [
+            "butterfly"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-whale",
+          "source": "clickTasks.animal-find-01.options.whale",
+          "label": "whale",
+          "regionIds": [
+            "whale"
+          ],
+          "entityIds": [
+            "whale"
+          ],
+          "evidenceTitle": "whale",
+          "observePrompt": "找一找：谁有羽毛？",
+          "evidenceCopy": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+          "markerChips": [
+            "whale"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-body",
+          "source": "clickTasks.animal-sequence-01.options.body",
+          "label": "看身体特征",
+          "regionIds": [
+            "body"
+          ],
+          "entityIds": [
+            "body"
+          ],
+          "evidenceTitle": "看身体特征",
+          "observePrompt": "按顺序点三个线索。",
+          "evidenceCopy": "当前步骤：看身体特征。按顺序点三个线索。",
+          "markerChips": [
+            "看身体特征"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-life",
+          "source": "clickTasks.animal-sequence-01.options.life",
+          "label": "看生活方式",
+          "regionIds": [
+            "life"
+          ],
+          "entityIds": [
+            "life"
+          ],
+          "evidenceTitle": "看生活方式",
+          "observePrompt": "按顺序点三个线索。",
+          "evidenceCopy": "当前步骤：看生活方式。按顺序点三个线索。",
+          "markerChips": [
+            "看生活方式"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-compare",
+          "source": "clickTasks.animal-sequence-01.options.compare",
+          "label": "和容易混淆的动物比一比",
+          "regionIds": [
+            "compare"
+          ],
+          "entityIds": [
+            "compare"
+          ],
+          "evidenceTitle": "和容易混淆的动物比一比",
+          "observePrompt": "按顺序点三个线索。",
+          "evidenceCopy": "当前步骤：和容易混淆的动物比一比。按顺序点三个线索。",
+          "markerChips": [
+            "和容易混淆的动物比一比"
+          ],
+          "expectedStatus": "partial"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "点一个分类。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "animal-classify-01",
+          "type": "singleChoice",
+          "title": "鲸鱼应该住在哪根树枝上？",
+          "prompt": "点一个分类。",
+          "source": "clickTasks.animal-classify-01",
+          "options": [
+            {
+              "id": "fish",
+              "label": "鱼类",
+              "source": "clickTasks.animal-classify-01.options.fish",
+              "regionIds": [
+                "fish"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "mammals",
+              "label": "哺乳类",
+              "source": "clickTasks.animal-classify-01.options.mammals",
+              "regionIds": [
+                "mammals"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "birds",
+              "label": "鸟类",
+              "source": "clickTasks.animal-classify-01.options.birds",
+              "regionIds": [
+                "birds"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "mammals"
+          ],
+          "decoyRegionIds": [
+            "fish",
+            "birds"
+          ],
+          "feedback": {
+            "correct": "对！鲸鱼是住在海里的哺乳动物。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点一个分类。",
+            "complete": "对！鲸鱼是住在海里的哺乳动物。"
+          }
+        },
+        {
+          "id": "animal-classify-02",
+          "type": "singleChoice",
+          "title": "蝙蝠是鸟吗？",
+          "prompt": "点出更准确的说法。",
+          "source": "clickTasks.animal-classify-02",
+          "options": [
+            {
+              "id": "bird",
+              "label": "是鸟，因为会飞",
+              "source": "clickTasks.animal-classify-02.options.bird",
+              "regionIds": [
+                "bird"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "mammal",
+              "label": "是哺乳类，因为没有羽毛，宝宝喝奶",
+              "source": "clickTasks.animal-classify-02.options.mammal",
+              "regionIds": [
+                "mammal"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "mammal"
+          ],
+          "decoyRegionIds": [
+            "bird"
+          ],
+          "feedback": {
+            "correct": "很棒！会飞不一定是鸟。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点出更准确的说法。",
+            "complete": "很棒！会飞不一定是鸟。"
+          }
+        },
+        {
+          "id": "animal-find-01",
+          "type": "findTarget",
+          "title": "找一找：谁有羽毛？",
+          "prompt": "找一找：谁有羽毛？",
+          "source": "clickTasks.animal-find-01",
+          "options": [
+            {
+              "id": "sparrow",
+              "label": "sparrow",
+              "source": "clickTasks.animal-find-01.options.sparrow",
+              "regionIds": [
+                "sparrow"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "penguin",
+              "label": "penguin",
+              "source": "clickTasks.animal-find-01.options.penguin",
+              "regionIds": [
+                "penguin"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "bat",
+              "label": "bat",
+              "source": "clickTasks.animal-find-01.options.bat",
+              "regionIds": [
+                "bat"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "butterfly",
+              "label": "butterfly",
+              "source": "clickTasks.animal-find-01.options.butterfly",
+              "regionIds": [
+                "butterfly"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "whale",
+              "label": "whale",
+              "source": "clickTasks.animal-find-01.options.whale",
+              "regionIds": [
+                "whale"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "sparrow",
+            "penguin"
+          ],
+          "decoyRegionIds": [
+            "bat",
+            "butterfly",
+            "whale"
+          ],
+          "feedback": {
+            "correct": "你找到了鸟类的重要线索：羽毛。",
+            "wrong": "再看看身体表面，羽毛和翅膀不是同一个线索。",
+            "partial": "找一找：谁有羽毛？",
+            "complete": "你找到了鸟类的重要线索：羽毛。"
+          }
+        },
+        {
+          "id": "animal-sequence-01",
+          "type": "sequenceClick",
+          "title": "分类时先后看什么？",
+          "prompt": "按顺序点三个线索。",
+          "source": "clickTasks.animal-sequence-01",
+          "options": [
+            {
+              "id": "body",
+              "label": "看身体特征",
+              "source": "clickTasks.animal-sequence-01.options.body",
+              "regionIds": [
+                "body"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "life",
+              "label": "看生活方式",
+              "source": "clickTasks.animal-sequence-01.options.life",
+              "regionIds": [
+                "life"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "compare",
+              "label": "和容易混淆的动物比一比",
+              "source": "clickTasks.animal-sequence-01.options.compare",
+              "regionIds": [
+                "compare"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "body",
+            "life",
+            "compare"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "body",
+            "life",
+            "compare"
+          ],
+          "feedback": {
+            "correct": "你学会了分类侦探的观察顺序。",
+            "wrong": "先从最容易看到的身体特征开始。",
+            "partial": "按顺序点三个线索。",
+            "complete": "你学会了分类侦探的观察顺序。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-animal-classification-tree-scene-summary",
+        "assetId": "life-animal-classification-tree-hero",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "cat",
+            "label": "猫",
+            "required": true
+          },
+          {
+            "id": "whale",
+            "label": "鲸鱼",
+            "required": true
+          },
+          {
+            "id": "bat",
+            "label": "蝙蝠",
+            "required": true
+          },
+          {
+            "id": "sparrow",
+            "label": "麻雀",
+            "required": true
+          },
+          {
+            "id": "penguin",
+            "label": "企鹅",
+            "required": true
+          },
+          {
+            "id": "goldfish",
+            "label": "金鱼",
+            "required": true
+          },
+          {
+            "id": "shark",
+            "label": "鲨鱼",
+            "required": true
+          },
+          {
+            "id": "snake",
+            "label": "蛇",
+            "required": true
+          },
+          {
+            "id": "turtle",
+            "label": "乌龟",
+            "required": true
+          },
+          {
+            "id": "frog",
+            "label": "青蛙",
+            "required": true
+          },
+          {
+            "id": "butterfly",
+            "label": "蝴蝶",
+            "required": true
+          },
+          {
+            "id": "ant",
+            "label": "蚂蚁",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "cat",
+            "entityIds": [
+              "cat"
+            ],
+            "label": "猫",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "whale",
+            "entityIds": [
+              "whale"
+            ],
+            "label": "鲸鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "bat",
+            "entityIds": [
+              "bat"
+            ],
+            "label": "蝙蝠",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sparrow",
+            "entityIds": [
+              "sparrow"
+            ],
+            "label": "麻雀",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 119,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "penguin",
+            "entityIds": [
+              "penguin"
+            ],
+            "label": "企鹅",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "goldfish",
+            "entityIds": [
+              "goldfish"
+            ],
+            "label": "金鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "shark",
+            "entityIds": [
+              "shark"
+            ],
+            "label": "鲨鱼",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "snake",
+            "entityIds": [
+              "snake"
+            ],
+            "label": "蛇",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 359,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "turtle",
+            "entityIds": [
+              "turtle"
+            ],
+            "label": "乌龟",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "frog",
+            "entityIds": [
+              "frog"
+            ],
+            "label": "青蛙",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "butterfly",
+            "entityIds": [
+              "butterfly"
+            ],
+            "label": "蝴蝶",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ant",
+            "entityIds": [
+              "ant"
+            ],
+            "label": "蚂蚁",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 599,
+              "w": 185,
+              "h": 202
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-cat",
+          "source": "representativeObjects.cat",
+          "label": "猫",
+          "regionIds": [
+            "cat"
+          ],
+          "entityIds": [
+            "cat"
+          ],
+          "evidenceTitle": "猫",
+          "observePrompt": "毛、四条腿、幼崽喝奶",
+          "evidenceCopy": "猫是哺乳动物，小时候会喝妈妈的奶。",
+          "markerChips": [
+            "猫"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "我觉得____属于____，因为它有____。",
+            "____看起来像____，但它其实是____，因为____。",
+            "我今天发现：不能只看____，还要看____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "我觉得____属于____，因为它有____。",
+        "____看起来像____，但它其实是____，因为____。",
+        "我今天发现：不能只看____，还要看____。"
+      ],
+      "parentTips": [
+        "不要要求孩子一次记住所有类别，优先让他说出分类依据。",
+        "可以追问：你是看哪个线索判断的？还有没有反例？",
+        "本页可自然连接到‘昆虫与蜘蛛’和‘恐龙分类’。"
+      ]
     }
   ]
 }

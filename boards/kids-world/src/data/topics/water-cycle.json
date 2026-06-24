@@ -1166,5 +1166,1584 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "水为什么会从海里跑到天上，又变成雨回到地面？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-water-cycle-scene-entry",
+        "assetId": "earth-water-cycle-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "主视觉是一张环形水滴路径：太阳照到海面，水汽升起，天空形成云，雨水落到山地和植物上，最后沿着河流回到大海。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-water-cycle-scene-classify",
+        "assetId": "earth-water-cycle-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sun",
+            "label": "太阳",
+            "required": true
+          },
+          {
+            "id": "ocean",
+            "label": "大海",
+            "required": true
+          },
+          {
+            "id": "water-vapor",
+            "label": "水汽",
+            "required": true
+          },
+          {
+            "id": "cloud",
+            "label": "云",
+            "required": true
+          },
+          {
+            "id": "rain",
+            "label": "雨",
+            "required": true
+          },
+          {
+            "id": "river",
+            "label": "河流",
+            "required": true
+          },
+          {
+            "id": "plant",
+            "label": "植物",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sun",
+            "entityIds": [
+              "sun"
+            ],
+            "label": "太阳",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ocean",
+            "entityIds": [
+              "ocean"
+            ],
+            "label": "大海",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "water-vapor",
+            "entityIds": [
+              "water-vapor"
+            ],
+            "label": "水汽",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cloud",
+            "entityIds": [
+              "cloud"
+            ],
+            "label": "云",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "rain",
+            "entityIds": [
+              "rain"
+            ],
+            "label": "雨",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "river",
+            "entityIds": [
+              "river"
+            ],
+            "label": "河流",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "plant",
+            "entityIds": [
+              "plant"
+            ],
+            "label": "植物",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-water-places",
+          "source": "classificationGroups.water-places",
+          "label": "水待过的地方",
+          "regionIds": [
+            "ocean",
+            "plant"
+          ],
+          "entityIds": [
+            "ocean",
+            "plant"
+          ],
+          "evidenceTitle": "水待过的地方",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "水可以在大海、河流、土壤和植物里。 这类里可以看到：大海、植物。",
+          "markerChips": [
+            "大海",
+            "植物"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sun",
+          "source": "representativeObjects.sun",
+          "label": "太阳",
+          "regionIds": [
+            "sun"
+          ],
+          "entityIds": [
+            "sun"
+          ],
+          "evidenceTitle": "太阳",
+          "observePrompt": "明亮的圆太阳",
+          "evidenceCopy": "太阳把地面和海面的水晒暖，让一部分水变成水汽。",
+          "markerChips": [
+            "太阳"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-ocean",
+          "source": "representativeObjects.ocean",
+          "label": "大海",
+          "regionIds": [
+            "ocean"
+          ],
+          "entityIds": [
+            "ocean"
+          ],
+          "evidenceTitle": "大海",
+          "observePrompt": "一大片蓝色水面",
+          "evidenceCopy": "大海里有很多水，是水循环的重要出发点。",
+          "markerChips": [
+            "大海"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-water-vapor",
+          "source": "representativeObjects.water-vapor",
+          "label": "水汽",
+          "regionIds": [
+            "water-vapor"
+          ],
+          "entityIds": [
+            "water-vapor"
+          ],
+          "evidenceTitle": "水汽",
+          "observePrompt": "往上飘的透明小线条",
+          "evidenceCopy": "水汽很轻，常常看不见，会往天空跑。",
+          "markerChips": [
+            "水汽"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-cloud",
+          "source": "representativeObjects.cloud",
+          "label": "云",
+          "regionIds": [
+            "cloud"
+          ],
+          "entityIds": [
+            "cloud"
+          ],
+          "evidenceTitle": "云",
+          "observePrompt": "白白软软但里面有小水滴",
+          "evidenceCopy": "云里有很多小水滴或小冰晶。",
+          "markerChips": [
+            "云"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-rain",
+          "source": "representativeObjects.rain",
+          "label": "雨",
+          "regionIds": [
+            "rain"
+          ],
+          "entityIds": [
+            "rain"
+          ],
+          "evidenceTitle": "雨",
+          "observePrompt": "从云下落的小水滴",
+          "evidenceCopy": "小水滴变大变重，就会从云里落下来。",
+          "markerChips": [
+            "雨"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-river",
+          "source": "representativeObjects.river",
+          "label": "河流",
+          "regionIds": [
+            "river"
+          ],
+          "entityIds": [
+            "river"
+          ],
+          "evidenceTitle": "河流",
+          "observePrompt": "弯弯的蓝色水带",
+          "evidenceCopy": "雨水会汇成小溪和河流，继续流动。",
+          "markerChips": [
+            "河流"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-plant",
+          "source": "representativeObjects.plant",
+          "label": "植物",
+          "regionIds": [
+            "plant"
+          ],
+          "entityIds": [
+            "plant"
+          ],
+          "evidenceTitle": "植物",
+          "observePrompt": "带根的小绿苗",
+          "evidenceCopy": "植物会吸收水，也会把一部分水送回空气里。",
+          "markerChips": [
+            "植物"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "太阳: 太阳把地面和海面的水晒暖，让一部分水变成水汽。",
+            "大海: 大海里有很多水，是水循环的重要出发点。",
+            "水汽: 水汽很轻，常常看不见，会往天空跑。",
+            "云: 云里有很多小水滴或小冰晶。",
+            "雨: 小水滴变大变重，就会从云里落下来。",
+            "河流: 雨水会汇成小溪和河流，继续流动。",
+            "植物: 植物会吸收水，也会把一部分水送回空气里。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-water-cycle-scene-process",
+        "assetId": "earth-water-cycle-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "evaporation",
+            "label": "被太阳晒暖",
+            "required": true
+          },
+          {
+            "id": "rising",
+            "label": "水汽往上跑",
+            "required": true
+          },
+          {
+            "id": "condensation",
+            "label": "聚成云",
+            "required": true
+          },
+          {
+            "id": "precipitation",
+            "label": "变成雨落下",
+            "required": true
+          },
+          {
+            "id": "collection",
+            "label": "流回大海",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "evaporation",
+            "entityIds": [
+              "evaporation"
+            ],
+            "label": "被太阳晒暖",
+            "shape": "rect",
+            "bounds": {
+              "x": 75,
+              "y": 165,
+              "w": 210,
+              "h": 320
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "rising",
+            "entityIds": [
+              "rising"
+            ],
+            "label": "水汽往上跑",
+            "shape": "rect",
+            "bounds": {
+              "x": 345,
+              "y": 105,
+              "w": 240,
+              "h": 315
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "condensation",
+            "entityIds": [
+              "condensation"
+            ],
+            "label": "聚成云",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 145,
+              "w": 230,
+              "h": 320
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "precipitation",
+            "entityIds": [
+              "precipitation"
+            ],
+            "label": "变成雨落下",
+            "shape": "rect",
+            "bounds": {
+              "x": 600,
+              "y": 515,
+              "w": 235,
+              "h": 315
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "collection",
+            "entityIds": [
+              "collection"
+            ],
+            "label": "流回大海",
+            "shape": "rect",
+            "bounds": {
+              "x": 220,
+              "y": 540,
+              "w": 235,
+              "h": 315
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-evaporation",
+          "source": "mechanism.steps.evaporation",
+          "label": "被太阳晒暖",
+          "regionIds": [
+            "evaporation"
+          ],
+          "entityIds": [
+            "evaporation"
+          ],
+          "evidenceTitle": "被太阳晒暖",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "海面和地面的水被太阳晒暖，一部分变成水汽。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-rising",
+          "source": "mechanism.steps.rising",
+          "label": "水汽往上跑",
+          "regionIds": [
+            "rising"
+          ],
+          "entityIds": [
+            "rising"
+          ],
+          "evidenceTitle": "水汽往上跑",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "轻轻的水汽升到天空，和空气一起移动。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-condensation",
+          "source": "mechanism.steps.condensation",
+          "label": "聚成云",
+          "regionIds": [
+            "condensation"
+          ],
+          "entityIds": [
+            "condensation"
+          ],
+          "evidenceTitle": "聚成云",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "水汽遇到冷一点的空气，会聚成很多小水滴，形成云。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-precipitation",
+          "source": "mechanism.steps.precipitation",
+          "label": "变成雨落下",
+          "regionIds": [
+            "precipitation"
+          ],
+          "entityIds": [
+            "precipitation"
+          ],
+          "evidenceTitle": "变成雨落下",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "小水滴变大变重，就会变成雨落回地面。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-collection",
+          "source": "mechanism.steps.collection",
+          "label": "流回大海",
+          "regionIds": [
+            "collection"
+          ],
+          "entityIds": [
+            "collection"
+          ],
+          "evidenceTitle": "流回大海",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "雨水进入土壤、小溪、河流，最后很多水又回到大海。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "一滴水的循环旅行",
+          "items": [
+            "被太阳晒暖: 海面和地面的水被太阳晒暖，一部分变成水汽。",
+            "水汽往上跑: 轻轻的水汽升到天空，和空气一起移动。",
+            "聚成云: 水汽遇到冷一点的空气，会聚成很多小水滴，形成云。",
+            "变成雨落下: 小水滴变大变重，就会变成雨落回地面。",
+            "流回大海: 雨水进入土壤、小溪、河流，最后很多水又回到大海。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-water-cycle-scene-compare",
+        "assetId": "earth-water-cycle-compare",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-cloud-vs-cotton",
+          "source": "comparePairs.cloud-vs-cotton",
+          "label": "云 vs 棉花",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "云 vs 棉花",
+          "observePrompt": "对比 云 和 棉花 的图片线索。",
+          "evidenceCopy": "云: 由许多小水滴或小冰晶组成；会移动和变化；可能带来雨雪。棉花: 是一种植物纤维；可以拿在手里；不会变成雨。云看起来软软的，但不是棉花。",
+          "markerChips": [
+            "云",
+            "棉花"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-evaporation-vs-boiling",
+          "source": "comparePairs.evaporation-vs-boiling",
+          "label": "蒸发 vs 烧开",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "蒸发 vs 烧开",
+          "observePrompt": "对比 蒸发 和 烧开 的图片线索。",
+          "evidenceCopy": "蒸发: 水慢慢变成水汽；可以在海面和地面发生；不一定冒大泡泡。烧开: 水被加热到很热；会冒泡泡；通常发生在锅里。海水不需要烧开，也能慢慢变成水汽。",
+          "markerChips": [
+            "蒸发",
+            "烧开"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-river-vs-ocean",
+          "source": "comparePairs.river-vs-ocean",
+          "label": "河流 vs 大海",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "河流 vs 大海",
+          "observePrompt": "对比 河流 和 大海 的图片线索。",
+          "evidenceCopy": "河流: 在陆地上流动；常常从高处流向低处；会把水带向湖泊或大海。大海: 非常大；是很多水聚集的地方；会被太阳晒出水汽。河流和大海连接在同一个循环里。",
+          "markerChips": [
+            "河流",
+            "大海"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "云 vs 棉花: 云看起来软软的，但不是棉花。",
+            "蒸发 vs 烧开: 海水不需要烧开，也能慢慢变成水汽。",
+            "河流 vs 大海: 河流和大海连接在同一个循环里。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-water-cycle-scene-task",
+        "assetId": "earth-water-cycle-click-task",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "ocean",
+            "label": "大海",
+            "required": true
+          },
+          {
+            "id": "water-vapor",
+            "label": "水汽",
+            "required": true
+          },
+          {
+            "id": "cloud",
+            "label": "云",
+            "required": true
+          },
+          {
+            "id": "rain",
+            "label": "雨",
+            "required": true
+          },
+          {
+            "id": "river",
+            "label": "河流",
+            "required": true
+          },
+          {
+            "id": "sun",
+            "label": "太阳",
+            "required": true
+          },
+          {
+            "id": "plant",
+            "label": "植物",
+            "required": true
+          },
+          {
+            "id": "tiny-water",
+            "label": "很多小水滴或小冰晶",
+            "required": true
+          },
+          {
+            "id": "cotton",
+            "label": "棉花",
+            "required": true
+          },
+          {
+            "id": "smoke",
+            "label": "烟",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "ocean",
+            "entityIds": [
+              "ocean"
+            ],
+            "label": "大海",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 145,
+              "w": 155,
+              "h": 325
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "water-vapor",
+            "entityIds": [
+              "water-vapor"
+            ],
+            "label": "水汽",
+            "shape": "rect",
+            "bounds": {
+              "x": 255,
+              "y": 145,
+              "w": 155,
+              "h": 325
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cloud",
+            "entityIds": [
+              "cloud"
+            ],
+            "label": "云",
+            "shape": "rect",
+            "bounds": {
+              "x": 430,
+              "y": 145,
+              "w": 155,
+              "h": 325
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "rain",
+            "entityIds": [
+              "rain"
+            ],
+            "label": "雨",
+            "shape": "rect",
+            "bounds": {
+              "x": 605,
+              "y": 145,
+              "w": 155,
+              "h": 325
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "river",
+            "entityIds": [
+              "river"
+            ],
+            "label": "河流",
+            "shape": "rect",
+            "bounds": {
+              "x": 780,
+              "y": 145,
+              "w": 155,
+              "h": 325
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sun",
+            "entityIds": [
+              "sun"
+            ],
+            "label": "太阳",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 520,
+              "w": 155,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "plant",
+            "entityIds": [
+              "plant"
+            ],
+            "label": "植物",
+            "shape": "rect",
+            "bounds": {
+              "x": 255,
+              "y": 520,
+              "w": 155,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "tiny-water",
+            "entityIds": [
+              "tiny-water"
+            ],
+            "label": "很多小水滴或小冰晶",
+            "shape": "rect",
+            "bounds": {
+              "x": 430,
+              "y": 520,
+              "w": 155,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cotton",
+            "entityIds": [
+              "cotton"
+            ],
+            "label": "棉花",
+            "shape": "rect",
+            "bounds": {
+              "x": 605,
+              "y": 520,
+              "w": 155,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "smoke",
+            "entityIds": [
+              "smoke"
+            ],
+            "label": "烟",
+            "shape": "rect",
+            "bounds": {
+              "x": 780,
+              "y": 520,
+              "w": 155,
+              "h": 300
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-ocean",
+          "source": "clickTasks.water-sequence-01.options.ocean",
+          "label": "大海",
+          "regionIds": [
+            "ocean"
+          ],
+          "entityIds": [
+            "ocean"
+          ],
+          "evidenceTitle": "大海",
+          "observePrompt": "从海面开始，点出水循环路线。",
+          "evidenceCopy": "当前步骤：大海。从海面开始，点出水循环路线。",
+          "markerChips": [
+            "大海"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-water-vapor",
+          "source": "clickTasks.water-sequence-01.options.water-vapor",
+          "label": "水汽",
+          "regionIds": [
+            "water-vapor"
+          ],
+          "entityIds": [
+            "water-vapor"
+          ],
+          "evidenceTitle": "水汽",
+          "observePrompt": "从海面开始，点出水循环路线。",
+          "evidenceCopy": "当前步骤：水汽。从海面开始，点出水循环路线。",
+          "markerChips": [
+            "水汽"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-cloud",
+          "source": "clickTasks.water-sequence-01.options.cloud",
+          "label": "云",
+          "regionIds": [
+            "cloud"
+          ],
+          "entityIds": [
+            "cloud"
+          ],
+          "evidenceTitle": "云",
+          "observePrompt": "从海面开始，点出水循环路线。",
+          "evidenceCopy": "当前步骤：云。从海面开始，点出水循环路线。",
+          "markerChips": [
+            "云"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-rain",
+          "source": "clickTasks.water-sequence-01.options.rain",
+          "label": "雨",
+          "regionIds": [
+            "rain"
+          ],
+          "entityIds": [
+            "rain"
+          ],
+          "evidenceTitle": "雨",
+          "observePrompt": "从海面开始，点出水循环路线。",
+          "evidenceCopy": "当前步骤：雨。从海面开始，点出水循环路线。",
+          "markerChips": [
+            "雨"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-river",
+          "source": "clickTasks.water-sequence-01.options.river",
+          "label": "河流",
+          "regionIds": [
+            "river"
+          ],
+          "entityIds": [
+            "river"
+          ],
+          "evidenceTitle": "河流",
+          "observePrompt": "从海面开始，点出水循环路线。",
+          "evidenceCopy": "当前步骤：河流。从海面开始，点出水循环路线。",
+          "markerChips": [
+            "河流"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-sun",
+          "source": "clickTasks.water-find-01.options.sun",
+          "label": "sun",
+          "regionIds": [
+            "sun"
+          ],
+          "entityIds": [
+            "sun"
+          ],
+          "evidenceTitle": "sun",
+          "observePrompt": "找到推动水循环的重要能量来源。",
+          "evidenceCopy": "对！太阳给水循环提供能量。",
+          "markerChips": [
+            "sun"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-cloud",
+          "source": "clickTasks.water-find-01.options.cloud",
+          "label": "cloud",
+          "regionIds": [
+            "cloud"
+          ],
+          "entityIds": [
+            "cloud"
+          ],
+          "evidenceTitle": "cloud",
+          "observePrompt": "找到推动水循环的重要能量来源。",
+          "evidenceCopy": "它又亮又暖，会把水晒成水汽。",
+          "markerChips": [
+            "cloud"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-river",
+          "source": "clickTasks.water-find-01.options.river",
+          "label": "river",
+          "regionIds": [
+            "river"
+          ],
+          "entityIds": [
+            "river"
+          ],
+          "evidenceTitle": "river",
+          "observePrompt": "找到推动水循环的重要能量来源。",
+          "evidenceCopy": "它又亮又暖，会把水晒成水汽。",
+          "markerChips": [
+            "river"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-plant",
+          "source": "clickTasks.water-find-01.options.plant",
+          "label": "plant",
+          "regionIds": [
+            "plant"
+          ],
+          "entityIds": [
+            "plant"
+          ],
+          "evidenceTitle": "plant",
+          "observePrompt": "找到推动水循环的重要能量来源。",
+          "evidenceCopy": "它又亮又暖，会把水晒成水汽。",
+          "markerChips": [
+            "plant"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-tiny-water",
+          "source": "clickTasks.water-choice-01.options.tiny-water",
+          "label": "很多小水滴或小冰晶",
+          "regionIds": [
+            "tiny-water"
+          ],
+          "entityIds": [
+            "tiny-water"
+          ],
+          "evidenceTitle": "很多小水滴或小冰晶",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "对！云里有很多小水滴或小冰晶。",
+          "markerChips": [
+            "很多小水滴或小冰晶"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-cotton",
+          "source": "clickTasks.water-choice-01.options.cotton",
+          "label": "棉花",
+          "regionIds": [
+            "cotton"
+          ],
+          "entityIds": [
+            "cotton"
+          ],
+          "evidenceTitle": "棉花",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "云看起来像棉花，但不是棉花。",
+          "markerChips": [
+            "棉花"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-smoke",
+          "source": "clickTasks.water-choice-01.options.smoke",
+          "label": "烟",
+          "regionIds": [
+            "smoke"
+          ],
+          "entityIds": [
+            "smoke"
+          ],
+          "evidenceTitle": "烟",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "云不是烟，而是和水有关。",
+          "markerChips": [
+            "烟"
+          ],
+          "expectedStatus": "wrong"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "从海面开始，点出水循环路线。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "water-sequence-01",
+          "type": "sequenceClick",
+          "title": "帮一滴水按顺序旅行",
+          "prompt": "从海面开始，点出水循环路线。",
+          "source": "clickTasks.water-sequence-01",
+          "options": [
+            {
+              "id": "ocean",
+              "label": "大海",
+              "source": "clickTasks.water-sequence-01.options.ocean",
+              "regionIds": [
+                "ocean"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "water-vapor",
+              "label": "水汽",
+              "source": "clickTasks.water-sequence-01.options.water-vapor",
+              "regionIds": [
+                "water-vapor"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "cloud",
+              "label": "云",
+              "source": "clickTasks.water-sequence-01.options.cloud",
+              "regionIds": [
+                "cloud"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "rain",
+              "label": "雨",
+              "source": "clickTasks.water-sequence-01.options.rain",
+              "regionIds": [
+                "rain"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "river",
+              "label": "河流",
+              "source": "clickTasks.water-sequence-01.options.river",
+              "regionIds": [
+                "river"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "ocean",
+            "water-vapor",
+            "cloud",
+            "rain",
+            "river"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "ocean",
+            "water-vapor",
+            "cloud",
+            "rain",
+            "river"
+          ],
+          "feedback": {
+            "correct": "太好了！你帮一滴水完成了循环旅行。",
+            "wrong": "先想一想：水从哪里被太阳晒起来？",
+            "partial": "从海面开始，点出水循环路线。",
+            "complete": "太好了！你帮一滴水完成了循环旅行。"
+          }
+        },
+        {
+          "id": "water-find-01",
+          "type": "findTarget",
+          "title": "找一找：谁让水开始往天空跑？",
+          "prompt": "找到推动水循环的重要能量来源。",
+          "source": "clickTasks.water-find-01",
+          "options": [
+            {
+              "id": "sun",
+              "label": "sun",
+              "source": "clickTasks.water-find-01.options.sun",
+              "regionIds": [
+                "sun"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "cloud",
+              "label": "cloud",
+              "source": "clickTasks.water-find-01.options.cloud",
+              "regionIds": [
+                "cloud"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "river",
+              "label": "river",
+              "source": "clickTasks.water-find-01.options.river",
+              "regionIds": [
+                "river"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "plant",
+              "label": "plant",
+              "source": "clickTasks.water-find-01.options.plant",
+              "regionIds": [
+                "plant"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "sun"
+          ],
+          "decoyRegionIds": [
+            "cloud",
+            "river",
+            "plant"
+          ],
+          "feedback": {
+            "correct": "对！太阳给水循环提供能量。",
+            "wrong": "它又亮又暖，会把水晒成水汽。",
+            "partial": "找到推动水循环的重要能量来源。",
+            "complete": "对！太阳给水循环提供能量。"
+          }
+        },
+        {
+          "id": "water-choice-01",
+          "type": "singleChoice",
+          "title": "云主要是什么组成的？",
+          "prompt": "选择最准确的答案。",
+          "source": "clickTasks.water-choice-01",
+          "options": [
+            {
+              "id": "tiny-water",
+              "label": "很多小水滴或小冰晶",
+              "source": "clickTasks.water-choice-01.options.tiny-water",
+              "regionIds": [
+                "tiny-water"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "cotton",
+              "label": "棉花",
+              "source": "clickTasks.water-choice-01.options.cotton",
+              "regionIds": [
+                "cotton"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "smoke",
+              "label": "烟",
+              "source": "clickTasks.water-choice-01.options.smoke",
+              "regionIds": [
+                "smoke"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "tiny-water"
+          ],
+          "decoyRegionIds": [
+            "cotton",
+            "smoke"
+          ],
+          "feedback": {
+            "correct": "对！云里有很多小水滴或小冰晶。",
+            "wrong": "再观察一下试试看。",
+            "partial": "选择最准确的答案。",
+            "complete": "对！云里有很多小水滴或小冰晶。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-water-cycle-scene-summary",
+        "assetId": "earth-water-cycle-parent-guide",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "sun",
+            "label": "太阳",
+            "required": true
+          },
+          {
+            "id": "ocean",
+            "label": "大海",
+            "required": true
+          },
+          {
+            "id": "water-vapor",
+            "label": "水汽",
+            "required": true
+          },
+          {
+            "id": "cloud",
+            "label": "云",
+            "required": true
+          },
+          {
+            "id": "rain",
+            "label": "雨",
+            "required": true
+          },
+          {
+            "id": "river",
+            "label": "河流",
+            "required": true
+          },
+          {
+            "id": "plant",
+            "label": "植物",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "sun",
+            "entityIds": [
+              "sun"
+            ],
+            "label": "太阳",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "ocean",
+            "entityIds": [
+              "ocean"
+            ],
+            "label": "大海",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "water-vapor",
+            "entityIds": [
+              "water-vapor"
+            ],
+            "label": "水汽",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "cloud",
+            "entityIds": [
+              "cloud"
+            ],
+            "label": "云",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "rain",
+            "entityIds": [
+              "rain"
+            ],
+            "label": "雨",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "river",
+            "entityIds": [
+              "river"
+            ],
+            "label": "河流",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "plant",
+            "entityIds": [
+              "plant"
+            ],
+            "label": "植物",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-sun",
+          "source": "representativeObjects.sun",
+          "label": "太阳",
+          "regionIds": [
+            "sun"
+          ],
+          "entityIds": [
+            "sun"
+          ],
+          "evidenceTitle": "太阳",
+          "observePrompt": "明亮的圆太阳",
+          "evidenceCopy": "太阳把地面和海面的水晒暖，让一部分水变成水汽。",
+          "markerChips": [
+            "太阳"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "水从____变成____，升到天空。",
+            "云里有很多____。",
+            "雨落下来以后，会流进____。",
+            "水循环不是一条直线，而是一个____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "水从____变成____，升到天空。",
+        "云里有很多____。",
+        "雨落下来以后，会流进____。",
+        "水循环不是一条直线，而是一个____。"
+      ],
+      "parentTips": [
+        "可以用洗澡后的镜子、水杯外的小水珠、锅盖上的水珠帮助孩子理解状态变化。",
+        "不要强迫孩子记“蒸发、凝结、降水”术语，先让他能讲完整故事。",
+        "可以让孩子画一条箭头，把太阳、海、云、雨、河连起来。"
+      ]
+    }
   ]
 }

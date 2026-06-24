@@ -606,7 +606,7 @@
     {
       "id": "evidence-comparePairs-red-vs-white",
       "source": "comparePairs.red-vs-white",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "Red blood cells vs White blood cells",
       "observePrompt": "Compare visual clues for Red blood cells and White blood cells.",
@@ -629,7 +629,7 @@
     {
       "id": "evidence-comparePairs-platelet-vs-red",
       "source": "comparePairs.platelet-vs-red",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "Platelets vs Red blood cells",
       "observePrompt": "Compare visual clues for Platelets and Red blood cells.",
@@ -652,7 +652,7 @@
     {
       "id": "evidence-comparePairs-blood-vs-water",
       "source": "comparePairs.blood-vs-water",
-      "visualSlotId": "hero",
+      "visualSlotId": "blood-overview",
       "interactionScope": "local",
       "evidenceTitle": "Blood vs Red water",
       "observePrompt": "Compare visual clues for Blood and Red water.",
@@ -675,7 +675,7 @@
     {
       "id": "evidence-clickTasks-blood-match-01-options-red-cell",
       "source": "clickTasks.blood-match-01.options.red-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "Red blood cell",
       "observePrompt": "Choose the blood team member with the oxygen job.",
@@ -693,7 +693,7 @@
     {
       "id": "evidence-clickTasks-blood-match-01-options-white-cell",
       "source": "clickTasks.blood-match-01.options.white-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "White blood cell",
       "observePrompt": "Choose the blood team member with the oxygen job.",
@@ -711,7 +711,7 @@
     {
       "id": "evidence-clickTasks-blood-match-01-options-platelet",
       "source": "clickTasks.blood-match-01.options.platelet",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "Platelet",
       "observePrompt": "Choose the blood team member with the oxygen job.",
@@ -729,7 +729,7 @@
     {
       "id": "evidence-clickTasks-blood-match-02-options-plasma",
       "source": "clickTasks.blood-match-02.options.plasma",
-      "visualSlotId": "hero",
+      "visualSlotId": "white-cell-guard",
       "interactionScope": "local",
       "evidenceTitle": "Plasma",
       "observePrompt": "Choose the small body guard.",
@@ -747,7 +747,7 @@
     {
       "id": "evidence-clickTasks-blood-match-02-options-white-cell",
       "source": "clickTasks.blood-match-02.options.white-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "white-cell-guard",
       "interactionScope": "local",
       "evidenceTitle": "White blood cell",
       "observePrompt": "Choose the small body guard.",
@@ -765,7 +765,7 @@
     {
       "id": "evidence-clickTasks-blood-match-02-options-red-cell",
       "source": "clickTasks.blood-match-02.options.red-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "white-cell-guard",
       "interactionScope": "local",
       "evidenceTitle": "Red blood cell",
       "observePrompt": "Choose the small body guard.",
@@ -783,7 +783,7 @@
     {
       "id": "evidence-clickTasks-blood-sequence-01-options-lung",
       "source": "clickTasks.blood-sequence-01.options.lung",
-      "visualSlotId": "hero",
+      "visualSlotId": "oxygen-flow",
       "interactionScope": "local",
       "evidenceTitle": "Lungs get oxygen",
       "observePrompt": "Tap the path in order.",
@@ -801,7 +801,7 @@
     {
       "id": "evidence-clickTasks-blood-sequence-01-options-heart",
       "source": "clickTasks.blood-sequence-01.options.heart",
-      "visualSlotId": "hero",
+      "visualSlotId": "oxygen-flow",
       "interactionScope": "local",
       "evidenceTitle": "Heart pushes blood",
       "observePrompt": "Tap the path in order.",
@@ -819,7 +819,7 @@
     {
       "id": "evidence-clickTasks-blood-sequence-01-options-body",
       "source": "clickTasks.blood-sequence-01.options.body",
-      "visualSlotId": "hero",
+      "visualSlotId": "oxygen-flow",
       "interactionScope": "local",
       "evidenceTitle": "Body receives oxygen",
       "observePrompt": "Tap the path in order.",
@@ -837,7 +837,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-platelet",
       "source": "clickTasks.blood-find-01.options.platelet",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "platelet",
       "observePrompt": "Find: who is the repair team?",
@@ -855,7 +855,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-red-cell",
       "source": "clickTasks.blood-find-01.options.red-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "red cell",
       "observePrompt": "Find: who is the repair team?",
@@ -873,7 +873,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-white-cell",
       "source": "clickTasks.blood-find-01.options.white-cell",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "white cell",
       "observePrompt": "Find: who is the repair team?",
@@ -891,7 +891,7 @@
     {
       "id": "evidence-clickTasks-blood-find-01-options-plasma",
       "source": "clickTasks.blood-find-01.options.plasma",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "plasma",
       "observePrompt": "Find: who is the repair team?",
@@ -905,6 +905,518 @@
       ],
       "expectedStatus": "wrong",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Why can blood help the body work?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a gentle blood vessel micro-world: red blood cells carry oxygen like small delivery carts, white blood cells are larger and fewer like guards, platelets are tiny repair helpers, and plasma flows like a river carrying everyone along."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-red-blood-cells",
+          "label": "Red blood cells",
+          "evidenceTitle": "Red blood cells",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Like little oxygen delivery carts that bring oxygen around the body. You can spot: Red blood cell.",
+          "markerChips": [
+            "Red blood cell"
+          ]
+        },
+        {
+          "id": "focus-red-cell",
+          "label": "Red blood cell",
+          "evidenceTitle": "Red blood cell",
+          "observePrompt": "red, flat round shape, many of them",
+          "evidenceCopy": "I deliver oxygen.",
+          "markerChips": [
+            "Red blood cell"
+          ]
+        },
+        {
+          "id": "focus-white-cell",
+          "label": "White blood cell",
+          "evidenceTitle": "White blood cell",
+          "observePrompt": "pale color, bigger than red cells, fewer",
+          "evidenceCopy": "I help protect the body.",
+          "markerChips": [
+            "White blood cell"
+          ]
+        },
+        {
+          "id": "focus-platelet",
+          "label": "Platelet",
+          "evidenceTitle": "Platelet",
+          "observePrompt": "tiny dots or small fragments",
+          "evidenceCopy": "I help repair small wounds.",
+          "markerChips": [
+            "Platelet"
+          ]
+        },
+        {
+          "id": "focus-plasma",
+          "label": "Plasma",
+          "evidenceTitle": "Plasma",
+          "observePrompt": "light yellow or transparent flowing background",
+          "evidenceCopy": "I carry the team as blood flows.",
+          "markerChips": [
+            "Plasma"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Red blood cell: I deliver oxygen.",
+            "White blood cell: I help protect the body.",
+            "Platelet: I help repair small wounds.",
+            "Plasma: I carry the team as blood flows."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-get-oxygen",
+          "label": "Oxygen enters the lungs",
+          "evidenceTitle": "Oxygen enters the lungs",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "When we breathe in, oxygen comes into the lungs.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-red-cell-load",
+          "label": "Red cells pick it up",
+          "evidenceTitle": "Red cells pick it up",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Red blood cells carry oxygen and get ready to travel.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-heart-pump",
+          "label": "The heart pushes",
+          "evidenceTitle": "The heart pushes",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "The heart works like a pump that moves blood through the body.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-deliver",
+          "label": "Oxygen is delivered",
+          "evidenceTitle": "Oxygen is delivered",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Red cells bring oxygen to places that need to work.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-return",
+          "label": "Waste gas goes back",
+          "evidenceTitle": "Waste gas goes back",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "Blood also carries waste gas back to be breathed out.",
+          "markerChips": [
+            "Step 5"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How does oxygen travel through the body?",
+          "items": [
+            "Oxygen enters the lungs: When we breathe in, oxygen comes into the lungs.",
+            "Red cells pick it up: Red blood cells carry oxygen and get ready to travel.",
+            "The heart pushes: The heart works like a pump that moves blood through the body.",
+            "Oxygen is delivered: Red cells bring oxygen to places that need to work.",
+            "Waste gas goes back: Blood also carries waste gas back to be breathed out."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-red-vs-white",
+          "label": "Red blood cells vs White blood cells",
+          "evidenceTitle": "Red blood cells vs White blood cells",
+          "observePrompt": "Compare visual clues for Red blood cells and White blood cells.",
+          "evidenceCopy": "Red blood cells: many of them; carry oxygen; like delivery carts. White blood cells: fewer; protect the body; like guards. They are both in blood, but they do different jobs.",
+          "markerChips": [
+            "Red blood cells",
+            "White blood cells"
+          ]
+        },
+        {
+          "id": "focus-platelet-vs-red",
+          "label": "Platelets vs Red blood cells",
+          "evidenceTitle": "Platelets vs Red blood cells",
+          "observePrompt": "Compare visual clues for Platelets and Red blood cells.",
+          "evidenceCopy": "Platelets: smaller; help stop bleeding; like repair helpers. Red blood cells: more common; carry oxygen; like carts. Tiny platelets also have an important job.",
+          "markerChips": [
+            "Platelets",
+            "Red blood cells"
+          ]
+        },
+        {
+          "id": "focus-blood-vs-water",
+          "label": "Blood vs Red water",
+          "evidenceTitle": "Blood vs Red water",
+          "observePrompt": "Compare visual clues for Blood and Red water.",
+          "evidenceCopy": "Blood: many members; transports and protects; circulates in the body. Red water: only liquid; no working team; does not protect the body. Blood is not ordinary red water.",
+          "markerChips": [
+            "Blood",
+            "Red water"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Red blood cells vs White blood cells: They are both in blood, but they do different jobs.",
+            "Platelets vs Red blood cells: Tiny platelets also have an important job.",
+            "Blood vs Red water: Blood is not ordinary red water."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-red-cell",
+          "label": "Red blood cell",
+          "evidenceTitle": "Red blood cell",
+          "observePrompt": "Choose the blood team member with the oxygen job.",
+          "evidenceCopy": "Correct! Red blood cells carry oxygen around the body.",
+          "markerChips": [
+            "Red blood cell"
+          ]
+        },
+        {
+          "id": "focus-white-cell",
+          "label": "White blood cell",
+          "evidenceTitle": "White blood cell",
+          "observePrompt": "Choose the blood team member with the oxygen job.",
+          "evidenceCopy": "White blood cells help protect the body. Look for the oxygen delivery job.",
+          "markerChips": [
+            "White blood cell"
+          ]
+        },
+        {
+          "id": "focus-platelet",
+          "label": "Platelet",
+          "evidenceTitle": "Platelet",
+          "observePrompt": "Choose the blood team member with the oxygen job.",
+          "evidenceCopy": "Platelets help with repair. Look for the oxygen delivery job.",
+          "markerChips": [
+            "Platelet"
+          ]
+        },
+        {
+          "id": "focus-plasma",
+          "label": "Plasma",
+          "evidenceTitle": "Plasma",
+          "observePrompt": "Choose the small body guard.",
+          "evidenceCopy": "Plasma is like the flowing river that carries many things.",
+          "markerChips": [
+            "Plasma"
+          ]
+        },
+        {
+          "id": "focus-white-cell",
+          "label": "White blood cell",
+          "evidenceTitle": "White blood cell",
+          "observePrompt": "Choose the small body guard.",
+          "evidenceCopy": "Yes! White blood cells help protect the body.",
+          "markerChips": [
+            "White blood cell"
+          ]
+        },
+        {
+          "id": "focus-red-cell",
+          "label": "Red blood cell",
+          "evidenceTitle": "Red blood cell",
+          "observePrompt": "Choose the small body guard.",
+          "evidenceCopy": "Red blood cells carry oxygen. Protection is the white blood cell’s job.",
+          "markerChips": [
+            "Red blood cell"
+          ]
+        },
+        {
+          "id": "focus-lung",
+          "label": "Lungs get oxygen",
+          "evidenceTitle": "Lungs get oxygen",
+          "observePrompt": "Tap the path in order.",
+          "evidenceCopy": "Current step: Lungs get oxygen. Tap the path in order.",
+          "markerChips": [
+            "Lungs get oxygen"
+          ]
+        },
+        {
+          "id": "focus-heart",
+          "label": "Heart pushes blood",
+          "evidenceTitle": "Heart pushes blood",
+          "observePrompt": "Tap the path in order.",
+          "evidenceCopy": "Current step: Heart pushes blood. Tap the path in order.",
+          "markerChips": [
+            "Heart pushes blood"
+          ]
+        },
+        {
+          "id": "focus-body",
+          "label": "Body receives oxygen",
+          "evidenceTitle": "Body receives oxygen",
+          "observePrompt": "Tap the path in order.",
+          "evidenceCopy": "Current step: Body receives oxygen. Tap the path in order.",
+          "markerChips": [
+            "Body receives oxygen"
+          ]
+        },
+        {
+          "id": "focus-platelet",
+          "label": "platelet",
+          "evidenceTitle": "platelet",
+          "observePrompt": "Find: who is the repair team?",
+          "evidenceCopy": "You found the repair helper. Platelets help stop small bleeding.",
+          "markerChips": [
+            "platelet"
+          ]
+        },
+        {
+          "id": "focus-red-cell",
+          "label": "red cell",
+          "evidenceTitle": "red cell",
+          "observePrompt": "Find: who is the repair team?",
+          "evidenceCopy": "Look for the tiny pieces that help patch a small wound.",
+          "markerChips": [
+            "red cell"
+          ]
+        },
+        {
+          "id": "focus-white-cell",
+          "label": "white cell",
+          "evidenceTitle": "white cell",
+          "observePrompt": "Find: who is the repair team?",
+          "evidenceCopy": "Look for the tiny pieces that help patch a small wound.",
+          "markerChips": [
+            "white cell"
+          ]
+        },
+        {
+          "id": "focus-plasma",
+          "label": "plasma",
+          "evidenceTitle": "plasma",
+          "observePrompt": "Find: who is the repair team?",
+          "evidenceCopy": "Look for the tiny pieces that help patch a small wound.",
+          "markerChips": [
+            "plasma"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Choose the blood team member with the oxygen job."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "blood-match-01",
+          "title": "Who is most like an oxygen delivery cart?",
+          "prompt": "Choose the blood team member with the oxygen job.",
+          "options": [
+            {
+              "id": "red-cell",
+              "label": "Red blood cell"
+            },
+            {
+              "id": "white-cell",
+              "label": "White blood cell"
+            },
+            {
+              "id": "platelet",
+              "label": "Platelet"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! Red blood cells carry oxygen around the body.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the blood team member with the oxygen job.",
+            "complete": "Correct! Red blood cells carry oxygen around the body."
+          }
+        },
+        {
+          "id": "blood-match-02",
+          "title": "When the body meets an invader, who helps protect it?",
+          "prompt": "Choose the small body guard.",
+          "options": [
+            {
+              "id": "plasma",
+              "label": "Plasma"
+            },
+            {
+              "id": "white-cell",
+              "label": "White blood cell"
+            },
+            {
+              "id": "red-cell",
+              "label": "Red blood cell"
+            }
+          ],
+          "feedback": {
+            "correct": "Yes! White blood cells help protect the body.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the small body guard.",
+            "complete": "Yes! White blood cells help protect the body."
+          }
+        },
+        {
+          "id": "blood-sequence-01",
+          "title": "What is the oxygen travel order?",
+          "prompt": "Tap the path in order.",
+          "options": [
+            {
+              "id": "lung",
+              "label": "Lungs get oxygen"
+            },
+            {
+              "id": "heart",
+              "label": "Heart pushes blood"
+            },
+            {
+              "id": "body",
+              "label": "Body receives oxygen"
+            }
+          ],
+          "feedback": {
+            "correct": "You followed the oxygen trip!",
+            "wrong": "Start where oxygen enters the body: the lungs.",
+            "partial": "Tap the path in order.",
+            "complete": "You followed the oxygen trip!"
+          }
+        },
+        {
+          "id": "blood-find-01",
+          "title": "Find: who is the repair team?",
+          "prompt": "Find: who is the repair team?",
+          "options": [
+            {
+              "id": "platelet",
+              "label": "platelet"
+            },
+            {
+              "id": "red-cell",
+              "label": "red cell"
+            },
+            {
+              "id": "white-cell",
+              "label": "white cell"
+            },
+            {
+              "id": "plasma",
+              "label": "plasma"
+            }
+          ],
+          "feedback": {
+            "correct": "You found the repair helper. Platelets help stop small bleeding.",
+            "wrong": "Look for the tiny pieces that help patch a small wound.",
+            "partial": "Find: who is the repair team?",
+            "complete": "You found the repair helper. Platelets help stop small bleeding."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-red-cell",
+          "label": "Red blood cell",
+          "evidenceTitle": "Red blood cell",
+          "observePrompt": "red, flat round shape, many of them",
+          "evidenceCopy": "I deliver oxygen.",
+          "markerChips": [
+            "Red blood cell"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "Blood has ____, ____, and ____.",
+            "Red blood cells are like ____. They help ____.",
+            "White blood cells are like ____. They help ____.",
+            "If there were no ____, the body might ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "Blood has ____, ____, and ____.",
+        "Red blood cells are like ____. They help ____.",
+        "White blood cells are like ____. They help ____.",
+        "If there were no ____, the body might ____."
+      ],
+      "parentTips": [
+        "Keep the tone gentle; avoid scary medical visuals.",
+        "Ask the child to match each cell to a job instead of memorizing names only.",
+        "This page can connect to immunity, heart, lungs, and wound healing."
+      ]
     }
   ]
 }

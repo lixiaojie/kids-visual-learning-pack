@@ -319,7 +319,7 @@
     {
       "id": "evidence-classificationGroups-tropical",
       "source": "classificationGroups.tropical",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "Tropical area",
       "observePrompt": "Look for objects that belong to this group.",
@@ -337,7 +337,7 @@
     {
       "id": "evidence-classificationGroups-subtropical",
       "source": "classificationGroups.subtropical",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "Warm and humid area",
       "observePrompt": "Look for objects that belong to this group.",
@@ -355,7 +355,7 @@
     {
       "id": "evidence-classificationGroups-temperate",
       "source": "classificationGroups.temperate",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "Temperate area",
       "observePrompt": "Look for objects that belong to this group.",
@@ -378,7 +378,7 @@
     {
       "id": "evidence-classificationGroups-dryHot",
       "source": "classificationGroups.dryHot",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "Dry hot area",
       "observePrompt": "Look for objects that belong to this group.",
@@ -396,7 +396,7 @@
     {
       "id": "evidence-classificationGroups-cold",
       "source": "classificationGroups.cold",
-      "visualSlotId": "city-cards",
+      "visualSlotId": "zone-icons",
       "interactionScope": "local",
       "evidenceTitle": "Cold area",
       "observePrompt": "Look for objects that belong to this group.",
@@ -594,7 +594,7 @@
     {
       "id": "evidence-comparePairs-singapore-vs-reykjavik",
       "source": "comparePairs.singapore-vs-reykjavik",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "Singapore vs Reykjavik",
       "observePrompt": "Compare visual clues for Singapore and Reykjavik.",
@@ -617,7 +617,7 @@
     {
       "id": "evidence-comparePairs-shenzhen-vs-beijing",
       "source": "comparePairs.shenzhen-vs-beijing",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "Shenzhen vs Beijing",
       "observePrompt": "Compare visual clues for Shenzhen and Beijing.",
@@ -640,7 +640,7 @@
     {
       "id": "evidence-comparePairs-hot-wet-vs-hot-dry",
       "source": "comparePairs.hot-wet-vs-hot-dry",
-      "visualSlotId": "hero",
+      "visualSlotId": "life-compare",
       "interactionScope": "local",
       "evidenceTitle": "Hot wet vs Hot dry",
       "observePrompt": "Compare visual clues for Hot wet and Hot dry.",
@@ -663,7 +663,7 @@
     {
       "id": "evidence-clickTasks-earth-single-01-options-singapore",
       "source": "clickTasks.earth-single-01.options.singapore",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "Singapore",
       "observePrompt": "Look for the city in the hottest band.",
@@ -681,7 +681,7 @@
     {
       "id": "evidence-clickTasks-earth-single-01-options-beijing",
       "source": "clickTasks.earth-single-01.options.beijing",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "Beijing",
       "observePrompt": "Look for the city in the hottest band.",
@@ -699,7 +699,7 @@
     {
       "id": "evidence-clickTasks-earth-single-01-options-reykjavik",
       "source": "clickTasks.earth-single-01.options.reykjavik",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "Reykjavik",
       "observePrompt": "Look for the city in the hottest band.",
@@ -717,7 +717,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-beijing",
       "source": "clickTasks.earth-find-01.options.beijing",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "beijing",
       "observePrompt": "Find: which cities may need a thick coat?",
@@ -735,7 +735,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-reykjavik",
       "source": "clickTasks.earth-find-01.options.reykjavik",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "reykjavik",
       "observePrompt": "Find: which cities may need a thick coat?",
@@ -753,7 +753,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-singapore",
       "source": "clickTasks.earth-find-01.options.singapore",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "singapore",
       "observePrompt": "Find: which cities may need a thick coat?",
@@ -771,7 +771,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-shenzhen",
       "source": "clickTasks.earth-find-01.options.shenzhen",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "shenzhen",
       "observePrompt": "Find: which cities may need a thick coat?",
@@ -789,7 +789,7 @@
     {
       "id": "evidence-clickTasks-earth-find-01-options-cairo",
       "source": "clickTasks.earth-find-01.options.cairo",
-      "visualSlotId": "hero",
+      "visualSlotId": "city-cards",
       "interactionScope": "local",
       "evidenceTitle": "cairo",
       "observePrompt": "Find: which cities may need a thick coat?",
@@ -807,7 +807,7 @@
     {
       "id": "evidence-clickTasks-earth-single-02-options-closer-sun",
       "source": "clickTasks.earth-single-02.options.closer-sun",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "Because the equator is much closer to the Sun",
       "observePrompt": "Choose the best reason.",
@@ -825,7 +825,7 @@
     {
       "id": "evidence-clickTasks-earth-single-02-options-direct-light",
       "source": "clickTasks.earth-single-02.options.direct-light",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "Because sunlight hits more directly there",
       "observePrompt": "Choose the best reason.",
@@ -843,7 +843,7 @@
     {
       "id": "evidence-clickTasks-earth-single-02-options-more-cities",
       "source": "clickTasks.earth-single-02.options.more-cities",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "Because there are more cities there",
       "observePrompt": "Choose the best reason.",
@@ -861,7 +861,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-ball",
       "source": "clickTasks.earth-sequence-01.options.ball",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "Earth is a ball",
       "observePrompt": "Tap the idea chain in order.",
@@ -879,7 +879,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-sunlight",
       "source": "clickTasks.earth-sequence-01.options.sunlight",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "Sunlight hits places differently",
       "observePrompt": "Tap the idea chain in order.",
@@ -897,7 +897,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-bands",
       "source": "clickTasks.earth-sequence-01.options.bands",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "Hot and cold bands appear",
       "observePrompt": "Tap the idea chain in order.",
@@ -915,7 +915,7 @@
     {
       "id": "evidence-clickTasks-earth-sequence-01-options-life",
       "source": "clickTasks.earth-sequence-01.options.life",
-      "visualSlotId": "hero",
+      "visualSlotId": "sun-angle",
       "interactionScope": "local",
       "evidenceTitle": "People, plants, and animals live differently",
       "observePrompt": "Tap the idea chain in order.",
@@ -929,6 +929,555 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Why are some places hot and some places cold?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main visual is a child-friendly globe. Soft horizontal bands show tropical, temperate, and cold regions. City cards sit in different areas; tapping a city shows weather impressions, clothing ideas, and everyday life scenes."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-tropical",
+          "label": "Tropical area",
+          "evidenceTitle": "Tropical area",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Near the equator, many places are warm or hot all year. You can spot: Singapore.",
+          "markerChips": [
+            "Singapore"
+          ]
+        },
+        {
+          "id": "focus-singapore",
+          "label": "Singapore",
+          "evidenceTitle": "Singapore",
+          "observePrompt": "short sleeves, umbrella, tropical plants",
+          "evidenceCopy": "Singapore is near the equator. It is often hot and rainy.",
+          "markerChips": [
+            "Singapore"
+          ]
+        },
+        {
+          "id": "focus-shenzhen",
+          "label": "Shenzhen",
+          "evidenceTitle": "Shenzhen",
+          "observePrompt": "city, tall buildings, humid summer",
+          "evidenceCopy": "Shenzhen is warm for much of the year, with hot summers and lots of rain.",
+          "markerChips": [
+            "Shenzhen"
+          ]
+        },
+        {
+          "id": "focus-beijing",
+          "label": "Beijing",
+          "evidenceTitle": "Beijing",
+          "observePrompt": "short sleeves in summer, thick coat in winter",
+          "evidenceCopy": "Beijing has more obvious seasons: hot summer and cold winter.",
+          "markerChips": [
+            "Beijing"
+          ]
+        },
+        {
+          "id": "focus-london",
+          "label": "London",
+          "evidenceTitle": "London",
+          "observePrompt": "umbrella, river, mild weather",
+          "evidenceCopy": "London is also temperate, often mild, with a strong rainy-day impression.",
+          "markerChips": [
+            "London"
+          ]
+        },
+        {
+          "id": "focus-cairo",
+          "label": "Cairo",
+          "evidenceTitle": "Cairo",
+          "observePrompt": "desert, sun, light clothing",
+          "evidenceCopy": "Cairo is near dry hot desert environments, with strong sunshine in the day.",
+          "markerChips": [
+            "Cairo"
+          ]
+        },
+        {
+          "id": "focus-reykjavik",
+          "label": "Reykjavik",
+          "evidenceTitle": "Reykjavik",
+          "observePrompt": "thick coat, cold wind, northern city",
+          "evidenceCopy": "Reykjavik is far north and often feels cold.",
+          "markerChips": [
+            "Reykjavik"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Singapore: Singapore is near the equator. It is often hot and rainy.",
+            "Shenzhen: Shenzhen is warm for much of the year, with hot summers and lots of rain.",
+            "Beijing: Beijing has more obvious seasons: hot summer and cold winter.",
+            "London: London is also temperate, often mild, with a strong rainy-day impression.",
+            "Cairo: Cairo is near dry hot desert environments, with strong sunshine in the day.",
+            "Reykjavik: Reykjavik is far north and often feels cold."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-earth-ball",
+          "label": "Earth is a ball",
+          "evidenceTitle": "Earth is a ball",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "Earth is not a flat sheet. It is a big ball.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-sunlight-angle",
+          "label": "Sunlight hits differently",
+          "evidenceTitle": "Sunlight hits differently",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Sunlight reaches different places in different ways. Near the equator it is more direct; near the poles it is more slanted.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-climate-bands",
+          "label": "Climate bands appear",
+          "evidenceTitle": "Climate bands appear",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "That is why Earth has hot, mild, and cold regions.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-life-changes",
+          "label": "Life changes too",
+          "evidenceTitle": "Life changes too",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Climate affects clothes, plants, animals, and homes.",
+          "markerChips": [
+            "Step 4"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "Why are some places hot and some cold?",
+          "items": [
+            "Earth is a ball: Earth is not a flat sheet. It is a big ball.",
+            "Sunlight hits differently: Sunlight reaches different places in different ways. Near the equator it is more direct; near the poles it is more slanted.",
+            "Climate bands appear: That is why Earth has hot, mild, and cold regions.",
+            "Life changes too: Climate affects clothes, plants, animals, and homes."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-singapore-vs-reykjavik",
+          "label": "Singapore vs Reykjavik",
+          "evidenceTitle": "Singapore vs Reykjavik",
+          "observePrompt": "Compare visual clues for Singapore and Reykjavik.",
+          "evidenceCopy": "Singapore: near the equator; often hot; tropical plants. Reykjavik: far north; often cold; warmer clothes. A city’s place on Earth affects how hot or cold it feels.",
+          "markerChips": [
+            "Singapore",
+            "Reykjavik"
+          ]
+        },
+        {
+          "id": "focus-shenzhen-vs-beijing",
+          "label": "Shenzhen vs Beijing",
+          "evidenceTitle": "Shenzhen vs Beijing",
+          "observePrompt": "Compare visual clues for Shenzhen and Beijing.",
+          "evidenceCopy": "Shenzhen: farther south; warm and humid; hot summer. Beijing: farther north; clearer seasons; colder winter. Even in one country, cities can have different climates.",
+          "markerChips": [
+            "Shenzhen",
+            "Beijing"
+          ]
+        },
+        {
+          "id": "focus-hot-wet-vs-hot-dry",
+          "label": "Hot wet vs Hot dry",
+          "evidenceTitle": "Hot wet vs Hot dry",
+          "observePrompt": "Compare visual clues for Hot wet and Hot dry.",
+          "evidenceCopy": "Hot wet: hot; more rain; many plants. Hot dry: hot; little rain; desert scenes. Hot places can still be very different.",
+          "markerChips": [
+            "Hot wet",
+            "Hot dry"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Singapore vs Reykjavik: A city’s place on Earth affects how hot or cold it feels.",
+            "Shenzhen vs Beijing: Even in one country, cities can have different climates.",
+            "Hot wet vs Hot dry: Hot places can still be very different."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-singapore",
+          "label": "Singapore",
+          "evidenceTitle": "Singapore",
+          "observePrompt": "Look for the city in the hottest band.",
+          "evidenceCopy": "Correct! Singapore is close to the equator and often feels hot and humid.",
+          "markerChips": [
+            "Singapore"
+          ]
+        },
+        {
+          "id": "focus-beijing",
+          "label": "Beijing",
+          "evidenceTitle": "Beijing",
+          "observePrompt": "Look for the city in the hottest band.",
+          "evidenceCopy": "Beijing is in a temperate area, not the hottest band.",
+          "markerChips": [
+            "Beijing"
+          ]
+        },
+        {
+          "id": "focus-reykjavik",
+          "label": "Reykjavik",
+          "evidenceTitle": "Reykjavik",
+          "observePrompt": "Look for the city in the hottest band.",
+          "evidenceCopy": "Reykjavik is far north and much colder.",
+          "markerChips": [
+            "Reykjavik"
+          ]
+        },
+        {
+          "id": "focus-beijing",
+          "label": "beijing",
+          "evidenceTitle": "beijing",
+          "observePrompt": "Find: which cities may need a thick coat?",
+          "evidenceCopy": "Good observation! Colder places often need warmer clothes.",
+          "markerChips": [
+            "beijing"
+          ]
+        },
+        {
+          "id": "focus-reykjavik",
+          "label": "reykjavik",
+          "evidenceTitle": "reykjavik",
+          "observePrompt": "Find: which cities may need a thick coat?",
+          "evidenceCopy": "Good observation! Colder places often need warmer clothes.",
+          "markerChips": [
+            "reykjavik"
+          ]
+        },
+        {
+          "id": "focus-singapore",
+          "label": "singapore",
+          "evidenceTitle": "singapore",
+          "observePrompt": "Find: which cities may need a thick coat?",
+          "evidenceCopy": "Think about which cities are farther from the hot band.",
+          "markerChips": [
+            "singapore"
+          ]
+        },
+        {
+          "id": "focus-shenzhen",
+          "label": "shenzhen",
+          "evidenceTitle": "shenzhen",
+          "observePrompt": "Find: which cities may need a thick coat?",
+          "evidenceCopy": "Think about which cities are farther from the hot band.",
+          "markerChips": [
+            "shenzhen"
+          ]
+        },
+        {
+          "id": "focus-cairo",
+          "label": "cairo",
+          "evidenceTitle": "cairo",
+          "observePrompt": "Find: which cities may need a thick coat?",
+          "evidenceCopy": "Think about which cities are farther from the hot band.",
+          "markerChips": [
+            "cairo"
+          ]
+        },
+        {
+          "id": "focus-closer-sun",
+          "label": "Because the equator is much closer to the Sun",
+          "evidenceTitle": "Because the equator is much closer to the Sun",
+          "observePrompt": "Choose the best reason.",
+          "evidenceCopy": "The key is not that it is much closer. It is how sunlight hits the surface.",
+          "markerChips": [
+            "Because the equator is much closer to the Sun"
+          ]
+        },
+        {
+          "id": "focus-direct-light",
+          "label": "Because sunlight hits more directly there",
+          "evidenceTitle": "Because sunlight hits more directly there",
+          "observePrompt": "Choose the best reason.",
+          "evidenceCopy": "Right! More direct sunlight helps make the equator warmer.",
+          "markerChips": [
+            "Because sunlight hits more directly there"
+          ]
+        },
+        {
+          "id": "focus-more-cities",
+          "label": "Because there are more cities there",
+          "evidenceTitle": "Because there are more cities there",
+          "observePrompt": "Choose the best reason.",
+          "evidenceCopy": "Cities do not create the main climate bands.",
+          "markerChips": [
+            "Because there are more cities there"
+          ]
+        },
+        {
+          "id": "focus-ball",
+          "label": "Earth is a ball",
+          "evidenceTitle": "Earth is a ball",
+          "observePrompt": "Tap the idea chain in order.",
+          "evidenceCopy": "Current step: Earth is a ball. Tap the idea chain in order.",
+          "markerChips": [
+            "Earth is a ball"
+          ]
+        },
+        {
+          "id": "focus-sunlight",
+          "label": "Sunlight hits places differently",
+          "evidenceTitle": "Sunlight hits places differently",
+          "observePrompt": "Tap the idea chain in order.",
+          "evidenceCopy": "Current step: Sunlight hits places differently. Tap the idea chain in order.",
+          "markerChips": [
+            "Sunlight hits places differently"
+          ]
+        },
+        {
+          "id": "focus-bands",
+          "label": "Hot and cold bands appear",
+          "evidenceTitle": "Hot and cold bands appear",
+          "observePrompt": "Tap the idea chain in order.",
+          "evidenceCopy": "Current step: Hot and cold bands appear. Tap the idea chain in order.",
+          "markerChips": [
+            "Hot and cold bands appear"
+          ]
+        },
+        {
+          "id": "focus-life",
+          "label": "People, plants, and animals live differently",
+          "evidenceTitle": "People, plants, and animals live differently",
+          "observePrompt": "Tap the idea chain in order.",
+          "evidenceCopy": "Current step: People, plants, and animals live differently. Tap the idea chain in order.",
+          "markerChips": [
+            "People, plants, and animals live differently"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Look for the city in the hottest band."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "earth-single-01",
+          "title": "Which city is closest to the equator?",
+          "prompt": "Look for the city in the hottest band.",
+          "options": [
+            {
+              "id": "singapore",
+              "label": "Singapore"
+            },
+            {
+              "id": "beijing",
+              "label": "Beijing"
+            },
+            {
+              "id": "reykjavik",
+              "label": "Reykjavik"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! Singapore is close to the equator and often feels hot and humid.",
+            "wrong": "Look again and try once more.",
+            "partial": "Look for the city in the hottest band.",
+            "complete": "Correct! Singapore is close to the equator and often feels hot and humid."
+          }
+        },
+        {
+          "id": "earth-find-01",
+          "title": "Find: which cities may need a thick coat?",
+          "prompt": "Find: which cities may need a thick coat?",
+          "options": [
+            {
+              "id": "beijing",
+              "label": "beijing"
+            },
+            {
+              "id": "reykjavik",
+              "label": "reykjavik"
+            },
+            {
+              "id": "singapore",
+              "label": "singapore"
+            },
+            {
+              "id": "shenzhen",
+              "label": "shenzhen"
+            },
+            {
+              "id": "cairo",
+              "label": "cairo"
+            }
+          ],
+          "feedback": {
+            "correct": "Good observation! Colder places often need warmer clothes.",
+            "wrong": "Think about which cities are farther from the hot band.",
+            "partial": "Find: which cities may need a thick coat?",
+            "complete": "Good observation! Colder places often need warmer clothes."
+          }
+        },
+        {
+          "id": "earth-single-02",
+          "title": "Why is it often hotter near the equator?",
+          "prompt": "Choose the best reason.",
+          "options": [
+            {
+              "id": "closer-sun",
+              "label": "Because the equator is much closer to the Sun"
+            },
+            {
+              "id": "direct-light",
+              "label": "Because sunlight hits more directly there"
+            },
+            {
+              "id": "more-cities",
+              "label": "Because there are more cities there"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! More direct sunlight helps make the equator warmer.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the best reason.",
+            "complete": "Right! More direct sunlight helps make the equator warmer."
+          }
+        },
+        {
+          "id": "earth-sequence-01",
+          "title": "How climate bands form",
+          "prompt": "Tap the idea chain in order.",
+          "options": [
+            {
+              "id": "ball",
+              "label": "Earth is a ball"
+            },
+            {
+              "id": "sunlight",
+              "label": "Sunlight hits places differently"
+            },
+            {
+              "id": "bands",
+              "label": "Hot and cold bands appear"
+            },
+            {
+              "id": "life",
+              "label": "People, plants, and animals live differently"
+            }
+          ],
+          "feedback": {
+            "correct": "You built the climate idea chain.",
+            "wrong": "Start with the shape of Earth: it is a ball.",
+            "partial": "Tap the idea chain in order.",
+            "complete": "You built the climate idea chain."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-singapore",
+          "label": "Singapore",
+          "evidenceTitle": "Singapore",
+          "observePrompt": "short sleeves, umbrella, tropical plants",
+          "evidenceCopy": "Singapore is near the equator. It is often hot and rainy.",
+          "markerChips": [
+            "Singapore"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "____ is located more toward ____, so it often feels ____.",
+            "If I visit ____, I may bring ____ because ____.",
+            "Today I found out: hot places can be ____ or ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "____ is located more toward ____, so it often feels ____.",
+        "If I visit ____, I may bring ____ because ____.",
+        "Today I found out: hot places can be ____ or ____."
+      ],
+      "parentTips": [
+        "Do not focus on exact climate categories yet. Build spatial understanding first.",
+        "Use a flashlight and ball to show sunlight angle.",
+        "Ask life-based questions: what would you wear, what plants might you see, what houses might help?"
+      ]
     }
   ]
 }

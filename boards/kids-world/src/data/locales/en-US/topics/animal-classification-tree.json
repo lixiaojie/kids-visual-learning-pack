@@ -387,7 +387,7 @@
     {
       "id": "evidence-classificationGroups-vertebrates",
       "source": "classificationGroups.vertebrates",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Vertebrates",
       "observePrompt": "Look for objects that belong to this group.",
@@ -399,7 +399,7 @@
     {
       "id": "evidence-classificationGroups-mammals",
       "source": "classificationGroups.mammals",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Mammals",
       "observePrompt": "Look for objects that belong to this group.",
@@ -427,7 +427,7 @@
     {
       "id": "evidence-classificationGroups-birds",
       "source": "classificationGroups.birds",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Birds",
       "observePrompt": "Look for objects that belong to this group.",
@@ -450,7 +450,7 @@
     {
       "id": "evidence-classificationGroups-fish",
       "source": "classificationGroups.fish",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Fish",
       "observePrompt": "Look for objects that belong to this group.",
@@ -473,7 +473,7 @@
     {
       "id": "evidence-classificationGroups-reptiles",
       "source": "classificationGroups.reptiles",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Reptiles",
       "observePrompt": "Look for objects that belong to this group.",
@@ -496,7 +496,7 @@
     {
       "id": "evidence-classificationGroups-amphibians",
       "source": "classificationGroups.amphibians",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Amphibians",
       "observePrompt": "Look for objects that belong to this group.",
@@ -514,7 +514,7 @@
     {
       "id": "evidence-classificationGroups-insects",
       "source": "classificationGroups.insects",
-      "visualSlotId": "object-icons",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Insects",
       "observePrompt": "Look for objects that belong to this group.",
@@ -753,7 +753,7 @@
     {
       "id": "evidence-mechanism-steps-look-body",
       "source": "mechanism.steps.look-body",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "Look at the body",
       "observePrompt": "Current step 1. Look at what happens here.",
@@ -771,7 +771,7 @@
     {
       "id": "evidence-mechanism-steps-look-life",
       "source": "mechanism.steps.look-life",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "Look at lifestyle",
       "observePrompt": "Current step 2. Look at what happens here.",
@@ -789,7 +789,7 @@
     {
       "id": "evidence-mechanism-steps-look-baby",
       "source": "mechanism.steps.look-baby",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "Look at the baby",
       "observePrompt": "Current step 3. Look at what happens here.",
@@ -807,7 +807,7 @@
     {
       "id": "evidence-mechanism-steps-avoid-single-clue",
       "source": "mechanism.steps.avoid-single-clue",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "Do not use one clue only",
       "observePrompt": "Current step 4. Look at what happens here.",
@@ -894,7 +894,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-01-options-fish",
       "source": "clickTasks.animal-classify-01.options.fish",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Fish",
       "observePrompt": "A whale lives in the sea, but what kind of animal is it?",
@@ -912,7 +912,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-01-options-mammals",
       "source": "clickTasks.animal-classify-01.options.mammals",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Mammals",
       "observePrompt": "A whale lives in the sea, but what kind of animal is it?",
@@ -930,7 +930,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-01-options-birds",
       "source": "clickTasks.animal-classify-01.options.birds",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Birds",
       "observePrompt": "A whale lives in the sea, but what kind of animal is it?",
@@ -948,7 +948,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-02-options-bird",
       "source": "clickTasks.animal-classify-02.options.bird",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "Yes, because it can fly",
       "observePrompt": "It can fly, but what clue matters more?",
@@ -966,7 +966,7 @@
     {
       "id": "evidence-clickTasks-animal-classify-02-options-mammal",
       "source": "clickTasks.animal-classify-02.options.mammal",
-      "visualSlotId": "hero",
+      "visualSlotId": "group-icons",
       "interactionScope": "local",
       "evidenceTitle": "No, it is a mammal",
       "observePrompt": "It can fly, but what clue matters more?",
@@ -984,7 +984,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-sparrow",
       "source": "clickTasks.animal-find-01.options.sparrow",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "sparrow",
       "observePrompt": "Find: who has feathers?",
@@ -1002,7 +1002,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-penguin",
       "source": "clickTasks.animal-find-01.options.penguin",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "penguin",
       "observePrompt": "Find: who has feathers?",
@@ -1020,7 +1020,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-bat",
       "source": "clickTasks.animal-find-01.options.bat",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "bat",
       "observePrompt": "Find: who has feathers?",
@@ -1038,7 +1038,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-butterfly",
       "source": "clickTasks.animal-find-01.options.butterfly",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "butterfly",
       "observePrompt": "Find: who has feathers?",
@@ -1056,7 +1056,7 @@
     {
       "id": "evidence-clickTasks-animal-find-01-options-whale",
       "source": "clickTasks.animal-find-01.options.whale",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "whale",
       "observePrompt": "Find: who has feathers?",
@@ -1074,7 +1074,7 @@
     {
       "id": "evidence-clickTasks-animal-sequence-01-options-body",
       "source": "clickTasks.animal-sequence-01.options.body",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "Body clue",
       "observePrompt": "Tap the clues in order.",
@@ -1092,7 +1092,7 @@
     {
       "id": "evidence-clickTasks-animal-sequence-01-options-life",
       "source": "clickTasks.animal-sequence-01.options.life",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "How it lives",
       "observePrompt": "Tap the clues in order.",
@@ -1110,7 +1110,7 @@
     {
       "id": "evidence-clickTasks-animal-sequence-01-options-compare",
       "source": "clickTasks.animal-sequence-01.options.compare",
-      "visualSlotId": "hero",
+      "visualSlotId": "mechanism",
       "interactionScope": "local",
       "evidenceTitle": "Compare with a similar animal",
       "observePrompt": "Tap the clues in order.",
@@ -1124,6 +1124,591 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "How can we sort animals?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a layered tree: the root is ‘animals’, the first split is vertebrates and invertebrates, and the branches continue into mammals, birds, fish, reptiles, amphibians, insects, and more. When a child clicks an animal card, the matching branch lights up."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-vertebrates",
+          "label": "Vertebrates",
+          "evidenceTitle": "Vertebrates",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Animals with an important bone column inside the body, like a body support.",
+          "markerChips": []
+        },
+        {
+          "id": "focus-cat",
+          "label": "Cat",
+          "evidenceTitle": "Cat",
+          "observePrompt": "fur, four legs, kittens drinking milk",
+          "evidenceCopy": "A cat is a mammal. Baby cats drink milk from their mother.",
+          "markerChips": [
+            "Cat"
+          ]
+        },
+        {
+          "id": "focus-whale",
+          "label": "Whale",
+          "evidenceTitle": "Whale",
+          "observePrompt": "sea life, breathes air, baby drinks milk",
+          "evidenceCopy": "A whale lives in the sea, but it is not a fish. It is a mammal.",
+          "markerChips": [
+            "Whale"
+          ]
+        },
+        {
+          "id": "focus-bat",
+          "label": "Bat",
+          "evidenceTitle": "Bat",
+          "observePrompt": "skin wings, no feathers",
+          "evidenceCopy": "A bat can fly, but it is not a bird. It is a mammal.",
+          "markerChips": [
+            "Bat"
+          ]
+        },
+        {
+          "id": "focus-sparrow",
+          "label": "Sparrow",
+          "evidenceTitle": "Sparrow",
+          "observePrompt": "feathers, beak, wings",
+          "evidenceCopy": "A sparrow has feathers, so it is a bird.",
+          "markerChips": [
+            "Sparrow"
+          ]
+        },
+        {
+          "id": "focus-penguin",
+          "label": "Penguin",
+          "evidenceTitle": "Penguin",
+          "observePrompt": "feathers, wings used for swimming",
+          "evidenceCopy": "A penguin does not fly well, but it has feathers, so it is still a bird.",
+          "markerChips": [
+            "Penguin"
+          ]
+        },
+        {
+          "id": "focus-goldfish",
+          "label": "Goldfish",
+          "evidenceTitle": "Goldfish",
+          "observePrompt": "gills, fins, water",
+          "evidenceCopy": "A goldfish lives in water and breathes with gills.",
+          "markerChips": [
+            "Goldfish"
+          ]
+        },
+        {
+          "id": "focus-shark",
+          "label": "Shark",
+          "evidenceTitle": "Shark",
+          "observePrompt": "fins, gills, streamlined body",
+          "evidenceCopy": "A shark is a fish with a body made for swimming.",
+          "markerChips": [
+            "Shark"
+          ]
+        },
+        {
+          "id": "focus-snake",
+          "label": "Snake",
+          "evidenceTitle": "Snake",
+          "observePrompt": "scales, long body",
+          "evidenceCopy": "A snake has scales and is a reptile.",
+          "markerChips": [
+            "Snake"
+          ]
+        },
+        {
+          "id": "focus-turtle",
+          "label": "Turtle",
+          "evidenceTitle": "Turtle",
+          "observePrompt": "shell, scales",
+          "evidenceCopy": "A turtle is a reptile with a shell.",
+          "markerChips": [
+            "Turtle"
+          ]
+        },
+        {
+          "id": "focus-frog",
+          "label": "Frog",
+          "evidenceTitle": "Frog",
+          "observePrompt": "tadpole to frog",
+          "evidenceCopy": "A frog is an amphibian. It changes a lot as it grows.",
+          "markerChips": [
+            "Frog"
+          ]
+        },
+        {
+          "id": "focus-butterfly",
+          "label": "Butterfly",
+          "evidenceTitle": "Butterfly",
+          "observePrompt": "wings, six legs, antennae",
+          "evidenceCopy": "A butterfly is an insect with six legs.",
+          "markerChips": [
+            "Butterfly"
+          ]
+        },
+        {
+          "id": "focus-ant",
+          "label": "Ant",
+          "evidenceTitle": "Ant",
+          "observePrompt": "six legs, antennae, small body",
+          "evidenceCopy": "An ant is an insect with six legs.",
+          "markerChips": [
+            "Ant"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Cat: A cat is a mammal. Baby cats drink milk from their mother.",
+            "Whale: A whale lives in the sea, but it is not a fish. It is a mammal.",
+            "Bat: A bat can fly, but it is not a bird. It is a mammal.",
+            "Sparrow: A sparrow has feathers, so it is a bird.",
+            "Penguin: A penguin does not fly well, but it has feathers, so it is still a bird.",
+            "Goldfish: A goldfish lives in water and breathes with gills.",
+            "Shark: A shark is a fish with a body made for swimming.",
+            "Snake: A snake has scales and is a reptile.",
+            "Turtle: A turtle is a reptile with a shell.",
+            "Frog: A frog is an amphibian. It changes a lot as it grows.",
+            "Butterfly: A butterfly is an insect with six legs.",
+            "Ant: An ant is an insect with six legs."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-look-body",
+          "label": "Look at the body",
+          "evidenceTitle": "Look at the body",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "Does it have feathers, scales, fur, or six legs?",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-look-life",
+          "label": "Look at lifestyle",
+          "evidenceTitle": "Look at lifestyle",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Does it live in water, on land, or both?",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-look-baby",
+          "label": "Look at the baby",
+          "evidenceTitle": "Look at the baby",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "How the baby grows can also help us classify.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-avoid-single-clue",
+          "label": "Do not use one clue only",
+          "evidenceTitle": "Do not use one clue only",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Flying does not always mean bird. Living in water does not always mean fish.",
+          "markerChips": [
+            "Step 4"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "What clues do we use for classification?",
+          "items": [
+            "Look at the body: Does it have feathers, scales, fur, or six legs?",
+            "Look at lifestyle: Does it live in water, on land, or both?",
+            "Look at the baby: How the baby grows can also help us classify.",
+            "Do not use one clue only: Flying does not always mean bird. Living in water does not always mean fish."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-whale-vs-fish",
+          "label": "Whale vs Fish",
+          "evidenceTitle": "Whale vs Fish",
+          "observePrompt": "Compare visual clues for Whale and Fish.",
+          "evidenceCopy": "Whale: breathes air with lungs; baby drinks milk; is a mammal. Fish: mostly breathe with gills; have fins; are fish. Living in the sea does not always mean fish.",
+          "markerChips": [
+            "Whale",
+            "Fish"
+          ]
+        },
+        {
+          "id": "focus-bat-vs-bird",
+          "label": "Bat vs Bird",
+          "evidenceTitle": "Bat vs Bird",
+          "observePrompt": "Compare visual clues for Bat and Bird.",
+          "evidenceCopy": "Bat: no feathers; baby drinks milk; is a mammal. Bird: has feathers; has a beak; is a bird. Flying does not always mean bird.",
+          "markerChips": [
+            "Bat",
+            "Bird"
+          ]
+        },
+        {
+          "id": "focus-penguin-vs-sparrow",
+          "label": "Penguin vs Sparrow",
+          "evidenceTitle": "Penguin vs Sparrow",
+          "observePrompt": "Compare visual clues for Penguin and Sparrow.",
+          "evidenceCopy": "Penguin: does not fly well; has feathers; is a bird. Sparrow: can fly; has feathers; is a bird. Flying is not the only clue for birds.",
+          "markerChips": [
+            "Penguin",
+            "Sparrow"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Whale vs Fish: Living in the sea does not always mean fish.",
+            "Bat vs Bird: Flying does not always mean bird.",
+            "Penguin vs Sparrow: Flying is not the only clue for birds."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-fish",
+          "label": "Fish",
+          "evidenceTitle": "Fish",
+          "observePrompt": "A whale lives in the sea, but what kind of animal is it?",
+          "evidenceCopy": "Living in water is not enough. A whale breathes air and feeds milk to its baby.",
+          "markerChips": [
+            "Fish"
+          ]
+        },
+        {
+          "id": "focus-mammals",
+          "label": "Mammals",
+          "evidenceTitle": "Mammals",
+          "observePrompt": "A whale lives in the sea, but what kind of animal is it?",
+          "evidenceCopy": "Right! A whale lives in the sea, but it is a mammal.",
+          "markerChips": [
+            "Mammals"
+          ]
+        },
+        {
+          "id": "focus-birds",
+          "label": "Birds",
+          "evidenceTitle": "Birds",
+          "observePrompt": "A whale lives in the sea, but what kind of animal is it?",
+          "evidenceCopy": "A whale does not have feathers.",
+          "markerChips": [
+            "Birds"
+          ]
+        },
+        {
+          "id": "focus-bird",
+          "label": "Yes, because it can fly",
+          "evidenceTitle": "Yes, because it can fly",
+          "observePrompt": "It can fly, but what clue matters more?",
+          "evidenceCopy": "Flying is not the only clue. Birds have feathers; bats do not.",
+          "markerChips": [
+            "Yes, because it can fly"
+          ]
+        },
+        {
+          "id": "focus-mammal",
+          "label": "No, it is a mammal",
+          "evidenceTitle": "No, it is a mammal",
+          "observePrompt": "It can fly, but what clue matters more?",
+          "evidenceCopy": "Yes! A bat can fly, but it is still a mammal.",
+          "markerChips": [
+            "No, it is a mammal"
+          ]
+        },
+        {
+          "id": "focus-sparrow",
+          "label": "sparrow",
+          "evidenceTitle": "sparrow",
+          "observePrompt": "Find: who has feathers?",
+          "evidenceCopy": "You found the feather clue. Sparrows and penguins are both birds.",
+          "markerChips": [
+            "sparrow"
+          ]
+        },
+        {
+          "id": "focus-penguin",
+          "label": "penguin",
+          "evidenceTitle": "penguin",
+          "observePrompt": "Find: who has feathers?",
+          "evidenceCopy": "You found the feather clue. Sparrows and penguins are both birds.",
+          "markerChips": [
+            "penguin"
+          ]
+        },
+        {
+          "id": "focus-bat",
+          "label": "bat",
+          "evidenceTitle": "bat",
+          "observePrompt": "Find: who has feathers?",
+          "evidenceCopy": "Look for feathers, not only wings.",
+          "markerChips": [
+            "bat"
+          ]
+        },
+        {
+          "id": "focus-butterfly",
+          "label": "butterfly",
+          "evidenceTitle": "butterfly",
+          "observePrompt": "Find: who has feathers?",
+          "evidenceCopy": "Look for feathers, not only wings.",
+          "markerChips": [
+            "butterfly"
+          ]
+        },
+        {
+          "id": "focus-whale",
+          "label": "whale",
+          "evidenceTitle": "whale",
+          "observePrompt": "Find: who has feathers?",
+          "evidenceCopy": "Look for feathers, not only wings.",
+          "markerChips": [
+            "whale"
+          ]
+        },
+        {
+          "id": "focus-body",
+          "label": "Body clue",
+          "evidenceTitle": "Body clue",
+          "observePrompt": "Tap the clues in order.",
+          "evidenceCopy": "Current step: Body clue. Tap the clues in order.",
+          "markerChips": [
+            "Body clue"
+          ]
+        },
+        {
+          "id": "focus-life",
+          "label": "How it lives",
+          "evidenceTitle": "How it lives",
+          "observePrompt": "Tap the clues in order.",
+          "evidenceCopy": "Current step: How it lives. Tap the clues in order.",
+          "markerChips": [
+            "How it lives"
+          ]
+        },
+        {
+          "id": "focus-compare",
+          "label": "Compare with a similar animal",
+          "evidenceTitle": "Compare with a similar animal",
+          "observePrompt": "Tap the clues in order.",
+          "evidenceCopy": "Current step: Compare with a similar animal. Tap the clues in order.",
+          "markerChips": [
+            "Compare with a similar animal"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "A whale lives in the sea, but what kind of animal is it?"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "animal-classify-01",
+          "title": "Which branch should a whale live on?",
+          "prompt": "A whale lives in the sea, but what kind of animal is it?",
+          "options": [
+            {
+              "id": "fish",
+              "label": "Fish"
+            },
+            {
+              "id": "mammals",
+              "label": "Mammals"
+            },
+            {
+              "id": "birds",
+              "label": "Birds"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! A whale lives in the sea, but it is a mammal.",
+            "wrong": "Look again and try once more.",
+            "partial": "A whale lives in the sea, but what kind of animal is it?",
+            "complete": "Right! A whale lives in the sea, but it is a mammal."
+          }
+        },
+        {
+          "id": "animal-classify-02",
+          "title": "Is a bat a bird?",
+          "prompt": "It can fly, but what clue matters more?",
+          "options": [
+            {
+              "id": "bird",
+              "label": "Yes, because it can fly"
+            },
+            {
+              "id": "mammal",
+              "label": "No, it is a mammal"
+            }
+          ],
+          "feedback": {
+            "correct": "Yes! A bat can fly, but it is still a mammal.",
+            "wrong": "Look again and try once more.",
+            "partial": "It can fly, but what clue matters more?",
+            "complete": "Yes! A bat can fly, but it is still a mammal."
+          }
+        },
+        {
+          "id": "animal-find-01",
+          "title": "Find: who has feathers?",
+          "prompt": "Find: who has feathers?",
+          "options": [
+            {
+              "id": "sparrow",
+              "label": "sparrow"
+            },
+            {
+              "id": "penguin",
+              "label": "penguin"
+            },
+            {
+              "id": "bat",
+              "label": "bat"
+            },
+            {
+              "id": "butterfly",
+              "label": "butterfly"
+            },
+            {
+              "id": "whale",
+              "label": "whale"
+            }
+          ],
+          "feedback": {
+            "correct": "You found the feather clue. Sparrows and penguins are both birds.",
+            "wrong": "Look for feathers, not only wings.",
+            "partial": "Find: who has feathers?",
+            "complete": "You found the feather clue. Sparrows and penguins are both birds."
+          }
+        },
+        {
+          "id": "animal-sequence-01",
+          "title": "What should we check when sorting animals?",
+          "prompt": "Tap the clues in order.",
+          "options": [
+            {
+              "id": "body",
+              "label": "Body clue"
+            },
+            {
+              "id": "life",
+              "label": "How it lives"
+            },
+            {
+              "id": "compare",
+              "label": "Compare with a similar animal"
+            }
+          ],
+          "feedback": {
+            "correct": "You sorted like a scientist: look, think, then compare.",
+            "wrong": "Start with what you can see on the body.",
+            "partial": "Tap the clues in order.",
+            "complete": "You sorted like a scientist: look, think, then compare."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-cat",
+          "label": "Cat",
+          "evidenceTitle": "Cat",
+          "observePrompt": "fur, four legs, kittens drinking milk",
+          "evidenceCopy": "A cat is a mammal. Baby cats drink milk from their mother.",
+          "markerChips": [
+            "Cat"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "I think ____ belongs to ____ because it has ____.",
+            "____ looks like ____, but it is actually ____ because ____.",
+            "Today I found out: do not only look at ____. Also look at ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "I think ____ belongs to ____ because it has ____.",
+        "____ looks like ____, but it is actually ____ because ____.",
+        "Today I found out: do not only look at ____. Also look at ____."
+      ],
+      "parentTips": [
+        "Do not ask the child to memorize all categories at once. Ask them to explain the clue.",
+        "Ask: Which clue did you use? Is there a counterexample?",
+        "This page connects naturally to Insects and Spiders and Dinosaur Classification."
+      ]
     }
   ]
 }

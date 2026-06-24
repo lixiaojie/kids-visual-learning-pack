@@ -984,5 +984,524 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "How does water rise from the sea, become rain, and return to the ground?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a circular droplet path: sunlight warms the ocean, vapor rises, clouds form, rain falls on mountains and plants, and water flows through rivers back to the sea."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-water-places",
+          "label": "Places water stays",
+          "evidenceTitle": "Places water stays",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Water can be in oceans, rivers, soil, and plants. You can spot: Ocean, Plant.",
+          "markerChips": [
+            "Ocean",
+            "Plant"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "Sun",
+          "evidenceTitle": "Sun",
+          "observePrompt": "bright round sun",
+          "evidenceCopy": "The Sun warms water on land and sea, turning some of it into vapor.",
+          "markerChips": [
+            "Sun"
+          ]
+        },
+        {
+          "id": "focus-ocean",
+          "label": "Ocean",
+          "evidenceTitle": "Ocean",
+          "observePrompt": "wide blue water",
+          "evidenceCopy": "The ocean holds a lot of water and is an important starting point.",
+          "markerChips": [
+            "Ocean"
+          ]
+        },
+        {
+          "id": "focus-water-vapor",
+          "label": "Water vapor",
+          "evidenceTitle": "Water vapor",
+          "observePrompt": "thin upward wisps",
+          "evidenceCopy": "Water vapor is light and often invisible, so it can rise into the air.",
+          "markerChips": [
+            "Water vapor"
+          ]
+        },
+        {
+          "id": "focus-cloud",
+          "label": "Cloud",
+          "evidenceTitle": "Cloud",
+          "observePrompt": "soft cloud with tiny droplets",
+          "evidenceCopy": "A cloud contains many tiny water droplets or ice crystals.",
+          "markerChips": [
+            "Cloud"
+          ]
+        },
+        {
+          "id": "focus-rain",
+          "label": "Rain",
+          "evidenceTitle": "Rain",
+          "observePrompt": "falling blue drops",
+          "evidenceCopy": "When droplets grow bigger and heavier, they fall as rain.",
+          "markerChips": [
+            "Rain"
+          ]
+        },
+        {
+          "id": "focus-river",
+          "label": "River",
+          "evidenceTitle": "River",
+          "observePrompt": "curving blue stream",
+          "evidenceCopy": "Rainwater can gather into streams and rivers.",
+          "markerChips": [
+            "River"
+          ]
+        },
+        {
+          "id": "focus-plant",
+          "label": "Plant",
+          "evidenceTitle": "Plant",
+          "observePrompt": "small green plant with roots",
+          "evidenceCopy": "Plants take in water and can also send some vapor back into the air.",
+          "markerChips": [
+            "Plant"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Sun: The Sun warms water on land and sea, turning some of it into vapor.",
+            "Ocean: The ocean holds a lot of water and is an important starting point.",
+            "Water vapor: Water vapor is light and often invisible, so it can rise into the air.",
+            "Cloud: A cloud contains many tiny water droplets or ice crystals.",
+            "Rain: When droplets grow bigger and heavier, they fall as rain.",
+            "River: Rainwater can gather into streams and rivers.",
+            "Plant: Plants take in water and can also send some vapor back into the air."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-evaporation",
+          "label": "Warmed by the Sun",
+          "evidenceTitle": "Warmed by the Sun",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "The Sun warms water on the ocean and land, and some water becomes vapor.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-rising",
+          "label": "Vapor rises",
+          "evidenceTitle": "Vapor rises",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Light water vapor rises into the sky with the air.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-condensation",
+          "label": "Clouds form",
+          "evidenceTitle": "Clouds form",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "When vapor meets cooler air, many tiny droplets gather to form clouds.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-precipitation",
+          "label": "Rain falls",
+          "evidenceTitle": "Rain falls",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "When droplets grow bigger and heavier, they fall back as rain.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-collection",
+          "label": "Water returns",
+          "evidenceTitle": "Water returns",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "Rain enters soil, streams, rivers, and eventually many drops return to the sea.",
+          "markerChips": [
+            "Step 5"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "One water drop’s cycle journey",
+          "items": [
+            "Warmed by the Sun: The Sun warms water on the ocean and land, and some water becomes vapor.",
+            "Vapor rises: Light water vapor rises into the sky with the air.",
+            "Clouds form: When vapor meets cooler air, many tiny droplets gather to form clouds.",
+            "Rain falls: When droplets grow bigger and heavier, they fall back as rain.",
+            "Water returns: Rain enters soil, streams, rivers, and eventually many drops return to the sea."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-cloud-vs-cotton",
+          "label": "Cloud vs Cotton",
+          "evidenceTitle": "Cloud vs Cotton",
+          "observePrompt": "Compare visual clues for Cloud and Cotton.",
+          "evidenceCopy": "Cloud: made of tiny droplets or ice crystals; moves and changes; can bring rain or snow. Cotton: plant fiber; can be held in your hand; does not become rain. Clouds look soft, but they are not cotton.",
+          "markerChips": [
+            "Cloud",
+            "Cotton"
+          ]
+        },
+        {
+          "id": "focus-evaporation-vs-boiling",
+          "label": "Evaporation vs Boiling",
+          "evidenceTitle": "Evaporation vs Boiling",
+          "observePrompt": "Compare visual clues for Evaporation and Boiling.",
+          "evidenceCopy": "Evaporation: water slowly becomes vapor; can happen on oceans and ground; does not need big bubbles. Boiling: water becomes very hot; bubbles appear; usually happens in a pot. Ocean water can evaporate without boiling.",
+          "markerChips": [
+            "Evaporation",
+            "Boiling"
+          ]
+        },
+        {
+          "id": "focus-river-vs-ocean",
+          "label": "River vs Ocean",
+          "evidenceTitle": "River vs Ocean",
+          "observePrompt": "Compare visual clues for River and Ocean.",
+          "evidenceCopy": "River: flows across land; often moves downhill; carries water toward lakes or seas. Ocean: very large; holds lots of water; sends vapor upward when warmed. Rivers and oceans are connected in the same cycle.",
+          "markerChips": [
+            "River",
+            "Ocean"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Cloud vs Cotton: Clouds look soft, but they are not cotton.",
+            "Evaporation vs Boiling: Ocean water can evaporate without boiling.",
+            "River vs Ocean: Rivers and oceans are connected in the same cycle."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-ocean",
+          "label": "Ocean",
+          "evidenceTitle": "Ocean",
+          "observePrompt": "Start at the sea and tap the water-cycle route.",
+          "evidenceCopy": "Current step: Ocean. Start at the sea and tap the water-cycle route.",
+          "markerChips": [
+            "Ocean"
+          ]
+        },
+        {
+          "id": "focus-water-vapor",
+          "label": "Water vapor",
+          "evidenceTitle": "Water vapor",
+          "observePrompt": "Start at the sea and tap the water-cycle route.",
+          "evidenceCopy": "Current step: Water vapor. Start at the sea and tap the water-cycle route.",
+          "markerChips": [
+            "Water vapor"
+          ]
+        },
+        {
+          "id": "focus-cloud",
+          "label": "Cloud",
+          "evidenceTitle": "Cloud",
+          "observePrompt": "Start at the sea and tap the water-cycle route.",
+          "evidenceCopy": "Current step: Cloud. Start at the sea and tap the water-cycle route.",
+          "markerChips": [
+            "Cloud"
+          ]
+        },
+        {
+          "id": "focus-rain",
+          "label": "Rain",
+          "evidenceTitle": "Rain",
+          "observePrompt": "Start at the sea and tap the water-cycle route.",
+          "evidenceCopy": "Current step: Rain. Start at the sea and tap the water-cycle route.",
+          "markerChips": [
+            "Rain"
+          ]
+        },
+        {
+          "id": "focus-river",
+          "label": "River",
+          "evidenceTitle": "River",
+          "observePrompt": "Start at the sea and tap the water-cycle route.",
+          "evidenceCopy": "Current step: River. Start at the sea and tap the water-cycle route.",
+          "markerChips": [
+            "River"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "sun",
+          "evidenceTitle": "sun",
+          "observePrompt": "Find the important energy source.",
+          "evidenceCopy": "Correct! The Sun powers the water cycle.",
+          "markerChips": [
+            "sun"
+          ]
+        },
+        {
+          "id": "focus-cloud",
+          "label": "cloud",
+          "evidenceTitle": "cloud",
+          "observePrompt": "Find the important energy source.",
+          "evidenceCopy": "It is bright and warm, and it helps water become vapor.",
+          "markerChips": [
+            "cloud"
+          ]
+        },
+        {
+          "id": "focus-river",
+          "label": "river",
+          "evidenceTitle": "river",
+          "observePrompt": "Find the important energy source.",
+          "evidenceCopy": "It is bright and warm, and it helps water become vapor.",
+          "markerChips": [
+            "river"
+          ]
+        },
+        {
+          "id": "focus-plant",
+          "label": "plant",
+          "evidenceTitle": "plant",
+          "observePrompt": "Find the important energy source.",
+          "evidenceCopy": "It is bright and warm, and it helps water become vapor.",
+          "markerChips": [
+            "plant"
+          ]
+        },
+        {
+          "id": "focus-tiny-water",
+          "label": "Many tiny droplets or ice crystals",
+          "evidenceTitle": "Many tiny droplets or ice crystals",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Right! Clouds contain many tiny droplets or ice crystals.",
+          "markerChips": [
+            "Many tiny droplets or ice crystals"
+          ]
+        },
+        {
+          "id": "focus-cotton",
+          "label": "Cotton",
+          "evidenceTitle": "Cotton",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Clouds look like cotton, but they are not cotton.",
+          "markerChips": [
+            "Cotton"
+          ]
+        },
+        {
+          "id": "focus-smoke",
+          "label": "Smoke",
+          "evidenceTitle": "Smoke",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Clouds are related to water, not smoke.",
+          "markerChips": [
+            "Smoke"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Start at the sea and tap the water-cycle route."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "water-sequence-01",
+          "title": "Help one water drop travel in order",
+          "prompt": "Start at the sea and tap the water-cycle route.",
+          "options": [
+            {
+              "id": "ocean",
+              "label": "Ocean"
+            },
+            {
+              "id": "water-vapor",
+              "label": "Water vapor"
+            },
+            {
+              "id": "cloud",
+              "label": "Cloud"
+            },
+            {
+              "id": "rain",
+              "label": "Rain"
+            },
+            {
+              "id": "river",
+              "label": "River"
+            }
+          ],
+          "feedback": {
+            "correct": "Great! You helped one drop complete its cycle journey.",
+            "wrong": "Think first: where does water get warmed by the Sun?",
+            "partial": "Start at the sea and tap the water-cycle route.",
+            "complete": "Great! You helped one drop complete its cycle journey."
+          }
+        },
+        {
+          "id": "water-find-01",
+          "title": "Find: what helps water rise into the sky?",
+          "prompt": "Find the important energy source.",
+          "options": [
+            {
+              "id": "sun",
+              "label": "sun"
+            },
+            {
+              "id": "cloud",
+              "label": "cloud"
+            },
+            {
+              "id": "river",
+              "label": "river"
+            },
+            {
+              "id": "plant",
+              "label": "plant"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! The Sun powers the water cycle.",
+            "wrong": "It is bright and warm, and it helps water become vapor.",
+            "partial": "Find the important energy source.",
+            "complete": "Correct! The Sun powers the water cycle."
+          }
+        },
+        {
+          "id": "water-choice-01",
+          "title": "What are clouds mostly made of?",
+          "prompt": "Choose the best answer.",
+          "options": [
+            {
+              "id": "tiny-water",
+              "label": "Many tiny droplets or ice crystals"
+            },
+            {
+              "id": "cotton",
+              "label": "Cotton"
+            },
+            {
+              "id": "smoke",
+              "label": "Smoke"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! Clouds contain many tiny droplets or ice crystals.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the best answer.",
+            "complete": "Right! Clouds contain many tiny droplets or ice crystals."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-sun",
+          "label": "Sun",
+          "evidenceTitle": "Sun",
+          "observePrompt": "bright round sun",
+          "evidenceCopy": "The Sun warms water on land and sea, turning some of it into vapor.",
+          "markerChips": [
+            "Sun"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "Water changes from ____ into ____ and rises into the sky.",
+            "Clouds contain many _____.",
+            "After rain falls, water can flow into _____.",
+            "The water cycle is not a straight line; it is a _____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "Water changes from ____ into ____ and rises into the sky.",
+        "Clouds contain many _____.",
+        "After rain falls, water can flow into _____.",
+        "The water cycle is not a straight line; it is a _____."
+      ],
+      "parentTips": [
+        "Use a foggy mirror, droplets on a cold cup, or water under a pot lid to explain state change.",
+        "Do not force terminology first; let the child tell the story of the cycle.",
+        "Ask the child to draw arrows connecting Sun, ocean, cloud, rain, and river."
+      ]
+    }
   ]
 }

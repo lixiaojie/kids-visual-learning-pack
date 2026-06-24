@@ -2920,5 +2920,1758 @@
         "dimOthers": true
       }
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "机器人是不是有魔法，还是由传感器、程序和动作部件一起工作？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-robots-scene-entry",
+        "assetId": "human-system-robots-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "主视觉是友好的机器人工作台：左侧是摄像头、麦克风、按钮、距离传感器等输入，中央是程序判断云，右侧是灯光、轮子、机械臂等行动输出。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-robots-scene-classify",
+        "assetId": "human-system-robots-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "camera",
+            "label": "摄像头",
+            "required": true
+          },
+          {
+            "id": "microphone",
+            "label": "麦克风",
+            "required": true
+          },
+          {
+            "id": "distance-sensor",
+            "label": "距离传感器",
+            "required": true
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "required": true
+          },
+          {
+            "id": "program",
+            "label": "程序规则",
+            "required": true
+          },
+          {
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "camera",
+            "entityIds": [
+              "camera"
+            ],
+            "label": "摄像头",
+            "shape": "rect",
+            "bounds": {
+              "x": 130,
+              "y": 100,
+              "w": 240,
+              "h": 280
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "microphone",
+            "entityIds": [
+              "microphone"
+            ],
+            "label": "麦克风",
+            "shape": "rect",
+            "bounds": {
+              "x": 380,
+              "y": 100,
+              "w": 220,
+              "h": 280
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "distance-sensor",
+            "entityIds": [
+              "distance-sensor"
+            ],
+            "label": "距离传感器",
+            "shape": "rect",
+            "bounds": {
+              "x": 630,
+              "y": 100,
+              "w": 240,
+              "h": 280
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "button",
+            "entityIds": [
+              "button"
+            ],
+            "label": "按钮",
+            "shape": "rect",
+            "bounds": {
+              "x": 140,
+              "y": 400,
+              "w": 220,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "program",
+            "entityIds": [
+              "program"
+            ],
+            "label": "程序规则",
+            "shape": "rect",
+            "bounds": {
+              "x": 390,
+              "y": 400,
+              "w": 220,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "wheel-arm",
+            "entityIds": [
+              "wheel-arm"
+            ],
+            "label": "轮子和机械臂",
+            "shape": "rect",
+            "bounds": {
+              "x": 640,
+              "y": 400,
+              "w": 240,
+              "h": 250
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-sensors",
+          "source": "classificationGroups.sensors",
+          "label": "接收信息",
+          "regionIds": [
+            "camera",
+            "microphone",
+            "distance-sensor",
+            "button"
+          ],
+          "entityIds": [
+            "camera",
+            "microphone",
+            "distance-sensor",
+            "button"
+          ],
+          "evidenceTitle": "接收信息",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "传感器像机器人的眼睛、耳朵和小按钮。 这类里可以看到：摄像头、麦克风、按钮、距离传感器。",
+          "markerChips": [
+            "摄像头",
+            "麦克风",
+            "按钮",
+            "距离传感器"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-camera",
+          "source": "representativeObjects.camera",
+          "label": "摄像头",
+          "regionIds": [
+            "camera"
+          ],
+          "entityIds": [
+            "camera"
+          ],
+          "evidenceTitle": "摄像头",
+          "observePrompt": "圆圆镜头",
+          "evidenceCopy": "摄像头可以帮助机器人看到图像。",
+          "markerChips": [
+            "摄像头"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-microphone",
+          "source": "representativeObjects.microphone",
+          "label": "麦克风",
+          "regionIds": [
+            "microphone"
+          ],
+          "entityIds": [
+            "microphone"
+          ],
+          "evidenceTitle": "麦克风",
+          "observePrompt": "小话筒",
+          "evidenceCopy": "麦克风可以帮助机器人听到声音。",
+          "markerChips": [
+            "麦克风"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-distance-sensor",
+          "source": "representativeObjects.distance-sensor",
+          "label": "距离传感器",
+          "regionIds": [
+            "distance-sensor"
+          ],
+          "entityIds": [
+            "distance-sensor"
+          ],
+          "evidenceTitle": "距离传感器",
+          "observePrompt": "两个小圆眼",
+          "evidenceCopy": "它可以帮机器人知道前面是不是太近了。",
+          "markerChips": [
+            "距离传感器"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-button",
+          "source": "representativeObjects.button",
+          "label": "按钮",
+          "regionIds": [
+            "button"
+          ],
+          "entityIds": [
+            "button"
+          ],
+          "evidenceTitle": "按钮",
+          "observePrompt": "红色圆按钮",
+          "evidenceCopy": "按钮可以把人的选择告诉机器人。",
+          "markerChips": [
+            "按钮"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-program",
+          "source": "representativeObjects.program",
+          "label": "程序规则",
+          "regionIds": [
+            "program"
+          ],
+          "entityIds": [
+            "program"
+          ],
+          "evidenceTitle": "程序规则",
+          "observePrompt": "发光小脑云",
+          "evidenceCopy": "程序像任务规则，告诉机器人先做什么、后做什么。",
+          "markerChips": [
+            "程序规则"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-wheel-arm",
+          "source": "representativeObjects.wheel-arm",
+          "label": "轮子和机械臂",
+          "regionIds": [
+            "wheel-arm"
+          ],
+          "entityIds": [
+            "wheel-arm"
+          ],
+          "evidenceTitle": "轮子和机械臂",
+          "observePrompt": "轮子加夹爪",
+          "evidenceCopy": "轮子让机器人移动，机械臂让机器人抓取或推动东西。",
+          "markerChips": [
+            "轮子和机械臂"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "摄像头: 摄像头可以帮助机器人看到图像。",
+            "麦克风: 麦克风可以帮助机器人听到声音。",
+            "距离传感器: 它可以帮机器人知道前面是不是太近了。",
+            "按钮: 按钮可以把人的选择告诉机器人。",
+            "程序规则: 程序像任务规则，告诉机器人先做什么、后做什么。",
+            "轮子和机械臂: 轮子让机器人移动，机械臂让机器人抓取或推动东西。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-robots-scene-process",
+        "assetId": "human-system-robots-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "input",
+            "label": "1 接收",
+            "required": true
+          },
+          {
+            "id": "interpret",
+            "label": "2 看懂",
+            "required": true
+          },
+          {
+            "id": "decide",
+            "label": "3 决定",
+            "required": true
+          },
+          {
+            "id": "act",
+            "label": "4 动作",
+            "required": true
+          },
+          {
+            "id": "feedback-loop",
+            "label": "5 再检查",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "input",
+            "entityIds": [
+              "input"
+            ],
+            "label": "1 接收",
+            "shape": "rect",
+            "bounds": {
+              "x": 175,
+              "y": 95,
+              "w": 260,
+              "h": 340
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "interpret",
+            "entityIds": [
+              "interpret"
+            ],
+            "label": "2 看懂",
+            "shape": "rect",
+            "bounds": {
+              "x": 590,
+              "y": 115,
+              "w": 250,
+              "h": 320
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "decide",
+            "entityIds": [
+              "decide"
+            ],
+            "label": "3 决定",
+            "shape": "rect",
+            "bounds": {
+              "x": 420,
+              "y": 360,
+              "w": 165,
+              "h": 275
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "act",
+            "entityIds": [
+              "act"
+            ],
+            "label": "4 动作",
+            "shape": "rect",
+            "bounds": {
+              "x": 595,
+              "y": 590,
+              "w": 250,
+              "h": 320
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "feedback-loop",
+            "entityIds": [
+              "feedback-loop"
+            ],
+            "label": "5 再检查",
+            "shape": "rect",
+            "bounds": {
+              "x": 180,
+              "y": 590,
+              "w": 245,
+              "h": 320
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-input",
+          "source": "mechanism.steps.input",
+          "label": "接收信息",
+          "regionIds": [
+            "input"
+          ],
+          "entityIds": [
+            "input"
+          ],
+          "evidenceTitle": "接收信息",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "摄像头、麦克风、按钮或传感器先接收到信息。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-interpret",
+          "source": "mechanism.steps.interpret",
+          "label": "看懂情况",
+          "regionIds": [
+            "interpret"
+          ],
+          "entityIds": [
+            "interpret"
+          ],
+          "evidenceTitle": "看懂情况",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "机器人把信息交给程序，看看现在发生了什么。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-decide",
+          "source": "mechanism.steps.decide",
+          "label": "按规则决定",
+          "regionIds": [
+            "decide"
+          ],
+          "entityIds": [
+            "decide"
+          ],
+          "evidenceTitle": "按规则决定",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "程序根据任务规则，决定下一步做什么。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-act",
+          "source": "mechanism.steps.act",
+          "label": "做出动作",
+          "regionIds": [
+            "act"
+          ],
+          "entityIds": [
+            "act"
+          ],
+          "evidenceTitle": "做出动作",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "轮子、灯光或机械臂开始工作。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-feedback-loop",
+          "source": "mechanism.steps.feedback-loop",
+          "label": "再检查",
+          "regionIds": [
+            "feedback-loop"
+          ],
+          "entityIds": [
+            "feedback-loop"
+          ],
+          "evidenceTitle": "再检查",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "机器人可以再看看结果，必要时调整动作。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sense-wall",
+          "source": "secondaryMechanism.steps.sense-wall",
+          "label": "发现前面近",
+          "regionIds": [
+            "input"
+          ],
+          "entityIds": [
+            "input"
+          ],
+          "evidenceTitle": "发现前面近",
+          "observePrompt": "当前第 1 步，观察这个补充机制。",
+          "evidenceCopy": "距离传感器发现前面有东西。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-rule-stop",
+          "source": "secondaryMechanism.steps.rule-stop",
+          "label": "规则说停下",
+          "regionIds": [
+            "decide"
+          ],
+          "entityIds": [
+            "decide"
+          ],
+          "evidenceTitle": "规则说停下",
+          "observePrompt": "当前第 2 步，观察这个补充机制。",
+          "evidenceCopy": "程序规则告诉机器人：太近就停下。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-wheel-stop",
+          "source": "secondaryMechanism.steps.wheel-stop",
+          "label": "轮子停住",
+          "regionIds": [
+            "act"
+          ],
+          "entityIds": [
+            "act"
+          ],
+          "evidenceTitle": "轮子停住",
+          "observePrompt": "当前第 3 步，观察这个补充机制。",
+          "evidenceCopy": "轮子停止转动，机器人不撞上去。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "机器人怎样完成一个任务？",
+          "items": [
+            "接收信息: 摄像头、麦克风、按钮或传感器先接收到信息。",
+            "看懂情况: 机器人把信息交给程序，看看现在发生了什么。",
+            "按规则决定: 程序根据任务规则，决定下一步做什么。",
+            "做出动作: 轮子或机械臂开始工作，把决定变成动作。",
+            "再检查: 机器人可以再看看结果，必要时调整动作。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-robots-scene-compare",
+        "assetId": "human-system-robots-compare",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "对象 A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "对象 B",
+            "required": true
+          },
+          {
+            "id": "sensor-vs-actuator",
+            "label": "传感器 vs 行动部件",
+            "required": true
+          },
+          {
+            "id": "program-vs-magic",
+            "label": "程序 vs 魔法",
+            "required": true
+          },
+          {
+            "id": "robot-vs-remote-toy",
+            "label": "机器人 vs 遥控玩具",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "对象 A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "对象 B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sensor-vs-actuator",
+            "entityIds": [
+              "sensor-vs-actuator"
+            ],
+            "label": "传感器 vs 行动部件",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "program-vs-magic",
+            "entityIds": [
+              "program-vs-magic"
+            ],
+            "label": "程序 vs 魔法",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "robot-vs-remote-toy",
+            "entityIds": [
+              "robot-vs-remote-toy"
+            ],
+            "label": "机器人 vs 遥控玩具",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-sensor-vs-actuator",
+          "source": "comparePairs.sensor-vs-actuator",
+          "label": "传感器 vs 行动部件",
+          "regionIds": [
+            "sensor-vs-actuator",
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "sensor-vs-actuator",
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "传感器 vs 行动部件",
+          "observePrompt": "对比 传感器 和 行动部件 的图片线索。",
+          "evidenceCopy": "传感器: 接收信息；像机器人的感知入口；摄像头、麦克风、按钮都可以是输入。行动部件: 做出动作；把决定变成结果；轮子、灯、机械臂都可以行动。传感器负责知道，行动部件负责做。",
+          "markerChips": [
+            "传感器",
+            "行动部件"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-program-vs-magic",
+          "source": "comparePairs.program-vs-magic",
+          "label": "程序 vs 魔法",
+          "regionIds": [
+            "program-vs-magic",
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "program-vs-magic",
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "程序 vs 魔法",
+          "observePrompt": "对比 程序 和 魔法 的图片线索。",
+          "evidenceCopy": "程序: 有规则；可以被人设计；同样输入常有同样动作。魔法: 说不清规则；无法稳定复现；不是工程解释。机器人靠程序和部件工作，不靠魔法。",
+          "markerChips": [
+            "程序",
+            "魔法"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-robot-vs-remote-toy",
+          "source": "comparePairs.robot-vs-remote-toy",
+          "label": "机器人 vs 遥控玩具",
+          "regionIds": [
+            "robot-vs-remote-toy",
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "robot-vs-remote-toy",
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "机器人 vs 遥控玩具",
+          "observePrompt": "对比 机器人 和 遥控玩具 的图片线索。",
+          "evidenceCopy": "机器人: 能接收信息；能按规则判断；可以自动做一些动作。遥控玩具: 主要听人遥控；不一定会判断环境；动作更简单。会动不一定就是机器人，关键看能不能感知和按规则行动。",
+          "markerChips": [
+            "机器人",
+            "遥控玩具"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "传感器 vs 行动部件: 传感器负责知道，行动部件负责做。",
+            "程序 vs 魔法: 机器人靠程序和部件工作，不靠魔法。",
+            "机器人 vs 遥控玩具: 会动不一定就是机器人，关键看能不能感知和按规则行动。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-robots-scene-task",
+        "assetId": "human-system-robots-click-task",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "input",
+            "label": "1 接收",
+            "required": true
+          },
+          {
+            "id": "interpret",
+            "label": "2 看懂",
+            "required": true
+          },
+          {
+            "id": "decide",
+            "label": "3 决定",
+            "required": true
+          },
+          {
+            "id": "act",
+            "label": "4 动作",
+            "required": true
+          },
+          {
+            "id": "feedback-loop",
+            "label": "5 再检查",
+            "required": true
+          },
+          {
+            "id": "camera",
+            "label": "摄像头",
+            "required": true
+          },
+          {
+            "id": "microphone",
+            "label": "麦克风",
+            "required": true
+          },
+          {
+            "id": "distance-sensor",
+            "label": "距离传感器",
+            "required": true
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "required": true
+          },
+          {
+            "id": "program",
+            "label": "程序规则",
+            "required": true
+          },
+          {
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "required": true
+          },
+          {
+            "id": "magic",
+            "label": "魔法",
+            "required": true
+          },
+          {
+            "id": "sensors-program",
+            "label": "传感器和程序",
+            "required": true
+          },
+          {
+            "id": "wheels-arm",
+            "label": "轮子和机械臂",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "input",
+            "entityIds": [
+              "input"
+            ],
+            "label": "1 接收",
+            "shape": "rect",
+            "bounds": {
+              "x": 75,
+              "y": 130,
+              "w": 165,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "interpret",
+            "entityIds": [
+              "interpret"
+            ],
+            "label": "2 看懂",
+            "shape": "rect",
+            "bounds": {
+              "x": 250,
+              "y": 130,
+              "w": 165,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "decide",
+            "entityIds": [
+              "decide"
+            ],
+            "label": "3 决定",
+            "shape": "rect",
+            "bounds": {
+              "x": 425,
+              "y": 130,
+              "w": 165,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "act",
+            "entityIds": [
+              "act"
+            ],
+            "label": "4 动作",
+            "shape": "rect",
+            "bounds": {
+              "x": 600,
+              "y": 130,
+              "w": 165,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "feedback-loop",
+            "entityIds": [
+              "feedback-loop"
+            ],
+            "label": "5 再检查",
+            "shape": "rect",
+            "bounds": {
+              "x": 770,
+              "y": 130,
+              "w": 165,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "camera",
+            "entityIds": [
+              "camera"
+            ],
+            "label": "摄像头",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 465,
+              "w": 145,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "microphone",
+            "entityIds": [
+              "microphone"
+            ],
+            "label": "麦克风",
+            "shape": "rect",
+            "bounds": {
+              "x": 240,
+              "y": 465,
+              "w": 130,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "distance-sensor",
+            "entityIds": [
+              "distance-sensor"
+            ],
+            "label": "距离传感器",
+            "shape": "rect",
+            "bounds": {
+              "x": 375,
+              "y": 465,
+              "w": 130,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "button",
+            "entityIds": [
+              "button"
+            ],
+            "label": "按钮",
+            "shape": "rect",
+            "bounds": {
+              "x": 505,
+              "y": 465,
+              "w": 130,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "program",
+            "entityIds": [
+              "program"
+            ],
+            "label": "程序规则",
+            "shape": "rect",
+            "bounds": {
+              "x": 645,
+              "y": 465,
+              "w": 130,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "wheel-arm",
+            "entityIds": [
+              "wheel-arm"
+            ],
+            "label": "轮子和机械臂",
+            "shape": "rect",
+            "bounds": {
+              "x": 780,
+              "y": 465,
+              "w": 150,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "magic",
+            "entityIds": [
+              "magic"
+            ],
+            "label": "魔法",
+            "shape": "rect",
+            "bounds": {
+              "x": 190,
+              "y": 690,
+              "w": 200,
+              "h": 185
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sensors-program",
+            "entityIds": [
+              "sensors-program"
+            ],
+            "label": "传感器和程序",
+            "shape": "rect",
+            "bounds": {
+              "x": 400,
+              "y": 690,
+              "w": 220,
+              "h": 185
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "wheels-arm",
+            "entityIds": [
+              "wheels-arm"
+            ],
+            "label": "轮子和机械臂",
+            "shape": "rect",
+            "bounds": {
+              "x": 625,
+              "y": 690,
+              "w": 220,
+              "h": 185
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-input",
+          "source": "clickTasks.robot-sequence-01.options.input",
+          "label": "接收信息",
+          "regionIds": [
+            "input"
+          ],
+          "entityIds": [
+            "input"
+          ],
+          "evidenceTitle": "接收信息",
+          "observePrompt": "按从接收到行动的顺序点击。",
+          "evidenceCopy": "当前步骤：接收信息。按从接收到行动的顺序点击。",
+          "markerChips": [
+            "接收信息"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-interpret",
+          "source": "clickTasks.robot-sequence-01.options.interpret",
+          "label": "看懂情况",
+          "regionIds": [
+            "interpret"
+          ],
+          "entityIds": [
+            "interpret"
+          ],
+          "evidenceTitle": "看懂情况",
+          "observePrompt": "按从接收到行动的顺序点击。",
+          "evidenceCopy": "当前步骤：看懂情况。按从接收到行动的顺序点击。",
+          "markerChips": [
+            "看懂情况"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-decide",
+          "source": "clickTasks.robot-sequence-01.options.decide",
+          "label": "按规则决定",
+          "regionIds": [
+            "decide"
+          ],
+          "entityIds": [
+            "decide"
+          ],
+          "evidenceTitle": "按规则决定",
+          "observePrompt": "按从接收到行动的顺序点击。",
+          "evidenceCopy": "当前步骤：按规则决定。按从接收到行动的顺序点击。",
+          "markerChips": [
+            "按规则决定"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-act",
+          "source": "clickTasks.robot-sequence-01.options.act",
+          "label": "做出动作",
+          "regionIds": [
+            "act"
+          ],
+          "entityIds": [
+            "act"
+          ],
+          "evidenceTitle": "做出动作",
+          "observePrompt": "按从接收到行动的顺序点击。",
+          "evidenceCopy": "当前步骤：做出动作。按从接收到行动的顺序点击。",
+          "markerChips": [
+            "做出动作"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-camera",
+          "source": "clickTasks.robot-find-01.options.camera",
+          "label": "摄像头",
+          "regionIds": [
+            "camera"
+          ],
+          "entityIds": [
+            "camera"
+          ],
+          "evidenceTitle": "摄像头",
+          "observePrompt": "找到可以接收外界信息的部件。",
+          "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+          "markerChips": [
+            "摄像头"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-microphone",
+          "source": "clickTasks.robot-find-01.options.microphone",
+          "label": "麦克风",
+          "regionIds": [
+            "microphone"
+          ],
+          "entityIds": [
+            "microphone"
+          ],
+          "evidenceTitle": "麦克风",
+          "observePrompt": "找到可以接收外界信息的部件。",
+          "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+          "markerChips": [
+            "麦克风"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-distance-sensor",
+          "source": "clickTasks.robot-find-01.options.distance-sensor",
+          "label": "距离传感器",
+          "regionIds": [
+            "distance-sensor"
+          ],
+          "entityIds": [
+            "distance-sensor"
+          ],
+          "evidenceTitle": "距离传感器",
+          "observePrompt": "找到可以接收外界信息的部件。",
+          "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+          "markerChips": [
+            "距离传感器"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-button",
+          "source": "clickTasks.robot-find-01.options.button",
+          "label": "按钮",
+          "regionIds": [
+            "button"
+          ],
+          "entityIds": [
+            "button"
+          ],
+          "evidenceTitle": "按钮",
+          "observePrompt": "找到可以接收外界信息的部件。",
+          "evidenceCopy": "对！这些都可以帮助机器人接收信息。",
+          "markerChips": [
+            "按钮"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-program",
+          "source": "clickTasks.robot-find-01.options.program",
+          "label": "程序规则",
+          "regionIds": [
+            "program"
+          ],
+          "entityIds": [
+            "program"
+          ],
+          "evidenceTitle": "程序规则",
+          "observePrompt": "找到可以接收外界信息的部件。",
+          "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作/按规则”？",
+          "markerChips": [
+            "程序规则"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-wheel-arm",
+          "source": "clickTasks.robot-find-01.options.wheel-arm",
+          "label": "轮子和机械臂",
+          "regionIds": [
+            "wheel-arm"
+          ],
+          "entityIds": [
+            "wheel-arm"
+          ],
+          "evidenceTitle": "轮子和机械臂",
+          "observePrompt": "找到可以接收外界信息的部件。",
+          "evidenceCopy": "想一想：它是在“知道信息”，还是在“做动作/按规则”？",
+          "markerChips": [
+            "轮子和机械臂"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-magic",
+          "source": "clickTasks.robot-choice-01.options.magic",
+          "label": "魔法",
+          "regionIds": [
+            "magic"
+          ],
+          "entityIds": [
+            "magic"
+          ],
+          "evidenceTitle": "魔法",
+          "observePrompt": "选择最不准确的解释。",
+          "evidenceCopy": "对！机器人不是靠魔法，而是靠系统部件合作。",
+          "markerChips": [
+            "魔法"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-sensors-program",
+          "source": "clickTasks.robot-choice-01.options.sensors-program",
+          "label": "传感器和程序",
+          "regionIds": [
+            "sensors-program"
+          ],
+          "entityIds": [
+            "sensors-program"
+          ],
+          "evidenceTitle": "传感器和程序",
+          "observePrompt": "选择最不准确的解释。",
+          "evidenceCopy": "传感器和程序正是机器人工作的关键。",
+          "markerChips": [
+            "传感器和程序"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-wheels-arm",
+          "source": "clickTasks.robot-choice-01.options.wheels-arm",
+          "label": "轮子和机械臂",
+          "regionIds": [
+            "wheels-arm"
+          ],
+          "entityIds": [
+            "wheels-arm"
+          ],
+          "evidenceTitle": "轮子和机械臂",
+          "observePrompt": "选择最不准确的解释。",
+          "evidenceCopy": "轮子和机械臂能帮助机器人行动。",
+          "markerChips": [
+            "轮子和机械臂"
+          ],
+          "expectedStatus": "wrong"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "按从接收到行动的顺序点击。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "robot-sequence-01",
+          "type": "sequenceClick",
+          "title": "机器人完成任务的顺序是什么？",
+          "prompt": "按从接收到行动的顺序点击。",
+          "source": "clickTasks.robot-sequence-01",
+          "options": [
+            {
+              "id": "input",
+              "label": "接收信息",
+              "source": "clickTasks.robot-sequence-01.options.input",
+              "regionIds": [
+                "input"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "interpret",
+              "label": "看懂情况",
+              "source": "clickTasks.robot-sequence-01.options.interpret",
+              "regionIds": [
+                "interpret"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "decide",
+              "label": "按规则决定",
+              "source": "clickTasks.robot-sequence-01.options.decide",
+              "regionIds": [
+                "decide"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "act",
+              "label": "做出动作",
+              "source": "clickTasks.robot-sequence-01.options.act",
+              "regionIds": [
+                "act"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "input",
+            "interpret",
+            "decide",
+            "act"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "input",
+            "interpret",
+            "decide",
+            "act"
+          ],
+          "feedback": {
+            "correct": "你排出了机器人工作的基本流程！",
+            "wrong": "机器人要先知道发生了什么，才能行动。",
+            "partial": "按从接收到行动的顺序点击。",
+            "complete": "你排出了机器人工作的基本流程！"
+          }
+        },
+        {
+          "id": "robot-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪些是接收信息的部件？",
+          "prompt": "找到可以接收外界信息的部件。",
+          "source": "clickTasks.robot-find-01",
+          "options": [
+            {
+              "id": "camera",
+              "label": "摄像头",
+              "source": "clickTasks.robot-find-01.options.camera",
+              "regionIds": [
+                "camera"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "microphone",
+              "label": "麦克风",
+              "source": "clickTasks.robot-find-01.options.microphone",
+              "regionIds": [
+                "microphone"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "distance-sensor",
+              "label": "距离传感器",
+              "source": "clickTasks.robot-find-01.options.distance-sensor",
+              "regionIds": [
+                "distance-sensor"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "button",
+              "label": "按钮",
+              "source": "clickTasks.robot-find-01.options.button",
+              "regionIds": [
+                "button"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "program",
+              "label": "程序规则",
+              "source": "clickTasks.robot-find-01.options.program",
+              "regionIds": [
+                "program"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "wheel-arm",
+              "label": "轮子和机械臂",
+              "source": "clickTasks.robot-find-01.options.wheel-arm",
+              "regionIds": [
+                "wheel-arm"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "camera",
+            "microphone",
+            "distance-sensor",
+            "button"
+          ],
+          "decoyRegionIds": [
+            "program",
+            "wheel-arm"
+          ],
+          "feedback": {
+            "correct": "对！这些都可以帮助机器人接收信息。",
+            "wrong": "想一想：它是在“知道信息”，还是在“做动作/按规则”？",
+            "partial": "找到可以接收外界信息的部件。",
+            "complete": "对！这些都可以帮助机器人接收信息。"
+          }
+        },
+        {
+          "id": "robot-choice-01",
+          "type": "singleChoice",
+          "title": "机器人不是靠什么工作的？",
+          "prompt": "选择最不准确的解释。",
+          "source": "clickTasks.robot-choice-01",
+          "options": [
+            {
+              "id": "magic",
+              "label": "魔法",
+              "source": "clickTasks.robot-choice-01.options.magic",
+              "regionIds": [
+                "magic"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "sensors-program",
+              "label": "传感器和程序",
+              "source": "clickTasks.robot-choice-01.options.sensors-program",
+              "regionIds": [
+                "sensors-program"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "wheels-arm",
+              "label": "轮子和机械臂",
+              "source": "clickTasks.robot-choice-01.options.wheels-arm",
+              "regionIds": [
+                "wheels-arm"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "magic"
+          ],
+          "decoyRegionIds": [
+            "sensors-program",
+            "wheels-arm"
+          ],
+          "feedback": {
+            "correct": "对！机器人不是靠魔法，而是靠系统部件合作。",
+            "wrong": "再观察一下试试看。",
+            "partial": "选择最不准确的解释。",
+            "complete": "对！机器人不是靠魔法，而是靠系统部件合作。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-robots-scene-summary",
+        "assetId": "human-system-robots-parent-guide",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "camera",
+            "label": "摄像头",
+            "required": true
+          },
+          {
+            "id": "microphone",
+            "label": "麦克风",
+            "required": true
+          },
+          {
+            "id": "distance-sensor",
+            "label": "距离传感器",
+            "required": true
+          },
+          {
+            "id": "button",
+            "label": "按钮",
+            "required": true
+          },
+          {
+            "id": "program",
+            "label": "程序规则",
+            "required": true
+          },
+          {
+            "id": "wheel-arm",
+            "label": "轮子和机械臂",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "camera",
+            "entityIds": [
+              "camera"
+            ],
+            "label": "摄像头",
+            "shape": "rect",
+            "bounds": {
+              "x": 130,
+              "y": 100,
+              "w": 240,
+              "h": 280
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "microphone",
+            "entityIds": [
+              "microphone"
+            ],
+            "label": "麦克风",
+            "shape": "rect",
+            "bounds": {
+              "x": 380,
+              "y": 100,
+              "w": 220,
+              "h": 280
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "distance-sensor",
+            "entityIds": [
+              "distance-sensor"
+            ],
+            "label": "距离传感器",
+            "shape": "rect",
+            "bounds": {
+              "x": 630,
+              "y": 100,
+              "w": 240,
+              "h": 280
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "button",
+            "entityIds": [
+              "button"
+            ],
+            "label": "按钮",
+            "shape": "rect",
+            "bounds": {
+              "x": 140,
+              "y": 400,
+              "w": 220,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "program",
+            "entityIds": [
+              "program"
+            ],
+            "label": "程序规则",
+            "shape": "rect",
+            "bounds": {
+              "x": 390,
+              "y": 400,
+              "w": 220,
+              "h": 250
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "wheel-arm",
+            "entityIds": [
+              "wheel-arm"
+            ],
+            "label": "轮子和机械臂",
+            "shape": "rect",
+            "bounds": {
+              "x": 640,
+              "y": 400,
+              "w": 240,
+              "h": 250
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-camera",
+          "source": "representativeObjects.camera",
+          "label": "摄像头",
+          "regionIds": [
+            "camera"
+          ],
+          "entityIds": [
+            "camera"
+          ],
+          "evidenceTitle": "摄像头",
+          "observePrompt": "圆圆镜头",
+          "evidenceCopy": "摄像头可以帮助机器人看到图像。",
+          "markerChips": [
+            "摄像头"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "机器人先用____接收信息。",
+            "程序像____，告诉机器人怎么做。",
+            "轮子和机械臂属于____部件。",
+            "机器人完成任务通常是：____、____、____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "机器人先用____接收信息。",
+        "程序像____，告诉机器人怎么做。",
+        "轮子和机械臂属于____部件。",
+        "机器人完成任务通常是：____、____、____。"
+      ],
+      "parentTips": [
+        "可以用家里的扫地机器人、自动门、声控灯做例子。",
+        "避免把机器人说成“真的懂一切”，而是说它按规则处理信息。",
+        "如果孩子感兴趣，可引导他画一个“输入—判断—行动”的小流程图。"
+      ]
+    }
   ]
 }

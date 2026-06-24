@@ -492,6 +492,20 @@
       "target": "comparePairs",
       "role": "compare",
       "required": true
+    },
+    {
+      "id": "good-vs-vague-question",
+      "assetId": "human-made-llm-good-vs-vague-question",
+      "role": "task",
+      "target": "clickTasks.llm-single-01",
+      "required": false
+    },
+    {
+      "id": "check-important-answer",
+      "assetId": "human-made-llm-check-important-answer",
+      "role": "task",
+      "target": "clickTasks.llm-single-02",
+      "required": false
     }
   ],
   "visualEvidenceBindings": [
@@ -837,7 +851,7 @@
     {
       "id": "evidence-comparePairs-clear-vs-vague-prompt",
       "source": "comparePairs.clear-vs-vague-prompt",
-      "visualSlotId": "vs-search",
+      "visualSlotId": "good-vs-vague-question",
       "interactionScope": "local",
       "evidenceTitle": "清楚问题 vs 模糊问题",
       "observePrompt": "对比 清楚问题 和 模糊问题 的图片线索。",
@@ -860,7 +874,7 @@
     {
       "id": "evidence-comparePairs-fluent-vs-correct",
       "source": "comparePairs.fluent-vs-correct",
-      "visualSlotId": "vs-search",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "说得顺 vs 说得对",
       "observePrompt": "对比 说得顺 和 说得对 的图片线索。",
@@ -883,7 +897,7 @@
     {
       "id": "evidence-clickTasks-llm-single-01-options-vague",
       "source": "clickTasks.llm-single-01.options.vague",
-      "visualSlotId": "hero",
+      "visualSlotId": "good-vs-vague-question",
       "interactionScope": "local",
       "evidenceTitle": "告诉我动物",
       "observePrompt": "点出更容易让 AI 帮上忙的问题。",
@@ -901,7 +915,7 @@
     {
       "id": "evidence-clickTasks-llm-single-01-options-clear",
       "source": "clickTasks.llm-single-01.options.clear",
-      "visualSlotId": "hero",
+      "visualSlotId": "good-vs-vague-question",
       "interactionScope": "local",
       "evidenceTitle": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
       "observePrompt": "点出更容易让 AI 帮上忙的问题。",
@@ -919,7 +933,7 @@
     {
       "id": "evidence-clickTasks-llm-single-02-options-always-true",
       "source": "clickTasks.llm-single-02.options.always-true",
-      "visualSlotId": "hero",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "一定是真的",
       "observePrompt": "点出更安全的说法。",
@@ -937,7 +951,7 @@
     {
       "id": "evidence-clickTasks-llm-single-02-options-check-important",
       "source": "clickTasks.llm-single-02.options.check-important",
-      "visualSlotId": "hero",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "重要事情要再检查",
       "observePrompt": "点出更安全的说法。",
@@ -955,7 +969,7 @@
     {
       "id": "evidence-clickTasks-llm-single-02-options-never-use",
       "source": "clickTasks.llm-single-02.options.never-use",
-      "visualSlotId": "hero",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "完全不能用",
       "observePrompt": "点出更安全的说法。",
@@ -973,7 +987,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-healthQuestion",
       "source": "clickTasks.llm-find-01.options.healthQuestion",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "healthQuestion",
       "observePrompt": "找一找：哪些事情需要再确认？",
@@ -991,7 +1005,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-moneyQuestion",
       "source": "clickTasks.llm-find-01.options.moneyQuestion",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "moneyQuestion",
       "observePrompt": "找一找：哪些事情需要再确认？",
@@ -1009,7 +1023,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-schoolFact",
       "source": "clickTasks.llm-find-01.options.schoolFact",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "schoolFact",
       "observePrompt": "找一找：哪些事情需要再确认？",
@@ -1027,7 +1041,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-storyIdea",
       "source": "clickTasks.llm-find-01.options.storyIdea",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "storyIdea",
       "observePrompt": "找一找：哪些事情需要再确认？",
@@ -1045,7 +1059,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-nameRobot",
       "source": "clickTasks.llm-find-01.options.nameRobot",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "nameRobot",
       "observePrompt": "找一找：哪些事情需要再确认？",
@@ -1063,7 +1077,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-makeRiddle",
       "source": "clickTasks.llm-find-01.options.makeRiddle",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "makeRiddle",
       "observePrompt": "找一找：哪些事情需要再确认？",
@@ -1081,7 +1095,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-learn",
       "source": "clickTasks.llm-sequence-01.options.learn",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "学习很多文字规律",
       "observePrompt": "按顺序点出大模型回答问题的过程。",
@@ -1099,7 +1113,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-prompt",
       "source": "clickTasks.llm-sequence-01.options.prompt",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "读你的提示",
       "observePrompt": "按顺序点出大模型回答问题的过程。",
@@ -1117,7 +1131,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-answer",
       "source": "clickTasks.llm-sequence-01.options.answer",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "组织回答",
       "observePrompt": "按顺序点出大模型回答问题的过程。",
@@ -1135,7 +1149,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-check",
       "source": "clickTasks.llm-sequence-01.options.check",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "重要问题再检查",
       "observePrompt": "按顺序点出大模型回答问题的过程。",
@@ -1149,6 +1163,1785 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "大模型是怎么回答问题的？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-llm-kids-basics-scene-entry",
+        "assetId": "human-made-llm-kids-basics-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "页面主视觉是一台友好的语言机器：左边是书本、故事卡和问题气泡，中间是词语网络和发光节点，右边输出回答气泡。点击每一步，孩子能看到“读很多文字—学规律—看提示—组织回答—检查答案”的过程。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-llm-kids-basics-scene-classify",
+        "assetId": "human-made-llm-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "questionCard",
+            "label": "问题卡",
+            "required": true
+          },
+          {
+            "id": "storyCard",
+            "label": "故事卡",
+            "required": true
+          },
+          {
+            "id": "wordNetwork",
+            "label": "词语网络",
+            "required": true
+          },
+          {
+            "id": "patternGears",
+            "label": "规律齿轮",
+            "required": true
+          },
+          {
+            "id": "chatBubbles",
+            "label": "对话气泡",
+            "required": true
+          },
+          {
+            "id": "answerBubble",
+            "label": "回答气泡",
+            "required": true
+          },
+          {
+            "id": "checkBadge",
+            "label": "检查徽章",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "questionCard",
+            "entityIds": [
+              "questionCard"
+            ],
+            "label": "问题卡",
+            "shape": "rect",
+            "bounds": {
+              "x": 85,
+              "y": 75,
+              "w": 345,
+              "h": 270
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "storyCard",
+            "entityIds": [
+              "storyCard"
+            ],
+            "label": "故事卡",
+            "shape": "rect",
+            "bounds": {
+              "x": 500,
+              "y": 70,
+              "w": 410,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "wordNetwork",
+            "entityIds": [
+              "wordNetwork"
+            ],
+            "label": "词语网络",
+            "shape": "rect",
+            "bounds": {
+              "x": 70,
+              "y": 395,
+              "w": 430,
+              "h": 270
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "patternGears",
+            "entityIds": [
+              "patternGears"
+            ],
+            "label": "规律齿轮",
+            "shape": "rect",
+            "bounds": {
+              "x": 540,
+              "y": 390,
+              "w": 330,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "chatBubbles",
+            "entityIds": [
+              "chatBubbles"
+            ],
+            "label": "对话气泡",
+            "shape": "rect",
+            "bounds": {
+              "x": 55,
+              "y": 695,
+              "w": 305,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "answerBubble",
+            "entityIds": [
+              "answerBubble"
+            ],
+            "label": "回答气泡",
+            "shape": "rect",
+            "bounds": {
+              "x": 380,
+              "y": 700,
+              "w": 300,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "checkBadge",
+            "entityIds": [
+              "checkBadge"
+            ],
+            "label": "检查徽章",
+            "shape": "rect",
+            "bounds": {
+              "x": 700,
+              "y": 655,
+              "w": 225,
+              "h": 310
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-input",
+          "source": "classificationGroups.input",
+          "label": "输入",
+          "regionIds": [
+            "questionCard",
+            "storyCard"
+          ],
+          "entityIds": [
+            "questionCard",
+            "storyCard"
+          ],
+          "evidenceTitle": "输入",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "你给 AI 的问题、故事或要求，就是输入。 这类里可以看到：问题卡、故事卡。",
+          "markerChips": [
+            "问题卡",
+            "故事卡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-questionCard",
+          "source": "representativeObjects.questionCard",
+          "label": "问题卡",
+          "regionIds": [
+            "questionCard"
+          ],
+          "entityIds": [
+            "questionCard"
+          ],
+          "evidenceTitle": "问题卡",
+          "observePrompt": "一个带问号的卡片",
+          "evidenceCopy": "问题越清楚，AI 越容易知道你想要什么。",
+          "markerChips": [
+            "问题卡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-storyCard",
+          "source": "representativeObjects.storyCard",
+          "label": "故事卡",
+          "regionIds": [
+            "storyCard"
+          ],
+          "entityIds": [
+            "storyCard"
+          ],
+          "evidenceTitle": "故事卡",
+          "observePrompt": "书页和小星星",
+          "evidenceCopy": "你也可以给 AI 一段故事，让它接着写或帮你整理。",
+          "markerChips": [
+            "故事卡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-wordNetwork",
+          "source": "representativeObjects.wordNetwork",
+          "label": "词语网络",
+          "regionIds": [
+            "wordNetwork"
+          ],
+          "entityIds": [
+            "wordNetwork"
+          ],
+          "evidenceTitle": "词语网络",
+          "observePrompt": "发光节点和连线",
+          "evidenceCopy": "很多词语之间有关系，AI 会学习这些关系。",
+          "markerChips": [
+            "词语网络"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-patternGears",
+          "source": "representativeObjects.patternGears",
+          "label": "规律齿轮",
+          "regionIds": [
+            "patternGears"
+          ],
+          "entityIds": [
+            "patternGears"
+          ],
+          "evidenceTitle": "规律齿轮",
+          "observePrompt": "柔和齿轮和文字碎片",
+          "evidenceCopy": "规律像齿轮一样，把输入变成可能的回答。",
+          "markerChips": [
+            "规律齿轮"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-chatBubbles",
+          "source": "representativeObjects.chatBubbles",
+          "label": "对话气泡",
+          "regionIds": [
+            "chatBubbles"
+          ],
+          "entityIds": [
+            "chatBubbles"
+          ],
+          "evidenceTitle": "对话气泡",
+          "observePrompt": "连续气泡",
+          "evidenceCopy": "同一句话放在不同对话里，意思可能不一样。",
+          "markerChips": [
+            "对话气泡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-answerBubble",
+          "source": "representativeObjects.answerBubble",
+          "label": "回答气泡",
+          "regionIds": [
+            "answerBubble"
+          ],
+          "entityIds": [
+            "answerBubble"
+          ],
+          "evidenceTitle": "回答气泡",
+          "observePrompt": "发光回答框",
+          "evidenceCopy": "AI 会把回答组织成句子，说给你听。",
+          "markerChips": [
+            "回答气泡"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-checkBadge",
+          "source": "representativeObjects.checkBadge",
+          "label": "检查徽章",
+          "regionIds": [
+            "checkBadge"
+          ],
+          "entityIds": [
+            "checkBadge"
+          ],
+          "evidenceTitle": "检查徽章",
+          "observePrompt": "放大镜和对勾",
+          "evidenceCopy": "遇到健康、安全、金钱、学校作业等重要问题，要检查。",
+          "markerChips": [
+            "检查徽章"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "问题卡: 问题越清楚，AI 越容易知道你想要什么。",
+            "故事卡: 你也可以给 AI 一段故事，让它接着写或帮你整理。",
+            "词语网络: 很多词语之间有关系，AI 会学习这些关系。",
+            "规律齿轮: 规律像齿轮一样，把输入变成可能的回答。",
+            "对话气泡: 同一句话放在不同对话里，意思可能不一样。",
+            "回答气泡: AI 会把回答组织成句子，说给你听。",
+            "检查徽章: 遇到健康、安全、金钱、学校作业等重要问题，要检查。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-llm-kids-basics-scene-process",
+        "assetId": "human-made-llm-four-steps",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "read-many",
+            "label": "看过很多文字",
+            "required": true
+          },
+          {
+            "id": "learn-patterns",
+            "label": "学习语言规律",
+            "required": true
+          },
+          {
+            "id": "read-prompt",
+            "label": "读你的提示",
+            "required": true
+          },
+          {
+            "id": "generate-answer",
+            "label": "一步步接出回答",
+            "required": true
+          },
+          {
+            "id": "check-important",
+            "label": "重要事情要检查",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "read-many",
+            "entityIds": [
+              "read-many"
+            ],
+            "label": "看过很多文字",
+            "shape": "rect",
+            "bounds": {
+              "x": 64,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "learn-patterns",
+            "entityIds": [
+              "learn-patterns"
+            ],
+            "label": "学习语言规律",
+            "shape": "rect",
+            "bounds": {
+              "x": 244,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "read-prompt",
+            "entityIds": [
+              "read-prompt"
+            ],
+            "label": "读你的提示",
+            "shape": "rect",
+            "bounds": {
+              "x": 424,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "generate-answer",
+            "entityIds": [
+              "generate-answer"
+            ],
+            "label": "一步步接出回答",
+            "shape": "rect",
+            "bounds": {
+              "x": 604,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "check-important",
+            "entityIds": [
+              "check-important"
+            ],
+            "label": "重要事情要检查",
+            "shape": "rect",
+            "bounds": {
+              "x": 784,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-read-many",
+          "source": "mechanism.steps.read-many",
+          "label": "看过很多文字",
+          "regionIds": [
+            "read-many"
+          ],
+          "entityIds": [
+            "read-many"
+          ],
+          "evidenceTitle": "看过很多文字",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "它学习过很多句子、故事和问答。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-learn-patterns",
+          "source": "mechanism.steps.learn-patterns",
+          "label": "学习语言规律",
+          "regionIds": [
+            "learn-patterns"
+          ],
+          "entityIds": [
+            "learn-patterns"
+          ],
+          "evidenceTitle": "学习语言规律",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "它学会哪些词常常放在一起，什么回答更像一句完整的话。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-read-prompt",
+          "source": "mechanism.steps.read-prompt",
+          "label": "读你的提示",
+          "regionIds": [
+            "read-prompt"
+          ],
+          "entityIds": [
+            "read-prompt"
+          ],
+          "evidenceTitle": "读你的提示",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "你说得越清楚，它越容易沿着正确方向回答。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-generate-answer",
+          "source": "mechanism.steps.generate-answer",
+          "label": "一步步接出回答",
+          "regionIds": [
+            "generate-answer"
+          ],
+          "entityIds": [
+            "generate-answer"
+          ],
+          "evidenceTitle": "一步步接出回答",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "它像接龙一样，一个词一个词组织成回答。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-check-important",
+          "source": "mechanism.steps.check-important",
+          "label": "重要事情要检查",
+          "regionIds": [
+            "check-important"
+          ],
+          "entityIds": [
+            "check-important"
+          ],
+          "evidenceTitle": "重要事情要检查",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "AI 有时会答错，重要问题要找大人或资料确认。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "大模型怎么回答？",
+          "items": [
+            "看过很多文字: 它学习过很多句子、故事和问答。",
+            "学习语言规律: 它学会哪些词常常放在一起，什么回答更像一句完整的话。",
+            "读你的提示: 你说得越清楚，它越容易沿着正确方向回答。",
+            "一步步接出回答: 它像接龙一样，一个词一个词组织成回答。",
+            "重要事情要检查: AI 有时会答错，重要问题要找大人或资料确认。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-llm-kids-basics-scene-compare",
+        "assetId": "human-made-llm-vs-search",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-ai-vs-search",
+          "source": "comparePairs.ai-vs-search",
+          "label": "大模型 vs 搜索",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "大模型 vs 搜索",
+          "observePrompt": "对比 大模型 和 搜索 的图片线索。",
+          "evidenceCopy": "大模型: 根据学到的语言规律组织回答；可以改写、总结、接着写；可能说错。搜索: 帮你找网页和资料；需要自己判断来源；也可能找到不合适信息。AI 和搜索都能帮忙，但都要学会检查。",
+          "markerChips": [
+            "大模型",
+            "搜索"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-clear-vs-vague-prompt",
+          "source": "comparePairs.clear-vs-vague-prompt",
+          "label": "清楚问题 vs 模糊问题",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "清楚问题 vs 模糊问题",
+          "observePrompt": "对比 清楚问题 和 模糊问题 的图片线索。",
+          "evidenceCopy": "清楚问题: 说清主题；说清数量；说清想要的方式。模糊问题: 只说“讲讲”；没有范围；容易答偏。问题说得清楚，回答更容易有用。",
+          "markerChips": [
+            "清楚问题",
+            "模糊问题"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-fluent-vs-correct",
+          "source": "comparePairs.fluent-vs-correct",
+          "label": "说得顺 vs 说得对",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "说得顺 vs 说得对",
+          "observePrompt": "对比 说得顺 和 说得对 的图片线索。",
+          "evidenceCopy": "说得顺: 句子好听；看起来很完整；不一定真实。说得对: 能查到依据；和可靠资料一致；经得起追问。AI 说得很顺，也要检查重要信息。",
+          "markerChips": [
+            "说得顺",
+            "说得对"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "大模型 vs 搜索: AI 和搜索都能帮忙，但都要学会检查。",
+            "清楚问题 vs 模糊问题: 问题说得清楚，回答更容易有用。",
+            "说得顺 vs 说得对: AI 说得很顺，也要检查重要信息。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-llm-kids-basics-scene-task",
+        "assetId": "human-made-llm-good-vs-vague-question",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "vague",
+            "label": "告诉我动物",
+            "required": true
+          },
+          {
+            "id": "clear",
+            "label": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+            "required": true
+          },
+          {
+            "id": "always-true",
+            "label": "一定是真的",
+            "required": true
+          },
+          {
+            "id": "check-important",
+            "label": "重要事情要再检查",
+            "required": true
+          },
+          {
+            "id": "never-use",
+            "label": "完全不能用",
+            "required": true
+          },
+          {
+            "id": "healthQuestion",
+            "label": "healthQuestion",
+            "required": true
+          },
+          {
+            "id": "moneyQuestion",
+            "label": "moneyQuestion",
+            "required": true
+          },
+          {
+            "id": "schoolFact",
+            "label": "schoolFact",
+            "required": true
+          },
+          {
+            "id": "storyIdea",
+            "label": "storyIdea",
+            "required": true
+          },
+          {
+            "id": "nameRobot",
+            "label": "nameRobot",
+            "required": true
+          },
+          {
+            "id": "makeRiddle",
+            "label": "makeRiddle",
+            "required": true
+          },
+          {
+            "id": "learn",
+            "label": "学习很多文字规律",
+            "required": true
+          },
+          {
+            "id": "prompt",
+            "label": "读你的提示",
+            "required": true
+          },
+          {
+            "id": "answer",
+            "label": "组织回答",
+            "required": true
+          },
+          {
+            "id": "check",
+            "label": "重要问题再检查",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "vague",
+            "entityIds": [
+              "vague"
+            ],
+            "label": "告诉我动物",
+            "shape": "rect",
+            "bounds": {
+              "x": 145,
+              "y": 105,
+              "w": 330,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "clear",
+            "entityIds": [
+              "clear"
+            ],
+            "label": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+            "shape": "rect",
+            "bounds": {
+              "x": 535,
+              "y": 105,
+              "w": 330,
+              "h": 300
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "always-true",
+            "entityIds": [
+              "always-true"
+            ],
+            "label": "一定是真的",
+            "shape": "rect",
+            "bounds": {
+              "x": 170,
+              "y": 405,
+              "w": 130,
+              "h": 185
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "check-important",
+            "entityIds": [
+              "check-important"
+            ],
+            "label": "重要事情要再检查",
+            "shape": "rect",
+            "bounds": {
+              "x": 315,
+              "y": 405,
+              "w": 130,
+              "h": 185
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "never-use",
+            "entityIds": [
+              "never-use"
+            ],
+            "label": "完全不能用",
+            "shape": "rect",
+            "bounds": {
+              "x": 455,
+              "y": 405,
+              "w": 130,
+              "h": 185
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "healthQuestion",
+            "entityIds": [
+              "healthQuestion"
+            ],
+            "label": "healthQuestion",
+            "shape": "rect",
+            "bounds": {
+              "x": 525,
+              "y": 405,
+              "w": 120,
+              "h": 115
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "moneyQuestion",
+            "entityIds": [
+              "moneyQuestion"
+            ],
+            "label": "moneyQuestion",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 405,
+              "w": 120,
+              "h": 115
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "schoolFact",
+            "entityIds": [
+              "schoolFact"
+            ],
+            "label": "schoolFact",
+            "shape": "rect",
+            "bounds": {
+              "x": 775,
+              "y": 405,
+              "w": 120,
+              "h": 115
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "storyIdea",
+            "entityIds": [
+              "storyIdea"
+            ],
+            "label": "storyIdea",
+            "shape": "rect",
+            "bounds": {
+              "x": 525,
+              "y": 530,
+              "w": 120,
+              "h": 115
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "nameRobot",
+            "entityIds": [
+              "nameRobot"
+            ],
+            "label": "nameRobot",
+            "shape": "rect",
+            "bounds": {
+              "x": 650,
+              "y": 530,
+              "w": 120,
+              "h": 115
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "makeRiddle",
+            "entityIds": [
+              "makeRiddle"
+            ],
+            "label": "makeRiddle",
+            "shape": "rect",
+            "bounds": {
+              "x": 775,
+              "y": 530,
+              "w": 120,
+              "h": 115
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "learn",
+            "entityIds": [
+              "learn"
+            ],
+            "label": "学习很多文字规律",
+            "shape": "rect",
+            "bounds": {
+              "x": 175,
+              "y": 690,
+              "w": 155,
+              "h": 145
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "prompt",
+            "entityIds": [
+              "prompt"
+            ],
+            "label": "读你的提示",
+            "shape": "rect",
+            "bounds": {
+              "x": 360,
+              "y": 690,
+              "w": 155,
+              "h": 145
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "answer",
+            "entityIds": [
+              "answer"
+            ],
+            "label": "组织回答",
+            "shape": "rect",
+            "bounds": {
+              "x": 545,
+              "y": 690,
+              "w": 155,
+              "h": 145
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "check",
+            "entityIds": [
+              "check"
+            ],
+            "label": "重要问题再检查",
+            "shape": "rect",
+            "bounds": {
+              "x": 730,
+              "y": 690,
+              "w": 155,
+              "h": 145
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-vague",
+          "source": "clickTasks.llm-single-01.options.vague",
+          "label": "告诉我动物",
+          "regionIds": [
+            "vague"
+          ],
+          "entityIds": [
+            "vague"
+          ],
+          "evidenceTitle": "告诉我动物",
+          "observePrompt": "点出更容易让 AI 帮上忙的问题。",
+          "evidenceCopy": "这个问题太大了。加上数量、场景和想知道的内容，会更清楚。",
+          "markerChips": [
+            "告诉我动物"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-clear",
+          "source": "clickTasks.llm-single-01.options.clear",
+          "label": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+          "regionIds": [
+            "clear"
+          ],
+          "entityIds": [
+            "clear"
+          ],
+          "evidenceTitle": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+          "observePrompt": "点出更容易让 AI 帮上忙的问题。",
+          "evidenceCopy": "对！清楚的问题更像一张好地图。",
+          "markerChips": [
+            "请告诉我 3 种森林动物，并说说它们怎么保护自己"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-always-true",
+          "source": "clickTasks.llm-single-02.options.always-true",
+          "label": "一定是真的",
+          "regionIds": [
+            "always-true"
+          ],
+          "entityIds": [
+            "always-true"
+          ],
+          "evidenceTitle": "一定是真的",
+          "observePrompt": "点出更安全的说法。",
+          "evidenceCopy": "AI 有时会答错，尤其是重要事情。",
+          "markerChips": [
+            "一定是真的"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-check-important",
+          "source": "clickTasks.llm-single-02.options.check-important",
+          "label": "重要事情要再检查",
+          "regionIds": [
+            "check-important"
+          ],
+          "entityIds": [
+            "check-important"
+          ],
+          "evidenceTitle": "重要事情要再检查",
+          "observePrompt": "点出更安全的说法。",
+          "evidenceCopy": "很好！会使用，也会检查，才是聪明用法。",
+          "markerChips": [
+            "重要事情要再检查"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-never-use",
+          "source": "clickTasks.llm-single-02.options.never-use",
+          "label": "完全不能用",
+          "regionIds": [
+            "never-use"
+          ],
+          "entityIds": [
+            "never-use"
+          ],
+          "evidenceTitle": "完全不能用",
+          "observePrompt": "点出更安全的说法。",
+          "evidenceCopy": "AI 可以帮忙，但要学会检查和提问。",
+          "markerChips": [
+            "完全不能用"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-healthQuestion",
+          "source": "clickTasks.llm-find-01.options.healthQuestion",
+          "label": "healthQuestion",
+          "regionIds": [
+            "healthQuestion"
+          ],
+          "entityIds": [
+            "healthQuestion"
+          ],
+          "evidenceTitle": "healthQuestion",
+          "observePrompt": "找一找：哪些事情需要再确认？",
+          "evidenceCopy": "你找到了需要认真检查的重要问题。",
+          "markerChips": [
+            "healthQuestion"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-moneyQuestion",
+          "source": "clickTasks.llm-find-01.options.moneyQuestion",
+          "label": "moneyQuestion",
+          "regionIds": [
+            "moneyQuestion"
+          ],
+          "entityIds": [
+            "moneyQuestion"
+          ],
+          "evidenceTitle": "moneyQuestion",
+          "observePrompt": "找一找：哪些事情需要再确认？",
+          "evidenceCopy": "你找到了需要认真检查的重要问题。",
+          "markerChips": [
+            "moneyQuestion"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-schoolFact",
+          "source": "clickTasks.llm-find-01.options.schoolFact",
+          "label": "schoolFact",
+          "regionIds": [
+            "schoolFact"
+          ],
+          "entityIds": [
+            "schoolFact"
+          ],
+          "evidenceTitle": "schoolFact",
+          "observePrompt": "找一找：哪些事情需要再确认？",
+          "evidenceCopy": "你找到了需要认真检查的重要问题。",
+          "markerChips": [
+            "schoolFact"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-storyIdea",
+          "source": "clickTasks.llm-find-01.options.storyIdea",
+          "label": "storyIdea",
+          "regionIds": [
+            "storyIdea"
+          ],
+          "entityIds": [
+            "storyIdea"
+          ],
+          "evidenceTitle": "storyIdea",
+          "observePrompt": "找一找：哪些事情需要再确认？",
+          "evidenceCopy": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+          "markerChips": [
+            "storyIdea"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-nameRobot",
+          "source": "clickTasks.llm-find-01.options.nameRobot",
+          "label": "nameRobot",
+          "regionIds": [
+            "nameRobot"
+          ],
+          "entityIds": [
+            "nameRobot"
+          ],
+          "evidenceTitle": "nameRobot",
+          "observePrompt": "找一找：哪些事情需要再确认？",
+          "evidenceCopy": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+          "markerChips": [
+            "nameRobot"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-makeRiddle",
+          "source": "clickTasks.llm-find-01.options.makeRiddle",
+          "label": "makeRiddle",
+          "regionIds": [
+            "makeRiddle"
+          ],
+          "entityIds": [
+            "makeRiddle"
+          ],
+          "evidenceTitle": "makeRiddle",
+          "observePrompt": "找一找：哪些事情需要再确认？",
+          "evidenceCopy": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+          "markerChips": [
+            "makeRiddle"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-learn",
+          "source": "clickTasks.llm-sequence-01.options.learn",
+          "label": "学习很多文字规律",
+          "regionIds": [
+            "learn"
+          ],
+          "entityIds": [
+            "learn"
+          ],
+          "evidenceTitle": "学习很多文字规律",
+          "observePrompt": "按顺序点出大模型回答问题的过程。",
+          "evidenceCopy": "当前步骤：学习很多文字规律。按顺序点出大模型回答问题的过程。",
+          "markerChips": [
+            "学习很多文字规律"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-prompt",
+          "source": "clickTasks.llm-sequence-01.options.prompt",
+          "label": "读你的提示",
+          "regionIds": [
+            "prompt"
+          ],
+          "entityIds": [
+            "prompt"
+          ],
+          "evidenceTitle": "读你的提示",
+          "observePrompt": "按顺序点出大模型回答问题的过程。",
+          "evidenceCopy": "当前步骤：读你的提示。按顺序点出大模型回答问题的过程。",
+          "markerChips": [
+            "读你的提示"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-answer",
+          "source": "clickTasks.llm-sequence-01.options.answer",
+          "label": "组织回答",
+          "regionIds": [
+            "answer"
+          ],
+          "entityIds": [
+            "answer"
+          ],
+          "evidenceTitle": "组织回答",
+          "observePrompt": "按顺序点出大模型回答问题的过程。",
+          "evidenceCopy": "当前步骤：组织回答。按顺序点出大模型回答问题的过程。",
+          "markerChips": [
+            "组织回答"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-check",
+          "source": "clickTasks.llm-sequence-01.options.check",
+          "label": "重要问题再检查",
+          "regionIds": [
+            "check"
+          ],
+          "entityIds": [
+            "check"
+          ],
+          "evidenceTitle": "重要问题再检查",
+          "observePrompt": "按顺序点出大模型回答问题的过程。",
+          "evidenceCopy": "当前步骤：重要问题再检查。按顺序点出大模型回答问题的过程。",
+          "markerChips": [
+            "重要问题再检查"
+          ],
+          "expectedStatus": "partial"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "点出更容易让 AI 帮上忙的问题。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "llm-single-01",
+          "type": "singleChoice",
+          "title": "哪个问题更清楚？",
+          "prompt": "点出更容易让 AI 帮上忙的问题。",
+          "source": "clickTasks.llm-single-01",
+          "options": [
+            {
+              "id": "vague",
+              "label": "告诉我动物",
+              "source": "clickTasks.llm-single-01.options.vague",
+              "regionIds": [
+                "vague"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "clear",
+              "label": "请告诉我 3 种森林动物，并说说它们怎么保护自己",
+              "source": "clickTasks.llm-single-01.options.clear",
+              "regionIds": [
+                "clear"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "clear"
+          ],
+          "decoyRegionIds": [
+            "vague"
+          ],
+          "feedback": {
+            "correct": "对！清楚的问题更像一张好地图。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点出更容易让 AI 帮上忙的问题。",
+            "complete": "对！清楚的问题更像一张好地图。"
+          }
+        },
+        {
+          "id": "llm-single-02",
+          "type": "singleChoice",
+          "title": "AI 说的一定是真的吗？",
+          "prompt": "点出更安全的说法。",
+          "source": "clickTasks.llm-single-02",
+          "options": [
+            {
+              "id": "always-true",
+              "label": "一定是真的",
+              "source": "clickTasks.llm-single-02.options.always-true",
+              "regionIds": [
+                "always-true"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "check-important",
+              "label": "重要事情要再检查",
+              "source": "clickTasks.llm-single-02.options.check-important",
+              "regionIds": [
+                "check-important"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "never-use",
+              "label": "完全不能用",
+              "source": "clickTasks.llm-single-02.options.never-use",
+              "regionIds": [
+                "never-use"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "check-important"
+          ],
+          "decoyRegionIds": [
+            "always-true",
+            "never-use"
+          ],
+          "feedback": {
+            "correct": "很好！会使用，也会检查，才是聪明用法。",
+            "wrong": "再观察一下试试看。",
+            "partial": "点出更安全的说法。",
+            "complete": "很好！会使用，也会检查，才是聪明用法。"
+          }
+        },
+        {
+          "id": "llm-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪些事情需要再确认？",
+          "prompt": "找一找：哪些事情需要再确认？",
+          "source": "clickTasks.llm-find-01",
+          "options": [
+            {
+              "id": "healthQuestion",
+              "label": "healthQuestion",
+              "source": "clickTasks.llm-find-01.options.healthQuestion",
+              "regionIds": [
+                "healthQuestion"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "moneyQuestion",
+              "label": "moneyQuestion",
+              "source": "clickTasks.llm-find-01.options.moneyQuestion",
+              "regionIds": [
+                "moneyQuestion"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "schoolFact",
+              "label": "schoolFact",
+              "source": "clickTasks.llm-find-01.options.schoolFact",
+              "regionIds": [
+                "schoolFact"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "storyIdea",
+              "label": "storyIdea",
+              "source": "clickTasks.llm-find-01.options.storyIdea",
+              "regionIds": [
+                "storyIdea"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "nameRobot",
+              "label": "nameRobot",
+              "source": "clickTasks.llm-find-01.options.nameRobot",
+              "regionIds": [
+                "nameRobot"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "makeRiddle",
+              "label": "makeRiddle",
+              "source": "clickTasks.llm-find-01.options.makeRiddle",
+              "regionIds": [
+                "makeRiddle"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "healthQuestion",
+            "moneyQuestion",
+            "schoolFact"
+          ],
+          "decoyRegionIds": [
+            "storyIdea",
+            "nameRobot",
+            "makeRiddle"
+          ],
+          "feedback": {
+            "correct": "你找到了需要认真检查的重要问题。",
+            "wrong": "想一想：这件事如果答错，会不会影响健康、安全、金钱或作业事实？",
+            "partial": "找一找：哪些事情需要再确认？",
+            "complete": "你找到了需要认真检查的重要问题。"
+          }
+        },
+        {
+          "id": "llm-sequence-01",
+          "type": "sequenceClick",
+          "title": "AI 回答的过程",
+          "prompt": "按顺序点出大模型回答问题的过程。",
+          "source": "clickTasks.llm-sequence-01",
+          "options": [
+            {
+              "id": "learn",
+              "label": "学习很多文字规律",
+              "source": "clickTasks.llm-sequence-01.options.learn",
+              "regionIds": [
+                "learn"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "prompt",
+              "label": "读你的提示",
+              "source": "clickTasks.llm-sequence-01.options.prompt",
+              "regionIds": [
+                "prompt"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "answer",
+              "label": "组织回答",
+              "source": "clickTasks.llm-sequence-01.options.answer",
+              "regionIds": [
+                "answer"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "check",
+              "label": "重要问题再检查",
+              "source": "clickTasks.llm-sequence-01.options.check",
+              "regionIds": [
+                "check"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "learn",
+            "prompt",
+            "answer",
+            "check"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "learn",
+            "prompt",
+            "answer",
+            "check"
+          ],
+          "feedback": {
+            "correct": "你把 AI 的回答过程连起来了！",
+            "wrong": "先想：AI 要先学过语言规律，才能根据提示回答。",
+            "partial": "按顺序点出大模型回答问题的过程。",
+            "complete": "你把 AI 的回答过程连起来了！"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-llm-kids-basics-scene-summary",
+        "assetId": "human-made-llm-object-icons",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "questionCard",
+            "label": "问题卡",
+            "required": true
+          },
+          {
+            "id": "storyCard",
+            "label": "故事卡",
+            "required": true
+          },
+          {
+            "id": "wordNetwork",
+            "label": "词语网络",
+            "required": true
+          },
+          {
+            "id": "patternGears",
+            "label": "规律齿轮",
+            "required": true
+          },
+          {
+            "id": "chatBubbles",
+            "label": "对话气泡",
+            "required": true
+          },
+          {
+            "id": "answerBubble",
+            "label": "回答气泡",
+            "required": true
+          },
+          {
+            "id": "checkBadge",
+            "label": "检查徽章",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "questionCard",
+            "entityIds": [
+              "questionCard"
+            ],
+            "label": "问题卡",
+            "shape": "rect",
+            "bounds": {
+              "x": 85,
+              "y": 75,
+              "w": 345,
+              "h": 270
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "storyCard",
+            "entityIds": [
+              "storyCard"
+            ],
+            "label": "故事卡",
+            "shape": "rect",
+            "bounds": {
+              "x": 500,
+              "y": 70,
+              "w": 410,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "wordNetwork",
+            "entityIds": [
+              "wordNetwork"
+            ],
+            "label": "词语网络",
+            "shape": "rect",
+            "bounds": {
+              "x": 70,
+              "y": 395,
+              "w": 430,
+              "h": 270
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "patternGears",
+            "entityIds": [
+              "patternGears"
+            ],
+            "label": "规律齿轮",
+            "shape": "rect",
+            "bounds": {
+              "x": 540,
+              "y": 390,
+              "w": 330,
+              "h": 285
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "chatBubbles",
+            "entityIds": [
+              "chatBubbles"
+            ],
+            "label": "对话气泡",
+            "shape": "rect",
+            "bounds": {
+              "x": 55,
+              "y": 695,
+              "w": 305,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "answerBubble",
+            "entityIds": [
+              "answerBubble"
+            ],
+            "label": "回答气泡",
+            "shape": "rect",
+            "bounds": {
+              "x": 380,
+              "y": 700,
+              "w": 300,
+              "h": 220
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "checkBadge",
+            "entityIds": [
+              "checkBadge"
+            ],
+            "label": "检查徽章",
+            "shape": "rect",
+            "bounds": {
+              "x": 700,
+              "y": 655,
+              "w": 225,
+              "h": 310
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-questionCard",
+          "source": "representativeObjects.questionCard",
+          "label": "问题卡",
+          "regionIds": [
+            "questionCard"
+          ],
+          "entityIds": [
+            "questionCard"
+          ],
+          "evidenceTitle": "问题卡",
+          "observePrompt": "一个带问号的卡片",
+          "evidenceCopy": "问题越清楚，AI 越容易知道你想要什么。",
+          "markerChips": [
+            "问题卡"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "AI 像____，它会根据____来回答。",
+            "我可以把“____”改成更清楚的问题：“____”。",
+            "如果 AI 回答的是____，我还要____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "AI 像____，它会根据____来回答。",
+        "我可以把“____”改成更清楚的问题：“____”。",
+        "如果 AI 回答的是____，我还要____。"
+      ],
+      "parentTips": [
+        "避免说“AI 像人一样思考”或“AI 完全懂了”。",
+        "鼓励孩子把模糊问题改写成清楚问题，这是比记技术名词更重要的能力。",
+        "建立安全边界：健康、安全、金钱、隐私、作业事实都要再确认。"
+      ]
     }
   ]
 }

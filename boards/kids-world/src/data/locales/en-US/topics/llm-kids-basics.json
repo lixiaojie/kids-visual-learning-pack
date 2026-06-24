@@ -668,7 +668,7 @@
     {
       "id": "evidence-comparePairs-clear-vs-vague-prompt",
       "source": "comparePairs.clear-vs-vague-prompt",
-      "visualSlotId": "vs-search",
+      "visualSlotId": "good-vs-vague-question",
       "interactionScope": "local",
       "evidenceTitle": "Clear question vs Vague question",
       "observePrompt": "Compare visual clues for Clear question and Vague question.",
@@ -691,7 +691,7 @@
     {
       "id": "evidence-comparePairs-fluent-vs-correct",
       "source": "comparePairs.fluent-vs-correct",
-      "visualSlotId": "vs-search",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "Smooth answer vs Correct answer",
       "observePrompt": "Compare visual clues for Smooth answer and Correct answer.",
@@ -714,7 +714,7 @@
     {
       "id": "evidence-clickTasks-llm-single-01-options-vague",
       "source": "clickTasks.llm-single-01.options.vague",
-      "visualSlotId": "hero",
+      "visualSlotId": "good-vs-vague-question",
       "interactionScope": "local",
       "evidenceTitle": "Tell me about animals",
       "observePrompt": "A clear question helps AI answer better.",
@@ -732,7 +732,7 @@
     {
       "id": "evidence-clickTasks-llm-single-01-options-clear",
       "source": "clickTasks.llm-single-01.options.clear",
-      "visualSlotId": "hero",
+      "visualSlotId": "good-vs-vague-question",
       "interactionScope": "local",
       "evidenceTitle": "Tell me three forest animals and how they protect themselves",
       "observePrompt": "A clear question helps AI answer better.",
@@ -750,7 +750,7 @@
     {
       "id": "evidence-clickTasks-llm-single-02-options-always-true",
       "source": "clickTasks.llm-single-02.options.always-true",
-      "visualSlotId": "hero",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "Yes, AI is always right",
       "observePrompt": "Choose the safest answer.",
@@ -768,7 +768,7 @@
     {
       "id": "evidence-clickTasks-llm-single-02-options-check-important",
       "source": "clickTasks.llm-single-02.options.check-important",
-      "visualSlotId": "hero",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "Important things should be checked again",
       "observePrompt": "Choose the safest answer.",
@@ -786,7 +786,7 @@
     {
       "id": "evidence-clickTasks-llm-single-02-options-never-use",
       "source": "clickTasks.llm-single-02.options.never-use",
-      "visualSlotId": "hero",
+      "visualSlotId": "check-important-answer",
       "interactionScope": "local",
       "evidenceTitle": "No, so we should never use AI",
       "observePrompt": "Choose the safest answer.",
@@ -804,7 +804,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-healthQuestion",
       "source": "clickTasks.llm-find-01.options.healthQuestion",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "healthQuestion",
       "observePrompt": "Find: which things need checking again?",
@@ -822,7 +822,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-moneyQuestion",
       "source": "clickTasks.llm-find-01.options.moneyQuestion",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "moneyQuestion",
       "observePrompt": "Find: which things need checking again?",
@@ -840,7 +840,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-schoolFact",
       "source": "clickTasks.llm-find-01.options.schoolFact",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "schoolFact",
       "observePrompt": "Find: which things need checking again?",
@@ -858,7 +858,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-storyIdea",
       "source": "clickTasks.llm-find-01.options.storyIdea",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "storyIdea",
       "observePrompt": "Find: which things need checking again?",
@@ -876,7 +876,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-nameRobot",
       "source": "clickTasks.llm-find-01.options.nameRobot",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "nameRobot",
       "observePrompt": "Find: which things need checking again?",
@@ -894,7 +894,7 @@
     {
       "id": "evidence-clickTasks-llm-find-01-options-makeRiddle",
       "source": "clickTasks.llm-find-01.options.makeRiddle",
-      "visualSlotId": "hero",
+      "visualSlotId": "object-icons",
       "interactionScope": "local",
       "evidenceTitle": "makeRiddle",
       "observePrompt": "Find: which things need checking again?",
@@ -912,7 +912,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-learn",
       "source": "clickTasks.llm-sequence-01.options.learn",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "Learn from lots of text",
       "observePrompt": "Tap the steps in order.",
@@ -930,7 +930,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-prompt",
       "source": "clickTasks.llm-sequence-01.options.prompt",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "Read your prompt",
       "observePrompt": "Tap the steps in order.",
@@ -948,7 +948,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-answer",
       "source": "clickTasks.llm-sequence-01.options.answer",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "Build an answer step by step",
       "observePrompt": "Tap the steps in order.",
@@ -966,7 +966,7 @@
     {
       "id": "evidence-clickTasks-llm-sequence-01-options-check",
       "source": "clickTasks.llm-sequence-01.options.check",
-      "visualSlotId": "hero",
+      "visualSlotId": "four-steps",
       "interactionScope": "local",
       "evidenceTitle": "Check important parts",
       "observePrompt": "Tap the steps in order.",
@@ -980,6 +980,578 @@
       ],
       "expectedStatus": "partial",
       "quality": "generated"
+    }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "How does a large language model answer questions?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main visual is a friendly language machine: books, story cards, and question bubbles enter on the left; word networks and glowing nodes work in the middle; answer bubbles come out on the right. Tapping each step shows: read lots of text — learn patterns — read your prompt — build an answer — check important facts."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-input",
+          "label": "Input",
+          "evidenceTitle": "Input",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Your question, story, or request is the input. You can spot: Question card, Story card.",
+          "markerChips": [
+            "Question card",
+            "Story card"
+          ]
+        },
+        {
+          "id": "focus-questionCard",
+          "label": "Question card",
+          "evidenceTitle": "Question card",
+          "observePrompt": "a card with a question mark",
+          "evidenceCopy": "The clearer your question is, the easier it is for AI to help.",
+          "markerChips": [
+            "Question card"
+          ]
+        },
+        {
+          "id": "focus-storyCard",
+          "label": "Story card",
+          "evidenceTitle": "Story card",
+          "observePrompt": "book page and small stars",
+          "evidenceCopy": "You can give AI a story and ask it to continue or organize it.",
+          "markerChips": [
+            "Story card"
+          ]
+        },
+        {
+          "id": "focus-wordNetwork",
+          "label": "Word network",
+          "evidenceTitle": "Word network",
+          "observePrompt": "glowing nodes and lines",
+          "evidenceCopy": "Words have relationships. AI learns many of these relationships.",
+          "markerChips": [
+            "Word network"
+          ]
+        },
+        {
+          "id": "focus-patternGears",
+          "label": "Pattern gears",
+          "evidenceTitle": "Pattern gears",
+          "observePrompt": "soft gears and word pieces",
+          "evidenceCopy": "Patterns help turn input into a possible answer.",
+          "markerChips": [
+            "Pattern gears"
+          ]
+        },
+        {
+          "id": "focus-chatBubbles",
+          "label": "Chat bubbles",
+          "evidenceTitle": "Chat bubbles",
+          "observePrompt": "connected speech bubbles",
+          "evidenceCopy": "The same sentence can mean different things in different conversations.",
+          "markerChips": [
+            "Chat bubbles"
+          ]
+        },
+        {
+          "id": "focus-answerBubble",
+          "label": "Answer bubble",
+          "evidenceTitle": "Answer bubble",
+          "observePrompt": "glowing answer box",
+          "evidenceCopy": "AI organizes its answer into sentences for you.",
+          "markerChips": [
+            "Answer bubble"
+          ]
+        },
+        {
+          "id": "focus-checkBadge",
+          "label": "Check badge",
+          "evidenceTitle": "Check badge",
+          "observePrompt": "check mark and small magnifier",
+          "evidenceCopy": "Important answers need checking.",
+          "markerChips": [
+            "Check badge"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Question card: The clearer your question is, the easier it is for AI to help.",
+            "Story card: You can give AI a story and ask it to continue or organize it.",
+            "Word network: Words have relationships. AI learns many of these relationships.",
+            "Pattern gears: Patterns help turn input into a possible answer.",
+            "Chat bubbles: The same sentence can mean different things in different conversations.",
+            "Answer bubble: AI organizes its answer into sentences for you.",
+            "Check badge: Important answers need checking."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-read-many",
+          "label": "Reads lots of text",
+          "evidenceTitle": "Reads lots of text",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "It has learned from many sentences, stories, and question-answer examples.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-learn-patterns",
+          "label": "Learns language patterns",
+          "evidenceTitle": "Learns language patterns",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "It learns which words often go together and what a complete answer may look like.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-read-prompt",
+          "label": "Reads your prompt",
+          "evidenceTitle": "Reads your prompt",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "The clearer you are, the easier it is for AI to answer in the right direction.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-generate-answer",
+          "label": "Builds the answer step by step",
+          "evidenceTitle": "Builds the answer step by step",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "It works like a word-chain game, adding words into an answer.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-check-important",
+          "label": "Checks important things",
+          "evidenceTitle": "Checks important things",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "AI can be wrong. Important questions need an adult or reliable source.",
+          "markerChips": [
+            "Step 5"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How does a large language model answer?",
+          "items": [
+            "Reads lots of text: It has learned from many sentences, stories, and question-answer examples.",
+            "Learns language patterns: It learns which words often go together and what a complete answer may look like.",
+            "Reads your prompt: The clearer you are, the easier it is for AI to answer in the right direction.",
+            "Builds the answer step by step: It works like a word-chain game, adding words into an answer.",
+            "Checks important things: AI can be wrong. Important questions need an adult or reliable source."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-ai-vs-search",
+          "label": "Large language model vs Search",
+          "evidenceTitle": "Large language model vs Search",
+          "observePrompt": "Compare visual clues for Large language model and Search.",
+          "evidenceCopy": "Large language model: organizes answers from learned language patterns; can rewrite, summarize, and continue writing; may be wrong. Search: helps find webpages and sources; you still judge the source; may find unsuitable information. AI and search can both help, but we need to check important things.",
+          "markerChips": [
+            "Large language model",
+            "Search"
+          ]
+        },
+        {
+          "id": "focus-clear-vs-vague-prompt",
+          "label": "Clear question vs Vague question",
+          "evidenceTitle": "Clear question vs Vague question",
+          "observePrompt": "Compare visual clues for Clear question and Vague question.",
+          "evidenceCopy": "Clear question: says the topic; says the number or scope; says the format wanted. Vague question: only says ‘tell me about’; no range; easy to go off track. Clearer questions make answers more useful.",
+          "markerChips": [
+            "Clear question",
+            "Vague question"
+          ]
+        },
+        {
+          "id": "focus-fluent-vs-correct",
+          "label": "Smooth answer vs Correct answer",
+          "evidenceTitle": "Smooth answer vs Correct answer",
+          "observePrompt": "Compare visual clues for Smooth answer and Correct answer.",
+          "evidenceCopy": "Smooth answer: sounds nice; looks complete; may not be true. Correct answer: can be checked; matches reliable sources; survives follow-up questions. A smooth AI answer still needs checking if it is important.",
+          "markerChips": [
+            "Smooth answer",
+            "Correct answer"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Large language model vs Search: AI and search can both help, but we need to check important things.",
+            "Clear question vs Vague question: Clearer questions make answers more useful.",
+            "Smooth answer vs Correct answer: A smooth AI answer still needs checking if it is important."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-vague",
+          "label": "Tell me about animals",
+          "evidenceTitle": "Tell me about animals",
+          "observePrompt": "A clear question helps AI answer better.",
+          "evidenceCopy": "This question is too broad. Try saying what kind of answer you want.",
+          "markerChips": [
+            "Tell me about animals"
+          ]
+        },
+        {
+          "id": "focus-clear",
+          "label": "Tell me three forest animals and how they protect themselves",
+          "evidenceTitle": "Tell me three forest animals and how they protect themselves",
+          "observePrompt": "A clear question helps AI answer better.",
+          "evidenceCopy": "Right! A clear question gives AI a better direction.",
+          "markerChips": [
+            "Tell me three forest animals and how they protect themselves"
+          ]
+        },
+        {
+          "id": "focus-always-true",
+          "label": "Yes, AI is always right",
+          "evidenceTitle": "Yes, AI is always right",
+          "observePrompt": "Choose the safest answer.",
+          "evidenceCopy": "AI can make mistakes. Important things need checking.",
+          "markerChips": [
+            "Yes, AI is always right"
+          ]
+        },
+        {
+          "id": "focus-check-important",
+          "label": "Important things should be checked again",
+          "evidenceTitle": "Important things should be checked again",
+          "observePrompt": "Choose the safest answer.",
+          "evidenceCopy": "Good judgment! AI can help, and important answers should be checked.",
+          "markerChips": [
+            "Important things should be checked again"
+          ]
+        },
+        {
+          "id": "focus-never-use",
+          "label": "No, so we should never use AI",
+          "evidenceTitle": "No, so we should never use AI",
+          "observePrompt": "Choose the safest answer.",
+          "evidenceCopy": "AI can help, but we need to use it carefully.",
+          "markerChips": [
+            "No, so we should never use AI"
+          ]
+        },
+        {
+          "id": "focus-healthQuestion",
+          "label": "healthQuestion",
+          "evidenceTitle": "healthQuestion",
+          "observePrompt": "Find: which things need checking again?",
+          "evidenceCopy": "You found the careful-use cases. Important facts need checking.",
+          "markerChips": [
+            "healthQuestion"
+          ]
+        },
+        {
+          "id": "focus-moneyQuestion",
+          "label": "moneyQuestion",
+          "evidenceTitle": "moneyQuestion",
+          "observePrompt": "Find: which things need checking again?",
+          "evidenceCopy": "You found the careful-use cases. Important facts need checking.",
+          "markerChips": [
+            "moneyQuestion"
+          ]
+        },
+        {
+          "id": "focus-schoolFact",
+          "label": "schoolFact",
+          "evidenceTitle": "schoolFact",
+          "observePrompt": "Find: which things need checking again?",
+          "evidenceCopy": "You found the careful-use cases. Important facts need checking.",
+          "markerChips": [
+            "schoolFact"
+          ]
+        },
+        {
+          "id": "focus-storyIdea",
+          "label": "storyIdea",
+          "evidenceTitle": "storyIdea",
+          "observePrompt": "Find: which things need checking again?",
+          "evidenceCopy": "Think about health, money, and school facts: these should be checked.",
+          "markerChips": [
+            "storyIdea"
+          ]
+        },
+        {
+          "id": "focus-nameRobot",
+          "label": "nameRobot",
+          "evidenceTitle": "nameRobot",
+          "observePrompt": "Find: which things need checking again?",
+          "evidenceCopy": "Think about health, money, and school facts: these should be checked.",
+          "markerChips": [
+            "nameRobot"
+          ]
+        },
+        {
+          "id": "focus-makeRiddle",
+          "label": "makeRiddle",
+          "evidenceTitle": "makeRiddle",
+          "observePrompt": "Find: which things need checking again?",
+          "evidenceCopy": "Think about health, money, and school facts: these should be checked.",
+          "markerChips": [
+            "makeRiddle"
+          ]
+        },
+        {
+          "id": "focus-learn",
+          "label": "Learn from lots of text",
+          "evidenceTitle": "Learn from lots of text",
+          "observePrompt": "Tap the steps in order.",
+          "evidenceCopy": "Current step: Learn from lots of text. Tap the steps in order.",
+          "markerChips": [
+            "Learn from lots of text"
+          ]
+        },
+        {
+          "id": "focus-prompt",
+          "label": "Read your prompt",
+          "evidenceTitle": "Read your prompt",
+          "observePrompt": "Tap the steps in order.",
+          "evidenceCopy": "Current step: Read your prompt. Tap the steps in order.",
+          "markerChips": [
+            "Read your prompt"
+          ]
+        },
+        {
+          "id": "focus-answer",
+          "label": "Build an answer step by step",
+          "evidenceTitle": "Build an answer step by step",
+          "observePrompt": "Tap the steps in order.",
+          "evidenceCopy": "Current step: Build an answer step by step. Tap the steps in order.",
+          "markerChips": [
+            "Build an answer step by step"
+          ]
+        },
+        {
+          "id": "focus-check",
+          "label": "Check important parts",
+          "evidenceTitle": "Check important parts",
+          "observePrompt": "Tap the steps in order.",
+          "evidenceCopy": "Current step: Check important parts. Tap the steps in order.",
+          "markerChips": [
+            "Check important parts"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "A clear question helps AI answer better."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "llm-single-01",
+          "title": "Which question is clearer?",
+          "prompt": "A clear question helps AI answer better.",
+          "options": [
+            {
+              "id": "vague",
+              "label": "Tell me about animals"
+            },
+            {
+              "id": "clear",
+              "label": "Tell me three forest animals and how they protect themselves"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! A clear question gives AI a better direction.",
+            "wrong": "Look again and try once more.",
+            "partial": "A clear question helps AI answer better.",
+            "complete": "Right! A clear question gives AI a better direction."
+          }
+        },
+        {
+          "id": "llm-single-02",
+          "title": "Is everything AI says always true?",
+          "prompt": "Choose the safest answer.",
+          "options": [
+            {
+              "id": "always-true",
+              "label": "Yes, AI is always right"
+            },
+            {
+              "id": "check-important",
+              "label": "Important things should be checked again"
+            },
+            {
+              "id": "never-use",
+              "label": "No, so we should never use AI"
+            }
+          ],
+          "feedback": {
+            "correct": "Good judgment! AI can help, and important answers should be checked.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the safest answer.",
+            "complete": "Good judgment! AI can help, and important answers should be checked."
+          }
+        },
+        {
+          "id": "llm-find-01",
+          "title": "Find: which things need checking again?",
+          "prompt": "Find: which things need checking again?",
+          "options": [
+            {
+              "id": "healthQuestion",
+              "label": "healthQuestion"
+            },
+            {
+              "id": "moneyQuestion",
+              "label": "moneyQuestion"
+            },
+            {
+              "id": "schoolFact",
+              "label": "schoolFact"
+            },
+            {
+              "id": "storyIdea",
+              "label": "storyIdea"
+            },
+            {
+              "id": "nameRobot",
+              "label": "nameRobot"
+            },
+            {
+              "id": "makeRiddle",
+              "label": "makeRiddle"
+            }
+          ],
+          "feedback": {
+            "correct": "You found the careful-use cases. Important facts need checking.",
+            "wrong": "Think about health, money, and school facts: these should be checked.",
+            "partial": "Find: which things need checking again?",
+            "complete": "You found the careful-use cases. Important facts need checking."
+          }
+        },
+        {
+          "id": "llm-sequence-01",
+          "title": "How AI answers",
+          "prompt": "Tap the steps in order.",
+          "options": [
+            {
+              "id": "learn",
+              "label": "Learn from lots of text"
+            },
+            {
+              "id": "prompt",
+              "label": "Read your prompt"
+            },
+            {
+              "id": "answer",
+              "label": "Build an answer step by step"
+            },
+            {
+              "id": "check",
+              "label": "Check important parts"
+            }
+          ],
+          "feedback": {
+            "correct": "You built the AI answer flow.",
+            "wrong": "AI first learns from lots of text, then reads your prompt.",
+            "partial": "Tap the steps in order.",
+            "complete": "You built the AI answer flow."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-questionCard",
+          "label": "Question card",
+          "evidenceTitle": "Question card",
+          "observePrompt": "a card with a question mark",
+          "evidenceCopy": "The clearer your question is, the easier it is for AI to help.",
+          "markerChips": [
+            "Question card"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "AI is like ____. It answers using ____.",
+            "I can change ‘____’ into a clearer question: ‘____’. ",
+            "If AI answers about ____, I should ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "AI is like ____. It answers using ____.",
+        "I can change ‘____’ into a clearer question: ‘____’. ",
+        "If AI answers about ____, I should ____."
+      ],
+      "parentTips": [
+        "Avoid saying AI thinks like a person or understands everything.",
+        "Encourage the child to turn vague questions into clear questions.",
+        "Set safety boundaries: health, safety, money, privacy, and school facts need checking."
+      ]
     }
   ]
 }

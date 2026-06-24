@@ -1196,5 +1196,1780 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "order": 1,
+      "title": "先发现",
+      "kidQuestion": "吃下去的食物在身体里经过哪些地方？",
+      "sceneType": "entry-scene",
+      "visualPlan": {
+        "id": "vp-digestion-scene-entry",
+        "assetId": "body-digestion-hero",
+        "layoutPreset": "single-focus-scene",
+        "imageRole": "hero",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "region-scene-entry",
+            "label": "先发现",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "region-scene-entry",
+            "entityIds": [
+              "region-scene-entry"
+            ],
+            "label": "先发现",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 120,
+              "w": 840,
+              "h": 680
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "主视觉是一条温和、图标化的身体路线：从嘴巴开始，经食道到胃，再到小肠和大肠，最后把营养变成能量小星星。"
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "order": 2,
+      "title": "分一分",
+      "kidQuestion": "它属于哪一类？",
+      "sceneType": "taxonomy-map",
+      "visualPlan": {
+        "id": "vp-digestion-scene-classify",
+        "assetId": "body-digestion-object-icons",
+        "layoutPreset": "taxonomy-map",
+        "imageRole": "scene",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "mouth",
+            "label": "嘴巴",
+            "required": true
+          },
+          {
+            "id": "teeth",
+            "label": "牙齿",
+            "required": true
+          },
+          {
+            "id": "saliva",
+            "label": "口水",
+            "required": true
+          },
+          {
+            "id": "esophagus",
+            "label": "食道",
+            "required": true
+          },
+          {
+            "id": "stomach",
+            "label": "胃",
+            "required": true
+          },
+          {
+            "id": "small-intestine",
+            "label": "小肠",
+            "required": true
+          },
+          {
+            "id": "large-intestine",
+            "label": "大肠",
+            "required": true
+          },
+          {
+            "id": "energy",
+            "label": "能量",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "mouth",
+            "entityIds": [
+              "mouth"
+            ],
+            "label": "嘴巴",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "teeth",
+            "entityIds": [
+              "teeth"
+            ],
+            "label": "牙齿",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "saliva",
+            "entityIds": [
+              "saliva"
+            ],
+            "label": "口水",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "esophagus",
+            "entityIds": [
+              "esophagus"
+            ],
+            "label": "食道",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "stomach",
+            "entityIds": [
+              "stomach"
+            ],
+            "label": "胃",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "small-intestine",
+            "entityIds": [
+              "small-intestine"
+            ],
+            "label": "小肠",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "large-intestine",
+            "entityIds": [
+              "large-intestine"
+            ],
+            "label": "大肠",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "energy",
+            "entityIds": [
+              "energy"
+            ],
+            "label": "能量",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-entry",
+          "source": "classificationGroups.entry",
+          "label": "入口和准备",
+          "regionIds": [
+            "mouth",
+            "teeth",
+            "saliva"
+          ],
+          "entityIds": [
+            "mouth",
+            "teeth",
+            "saliva"
+          ],
+          "evidenceTitle": "入口和准备",
+          "observePrompt": "看一看哪些对象被归到这一类。",
+          "evidenceCopy": "嘴巴和牙齿先把食物变小。 这类里可以看到：嘴巴、牙齿、口水。",
+          "markerChips": [
+            "嘴巴",
+            "牙齿",
+            "口水"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-mouth",
+          "source": "representativeObjects.mouth",
+          "label": "嘴巴",
+          "regionIds": [
+            "mouth"
+          ],
+          "entityIds": [
+            "mouth"
+          ],
+          "evidenceTitle": "嘴巴",
+          "observePrompt": "张开的友好嘴巴图标",
+          "evidenceCopy": "食物旅行从嘴巴开始。",
+          "markerChips": [
+            "嘴巴"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-teeth",
+          "source": "representativeObjects.teeth",
+          "label": "牙齿",
+          "regionIds": [
+            "teeth"
+          ],
+          "entityIds": [
+            "teeth"
+          ],
+          "evidenceTitle": "牙齿",
+          "observePrompt": "圆润白色牙齿",
+          "evidenceCopy": "牙齿把食物咬小，方便后面继续处理。",
+          "markerChips": [
+            "牙齿"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-saliva",
+          "source": "representativeObjects.saliva",
+          "label": "口水",
+          "regionIds": [
+            "saliva"
+          ],
+          "entityIds": [
+            "saliva"
+          ],
+          "evidenceTitle": "口水",
+          "observePrompt": "小水滴和食物碎片",
+          "evidenceCopy": "口水会让食物变湿、变软。",
+          "markerChips": [
+            "口水"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-esophagus",
+          "source": "representativeObjects.esophagus",
+          "label": "食道",
+          "regionIds": [
+            "esophagus"
+          ],
+          "entityIds": [
+            "esophagus"
+          ],
+          "evidenceTitle": "食道",
+          "observePrompt": "一条柔和的弯管",
+          "evidenceCopy": "食道把食物从嘴巴送到胃。",
+          "markerChips": [
+            "食道"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-stomach",
+          "source": "representativeObjects.stomach",
+          "label": "胃",
+          "regionIds": [
+            "stomach"
+          ],
+          "entityIds": [
+            "stomach"
+          ],
+          "evidenceTitle": "胃",
+          "observePrompt": "粉色圆润胃袋",
+          "evidenceCopy": "胃会搅拌食物，让它变得更软更小。",
+          "markerChips": [
+            "胃"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-small-intestine",
+          "source": "representativeObjects.small-intestine",
+          "label": "小肠",
+          "regionIds": [
+            "small-intestine"
+          ],
+          "entityIds": [
+            "small-intestine"
+          ],
+          "evidenceTitle": "小肠",
+          "observePrompt": "细细弯弯的路线",
+          "evidenceCopy": "小肠会吸收很多身体需要的营养。",
+          "markerChips": [
+            "小肠"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-large-intestine",
+          "source": "representativeObjects.large-intestine",
+          "label": "大肠",
+          "regionIds": [
+            "large-intestine"
+          ],
+          "entityIds": [
+            "large-intestine"
+          ],
+          "evidenceTitle": "大肠",
+          "observePrompt": "更粗的绿色路线",
+          "evidenceCopy": "大肠会整理剩下的东西，也会吸收一些水分。",
+          "markerChips": [
+            "大肠"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-energy",
+          "source": "representativeObjects.energy",
+          "label": "能量",
+          "regionIds": [
+            "energy"
+          ],
+          "entityIds": [
+            "energy"
+          ],
+          "evidenceTitle": "能量",
+          "observePrompt": "发光小星星",
+          "evidenceCopy": "身体把营养用来长高、跑跳和思考。",
+          "markerChips": [
+            "能量"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "代表对象",
+          "items": [
+            "嘴巴: 食物旅行从嘴巴开始。",
+            "牙齿: 牙齿把食物咬小，方便后面继续处理。",
+            "口水: 口水会让食物变湿、变软。",
+            "食道: 食道把食物从嘴巴送到胃。",
+            "胃: 胃会搅拌食物，让它变得更软更小。",
+            "小肠: 小肠会吸收很多身体需要的营养。",
+            "大肠: 大肠会整理剩下的东西，也会吸收一些水分。",
+            "能量: 身体把营养用来长高、跑跳和思考。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "order": 3,
+      "title": "看变化",
+      "kidQuestion": "它是怎样一步步发生的？",
+      "sceneType": "process-path",
+      "visualPlan": {
+        "id": "vp-digestion-scene-process",
+        "assetId": "body-digestion-mechanism",
+        "layoutPreset": "process-path",
+        "imageRole": "process",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "chew",
+            "label": "咬小",
+            "required": true
+          },
+          {
+            "id": "swallow",
+            "label": "送下去",
+            "required": true
+          },
+          {
+            "id": "mix",
+            "label": "胃里搅拌",
+            "required": true
+          },
+          {
+            "id": "absorb",
+            "label": "小肠吸收",
+            "required": true
+          },
+          {
+            "id": "sort",
+            "label": "大肠整理",
+            "required": true
+          },
+          {
+            "id": "food-to-small",
+            "label": "变小",
+            "required": true
+          },
+          {
+            "id": "small-to-body",
+            "label": "送给身体",
+            "required": true
+          },
+          {
+            "id": "body-use",
+            "label": "身体使用",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "chew",
+            "entityIds": [
+              "chew"
+            ],
+            "label": "咬小",
+            "shape": "rect",
+            "bounds": {
+              "x": 64,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "swallow",
+            "entityIds": [
+              "swallow"
+            ],
+            "label": "送下去",
+            "shape": "rect",
+            "bounds": {
+              "x": 244,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "mix",
+            "entityIds": [
+              "mix"
+            ],
+            "label": "胃里搅拌",
+            "shape": "rect",
+            "bounds": {
+              "x": 424,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "absorb",
+            "entityIds": [
+              "absorb"
+            ],
+            "label": "小肠吸收",
+            "shape": "rect",
+            "bounds": {
+              "x": 604,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "sort",
+            "entityIds": [
+              "sort"
+            ],
+            "label": "大肠整理",
+            "shape": "rect",
+            "bounds": {
+              "x": 784,
+              "y": 257,
+              "w": 151,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "food-to-small",
+            "entityIds": [
+              "food-to-small"
+            ],
+            "label": "变小",
+            "shape": "rect",
+            "bounds": {
+              "x": 74,
+              "y": 257,
+              "w": 252,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "small-to-body",
+            "entityIds": [
+              "small-to-body"
+            ],
+            "label": "送给身体",
+            "shape": "rect",
+            "bounds": {
+              "x": 374,
+              "y": 257,
+              "w": 252,
+              "h": 386
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "body-use",
+            "entityIds": [
+              "body-use"
+            ],
+            "label": "身体使用",
+            "shape": "rect",
+            "bounds": {
+              "x": 674,
+              "y": 257,
+              "w": 252,
+              "h": 386
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-chew",
+          "source": "mechanism.steps.chew",
+          "label": "咬小",
+          "regionIds": [
+            "chew"
+          ],
+          "entityIds": [
+            "chew"
+          ],
+          "evidenceTitle": "咬小",
+          "observePrompt": "当前第 1 步，先看这一步发生了什么。",
+          "evidenceCopy": "牙齿把食物咬小，口水让食物变湿。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-swallow",
+          "source": "mechanism.steps.swallow",
+          "label": "送下去",
+          "regionIds": [
+            "swallow"
+          ],
+          "entityIds": [
+            "swallow"
+          ],
+          "evidenceTitle": "送下去",
+          "observePrompt": "当前第 2 步，先看这一步发生了什么。",
+          "evidenceCopy": "吞咽后，食物沿着食道去胃。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-mix",
+          "source": "mechanism.steps.mix",
+          "label": "胃里搅拌",
+          "regionIds": [
+            "mix"
+          ],
+          "entityIds": [
+            "mix"
+          ],
+          "evidenceTitle": "胃里搅拌",
+          "observePrompt": "当前第 3 步，先看这一步发生了什么。",
+          "evidenceCopy": "胃像一个会动的袋子，把食物搅拌得更细。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-absorb",
+          "source": "mechanism.steps.absorb",
+          "label": "小肠吸收",
+          "regionIds": [
+            "absorb"
+          ],
+          "entityIds": [
+            "absorb"
+          ],
+          "evidenceTitle": "小肠吸收",
+          "observePrompt": "当前第 4 步，先看这一步发生了什么。",
+          "evidenceCopy": "小肠把有用的营养送给身体。",
+          "markerChips": [
+            "第 4 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-sort",
+          "source": "mechanism.steps.sort",
+          "label": "大肠整理",
+          "regionIds": [
+            "sort"
+          ],
+          "entityIds": [
+            "sort"
+          ],
+          "evidenceTitle": "大肠整理",
+          "observePrompt": "当前第 5 步，先看这一步发生了什么。",
+          "evidenceCopy": "大肠整理剩下的东西，也帮身体留住一些水。",
+          "markerChips": [
+            "第 5 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-food-to-small",
+          "source": "secondaryMechanism.steps.food-to-small",
+          "label": "变小",
+          "regionIds": [
+            "food-to-small"
+          ],
+          "entityIds": [
+            "food-to-small"
+          ],
+          "evidenceTitle": "变小",
+          "observePrompt": "当前第 1 步，观察这个补充机制。",
+          "evidenceCopy": "大块食物变成身体能处理的小部分。",
+          "markerChips": [
+            "第 1 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-small-to-body",
+          "source": "secondaryMechanism.steps.small-to-body",
+          "label": "送给身体",
+          "regionIds": [
+            "small-to-body"
+          ],
+          "entityIds": [
+            "small-to-body"
+          ],
+          "evidenceTitle": "送给身体",
+          "observePrompt": "当前第 2 步，观察这个补充机制。",
+          "evidenceCopy": "营养被送到身体各处。",
+          "markerChips": [
+            "第 2 步"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-body-use",
+          "source": "secondaryMechanism.steps.body-use",
+          "label": "身体使用",
+          "regionIds": [
+            "body-use"
+          ],
+          "entityIds": [
+            "body-use"
+          ],
+          "evidenceTitle": "身体使用",
+          "observePrompt": "当前第 3 步，观察这个补充机制。",
+          "evidenceCopy": "身体用它们跑步、长高、修补和思考。",
+          "markerChips": [
+            "第 3 步"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "食物怎样完成身体旅行？",
+          "items": [
+            "咬小: 牙齿把食物咬小，口水让食物变湿。",
+            "送下去: 吞咽后，食物沿着食道去胃。",
+            "胃里搅拌: 胃像一个会动的袋子，把食物搅拌得更细。",
+            "小肠吸收: 小肠把有用的营养送给身体。",
+            "大肠整理: 大肠整理剩下的东西，也帮身体留住一些水。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "order": 4,
+      "title": "比一比",
+      "kidQuestion": "哪里相同，哪里不同？",
+      "sceneType": "compare-split",
+      "visualPlan": {
+        "id": "vp-digestion-scene-compare",
+        "assetId": "body-digestion-compare",
+        "layoutPreset": "compare-split",
+        "imageRole": "compare",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "left",
+            "label": "A",
+            "required": true
+          },
+          {
+            "id": "right",
+            "label": "B",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "left",
+            "entityIds": [
+              "left"
+            ],
+            "label": "A",
+            "shape": "rect",
+            "bounds": {
+              "x": 80,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "right",
+            "entityIds": [
+              "right"
+            ],
+            "label": "B",
+            "shape": "rect",
+            "bounds": {
+              "x": 560,
+              "y": 200,
+              "w": 360,
+              "h": 600
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-stomach-vs-route",
+          "source": "comparePairs.stomach-vs-route",
+          "label": "只有胃 vs 一条路线",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "只有胃 vs 一条路线",
+          "observePrompt": "对比 只有胃 和 一条路线 的图片线索。",
+          "evidenceCopy": "只有胃: 只看到一个站点；容易忘记嘴巴和肠道；解释不完整。一条路线: 有入口和出口；每个器官分工合作；更接近真实过程。消化是一条合作路线，不是胃一个人完成。",
+          "markerChips": [
+            "只有胃",
+            "一条路线"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-small-vs-large-intestine",
+          "source": "comparePairs.small-vs-large-intestine",
+          "label": "小肠 vs 大肠",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "小肠 vs 大肠",
+          "observePrompt": "对比 小肠 和 大肠 的图片线索。",
+          "evidenceCopy": "小肠: 细而长；吸收很多营养；非常重要。大肠: 更粗；整理剩下的东西；帮助吸收一些水分。小肠和大肠名字相似，但任务不同。",
+          "markerChips": [
+            "小肠",
+            "大肠"
+          ],
+          "expectedStatus": "notice"
+        },
+        {
+          "id": "focus-food-vs-energy",
+          "source": "comparePairs.food-vs-energy",
+          "label": "食物 vs 能量",
+          "regionIds": [
+            "left",
+            "right"
+          ],
+          "entityIds": [
+            "left",
+            "right"
+          ],
+          "evidenceTitle": "食物 vs 能量",
+          "observePrompt": "对比 食物 和 能量 的图片线索。",
+          "evidenceCopy": "食物: 能看见、能咬；有不同味道；从嘴巴进入。能量: 帮助身体活动；看不见但能感受到；来自食物里的营养。吃下去的食物会帮助身体获得能量。",
+          "markerChips": [
+            "食物",
+            "能量"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "只有胃 vs 一条路线: 消化是一条合作路线，不是胃一个人完成。",
+            "小肠 vs 大肠: 小肠和大肠名字相似，但任务不同。",
+            "食物 vs 能量: 吃下去的食物会帮助身体获得能量。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "order": 5,
+      "title": "点一点",
+      "kidQuestion": "你能找对吗？",
+      "sceneType": "task-board",
+      "visualPlan": {
+        "id": "vp-digestion-scene-task",
+        "assetId": "body-digestion-click-task",
+        "layoutPreset": "task-board",
+        "imageRole": "task",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "mouth",
+            "label": "嘴巴",
+            "required": true
+          },
+          {
+            "id": "esophagus",
+            "label": "食道",
+            "required": true
+          },
+          {
+            "id": "stomach",
+            "label": "胃",
+            "required": true
+          },
+          {
+            "id": "small-intestine",
+            "label": "小肠",
+            "required": true
+          },
+          {
+            "id": "large-intestine",
+            "label": "大肠",
+            "required": true
+          },
+          {
+            "id": "teeth",
+            "label": "牙齿",
+            "required": true
+          },
+          {
+            "id": "saliva",
+            "label": "口水",
+            "required": true
+          },
+          {
+            "id": "energy",
+            "label": "能量",
+            "required": true
+          },
+          {
+            "id": "whole-route",
+            "label": "一条路线分工合作",
+            "required": true
+          },
+          {
+            "id": "only-stomach",
+            "label": "只有胃",
+            "required": true
+          },
+          {
+            "id": "only-mouth",
+            "label": "只有嘴巴",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "mouth",
+            "entityIds": [
+              "mouth"
+            ],
+            "label": "嘴巴",
+            "shape": "rect",
+            "bounds": {
+              "x": 220,
+              "y": 145,
+              "w": 205,
+              "h": 315
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "esophagus",
+            "entityIds": [
+              "esophagus"
+            ],
+            "label": "食道",
+            "shape": "rect",
+            "bounds": {
+              "x": 440,
+              "y": 145,
+              "w": 200,
+              "h": 315
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "stomach",
+            "entityIds": [
+              "stomach"
+            ],
+            "label": "胃",
+            "shape": "rect",
+            "bounds": {
+              "x": 660,
+              "y": 145,
+              "w": 205,
+              "h": 315
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "small-intestine",
+            "entityIds": [
+              "small-intestine"
+            ],
+            "label": "小肠",
+            "shape": "rect",
+            "bounds": {
+              "x": 220,
+              "y": 470,
+              "w": 205,
+              "h": 310
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "large-intestine",
+            "entityIds": [
+              "large-intestine"
+            ],
+            "label": "大肠",
+            "shape": "rect",
+            "bounds": {
+              "x": 440,
+              "y": 470,
+              "w": 205,
+              "h": 310
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "teeth",
+            "entityIds": [
+              "teeth"
+            ],
+            "label": "牙齿",
+            "shape": "rect",
+            "bounds": {
+              "x": 90,
+              "y": 210,
+              "w": 130,
+              "h": 175
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "saliva",
+            "entityIds": [
+              "saliva"
+            ],
+            "label": "口水",
+            "shape": "rect",
+            "bounds": {
+              "x": 90,
+              "y": 400,
+              "w": 130,
+              "h": 185
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "energy",
+            "entityIds": [
+              "energy"
+            ],
+            "label": "能量",
+            "shape": "rect",
+            "bounds": {
+              "x": 660,
+              "y": 470,
+              "w": 205,
+              "h": 310
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "whole-route",
+            "entityIds": [
+              "whole-route"
+            ],
+            "label": "一条路线分工合作",
+            "shape": "rect",
+            "bounds": {
+              "x": 215,
+              "y": 140,
+              "w": 650,
+              "h": 645
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "only-stomach",
+            "entityIds": [
+              "only-stomach"
+            ],
+            "label": "只有胃",
+            "shape": "rect",
+            "bounds": {
+              "x": 660,
+              "y": 145,
+              "w": 205,
+              "h": 315
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "only-mouth",
+            "entityIds": [
+              "only-mouth"
+            ],
+            "label": "只有嘴巴",
+            "shape": "rect",
+            "bounds": {
+              "x": 220,
+              "y": 145,
+              "w": 205,
+              "h": 315
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-mouth",
+          "source": "clickTasks.digestion-sequence-01.options.mouth",
+          "label": "嘴巴",
+          "regionIds": [
+            "mouth"
+          ],
+          "entityIds": [
+            "mouth"
+          ],
+          "evidenceTitle": "嘴巴",
+          "observePrompt": "从嘴巴开始，帮食物走完整条路线。",
+          "evidenceCopy": "当前步骤：嘴巴。从嘴巴开始，帮食物走完整条路线。",
+          "markerChips": [
+            "嘴巴"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-esophagus",
+          "source": "clickTasks.digestion-sequence-01.options.esophagus",
+          "label": "食道",
+          "regionIds": [
+            "esophagus"
+          ],
+          "entityIds": [
+            "esophagus"
+          ],
+          "evidenceTitle": "食道",
+          "observePrompt": "从嘴巴开始，帮食物走完整条路线。",
+          "evidenceCopy": "当前步骤：食道。从嘴巴开始，帮食物走完整条路线。",
+          "markerChips": [
+            "食道"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-stomach",
+          "source": "clickTasks.digestion-sequence-01.options.stomach",
+          "label": "胃",
+          "regionIds": [
+            "stomach"
+          ],
+          "entityIds": [
+            "stomach"
+          ],
+          "evidenceTitle": "胃",
+          "observePrompt": "从嘴巴开始，帮食物走完整条路线。",
+          "evidenceCopy": "当前步骤：胃。从嘴巴开始，帮食物走完整条路线。",
+          "markerChips": [
+            "胃"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-small-intestine",
+          "source": "clickTasks.digestion-sequence-01.options.small-intestine",
+          "label": "小肠",
+          "regionIds": [
+            "small-intestine"
+          ],
+          "entityIds": [
+            "small-intestine"
+          ],
+          "evidenceTitle": "小肠",
+          "observePrompt": "从嘴巴开始，帮食物走完整条路线。",
+          "evidenceCopy": "当前步骤：小肠。从嘴巴开始，帮食物走完整条路线。",
+          "markerChips": [
+            "小肠"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-large-intestine",
+          "source": "clickTasks.digestion-sequence-01.options.large-intestine",
+          "label": "大肠",
+          "regionIds": [
+            "large-intestine"
+          ],
+          "entityIds": [
+            "large-intestine"
+          ],
+          "evidenceTitle": "大肠",
+          "observePrompt": "从嘴巴开始，帮食物走完整条路线。",
+          "evidenceCopy": "当前步骤：大肠。从嘴巴开始，帮食物走完整条路线。",
+          "markerChips": [
+            "大肠"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-small-intestine",
+          "source": "clickTasks.digestion-find-01.options.small-intestine",
+          "label": "small intestine",
+          "regionIds": [
+            "small-intestine"
+          ],
+          "entityIds": [
+            "small-intestine"
+          ],
+          "evidenceTitle": "small intestine",
+          "observePrompt": "找到负责吸收很多营养的站点。",
+          "evidenceCopy": "对！小肠会吸收很多身体需要的营养。",
+          "markerChips": [
+            "small intestine"
+          ],
+          "expectedStatus": "partial"
+        },
+        {
+          "id": "focus-mouth",
+          "source": "clickTasks.digestion-find-01.options.mouth",
+          "label": "mouth",
+          "regionIds": [
+            "mouth"
+          ],
+          "entityIds": [
+            "mouth"
+          ],
+          "evidenceTitle": "mouth",
+          "observePrompt": "找到负责吸收很多营养的站点。",
+          "evidenceCopy": "它名字里有“小”，但其实又长又重要。",
+          "markerChips": [
+            "mouth"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-stomach",
+          "source": "clickTasks.digestion-find-01.options.stomach",
+          "label": "stomach",
+          "regionIds": [
+            "stomach"
+          ],
+          "entityIds": [
+            "stomach"
+          ],
+          "evidenceTitle": "stomach",
+          "observePrompt": "找到负责吸收很多营养的站点。",
+          "evidenceCopy": "它名字里有“小”，但其实又长又重要。",
+          "markerChips": [
+            "stomach"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-large-intestine",
+          "source": "clickTasks.digestion-find-01.options.large-intestine",
+          "label": "large intestine",
+          "regionIds": [
+            "large-intestine"
+          ],
+          "entityIds": [
+            "large-intestine"
+          ],
+          "evidenceTitle": "large intestine",
+          "observePrompt": "找到负责吸收很多营养的站点。",
+          "evidenceCopy": "它名字里有“小”，但其实又长又重要。",
+          "markerChips": [
+            "large intestine"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-whole-route",
+          "source": "clickTasks.digestion-choice-01.options.whole-route",
+          "label": "一条路线分工合作",
+          "regionIds": [
+            "whole-route"
+          ],
+          "entityIds": [
+            "whole-route"
+          ],
+          "evidenceTitle": "一条路线分工合作",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "对！消化是身体路线一起合作。",
+          "markerChips": [
+            "一条路线分工合作"
+          ],
+          "expectedStatus": "correct"
+        },
+        {
+          "id": "focus-only-stomach",
+          "source": "clickTasks.digestion-choice-01.options.only-stomach",
+          "label": "只有胃",
+          "regionIds": [
+            "only-stomach"
+          ],
+          "entityIds": [
+            "only-stomach"
+          ],
+          "evidenceTitle": "只有胃",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "胃很重要，但嘴巴、小肠、大肠也在工作。",
+          "markerChips": [
+            "只有胃"
+          ],
+          "expectedStatus": "wrong"
+        },
+        {
+          "id": "focus-only-mouth",
+          "source": "clickTasks.digestion-choice-01.options.only-mouth",
+          "label": "只有嘴巴",
+          "regionIds": [
+            "only-mouth"
+          ],
+          "entityIds": [
+            "only-mouth"
+          ],
+          "evidenceTitle": "只有嘴巴",
+          "observePrompt": "选择最准确的答案。",
+          "evidenceCopy": "嘴巴是第一站，但后面还有很多站。",
+          "markerChips": [
+            "只有嘴巴"
+          ],
+          "expectedStatus": "wrong"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "从嘴巴开始，帮食物走完整条路线。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "digestion-sequence-01",
+          "type": "sequenceClick",
+          "title": "按顺序点击食物旅行站",
+          "prompt": "从嘴巴开始，帮食物走完整条路线。",
+          "source": "clickTasks.digestion-sequence-01",
+          "options": [
+            {
+              "id": "mouth",
+              "label": "嘴巴",
+              "source": "clickTasks.digestion-sequence-01.options.mouth",
+              "regionIds": [
+                "mouth"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "esophagus",
+              "label": "食道",
+              "source": "clickTasks.digestion-sequence-01.options.esophagus",
+              "regionIds": [
+                "esophagus"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "stomach",
+              "label": "胃",
+              "source": "clickTasks.digestion-sequence-01.options.stomach",
+              "regionIds": [
+                "stomach"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "small-intestine",
+              "label": "小肠",
+              "source": "clickTasks.digestion-sequence-01.options.small-intestine",
+              "regionIds": [
+                "small-intestine"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "large-intestine",
+              "label": "大肠",
+              "source": "clickTasks.digestion-sequence-01.options.large-intestine",
+              "regionIds": [
+                "large-intestine"
+              ],
+              "isCorrect": true
+            }
+          ],
+          "targetRegionIds": [
+            "mouth",
+            "esophagus",
+            "stomach",
+            "small-intestine",
+            "large-intestine"
+          ],
+          "decoyRegionIds": [],
+          "correctSequence": [
+            "mouth",
+            "esophagus",
+            "stomach",
+            "small-intestine",
+            "large-intestine"
+          ],
+          "feedback": {
+            "correct": "你帮食物完成了身体旅行路线！",
+            "wrong": "先从食物进入身体的地方开始。",
+            "partial": "从嘴巴开始，帮食物走完整条路线。",
+            "complete": "你帮食物完成了身体旅行路线！"
+          }
+        },
+        {
+          "id": "digestion-find-01",
+          "type": "findTarget",
+          "title": "找一找：哪里主要吸收营养？",
+          "prompt": "找到负责吸收很多营养的站点。",
+          "source": "clickTasks.digestion-find-01",
+          "options": [
+            {
+              "id": "small-intestine",
+              "label": "small intestine",
+              "source": "clickTasks.digestion-find-01.options.small-intestine",
+              "regionIds": [
+                "small-intestine"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "mouth",
+              "label": "mouth",
+              "source": "clickTasks.digestion-find-01.options.mouth",
+              "regionIds": [
+                "mouth"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "stomach",
+              "label": "stomach",
+              "source": "clickTasks.digestion-find-01.options.stomach",
+              "regionIds": [
+                "stomach"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "large-intestine",
+              "label": "large intestine",
+              "source": "clickTasks.digestion-find-01.options.large-intestine",
+              "regionIds": [
+                "large-intestine"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "small-intestine"
+          ],
+          "decoyRegionIds": [
+            "mouth",
+            "stomach",
+            "large-intestine"
+          ],
+          "feedback": {
+            "correct": "对！小肠会吸收很多身体需要的营养。",
+            "wrong": "它名字里有“小”，但其实又长又重要。",
+            "partial": "找到负责吸收很多营养的站点。",
+            "complete": "对！小肠会吸收很多身体需要的营养。"
+          }
+        },
+        {
+          "id": "digestion-choice-01",
+          "type": "singleChoice",
+          "title": "消化是谁完成的？",
+          "prompt": "选择最准确的答案。",
+          "source": "clickTasks.digestion-choice-01",
+          "options": [
+            {
+              "id": "whole-route",
+              "label": "一条路线分工合作",
+              "source": "clickTasks.digestion-choice-01.options.whole-route",
+              "regionIds": [
+                "whole-route"
+              ],
+              "isCorrect": true
+            },
+            {
+              "id": "only-stomach",
+              "label": "只有胃",
+              "source": "clickTasks.digestion-choice-01.options.only-stomach",
+              "regionIds": [
+                "only-stomach"
+              ],
+              "isCorrect": false
+            },
+            {
+              "id": "only-mouth",
+              "label": "只有嘴巴",
+              "source": "clickTasks.digestion-choice-01.options.only-mouth",
+              "regionIds": [
+                "only-mouth"
+              ],
+              "isCorrect": false
+            }
+          ],
+          "targetRegionIds": [
+            "whole-route"
+          ],
+          "decoyRegionIds": [
+            "only-stomach",
+            "only-mouth"
+          ],
+          "feedback": {
+            "correct": "对！消化是身体路线一起合作。",
+            "wrong": "再观察一下试试看。",
+            "partial": "选择最准确的答案。",
+            "complete": "对！消化是身体路线一起合作。"
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "order": 6,
+      "title": "讲出来",
+      "kidQuestion": "你能讲给家长听吗？",
+      "sceneType": "summary-talk",
+      "visualPlan": {
+        "id": "vp-digestion-scene-summary",
+        "assetId": "body-digestion-parent-guide",
+        "layoutPreset": "summary-talk",
+        "imageRole": "summary",
+        "aspectRatio": "16:9",
+        "compositionZones": [],
+        "visualEntities": [
+          {
+            "id": "mouth",
+            "label": "嘴巴",
+            "required": true
+          },
+          {
+            "id": "teeth",
+            "label": "牙齿",
+            "required": true
+          },
+          {
+            "id": "saliva",
+            "label": "口水",
+            "required": true
+          },
+          {
+            "id": "esophagus",
+            "label": "食道",
+            "required": true
+          },
+          {
+            "id": "stomach",
+            "label": "胃",
+            "required": true
+          },
+          {
+            "id": "small-intestine",
+            "label": "小肠",
+            "required": true
+          },
+          {
+            "id": "large-intestine",
+            "label": "大肠",
+            "required": true
+          },
+          {
+            "id": "energy",
+            "label": "能量",
+            "required": true
+          }
+        ],
+        "regions": [
+          {
+            "id": "mouth",
+            "entityIds": [
+              "mouth"
+            ],
+            "label": "嘴巴",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "teeth",
+            "entityIds": [
+              "teeth"
+            ],
+            "label": "牙齿",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "saliva",
+            "entityIds": [
+              "saliva"
+            ],
+            "label": "口水",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "esophagus",
+            "entityIds": [
+              "esophagus"
+            ],
+            "label": "食道",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 129,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "stomach",
+            "entityIds": [
+              "stomach"
+            ],
+            "label": "胃",
+            "shape": "rect",
+            "bounds": {
+              "x": 78,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "small-intestine",
+            "entityIds": [
+              "small-intestine"
+            ],
+            "label": "小肠",
+            "shape": "rect",
+            "bounds": {
+              "x": 298,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "large-intestine",
+            "entityIds": [
+              "large-intestine"
+            ],
+            "label": "大肠",
+            "shape": "rect",
+            "bounds": {
+              "x": 518,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          },
+          {
+            "id": "energy",
+            "entityIds": [
+              "energy"
+            ],
+            "label": "能量",
+            "shape": "rect",
+            "bounds": {
+              "x": 738,
+              "y": 489,
+              "w": 185,
+              "h": 302
+            },
+            "minTapSize": 64
+          }
+        ]
+      },
+      "focusItems": [
+        {
+          "id": "focus-mouth",
+          "source": "representativeObjects.mouth",
+          "label": "嘴巴",
+          "regionIds": [
+            "mouth"
+          ],
+          "entityIds": [
+            "mouth"
+          ],
+          "evidenceTitle": "嘴巴",
+          "observePrompt": "张开的友好嘴巴图标",
+          "evidenceCopy": "食物旅行从嘴巴开始。",
+          "markerChips": [
+            "嘴巴"
+          ],
+          "expectedStatus": "notice"
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "食物先到____，然后经过____。",
+            "胃的任务是____。",
+            "小肠会帮助身体____。",
+            "消化不是只有____，而是____。"
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "食物先到____，然后经过____。",
+        "胃的任务是____。",
+        "小肠会帮助身体____。",
+        "消化不是只有____，而是____。"
+      ],
+      "parentTips": [
+        "讲消化时保持图标化和温和，不需要展示真实器官照片。",
+        "吃饭时可以用“慢慢嚼是在帮第一站工作”进行生活连接。",
+        "如果孩子问排便，简单说明是身体整理剩下的东西即可。"
+      ]
+    }
   ]
 }

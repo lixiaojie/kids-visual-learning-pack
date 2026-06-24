@@ -1098,5 +1098,600 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "How are plants, animals, mushrooms, sunlight, and water connected?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a warm forest pond: sunlight reaches plants, and insects, frogs, birds, foxes, mushrooms, earthworms, water, and soil are connected with a few clear arrows."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-producers",
+          "label": "Producers",
+          "evidenceTitle": "Producers",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "Plants use sunlight, water, and air to grow. You can spot: Plant.",
+          "markerChips": [
+            "Plant"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "Sunlight",
+          "evidenceTitle": "Sunlight",
+          "observePrompt": "warm yellow sun",
+          "evidenceCopy": "Sunlight gives plants energy to grow.",
+          "markerChips": [
+            "Sunlight"
+          ]
+        },
+        {
+          "id": "focus-plant",
+          "label": "Plant",
+          "evidenceTitle": "Plant",
+          "observePrompt": "small green plant with roots",
+          "evidenceCopy": "Plants use sunlight, water, and air to grow and provide food or shelter.",
+          "markerChips": [
+            "Plant"
+          ]
+        },
+        {
+          "id": "focus-insect",
+          "label": "Insect",
+          "evidenceTitle": "Insect",
+          "observePrompt": "butterfly or beetle",
+          "evidenceCopy": "Some insects eat leaves or nectar and may be eaten by frogs or birds.",
+          "markerChips": [
+            "Insect"
+          ]
+        },
+        {
+          "id": "focus-frog",
+          "label": "Frog",
+          "evidenceTitle": "Frog",
+          "observePrompt": "green frog on lily pad",
+          "evidenceCopy": "Frogs live near ponds and eat small insects.",
+          "markerChips": [
+            "Frog"
+          ]
+        },
+        {
+          "id": "focus-bird",
+          "label": "Bird",
+          "evidenceTitle": "Bird",
+          "observePrompt": "small bird on branch",
+          "evidenceCopy": "Birds may eat seeds, fruit, or insects, and can help spread seeds.",
+          "markerChips": [
+            "Bird"
+          ]
+        },
+        {
+          "id": "focus-fox",
+          "label": "Fox",
+          "evidenceTitle": "Fox",
+          "observePrompt": "gentle orange fox",
+          "evidenceCopy": "The fox is a larger consumer near the pond.",
+          "markerChips": [
+            "Fox"
+          ]
+        },
+        {
+          "id": "focus-mushroom",
+          "label": "Mushroom",
+          "evidenceTitle": "Mushroom",
+          "observePrompt": "small red or brown mushroom",
+          "evidenceCopy": "Mushrooms help break down leaves and dead wood.",
+          "markerChips": [
+            "Mushroom"
+          ]
+        },
+        {
+          "id": "focus-earthworm",
+          "label": "Earthworm",
+          "evidenceTitle": "Earthworm",
+          "observePrompt": "pink worm in soil",
+          "evidenceCopy": "Earthworms move through soil and help loosen it.",
+          "markerChips": [
+            "Earthworm"
+          ]
+        },
+        {
+          "id": "focus-water",
+          "label": "Water",
+          "evidenceTitle": "Water",
+          "observePrompt": "blue pond water",
+          "evidenceCopy": "Pond water helps plants and animals live.",
+          "markerChips": [
+            "Water"
+          ]
+        },
+        {
+          "id": "focus-soil",
+          "label": "Soil",
+          "evidenceTitle": "Soil",
+          "observePrompt": "soil layer with roots",
+          "evidenceCopy": "Soil supports roots and holds water and nutrients.",
+          "markerChips": [
+            "Soil"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Sunlight: Sunlight gives plants energy to grow.",
+            "Plant: Plants use sunlight, water, and air to grow and provide food or shelter.",
+            "Insect: Some insects eat leaves or nectar and may be eaten by frogs or birds.",
+            "Frog: Frogs live near ponds and eat small insects.",
+            "Bird: Birds may eat seeds, fruit, or insects, and can help spread seeds.",
+            "Fox: The fox is a larger consumer near the pond.",
+            "Mushroom: Mushrooms help break down leaves and dead wood.",
+            "Earthworm: Earthworms move through soil and help loosen it.",
+            "Water: Pond water helps plants and animals live.",
+            "Soil: Soil supports roots and holds water and nutrients."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-sun-to-plant",
+          "label": "Sun feeds plants",
+          "evidenceTitle": "Sun feeds plants",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "Plants use sunlight, water, and air to grow.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-plant-to-animal",
+          "label": "Plants feed animals",
+          "evidenceTitle": "Plants feed animals",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "Insects or other animals eat parts of plants.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-animal-to-animal",
+          "label": "Animals connect",
+          "evidenceTitle": "Animals connect",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "Frogs, birds, and foxes can form food relationships.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-life-to-decomposer",
+          "label": "Leaves return to soil",
+          "evidenceTitle": "Leaves return to soil",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "Leaves and dead wood are slowly broken down by mushrooms, earthworms, and microbes.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-nutrient-to-plant",
+          "label": "Nutrients help plants again",
+          "evidenceTitle": "Nutrients help plants again",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "Nutrients in soil help plants grow again.",
+          "markerChips": [
+            "Step 5"
+          ]
+        },
+        {
+          "id": "focus-water-help",
+          "label": "Water helps life",
+          "evidenceTitle": "Water helps life",
+          "observePrompt": "Current step 1. Observe this supporting mechanism.",
+          "evidenceCopy": "Plants and animals need water.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-soil-home",
+          "label": "Soil is a home",
+          "evidenceTitle": "Soil is a home",
+          "observePrompt": "Current step 2. Observe this supporting mechanism.",
+          "evidenceCopy": "Plants root in soil, and many small lives live there.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-change-affects",
+          "label": "Change affects life",
+          "evidenceTitle": "Change affects life",
+          "observePrompt": "Current step 3. Observe this supporting mechanism.",
+          "evidenceCopy": "If water or plants decrease, many animals may be affected.",
+          "markerChips": [
+            "Step 3"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How is an ecosystem connected?",
+          "items": [
+            "Sun feeds plants: Plants use sunlight, water, and air to grow.",
+            "Plants feed animals: Insects or other animals eat parts of plants.",
+            "Animals connect: Frogs, birds, and foxes can form food relationships.",
+            "Leaves return to soil: Leaves and dead wood are slowly broken down by mushrooms, earthworms, and microbes.",
+            "Nutrients help plants again: Nutrients in soil help plants grow again."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-food-chain-vs-ecosystem",
+          "label": "Food chain vs Ecosystem",
+          "evidenceTitle": "Food chain vs Ecosystem",
+          "observePrompt": "Compare visual clues for Food chain and Ecosystem.",
+          "evidenceCopy": "Food chain: like one line; shows energy passing from one to another; simpler. Ecosystem: like a web; includes living things and environment; has more relationships. A food chain is a line; an ecosystem is a web.",
+          "markerChips": [
+            "Food chain",
+            "Ecosystem"
+          ]
+        },
+        {
+          "id": "focus-producer-vs-consumer",
+          "label": "Producer vs Consumer",
+          "evidenceTitle": "Producer vs Consumer",
+          "observePrompt": "Compare visual clues for Producer and Consumer.",
+          "evidenceCopy": "Producer: often plants; uses sunlight to grow; starts many food relationships. Consumer: often animals; needs food for energy; connects with other lives. Plants and animals have different jobs in an ecosystem.",
+          "markerChips": [
+            "Producer",
+            "Consumer"
+          ]
+        },
+        {
+          "id": "focus-decompose-vs-disappear",
+          "label": "Decompose vs Disappear",
+          "evidenceTitle": "Decompose vs Disappear",
+          "observePrompt": "Compare visual clues for Decompose and Disappear.",
+          "evidenceCopy": "Decompose: leaves become smaller parts; nutrients return to soil; decomposers are working. Disappear: seems like nothing is left; process is hidden; decomposers are ignored. Leaves do not vanish; decomposers help return them to the cycle.",
+          "markerChips": [
+            "Decompose",
+            "Disappear"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Food chain vs Ecosystem: A food chain is a line; an ecosystem is a web.",
+            "Producer vs Consumer: Plants and animals have different jobs in an ecosystem.",
+            "Decompose vs Disappear: Leaves do not vanish; decomposers help return them to the cycle."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-mushroom",
+          "label": "mushroom",
+          "evidenceTitle": "mushroom",
+          "observePrompt": "Find the partners that help leaves return to soil.",
+          "evidenceCopy": "Correct! Mushrooms and earthworms help decomposition.",
+          "markerChips": [
+            "mushroom"
+          ]
+        },
+        {
+          "id": "focus-earthworm",
+          "label": "earthworm",
+          "evidenceTitle": "earthworm",
+          "observePrompt": "Find the partners that help leaves return to soil.",
+          "evidenceCopy": "Correct! Mushrooms and earthworms help decomposition.",
+          "markerChips": [
+            "earthworm"
+          ]
+        },
+        {
+          "id": "focus-frog",
+          "label": "frog",
+          "evidenceTitle": "frog",
+          "observePrompt": "Find the partners that help leaves return to soil.",
+          "evidenceCopy": "Decomposers often work near leaves, dead wood, and soil.",
+          "markerChips": [
+            "frog"
+          ]
+        },
+        {
+          "id": "focus-fox",
+          "label": "fox",
+          "evidenceTitle": "fox",
+          "observePrompt": "Find the partners that help leaves return to soil.",
+          "evidenceCopy": "Decomposers often work near leaves, dead wood, and soil.",
+          "markerChips": [
+            "fox"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "sun",
+          "evidenceTitle": "sun",
+          "observePrompt": "Find the partners that help leaves return to soil.",
+          "evidenceCopy": "Decomposers often work near leaves, dead wood, and soil.",
+          "markerChips": [
+            "sun"
+          ]
+        },
+        {
+          "id": "focus-sun",
+          "label": "Sunlight",
+          "evidenceTitle": "Sunlight",
+          "observePrompt": "Tap the energy and nutrient route in order.",
+          "evidenceCopy": "Current step: Sunlight. Tap the energy and nutrient route in order.",
+          "markerChips": [
+            "Sunlight"
+          ]
+        },
+        {
+          "id": "focus-plant",
+          "label": "Plant",
+          "evidenceTitle": "Plant",
+          "observePrompt": "Tap the energy and nutrient route in order.",
+          "evidenceCopy": "Current step: Plant. Tap the energy and nutrient route in order.",
+          "markerChips": [
+            "Plant"
+          ]
+        },
+        {
+          "id": "focus-insect",
+          "label": "Insect",
+          "evidenceTitle": "Insect",
+          "observePrompt": "Tap the energy and nutrient route in order.",
+          "evidenceCopy": "Current step: Insect. Tap the energy and nutrient route in order.",
+          "markerChips": [
+            "Insect"
+          ]
+        },
+        {
+          "id": "focus-frog",
+          "label": "Frog",
+          "evidenceTitle": "Frog",
+          "observePrompt": "Tap the energy and nutrient route in order.",
+          "evidenceCopy": "Current step: Frog. Tap the energy and nutrient route in order.",
+          "markerChips": [
+            "Frog"
+          ]
+        },
+        {
+          "id": "focus-soil",
+          "label": "Soil",
+          "evidenceTitle": "Soil",
+          "observePrompt": "Tap the energy and nutrient route in order.",
+          "evidenceCopy": "Current step: Soil. Tap the energy and nutrient route in order.",
+          "markerChips": [
+            "Soil"
+          ]
+        },
+        {
+          "id": "focus-no-life-and-environment",
+          "label": "No, it includes plants, decomposers, and environment too",
+          "evidenceTitle": "No, it includes plants, decomposers, and environment too",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Right! Ecosystems include living things and environment.",
+          "markerChips": [
+            "No, it includes plants, decomposers, and environment too"
+          ]
+        },
+        {
+          "id": "focus-animals-only",
+          "label": "Yes, only animals",
+          "evidenceTitle": "Yes, only animals",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Plants, mushrooms, water, and soil also matter.",
+          "markerChips": [
+            "Yes, only animals"
+          ]
+        },
+        {
+          "id": "focus-plants-only",
+          "label": "Yes, only plants",
+          "evidenceTitle": "Yes, only plants",
+          "observePrompt": "Choose the best answer.",
+          "evidenceCopy": "Animals, decomposers, and environmental conditions also matter.",
+          "markerChips": [
+            "Yes, only plants"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Find the partners that help leaves return to soil."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "ecosystem-find-01",
+          "title": "Find: who are decomposer partners?",
+          "prompt": "Find the partners that help leaves return to soil.",
+          "options": [
+            {
+              "id": "mushroom",
+              "label": "mushroom"
+            },
+            {
+              "id": "earthworm",
+              "label": "earthworm"
+            },
+            {
+              "id": "frog",
+              "label": "frog"
+            },
+            {
+              "id": "fox",
+              "label": "fox"
+            },
+            {
+              "id": "sun",
+              "label": "sun"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! Mushrooms and earthworms help decomposition.",
+            "wrong": "Decomposers often work near leaves, dead wood, and soil.",
+            "partial": "Find the partners that help leaves return to soil.",
+            "complete": "Correct! Mushrooms and earthworms help decomposition."
+          }
+        },
+        {
+          "id": "ecosystem-sequence-01",
+          "title": "Connect an ecosystem route from sunlight",
+          "prompt": "Tap the energy and nutrient route in order.",
+          "options": [
+            {
+              "id": "sun",
+              "label": "Sunlight"
+            },
+            {
+              "id": "plant",
+              "label": "Plant"
+            },
+            {
+              "id": "insect",
+              "label": "Insect"
+            },
+            {
+              "id": "frog",
+              "label": "Frog"
+            },
+            {
+              "id": "soil",
+              "label": "Soil"
+            }
+          ],
+          "feedback": {
+            "correct": "You connected an ecosystem route!",
+            "wrong": "First think: where do plants get energy to grow?",
+            "partial": "Tap the energy and nutrient route in order.",
+            "complete": "You connected an ecosystem route!"
+          }
+        },
+        {
+          "id": "ecosystem-choice-01",
+          "title": "Does an ecosystem include only animals?",
+          "prompt": "Choose the best answer.",
+          "options": [
+            {
+              "id": "no-life-and-environment",
+              "label": "No, it includes plants, decomposers, and environment too"
+            },
+            {
+              "id": "animals-only",
+              "label": "Yes, only animals"
+            },
+            {
+              "id": "plants-only",
+              "label": "Yes, only plants"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! Ecosystems include living things and environment.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the best answer.",
+            "complete": "Right! Ecosystems include living things and environment."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-sun",
+          "label": "Sunlight",
+          "evidenceTitle": "Sunlight",
+          "observePrompt": "warm yellow sun",
+          "evidenceCopy": "Sunlight gives plants energy to grow.",
+          "markerChips": [
+            "Sunlight"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "An ecosystem is like a _____.",
+            "Plants use _____ to grow.",
+            "Decomposers help _____ return to soil.",
+            "If _____ becomes less, _____ may also be affected."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "An ecosystem is like a _____.",
+        "Plants use _____ to grow.",
+        "Decomposers help _____ return to soil.",
+        "If _____ becomes less, _____ may also be affected."
+      ],
+      "parentTips": [
+        "Do not make the ecosystem a complicated food web first; explain 5–6 objects clearly.",
+        "On a walk, ask the child to find producers, consumers, decomposers, and environmental conditions.",
+        "Stress that no life is useless; mushrooms, earthworms, and soil all matter."
+      ]
+    }
   ]
 }

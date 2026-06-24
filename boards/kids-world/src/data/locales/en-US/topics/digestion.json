@@ -1014,5 +1014,566 @@
       "expectedStatus": "wrong",
       "quality": "generated"
     }
+  ],
+  "learningScenes": [
+    {
+      "id": "scene-entry",
+      "title": "First Look",
+      "kidQuestion": "Where does food go inside the body after we eat it?",
+      "focusItems": [],
+      "contentBlocks": [
+        {
+          "id": "copy-entry",
+          "type": "short-explanation",
+          "body": "The main scene is a gentle icon-like body route: from the mouth, through the esophagus to the stomach, then to the small and large intestines, with nutrients becoming little energy stars."
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-classify",
+      "title": "Sort and Spot",
+      "kidQuestion": "Which group does it belong to?",
+      "focusItems": [
+        {
+          "id": "focus-entry",
+          "label": "Entry and preparation",
+          "evidenceTitle": "Entry and preparation",
+          "observePrompt": "Look for objects that belong to this group.",
+          "evidenceCopy": "The mouth and teeth make food smaller. You can spot: Mouth, Teeth, Saliva.",
+          "markerChips": [
+            "Mouth",
+            "Teeth",
+            "Saliva"
+          ]
+        },
+        {
+          "id": "focus-mouth",
+          "label": "Mouth",
+          "evidenceTitle": "Mouth",
+          "observePrompt": "friendly open mouth icon",
+          "evidenceCopy": "The food journey starts in the mouth.",
+          "markerChips": [
+            "Mouth"
+          ]
+        },
+        {
+          "id": "focus-teeth",
+          "label": "Teeth",
+          "evidenceTitle": "Teeth",
+          "observePrompt": "rounded white teeth",
+          "evidenceCopy": "Teeth break food into smaller pieces.",
+          "markerChips": [
+            "Teeth"
+          ]
+        },
+        {
+          "id": "focus-saliva",
+          "label": "Saliva",
+          "evidenceTitle": "Saliva",
+          "observePrompt": "small drops and food bits",
+          "evidenceCopy": "Saliva makes food wet and soft.",
+          "markerChips": [
+            "Saliva"
+          ]
+        },
+        {
+          "id": "focus-esophagus",
+          "label": "Esophagus",
+          "evidenceTitle": "Esophagus",
+          "observePrompt": "soft curved tube",
+          "evidenceCopy": "The esophagus carries food from the mouth to the stomach.",
+          "markerChips": [
+            "Esophagus"
+          ]
+        },
+        {
+          "id": "focus-stomach",
+          "label": "Stomach",
+          "evidenceTitle": "Stomach",
+          "observePrompt": "rounded pink stomach",
+          "evidenceCopy": "The stomach mixes food and makes it softer and smaller.",
+          "markerChips": [
+            "Stomach"
+          ]
+        },
+        {
+          "id": "focus-small-intestine",
+          "label": "Small intestine",
+          "evidenceTitle": "Small intestine",
+          "observePrompt": "thin winding route",
+          "evidenceCopy": "The small intestine absorbs many nutrients the body needs.",
+          "markerChips": [
+            "Small intestine"
+          ]
+        },
+        {
+          "id": "focus-large-intestine",
+          "label": "Large intestine",
+          "evidenceTitle": "Large intestine",
+          "observePrompt": "thicker green route",
+          "evidenceCopy": "The large intestine sorts what remains and helps keep some water.",
+          "markerChips": [
+            "Large intestine"
+          ]
+        },
+        {
+          "id": "focus-energy",
+          "label": "Energy",
+          "evidenceTitle": "Energy",
+          "observePrompt": "glowing little stars",
+          "evidenceCopy": "The body uses nutrients to grow, run, jump, and think.",
+          "markerChips": [
+            "Energy"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-classify",
+          "type": "detail-list",
+          "title": "Representative objects",
+          "items": [
+            "Mouth: The food journey starts in the mouth.",
+            "Teeth: Teeth break food into smaller pieces.",
+            "Saliva: Saliva makes food wet and soft.",
+            "Esophagus: The esophagus carries food from the mouth to the stomach.",
+            "Stomach: The stomach mixes food and makes it softer and smaller.",
+            "Small intestine: The small intestine absorbs many nutrients the body needs.",
+            "Large intestine: The large intestine sorts what remains and helps keep some water.",
+            "Energy: The body uses nutrients to grow, run, jump, and think."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-process",
+      "title": "Watch Change",
+      "kidQuestion": "How does it happen step by step?",
+      "focusItems": [
+        {
+          "id": "focus-chew",
+          "label": "Chew smaller",
+          "evidenceTitle": "Chew smaller",
+          "observePrompt": "Current step 1. Look at what happens here.",
+          "evidenceCopy": "Teeth break food down and saliva makes it wet.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-swallow",
+          "label": "Send it down",
+          "evidenceTitle": "Send it down",
+          "observePrompt": "Current step 2. Look at what happens here.",
+          "evidenceCopy": "After swallowing, food moves through the esophagus to the stomach.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-mix",
+          "label": "Mix in the stomach",
+          "evidenceTitle": "Mix in the stomach",
+          "observePrompt": "Current step 3. Look at what happens here.",
+          "evidenceCopy": "The stomach is like a moving bag that mixes food.",
+          "markerChips": [
+            "Step 3"
+          ]
+        },
+        {
+          "id": "focus-absorb",
+          "label": "Small intestine absorbs",
+          "evidenceTitle": "Small intestine absorbs",
+          "observePrompt": "Current step 4. Look at what happens here.",
+          "evidenceCopy": "The small intestine sends useful nutrients to the body.",
+          "markerChips": [
+            "Step 4"
+          ]
+        },
+        {
+          "id": "focus-sort",
+          "label": "Large intestine sorts",
+          "evidenceTitle": "Large intestine sorts",
+          "observePrompt": "Current step 5. Look at what happens here.",
+          "evidenceCopy": "The large intestine sorts what remains and keeps some water.",
+          "markerChips": [
+            "Step 5"
+          ]
+        },
+        {
+          "id": "focus-food-to-small",
+          "label": "Become smaller",
+          "evidenceTitle": "Become smaller",
+          "observePrompt": "Current step 1. Observe this supporting mechanism.",
+          "evidenceCopy": "Big food becomes small parts the body can handle.",
+          "markerChips": [
+            "Step 1"
+          ]
+        },
+        {
+          "id": "focus-small-to-body",
+          "label": "Sent to the body",
+          "evidenceTitle": "Sent to the body",
+          "observePrompt": "Current step 2. Observe this supporting mechanism.",
+          "evidenceCopy": "Nutrients are sent to many places in the body.",
+          "markerChips": [
+            "Step 2"
+          ]
+        },
+        {
+          "id": "focus-body-use",
+          "label": "Body uses it",
+          "evidenceTitle": "Body uses it",
+          "observePrompt": "Current step 3. Observe this supporting mechanism.",
+          "evidenceCopy": "The body uses them to run, grow, repair, and think.",
+          "markerChips": [
+            "Step 3"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-process",
+          "type": "detail-list",
+          "title": "How does food finish its body journey?",
+          "items": [
+            "Chew smaller: Teeth break food down and saliva makes it wet.",
+            "Send it down: After swallowing, food moves through the esophagus to the stomach.",
+            "Mix in the stomach: The stomach is like a moving bag that mixes food.",
+            "Small intestine absorbs: The small intestine sends useful nutrients to the body.",
+            "Large intestine sorts: The large intestine sorts what remains and keeps some water."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-compare",
+      "title": "Compare",
+      "kidQuestion": "What is the same, and what is different?",
+      "focusItems": [
+        {
+          "id": "focus-stomach-vs-route",
+          "label": "Only stomach vs Whole route",
+          "evidenceTitle": "Only stomach vs Whole route",
+          "observePrompt": "Compare visual clues for Only stomach and Whole route.",
+          "evidenceCopy": "Only stomach: one station only; forgets mouth and intestines; incomplete explanation. Whole route: has entrance and later stations; organs cooperate; closer to the real process. Digestion is a team route, not a stomach-only job.",
+          "markerChips": [
+            "Only stomach",
+            "Whole route"
+          ]
+        },
+        {
+          "id": "focus-small-vs-large-intestine",
+          "label": "Small intestine vs Large intestine",
+          "evidenceTitle": "Small intestine vs Large intestine",
+          "observePrompt": "Compare visual clues for Small intestine and Large intestine.",
+          "evidenceCopy": "Small intestine: thin and long; absorbs many nutrients; very important. Large intestine: thicker; sorts what remains; helps keep some water. Their names sound similar, but their jobs are different.",
+          "markerChips": [
+            "Small intestine",
+            "Large intestine"
+          ]
+        },
+        {
+          "id": "focus-food-vs-energy",
+          "label": "Food vs Energy",
+          "evidenceTitle": "Food vs Energy",
+          "observePrompt": "Compare visual clues for Food and Energy.",
+          "evidenceCopy": "Food: can be seen and bitten; has different tastes; enters through the mouth. Energy: helps the body move; cannot be seen but can be felt; comes from nutrients. Food helps the body get energy.",
+          "markerChips": [
+            "Food",
+            "Energy"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-compare",
+          "type": "detail-list",
+          "items": [
+            "Only stomach vs Whole route: Digestion is a team route, not a stomach-only job.",
+            "Small intestine vs Large intestine: Their names sound similar, but their jobs are different.",
+            "Food vs Energy: Food helps the body get energy."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-task",
+      "title": "Try It",
+      "kidQuestion": "Can you find the right answer?",
+      "focusItems": [
+        {
+          "id": "focus-mouth",
+          "label": "Mouth",
+          "evidenceTitle": "Mouth",
+          "observePrompt": "Start at the mouth and help food travel the whole route.",
+          "evidenceCopy": "Current step: Mouth. Start at the mouth and help food travel the whole route.",
+          "markerChips": [
+            "Mouth"
+          ]
+        },
+        {
+          "id": "focus-esophagus",
+          "label": "Esophagus",
+          "evidenceTitle": "Esophagus",
+          "observePrompt": "Start at the mouth and help food travel the whole route.",
+          "evidenceCopy": "Current step: Esophagus. Start at the mouth and help food travel the whole route.",
+          "markerChips": [
+            "Esophagus"
+          ]
+        },
+        {
+          "id": "focus-stomach",
+          "label": "Stomach",
+          "evidenceTitle": "Stomach",
+          "observePrompt": "Start at the mouth and help food travel the whole route.",
+          "evidenceCopy": "Current step: Stomach. Start at the mouth and help food travel the whole route.",
+          "markerChips": [
+            "Stomach"
+          ]
+        },
+        {
+          "id": "focus-small-intestine",
+          "label": "Small intestine",
+          "evidenceTitle": "Small intestine",
+          "observePrompt": "Start at the mouth and help food travel the whole route.",
+          "evidenceCopy": "Current step: Small intestine. Start at the mouth and help food travel the whole route.",
+          "markerChips": [
+            "Small intestine"
+          ]
+        },
+        {
+          "id": "focus-large-intestine",
+          "label": "Large intestine",
+          "evidenceTitle": "Large intestine",
+          "observePrompt": "Start at the mouth and help food travel the whole route.",
+          "evidenceCopy": "Current step: Large intestine. Start at the mouth and help food travel the whole route.",
+          "markerChips": [
+            "Large intestine"
+          ]
+        },
+        {
+          "id": "focus-small-intestine",
+          "label": "small intestine",
+          "evidenceTitle": "small intestine",
+          "observePrompt": "Find the station that absorbs many nutrients.",
+          "evidenceCopy": "Correct! The small intestine absorbs many nutrients.",
+          "markerChips": [
+            "small intestine"
+          ]
+        },
+        {
+          "id": "focus-mouth",
+          "label": "mouth",
+          "evidenceTitle": "mouth",
+          "observePrompt": "Find the station that absorbs many nutrients.",
+          "evidenceCopy": "It is called small, but it is long and important.",
+          "markerChips": [
+            "mouth"
+          ]
+        },
+        {
+          "id": "focus-stomach",
+          "label": "stomach",
+          "evidenceTitle": "stomach",
+          "observePrompt": "Find the station that absorbs many nutrients.",
+          "evidenceCopy": "It is called small, but it is long and important.",
+          "markerChips": [
+            "stomach"
+          ]
+        },
+        {
+          "id": "focus-large-intestine",
+          "label": "large intestine",
+          "evidenceTitle": "large intestine",
+          "observePrompt": "Find the station that absorbs many nutrients.",
+          "evidenceCopy": "It is called small, but it is long and important.",
+          "markerChips": [
+            "large intestine"
+          ]
+        },
+        {
+          "id": "focus-whole-route",
+          "label": "A whole route working together",
+          "evidenceTitle": "A whole route working together",
+          "observePrompt": "Choose the most accurate answer.",
+          "evidenceCopy": "Right! Digestion is a route of body parts working together.",
+          "markerChips": [
+            "A whole route working together"
+          ]
+        },
+        {
+          "id": "focus-only-stomach",
+          "label": "Only the stomach",
+          "evidenceTitle": "Only the stomach",
+          "observePrompt": "Choose the most accurate answer.",
+          "evidenceCopy": "The stomach matters, but the mouth and intestines also work.",
+          "markerChips": [
+            "Only the stomach"
+          ]
+        },
+        {
+          "id": "focus-only-mouth",
+          "label": "Only the mouth",
+          "evidenceTitle": "Only the mouth",
+          "observePrompt": "Choose the most accurate answer.",
+          "evidenceCopy": "The mouth is the first stop, but many stops follow.",
+          "markerChips": [
+            "Only the mouth"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-task",
+          "type": "short-explanation",
+          "body": "Start at the mouth and help food travel the whole route."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "digestion-sequence-01",
+          "title": "Tap the food journey stations in order",
+          "prompt": "Start at the mouth and help food travel the whole route.",
+          "options": [
+            {
+              "id": "mouth",
+              "label": "Mouth"
+            },
+            {
+              "id": "esophagus",
+              "label": "Esophagus"
+            },
+            {
+              "id": "stomach",
+              "label": "Stomach"
+            },
+            {
+              "id": "small-intestine",
+              "label": "Small intestine"
+            },
+            {
+              "id": "large-intestine",
+              "label": "Large intestine"
+            }
+          ],
+          "feedback": {
+            "correct": "You helped food complete its body journey!",
+            "wrong": "Start where food enters the body.",
+            "partial": "Start at the mouth and help food travel the whole route.",
+            "complete": "You helped food complete its body journey!"
+          }
+        },
+        {
+          "id": "digestion-find-01",
+          "title": "Find: where are many nutrients absorbed?",
+          "prompt": "Find the station that absorbs many nutrients.",
+          "options": [
+            {
+              "id": "small-intestine",
+              "label": "small intestine"
+            },
+            {
+              "id": "mouth",
+              "label": "mouth"
+            },
+            {
+              "id": "stomach",
+              "label": "stomach"
+            },
+            {
+              "id": "large-intestine",
+              "label": "large intestine"
+            }
+          ],
+          "feedback": {
+            "correct": "Correct! The small intestine absorbs many nutrients.",
+            "wrong": "It is called small, but it is long and important.",
+            "partial": "Find the station that absorbs many nutrients.",
+            "complete": "Correct! The small intestine absorbs many nutrients."
+          }
+        },
+        {
+          "id": "digestion-choice-01",
+          "title": "Who completes digestion?",
+          "prompt": "Choose the most accurate answer.",
+          "options": [
+            {
+              "id": "whole-route",
+              "label": "A whole route working together"
+            },
+            {
+              "id": "only-stomach",
+              "label": "Only the stomach"
+            },
+            {
+              "id": "only-mouth",
+              "label": "Only the mouth"
+            }
+          ],
+          "feedback": {
+            "correct": "Right! Digestion is a route of body parts working together.",
+            "wrong": "Look again and try once more.",
+            "partial": "Choose the most accurate answer.",
+            "complete": "Right! Digestion is a route of body parts working together."
+          }
+        }
+      ],
+      "speakPrompts": [],
+      "parentTips": []
+    },
+    {
+      "id": "scene-summary",
+      "title": "Tell It Back",
+      "kidQuestion": "Can you explain it to your parent?",
+      "focusItems": [
+        {
+          "id": "focus-mouth",
+          "label": "Mouth",
+          "evidenceTitle": "Mouth",
+          "observePrompt": "friendly open mouth icon",
+          "evidenceCopy": "The food journey starts in the mouth.",
+          "markerChips": [
+            "Mouth"
+          ]
+        }
+      ],
+      "contentBlocks": [
+        {
+          "id": "copy-summary",
+          "type": "prompt-list",
+          "items": [
+            "Food first goes to ____, then through ____.",
+            "The stomach's job is to _____.",
+            "The small intestine helps the body _____.",
+            "Digestion is not only ____; it is ____."
+          ]
+        }
+      ],
+      "tasks": [],
+      "speakPrompts": [
+        "Food first goes to ____, then through ____.",
+        "The stomach's job is to _____.",
+        "The small intestine helps the body _____.",
+        "Digestion is not only ____; it is ____."
+      ],
+      "parentTips": [
+        "Keep digestion icon-like and gentle; avoid realistic organ photos.",
+        "At meals, say that chewing slowly helps the first station work well.",
+        "If the child asks about poop, simply say the body sorts what remains."
+      ]
+    }
   ]
 }
