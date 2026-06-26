@@ -16,6 +16,8 @@ const miniRuntimePage = read("apps/miniprogram/src/components/topic/TopicRuntime
 const miniSceneDeckPath = "apps/miniprogram/src/components/topic/SceneDeckTopicPage.tsx";
 const miniTopicRoutes = read("apps/miniprogram/src/lib/topic-routes.ts");
 const miniTaroConfig = read("apps/miniprogram/config/index.ts");
+const miniTopicStyles = read("apps/miniprogram/src/pages/topic/index.scss");
+const miniGeneratedImage = read("apps/miniprogram/src/components/shared/GeneratedImage.tsx");
 const packageJson = read("package.json");
 
 for (const [label, source, componentPath] of [
@@ -82,6 +84,18 @@ for (const requiredAlias of [
   if (!miniTaroConfig.includes(requiredAlias)) {
     errors.push(`Mini Program Taro config must alias ${requiredAlias} for webpack builds`);
   }
+}
+if (!/\.scene-deck-page\s+\.section-body\s*{[^}]*font-size:\s*16px;/s.test(miniTopicStyles)) {
+  errors.push("Mini Program scene deck body text must be scoped to 16px to fit one-screen panels");
+}
+if (!/\.scene-deck-page\s+\.section-title\s*{[^}]*font-size:\s*20px;/s.test(miniTopicStyles)) {
+  errors.push("Mini Program scene deck section title must be scoped to 20px");
+}
+if (!/\.scene-deck-page\s+\.scene-nav-label[\s\S]*?font-size:\s*15px;/s.test(miniTopicStyles)) {
+  errors.push("Mini Program scene navigation labels must use compact 15px text");
+}
+if (!miniGeneratedImage.includes("onError") || !miniGeneratedImage.includes("image-load-failed")) {
+  errors.push("Mini Program generated images must render a fallback state when CDN image loading fails");
 }
 
 if (errors.length > 0) {

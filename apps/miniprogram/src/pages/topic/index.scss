@@ -492,3 +492,97 @@
 .scene-task-feedback.wrong {
   color: #be123c;
 }
+
+.scene-deck-page .scene-nav-toggle {
+  grid-template-columns: 28px minmax(0, 1fr);
+  min-height: 44px;
+  gap: 7px;
+  padding: 6px 10px;
+}
+
+.scene-deck-page .scene-deck-nav {
+  gap: 8px;
+  padding: 10px;
+}
+
+.scene-deck-page .scene-nav-item {
+  grid-template-columns: 28px minmax(0, 1fr);
+  min-height: 42px;
+  padding: 7px 8px;
+}
+
+.scene-deck-page .scene-nav-index {
+  width: 28px;
+  height: 28px;
+  font-size: 15px;
+}
+
+.scene-deck-page .scene-nav-label,
+.scene-deck-page .scene-focus-item,
+.scene-deck-page .scene-task-option {
+  font-size: 15px;
+  line-height: 1.22;
+}
+
+.scene-deck-page .scene-panel {
+  min-height: 100vh;
+  gap: 8px;
+  padding: 58px 10px 14px;
+}
+
+.scene-deck-page .scene-deck-copy,
+.scene-deck-page .scene-task-card,
+.scene-deck-page .scene-panel-summary {
+  gap: 8px;
+  padding: 10px;
+}
+
+.scene-deck-page .section-title {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.scene-deck-page .section-body {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.scene-deck-page .scene-kicker {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.scene-deck-page .scene-evidence-card,
+.scene-deck-page .scene-content-block {
+  gap: 5px;
+  padding: 8px;
+}
+
+.scene-deck-page .scene-evidence-title {
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.scene-deck-page .scene-focus-list,
+.scene-deck-page .scene-task-options {
+  gap: 7px;
+}
+
+.scene-deck-page .scene-focus-item,
+.scene-deck-page .scene-task-option {
+  min-height: 38px;
+  padding: 7px 8px;
+}
+
+.scene-deck-page .scene-visual-panel {
+  gap: 6px;
+}
+
+.scene-deck-page .scene-visual-frame {
+  max-height: 34vh;
+}
+
+.scene-deck-page .topic-visual-caption {
+  font-size: 13px;
+  line-height: 1.25;
+}
