@@ -19,7 +19,10 @@ export default defineConfig({
   framework: "react",
   compiler: "webpack5",
   alias: {
-    "@yutou/kids-content": path.join(root, "packages/kids-content/src/index.ts"),
+    "@yutou/kids-content$": path.join(root, "packages/kids-content/src/index.ts"),
+    "@yutou/kids-content/evidence": path.join(root, "packages/kids-content/src/evidence.ts"),
+    "@yutou/kids-content/media": path.join(root, "packages/kids-content/src/media.ts"),
+    "@yutou/kids-content/scene-deck": path.join(root, "packages/kids-content/src/scene-deck.ts"),
   },
   mini: {
     webpackChain(chain) {
