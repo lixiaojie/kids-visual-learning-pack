@@ -7,9 +7,11 @@ type Props = {
   assetId?: string;
   alt?: string;
   className?: string;
+  load?: boolean;
+  lazyLoad?: boolean;
 };
 
-export function GeneratedImage({ assetId, alt, className }: Props) {
+export function GeneratedImage({ assetId, alt, className, load = true, lazyLoad = true }: Props) {
   const src = getGeneratedImageUrl(assetId);
   const [imageLoadFailed, setImageLoadFailed] = useState(false);
 
@@ -17,9 +19,18 @@ export function GeneratedImage({ assetId, alt, className }: Props) {
     setImageLoadFailed(false);
   }, [src]);
 
-  if (!src || imageLoadFailed) {
+  if (!load || !src || imageLoadFailed) {
     return <View className={`generated-image-placeholder image-load-failed ${className ?? ""}`}>{alt ?? "图片准备中"}</View>;
   }
 
-  return <Image className={`generated-image ${className ?? ""}`} src={src} mode="widthFix" onError={() => setImageLoadFailed(true)} />;
+  return (
+    <Image
+      className={`generated-image ${className ?? ""}`}
+      src={src}
+      mode="widthFix"
+      lazyLoad={lazyLoad}
+      webp
+      onError={() => setImageLoadFailed(true)}
+    />
+  );
 }

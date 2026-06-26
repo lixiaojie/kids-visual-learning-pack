@@ -18,6 +18,7 @@ const miniTopicRoutes = read("apps/miniprogram/src/lib/topic-routes.ts");
 const miniTaroConfig = read("apps/miniprogram/config/index.ts");
 const miniTopicStyles = read("apps/miniprogram/src/pages/topic/index.scss");
 const miniGeneratedImage = read("apps/miniprogram/src/components/shared/GeneratedImage.tsx");
+const miniHomePage = read("apps/miniprogram/src/pages/index/index.tsx");
 const packageJson = read("package.json");
 
 for (const [label, source, componentPath] of [
@@ -96,6 +97,12 @@ if (!/\.scene-deck-page\s+\.scene-nav-label[\s\S]*?font-size:\s*15px;/s.test(min
 }
 if (!miniGeneratedImage.includes("onError") || !miniGeneratedImage.includes("image-load-failed")) {
   errors.push("Mini Program generated images must render a fallback state when CDN image loading fails");
+}
+if (!miniGeneratedImage.includes("lazyLoad={lazyLoad}")) {
+  errors.push("Mini Program generated images must use native lazy loading to avoid startup-time CDN request storms");
+}
+if (!miniHomePage.includes("load={false}")) {
+  errors.push("Mini Program home topic list must not eagerly request every remote topic image on app launch");
 }
 
 if (errors.length > 0) {

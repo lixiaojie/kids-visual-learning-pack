@@ -77,7 +77,7 @@ export default function IndexPage() {
               {selectedWorld.topicCards.map((topic) =>
                 topic.slug ? (
                   <View className="topic-card" key={topic.slug} onClick={() => openTopic(topic.slug as string)}>
-                    <GeneratedImage assetId={getKnowledgeTopicAssetId(topic)} alt={topic.title} />
+                    <GeneratedImage assetId={getKnowledgeTopicAssetId(topic)} alt={topic.title} load={false} />
                     <View className="topic-copy">
                       <Text className="topic-title">{topic.title}</Text>
                       <Text className="topic-question">{topic.cardDescription}</Text>
