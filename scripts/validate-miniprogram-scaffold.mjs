@@ -26,6 +26,7 @@ const requiredFiles = [
   "src/components/topic/ComparePairCard.tsx",
   "src/components/topic/InfoList.tsx",
   "src/components/topic/LearningFlowRail.tsx",
+  "src/components/topic/SceneDeckTopicPage.tsx",
   "src/components/topic/TopicVisual.tsx",
 ];
 const errors = [];
@@ -56,10 +57,7 @@ const indexPage = fs.readFileSync(path.join(appDir, "src/pages/index/index.tsx")
 const topicPage = fs.readFileSync(path.join(appDir, "src/pages/topic/index.tsx"), "utf8");
 const aboutPage = fs.readFileSync(path.join(appDir, "src/pages/about/index.tsx"), "utf8");
 const imageComponent = fs.readFileSync(path.join(appDir, "src/components/shared/GeneratedImage.tsx"), "utf8");
-const clickTaskCard = fs.readFileSync(path.join(appDir, "src/components/topic/ClickTaskCard.tsx"), "utf8");
-const clickTaskDeck = fs.readFileSync(path.join(appDir, "src/components/topic/ClickTaskDeck.tsx"), "utf8");
-const topicVisual = fs.readFileSync(path.join(appDir, "src/components/topic/TopicVisual.tsx"), "utf8");
-const interactionSource = fs.readFileSync(path.join(root, "packages/kids-content/src/interaction.ts"), "utf8");
+const sceneDeckComponent = fs.readFileSync(path.join(appDir, "src/components/topic/SceneDeckTopicPage.tsx"), "utf8");
 
 if (!indexPage.includes("@yutou/kids-content")) {
   errors.push("index page must use @yutou/kids-content");
@@ -70,45 +68,24 @@ if (indexPage.includes("slice(0, 6)")) {
 if (!topicPage.includes("useShareAppMessage") || !topicPage.includes("useShareTimeline")) {
   errors.push("topic page must define friend and timeline share handlers");
 }
-for (const requiredTaskSupport of [
-  "singleChoice",
-  "findTarget",
-  "sequenceClick",
-  "correctOptionId",
-  "targetIds",
-  "correctSequence",
-  "wrongHints",
-  "resolveTopicPresentation",
-  "data-evidence-source",
+if (!topicPage.includes("SceneDeckTopicPage")) {
+  errors.push("topic page must render SceneDeckTopicPage");
+}
+for (const requiredSceneDeckWire of [
+  "normalizeTopicToSceneDeck",
+  "createInitialSceneInteractionState",
+  "reduceSceneInteractionState",
+  "resolveScenePresentation",
+  "SELECT_SCENE",
+  "SELECT_FOCUS",
+  "CLICK_TASK_OPTION",
+  "activeEvidence",
+  "GeneratedImage",
+  "scene-region",
+  "scene-task-feedback",
 ]) {
-  const supportSource = `${clickTaskCard}\n${clickTaskDeck}\n${topicPage}\n${interactionSource}`;
-  if (!supportSource.includes(requiredTaskSupport)) {
-    errors.push(`miniprogram controlled task flow must support ${requiredTaskSupport}`);
-  }
-}
-for (const requiredTopicSection of ["ClickTaskDeck", "ComparePairCard", "representativeObjects", "comparePairs", "parentTips"]) {
-  if (!topicPage.includes(requiredTopicSection)) {
-    errors.push(`topic page must render ${requiredTopicSection}`);
-  }
-}
-for (const requiredTopicSection of ["classificationGroups", "secondaryMechanism", "relatedTopics"]) {
-  if (!topicPage.includes(requiredTopicSection)) {
-    errors.push(`topic page must render ${requiredTopicSection} for section parity`);
-  }
-}
-for (const requiredTopicFlow of ["LearningFlowRail", "TopicVisual", "getTopicLearningFlow", "getVisualSlotForTarget"]) {
-  if (!topicPage.includes(requiredTopicFlow)) {
-    errors.push(`topic page must support learning flow and visual slots: ${requiredTopicFlow}`);
-  }
-}
-for (const requiredEvidenceWire of ["resolveTopicPresentation", "evidence={", "data-evidence-source"]) {
-  if (!topicPage.includes(requiredEvidenceWire) && !clickTaskCard.includes(requiredEvidenceWire) && !clickTaskDeck.includes(requiredEvidenceWire) && !topicVisual.includes(requiredEvidenceWire)) {
-    errors.push(`miniprogram topic UI must wire visual evidence: ${requiredEvidenceWire}`);
-  }
-}
-for (const requiredEvidencePanel of ["evidence-panel", "evidenceTitle", "evidenceCopy", "markerChips"]) {
-  if (!topicVisual.includes(requiredEvidencePanel)) {
-    errors.push(`TopicVisual must render visual evidence panel field: ${requiredEvidencePanel}`);
+  if (!sceneDeckComponent.includes(requiredSceneDeckWire)) {
+    errors.push(`SceneDeckTopicPage must wire scene deck feature: ${requiredSceneDeckWire}`);
   }
 }
 if (/\.slice\(\s*0\s*,/.test(topicPage)) {
@@ -119,6 +96,9 @@ if (!aboutPage.includes("不登录") || !aboutPage.includes("不收集儿童")) 
 }
 if (!imageComponent.includes("getGeneratedImageUrl")) {
   errors.push("GeneratedImage must resolve CDN URLs through kids-content");
+}
+if (!imageComponent.includes("load = false")) {
+  errors.push("GeneratedImage must not request remote CDN assets by default in the miniprogram");
 }
 
 if (errors.length > 0) {

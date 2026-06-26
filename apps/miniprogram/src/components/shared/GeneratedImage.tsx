@@ -11,7 +11,7 @@ type Props = {
   lazyLoad?: boolean;
 };
 
-export function GeneratedImage({ assetId, alt, className, load = true, lazyLoad = true }: Props) {
+export function GeneratedImage({ assetId, alt, className, load = false, lazyLoad = true }: Props) {
   const src = getGeneratedImageUrl(assetId);
   const [imageLoadFailed, setImageLoadFailed] = useState(false);
 

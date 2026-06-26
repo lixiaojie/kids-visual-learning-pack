@@ -101,6 +101,9 @@ if (!miniGeneratedImage.includes("onError") || !miniGeneratedImage.includes("ima
 if (!miniGeneratedImage.includes("lazyLoad={lazyLoad}")) {
   errors.push("Mini Program generated images must use native lazy loading to avoid startup-time CDN request storms");
 }
+if (!miniGeneratedImage.includes("load = false")) {
+  errors.push("Mini Program generated images must not request remote CDN assets by default");
+}
 if (!miniHomePage.includes("load={false}")) {
   errors.push("Mini Program home topic list must not eagerly request every remote topic image on app launch");
 }
