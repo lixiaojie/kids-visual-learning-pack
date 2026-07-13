@@ -1202,6 +1202,27 @@ class ScannerTests(unittest.TestCase):
         self.assertEqual([(PurePosixPath("nested/item.txt"), b"value")], observed)
         self.assertEqual([], warnings)
 
+    def test_walk_source_does_not_disguise_callback_programming_errors(self) -> None:
+        (self.source / "item.txt").write_text("value", encoding="utf-8")
+        errors = (
+            TypeError("/machine/private/programming-bug"),
+            NotImplementedError("/machine/private/not-a-platform-error"),
+        )
+
+        for error in errors:
+            with self.subTest(error=type(error).__name__):
+                def broken_callback(
+                    _relative_path: PurePosixPath,
+                    _descriptor: int,
+                    _expected_stat: os.stat_result,
+                ) -> None:
+                    raise error
+
+                with self.assertRaises(type(error)) as caught:
+                    walk_source(self.rule, broken_callback)
+
+                self.assertIs(error, caught.exception)
+
 
 if __name__ == "__main__":
     unittest.main()

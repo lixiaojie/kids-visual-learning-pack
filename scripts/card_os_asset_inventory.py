@@ -81,7 +81,6 @@ _OS_OPEN_SUPPORT_TARGET = os.open
 _OS_SCANDIR_SUPPORT_TARGET = os.scandir
 _OS_STAT_SUPPORT_TARGET = os.stat
 _DESCRIPTOR_UNSUPPORTED_ERRORS = (NotImplementedError, TypeError)
-_DESCRIPTOR_OPERATION_ERRORS = (OSError, NotImplementedError, TypeError)
 
 
 class ConfigError(ValueError):
@@ -90,6 +89,19 @@ class ConfigError(ValueError):
 
 class _MetadataUnreadable(ValueError):
     pass
+
+
+class _DescriptorOperationsUnsupported(RuntimeError):
+    pass
+
+
+class _SourceFileUnreadable(RuntimeError):
+    pass
+
+
+class _SourceChangedDuringScan(ValueError):
+    def __init__(self) -> None:
+        super().__init__("source_changed_during_scan")
 
 
 @dataclass(frozen=True)
@@ -551,6 +563,63 @@ def _descriptor_operations_supported() -> bool:
         return False
 
 
+def _unsupported_descriptor_operation() -> _DescriptorOperationsUnsupported:
+    return _DescriptorOperationsUnsupported("descriptor operation is unsupported")
+
+
+def _descriptor_open(
+    path: str | Path,
+    flags: int,
+    *,
+    dir_fd: int | None = None,
+) -> int:
+    try:
+        if dir_fd is None:
+            return os.open(path, flags)
+        return os.open(path, flags, dir_fd=dir_fd)
+    except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        raise _unsupported_descriptor_operation() from None
+
+
+def _descriptor_scandir(descriptor: int):
+    try:
+        return os.scandir(descriptor)
+    except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        raise _unsupported_descriptor_operation() from None
+
+
+def _descriptor_lstat(path: Path) -> os.stat_result:
+    try:
+        return path.lstat()
+    except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        raise _unsupported_descriptor_operation() from None
+
+
+def _descriptor_entry_stat(entry: os.DirEntry[str]) -> os.stat_result:
+    try:
+        return entry.stat(follow_symlinks=False)
+    except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        raise _unsupported_descriptor_operation() from None
+
+
+def _descriptor_fstat(descriptor: int) -> os.stat_result:
+    try:
+        return os.fstat(descriptor)
+    except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        raise _unsupported_descriptor_operation() from None
+
+
+def _descriptor_stat_at(name: str, parent_descriptor: int) -> os.stat_result:
+    try:
+        return os.stat(
+            name,
+            dir_fd=parent_descriptor,
+            follow_symlinks=False,
+        )
+    except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        raise _unsupported_descriptor_operation() from None
+
+
 @contextmanager
 def _isolated_library_logger(name: str):
     """Temporarily silence one parser logger and restore its exact state."""
@@ -578,25 +647,32 @@ def sha256_descriptor(
 ) -> tuple[str, int, os.stat_result]:
     """Hash one already-open regular file without reopening its pathname."""
 
-    before = os.fstat(descriptor)
-    if not stat.S_ISREG(before.st_mode) or not _same_identity(expected_stat, before):
-        raise ValueError("source_changed_during_scan")
-    os.lseek(descriptor, 0, os.SEEK_SET)
-    digest = hashlib.sha256()
-    total = 0
-    while True:
-        chunk = os.read(descriptor, READ_CHUNK_SIZE)
-        if not chunk:
-            break
-        digest.update(chunk)
-        total += len(chunk)
-    after = os.fstat(descriptor)
+    try:
+        before = _descriptor_fstat(descriptor)
+        if not stat.S_ISREG(before.st_mode) or not _same_identity(
+            expected_stat, before
+        ):
+            raise _SourceChangedDuringScan
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        digest = hashlib.sha256()
+        total = 0
+        while True:
+            chunk = os.read(descriptor, READ_CHUNK_SIZE)
+            if not chunk:
+                break
+            digest.update(chunk)
+            total += len(chunk)
+        after = _descriptor_fstat(descriptor)
+    except (_DescriptorOperationsUnsupported, _SourceChangedDuringScan):
+        raise
+    except OSError:
+        raise _SourceFileUnreadable("source file could not be read") from None
     if (
         not _same_identity(expected_stat, after)
         or not _same_identity(before, after)
         or total != after.st_size
     ):
-        raise ValueError("source_changed_during_scan")
+        raise _SourceChangedDuringScan
     return digest.hexdigest(), total, after
 
 
@@ -625,7 +701,7 @@ def walk_source(
         ]
 
     try:
-        root_lstat = rule.resolved_path.lstat()
+        root_lstat = _descriptor_lstat(rule.resolved_path)
     except FileNotFoundError:
         return [
             _warning(
@@ -635,7 +711,7 @@ def walk_source(
                 "declared source root does not exist on this machine",
             )
         ]
-    except _DESCRIPTOR_OPERATION_ERRORS:
+    except (_DescriptorOperationsUnsupported, OSError):
         return [
             _warning(
                 rule,
@@ -655,8 +731,8 @@ def walk_source(
         ]
 
     try:
-        root_descriptor = os.open(rule.resolved_path, directory_flags)
-    except _DESCRIPTOR_OPERATION_ERRORS:
+        root_descriptor = _descriptor_open(rule.resolved_path, directory_flags)
+    except (_DescriptorOperationsUnsupported, OSError):
         return [
             _warning(
                 rule,
@@ -668,9 +744,9 @@ def walk_source(
 
     def traverse(parent_descriptor: int, logical_parent: PurePosixPath) -> None:
         try:
-            with os.scandir(parent_descriptor) as iterator:
+            with _descriptor_scandir(parent_descriptor) as iterator:
                 entries = sorted(iterator, key=lambda candidate: candidate.name)
-        except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+        except _DescriptorOperationsUnsupported:
             warnings.append(
                 _warning(
                     rule,
@@ -705,8 +781,8 @@ def walk_source(
                 continue
             relative_path = logical_parent / name
             try:
-                discovery_stat = entry.stat(follow_symlinks=False)
-            except _DESCRIPTOR_OPERATION_ERRORS:
+                discovery_stat = _descriptor_entry_stat(entry)
+            except (_DescriptorOperationsUnsupported, OSError):
                 warnings.append(
                     _warning(
                         rule,
@@ -738,12 +814,12 @@ def walk_source(
                 continue
             if stat.S_ISDIR(discovery_stat.st_mode):
                 try:
-                    child_descriptor = os.open(
+                    child_descriptor = _descriptor_open(
                         name,
                         directory_flags,
                         dir_fd=parent_descriptor,
                     )
-                except _DESCRIPTOR_OPERATION_ERRORS:
+                except (_DescriptorOperationsUnsupported, OSError):
                     warnings.append(
                         _warning(
                             rule,
@@ -755,8 +831,8 @@ def walk_source(
                     continue
                 try:
                     try:
-                        child_stat = os.fstat(child_descriptor)
-                    except _DESCRIPTOR_OPERATION_ERRORS:
+                        child_stat = _descriptor_fstat(child_descriptor)
+                    except (_DescriptorOperationsUnsupported, OSError):
                         warnings.append(
                             _warning(
                                 rule,
@@ -780,12 +856,10 @@ def walk_source(
                         continue
                     traverse(child_descriptor, relative_path)
                     try:
-                        final_entry_stat = os.stat(
-                            name,
-                            dir_fd=parent_descriptor,
-                            follow_symlinks=False,
+                        final_entry_stat = _descriptor_stat_at(
+                            name, parent_descriptor
                         )
-                    except _DESCRIPTOR_OPERATION_ERRORS:
+                    except (_DescriptorOperationsUnsupported, OSError):
                         final_entry_stat = None
                     if final_entry_stat is None or not _same_identity(
                         discovery_stat, final_entry_stat
@@ -823,7 +897,7 @@ def walk_source(
                 )
                 continue
             try:
-                file_descriptor = os.open(
+                file_descriptor = _descriptor_open(
                     name,
                     file_flags,
                     dir_fd=parent_descriptor,
@@ -838,7 +912,7 @@ def walk_source(
                     )
                 )
                 continue
-            except _DESCRIPTOR_OPERATION_ERRORS:
+            except (_DescriptorOperationsUnsupported, OSError):
                 warnings.append(
                     _warning(
                         rule,
@@ -850,8 +924,8 @@ def walk_source(
                 continue
             try:
                 try:
-                    opened_stat = os.fstat(file_descriptor)
-                except _DESCRIPTOR_OPERATION_ERRORS:
+                    opened_stat = _descriptor_fstat(file_descriptor)
+                except (_DescriptorOperationsUnsupported, OSError):
                     warnings.append(
                         _warning(
                             rule,
@@ -875,24 +949,20 @@ def walk_source(
                     continue
                 try:
                     on_file(relative_path, file_descriptor, discovery_stat)
-                    final_stat = os.fstat(file_descriptor)
+                    final_stat = _descriptor_fstat(file_descriptor)
                     try:
-                        final_entry_stat = os.stat(
-                            name,
-                            dir_fd=parent_descriptor,
-                            follow_symlinks=False,
+                        final_entry_stat = _descriptor_stat_at(
+                            name, parent_descriptor
                         )
-                    except _DESCRIPTOR_OPERATION_ERRORS:
+                    except OSError:
                         final_entry_stat = None
                     if (
                         not _same_identity(discovery_stat, final_stat)
                         or final_entry_stat is None
                         or not _same_identity(discovery_stat, final_entry_stat)
                     ):
-                        raise ValueError("source_changed_during_scan")
-                except ValueError as error:
-                    if str(error) != "source_changed_during_scan":
-                        raise
+                        raise _SourceChangedDuringScan
+                except _SourceChangedDuringScan:
                     warnings.append(
                         _warning(
                             rule,
@@ -901,7 +971,7 @@ def walk_source(
                             "source file changed during the scan",
                         )
                     )
-                except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+                except _DescriptorOperationsUnsupported:
                     warnings.append(
                         _warning(
                             rule,
@@ -910,7 +980,7 @@ def walk_source(
                             "source file descriptor operations are unsupported",
                         )
                     )
-                except OSError:
+                except _SourceFileUnreadable:
                     warnings.append(
                         _warning(
                             rule,
@@ -923,52 +993,54 @@ def walk_source(
                 os.close(file_descriptor)
 
     try:
-        opened_root_stat = os.fstat(root_descriptor)
-        if not stat.S_ISDIR(opened_root_stat.st_mode) or not _same_identity(
-            root_lstat, opened_root_stat
-        ):
+        try:
+            opened_root_stat = _descriptor_fstat(root_descriptor)
+        except (_DescriptorOperationsUnsupported, OSError):
             warnings.append(
                 _warning(
                     rule,
                     root_relative,
                     "unsafe_source_entry",
-                    "declared source root changed before traversal",
+                    "declared source root failed descriptor safety checks",
                 )
             )
         else:
-            traverse(root_descriptor, PurePosixPath())
-            try:
-                final_root_descriptor_stat = os.fstat(root_descriptor)
-                final_root_path_stat = rule.resolved_path.lstat()
-            except _DESCRIPTOR_OPERATION_ERRORS:
-                final_root_descriptor_stat = None
-                final_root_path_stat = None
-            if (
-                final_root_descriptor_stat is None
-                or final_root_path_stat is None
-                or not stat.S_ISDIR(final_root_descriptor_stat.st_mode)
-                or not stat.S_ISDIR(final_root_path_stat.st_mode)
-                or stat.S_ISLNK(final_root_path_stat.st_mode)
-                or not _same_identity(root_lstat, final_root_descriptor_stat)
-                or not _same_identity(root_lstat, final_root_path_stat)
+            if not stat.S_ISDIR(opened_root_stat.st_mode) or not _same_identity(
+                root_lstat, opened_root_stat
             ):
                 warnings.append(
                     _warning(
                         rule,
                         root_relative,
                         "unsafe_source_entry",
-                        "declared source root changed during traversal",
+                        "declared source root changed before traversal",
                     )
                 )
-    except _DESCRIPTOR_OPERATION_ERRORS:
-        warnings.append(
-            _warning(
-                rule,
-                root_relative,
-                "unsafe_source_entry",
-                "declared source root failed descriptor safety checks",
-            )
-        )
+            else:
+                traverse(root_descriptor, PurePosixPath())
+                try:
+                    final_root_descriptor_stat = _descriptor_fstat(root_descriptor)
+                    final_root_path_stat = _descriptor_lstat(rule.resolved_path)
+                except (_DescriptorOperationsUnsupported, OSError):
+                    final_root_descriptor_stat = None
+                    final_root_path_stat = None
+                if (
+                    final_root_descriptor_stat is None
+                    or final_root_path_stat is None
+                    or not stat.S_ISDIR(final_root_descriptor_stat.st_mode)
+                    or not stat.S_ISDIR(final_root_path_stat.st_mode)
+                    or stat.S_ISLNK(final_root_path_stat.st_mode)
+                    or not _same_identity(root_lstat, final_root_descriptor_stat)
+                    or not _same_identity(root_lstat, final_root_path_stat)
+                ):
+                    warnings.append(
+                        _warning(
+                            rule,
+                            root_relative,
+                            "unsafe_source_entry",
+                            "declared source root changed during traversal",
+                        )
+                    )
     finally:
         os.close(root_descriptor)
     warnings.sort(key=lambda warning: (warning.relative_path, warning.code))
@@ -1065,9 +1137,12 @@ def scan_source(
                 )
             else:
                 metadata_status = "ok"
-        final_stat = os.fstat(descriptor)
+        try:
+            final_stat = _descriptor_fstat(descriptor)
+        except OSError:
+            raise _SourceFileUnreadable("source file could not be read") from None
         if not _same_identity(expected_stat, final_stat):
-            raise ValueError("source_changed_during_scan")
+            raise _SourceChangedDuringScan
         aliases.append(
             SourceAliasRecord(
                 root_id=rule.root_id,
