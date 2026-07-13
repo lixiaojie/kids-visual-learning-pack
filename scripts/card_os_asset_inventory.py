@@ -1739,6 +1739,14 @@ def _warning_payloads(
         }
         for warning in scan_warnings
     )
+    values.sort(
+        key=lambda warning: (
+            warning["root_id"],
+            warning["relative_path"],
+            warning["code"],
+            warning["detail"],
+        )
+    )
     return values
 
 
@@ -2276,7 +2284,9 @@ def _publication_directories(
         yield directories
 
 
-def _write_new_file_at(directory_fd: int, name: str, content: str) -> None:
+def _write_new_file_at(
+    directory_fd: int, name: str, content: str
+) -> tuple[int, ...]:
     flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
     if hasattr(os, "O_NOFOLLOW"):
         flags |= os.O_NOFOLLOW
@@ -2289,6 +2299,18 @@ def _write_new_file_at(directory_fd: int, name: str, content: str) -> None:
         while offset < len(payload):
             offset += os.write(descriptor, payload[offset:])
         os.fsync(descriptor)
+        descriptor_stat = os.fstat(descriptor)
+        entry_stat = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        if (
+            not stat.S_ISREG(descriptor_stat.st_mode)
+            or not stat.S_ISREG(entry_stat.st_mode)
+            or descriptor_stat.st_nlink != 1
+            or entry_stat.st_nlink != 1
+            or _stable_file_identity(descriptor_stat)
+            != _stable_file_identity(entry_stat)
+        ):
+            raise ConfigError("new publication file identity changed")
+        return _stable_file_identity(descriptor_stat)
     finally:
         os.close(descriptor)
 
@@ -2368,6 +2390,55 @@ def _read_regular_file_with_identity_at(
 
 def _read_regular_file_at(directory_fd: int, name: str) -> str:
     return _read_regular_file_with_identity_at(directory_fd, name)[0]
+
+
+def _regular_file_matches_at(
+    directory_fd: int,
+    name: str,
+    expected_identity: tuple[int, ...],
+    expected_content: str,
+) -> bool:
+    try:
+        content, identity = _read_regular_file_with_identity_at(directory_fd, name)
+    except (OSError, ConfigError):
+        return False
+    return identity == expected_identity and content == expected_content
+
+
+def _regular_file_object_matches_at(
+    directory_fd: int,
+    name: str,
+    expected_identity: tuple[int, ...],
+    expected_content: str,
+) -> bool:
+    try:
+        content, identity = _read_regular_file_with_identity_at(directory_fd, name)
+    except (OSError, ConfigError):
+        return False
+    return identity[:-1] == expected_identity[:-1] and content == expected_content
+
+
+def _cleanup_owned_regular_file_at(
+    directory_fd: int,
+    name: str,
+    expected_identity: tuple[int, ...] | None,
+    expected_content: str,
+) -> None:
+    if expected_identity is None or not _regular_file_matches_at(
+        directory_fd, name, expected_identity, expected_content
+    ):
+        return
+    try:
+        entry_stat = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        if (
+            not stat.S_ISREG(entry_stat.st_mode)
+            or entry_stat.st_nlink != 1
+            or _stable_file_identity(entry_stat) != expected_identity
+        ):
+            return
+        os.unlink(name, dir_fd=directory_fd)
+    except OSError:
+        return
 
 
 def _verified_snapshot_identity_at(
@@ -2514,10 +2585,12 @@ def _atomic_replace_latest_at(
     ],
 ) -> None:
     temporary = ".latest-" + secrets.token_hex(12) + ".json"
+    temporary_content = deterministic_json_text(document)
+    temporary_identity: tuple[int, ...] | None = None
     try:
         directories.verify()
-        _write_new_file_at(
-            directories.output_fd, temporary, deterministic_json_text(document)
+        temporary_identity = _write_new_file_at(
+            directories.output_fd, temporary, temporary_content
         )
         directories.verify()
         current_snapshot_identity = _verified_snapshot_identity_at(
@@ -2525,6 +2598,13 @@ def _atomic_replace_latest_at(
         )
         if current_snapshot_identity != expected_snapshot_identity:
             raise ConfigError("snapshot identity changed before latest replacement")
+        if not _regular_file_matches_at(
+            directories.output_fd,
+            temporary,
+            temporary_identity,
+            temporary_content,
+        ):
+            raise ConfigError("latest temporary file changed before replacement")
         os.replace(
             temporary,
             "latest.json",
@@ -2533,11 +2613,20 @@ def _atomic_replace_latest_at(
         )
         os.fsync(directories.output_fd)
         directories.verify()
+        if not _regular_file_object_matches_at(
+            directories.output_fd,
+            "latest.json",
+            temporary_identity,
+            temporary_content,
+        ):
+            raise ConfigError("latest file changed during replacement")
     finally:
-        try:
-            os.unlink(temporary, dir_fd=directories.output_fd)
-        except OSError:
-            pass
+        _cleanup_owned_regular_file_at(
+            directories.output_fd,
+            temporary,
+            temporary_identity,
+            temporary_content,
+        )
 
 
 def publish_inventory_snapshot(

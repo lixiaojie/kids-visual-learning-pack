@@ -2081,7 +2081,93 @@ class WriterAndCliTests(unittest.TestCase):
                 )["scan-warnings.json"]
             )
 
-        self.assertEqual(list(required_codes), [item["code"] for item in document["warnings"]])
+        self.assertEqual(
+            sorted(required_codes), [item["code"] for item in document["warnings"]]
+        )
+
+    def test_warning_reordering_keeps_documents_run_id_and_publication_identical(self) -> None:
+        config = replace(
+            self._config(),
+            warnings=(
+                ConfigWarning(
+                    root_id="fixture-root",
+                    code="missing_root",
+                    detail="declared source root does not exist on this machine",
+                ),
+            ),
+        )
+        warnings = [
+            WarningRecord(
+                root_id="fixture-root",
+                relative_path="zeta/item.txt",
+                code="unsupported_extension",
+                detail="extension is not enabled for this root",
+            ),
+            WarningRecord(
+                root_id="fixture-root",
+                relative_path="alpha/item.txt",
+                code="symlink",
+                detail="symbolic links are not followed",
+            ),
+            WarningRecord(
+                root_id="fixture-root",
+                relative_path="middle/item.txt",
+                code="unreadable_file",
+                detail="source file could not be read",
+            ),
+        ]
+        warnings.append(warnings[1])
+        generator = random.Random(20260714)
+        expected_documents: dict[str, str] | None = None
+        expected_latest: dict[str, object] | None = None
+
+        with patch.object(
+            inventory_module,
+            "metadata_reader_versions",
+            return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+        ):
+            for _ in range(12):
+                shuffled = list(warnings)
+                generator.shuffle(shuffled)
+                documents = inventory_module.build_snapshot_documents(
+                    config,
+                    [],
+                    shuffled,
+                    generated_at=self.GENERATED_AT,
+                )
+                latest = inventory_module.publish_inventory_snapshot(
+                    config,
+                    [],
+                    shuffled,
+                    config_path=self.config_path,
+                    roots_path=self.roots_path,
+                    output_root=self.output,
+                    generated_at=self.GENERATED_AT,
+                )
+                if expected_documents is None:
+                    expected_documents = documents
+                    expected_latest = latest
+                else:
+                    self.assertEqual(expected_documents, documents)
+                    self.assertEqual(expected_latest, latest)
+
+        self.assertIsNotNone(expected_documents)
+        warning_payloads = json.loads(expected_documents["scan-warnings.json"])[
+            "warnings"
+        ]
+        self.assertEqual(
+            sorted(
+                warning_payloads,
+                key=lambda item: (
+                    item["root_id"],
+                    item["relative_path"],
+                    item["code"],
+                    item["detail"],
+                ),
+            ),
+            warning_payloads,
+        )
+        self.assertEqual(2, warning_payloads.count(warning_payloads[1]))
 
     def test_publication_path_validation_rejects_collisions_containment_and_symlinks(self) -> None:
         config = self._config()
@@ -2538,7 +2624,7 @@ class WriterAndCliTests(unittest.TestCase):
 
         def racing_write(directory_fd, name, content):
             nonlocal replaced
-            real_write(directory_fd, name, content)
+            identity = real_write(directory_fd, name, content)
             if not replaced and name.startswith(".latest-"):
                 replaced = True
                 payload = inventory_path.read_bytes()
@@ -2546,6 +2632,7 @@ class WriterAndCliTests(unittest.TestCase):
                 inventory_path.rename(old_path)
                 inventory_path.write_bytes(payload)
                 old_path.unlink()
+            return identity
 
         with patch.object(
             inventory_module, "_write_new_file_at", side_effect=racing_write
@@ -2555,6 +2642,98 @@ class WriterAndCliTests(unittest.TestCase):
 
         self.assertTrue(replaced)
         self.assertEqual(prior_latest, (self.output / "latest.json").read_bytes())
+
+    def _assert_latest_temp_replacement_is_rejected(self, kind: str) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        self._publish(aliases)
+        latest_path = self.output / "latest.json"
+        prior_latest = latest_path.read_bytes()
+        prior_inode = latest_path.stat().st_ino
+        attacker = self.base / f"attacker-{kind}.json"
+        attacker.write_bytes(b'{"attacker":true}\n')
+        real_verify = inventory_module._verified_snapshot_identity_at
+        swapped_path: Path | None = None
+
+        def replace_temp_after_snapshot_verify(*args, **kwargs):
+            nonlocal swapped_path
+            result = real_verify(*args, **kwargs)
+            candidates = list(self.output.glob(".latest-*.json"))
+            if swapped_path is None and candidates:
+                swapped_path = candidates[0]
+                swapped_path.unlink()
+                if kind == "symlink":
+                    swapped_path.symlink_to(attacker)
+                else:
+                    swapped_path.write_bytes(attacker.read_bytes())
+            return result
+
+        with patch.object(
+            inventory_module,
+            "_verified_snapshot_identity_at",
+            side_effect=replace_temp_after_snapshot_verify,
+        ):
+            with self.assertRaises(ConfigError):
+                self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+        self.assertIsNotNone(swapped_path)
+        self.assertFalse(latest_path.is_symlink())
+        self.assertEqual(prior_inode, latest_path.stat().st_ino)
+        self.assertEqual(prior_latest, latest_path.read_bytes())
+        self.assertEqual(b'{"attacker":true}\n', attacker.read_bytes())
+        self.assertTrue(swapped_path.is_symlink() if kind == "symlink" else swapped_path.is_file())
+
+    def test_latest_temp_symlink_swap_is_rejected_without_unlinking_replacement(self) -> None:
+        self._assert_latest_temp_replacement_is_rejected("symlink")
+
+    def test_latest_temp_regular_inode_swap_is_rejected_without_unlinking_replacement(self) -> None:
+        self._assert_latest_temp_replacement_is_rejected("regular")
+
+    def test_latest_temp_name_collision_survives_failed_publication(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        self._publish(aliases)
+        latest_path = self.output / "latest.json"
+        prior_latest = latest_path.read_bytes()
+        collision = self.output / ".latest-collision.json"
+        collision.write_bytes(b"preexisting collision")
+        collision_inode = collision.stat().st_ino
+
+        with patch.object(
+            inventory_module,
+            "secrets",
+            wraps=inventory_module.secrets,
+        ) as mocked_secrets:
+            mocked_secrets.token_hex.side_effect = ("staging-token", "collision")
+            with self.assertRaises(ConfigError):
+                self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+        self.assertEqual(collision_inode, collision.stat().st_ino)
+        self.assertEqual(b"preexisting collision", collision.read_bytes())
+        self.assertEqual(prior_latest, latest_path.read_bytes())
+
+    def test_latest_replace_preserves_created_file_identity_except_ctime(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        created_identities: list[tuple[int, ...]] = []
+        real_write = inventory_module._write_new_file_at
+
+        def capture_latest_identity(directory_fd, name, content):
+            identity = real_write(directory_fd, name, content)
+            if name.startswith(".latest-"):
+                created_identities.append(identity)
+            return identity
+
+        with patch.object(
+            inventory_module,
+            "_write_new_file_at",
+            side_effect=capture_latest_identity,
+        ):
+            latest = self._publish(aliases)
+
+        self.assertEqual(1, len(created_identities))
+        published_identity = inventory_module._stable_file_identity(
+            (self.output / "latest.json").stat()
+        )
+        self.assertEqual(created_identities[0][:-1], published_identity[:-1])
+        self.assertEqual(latest, json.loads((self.output / "latest.json").read_text()))
 
     def test_publication_attach_failure_does_not_leak_descriptors(self) -> None:
         fd_root = Path("/dev/fd") if Path("/dev/fd").is_dir() else Path("/proc/self/fd")
