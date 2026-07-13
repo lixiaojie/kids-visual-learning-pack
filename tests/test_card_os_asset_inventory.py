@@ -12,6 +12,7 @@ import traceback
 import unittest
 import warnings
 from contextlib import redirect_stderr
+from contextlib import redirect_stdout
 from dataclasses import replace
 from pathlib import Path
 from pathlib import PurePosixPath
@@ -19,6 +20,8 @@ from unittest.mock import patch
 
 from PIL import Image
 from pypdf import PdfWriter
+
+import scripts.card_os_asset_inventory as inventory_module
 
 from scripts.card_os_asset_inventory import (
     ConfigWarning,
@@ -1783,6 +1786,438 @@ class AggregationTests(unittest.TestCase):
             shuffled = list(aliases)
             generator.shuffle(shuffled)
             self.assertEqual(expected, self._build(shuffled))
+
+
+class WriterAndCliTests(unittest.TestCase):
+    GENERATED_AT = "2026-07-13T02:03:04Z"
+
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
+        self.base = Path(self.temporary_directory.name).resolve(strict=True)
+        self.source = self.base / "source"
+        self.source.mkdir()
+        self.config_path = self.base / "inventory-sources.json"
+        self.roots_path = self.base / "inventory-roots.json"
+        self.output = self.base / "generated"
+        self._write_config()
+
+    def _write_config(self, *, config_override: object | None = None) -> None:
+        config: object = config_override or {
+            "schema": SCHEMA,
+            "defaults": {
+                "include_extensions": [".txt", ".md"],
+                "exclude_names": [".git", "tmp"],
+            },
+            "sources": [
+                {
+                    "root_id": "fixture-root",
+                    "source_group": "fixture-root",
+                    "locator": {"base": "workspace", "relative": "source"},
+                    "source_thread_id": None,
+                    "migration_grade": "A",
+                    "decision": "strict_revalidate",
+                }
+            ],
+        }
+        roots = {
+            "schema": ROOTS_SCHEMA,
+            "bases": {
+                "workspace": str(self.base),
+                "codex_archive": str(self.base / "archive"),
+            },
+        }
+        (self.base / "archive").mkdir(exist_ok=True)
+        self.config_path.write_text(
+            json.dumps(config, ensure_ascii=False), encoding="utf-8"
+        )
+        self.roots_path.write_text(
+            json.dumps(roots, ensure_ascii=False), encoding="utf-8"
+        )
+
+    def _config(self) -> SourceConfig:
+        return load_source_config(
+            self.config_path, self.roots_path, strict_roots=True
+        )
+
+    def _alias(
+        self, relative_path: str, payload: bytes, *, root_id: str = "fixture-root"
+    ) -> SourceAliasRecord:
+        return SourceAliasRecord(
+            root_id=root_id,
+            relative_path=relative_path,
+            source_thread_id=None,
+            source_group="fixture-root",
+            sha256=hashlib.sha256(payload).hexdigest(),
+            size_bytes=len(payload),
+            media_type="text/plain",
+            image_width=None,
+            image_height=None,
+            pdf_page_count=None,
+            metadata_status="not_applicable",
+        )
+
+    def _publish(
+        self,
+        aliases: list[SourceAliasRecord],
+        warnings: list[WarningRecord] | None = None,
+        *,
+        generated_at: str | None = None,
+    ) -> dict[str, object]:
+        with patch.object(
+            inventory_module,
+            "metadata_reader_versions",
+            return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+        ):
+            return inventory_module.publish_inventory_snapshot(
+                self._config(),
+                aliases,
+                warnings or [],
+                config_path=self.config_path,
+                roots_path=self.roots_path,
+                output_root=self.output,
+                generated_at=generated_at or self.GENERATED_AT,
+            )
+
+    def test_deterministic_json_uses_utf8_sorted_indent_and_newline(self) -> None:
+        rendered = inventory_module.deterministic_json_text(
+            {"z": "兔子", "a": {"b": 1}}
+        )
+
+        self.assertEqual(
+            '{\n  "a": {\n    "b": 1\n  },\n  "z": "兔子"\n}\n', rendered
+        )
+
+    def test_snapshot_documents_share_identity_and_markdown_escapes_values(self) -> None:
+        aliases = [
+            self._alias("one/odd|`[name]\n.txt", b"first"),
+            self._alias("two/odd|`[name]\n.txt", b"second"),
+            self._alias("copies/shared.txt", b"first"),
+        ]
+        warning_records = [
+            WarningRecord(
+                root_id="fixture-root",
+                relative_path="odd|`[name]\n.txt",
+                code="unsupported_extension",
+                detail="extension is not enabled for this root",
+            )
+        ]
+
+        with patch.object(
+            inventory_module,
+            "metadata_reader_versions",
+            return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+        ):
+            documents = inventory_module.build_snapshot_documents(
+                self._config(), aliases, warning_records, generated_at=self.GENERATED_AT
+            )
+
+        inventory = json.loads(documents["inventory.json"])
+        warnings_document = json.loads(documents["scan-warnings.json"])
+        report = documents["duplicate-report.md"]
+        run_id = inventory["run_id"]
+        digest = inventory["snapshot_digest"]
+        self.assertRegex(run_id, r"^inv_sha256_[0-9a-f]{64}$")
+        self.assertEqual("sha256:" + run_id.removeprefix("inv_sha256_"), digest)
+        self.assertEqual(run_id, warnings_document["run_id"])
+        self.assertEqual(digest, warnings_document["snapshot_digest"])
+        self.assertIn(f'run_id: "{run_id}"', report)
+        self.assertIn(f'snapshot_digest: "{digest}"', report)
+        for field in (
+            "content_object_count",
+            "duplicate_group_count",
+            "same_name_candidate_group_count",
+            "total_source_bytes",
+            "unique_content_bytes",
+            "Aliases",
+            "Same-name, different-digest candidates",
+        ):
+            self.assertIn(field, report)
+        self.assertNotIn("odd|`[name]\n.txt", report)
+        self.assertIn(r"odd\|\`\[name\]\\n.txt", report)
+
+    def test_warnings_document_preserves_all_required_reason_codes(self) -> None:
+        required_codes = (
+            "missing_root",
+            "symlink",
+            "unreadable_file",
+            "unsupported_extension",
+            "source_changed_during_scan",
+        )
+        warnings = [
+            WarningRecord(
+                root_id="fixture-root",
+                relative_path=".",
+                code=code,
+                detail="source entry was not included in this inventory",
+            )
+            for code in required_codes
+        ]
+
+        with patch.object(
+            inventory_module,
+            "metadata_reader_versions",
+            return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+        ):
+            document = json.loads(
+                inventory_module.build_snapshot_documents(
+                    self._config(), [], warnings, generated_at=self.GENERATED_AT
+                )["scan-warnings.json"]
+            )
+
+        self.assertEqual(list(required_codes), [item["code"] for item in document["warnings"]])
+
+    def test_publication_path_validation_rejects_collisions_containment_and_symlinks(self) -> None:
+        config = self._config()
+        unsafe_outputs = (
+            self.source,
+            self.source / "nested-output",
+            self.base,
+            self.config_path,
+            self.roots_path,
+        )
+        for output in unsafe_outputs:
+            with self.subTest(output=output.name):
+                with self.assertRaises(ConfigError):
+                    inventory_module.validate_publication_paths(
+                        config,
+                        config_path=self.config_path,
+                        roots_path=self.roots_path,
+                        output_root=output,
+                    )
+
+        with self.assertRaises(ConfigError):
+            inventory_module.validate_publication_paths(
+                config,
+                config_path=self.config_path,
+                roots_path=self.config_path,
+                output_root=self.output,
+            )
+
+        symlink = self.base / "output-link"
+        try:
+            symlink.symlink_to(self.base / "real-output", target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlinks unavailable")
+        with self.assertRaises(ConfigError):
+            inventory_module.validate_publication_paths(
+                config,
+                config_path=self.config_path,
+                roots_path=self.roots_path,
+                output_root=symlink / "nested",
+            )
+        self.assertFalse((self.base / "real-output").exists())
+
+    def test_failure_before_snapshot_rename_preserves_prior_publication(self) -> None:
+        first = self._publish([self._alias("first.txt", b"first")])
+        prior_latest = (self.output / "latest.json").read_bytes()
+        prior_snapshot = self.output / "snapshots" / str(first["run_id"])
+        prior_files = {
+            path.name: path.read_bytes() for path in prior_snapshot.iterdir()
+        }
+
+        with patch.object(
+            inventory_module,
+            "_rename_staging_to_snapshot",
+            side_effect=OSError("simulated publication failure"),
+        ):
+            with self.assertRaises(ConfigError):
+                self._publish([self._alias("second.txt", b"second")])
+
+        self.assertEqual(prior_latest, (self.output / "latest.json").read_bytes())
+        self.assertEqual(
+            prior_files,
+            {path.name: path.read_bytes() for path in prior_snapshot.iterdir()},
+        )
+        self.assertEqual([], list(self.output.glob(".staging-*")))
+
+    def test_check_ignores_only_generated_at_and_requires_complete_snapshot(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        self._publish(aliases)
+
+        with patch.object(
+            inventory_module,
+            "metadata_reader_versions",
+            return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+        ):
+            self.assertTrue(
+                inventory_module.check_inventory_snapshot(
+                    self._config(),
+                    aliases,
+                    [],
+                    config_path=self.config_path,
+                    roots_path=self.roots_path,
+                    output_root=self.output,
+                    generated_at="2030-01-02T03:04:05Z",
+                )
+            )
+
+        latest_path = self.output / "latest.json"
+        latest_text = latest_path.read_text(encoding="utf-8")
+        external_latest = self.base / "outside-latest.json"
+        external_latest.write_text(latest_text, encoding="utf-8")
+        latest_path.unlink()
+        try:
+            latest_path.symlink_to(external_latest)
+        except (OSError, NotImplementedError):
+            latest_path.write_text(latest_text, encoding="utf-8")
+        else:
+            with patch.object(inventory_module, "metadata_reader_versions", return_value={"pillow": "12.0.0", "pypdf": "6.0.0"}):
+                self.assertFalse(
+                    inventory_module.check_inventory_snapshot(
+                        self._config(), aliases, [], config_path=self.config_path,
+                        roots_path=self.roots_path, output_root=self.output,
+                        generated_at=self.GENERATED_AT,
+                    )
+                )
+            latest_path.unlink()
+            latest_path.write_text(latest_text, encoding="utf-8")
+
+        latest = json.loads(latest_text)
+        inventory_path = self.output / latest["inventory"]
+        original = inventory_path.read_text(encoding="utf-8")
+        changed = json.loads(original)
+        changed["summary"]["content_object_count"] += 1
+        inventory_path.write_text(json.dumps(changed), encoding="utf-8")
+        with patch.object(inventory_module, "metadata_reader_versions", return_value={"pillow": "12.0.0", "pypdf": "6.0.0"}):
+            self.assertFalse(
+                inventory_module.check_inventory_snapshot(
+                    self._config(), aliases, [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=self.output,
+                    generated_at=self.GENERATED_AT,
+                )
+            )
+        inventory_path.write_text(original, encoding="utf-8")
+        report_path = self.output / latest["duplicates"]
+        original_report = report_path.read_text(encoding="utf-8")
+        report_path.write_text(original_report.rstrip("\n"), encoding="utf-8")
+        with patch.object(inventory_module, "metadata_reader_versions", return_value={"pillow": "12.0.0", "pypdf": "6.0.0"}):
+            self.assertFalse(
+                inventory_module.check_inventory_snapshot(
+                    self._config(), aliases, [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=self.output,
+                    generated_at=self.GENERATED_AT,
+                )
+            )
+        report_path.write_text(original_report, encoding="utf-8")
+        report_path.unlink()
+        with patch.object(inventory_module, "metadata_reader_versions", return_value={"pillow": "12.0.0", "pypdf": "6.0.0"}):
+            self.assertFalse(
+                inventory_module.check_inventory_snapshot(
+                    self._config(), aliases, [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=self.output,
+                    generated_at=self.GENERATED_AT,
+                )
+            )
+
+    def test_existing_snapshot_is_immutable_and_must_be_semantically_equal(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        published = self._publish(aliases)
+        snapshot = self.output / "snapshots" / str(published["run_id"])
+        inventory_path = snapshot / "inventory.json"
+        inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+        inventory["summary"]["source_alias_count"] += 1
+        inventory_path.write_text(json.dumps(inventory), encoding="utf-8")
+
+        with self.assertRaises(ConfigError):
+            self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+    def test_dry_run_summary_hashes_sorted_descriptors_without_reading_contents(self) -> None:
+        first = self.source / "b.txt"
+        second = self.source / "a.md"
+        unsupported = self.source / "ignored.bin"
+        first.write_bytes(b"12345")
+        second.write_bytes(b"678")
+        unsupported.write_bytes(b"ignored")
+        rows = []
+        for path in (first, second):
+            file_stat = path.stat()
+            rows.append(
+                (
+                    file_stat.st_dev,
+                    file_stat.st_ino,
+                    path.relative_to(self.source).as_posix(),
+                    file_stat.st_size,
+                    file_stat.st_mtime_ns,
+                    file_stat.st_ctime_ns,
+                )
+            )
+        expected_digest = "sha256:" + hashlib.sha256(
+            json.dumps(
+                sorted(rows), ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        ).hexdigest()
+
+        with patch.object(
+            inventory_module,
+            "sha256_descriptor",
+            side_effect=AssertionError("content hashing is forbidden"),
+        ):
+            summary = inventory_module.build_dry_run_summary(self._config())
+
+        self.assertEqual(1, summary["declared_root_count"])
+        self.assertEqual(2, summary["eligible_file_count"])
+        self.assertEqual(8, summary["eligible_byte_count"])
+        self.assertEqual(expected_digest, summary["descriptor_digest"])
+        self.assertFalse(self.output.exists())
+
+    def test_cli_dry_run_writes_only_stdout_and_validates_generated_at(self) -> None:
+        (self.source / "item.txt").write_text("兔子", encoding="utf-8")
+        stdout = io.StringIO()
+        with redirect_stdout(stdout):
+            status = inventory_module.main(
+                [
+                    "--config", str(self.config_path),
+                    "--roots", str(self.roots_path),
+                    "--output-root", str(self.output),
+                    "--generated-at", self.GENERATED_AT,
+                    "--dry-run-summary",
+                ]
+            )
+        self.assertEqual(0, status)
+        self.assertEqual(1, json.loads(stdout.getvalue())["eligible_file_count"])
+        self.assertFalse(self.output.exists())
+
+        for invalid in (
+            "2026-07-13T02:03:04+00:00",
+            "2026-07-13T02:03:04.000Z",
+            "2026-02-30T02:03:04Z",
+            "not-a-time",
+        ):
+            with self.subTest(invalid=invalid):
+                with redirect_stderr(io.StringIO()):
+                    self.assertNotEqual(
+                        0,
+                        inventory_module.main(
+                            [
+                                "--config", str(self.config_path),
+                                "--roots", str(self.roots_path),
+                                "--output-root", str(self.output),
+                                "--generated-at", invalid,
+                                "--dry-run-summary",
+                            ]
+                        ),
+                    )
+
+    def test_cli_invalid_config_is_nonzero_and_source_tree_is_unchanged(self) -> None:
+        source_file = self.source / "keep.txt"
+        source_file.write_bytes(b"must remain unchanged")
+        before = (source_file.stat(), source_file.read_bytes())
+        self._write_config(config_override={"schema": "wrong"})
+
+        with redirect_stderr(io.StringIO()):
+            status = inventory_module.main(
+                [
+                    "--config", str(self.config_path),
+                    "--roots", str(self.roots_path),
+                    "--output-root", str(self.output),
+                ]
+            )
+
+        after = (source_file.stat(), source_file.read_bytes())
+        self.assertNotEqual(0, status)
+        self.assertEqual(before, after)
+        self.assertFalse(self.output.exists())
 
 
 if __name__ == "__main__":

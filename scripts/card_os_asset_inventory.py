@@ -1,18 +1,19 @@
-"""Configuration contract for the read-only Cognitive Card asset inventory.
-
-Task 1 intentionally stops at source declaration and validation. Traversal,
-hashing, aggregation, and report generation are implemented by later tasks.
-"""
+"""Read-only discovery and atomic reporting for Cognitive Card assets."""
 
 from __future__ import annotations
 
+import argparse
+import datetime as dt
 import hashlib
 import io
 import json
 import logging
 import os
 import re
+import secrets
+import shutil
 import stat
+import sys
 import unicodedata
 import warnings
 from contextlib import contextmanager, redirect_stderr
@@ -95,6 +96,7 @@ MANIFEST_BASENAMES = frozenset(
 )
 GRADE_ORDER = {grade: index for index, grade in enumerate(("A", "B", "C", "D", "legacy-gallery"))}
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+RFC3339_UTC_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$")
 VALID_WARNING_CODES = frozenset(
     {
         "missing_root",
@@ -1633,3 +1635,607 @@ def build_inventory(
         "same_name_candidate_groups": same_name_candidate_groups,
         "derivative_candidate_groups": derivative_candidate_groups,
     }
+
+
+def deterministic_json_text(value: object) -> str:
+    """Serialize one public JSON document with the repository-wide format."""
+
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        indent=2,
+    ) + "\n"
+
+
+def _warning_payloads(
+    config: SourceConfig, scan_warnings: Sequence[WarningRecord]
+) -> list[dict[str, str]]:
+    values = [
+        {
+            "root_id": warning.root_id,
+            "relative_path": ".",
+            "code": warning.code,
+            "detail": warning.detail,
+        }
+        for warning in config.warnings
+    ]
+    values.extend(
+        {
+            "root_id": warning.root_id,
+            "relative_path": warning.relative_path,
+            "code": warning.code,
+            "detail": warning.detail,
+        }
+        for warning in scan_warnings
+    )
+    return values
+
+
+def _markdown_escape(value: object) -> str:
+    text = str(value)
+    rendered: list[str] = []
+    markdown_characters = frozenset("\\`*_{}[]<>()|")
+    for character in text:
+        codepoint = ord(character)
+        if character == "\n":
+            rendered.append("\\\\n")
+        elif character == "\r":
+            rendered.append("\\\\r")
+        elif character == "\t":
+            rendered.append("\\\\t")
+        elif codepoint < 32 or codepoint == 127:
+            rendered.append(f"\\\\u{codepoint:04x}")
+        elif character in markdown_characters:
+            rendered.append("\\" + character)
+        else:
+            rendered.append(character)
+    return "".join(rendered)
+
+
+def _markdown_report(
+    inventory: Mapping[str, Any],
+    warnings_document: Mapping[str, Any],
+) -> str:
+    summary = inventory["summary"]
+    lines = [
+        "---",
+        'schema: "cognitive-card-migration-duplicate-report-v1"',
+        f'generated_at: "{inventory["generated_at"]}"',
+        f'run_id: "{inventory["run_id"]}"',
+        f'snapshot_digest: "{inventory["snapshot_digest"]}"',
+        "---",
+        "",
+        "# Cognitive Card asset inventory report",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Value |",
+        "| --- | ---: |",
+    ]
+    for field in (
+        "source_alias_count",
+        "content_object_count",
+        "duplicate_group_count",
+        "same_name_candidate_group_count",
+        "derivative_candidate_group_count",
+        "warning_count",
+        "total_source_bytes",
+        "unique_content_bytes",
+    ):
+        lines.append(f"| {field} | {summary[field]} |")
+
+    lines.extend(
+        [
+            "",
+            "## Aliases",
+            "",
+            "| Asset | Root | Relative path | Bytes |",
+            "| --- | --- | --- | ---: |",
+        ]
+    )
+    for asset in inventory["assets"]:
+        for alias in asset["source_aliases"]:
+            lines.append(
+                "| "
+                + " | ".join(
+                    (
+                        _markdown_escape(asset["migration_asset_id"]),
+                        _markdown_escape(alias["root_id"]),
+                        _markdown_escape(alias["relative_path"]),
+                        str(asset["size_bytes"]),
+                    )
+                )
+                + " |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Duplicate groups",
+            "",
+            "| Group | Alias count | Aliases |",
+            "| --- | ---: | --- |",
+        ]
+    )
+    for group in inventory["duplicate_groups"]:
+        aliases = ", ".join(
+            f'{_markdown_escape(alias["root_id"])}:{_markdown_escape(alias["relative_path"])}'
+            for alias in group["aliases"]
+        )
+        lines.append(
+            f'| {_markdown_escape(group["duplicate_group"])} | {group["alias_count"]} | {aliases} |'
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Same-name, different-digest candidates",
+            "",
+            "| Group | Normalized basename | Members |",
+            "| --- | --- | --- |",
+        ]
+    )
+    for group in inventory["same_name_candidate_groups"]:
+        members = ", ".join(_markdown_escape(item) for item in group["members"])
+        lines.append(
+            f'| {_markdown_escape(group["group_id"])} | '
+            f'{_markdown_escape(group["normalized_basename"])} | {members} |'
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Warnings",
+            "",
+            "| Root | Relative path | Reason | Detail |",
+            "| --- | --- | --- | --- |",
+        ]
+    )
+    for warning in warnings_document["warnings"]:
+        lines.append(
+            "| "
+            + " | ".join(
+                _markdown_escape(warning[field])
+                for field in ("root_id", "relative_path", "code", "detail")
+            )
+            + " |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def _semantic_inventory(inventory: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in inventory.items()
+        if key not in {"generated_at", "run_id", "snapshot_digest"}
+    }
+
+
+def build_snapshot_documents(
+    config: SourceConfig,
+    alias_records: Sequence[SourceAliasRecord],
+    scan_warnings: Sequence[WarningRecord],
+    *,
+    generated_at: str,
+) -> dict[str, str]:
+    """Build the three mutually bound snapshot documents in memory."""
+
+    _validate_generated_at(generated_at)
+    inventory = build_inventory(
+        config,
+        alias_records,
+        scan_warnings,
+        generated_at=generated_at,
+    )
+    warning_values = _warning_payloads(config, scan_warnings)
+    semantic_payload = {
+        "inventory": _semantic_inventory(inventory),
+        "warnings": warning_values,
+    }
+    snapshot_hex = hashlib.sha256(_canonical_json_bytes(semantic_payload)).hexdigest()
+    run_id = "inv_sha256_" + snapshot_hex
+    snapshot_digest = "sha256:" + snapshot_hex
+    inventory["run_id"] = run_id
+    inventory["snapshot_digest"] = snapshot_digest
+    warnings_document: dict[str, Any] = {
+        "schema": "cognitive-card-migration-warnings-v1",
+        "generated_at": generated_at,
+        "run_id": run_id,
+        "snapshot_digest": snapshot_digest,
+        "warnings": warning_values,
+    }
+    return {
+        "inventory.json": deterministic_json_text(inventory),
+        "scan-warnings.json": deterministic_json_text(warnings_document),
+        "duplicate-report.md": _markdown_report(inventory, warnings_document),
+    }
+
+
+def _absolute_normalized(path: Path) -> Path:
+    return Path(os.path.abspath(os.path.normpath(os.fspath(path))))
+
+
+def _contains_path(parent: Path, child: Path) -> bool:
+    try:
+        child.relative_to(parent)
+    except ValueError:
+        return False
+    return True
+
+
+def _validate_output_ancestors(output_root: Path) -> None:
+    output_stat = _lstat_existing_prefixes(output_root, "output root")
+    if output_stat is not None and not stat.S_ISDIR(output_stat.st_mode):
+        raise ConfigError("output root must name a non-symlink directory")
+
+
+def validate_publication_paths(
+    config: SourceConfig,
+    *,
+    config_path: Path,
+    roots_path: Path,
+    output_root: Path,
+) -> Path:
+    """Validate every destination boundary before publication can write."""
+
+    normalized_config = _absolute_normalized(config_path)
+    normalized_roots = _absolute_normalized(roots_path)
+    normalized_output = _absolute_normalized(output_root)
+    if normalized_config == normalized_roots:
+        raise ConfigError("source config and root map must be distinct")
+    if normalized_output in {normalized_config, normalized_roots}:
+        raise ConfigError("output root must be distinct from configuration files")
+    for rule in config.rules:
+        source = _absolute_normalized(rule.resolved_path)
+        if _contains_path(source, normalized_output) or _contains_path(
+            normalized_output, source
+        ):
+            raise ConfigError("output root and source roots must not contain each other")
+    _validate_output_ancestors(normalized_output)
+    return normalized_output
+
+
+def _fsync_directory(path: Path) -> None:
+    flags = os.O_RDONLY
+    if hasattr(os, "O_DIRECTORY"):
+        flags |= os.O_DIRECTORY
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    descriptor = os.open(path, flags)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def _write_new_file(path: Path, content: str) -> None:
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    descriptor = os.open(path, flags, 0o644)
+    try:
+        payload = content.encode("utf-8")
+        offset = 0
+        while offset < len(payload):
+            offset += os.write(descriptor, payload[offset:])
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def _without_generated_at_json(text: str) -> object:
+    value = json.loads(text)
+    if not isinstance(value, dict):
+        raise ValueError
+    value.pop("generated_at", None)
+    return value
+
+
+def _without_generated_at_markdown(text: str) -> str:
+    pattern = re.compile(r'^generated_at: "[^"\r\n]+"$', re.MULTILINE)
+    if len(pattern.findall(text)) != 1:
+        raise ValueError
+    return pattern.sub('generated_at: "<ignored>"', text)
+
+
+def _snapshot_matches_documents(
+    snapshot: Path, documents: Mapping[str, str]
+) -> bool:
+    expected_names = frozenset(documents)
+    try:
+        if snapshot.is_symlink() or not snapshot.is_dir():
+            return False
+        actual_names = frozenset(path.name for path in snapshot.iterdir())
+        if actual_names != expected_names:
+            return False
+        for name, expected in documents.items():
+            path = snapshot / name
+            if path.is_symlink() or not path.is_file():
+                return False
+            actual = path.read_text(encoding="utf-8")
+            if name.endswith(".json"):
+                if _without_generated_at_json(actual) != _without_generated_at_json(
+                    expected
+                ):
+                    return False
+            elif _without_generated_at_markdown(
+                actual
+            ) != _without_generated_at_markdown(expected):
+                return False
+    except (OSError, UnicodeError, ValueError, json.JSONDecodeError):
+        return False
+    return True
+
+
+def _verify_shared_identity(documents: Mapping[str, str]) -> tuple[str, str]:
+    try:
+        inventory = json.loads(documents["inventory.json"])
+        warnings_document = json.loads(documents["scan-warnings.json"])
+        run_id = inventory["run_id"]
+        digest = inventory["snapshot_digest"]
+        if (
+            warnings_document["run_id"] != run_id
+            or warnings_document["snapshot_digest"] != digest
+            or f'run_id: "{run_id}"' not in documents["duplicate-report.md"]
+            or f'snapshot_digest: "{digest}"' not in documents["duplicate-report.md"]
+        ):
+            raise ValueError
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+        raise ConfigError("snapshot documents do not share one identity") from None
+    return str(run_id), str(digest)
+
+
+def _rename_staging_to_snapshot(staging: Path, snapshot: Path) -> None:
+    os.rename(staging, snapshot)
+
+
+def _atomic_replace_latest(output_root: Path, document: Mapping[str, Any]) -> None:
+    temporary = output_root / (".latest-" + secrets.token_hex(12) + ".json")
+    try:
+        _write_new_file(temporary, deterministic_json_text(document))
+        _validate_output_ancestors(output_root)
+        os.replace(temporary, output_root / "latest.json")
+        _fsync_directory(output_root)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def publish_inventory_snapshot(
+    config: SourceConfig,
+    alias_records: Sequence[SourceAliasRecord],
+    scan_warnings: Sequence[WarningRecord],
+    *,
+    config_path: Path,
+    roots_path: Path,
+    output_root: Path,
+    generated_at: str,
+) -> dict[str, object]:
+    """Stage, verify, publish an immutable snapshot, then replace latest."""
+
+    normalized_output = validate_publication_paths(
+        config,
+        config_path=config_path,
+        roots_path=roots_path,
+        output_root=output_root,
+    )
+    documents = build_snapshot_documents(
+        config,
+        alias_records,
+        scan_warnings,
+        generated_at=generated_at,
+    )
+    run_id, snapshot_digest = _verify_shared_identity(documents)
+    staging: Path | None = None
+    try:
+        normalized_output.mkdir(parents=True, exist_ok=True)
+        _validate_output_ancestors(normalized_output)
+        snapshots = normalized_output / "snapshots"
+        snapshots.mkdir(exist_ok=True)
+        _validate_output_ancestors(snapshots)
+        staging = normalized_output / (".staging-" + secrets.token_hex(12))
+        staging.mkdir(mode=0o700)
+        for name, content in documents.items():
+            _write_new_file(staging / name, content)
+        _fsync_directory(staging)
+        if not _snapshot_matches_documents(staging, documents):
+            raise ConfigError("staged snapshot verification failed")
+
+        snapshot = snapshots / run_id
+        if snapshot.exists() or snapshot.is_symlink():
+            if not _snapshot_matches_documents(snapshot, documents):
+                raise ConfigError("existing immutable snapshot differs semantically")
+            shutil.rmtree(staging)
+            staging = None
+        else:
+            _validate_output_ancestors(snapshots)
+            _rename_staging_to_snapshot(staging, snapshot)
+            staging = None
+            _fsync_directory(snapshots)
+
+        latest: dict[str, object] = {
+            "schema": "cognitive-card-migration-latest-v1",
+            "run_id": run_id,
+            "snapshot_digest": snapshot_digest,
+            "inventory": f"snapshots/{run_id}/inventory.json",
+            "duplicates": f"snapshots/{run_id}/duplicate-report.md",
+            "warnings": f"snapshots/{run_id}/scan-warnings.json",
+        }
+        _atomic_replace_latest(normalized_output, latest)
+        return latest
+    except ConfigError:
+        raise
+    except OSError:
+        raise ConfigError("snapshot publication failed") from None
+    finally:
+        if staging is not None:
+            shutil.rmtree(staging, ignore_errors=True)
+
+
+def _read_latest(output_root: Path) -> dict[str, Any] | None:
+    try:
+        latest_path = output_root / "latest.json"
+        latest_stat = latest_path.lstat()
+        if not stat.S_ISREG(latest_stat.st_mode):
+            return None
+        value = json.loads(latest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def check_inventory_snapshot(
+    config: SourceConfig,
+    alias_records: Sequence[SourceAliasRecord],
+    scan_warnings: Sequence[WarningRecord],
+    *,
+    config_path: Path,
+    roots_path: Path,
+    output_root: Path,
+    generated_at: str,
+) -> bool:
+    normalized_output = validate_publication_paths(
+        config,
+        config_path=config_path,
+        roots_path=roots_path,
+        output_root=output_root,
+    )
+    documents = build_snapshot_documents(
+        config,
+        alias_records,
+        scan_warnings,
+        generated_at=generated_at,
+    )
+    run_id, snapshot_digest = _verify_shared_identity(documents)
+    latest = _read_latest(normalized_output)
+    expected_latest = {
+        "schema": "cognitive-card-migration-latest-v1",
+        "run_id": run_id,
+        "snapshot_digest": snapshot_digest,
+        "inventory": f"snapshots/{run_id}/inventory.json",
+        "duplicates": f"snapshots/{run_id}/duplicate-report.md",
+        "warnings": f"snapshots/{run_id}/scan-warnings.json",
+    }
+    return latest == expected_latest and _snapshot_matches_documents(
+        normalized_output / "snapshots" / run_id, documents
+    )
+
+
+def build_dry_run_summary(config: SourceConfig) -> dict[str, object]:
+    descriptors: list[tuple[int, int, str, int, int, int]] = []
+    for rule in config.rules:
+        def collect(
+            relative_path: PurePosixPath,
+            _descriptor: int,
+            file_stat: os.stat_result,
+        ) -> None:
+            descriptors.append(
+                (
+                    file_stat.st_dev,
+                    file_stat.st_ino,
+                    relative_path.as_posix(),
+                    file_stat.st_size,
+                    file_stat.st_mtime_ns,
+                    file_stat.st_ctime_ns,
+                )
+            )
+
+        walk_source(rule, collect)
+    descriptors.sort()
+    digest = hashlib.sha256(_canonical_json_bytes(descriptors)).hexdigest()
+    return {
+        "schema": "cognitive-card-migration-dry-run-summary-v1",
+        "declared_root_count": len(config.rules),
+        "eligible_file_count": len(descriptors),
+        "eligible_byte_count": sum(item[3] for item in descriptors),
+        "descriptor_digest": "sha256:" + digest,
+    }
+
+
+def _validate_generated_at(value: str) -> str:
+    if not isinstance(value, str) or not RFC3339_UTC_PATTERN.fullmatch(value):
+        raise ConfigError("generated_at must be RFC3339 UTC at whole-second precision")
+    try:
+        parsed = dt.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        raise ConfigError("generated_at must be RFC3339 UTC at whole-second precision") from None
+    if parsed.strftime("%Y-%m-%dT%H:%M:%SZ") != value:
+        raise ConfigError("generated_at must be RFC3339 UTC at whole-second precision")
+    return value
+
+
+def _current_generated_at() -> str:
+    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Inventory declared Cognitive Card assets")
+    parser.add_argument("--config", required=True, type=Path)
+    parser.add_argument("--roots", required=True, type=Path)
+    parser.add_argument("--output-root", required=True, type=Path)
+    parser.add_argument("--strict-roots", action="store_true")
+    parser.add_argument("--check", action="store_true")
+    parser.add_argument("--generated-at")
+    parser.add_argument("--dry-run-summary", action="store_true")
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
+    try:
+        generated_at = _validate_generated_at(args.generated_at or _current_generated_at())
+        config = load_source_config(
+            args.config,
+            args.roots,
+            strict_roots=args.strict_roots,
+        )
+        output_root = validate_publication_paths(
+            config,
+            config_path=args.config,
+            roots_path=args.roots,
+            output_root=args.output_root,
+        )
+        if args.dry_run_summary:
+            sys.stdout.write(deterministic_json_text(build_dry_run_summary(config)))
+            return 0
+
+        aliases: list[SourceAliasRecord] = []
+        scan_warnings: list[WarningRecord] = []
+        for rule in config.rules:
+            rule_aliases, rule_warnings = scan_source(rule)
+            aliases.extend(rule_aliases)
+            scan_warnings.extend(rule_warnings)
+        if args.check:
+            matched = check_inventory_snapshot(
+                config,
+                aliases,
+                scan_warnings,
+                config_path=args.config,
+                roots_path=args.roots,
+                output_root=output_root,
+                generated_at=generated_at,
+            )
+            return 0 if matched else 1
+        latest = publish_inventory_snapshot(
+            config,
+            aliases,
+            scan_warnings,
+            config_path=args.config,
+            roots_path=args.roots,
+            output_root=output_root,
+            generated_at=generated_at,
+        )
+        sys.stdout.write(deterministic_json_text(latest))
+        return 0
+    except (ConfigError, ValueError):
+        print("error: inventory command failed", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
