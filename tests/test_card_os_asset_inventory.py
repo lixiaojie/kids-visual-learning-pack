@@ -1095,6 +1095,52 @@ class ScannerTests(unittest.TestCase):
         )
         self._assert_warnings_sanitized(scan_warnings)
 
+    def test_fdopen_failure_does_not_leak_image_or_pdf_duplicate_descriptors(self) -> None:
+        self._write_image("fdopen-image.png", image_format="PNG", size=(8, 9))
+        self._write_pdf("fdopen.pdf", pages=1)
+        before_fds = {
+            int(name) for name in os.listdir("/dev/fd") if name.isdigit()
+        }
+
+        with patch(
+            "scripts.card_os_asset_inventory.os.fdopen",
+            side_effect=OSError(5, "fdopen failed", "/machine/private/reader"),
+        ):
+            aliases, scan_warnings = scan_source(self.rule)
+
+        after_fds = {
+            int(name) for name in os.listdir("/dev/fd") if name.isdigit()
+        }
+        leaked_fds = after_fds - before_fds
+
+        def close_if_open(descriptor: int) -> None:
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+
+        for descriptor in leaked_fds:
+            self.addCleanup(close_if_open, descriptor)
+
+        self.assertEqual(before_fds, after_fds)
+        self.assertEqual(
+            {"fdopen-image.png", "fdopen.pdf"},
+            {alias.relative_path for alias in aliases},
+        )
+        for alias in aliases:
+            self.assertEqual("unreadable", alias.metadata_status)
+            self.assertIsNone(alias.image_width)
+            self.assertIsNone(alias.image_height)
+            self.assertIsNone(alias.pdf_page_count)
+        self.assertEqual(
+            {
+                ("fdopen-image.png", "metadata_unreadable"),
+                ("fdopen.pdf", "metadata_unreadable"),
+            },
+            {(warning.relative_path, warning.code) for warning in scan_warnings},
+        )
+        self._assert_warnings_sanitized(scan_warnings)
+
     def test_missing_descriptor_platform_capability_fails_closed(self) -> None:
         (self.source / "never.txt").write_text("never", encoding="utf-8")
 

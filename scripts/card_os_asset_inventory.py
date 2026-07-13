@@ -642,6 +642,24 @@ def _isolated_library_logger(name: str):
         logger.disabled = previous_disabled
 
 
+@contextmanager
+def _duplicate_binary_reader(descriptor: int):
+    """Transfer one duplicate descriptor to fdopen or close it on construction failure."""
+
+    duplicate_descriptor: int | None = os.dup(descriptor)
+    try:
+        reader = os.fdopen(duplicate_descriptor, "rb")
+        duplicate_descriptor = None
+        with reader:
+            yield reader
+    finally:
+        if duplicate_descriptor is not None:
+            try:
+                os.close(duplicate_descriptor)
+            except OSError:
+                pass
+
+
 def sha256_descriptor(
     descriptor: int, *, expected_stat: os.stat_result
 ) -> tuple[str, int, os.stat_result]:
@@ -1052,7 +1070,7 @@ def _image_metadata(descriptor: int) -> tuple[str, int, int]:
 
     try:
         os.lseek(descriptor, 0, os.SEEK_SET)
-        with os.fdopen(os.dup(descriptor), "rb") as source:
+        with _duplicate_binary_reader(descriptor) as source:
             with warnings.catch_warnings():
                 warnings.simplefilter("error", Image.DecompressionBombWarning)
                 with Image.open(source) as image:
@@ -1072,7 +1090,7 @@ def _pdf_metadata(descriptor: int) -> int:
 
     try:
         os.lseek(descriptor, 0, os.SEEK_SET)
-        with os.fdopen(os.dup(descriptor), "rb") as source:
+        with _duplicate_binary_reader(descriptor) as source:
             with _isolated_library_logger("pypdf"):
                 with redirect_stderr(io.StringIO()):
                     return len(PdfReader(source, strict=True).pages)
