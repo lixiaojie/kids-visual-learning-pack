@@ -24,6 +24,8 @@ Project slug: `kids-visual-learning-pack`
 - [Cognitive Card OS 历史资产迁移清单](docs/cognitive-card-os-asset-migration-inventory.md)
 - [Pro 会员客户端执行架构](docs/superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md)
 - [订阅客户端执行基础实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-subscriber-execution-foundation-plan.md)
+- [远程 API、认证与协议实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)
+- [历史资产机器清单与去重实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)
 
 ## 本地预览
 

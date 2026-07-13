@@ -21,6 +21,7 @@ yarn-error.log*
 
 # temp
 tmp/
+.worktrees/
 
 # raw PNG assets — keep WebP in repo, PNGs are intermediate
 boards/*/assets/**/*.png

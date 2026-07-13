@@ -39,12 +39,12 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | READY | 编写独立设计与实施计划 |
-| AUTH-01 | Card OS 身份与权限 | READY | 与 API-01 同一里程碑设计 |
-| PROTO-01 | capability/protocol discovery | READY | 定义兼容矩阵和错误码 |
+| API-01 | HTTPS 写入 API | READY | 执行远程 API/AUTH/PROTO 实施计划 |
+| AUTH-01 | Card OS 身份与权限 | READY | 执行 CLI/Skill scoped token 批次 |
+| PROTO-01 | capability/protocol discovery | READY | 执行 capability 与兼容检查批次 |
 | SKILL-01 | Skill 发布注册表 | BACKLOG | 依赖 PROTO-01 |
 | SKILL-02 | 薄 Skill 客户端 | BACKLOG | 依赖 API-01、AUTH-01、SKILL-01 |
-| MIG-01 | 历史资产发现、摘要与去重清单 | IN PROGRESS | 将发现快照转为机器清单 |
+| MIG-01 | 历史资产发现、摘要与去重清单 | IN PROGRESS | 执行机器清单与去重实施计划 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
 | PORTAL-01 | 只读资产门户 | BACKLOG | 依赖认证和资产查询 API |
@@ -131,6 +131,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
   - 查询稳定错误和审计摘要。
 - 约束：HTTP 适配器不复制状态机；只调用现有应用服务。请求必须有大小、超时、媒体类型和幂等限制。
 - 完成条件：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
+- 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
 
 ### AUTH-01 Card OS 身份与权限
 
@@ -171,6 +172,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 已完成：定位兔子完整包、古生物包、7 种深圳植物双面卡、13 个旧知识主题、三批旧网站生图及旧副本来源。
 - 待办：生成机器可读 inventory；计算 SHA-256、媒体信息和重复组；记录 Codex 任务、原路径、现站引用、权利状态、结构证据和迁移等级。
 - 完成条件：每个候选文件有稳定 `migration_asset_id`；相同内容合并来源别名；无文件在盘点阶段被移动或删除。
+- 实施计划：[历史资产机器清单与去重实施计划](superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)。
 
 ### MIG-02 A/B 级结构化 package 导入
 
