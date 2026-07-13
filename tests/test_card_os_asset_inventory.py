@@ -1,19 +1,29 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import os
 import tempfile
 import traceback
 import unittest
 from pathlib import Path
+from pathlib import PurePosixPath
 from unittest.mock import patch
+
+from PIL import Image
+from pypdf import PdfWriter
 
 from scripts.card_os_asset_inventory import (
     ConfigError,
+    MEDIA_TYPES,
+    SourceRule,
     canonical_config_digest,
     load_source_config,
     metadata_reader_versions,
+    scan_source,
+    sha256_descriptor,
+    walk_source,
 )
 
 
@@ -633,6 +643,373 @@ class ConfigTests(unittest.TestCase):
                 else []
             )
             self.assertEqual(expected_extra, source.get("additional_extensions", []))
+
+
+class ScannerTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
+        self.base = Path(self.temporary_directory.name).resolve(strict=True)
+        self.source = self.base / "source"
+        self.source.mkdir()
+        self.rule = SourceRule(
+            root_id="scanner-assets",
+            source_group="scanner-assets",
+            locator_base="workspace",
+            locator_relative="source",
+            resolved_path=self.source,
+            source_thread_id=None,
+            migration_grade="A",
+            decision="strict_revalidate",
+            include_extensions=tuple(
+                DEFAULT_EXTENSIONS + [".html", ".css", ".js", ".ts", ".tsx"]
+            ),
+            exclude_names=tuple(DEFAULT_EXCLUDES),
+        )
+
+    def _write_image(
+        self,
+        relative_path: str,
+        *,
+        image_format: str,
+        size: tuple[int, int],
+    ) -> bytes:
+        buffer = io.BytesIO()
+        Image.new("RGB", size, color=(24, 92, 160)).save(
+            buffer, format=image_format
+        )
+        payload = buffer.getvalue()
+        target = self.source / relative_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(payload)
+        return payload
+
+    def _write_pdf(self, relative_path: str, *, pages: int) -> bytes:
+        writer = PdfWriter()
+        for _ in range(pages):
+            writer.add_blank_page(width=72, height=72)
+        buffer = io.BytesIO()
+        writer.write(buffer)
+        payload = buffer.getvalue()
+        target = self.source / relative_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(payload)
+        return payload
+
+    def _snapshot_source_files(self) -> dict[str, tuple[bytes, int, int]]:
+        snapshot: dict[str, tuple[bytes, int, int]] = {}
+        for path in sorted(self.source.rglob("*")):
+            if path.is_file() and not path.is_symlink():
+                item_stat = path.stat()
+                snapshot[path.relative_to(self.source).as_posix()] = (
+                    path.read_bytes(),
+                    item_stat.st_size,
+                    item_stat.st_mtime_ns,
+                )
+        return snapshot
+
+    def _assert_warnings_sanitized(self, warnings: object) -> None:
+        rendered = repr(warnings)
+        self.assertNotIn(str(self.base), rendered)
+        self.assertNotIn("/machine/private", rendered)
+
+    def test_walk_and_scan_are_stably_sorted_with_explicit_skip_reasons(self) -> None:
+        # Deliberately create entries in the opposite order from their logical paths.
+        (self.source / "zeta.txt").write_text("zeta", encoding="utf-8")
+        (self.source / "nested").mkdir()
+        (self.source / "nested" / "bravo.json").write_text("{}", encoding="utf-8")
+        (self.source / "alpha.md").write_text("alpha", encoding="utf-8")
+        (self.source / "unsupported.bin").write_bytes(b"binary")
+        (self.source / ".DS_Store").write_bytes(b"metadata")
+        (self.source / "dist").mkdir()
+        (self.source / "dist" / "hidden.txt").write_text("hidden", encoding="utf-8")
+
+        aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual(
+            ["alpha.md", "nested/bravo.json", "zeta.txt"],
+            [alias.relative_path for alias in aliases],
+        )
+        self.assertEqual(
+            [
+                (".DS_Store", "excluded_name"),
+                ("dist", "excluded_name"),
+                ("unsupported.bin", "unsupported_extension"),
+            ],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self._assert_warnings_sanitized(warnings)
+
+    @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
+    def test_symlinked_files_and_directories_are_skipped_and_never_opened(self) -> None:
+        outside = self.base / "outside"
+        outside.mkdir()
+        (outside / "never.txt").write_text("never", encoding="utf-8")
+        (self.source / "safe.txt").write_text("safe", encoding="utf-8")
+        (self.source / "linked-file.txt").symlink_to(outside / "never.txt")
+        (self.source / "linked-dir").symlink_to(outside, target_is_directory=True)
+        real_open = os.open
+        child_open_names: list[str] = []
+
+        def recording_open(path: object, flags: int, *args: object, **kwargs: object) -> int:
+            if isinstance(path, str) and kwargs.get("dir_fd") is not None:
+                child_open_names.append(path)
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch("scripts.card_os_asset_inventory.os.open", side_effect=recording_open):
+            aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual(["safe.txt"], [alias.relative_path for alias in aliases])
+        self.assertEqual(
+            [("linked-dir", "symlink"), ("linked-file.txt", "symlink")],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self.assertNotIn("linked-dir", child_open_names)
+        self.assertNotIn("linked-file.txt", child_open_names)
+        self.assertNotIn("never.txt", child_open_names)
+        self._assert_warnings_sanitized(warnings)
+
+    def test_hashes_in_one_mib_chunks_and_does_not_mutate_source_files(self) -> None:
+        payload = (b"0123456789abcdef" * 150_000) + b"tail"
+        target = self.source / "large.txt"
+        target.write_bytes(payload)
+        before = self._snapshot_source_files()
+        real_read = os.read
+        requested_sizes: list[int] = []
+
+        def recording_read(descriptor: int, amount: int) -> bytes:
+            requested_sizes.append(amount)
+            return real_read(descriptor, amount)
+
+        with patch("scripts.card_os_asset_inventory.os.read", side_effect=recording_read):
+            aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual([], warnings)
+        self.assertEqual(1, len(aliases))
+        self.assertEqual(hashlib.sha256(payload).hexdigest(), aliases[0].sha256)
+        self.assertEqual(len(payload), aliases[0].size_bytes)
+        self.assertTrue(requested_sizes)
+        self.assertEqual({1024 * 1024}, set(requested_sizes))
+        self.assertEqual(before, self._snapshot_source_files())
+
+    def test_sha256_descriptor_rejects_changed_expected_identity(self) -> None:
+        target = self.source / "identity.txt"
+        target.write_bytes(b"identity")
+        descriptor = os.open(target, os.O_RDONLY)
+        self.addCleanup(os.close, descriptor)
+        expected = os.fstat(descriptor)
+        changed = list(expected)
+        changed[6] += 1
+        mismatched = os.stat_result(changed)
+
+        with self.assertRaises(ValueError) as caught:
+            sha256_descriptor(descriptor, expected_stat=mismatched)
+
+        self.assertEqual("source_changed_during_scan", str(caught.exception))
+
+    def test_records_fixed_mime_types_and_observed_image_and_pdf_metadata(self) -> None:
+        self._write_image("images/sample.png", image_format="PNG", size=(13, 17))
+        self._write_image("images/sample.jpg", image_format="JPEG", size=(19, 23))
+        self._write_image("images/sample.webp", image_format="WEBP", size=(29, 31))
+        self._write_pdf("documents/sample.pdf", pages=3)
+        fixed = {
+            "data.json": "application/json",
+            "notes.md": "text/markdown",
+            "config.yaml": "application/yaml",
+            "config.yml": "application/yaml",
+            "readme.txt": "text/plain",
+            "table.tsv": "text/tab-separated-values",
+            "page.html": "text/html",
+            "style.css": "text/css",
+            "script.js": "text/javascript",
+            "types.ts": "text/typescript",
+            "component.tsx": "text/typescript",
+        }
+        for name in reversed(tuple(fixed)):
+            (self.source / name).write_text(name, encoding="utf-8")
+
+        aliases, warnings = scan_source(self.rule)
+        by_path = {alias.relative_path: alias for alias in aliases}
+
+        self.assertEqual([], warnings)
+        self.assertEqual(
+            {
+                ".png": "image/png",
+                ".webp": "image/webp",
+                ".jpg": "image/jpeg",
+                ".jpeg": "image/jpeg",
+                ".pdf": "application/pdf",
+                ".json": "application/json",
+                ".md": "text/markdown",
+                ".yaml": "application/yaml",
+                ".yml": "application/yaml",
+                ".txt": "text/plain",
+                ".tsv": "text/tab-separated-values",
+                ".html": "text/html",
+                ".css": "text/css",
+                ".js": "text/javascript",
+                ".ts": "text/typescript",
+                ".tsx": "text/typescript",
+            },
+            MEDIA_TYPES,
+        )
+        for relative_path, media_type in fixed.items():
+            alias = by_path[relative_path]
+            self.assertEqual(media_type, alias.media_type)
+            self.assertIsNone(alias.image_width)
+            self.assertIsNone(alias.image_height)
+            self.assertIsNone(alias.pdf_page_count)
+            self.assertEqual("not_applicable", alias.metadata_status)
+        for name, expected_type, dimensions in (
+            ("images/sample.png", "image/png", (13, 17)),
+            ("images/sample.jpg", "image/jpeg", (19, 23)),
+            ("images/sample.webp", "image/webp", (29, 31)),
+        ):
+            alias = by_path[name]
+            self.assertEqual(expected_type, alias.media_type)
+            self.assertEqual(dimensions, (alias.image_width, alias.image_height))
+            self.assertIsNone(alias.pdf_page_count)
+            self.assertEqual("ok", alias.metadata_status)
+        pdf = by_path["documents/sample.pdf"]
+        self.assertEqual("application/pdf", pdf.media_type)
+        self.assertEqual(3, pdf.pdf_page_count)
+        self.assertIsNone(pdf.image_width)
+        self.assertIsNone(pdf.image_height)
+        self.assertEqual("ok", pdf.metadata_status)
+
+    def test_observed_image_type_wins_and_malformed_metadata_is_retained(self) -> None:
+        mismatched_payload = self._write_image(
+            "mismatch.jpg", image_format="PNG", size=(7, 11)
+        )
+        (self.source / "broken.png").write_bytes(b"not an image")
+        (self.source / "broken.pdf").write_bytes(b"not a pdf")
+
+        aliases, warnings = scan_source(self.rule)
+        by_path = {alias.relative_path: alias for alias in aliases}
+
+        mismatch = by_path["mismatch.jpg"]
+        self.assertEqual(hashlib.sha256(mismatched_payload).hexdigest(), mismatch.sha256)
+        self.assertEqual("image/png", mismatch.media_type)
+        self.assertEqual((7, 11), (mismatch.image_width, mismatch.image_height))
+        self.assertEqual("ok", mismatch.metadata_status)
+        for name, expected_type in (
+            ("broken.png", "image/png"),
+            ("broken.pdf", "application/pdf"),
+        ):
+            alias = by_path[name]
+            self.assertEqual(expected_type, alias.media_type)
+            self.assertIsNone(alias.image_width)
+            self.assertIsNone(alias.image_height)
+            self.assertIsNone(alias.pdf_page_count)
+            self.assertEqual("unreadable", alias.metadata_status)
+        self.assertEqual(
+            [
+                ("broken.pdf", "metadata_unreadable"),
+                ("broken.png", "metadata_unreadable"),
+                ("mismatch.jpg", "media_type_mismatch"),
+            ],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self._assert_warnings_sanitized(warnings)
+
+    def test_permission_error_becomes_sanitized_warning(self) -> None:
+        (self.source / "denied.txt").write_text("private", encoding="utf-8")
+        (self.source / "safe.txt").write_text("safe", encoding="utf-8")
+        real_open = os.open
+
+        def permission_open(path: object, flags: int, *args: object, **kwargs: object) -> int:
+            if path == "denied.txt" and kwargs.get("dir_fd") is not None:
+                raise PermissionError(13, "denied", "/machine/private/denied.txt")
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch("scripts.card_os_asset_inventory.os.open", side_effect=permission_open):
+            aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual(["safe.txt"], [alias.relative_path for alias in aliases])
+        self.assertEqual(
+            [("denied.txt", "unreadable_file")],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self._assert_warnings_sanitized(warnings)
+
+    def test_file_changed_during_hash_is_excluded(self) -> None:
+        target = self.source / "changing.txt"
+        target.write_bytes(b"before")
+        real_read = os.read
+        changed = False
+
+        def mutating_read(descriptor: int, amount: int) -> bytes:
+            nonlocal changed
+            chunk = real_read(descriptor, amount)
+            if chunk and not changed:
+                changed = True
+                target.write_bytes(b"after-source-change")
+            return chunk
+
+        with patch("scripts.card_os_asset_inventory.os.read", side_effect=mutating_read):
+            aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual([], aliases)
+        self.assertEqual(
+            [("changing.txt", "source_changed_during_scan")],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self._assert_warnings_sanitized(warnings)
+
+    @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
+    def test_directory_replaced_with_symlink_fails_closed(self) -> None:
+        checked = self.source / "replace-me"
+        checked.mkdir()
+        (checked / "original.txt").write_text("original", encoding="utf-8")
+        outside = self.base / "outside-target"
+        outside.mkdir()
+        (outside / "never.txt").write_text("never", encoding="utf-8")
+        displaced = self.source / "displaced"
+        real_open = os.open
+        replaced = False
+
+        def replacing_open(path: object, flags: int, *args: object, **kwargs: object) -> int:
+            nonlocal replaced
+            if (
+                path == "replace-me"
+                and kwargs.get("dir_fd") is not None
+                and flags & getattr(os, "O_DIRECTORY", 0)
+                and not replaced
+            ):
+                replaced = True
+                checked.rename(displaced)
+                checked.symlink_to(outside, target_is_directory=True)
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch("scripts.card_os_asset_inventory.os.open", side_effect=replacing_open):
+            aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual([], aliases)
+        self.assertTrue(replaced)
+        self.assertEqual(
+            [("replace-me", "unsafe_source_entry")],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self.assertNotIn("never.txt", [alias.relative_path for alias in aliases])
+        self._assert_warnings_sanitized(warnings)
+
+    def test_walk_source_passes_only_logical_paths_and_read_only_descriptors(self) -> None:
+        (self.source / "nested").mkdir()
+        (self.source / "nested" / "item.txt").write_text("value", encoding="utf-8")
+        observed: list[tuple[PurePosixPath, bytes]] = []
+
+        def on_file(
+            relative_path: PurePosixPath,
+            descriptor: int,
+            _expected_stat: os.stat_result,
+        ) -> None:
+            self.assertFalse(relative_path.is_absolute())
+            observed.append((relative_path, os.read(descriptor, 1024)))
+
+        warnings = walk_source(self.rule, on_file)
+
+        self.assertEqual([(PurePosixPath("nested/item.txt"), b"value")], observed)
+        self.assertEqual([], warnings)
 
 
 if __name__ == "__main__":

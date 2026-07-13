@@ -13,7 +13,7 @@ import re
 import stat
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 
 SOURCE_SCHEMA = "cognitive-card-migration-sources-v1"
@@ -49,10 +49,38 @@ SOURCE_OPTIONAL_KEYS = frozenset({"additional_extensions"})
 LOCATOR_KEYS = frozenset({"base", "relative"})
 ROOT_MAP_KEYS = frozenset({"schema", "bases"})
 ROOT_BASE_KEYS = frozenset({"workspace", "codex_archive"})
+READ_CHUNK_SIZE = 1024 * 1024
+MEDIA_TYPES = {
+    ".png": "image/png",
+    ".webp": "image/webp",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".pdf": "application/pdf",
+    ".json": "application/json",
+    ".md": "text/markdown",
+    ".yaml": "application/yaml",
+    ".yml": "application/yaml",
+    ".txt": "text/plain",
+    ".tsv": "text/tab-separated-values",
+    ".html": "text/html",
+    ".css": "text/css",
+    ".js": "text/javascript",
+    ".ts": "text/typescript",
+    ".tsx": "text/typescript",
+}
+IMAGE_FORMAT_MEDIA_TYPES = {
+    "PNG": "image/png",
+    "JPEG": "image/jpeg",
+    "WEBP": "image/webp",
+}
 
 
 class ConfigError(ValueError):
     """Raised when inventory configuration cannot be used safely."""
+
+
+class _MetadataUnreadable(ValueError):
+    pass
 
 
 @dataclass(frozen=True)
@@ -82,6 +110,29 @@ class SourceConfig:
     rules: tuple[SourceRule, ...]
     warnings: tuple[ConfigWarning, ...]
     config_digest: str
+
+
+@dataclass(frozen=True)
+class WarningRecord:
+    root_id: str
+    relative_path: str
+    code: str
+    detail: str
+
+
+@dataclass(frozen=True)
+class SourceAliasRecord:
+    root_id: str
+    relative_path: str
+    source_thread_id: str | None
+    source_group: str
+    sha256: str
+    size_bytes: int
+    media_type: str
+    image_width: int | None
+    image_height: int | None
+    pdf_page_count: int | None
+    metadata_status: str
 
 
 class _DuplicateJsonKey(ValueError):
@@ -436,3 +487,532 @@ def load_source_config(
         config_digest="sha256:"
         + hashlib.sha256(_canonical_json_bytes(config)).hexdigest(),
     )
+
+
+def _warning(
+    rule: SourceRule,
+    relative_path: PurePosixPath,
+    code: str,
+    detail: str,
+) -> WarningRecord:
+    return WarningRecord(
+        root_id=rule.root_id,
+        relative_path=relative_path.as_posix(),
+        code=code,
+        detail=detail,
+    )
+
+
+def _identity(stat_result: os.stat_result) -> tuple[int, int, int, int, int]:
+    return (
+        stat_result.st_dev,
+        stat_result.st_ino,
+        stat_result.st_size,
+        stat_result.st_mtime_ns,
+        stat_result.st_ctime_ns,
+    )
+
+
+def _same_identity(left: os.stat_result, right: os.stat_result) -> bool:
+    return _identity(left) == _identity(right)
+
+
+def _descriptor_flags(*, directory: bool) -> int | None:
+    no_follow = getattr(os, "O_NOFOLLOW", None)
+    directory_flag = getattr(os, "O_DIRECTORY", None)
+    if no_follow is None or (directory and directory_flag is None):
+        return None
+    flags = os.O_RDONLY | no_follow
+    if directory:
+        flags |= directory_flag
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    return flags
+
+
+def sha256_descriptor(
+    descriptor: int, *, expected_stat: os.stat_result
+) -> tuple[str, int, os.stat_result]:
+    """Hash one already-open regular file without reopening its pathname."""
+
+    before = os.fstat(descriptor)
+    if not stat.S_ISREG(before.st_mode) or not _same_identity(expected_stat, before):
+        raise ValueError("source_changed_during_scan")
+    os.lseek(descriptor, 0, os.SEEK_SET)
+    digest = hashlib.sha256()
+    total = 0
+    while True:
+        chunk = os.read(descriptor, READ_CHUNK_SIZE)
+        if not chunk:
+            break
+        digest.update(chunk)
+        total += len(chunk)
+    after = os.fstat(descriptor)
+    if (
+        not _same_identity(expected_stat, after)
+        or not _same_identity(before, after)
+        or total != after.st_size
+    ):
+        raise ValueError("source_changed_during_scan")
+    return digest.hexdigest(), total, after
+
+
+def walk_source(
+    rule: SourceRule,
+    on_file: Callable[[PurePosixPath, int, os.stat_result], None],
+) -> list[WarningRecord]:
+    """Walk a declared source through directory descriptors without following links."""
+
+    warnings: list[WarningRecord] = []
+    root_relative = PurePosixPath(".")
+    directory_flags = _descriptor_flags(directory=True)
+    file_flags = _descriptor_flags(directory=False)
+    if directory_flags is None or file_flags is None:
+        return [
+            _warning(
+                rule,
+                root_relative,
+                "unsafe_source_entry",
+                "required no-follow descriptor operations are unavailable",
+            )
+        ]
+
+    try:
+        root_lstat = rule.resolved_path.lstat()
+    except FileNotFoundError:
+        return [
+            _warning(
+                rule,
+                root_relative,
+                "missing_root",
+                "declared source root does not exist on this machine",
+            )
+        ]
+    except OSError:
+        return [
+            _warning(
+                rule,
+                root_relative,
+                "unsafe_source_entry",
+                "declared source root could not be inspected safely",
+            )
+        ]
+    if stat.S_ISLNK(root_lstat.st_mode) or not stat.S_ISDIR(root_lstat.st_mode):
+        return [
+            _warning(
+                rule,
+                root_relative,
+                "unsafe_source_entry",
+                "declared source root is not a non-symlink directory",
+            )
+        ]
+
+    try:
+        root_descriptor = os.open(rule.resolved_path, directory_flags)
+    except OSError:
+        return [
+            _warning(
+                rule,
+                root_relative,
+                "unsafe_source_entry",
+                "declared source root could not be opened safely",
+            )
+        ]
+
+    def traverse(parent_descriptor: int, logical_parent: PurePosixPath) -> None:
+        try:
+            with os.scandir(parent_descriptor) as iterator:
+                entries = sorted(iterator, key=lambda candidate: candidate.name)
+        except OSError:
+            warnings.append(
+                _warning(
+                    rule,
+                    logical_parent,
+                    "unreadable_directory",
+                    "source directory could not be read",
+                )
+            )
+            return
+
+        for entry in entries:
+            name = entry.name
+            if not isinstance(name, str) or name in {"", ".", ".."} or "/" in name:
+                warnings.append(
+                    _warning(
+                        rule,
+                        logical_parent,
+                        "unsafe_source_entry",
+                        "source entry has an unsafe logical name",
+                    )
+                )
+                continue
+            relative_path = logical_parent / name
+            if name in rule.exclude_names:
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "excluded_name",
+                        "entry name is excluded by the source rule",
+                    )
+                )
+                continue
+            try:
+                discovery_stat = entry.stat(follow_symlinks=False)
+            except OSError:
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "unsafe_source_entry",
+                        "source entry could not be inspected safely",
+                    )
+                )
+                continue
+            if stat.S_ISLNK(discovery_stat.st_mode):
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "symlink",
+                        "symbolic links are not followed",
+                    )
+                )
+                continue
+            if stat.S_ISDIR(discovery_stat.st_mode):
+                try:
+                    child_descriptor = os.open(
+                        name,
+                        directory_flags,
+                        dir_fd=parent_descriptor,
+                    )
+                except OSError:
+                    warnings.append(
+                        _warning(
+                            rule,
+                            relative_path,
+                            "unsafe_source_entry",
+                            "source directory failed descriptor safety checks",
+                        )
+                    )
+                    continue
+                try:
+                    try:
+                        child_stat = os.fstat(child_descriptor)
+                    except OSError:
+                        warnings.append(
+                            _warning(
+                                rule,
+                                relative_path,
+                                "unsafe_source_entry",
+                                "source directory failed descriptor safety checks",
+                            )
+                        )
+                        continue
+                    if not stat.S_ISDIR(child_stat.st_mode) or not _same_identity(
+                        discovery_stat, child_stat
+                    ):
+                        warnings.append(
+                            _warning(
+                                rule,
+                                relative_path,
+                                "unsafe_source_entry",
+                                "source directory changed before traversal",
+                            )
+                        )
+                        continue
+                    traverse(child_descriptor, relative_path)
+                    try:
+                        final_entry_stat = os.stat(
+                            name,
+                            dir_fd=parent_descriptor,
+                            follow_symlinks=False,
+                        )
+                    except OSError:
+                        final_entry_stat = None
+                    if final_entry_stat is None or not _same_identity(
+                        discovery_stat, final_entry_stat
+                    ):
+                        warnings.append(
+                            _warning(
+                                rule,
+                                relative_path,
+                                "unsafe_source_entry",
+                                "source directory changed during traversal",
+                            )
+                        )
+                finally:
+                    os.close(child_descriptor)
+                continue
+            if not stat.S_ISREG(discovery_stat.st_mode):
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "unsafe_source_entry",
+                        "non-regular source entries are not scanned",
+                    )
+                )
+                continue
+            extension = relative_path.suffix.lower()
+            if extension not in rule.include_extensions:
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "unsupported_extension",
+                        f"extension {extension or '[none]'} is not enabled for this root",
+                    )
+                )
+                continue
+            try:
+                file_descriptor = os.open(
+                    name,
+                    file_flags,
+                    dir_fd=parent_descriptor,
+                )
+            except PermissionError:
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "unreadable_file",
+                        "source file could not be opened for reading",
+                    )
+                )
+                continue
+            except OSError:
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "unsafe_source_entry",
+                        "source file failed descriptor safety checks",
+                    )
+                )
+                continue
+            try:
+                try:
+                    opened_stat = os.fstat(file_descriptor)
+                except OSError:
+                    warnings.append(
+                        _warning(
+                            rule,
+                            relative_path,
+                            "unsafe_source_entry",
+                            "source file failed descriptor safety checks",
+                        )
+                    )
+                    continue
+                if not stat.S_ISREG(opened_stat.st_mode) or not _same_identity(
+                    discovery_stat, opened_stat
+                ):
+                    warnings.append(
+                        _warning(
+                            rule,
+                            relative_path,
+                            "unsafe_source_entry",
+                            "source file changed before it was opened",
+                        )
+                    )
+                    continue
+                try:
+                    on_file(relative_path, file_descriptor, discovery_stat)
+                    final_stat = os.fstat(file_descriptor)
+                    try:
+                        final_entry_stat = os.stat(
+                            name,
+                            dir_fd=parent_descriptor,
+                            follow_symlinks=False,
+                        )
+                    except OSError:
+                        final_entry_stat = None
+                    if (
+                        not _same_identity(discovery_stat, final_stat)
+                        or final_entry_stat is None
+                        or not _same_identity(discovery_stat, final_entry_stat)
+                    ):
+                        raise ValueError("source_changed_during_scan")
+                except ValueError as error:
+                    if str(error) != "source_changed_during_scan":
+                        raise
+                    warnings.append(
+                        _warning(
+                            rule,
+                            relative_path,
+                            "source_changed_during_scan",
+                            "source file changed during the scan",
+                        )
+                    )
+                except (OSError, PermissionError):
+                    warnings.append(
+                        _warning(
+                            rule,
+                            relative_path,
+                            "unreadable_file",
+                            "source file could not be read",
+                        )
+                    )
+            finally:
+                os.close(file_descriptor)
+
+    try:
+        opened_root_stat = os.fstat(root_descriptor)
+        if not stat.S_ISDIR(opened_root_stat.st_mode) or not _same_identity(
+            root_lstat, opened_root_stat
+        ):
+            warnings.append(
+                _warning(
+                    rule,
+                    root_relative,
+                    "unsafe_source_entry",
+                    "declared source root changed before traversal",
+                )
+            )
+        else:
+            traverse(root_descriptor, PurePosixPath())
+    except OSError:
+        warnings.append(
+            _warning(
+                rule,
+                root_relative,
+                "unsafe_source_entry",
+                "declared source root failed descriptor safety checks",
+            )
+        )
+    finally:
+        os.close(root_descriptor)
+    warnings.sort(key=lambda warning: (warning.relative_path, warning.code))
+    return warnings
+
+
+def _image_metadata(descriptor: int) -> tuple[str, int, int]:
+    from PIL import Image, UnidentifiedImageError
+
+    try:
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        with os.fdopen(os.dup(descriptor), "rb") as source:
+            with Image.open(source) as image:
+                image.load()
+                observed_media_type = IMAGE_FORMAT_MEDIA_TYPES.get(str(image.format))
+                if observed_media_type is None:
+                    raise _MetadataUnreadable
+                width, height = image.size
+    except (OSError, SyntaxError, ValueError, UnidentifiedImageError):
+        raise _MetadataUnreadable from None
+    return observed_media_type, int(width), int(height)
+
+
+def _pdf_metadata(descriptor: int) -> int:
+    from pypdf import PdfReader
+    from pypdf.errors import PyPdfError
+
+    try:
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        with os.fdopen(os.dup(descriptor), "rb") as source:
+            return len(PdfReader(source, strict=True).pages)
+    except (OSError, ValueError, TypeError, KeyError, EOFError, PyPdfError):
+        raise _MetadataUnreadable from None
+
+
+def scan_source(
+    rule: SourceRule,
+) -> tuple[list[SourceAliasRecord], list[WarningRecord]]:
+    """Hash and describe every eligible alias in one declared source root."""
+
+    aliases: list[SourceAliasRecord] = []
+    metadata_warnings: list[WarningRecord] = []
+
+    def scan_file(
+        relative_path: PurePosixPath,
+        descriptor: int,
+        expected_stat: os.stat_result,
+    ) -> None:
+        digest, size_bytes, _ = sha256_descriptor(
+            descriptor, expected_stat=expected_stat
+        )
+        extension = relative_path.suffix.lower()
+        media_type = MEDIA_TYPES[extension]
+        image_width: int | None = None
+        image_height: int | None = None
+        pdf_page_count: int | None = None
+        metadata_status = "not_applicable"
+        pending_warning: WarningRecord | None = None
+        if extension in {".png", ".webp", ".jpg", ".jpeg"}:
+            try:
+                observed_type, image_width, image_height = _image_metadata(descriptor)
+            except _MetadataUnreadable:
+                metadata_status = "unreadable"
+                pending_warning = _warning(
+                    rule,
+                    relative_path,
+                    "metadata_unreadable",
+                    "image metadata could not be read",
+                )
+            else:
+                metadata_status = "ok"
+                if observed_type != media_type:
+                    media_type = observed_type
+                    pending_warning = _warning(
+                        rule,
+                        relative_path,
+                        "media_type_mismatch",
+                        "observed image media type differs from the filename extension",
+                    )
+        elif extension == ".pdf":
+            try:
+                pdf_page_count = _pdf_metadata(descriptor)
+            except _MetadataUnreadable:
+                metadata_status = "unreadable"
+                pending_warning = _warning(
+                    rule,
+                    relative_path,
+                    "metadata_unreadable",
+                    "PDF metadata could not be read",
+                )
+            else:
+                metadata_status = "ok"
+        final_stat = os.fstat(descriptor)
+        if not _same_identity(expected_stat, final_stat):
+            raise ValueError("source_changed_during_scan")
+        aliases.append(
+            SourceAliasRecord(
+                root_id=rule.root_id,
+                relative_path=relative_path.as_posix(),
+                source_thread_id=rule.source_thread_id,
+                source_group=rule.source_group,
+                sha256=digest,
+                size_bytes=size_bytes,
+                media_type=media_type,
+                image_width=image_width,
+                image_height=image_height,
+                pdf_page_count=pdf_page_count,
+                metadata_status=metadata_status,
+            )
+        )
+        if pending_warning is not None:
+            metadata_warnings.append(pending_warning)
+
+    walk_warnings = walk_source(rule, scan_file)
+    rejected_paths = {
+        warning.relative_path
+        for warning in walk_warnings
+        if warning.code in {"source_changed_during_scan", "unsafe_source_entry"}
+    }
+    rejected_prefixes = tuple(path + "/" for path in rejected_paths)
+    aliases = [
+        alias
+        for alias in aliases
+        if alias.relative_path not in rejected_paths
+        and not alias.relative_path.startswith(rejected_prefixes)
+    ]
+    metadata_warnings = [
+        warning
+        for warning in metadata_warnings
+        if warning.relative_path not in rejected_paths
+        and not warning.relative_path.startswith(rejected_prefixes)
+    ]
+    aliases.sort(key=lambda alias: (alias.relative_path, alias.sha256))
+    warnings = [*walk_warnings, *metadata_warnings]
+    warnings.sort(key=lambda warning: (warning.relative_path, warning.code))
+    return aliases, warnings
