@@ -1890,7 +1890,7 @@ class WriterAndCliTests(unittest.TestCase):
 
     def test_snapshot_documents_share_identity_and_markdown_escapes_values(self) -> None:
         aliases = [
-            self._alias("one/odd|`[name]\n.txt", b"first"),
+            self._alias("one/odd|`[name]\n\x85\u2028\u200b.txt", b"first"),
             self._alias("two/odd|`[name]\n.txt", b"second"),
             self._alias("copies/shared.txt", b"first"),
         ]
@@ -1935,6 +1935,13 @@ class WriterAndCliTests(unittest.TestCase):
             self.assertIn(field, report)
         self.assertNotIn("odd|`[name]\n.txt", report)
         self.assertIn(r"odd\|\`\[name\]\\n.txt", report)
+        for unsafe_character, escaped in (
+            ("\x85", r"\u0085"),
+            ("\u2028", r"\u2028"),
+            ("\u200b", r"\u200b"),
+        ):
+            self.assertNotIn(unsafe_character, report)
+            self.assertIn(escaped, report)
 
     def test_warnings_document_preserves_all_required_reason_codes(self) -> None:
         required_codes = (
@@ -2007,6 +2014,74 @@ class WriterAndCliTests(unittest.TestCase):
                 output_root=symlink / "nested",
             )
         self.assertFalse((self.base / "real-output").exists())
+
+    def test_publication_rejects_config_and_root_map_containment_before_writing(self) -> None:
+        config = self._config()
+        for protected_kind in ("config", "roots"):
+            with self.subTest(protected_kind=protected_kind):
+                output = self.base / f"publish-{protected_kind}"
+                output.mkdir()
+                protected = output / "latest.json"
+                original_path = (
+                    self.config_path if protected_kind == "config" else self.roots_path
+                )
+                protected.write_bytes(original_path.read_bytes())
+                before = protected.read_bytes()
+                kwargs = {
+                    "config_path": protected if protected_kind == "config" else self.config_path,
+                    "roots_path": protected if protected_kind == "roots" else self.roots_path,
+                    "output_root": output,
+                    "generated_at": self.GENERATED_AT,
+                }
+
+                with self.assertRaises(ConfigError) as caught:
+                    inventory_module.publish_inventory_snapshot(
+                        config, [], [], **kwargs
+                    )
+
+                self.assertEqual(before, protected.read_bytes())
+                self.assertEqual(["latest.json"], sorted(path.name for path in output.iterdir()))
+                self.assertNotIn(str(self.base), str(caught.exception))
+
+        protected_directory = self.base / "protected-files"
+        protected_directory.mkdir()
+        protected_config = protected_directory / "config.json"
+        protected_roots = protected_directory / "roots.json"
+        protected_config.write_bytes(self.config_path.read_bytes())
+        protected_roots.write_bytes(self.roots_path.read_bytes())
+        for output, config_path, roots_path in (
+            (protected_directory, protected_config, self.roots_path),
+            (protected_directory, self.config_path, protected_roots),
+            (protected_config / "nested", protected_config, self.roots_path),
+            (protected_roots / "nested", self.config_path, protected_roots),
+        ):
+            with self.subTest(output=str(output.relative_to(self.base))):
+                with self.assertRaises(ConfigError) as caught:
+                    inventory_module.validate_publication_paths(
+                        config,
+                        config_path=config_path,
+                        roots_path=roots_path,
+                        output_root=output,
+                    )
+                self.assertNotIn(str(self.base), str(caught.exception))
+
+        alias_directory = self.base / "path-alias"
+        try:
+            alias_directory.symlink_to(protected_directory, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            return
+        for config_path, roots_path in (
+            (alias_directory / "config.json", self.roots_path),
+            (self.config_path, alias_directory / "roots.json"),
+        ):
+            with self.subTest(alias=config_path.name if config_path != self.config_path else roots_path.name):
+                with self.assertRaises(ConfigError):
+                    inventory_module.validate_publication_paths(
+                        config,
+                        config_path=config_path,
+                        roots_path=roots_path,
+                        output_root=self.base / "unrelated-output",
+                    )
 
     def test_failure_before_snapshot_rename_preserves_prior_publication(self) -> None:
         first = self._publish([self._alias("first.txt", b"first")])
@@ -2121,6 +2196,59 @@ class WriterAndCliTests(unittest.TestCase):
 
         with self.assertRaises(ConfigError):
             self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+    def test_check_requires_valid_top_level_generated_at_in_complete_documents(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        published = self._publish(aliases)
+        snapshot = self.output / "snapshots" / str(published["run_id"])
+
+        def check() -> bool:
+            with patch.object(
+                inventory_module,
+                "metadata_reader_versions",
+                return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+            ):
+                return inventory_module.check_inventory_snapshot(
+                    self._config(), aliases, [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=self.output,
+                    generated_at="2030-01-02T03:04:05Z",
+                )
+
+        for filename in ("inventory.json", "scan-warnings.json"):
+            document_path = snapshot / filename
+            original = document_path.read_text(encoding="utf-8")
+            value = json.loads(original)
+            mutations = []
+            missing = dict(value)
+            del missing["generated_at"]
+            mutations.append(json.dumps(missing, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+            wrong_type = dict(value)
+            wrong_type["generated_at"] = 42
+            mutations.append(json.dumps(wrong_type, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+            nested = json.loads(original)
+            nested.setdefault("summary", {})["generated_at"] = self.GENERATED_AT
+            mutations.append(json.dumps(nested, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+            duplicate = original.replace(
+                f'  "generated_at": "{self.GENERATED_AT}",',
+                f'  "generated_at": "{self.GENERATED_AT}",\n  "generated_at": "{self.GENERATED_AT}",',
+                1,
+            )
+            mutations.append(duplicate)
+            for index, mutated in enumerate(mutations):
+                with self.subTest(filename=filename, mutation=index):
+                    document_path.write_text(mutated, encoding="utf-8")
+                    self.assertFalse(check())
+            document_path.write_text(original, encoding="utf-8")
+
+        report_path = snapshot / "duplicate-report.md"
+        original_report = report_path.read_text(encoding="utf-8")
+        report_path.write_text(
+            original_report.replace(
+                f'generated_at: "{self.GENERATED_AT}"\n', "", 1
+            ),
+            encoding="utf-8",
+        )
+        self.assertFalse(check())
 
     def test_dry_run_summary_hashes_sorted_descriptors_without_reading_contents(self) -> None:
         first = self.source / "b.txt"

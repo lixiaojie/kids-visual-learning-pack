@@ -1678,14 +1678,17 @@ def _markdown_escape(value: object) -> str:
     markdown_characters = frozenset("\\`*_{}[]<>()|")
     for character in text:
         codepoint = ord(character)
+        category = unicodedata.category(character)
         if character == "\n":
             rendered.append("\\\\n")
         elif character == "\r":
             rendered.append("\\\\r")
         elif character == "\t":
             rendered.append("\\\\t")
-        elif codepoint < 32 or codepoint == 127:
-            rendered.append(f"\\\\u{codepoint:04x}")
+        elif category.startswith("C") or category in {"Zl", "Zp"}:
+            escape = "u" if codepoint <= 0xFFFF else "U"
+            width = 4 if codepoint <= 0xFFFF else 8
+            rendered.append(f"\\{escape}{codepoint:0{width}x}")
         elif character in markdown_characters:
             rendered.append("\\" + character)
         else:
@@ -1870,6 +1873,20 @@ def _validate_output_ancestors(output_root: Path) -> None:
         raise ConfigError("output root must name a non-symlink directory")
 
 
+def _validated_protected_file(
+    path: Path, label: str
+) -> tuple[Path, os.stat_result]:
+    normalized = _absolute_normalized(path)
+    path_stat = _lstat_existing_prefixes(normalized, label)
+    if path_stat is None or not stat.S_ISREG(path_stat.st_mode):
+        raise ConfigError(f"{label} must name a non-symlink regular file")
+    try:
+        resolved = normalized.resolve(strict=True)
+    except OSError:
+        raise ConfigError(f"{label} cannot be validated safely") from None
+    return resolved, path_stat
+
+
 def validate_publication_paths(
     config: SourceConfig,
     *,
@@ -1879,21 +1896,40 @@ def validate_publication_paths(
 ) -> Path:
     """Validate every destination boundary before publication can write."""
 
-    normalized_config = _absolute_normalized(config_path)
-    normalized_roots = _absolute_normalized(roots_path)
+    normalized_config, config_stat = _validated_protected_file(
+        config_path, "source config"
+    )
+    normalized_roots, roots_stat = _validated_protected_file(
+        roots_path, "root map"
+    )
     normalized_output = _absolute_normalized(output_root)
-    if normalized_config == normalized_roots:
+    _validate_output_ancestors(normalized_output)
+    try:
+        resolved_output = normalized_output.resolve(strict=False)
+    except OSError:
+        raise ConfigError("output root cannot be validated safely") from None
+    if (
+        normalized_config == normalized_roots
+        or resolved_output == normalized_config
+        or resolved_output == normalized_roots
+        or (config_stat.st_dev, config_stat.st_ino)
+        == (roots_stat.st_dev, roots_stat.st_ino)
+    ):
         raise ConfigError("source config and root map must be distinct")
-    if normalized_output in {normalized_config, normalized_roots}:
-        raise ConfigError("output root must be distinct from configuration files")
+    for protected in (normalized_config, normalized_roots):
+        if _contains_path(protected, resolved_output) or _contains_path(
+            resolved_output, protected
+        ):
+            raise ConfigError(
+                "output root and configuration files must not contain each other"
+            )
     for rule in config.rules:
         source = _absolute_normalized(rule.resolved_path)
-        if _contains_path(source, normalized_output) or _contains_path(
-            normalized_output, source
+        if _contains_path(source, resolved_output) or _contains_path(
+            resolved_output, source
         ):
             raise ConfigError("output root and source roots must not contain each other")
-    _validate_output_ancestors(normalized_output)
-    return normalized_output
+    return resolved_output
 
 
 def _fsync_directory(path: Path) -> None:
@@ -1925,17 +1961,23 @@ def _write_new_file(path: Path, content: str) -> None:
 
 
 def _without_generated_at_json(text: str) -> object:
-    value = json.loads(text)
+    value = json.loads(text, object_pairs_hook=_reject_duplicate_json_keys)
     if not isinstance(value, dict):
         raise ValueError
-    value.pop("generated_at", None)
+    generated_at = value.get("generated_at")
+    if not isinstance(generated_at, str):
+        raise ValueError
+    _validate_generated_at(generated_at)
+    del value["generated_at"]
     return value
 
 
 def _without_generated_at_markdown(text: str) -> str:
-    pattern = re.compile(r'^generated_at: "[^"\r\n]+"$', re.MULTILINE)
-    if len(pattern.findall(text)) != 1:
+    pattern = re.compile(r'^generated_at: "([^"\r\n]+)"$', re.MULTILINE)
+    matches = pattern.findall(text)
+    if len(matches) != 1:
         raise ValueError
+    _validate_generated_at(matches[0])
     return pattern.sub('generated_at: "<ignored>"', text)
 
 
