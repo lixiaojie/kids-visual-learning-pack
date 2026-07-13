@@ -1350,6 +1350,12 @@ def _is_positive_integer_or_none(value: object) -> bool:
     )
 
 
+def _is_nonnegative_integer_or_none(value: object) -> bool:
+    return value is None or (
+        isinstance(value, int) and not isinstance(value, bool) and value >= 0
+    )
+
+
 def _has_valid_alias_metadata(alias: SourceAliasRecord, rule: SourceRule) -> bool:
     if (
         not isinstance(alias.media_type, str)
@@ -1358,7 +1364,7 @@ def _has_valid_alias_metadata(alias: SourceAliasRecord, rule: SourceRule) -> boo
         or alias.metadata_status not in VALID_METADATA_STATUSES
         or not _is_positive_integer_or_none(alias.image_width)
         or not _is_positive_integer_or_none(alias.image_height)
-        or not _is_positive_integer_or_none(alias.pdf_page_count)
+        or not _is_nonnegative_integer_or_none(alias.pdf_page_count)
     ):
         return False
 

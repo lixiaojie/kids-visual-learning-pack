@@ -1851,7 +1851,6 @@ class AggregationTests(unittest.TestCase):
             replace(pdf_alias, metadata_status="not_applicable"),
             replace(pdf_alias, pdf_page_count=None),
             replace(pdf_alias, pdf_page_count=True),
-            replace(pdf_alias, pdf_page_count=0),
             replace(pdf_alias, pdf_page_count=-1),
             replace(pdf_alias, pdf_page_count="1"),  # type: ignore[arg-type]
             replace(pdf_alias, image_width=10),
@@ -1862,6 +1861,40 @@ class AggregationTests(unittest.TestCase):
             with self.subTest(invalid=repr(alias)):
                 with self.assertRaisesRegex(ValueError, "^invalid_alias_record$"):
                     self._build([alias])
+
+    def test_zero_page_pdf_from_scanner_is_valid_aggregation_input(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            source = Path(temporary_directory).resolve(strict=True) / "source"
+            source.mkdir()
+            buffer = io.BytesIO()
+            PdfWriter().write(buffer)
+            (source / "empty.pdf").write_bytes(buffer.getvalue())
+            rule = replace(self.rules[0], resolved_path=source)
+            config = SourceConfig(
+                schema=SCHEMA,
+                rules=(rule,),
+                warnings=(),
+                config_digest=self.config.config_digest,
+            )
+
+            aliases, scan_warnings = scan_source(rule)
+
+            self.assertEqual([], scan_warnings)
+            self.assertEqual(1, len(aliases))
+            self.assertEqual("ok", aliases[0].metadata_status)
+            self.assertEqual(0, aliases[0].pdf_page_count)
+            with patch(
+                "scripts.card_os_asset_inventory.metadata_reader_versions",
+                return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+            ):
+                inventory = build_inventory(
+                    config,
+                    aliases,
+                    scan_warnings,
+                    generated_at="2026-07-13T00:00:00Z",
+                )
+
+        self.assertEqual(0, inventory["assets"][0]["source_aliases"][0]["pdf_page_count"])
 
 
 class WriterAndCliTests(unittest.TestCase):
