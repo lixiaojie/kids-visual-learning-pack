@@ -2106,6 +2106,39 @@ class WriterAndCliTests(unittest.TestCase):
         )
         self.assertEqual([], list(self.output.glob(".staging-*")))
 
+    def test_output_swap_race_never_writes_through_symlink_into_source(self) -> None:
+        output = self.base / "race-output"
+        output.mkdir()
+        source_file = self.source / "unchanged.txt"
+        source_file.write_bytes(b"source must stay byte-for-byte unchanged")
+        before_bytes = source_file.read_bytes()
+        before_entries = sorted(path.name for path in self.source.iterdir())
+        displaced = self.base / "race-output-detached"
+        real_mkdir = os.mkdir
+        swapped = False
+
+        def racing_mkdir(path, mode=0o777, *, dir_fd=None):
+            nonlocal swapped
+            if not swapped and Path(path).name == "snapshots":
+                swapped = True
+                output.rename(displaced)
+                output.symlink_to(self.source, target_is_directory=True)
+            if dir_fd is None:
+                return real_mkdir(path, mode)
+            return real_mkdir(path, mode, dir_fd=dir_fd)
+
+        with patch.object(os, "mkdir", side_effect=racing_mkdir):
+            with self.assertRaises(ConfigError):
+                inventory_module.publish_inventory_snapshot(
+                    self._config(), [], [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=output,
+                    generated_at=self.GENERATED_AT,
+                )
+
+        self.assertTrue(swapped)
+        self.assertEqual(before_bytes, source_file.read_bytes())
+        self.assertEqual(before_entries, sorted(path.name for path in self.source.iterdir()))
+
     def test_check_ignores_only_generated_at_and_requires_complete_snapshot(self) -> None:
         aliases = [self._alias("item.txt", b"payload")]
         self._publish(aliases)
@@ -2196,6 +2229,107 @@ class WriterAndCliTests(unittest.TestCase):
 
         with self.assertRaises(ConfigError):
             self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+    def test_snapshot_files_with_external_hardlinks_are_rejected(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        published = self._publish(aliases)
+        snapshot = self.output / "snapshots" / str(published["run_id"])
+        linked = self.base / "external-inventory-link.json"
+        try:
+            os.link(snapshot / "inventory.json", linked)
+        except OSError:
+            self.skipTest("hard links unavailable")
+
+        with patch.object(inventory_module, "metadata_reader_versions", return_value={"pillow": "12.0.0", "pypdf": "6.0.0"}):
+            self.assertFalse(
+                inventory_module.check_inventory_snapshot(
+                    self._config(), aliases, [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=self.output,
+                    generated_at="2030-01-02T03:04:05Z",
+                )
+            )
+        with self.assertRaises(ConfigError):
+            self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+    def test_snapshot_identity_is_reverified_inside_latest_replacement(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        published = self._publish(aliases)
+        snapshot = self.output / "snapshots" / str(published["run_id"])
+        inventory_path = snapshot / "inventory.json"
+        prior_latest = (self.output / "latest.json").read_bytes()
+        real_write = inventory_module._write_new_file_at
+        replaced = False
+
+        def racing_write(directory_fd, name, content):
+            nonlocal replaced
+            real_write(directory_fd, name, content)
+            if not replaced and name.startswith(".latest-"):
+                replaced = True
+                payload = inventory_path.read_bytes()
+                old_path = snapshot / "inventory.old"
+                inventory_path.rename(old_path)
+                inventory_path.write_bytes(payload)
+                old_path.unlink()
+
+        with patch.object(
+            inventory_module, "_write_new_file_at", side_effect=racing_write
+        ):
+            with self.assertRaises(ConfigError):
+                self._publish(aliases, generated_at="2030-01-02T03:04:05Z")
+
+        self.assertTrue(replaced)
+        self.assertEqual(prior_latest, (self.output / "latest.json").read_bytes())
+
+    def test_publication_attach_failure_does_not_leak_descriptors(self) -> None:
+        fd_root = Path("/dev/fd") if Path("/dev/fd").is_dir() else Path("/proc/self/fd")
+        if not fd_root.is_dir():
+            self.skipTest("descriptor count is unavailable")
+        output = self.base / "fd-output"
+        output.mkdir()
+        before = len(list(fd_root.iterdir()))
+        real_stat = os.stat
+        injected = False
+
+        def failing_stat(path, *args, **kwargs):
+            nonlocal injected
+            if not injected and path == output.name and kwargs.get("dir_fd") is not None:
+                injected = True
+                raise OSError("simulated descriptor identity failure")
+            return real_stat(path, *args, **kwargs)
+
+        with patch.object(os, "stat", side_effect=failing_stat):
+            with self.assertRaises(ConfigError):
+                inventory_module.publish_inventory_snapshot(
+                    self._config(), [], [], config_path=self.config_path,
+                    roots_path=self.roots_path, output_root=output,
+                    generated_at=self.GENERATED_AT,
+                )
+
+        self.assertTrue(injected)
+        self.assertEqual(before, len(list(fd_root.iterdir())))
+
+    def test_latest_rejects_duplicate_keys_at_the_first_or_last_position(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        self._publish(aliases)
+        latest_path = self.output / "latest.json"
+        original = latest_path.read_text(encoding="utf-8")
+        duplicate_documents = (
+            original.replace("{\n", '{\n  "run_id": "attacker-first",\n', 1),
+            original.rstrip("\n}") + ',\n  "run_id": "' + json.loads(original)["run_id"] + '"\n}\n',
+        )
+
+        for index, document in enumerate(duplicate_documents):
+            with self.subTest(position=index):
+                latest_path.write_text(document, encoding="utf-8")
+                with patch.object(inventory_module, "metadata_reader_versions", return_value={"pillow": "12.0.0", "pypdf": "6.0.0"}):
+                    self.assertFalse(
+                        inventory_module.check_inventory_snapshot(
+                            self._config(), aliases, [], config_path=self.config_path,
+                            roots_path=self.roots_path, output_root=self.output,
+                            generated_at="2030-01-02T03:04:05Z",
+                        )
+                    )
+        latest_path.write_text(original, encoding="utf-8")
 
     def test_check_requires_valid_top_level_generated_at_in_complete_documents(self) -> None:
         aliases = [self._alias("item.txt", b"payload")]
@@ -2288,6 +2422,69 @@ class WriterAndCliTests(unittest.TestCase):
         self.assertEqual(8, summary["eligible_byte_count"])
         self.assertEqual(expected_digest, summary["descriptor_digest"])
         self.assertFalse(self.output.exists())
+
+    def test_dry_run_fails_closed_on_walk_warnings_even_after_callback(self) -> None:
+        source_file = self.source / "item.txt"
+        source_file.write_bytes(b"unchanged source")
+        original_bytes = source_file.read_bytes()
+        warning_codes = (
+            "source_changed_during_scan",
+            "unsafe_source_entry",
+            "unreadable_file",
+            "unreadable_directory",
+        )
+
+        for warning_code in warning_codes:
+            def warning_walk(rule, on_file, code=warning_code):
+                descriptor = os.open(source_file, os.O_RDONLY)
+                try:
+                    on_file(
+                        PurePosixPath("item.txt"), descriptor, os.fstat(descriptor)
+                    )
+                finally:
+                    os.close(descriptor)
+                return [
+                    WarningRecord(
+                        root_id=rule.root_id,
+                        relative_path="item.txt",
+                        code=code,
+                        detail="declared source could not be summarized safely",
+                    )
+                ]
+
+            with self.subTest(code=warning_code):
+                with patch.object(inventory_module, "walk_source", side_effect=warning_walk):
+                    with self.assertRaises(ConfigError):
+                        inventory_module.build_dry_run_summary(self._config())
+
+        missing_config = replace(
+            self._config(),
+            warnings=(
+                ConfigWarning(
+                    root_id="fixture-root",
+                    code="missing_root",
+                    detail="declared source root does not exist on this machine",
+                ),
+            ),
+        )
+        with self.assertRaises(ConfigError):
+            inventory_module.build_dry_run_summary(missing_config)
+
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with patch.object(inventory_module, "walk_source", side_effect=warning_walk):
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                status = inventory_module.main(
+                    [
+                        "--config", str(self.config_path),
+                        "--roots", str(self.roots_path),
+                        "--output-root", str(self.output),
+                        "--dry-run-summary",
+                    ]
+                )
+        self.assertNotEqual(0, status)
+        self.assertEqual("", stdout.getvalue())
+        self.assertEqual(original_bytes, source_file.read_bytes())
 
     def test_cli_dry_run_writes_only_stdout_and_validates_generated_at(self) -> None:
         (self.source / "item.txt").write_text("兔子", encoding="utf-8")

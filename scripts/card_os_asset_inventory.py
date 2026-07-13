@@ -11,7 +11,6 @@ import logging
 import os
 import re
 import secrets
-import shutil
 import stat
 import sys
 import unicodedata
@@ -1932,34 +1931,6 @@ def validate_publication_paths(
     return resolved_output
 
 
-def _fsync_directory(path: Path) -> None:
-    flags = os.O_RDONLY
-    if hasattr(os, "O_DIRECTORY"):
-        flags |= os.O_DIRECTORY
-    if hasattr(os, "O_NOFOLLOW"):
-        flags |= os.O_NOFOLLOW
-    descriptor = os.open(path, flags)
-    try:
-        os.fsync(descriptor)
-    finally:
-        os.close(descriptor)
-
-
-def _write_new_file(path: Path, content: str) -> None:
-    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
-    if hasattr(os, "O_NOFOLLOW"):
-        flags |= os.O_NOFOLLOW
-    descriptor = os.open(path, flags, 0o644)
-    try:
-        payload = content.encode("utf-8")
-        offset = 0
-        while offset < len(payload):
-            offset += os.write(descriptor, payload[offset:])
-        os.fsync(descriptor)
-    finally:
-        os.close(descriptor)
-
-
 def _without_generated_at_json(text: str) -> object:
     value = json.loads(text, object_pairs_hook=_reject_duplicate_json_keys)
     if not isinstance(value, dict):
@@ -1981,35 +1952,6 @@ def _without_generated_at_markdown(text: str) -> str:
     return pattern.sub('generated_at: "<ignored>"', text)
 
 
-def _snapshot_matches_documents(
-    snapshot: Path, documents: Mapping[str, str]
-) -> bool:
-    expected_names = frozenset(documents)
-    try:
-        if snapshot.is_symlink() or not snapshot.is_dir():
-            return False
-        actual_names = frozenset(path.name for path in snapshot.iterdir())
-        if actual_names != expected_names:
-            return False
-        for name, expected in documents.items():
-            path = snapshot / name
-            if path.is_symlink() or not path.is_file():
-                return False
-            actual = path.read_text(encoding="utf-8")
-            if name.endswith(".json"):
-                if _without_generated_at_json(actual) != _without_generated_at_json(
-                    expected
-                ):
-                    return False
-            elif _without_generated_at_markdown(
-                actual
-            ) != _without_generated_at_markdown(expected):
-                return False
-    except (OSError, UnicodeError, ValueError, json.JSONDecodeError):
-        return False
-    return True
-
-
 def _verify_shared_identity(documents: Mapping[str, str]) -> tuple[str, str]:
     try:
         inventory = json.loads(documents["inventory.json"])
@@ -2028,21 +1970,419 @@ def _verify_shared_identity(documents: Mapping[str, str]) -> tuple[str, str]:
     return str(run_id), str(digest)
 
 
-def _rename_staging_to_snapshot(staging: Path, snapshot: Path) -> None:
-    os.rename(staging, snapshot)
+def _rename_staging_to_snapshot(
+    staging: str,
+    snapshot: str,
+    *,
+    output_fd: int,
+    snapshots_fd: int,
+) -> None:
+    os.rename(
+        staging,
+        snapshot,
+        src_dir_fd=output_fd,
+        dst_dir_fd=snapshots_fd,
+    )
 
 
-def _atomic_replace_latest(output_root: Path, document: Mapping[str, Any]) -> None:
-    temporary = output_root / (".latest-" + secrets.token_hex(12) + ".json")
+def _directory_open_flags() -> int:
+    flags = os.O_RDONLY
+    if hasattr(os, "O_DIRECTORY"):
+        flags |= os.O_DIRECTORY
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    return flags
+
+
+def _directory_identity(value: os.stat_result) -> tuple[int, int]:
+    return value.st_dev, value.st_ino
+
+
+def _stable_file_identity(value: os.stat_result) -> tuple[int, ...]:
+    return (
+        value.st_dev,
+        value.st_ino,
+        value.st_nlink,
+        value.st_size,
+        value.st_mtime_ns,
+        value.st_ctime_ns,
+    )
+
+
+@dataclass
+class _DirectoryLink:
+    parent_fd: int
+    name: str
+    child_fd: int
+
+
+class _TrustedDirectoryChain:
+    def __init__(self, parent_path: Path) -> None:
+        if not parent_path.is_absolute():
+            raise ConfigError("publication parent must be absolute")
+        self._fds: list[int] = []
+        self._links: list[_DirectoryLink] = []
+        flags = _directory_open_flags()
+        try:
+            current = os.open(parent_path.anchor, flags)
+            self._fds.append(current)
+            for component in parent_path.parts[1:]:
+                child = os.open(component, flags, dir_fd=current)
+                self._fds.append(child)
+                child_stat = os.fstat(child)
+                entry_stat = os.stat(
+                    component, dir_fd=current, follow_symlinks=False
+                )
+                if (
+                    not stat.S_ISDIR(child_stat.st_mode)
+                    or not stat.S_ISDIR(entry_stat.st_mode)
+                    or _directory_identity(child_stat)
+                    != _directory_identity(entry_stat)
+                ):
+                    raise ConfigError("publication directory identity changed")
+                self._links.append(_DirectoryLink(current, component, child))
+                current = child
+        except (OSError, ConfigError):
+            self.close()
+            raise ConfigError("publication directory chain is unsafe") from None
+
+    @property
+    def current_fd(self) -> int:
+        return self._fds[-1]
+
+    def verify(self) -> None:
+        try:
+            for link in self._links:
+                child_stat = os.fstat(link.child_fd)
+                entry_stat = os.stat(
+                    link.name,
+                    dir_fd=link.parent_fd,
+                    follow_symlinks=False,
+                )
+                if (
+                    not stat.S_ISDIR(entry_stat.st_mode)
+                    or _directory_identity(child_stat)
+                    != _directory_identity(entry_stat)
+                ):
+                    raise ConfigError("publication directory identity changed")
+        except OSError:
+            raise ConfigError("publication directory identity changed") from None
+
+    def attach(self, name: str, *, create: bool) -> int:
+        if not name or "/" in name or name in {".", ".."}:
+            raise ConfigError("publication directory name is unsafe")
+        self.verify()
+        parent_fd = self.current_fd
+        if create:
+            try:
+                os.mkdir(name, 0o755, dir_fd=parent_fd)
+            except FileExistsError:
+                pass
+            except OSError:
+                raise ConfigError("publication directory could not be created") from None
+        self.verify()
+        child: int | None = None
+        try:
+            child = os.open(name, _directory_open_flags(), dir_fd=parent_fd)
+            child_stat = os.fstat(child)
+            entry_stat = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+        except OSError:
+            if child is not None:
+                os.close(child)
+            raise ConfigError("publication directory is unsafe") from None
+        if (
+            not stat.S_ISDIR(child_stat.st_mode)
+            or not stat.S_ISDIR(entry_stat.st_mode)
+            or _directory_identity(child_stat) != _directory_identity(entry_stat)
+        ):
+            os.close(child)
+            raise ConfigError("publication directory identity changed")
+        self._fds.append(child)
+        self._links.append(_DirectoryLink(parent_fd, name, child))
+        self.verify()
+        return child
+
+    def close(self) -> None:
+        for descriptor in reversed(self._fds):
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+        self._fds = []
+        self._links = []
+
+    def __enter__(self) -> "_TrustedDirectoryChain":
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        self.close()
+
+
+@dataclass
+class _PublicationDirectories:
+    chain: _TrustedDirectoryChain
+    output_fd: int
+    snapshots_fd: int
+
+    def verify(self) -> None:
+        self.chain.verify()
+
+
+@contextmanager
+def _publication_directories(
+    output_root: Path, *, create: bool
+):
+    parent = output_root.parent
+    if parent == output_root:
+        raise ConfigError("output root must have a trusted parent")
+    with _TrustedDirectoryChain(parent) as chain:
+        output_fd = chain.attach(output_root.name, create=create)
+        snapshots_fd = chain.attach("snapshots", create=create)
+        directories = _PublicationDirectories(chain, output_fd, snapshots_fd)
+        directories.verify()
+        yield directories
+
+
+def _write_new_file_at(directory_fd: int, name: str, content: str) -> None:
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    descriptor = os.open(name, flags, 0o644, dir_fd=directory_fd)
     try:
-        _write_new_file(temporary, deterministic_json_text(document))
-        _validate_output_ancestors(output_root)
-        os.replace(temporary, output_root / "latest.json")
-        _fsync_directory(output_root)
+        payload = content.encode("utf-8")
+        offset = 0
+        while offset < len(payload):
+            offset += os.write(descriptor, payload[offset:])
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def _open_directory_at(parent_fd: int, name: str) -> int:
+    descriptor: int | None = None
+    try:
+        descriptor = os.open(name, _directory_open_flags(), dir_fd=parent_fd)
+        descriptor_stat = os.fstat(descriptor)
+        entry_stat = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+    except OSError:
+        if descriptor is not None:
+            os.close(descriptor)
+        raise
+    if (
+        not stat.S_ISDIR(descriptor_stat.st_mode)
+        or not stat.S_ISDIR(entry_stat.st_mode)
+        or _directory_identity(descriptor_stat) != _directory_identity(entry_stat)
+    ):
+        os.close(descriptor)
+        raise ConfigError("snapshot directory identity changed")
+    return descriptor
+
+
+def _verify_directory_entry(parent_fd: int, name: str, directory_fd: int) -> None:
+    descriptor_stat = os.fstat(directory_fd)
+    entry_stat = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+    if (
+        not stat.S_ISDIR(entry_stat.st_mode)
+        or _directory_identity(descriptor_stat) != _directory_identity(entry_stat)
+    ):
+        raise ConfigError("snapshot directory identity changed")
+
+
+def _read_regular_file_with_identity_at(
+    directory_fd: int, name: str
+) -> tuple[str, tuple[int, ...]]:
+    flags = os.O_RDONLY
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    descriptor = os.open(name, flags, dir_fd=directory_fd)
+    try:
+        before = os.fstat(descriptor)
+        entry_before = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        if (
+            not stat.S_ISREG(before.st_mode)
+            or not stat.S_ISREG(entry_before.st_mode)
+            or before.st_nlink != 1
+            or entry_before.st_nlink != 1
+            or _stable_file_identity(before) != _stable_file_identity(entry_before)
+        ):
+            raise ConfigError("snapshot file is unsafe")
+        chunks: list[bytes] = []
+        while True:
+            chunk = os.read(descriptor, READ_CHUNK_SIZE)
+            if not chunk:
+                break
+            chunks.append(chunk)
+        after = os.fstat(descriptor)
+        entry_after = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        if (
+            _stable_file_identity(before) != _stable_file_identity(after)
+            or _stable_file_identity(after) != _stable_file_identity(entry_after)
+        ):
+            raise ConfigError("snapshot file changed while being read")
+        return (
+            b"".join(chunks).decode("utf-8"),
+            _stable_file_identity(after),
+        )
+    except UnicodeError:
+        raise ConfigError("snapshot file is not UTF-8") from None
+    finally:
+        os.close(descriptor)
+
+
+def _read_regular_file_at(directory_fd: int, name: str) -> str:
+    return _read_regular_file_with_identity_at(directory_fd, name)[0]
+
+
+def _verified_snapshot_identity_at(
+    snapshots_fd: int, run_id: str, documents: Mapping[str, str]
+) -> tuple[tuple[int, int], tuple[tuple[str, tuple[int, ...]], ...]] | None:
+    snapshot_fd: int | None = None
+    try:
+        snapshot_fd = _open_directory_at(snapshots_fd, run_id)
+        directory_identity = _directory_identity(os.fstat(snapshot_fd))
+        if frozenset(os.listdir(snapshot_fd)) != frozenset(documents):
+            return None
+        actual_documents: dict[str, str] = {}
+        file_identities: list[tuple[str, tuple[int, ...]]] = []
+        for name in sorted(documents):
+            text, file_identity = _read_regular_file_with_identity_at(
+                snapshot_fd, name
+            )
+            actual_documents[name] = text
+            file_identities.append((name, file_identity))
+        _verify_directory_entry(snapshots_fd, run_id, snapshot_fd)
+        if _directory_identity(os.fstat(snapshot_fd)) != directory_identity:
+            return None
+        for name, expected in documents.items():
+            actual = actual_documents[name]
+            if name.endswith(".json"):
+                if _without_generated_at_json(actual) != _without_generated_at_json(
+                    expected
+                ):
+                    return None
+            elif _without_generated_at_markdown(
+                actual
+            ) != _without_generated_at_markdown(expected):
+                return None
+        return directory_identity, tuple(file_identities)
+    except (OSError, ConfigError, ValueError, json.JSONDecodeError, _DuplicateJsonKey):
+        return None
+    finally:
+        if snapshot_fd is not None:
+            os.close(snapshot_fd)
+
+
+def _snapshot_matches_documents_at(
+    snapshots_fd: int, run_id: str, documents: Mapping[str, str]
+) -> bool:
+    return _verified_snapshot_identity_at(snapshots_fd, run_id, documents) is not None
+
+
+def _cleanup_staging_at(
+    output_fd: int, staging_name: str, expected_identity: tuple[int, int]
+) -> None:
+    staging_fd: int | None = None
+    try:
+        staging_fd = _open_directory_at(output_fd, staging_name)
+        if _directory_identity(os.fstat(staging_fd)) != expected_identity:
+            return
+        for name in os.listdir(staging_fd):
+            entry_stat = os.stat(name, dir_fd=staging_fd, follow_symlinks=False)
+            if stat.S_ISDIR(entry_stat.st_mode):
+                return
+            os.unlink(name, dir_fd=staging_fd)
+        os.close(staging_fd)
+        staging_fd = None
+        os.rmdir(staging_name, dir_fd=output_fd)
+    except OSError:
+        return
+    finally:
+        if staging_fd is not None:
+            os.close(staging_fd)
+
+
+def _strict_latest_document(text: str) -> dict[str, str] | None:
+    try:
+        value = json.loads(text, object_pairs_hook=_reject_duplicate_json_keys)
+    except (json.JSONDecodeError, _DuplicateJsonKey):
+        return None
+    required = {
+        "schema",
+        "run_id",
+        "snapshot_digest",
+        "inventory",
+        "duplicates",
+        "warnings",
+    }
+    if not isinstance(value, dict) or set(value) != required:
+        return None
+    if not all(isinstance(value[field], str) for field in required):
+        return None
+    run_id = value["run_id"]
+    snapshot_digest = value["snapshot_digest"]
+    if (
+        value["schema"] != "cognitive-card-migration-latest-v1"
+        or not re.fullmatch(r"inv_sha256_[0-9a-f]{64}", run_id)
+        or snapshot_digest != "sha256:" + run_id.removeprefix("inv_sha256_")
+    ):
+        return None
+    expected_paths = {
+        "inventory": f"snapshots/{run_id}/inventory.json",
+        "duplicates": f"snapshots/{run_id}/duplicate-report.md",
+        "warnings": f"snapshots/{run_id}/scan-warnings.json",
+    }
+    if any(value[field] != expected for field, expected in expected_paths.items()):
+        return None
+    return value
+
+
+def _read_latest_at(output_fd: int) -> dict[str, str] | None:
+    try:
+        return _strict_latest_document(_read_regular_file_at(output_fd, "latest.json"))
+    except (OSError, ConfigError):
+        return None
+
+
+def _atomic_replace_latest_at(
+    directories: _PublicationDirectories,
+    document: Mapping[str, Any],
+    *,
+    run_id: str,
+    documents: Mapping[str, str],
+    expected_snapshot_identity: tuple[
+        tuple[int, int], tuple[tuple[str, tuple[int, ...]], ...]
+    ],
+) -> None:
+    temporary = ".latest-" + secrets.token_hex(12) + ".json"
+    try:
+        directories.verify()
+        _write_new_file_at(
+            directories.output_fd, temporary, deterministic_json_text(document)
+        )
+        directories.verify()
+        current_snapshot_identity = _verified_snapshot_identity_at(
+            directories.snapshots_fd, run_id, documents
+        )
+        if current_snapshot_identity != expected_snapshot_identity:
+            raise ConfigError("snapshot identity changed before latest replacement")
+        os.replace(
+            temporary,
+            "latest.json",
+            src_dir_fd=directories.output_fd,
+            dst_dir_fd=directories.output_fd,
+        )
+        os.fsync(directories.output_fd)
+        directories.verify()
     finally:
         try:
-            temporary.unlink()
-        except FileNotFoundError:
+            os.unlink(temporary, dir_fd=directories.output_fd)
+        except OSError:
             pass
 
 
@@ -2071,62 +2411,95 @@ def publish_inventory_snapshot(
         generated_at=generated_at,
     )
     run_id, snapshot_digest = _verify_shared_identity(documents)
-    staging: Path | None = None
     try:
-        normalized_output.mkdir(parents=True, exist_ok=True)
-        _validate_output_ancestors(normalized_output)
-        snapshots = normalized_output / "snapshots"
-        snapshots.mkdir(exist_ok=True)
-        _validate_output_ancestors(snapshots)
-        staging = normalized_output / (".staging-" + secrets.token_hex(12))
-        staging.mkdir(mode=0o700)
-        for name, content in documents.items():
-            _write_new_file(staging / name, content)
-        _fsync_directory(staging)
-        if not _snapshot_matches_documents(staging, documents):
-            raise ConfigError("staged snapshot verification failed")
+        with _publication_directories(normalized_output, create=True) as directories:
+            staging_name = ".staging-" + secrets.token_hex(12)
+            directories.verify()
+            os.mkdir(staging_name, 0o700, dir_fd=directories.output_fd)
+            directories.verify()
+            staging_fd = _open_directory_at(directories.output_fd, staging_name)
+            staging_identity = _directory_identity(os.fstat(staging_fd))
+            staging_present = True
+            try:
+                for name, content in documents.items():
+                    directories.verify()
+                    _verify_directory_entry(
+                        directories.output_fd, staging_name, staging_fd
+                    )
+                    _write_new_file_at(staging_fd, name, content)
+                os.fsync(staging_fd)
+                if not _snapshot_matches_documents_at(
+                    directories.output_fd, staging_name, documents
+                ):
+                    raise ConfigError("staged snapshot verification failed")
 
-        snapshot = snapshots / run_id
-        if snapshot.exists() or snapshot.is_symlink():
-            if not _snapshot_matches_documents(snapshot, documents):
-                raise ConfigError("existing immutable snapshot differs semantically")
-            shutil.rmtree(staging)
-            staging = None
-        else:
-            _validate_output_ancestors(snapshots)
-            _rename_staging_to_snapshot(staging, snapshot)
-            staging = None
-            _fsync_directory(snapshots)
+                try:
+                    existing_fd = _open_directory_at(
+                        directories.snapshots_fd, run_id
+                    )
+                except (OSError, ConfigError):
+                    existing_fd = None
+                if existing_fd is not None:
+                    os.close(existing_fd)
+                    if not _snapshot_matches_documents_at(
+                        directories.snapshots_fd, run_id, documents
+                    ):
+                        raise ConfigError(
+                            "existing immutable snapshot differs semantically"
+                        )
+                    os.close(staging_fd)
+                    staging_fd = -1
+                    _cleanup_staging_at(
+                        directories.output_fd, staging_name, staging_identity
+                    )
+                    staging_present = False
+                else:
+                    directories.verify()
+                    _rename_staging_to_snapshot(
+                        staging_name,
+                        run_id,
+                        output_fd=directories.output_fd,
+                        snapshots_fd=directories.snapshots_fd,
+                    )
+                    staging_present = False
+                    os.fsync(directories.snapshots_fd)
+                    directories.verify()
+                    _verify_directory_entry(
+                        directories.snapshots_fd, run_id, staging_fd
+                    )
 
-        latest: dict[str, object] = {
-            "schema": "cognitive-card-migration-latest-v1",
-            "run_id": run_id,
-            "snapshot_digest": snapshot_digest,
-            "inventory": f"snapshots/{run_id}/inventory.json",
-            "duplicates": f"snapshots/{run_id}/duplicate-report.md",
-            "warnings": f"snapshots/{run_id}/scan-warnings.json",
-        }
-        _atomic_replace_latest(normalized_output, latest)
-        return latest
+                snapshot_identity = _verified_snapshot_identity_at(
+                    directories.snapshots_fd, run_id, documents
+                )
+                if snapshot_identity is None:
+                    raise ConfigError("snapshot changed before latest publication")
+                latest: dict[str, object] = {
+                    "schema": "cognitive-card-migration-latest-v1",
+                    "run_id": run_id,
+                    "snapshot_digest": snapshot_digest,
+                    "inventory": f"snapshots/{run_id}/inventory.json",
+                    "duplicates": f"snapshots/{run_id}/duplicate-report.md",
+                    "warnings": f"snapshots/{run_id}/scan-warnings.json",
+                }
+                _atomic_replace_latest_at(
+                    directories,
+                    latest,
+                    run_id=run_id,
+                    documents=documents,
+                    expected_snapshot_identity=snapshot_identity,
+                )
+                return latest
+            finally:
+                if staging_fd >= 0:
+                    os.close(staging_fd)
+                if staging_present:
+                    _cleanup_staging_at(
+                        directories.output_fd, staging_name, staging_identity
+                    )
     except ConfigError:
         raise
     except OSError:
         raise ConfigError("snapshot publication failed") from None
-    finally:
-        if staging is not None:
-            shutil.rmtree(staging, ignore_errors=True)
-
-
-def _read_latest(output_root: Path) -> dict[str, Any] | None:
-    try:
-        latest_path = output_root / "latest.json"
-        latest_stat = latest_path.lstat()
-        if not stat.S_ISREG(latest_stat.st_mode):
-            return None
-        value = json.loads(latest_path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError):
-        return None
-    return value if isinstance(value, dict) else None
 
 
 def check_inventory_snapshot(
@@ -2152,7 +2525,6 @@ def check_inventory_snapshot(
         generated_at=generated_at,
     )
     run_id, snapshot_digest = _verify_shared_identity(documents)
-    latest = _read_latest(normalized_output)
     expected_latest = {
         "schema": "cognitive-card-migration-latest-v1",
         "run_id": run_id,
@@ -2161,12 +2533,33 @@ def check_inventory_snapshot(
         "duplicates": f"snapshots/{run_id}/duplicate-report.md",
         "warnings": f"snapshots/{run_id}/scan-warnings.json",
     }
-    return latest == expected_latest and _snapshot_matches_documents(
-        normalized_output / "snapshots" / run_id, documents
-    )
+    try:
+        with _publication_directories(
+            normalized_output, create=False
+        ) as directories:
+            directories.verify()
+            latest = _read_latest_at(directories.output_fd)
+            if latest != expected_latest:
+                return False
+            matched = _snapshot_matches_documents_at(
+                directories.snapshots_fd, run_id, documents
+            )
+            directories.verify()
+            return matched
+    except (OSError, ConfigError):
+        return False
 
 
 def build_dry_run_summary(config: SourceConfig) -> dict[str, object]:
+    fatal_warning_codes = {
+        "missing_root",
+        "unsafe_source_entry",
+        "unreadable_directory",
+        "unreadable_file",
+        "source_changed_during_scan",
+    }
+    if any(warning.code in fatal_warning_codes for warning in config.warnings):
+        raise ConfigError("dry-run source summary is incomplete")
     descriptors: list[tuple[int, int, str, int, int, int]] = []
     for rule in config.rules:
         def collect(
@@ -2185,7 +2578,9 @@ def build_dry_run_summary(config: SourceConfig) -> dict[str, object]:
                 )
             )
 
-        walk_source(rule, collect)
+        walk_warnings = walk_source(rule, collect)
+        if any(warning.code in fatal_warning_codes for warning in walk_warnings):
+            raise ConfigError("dry-run source summary is incomplete")
     descriptors.sort()
     digest = hashlib.sha256(_canonical_json_bytes(descriptors)).hexdigest()
     return {
