@@ -2351,6 +2351,8 @@ def _cleanup_staging_at(
     staging_name: str,
     expected_identity: tuple[int, int] | None,
 ) -> None:
+    if expected_identity is None:
+        return
     staging_fd: int | None = None
     try:
         entry_stat = os.stat(
@@ -2358,19 +2360,12 @@ def _cleanup_staging_at(
         )
         if (
             not stat.S_ISDIR(entry_stat.st_mode)
-            or (
-                expected_identity is not None
-                and _directory_identity(entry_stat) != expected_identity
-            )
+            or _directory_identity(entry_stat) != expected_identity
         ):
-            return
-        if expected_identity is None:
-            os.rmdir(staging_name, dir_fd=output_fd)
             return
         try:
             staging_fd = _open_directory_at(output_fd, staging_name)
-        except OSError:
-            os.rmdir(staging_name, dir_fd=output_fd)
+        except (OSError, ConfigError):
             return
         if _directory_identity(os.fstat(staging_fd)) != expected_identity:
             return
@@ -2379,6 +2374,14 @@ def _cleanup_staging_at(
             if stat.S_ISDIR(entry_stat.st_mode):
                 return
             os.unlink(name, dir_fd=staging_fd)
+        entry_after = os.stat(
+            staging_name, dir_fd=output_fd, follow_symlinks=False
+        )
+        if (
+            not stat.S_ISDIR(entry_after.st_mode)
+            or _directory_identity(entry_after) != expected_identity
+        ):
+            return
         os.close(staging_fd)
         staging_fd = None
         os.rmdir(staging_name, dir_fd=output_fd)
@@ -2502,6 +2505,29 @@ def publish_inventory_snapshot(
             staging_fd = -1
             staging_identity: tuple[int, int] | None = None
             try:
+                try:
+                    staging_fd = os.open(
+                        staging_name,
+                        _directory_open_flags(),
+                        dir_fd=directories.output_fd,
+                    )
+                except OSError:
+                    try:
+                        fallback_stat = os.stat(
+                            staging_name,
+                            dir_fd=directories.output_fd,
+                            follow_symlinks=False,
+                        )
+                    except OSError:
+                        pass
+                    else:
+                        if stat.S_ISDIR(fallback_stat.st_mode):
+                            staging_identity = _directory_identity(fallback_stat)
+                    raise
+                opened_stat = os.fstat(staging_fd)
+                if not stat.S_ISDIR(opened_stat.st_mode):
+                    raise ConfigError("staging directory is unsafe")
+                staging_identity = _directory_identity(opened_stat)
                 staging_stat = os.stat(
                     staging_name,
                     dir_fd=directories.output_fd,
@@ -2509,13 +2535,9 @@ def publish_inventory_snapshot(
                 )
                 if not stat.S_ISDIR(staging_stat.st_mode):
                     raise ConfigError("staging directory is unsafe")
-                staging_identity = _directory_identity(staging_stat)
-                directories.verify()
-                staging_fd = _open_directory_at(
-                    directories.output_fd, staging_name
-                )
-                if _directory_identity(os.fstat(staging_fd)) != staging_identity:
+                if _directory_identity(staging_stat) != staging_identity:
                     raise ConfigError("staging directory identity changed")
+                directories.verify()
                 for name, content in documents.items():
                     directories.verify()
                     _verify_directory_entry(

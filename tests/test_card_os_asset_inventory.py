@@ -2145,27 +2145,72 @@ class WriterAndCliTests(unittest.TestCase):
         self.output.mkdir()
         unrelated = self.output / "keep.txt"
         unrelated.write_bytes(b"unrelated output must remain")
-        real_open_directory = inventory_module._open_directory_at
+        real_open = os.open
         injected = False
 
-        def failing_first_open(parent_fd, name):
+        def failing_first_open(path, flags, mode=0o777, *, dir_fd=None):
             nonlocal injected
-            if not injected and name.startswith(".staging-"):
+            if (
+                not injected
+                and isinstance(path, str)
+                and path.startswith(".staging-")
+                and dir_fd is not None
+            ):
                 injected = True
                 raise OSError("simulated first staging open failure")
-            return real_open_directory(parent_fd, name)
+            if dir_fd is None:
+                return real_open(path, flags, mode)
+            return real_open(path, flags, mode, dir_fd=dir_fd)
 
-        with patch.object(
-            inventory_module,
-            "_open_directory_at",
-            side_effect=failing_first_open,
-        ):
+        with patch.object(os, "open", side_effect=failing_first_open):
             with self.assertRaises(ConfigError):
                 self._publish([self._alias("item.txt", b"payload")])
 
         self.assertTrue(injected)
         self.assertEqual(b"unrelated output must remain", unrelated.read_bytes())
         self.assertEqual([], list(self.output.glob(".staging-*")))
+
+    def test_cleanup_preserves_same_name_replacement_after_initial_stat_race(self) -> None:
+        self.output.mkdir()
+        real_stat = os.stat
+        injected = False
+        replacement_name: str | None = None
+        replacement_inode: int | None = None
+        orphan_name = ".orphaned-original-staging"
+
+        def replacing_stat(path, *args, **kwargs):
+            nonlocal injected, replacement_name, replacement_inode
+            directory_fd = kwargs.get("dir_fd")
+            if (
+                not injected
+                and isinstance(path, str)
+                and path.startswith(".staging-")
+                and directory_fd is not None
+            ):
+                injected = True
+                replacement_name = path
+                os.rename(
+                    path,
+                    orphan_name,
+                    src_dir_fd=directory_fd,
+                    dst_dir_fd=directory_fd,
+                )
+                os.mkdir(path, 0o700, dir_fd=directory_fd)
+                replacement_inode = real_stat(
+                    path, dir_fd=directory_fd, follow_symlinks=False
+                ).st_ino
+                raise OSError("simulated identity stat race")
+            return real_stat(path, *args, **kwargs)
+
+        with patch.object(os, "stat", side_effect=replacing_stat):
+            with self.assertRaises(ConfigError):
+                self._publish([self._alias("item.txt", b"payload")])
+
+        self.assertTrue(injected)
+        replacement = self.output / str(replacement_name)
+        self.assertTrue(replacement.is_dir())
+        self.assertEqual(replacement_inode, replacement.stat().st_ino)
+        self.assertTrue((self.output / orphan_name).is_dir())
 
     def test_first_staging_stat_failure_also_cleans_new_empty_directory(self) -> None:
         self.output.mkdir()
@@ -2193,6 +2238,41 @@ class WriterAndCliTests(unittest.TestCase):
         self.assertTrue(injected)
         self.assertEqual(b"unrelated output must remain", unrelated.read_bytes())
         self.assertEqual([], list(self.output.glob(".staging-*")))
+
+    def test_staging_orphan_remains_visible_when_identity_cannot_be_captured(self) -> None:
+        self.output.mkdir()
+        real_open = os.open
+        real_stat = os.stat
+
+        def unavailable_open(path, flags, mode=0o777, *, dir_fd=None):
+            if (
+                isinstance(path, str)
+                and path.startswith(".staging-")
+                and dir_fd is not None
+            ):
+                raise OSError("staging open unavailable")
+            if dir_fd is None:
+                return real_open(path, flags, mode)
+            return real_open(path, flags, mode, dir_fd=dir_fd)
+
+        def unavailable_stat(path, *args, **kwargs):
+            if (
+                isinstance(path, str)
+                and path.startswith(".staging-")
+                and kwargs.get("dir_fd") is not None
+            ):
+                raise OSError("staging stat unavailable")
+            return real_stat(path, *args, **kwargs)
+
+        with patch.object(os, "open", side_effect=unavailable_open):
+            with patch.object(os, "stat", side_effect=unavailable_stat):
+                with self.assertRaises(ConfigError):
+                    self._publish([self._alias("item.txt", b"payload")])
+
+        orphans = list(self.output.glob(".staging-*"))
+        self.assertEqual(1, len(orphans))
+        self.assertTrue(orphans[0].is_dir())
+        self.assertEqual([], list(orphans[0].iterdir()))
 
     def test_output_swap_race_never_writes_through_symlink_into_source(self) -> None:
         output = self.base / "race-output"
