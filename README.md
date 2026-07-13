@@ -31,9 +31,9 @@ Project slug: `kids-visual-learning-pack`
 
 - [便携来源配置](migration/card-os/inventory-sources.json)
 - [最新快照指针](migration/card-os/generated/latest.json)
-- [机器 inventory](migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/inventory.json)
-- [重复与候选关系报告](migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/duplicate-report.md)
-- [扫描 warnings](migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/scan-warnings.json)
+- [机器 inventory](migration/card-os/generated/snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/inventory.json)
+- [重复与候选关系报告](migration/card-os/generated/snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/duplicate-report.md)
+- [扫描 warnings](migration/card-os/generated/snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/scan-warnings.json)
 
 本机先从 `migration/card-os/inventory-roots.example.json` 创建被 Git 忽略的 `inventory-roots.local.json`，再运行：
 

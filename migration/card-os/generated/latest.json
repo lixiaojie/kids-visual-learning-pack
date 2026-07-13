@@ -1,8 +1,8 @@
 {
-  "duplicates": "snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/duplicate-report.md",
-  "inventory": "snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/inventory.json",
-  "run_id": "inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a",
+  "duplicates": "snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/duplicate-report.md",
+  "inventory": "snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/inventory.json",
+  "run_id": "inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd",
   "schema": "cognitive-card-migration-latest-v1",
-  "snapshot_digest": "sha256:c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a",
-  "warnings": "snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/scan-warnings.json"
+  "snapshot_digest": "sha256:e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd",
+  "warnings": "snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/scan-warnings.json"
 }

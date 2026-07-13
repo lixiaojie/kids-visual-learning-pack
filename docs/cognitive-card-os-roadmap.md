@@ -172,7 +172,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 已完成：10 个声明根全部只读扫描；808 个来源别名聚合为 622 个 SHA-256 内容对象，形成 170 个重复组、159 个同名不同内容候选组和 138 个 PNG/WebP 衍生候选组。
 - 测量：来源总计 893,825,675 字节，唯一内容 571,623,546 字节；盘点前后设备/inode/路径/大小/mtime/ctime 摘要一致，内容级复现检查通过。
 - warnings：共 70 条规则性跳过记录，其中 28 条 `excluded_name`、42 条 `unsupported_extension`；没有缺失根、不可读元数据、扫描中变化、不安全源项或媒体类型不匹配。
-- 产物：[latest 指针](../migration/card-os/generated/latest.json)、[机器 inventory](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/inventory.json)、[重复报告](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/duplicate-report.md) 和 [warnings](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/scan-warnings.json)。
+- 产物：[latest 指针](../migration/card-os/generated/latest.json)、[机器 inventory](../migration/card-os/generated/snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/inventory.json)、[重复报告](../migration/card-os/generated/snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/duplicate-report.md) 和 [warnings](../migration/card-os/generated/snapshots/inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd/scan-warnings.json)。
 - 后续：人工复核 170 个重复组、159 个同名候选组和 138 个衍生候选组；在导入 API、严格 package 验证和不可变存储就绪后启动 MIG-02，不在盘点阶段自动删除、选择或发布资产。
 - 完成条件：每个候选文件有稳定 `migration_asset_id`；相同内容合并来源别名；无文件在盘点阶段被移动或删除。
 - 实施计划：[历史资产机器清单与去重实施计划](superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)。

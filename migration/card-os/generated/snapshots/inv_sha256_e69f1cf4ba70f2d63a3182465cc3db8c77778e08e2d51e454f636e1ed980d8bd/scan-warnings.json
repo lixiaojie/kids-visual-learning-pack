@@ -1,0 +1,428 @@
+{
+  "generated_at": "2026-07-13T16:34:40Z",
+  "run_id": "inv_sha256_e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd",
+  "schema": "cognitive-card-migration-warnings-v1",
+  "snapshot_digest": "sha256:e69f1cf4ba70f2d63a3182465cc3db8c77778e08e2d51e454f636e1ed980d8bd",
+  "warnings": [
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": ".DS_Store",
+      "root_id": "kids-world-batch-20260612"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": ".DS_Store",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "dist",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .mjs is not enabled for this root",
+      "relative_path": "evidence-coverage.test.mjs",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .html is not enabled for this root",
+      "relative_path": "index.html",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "public/.DS_Store",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "public/assets/.DS_Store",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/App.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/home/FeaturedObservation.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/home/HeroSection.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/home/WorldGrid.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/home/WorldTopicPanel.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/layout/PageShell.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/layout/Topbar.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/shared/GeneratedImage.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/shared/LocaleToggle.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/shared/SectionHeader.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/shared/StatusPill.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/ClassificationGroups.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/ClickTaskCard.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/ClickTaskDeck.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/ComparePairs.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/LearningFlowRail.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/MechanismSteps.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/ParentTips.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/RelatedTopics.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/RepresentativeObjects.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/SceneDeckTopicPage.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/SpeakTemplates.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/TopicHero.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/components/topic/TopicVisual.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/data/loaders/load-map.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/data/loaders/load-topic.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/data/loaders/locale-merge.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/hooks/use-hash-route.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/lib/asset-map.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/lib/asset-resolve.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/lib/world-icons.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/main.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/pages/HomePage.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .tsx is not enabled for this root",
+      "relative_path": "src/pages/TopicPage.tsx",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .css is not enabled for this root",
+      "relative_path": "src/styles/styles.css",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/types/assets.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/types/topic.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .ts is not enabled for this root",
+      "relative_path": "src/types/world.ts",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .mjs is not enabled for this root",
+      "relative_path": "structure.test.mjs",
+      "root_id": "kids-world-current"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": ".DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/parasaurolophus/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/parasaurolophus/20260707_172600__parasaurolophus__high_visual__v01/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/parasaurolophus/20260707_172600__parasaurolophus__high_visual__v01/03_assets/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/parasaurolophus/20260707_172600__parasaurolophus__high_visual__v01/03_assets/high_visual/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/20260707_140200__stegosaurus__high_visual__v01/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/20260707_140200__stegosaurus__high_visual__v01/03_assets/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/20260707_140200__stegosaurus__high_visual__v01/03_assets/high_visual/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/20260707_140200__stegosaurus__high_visual__v01/04_exports/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/20260707_140200__stegosaurus__high_visual__v01/05_print/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_dinosaur/stegosaurus/20260707_140200__stegosaurus__high_visual__v01/templates/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_fossil_animal/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_fossil_animal/pterosaurs/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_fossil_animal/pterosaurs/20260707_151900__pterosaurs__high_visual__v01/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_fossil_animal/pterosaurs/20260707_151900__pterosaurs__high_visual__v01/03_assets/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "paleobiology_fossil_animal/pterosaurs/20260707_151900__pterosaurs__high_visual__v01/03_assets/high_visual/.DS_Store",
+      "root_id": "paleobiology-packages-20260707"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": ".DS_Store",
+      "root_id": "paw-patrol"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "src/.DS_Store",
+      "root_id": "paw-patrol"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "05_print/.DS_Store",
+      "root_id": "rabbit-full-v01"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": ".DS_Store",
+      "root_id": "spider-verse"
+    },
+    {
+      "code": "excluded_name",
+      "detail": "entry name is excluded by the source rule",
+      "relative_path": "assets/.DS_Store",
+      "root_id": "spider-verse"
+    },
+    {
+      "code": "unsupported_extension",
+      "detail": "extension .mjs is not enabled for this root",
+      "relative_path": "structure.test.mjs",
+      "root_id": "spider-verse"
+    }
+  ]
+}
