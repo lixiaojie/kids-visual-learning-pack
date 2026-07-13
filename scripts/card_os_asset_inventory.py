@@ -80,6 +80,9 @@ IMAGE_FORMAT_MEDIA_TYPES = {
     "JPEG": "image/jpeg",
     "WEBP": "image/webp",
 }
+IMAGE_MEDIA_TYPES = frozenset(IMAGE_FORMAT_MEDIA_TYPES.values())
+ALLOWED_MEDIA_TYPES = frozenset(MEDIA_TYPES.values())
+VALID_METADATA_STATUSES = frozenset({"ok", "not_applicable", "unreadable"})
 UNSAFE_LOGICAL_NAME_DETAIL = "source entry has an unsafe logical name"
 FACT_BASENAMES = frozenset({"fact.json", "facts.json"})
 PROPOSITION_BASENAMES = frozenset(
@@ -1341,6 +1344,65 @@ def _is_sanitized_warning_field(code: object, detail: object) -> bool:
     )
 
 
+def _is_positive_integer_or_none(value: object) -> bool:
+    return value is None or (
+        isinstance(value, int) and not isinstance(value, bool) and value > 0
+    )
+
+
+def _has_valid_alias_metadata(alias: SourceAliasRecord, rule: SourceRule) -> bool:
+    if (
+        not isinstance(alias.media_type, str)
+        or alias.media_type not in ALLOWED_MEDIA_TYPES
+        or not isinstance(alias.metadata_status, str)
+        or alias.metadata_status not in VALID_METADATA_STATUSES
+        or not _is_positive_integer_or_none(alias.image_width)
+        or not _is_positive_integer_or_none(alias.image_height)
+        or not _is_positive_integer_or_none(alias.pdf_page_count)
+    ):
+        return False
+
+    extension = PurePosixPath(alias.relative_path).suffix.lower()
+    expected_media_type = MEDIA_TYPES.get(extension)
+    if expected_media_type is None or extension not in rule.include_extensions:
+        return False
+    if expected_media_type in IMAGE_MEDIA_TYPES:
+        if alias.media_type not in IMAGE_MEDIA_TYPES:
+            return False
+    elif alias.media_type != expected_media_type:
+        return False
+
+    all_metadata_null = (
+        alias.image_width is None
+        and alias.image_height is None
+        and alias.pdf_page_count is None
+    )
+    if alias.metadata_status == "unreadable":
+        return (
+            alias.media_type in IMAGE_MEDIA_TYPES
+            or alias.media_type == "application/pdf"
+        ) and all_metadata_null
+    if alias.metadata_status == "not_applicable":
+        return (
+            alias.media_type not in IMAGE_MEDIA_TYPES
+            and alias.media_type != "application/pdf"
+            and all_metadata_null
+        )
+    if alias.media_type in IMAGE_MEDIA_TYPES:
+        return (
+            alias.image_width is not None
+            and alias.image_height is not None
+            and alias.pdf_page_count is None
+        )
+    if alias.media_type == "application/pdf":
+        return (
+            alias.image_width is None
+            and alias.image_height is None
+            and alias.pdf_page_count is not None
+        )
+    return False
+
+
 def _register_identity(
     identities: dict[str, object], identity: str, semantic_value: object
 ) -> None:
@@ -1399,6 +1461,7 @@ def build_inventory(
             or not isinstance(alias.size_bytes, int)
             or isinstance(alias.size_bytes, bool)
             or alias.size_bytes < 0
+            or not _has_valid_alias_metadata(alias, rule)
         ):
             raise ValueError("invalid_alias_record")
         location = (alias.root_id, alias.relative_path)

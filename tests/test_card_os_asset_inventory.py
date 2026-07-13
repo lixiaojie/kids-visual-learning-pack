@@ -1396,6 +1396,9 @@ class AggregationTests(unittest.TestCase):
     ) -> SourceAliasRecord:
         rule = next(rule for rule in self.rules if rule.root_id == root_id)
         extension = PurePosixPath(relative_path).suffix.casefold()
+        resolved_media_type = media_type or MEDIA_TYPES[extension]
+        is_image = resolved_media_type in {"image/png", "image/jpeg", "image/webp"}
+        is_pdf = resolved_media_type == "application/pdf"
         return SourceAliasRecord(
             root_id=root_id,
             relative_path=relative_path,
@@ -1403,11 +1406,11 @@ class AggregationTests(unittest.TestCase):
             source_group=rule.source_group,
             sha256=hashlib.sha256(payload).hexdigest(),
             size_bytes=len(payload),
-            media_type=media_type or MEDIA_TYPES[extension],
-            image_width=None,
-            image_height=None,
-            pdf_page_count=None,
-            metadata_status="not_applicable",
+            media_type=resolved_media_type,
+            image_width=10 if is_image else None,
+            image_height=10 if is_image else None,
+            pdf_page_count=1 if is_pdf else None,
+            metadata_status="ok" if is_image or is_pdf else "not_applicable",
         )
 
     def _build(
@@ -1787,6 +1790,78 @@ class AggregationTests(unittest.TestCase):
             shuffled = list(aliases)
             generator.shuffle(shuffled)
             self.assertEqual(expected, self._build(shuffled))
+
+    def test_alias_media_metadata_must_match_scanner_output_contract(self) -> None:
+        text_alias = self._alias("root-alpha", "safe/item.txt", b"text")
+        image_alias = self._alias("root-alpha", "safe/item.png", b"image")
+        pdf_alias = self._alias("root-alpha", "safe/item.pdf", b"pdf")
+        mismatch_alias = self._alias(
+            "root-alpha",
+            "safe/observed.jpg",
+            b"observed png",
+            media_type="image/png",
+        )
+        unreadable_image = replace(
+            image_alias,
+            relative_path="safe/unreadable.png",
+            image_width=None,
+            image_height=None,
+            metadata_status="unreadable",
+        )
+        unreadable_pdf = replace(
+            pdf_alias,
+            relative_path="safe/unreadable.pdf",
+            pdf_page_count=None,
+            metadata_status="unreadable",
+        )
+
+        for alias in (
+            text_alias,
+            image_alias,
+            pdf_alias,
+            mismatch_alias,
+            unreadable_image,
+            unreadable_pdf,
+        ):
+            with self.subTest(valid=alias.relative_path):
+                self._build([alias])
+
+        invalid_aliases = (
+            replace(text_alias, media_type="/Users/admin/private"),
+            replace(text_alias, media_type="ccos_v1_secret_token"),
+            replace(text_alias, media_type="text/markdown"),
+            replace(text_alias, relative_path="safe/item.html", media_type="text/html"),
+            replace(text_alias, metadata_status="mismatch"),
+            replace(text_alias, metadata_status="ccos_v1_secret_token"),
+            replace(text_alias, image_width=1),
+            replace(text_alias, image_height=True),
+            replace(text_alias, pdf_page_count=1),
+            replace(text_alias, metadata_status="ok"),
+            replace(text_alias, metadata_status="unreadable"),
+            replace(image_alias, metadata_status="not_applicable"),
+            replace(image_alias, media_type="application/pdf"),
+            replace(image_alias, image_width=None),
+            replace(image_alias, image_height=None),
+            replace(image_alias, image_width=True),
+            replace(image_alias, image_width=0),
+            replace(image_alias, image_width=-1),
+            replace(image_alias, image_width="10"),  # type: ignore[arg-type]
+            replace(image_alias, pdf_page_count=1),
+            replace(unreadable_image, image_width=10),
+            replace(pdf_alias, metadata_status="not_applicable"),
+            replace(pdf_alias, pdf_page_count=None),
+            replace(pdf_alias, pdf_page_count=True),
+            replace(pdf_alias, pdf_page_count=0),
+            replace(pdf_alias, pdf_page_count=-1),
+            replace(pdf_alias, pdf_page_count="1"),  # type: ignore[arg-type]
+            replace(pdf_alias, image_width=10),
+            replace(unreadable_pdf, pdf_page_count=1),
+        )
+
+        for alias in invalid_aliases:
+            with self.subTest(invalid=repr(alias)):
+                with self.assertRaisesRegex(ValueError, "^invalid_alias_record$"):
+                    self._build([alias])
 
 
 class WriterAndCliTests(unittest.TestCase):
