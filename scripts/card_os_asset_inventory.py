@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
 import datetime as dt
+import errno
 import hashlib
 import io
 import json
@@ -1977,12 +1979,72 @@ def _rename_staging_to_snapshot(
     output_fd: int,
     snapshots_fd: int,
 ) -> None:
-    os.rename(
+    _rename_directory_noreplace(
+        output_fd,
         staging,
+        snapshots_fd,
         snapshot,
-        src_dir_fd=output_fd,
-        dst_dir_fd=snapshots_fd,
     )
+
+
+def _rename_directory_noreplace(
+    source_dir_fd: int,
+    source_name: str,
+    destination_dir_fd: int,
+    destination_name: str,
+) -> None:
+    """Atomically rename one directory entry without replacing a destination."""
+
+    for name in (source_name, destination_name):
+        if not name or "/" in name or "\x00" in name or name in {".", ".."}:
+            raise ConfigError("atomic rename name is unsafe")
+    try:
+        library = ctypes.CDLL(None, use_errno=True)
+    except OSError:
+        raise ConfigError("atomic no-replace rename is unavailable") from None
+
+    if sys.platform == "darwin":
+        function = getattr(library, "renameatx_np", None)
+        flags = 0x00000004  # RENAME_EXCL from Darwin sys/stdio.h.
+    elif sys.platform.startswith("linux"):
+        function = getattr(library, "renameat2", None)
+        flags = 0x00000001  # RENAME_NOREPLACE from linux/fs.h.
+    else:
+        function = None
+        flags = 0
+    if function is None:
+        raise ConfigError("atomic no-replace rename is unavailable")
+
+    function.argtypes = (
+        ctypes.c_int,
+        ctypes.c_char_p,
+        ctypes.c_int,
+        ctypes.c_char_p,
+        ctypes.c_uint,
+    )
+    function.restype = ctypes.c_int
+    ctypes.set_errno(0)
+    result = function(
+        source_dir_fd,
+        os.fsencode(source_name),
+        destination_dir_fd,
+        os.fsencode(destination_name),
+        flags,
+    )
+    if result == 0:
+        return
+    error_number = ctypes.get_errno()
+    if error_number == errno.EEXIST:
+        raise FileExistsError(errno.EEXIST, "destination already exists")
+    unsupported_errors = {
+        errno.ENOSYS,
+        errno.EINVAL,
+        getattr(errno, "ENOTSUP", errno.EOPNOTSUPP),
+        errno.EOPNOTSUPP,
+    }
+    if error_number in unsupported_errors:
+        raise ConfigError("atomic no-replace rename is unavailable")
+    raise OSError(error_number, "atomic no-replace rename failed")
 
 
 def _directory_open_flags() -> int:
@@ -2285,11 +2347,31 @@ def _snapshot_matches_documents_at(
 
 
 def _cleanup_staging_at(
-    output_fd: int, staging_name: str, expected_identity: tuple[int, int]
+    output_fd: int,
+    staging_name: str,
+    expected_identity: tuple[int, int] | None,
 ) -> None:
     staging_fd: int | None = None
     try:
-        staging_fd = _open_directory_at(output_fd, staging_name)
+        entry_stat = os.stat(
+            staging_name, dir_fd=output_fd, follow_symlinks=False
+        )
+        if (
+            not stat.S_ISDIR(entry_stat.st_mode)
+            or (
+                expected_identity is not None
+                and _directory_identity(entry_stat) != expected_identity
+            )
+        ):
+            return
+        if expected_identity is None:
+            os.rmdir(staging_name, dir_fd=output_fd)
+            return
+        try:
+            staging_fd = _open_directory_at(output_fd, staging_name)
+        except OSError:
+            os.rmdir(staging_name, dir_fd=output_fd)
+            return
         if _directory_identity(os.fstat(staging_fd)) != expected_identity:
             return
         for name in os.listdir(staging_fd):
@@ -2416,11 +2498,24 @@ def publish_inventory_snapshot(
             staging_name = ".staging-" + secrets.token_hex(12)
             directories.verify()
             os.mkdir(staging_name, 0o700, dir_fd=directories.output_fd)
-            directories.verify()
-            staging_fd = _open_directory_at(directories.output_fd, staging_name)
-            staging_identity = _directory_identity(os.fstat(staging_fd))
             staging_present = True
+            staging_fd = -1
+            staging_identity: tuple[int, int] | None = None
             try:
+                staging_stat = os.stat(
+                    staging_name,
+                    dir_fd=directories.output_fd,
+                    follow_symlinks=False,
+                )
+                if not stat.S_ISDIR(staging_stat.st_mode):
+                    raise ConfigError("staging directory is unsafe")
+                staging_identity = _directory_identity(staging_stat)
+                directories.verify()
+                staging_fd = _open_directory_at(
+                    directories.output_fd, staging_name
+                )
+                if _directory_identity(os.fstat(staging_fd)) != staging_identity:
+                    raise ConfigError("staging directory identity changed")
                 for name, content in documents.items():
                     directories.verify()
                     _verify_directory_entry(
@@ -2433,14 +2528,15 @@ def publish_inventory_snapshot(
                 ):
                     raise ConfigError("staged snapshot verification failed")
 
+                directories.verify()
                 try:
-                    existing_fd = _open_directory_at(
-                        directories.snapshots_fd, run_id
+                    _rename_staging_to_snapshot(
+                        staging_name,
+                        run_id,
+                        output_fd=directories.output_fd,
+                        snapshots_fd=directories.snapshots_fd,
                     )
-                except (OSError, ConfigError):
-                    existing_fd = None
-                if existing_fd is not None:
-                    os.close(existing_fd)
+                except FileExistsError:
                     if not _snapshot_matches_documents_at(
                         directories.snapshots_fd, run_id, documents
                     ):
@@ -2454,13 +2550,6 @@ def publish_inventory_snapshot(
                     )
                     staging_present = False
                 else:
-                    directories.verify()
-                    _rename_staging_to_snapshot(
-                        staging_name,
-                        run_id,
-                        output_fd=directories.output_fd,
-                        snapshots_fd=directories.snapshots_fd,
-                    )
                     staging_present = False
                     os.fsync(directories.snapshots_fd)
                     directories.verify()

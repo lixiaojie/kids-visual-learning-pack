@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import logging
+import errno
 import os
 import random
 import sys
@@ -2104,6 +2105,93 @@ class WriterAndCliTests(unittest.TestCase):
             prior_files,
             {path.name: path.read_bytes() for path in prior_snapshot.iterdir()},
         )
+        self.assertEqual([], list(self.output.glob(".staging-*")))
+
+    def test_no_replace_race_preserves_inserted_snapshot_inode(self) -> None:
+        aliases = [self._alias("item.txt", b"payload")]
+        inserted_inode: int | None = None
+        inserted_run_id: str | None = None
+
+        def racing_noreplace(
+            source_dir_fd, source_name, destination_dir_fd, destination_name
+        ):
+            nonlocal inserted_inode, inserted_run_id
+            os.mkdir(destination_name, 0o755, dir_fd=destination_dir_fd)
+            inserted_inode = os.stat(
+                destination_name,
+                dir_fd=destination_dir_fd,
+                follow_symlinks=False,
+            ).st_ino
+            inserted_run_id = destination_name
+            raise FileExistsError(errno.EEXIST, "destination exists")
+
+        with patch.object(
+            inventory_module,
+            "_rename_directory_noreplace",
+            side_effect=racing_noreplace,
+        ):
+            with self.assertRaises(ConfigError):
+                self._publish(aliases)
+
+        self.assertIsNotNone(inserted_run_id)
+        destination = self.output / "snapshots" / str(inserted_run_id)
+        self.assertTrue(destination.is_dir())
+        self.assertEqual(inserted_inode, destination.stat().st_ino)
+        self.assertEqual([], list(destination.iterdir()))
+        self.assertEqual([], list(self.output.glob(".staging-*")))
+        self.assertFalse((self.output / "latest.json").exists())
+
+    def test_first_staging_open_failure_cleans_only_new_staging_directory(self) -> None:
+        self.output.mkdir()
+        unrelated = self.output / "keep.txt"
+        unrelated.write_bytes(b"unrelated output must remain")
+        real_open_directory = inventory_module._open_directory_at
+        injected = False
+
+        def failing_first_open(parent_fd, name):
+            nonlocal injected
+            if not injected and name.startswith(".staging-"):
+                injected = True
+                raise OSError("simulated first staging open failure")
+            return real_open_directory(parent_fd, name)
+
+        with patch.object(
+            inventory_module,
+            "_open_directory_at",
+            side_effect=failing_first_open,
+        ):
+            with self.assertRaises(ConfigError):
+                self._publish([self._alias("item.txt", b"payload")])
+
+        self.assertTrue(injected)
+        self.assertEqual(b"unrelated output must remain", unrelated.read_bytes())
+        self.assertEqual([], list(self.output.glob(".staging-*")))
+
+    def test_first_staging_stat_failure_also_cleans_new_empty_directory(self) -> None:
+        self.output.mkdir()
+        unrelated = self.output / "keep.txt"
+        unrelated.write_bytes(b"unrelated output must remain")
+        real_stat = os.stat
+        injected = False
+
+        def failing_first_stat(path, *args, **kwargs):
+            nonlocal injected
+            if (
+                not injected
+                and isinstance(path, str)
+                and path.startswith(".staging-")
+                and kwargs.get("dir_fd") is not None
+            ):
+                injected = True
+                raise OSError("simulated first staging stat failure")
+            return real_stat(path, *args, **kwargs)
+
+        with patch.object(os, "stat", side_effect=failing_first_stat):
+            with self.assertRaises(ConfigError):
+                self._publish([self._alias("item.txt", b"payload")])
+
+        self.assertTrue(injected)
+        self.assertEqual(b"unrelated output must remain", unrelated.read_bytes())
         self.assertEqual([], list(self.output.glob(".staging-*")))
 
     def test_output_swap_race_never_writes_through_symlink_into_source(self) -> None:
