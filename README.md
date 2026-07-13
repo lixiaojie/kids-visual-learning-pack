@@ -27,6 +27,25 @@ Project slug: `kids-visual-learning-pack`
 - [远程 API、认证与协议实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)
 - [历史资产机器清单与去重实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)
 
+历史资产机器盘点入口：
+
+- [便携来源配置](migration/card-os/inventory-sources.json)
+- [最新快照指针](migration/card-os/generated/latest.json)
+- [机器 inventory](migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/inventory.json)
+- [重复与候选关系报告](migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/duplicate-report.md)
+- [扫描 warnings](migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/scan-warnings.json)
+
+本机先从 `migration/card-os/inventory-roots.example.json` 创建被 Git 忽略的 `inventory-roots.local.json`，再运行：
+
+```bash
+npm run inventory:card-os
+python3 scripts/card_os_asset_inventory.py \
+  --config migration/card-os/inventory-sources.json \
+  --roots migration/card-os/inventory-roots.local.json \
+  --output-root migration/card-os/generated \
+  --check
+```
+
 ## 本地预览
 
 打开总入口：

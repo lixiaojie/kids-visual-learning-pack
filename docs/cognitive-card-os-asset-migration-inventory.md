@@ -1,7 +1,8 @@
 # Cognitive Card OS 历史资产迁移清单
 
-状态：发现阶段  
+状态：机器盘点完成（`MIG-01`）
 发现日期：2026-07-13  
+盘点日期：2026-07-14
 整体策略：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md#12-网站替换与历史资产迁移)  
 动态任务：[Cognitive Card OS 路线图](cognitive-card-os-roadmap.md)
 
@@ -9,14 +10,14 @@
 
 本文记录历史资产的位置、规模、结构完整度和迁移等级，是迁移工作的来源清单，不是正式 package manifest。
 
-本轮只执行只读发现：
+发现和机器盘点均只执行只读操作：
 
 - 未复制、移动、删除或重命名任何文件；
 - 未把旧资产写入服务器；
 - 未将旧网页公开状态等同于 Card OS 发布状态；
 - 未在发现阶段为缺失的 FACT、来源、命题或 CONTENT LOCK 编造内容。
 
-正式迁移前，`MIG-01` 必须为每个候选文件计算 SHA-256、媒体类型、像素/页面信息、来源别名和重复组。
+`MIG-01` 已为配置允许的候选文件计算 SHA-256、媒体类型、像素/页面信息、来源别名和重复组。它没有改变权利状态、发布状态或目标 package；这些决定仍属于后续人工复核与导入流程。
 
 ## 2. 发现范围
 
@@ -151,37 +152,38 @@ Codex 任务：`019f02ca-cf3c-79e0-919d-9f8b90a076db`
 - 与儿童知识卡无关的工作目录和个人资料不进入清单；
 - 版权或来源不清的素材在完成权利审查前保持归档状态。
 
-## 10. 正式迁移记录
+## 10. MIG-01 机器盘点快照
 
-`MIG-01` 生成的机器清单每项至少包含：
+本次不可变快照由 [来源配置](../migration/card-os/inventory-sources.json) 生成，10 个声明根全部为 `scanned`。本机绝对根映射保存在忽略文件中，没有进入配置摘要或提交产物。
 
-```json
-{
-  "migration_asset_id": "mig_...",
-  "source_path": "...",
-  "source_thread_id": "...",
-  "sha256": "...",
-  "size_bytes": 0,
-  "media_type": "...",
-  "object_name": "...",
-  "classification": {},
-  "rights_status": "review_required",
-  "structural_evidence": {
-    "fact": false,
-    "propositions": false,
-    "content_lock": false,
-    "four_cards": false,
-    "qa": false,
-    "print_pdf": false
-  },
-  "migration_grade": "C",
-  "duplicate_group": null,
-  "target_package_id": null,
-  "decision": "rebuild"
-}
-```
+| 指标 | 测量值 |
+| --- | ---: |
+| 来源别名 | 808 |
+| 唯一内容对象 | 622 |
+| SHA-256 重复组 | 170 |
+| 同名不同内容候选组 | 159 |
+| PNG/WebP 衍生候选组 | 138 |
+| 来源总字节 | 893,825,675 |
+| 唯一内容字节 | 571,623,546 |
+| 扫描 warning | 70 |
 
-`size_bytes`、摘要、分类、权利状态和目标 package 只由正式盘点与审核写入；发现文档不为尚未核实的字段提供推测值。
+- run ID：`inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a`
+- snapshot digest：`sha256:c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a`
+- config digest：`sha256:b4ce856685574a6ffe7b26aaa60f70b2146d33146650571bf6dbd0da0a83687d`
+- metadata readers：Pillow `12.3.0`、pypdf `6.14.2`
+- [latest 指针](../migration/card-os/generated/latest.json)
+- [机器 inventory](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/inventory.json)
+- [重复与候选关系报告](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/duplicate-report.md)
+- [扫描 warnings](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/scan-warnings.json)
+
+70 条 warning 均为受控跳过项，没有 `missing_root`、`metadata_unreadable`、`source_changed_during_scan`、`unsafe_source_entry` 或 `media_type_mismatch`：
+
+- 28 条 `excluded_name`：命中配置声明的 `.DS_Store` 等排除名；
+- 42 条 `unsupported_extension`：`kids-world-current` 中 41 个未纳入知识资产盘点的代码/页面文件，以及 `spider-verse` 中 1 个未启用的 `.mjs` 文件。
+
+这些 warning 表示相应文件没有进入内容对象，并不表示可以删除源文件。代码、页面和其他非候选文件仍需在后续主题迁移时按用途人工复核。所有已盘点资产保持 `rights_status=review_required`、`target_package_id=null`；结构证据只来自保守路径规则，不等同于现行 Card OS 严格验证通过。
+
+盘点前后的 808 个 eligible 文件、893,825,675 字节及设备/inode/路径/大小/mtime/ctime 摘要完全一致；盘点后内容级 `--check` 通过。深圳植物根的 15 个来源别名均携带任务 ID `019f02ca-cf3c-79e0-919d-9f8b90a076db`；`spider-verse` 与 `paw-patrol` 仍为 `legacy-gallery`，没有被升级为 Card OS package 候选。
 
 ## 11. 切换门禁
 

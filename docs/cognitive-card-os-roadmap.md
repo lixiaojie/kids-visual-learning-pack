@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-07-13  
+最近更新：2026-07-14
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -44,7 +44,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | PROTO-01 | capability/protocol discovery | READY | 执行 capability 与兼容检查批次 |
 | SKILL-01 | Skill 发布注册表 | BACKLOG | 依赖 PROTO-01 |
 | SKILL-02 | 薄 Skill 客户端 | BACKLOG | 依赖 API-01、AUTH-01、SKILL-01 |
-| MIG-01 | 历史资产发现、摘要与去重清单 | IN PROGRESS | 执行机器清单与去重实施计划 |
+| MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
 | PORTAL-01 | 只读资产门户 | BACKLOG | 依赖认证和资产查询 API |
@@ -167,10 +167,13 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### MIG-01 历史资产发现、摘要与去重
 
-- 状态：`IN PROGRESS`
+- 状态：`DONE`
 - 权威清单：[历史资产迁移清单](cognitive-card-os-asset-migration-inventory.md)。
-- 已完成：定位兔子完整包、古生物包、7 种深圳植物双面卡、13 个旧知识主题、三批旧网站生图及旧副本来源。
-- 待办：生成机器可读 inventory；计算 SHA-256、媒体信息和重复组；记录 Codex 任务、原路径、现站引用、权利状态、结构证据和迁移等级。
+- 已完成：10 个声明根全部只读扫描；808 个来源别名聚合为 622 个 SHA-256 内容对象，形成 170 个重复组、159 个同名不同内容候选组和 138 个 PNG/WebP 衍生候选组。
+- 测量：来源总计 893,825,675 字节，唯一内容 571,623,546 字节；盘点前后设备/inode/路径/大小/mtime/ctime 摘要一致，内容级复现检查通过。
+- warnings：共 70 条规则性跳过记录，其中 28 条 `excluded_name`、42 条 `unsupported_extension`；没有缺失根、不可读元数据、扫描中变化、不安全源项或媒体类型不匹配。
+- 产物：[latest 指针](../migration/card-os/generated/latest.json)、[机器 inventory](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/inventory.json)、[重复报告](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/duplicate-report.md) 和 [warnings](../migration/card-os/generated/snapshots/inv_sha256_c3e272baf0d4f1d9e899ef2d59bb93a35f45fb6c2b7ac7210b8cf42e457f808a/scan-warnings.json)。
+- 后续：人工复核 170 个重复组、159 个同名候选组和 138 个衍生候选组；在导入 API、严格 package 验证和不可变存储就绪后启动 MIG-02，不在盘点阶段自动删除、选择或发布资产。
 - 完成条件：每个候选文件有稳定 `migration_asset_id`；相同内容合并来源别名；无文件在盘点阶段被移动或删除。
 - 实施计划：[历史资产机器清单与去重实施计划](superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)。
 
