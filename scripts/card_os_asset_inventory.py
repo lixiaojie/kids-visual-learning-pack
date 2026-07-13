@@ -7,10 +7,14 @@ hashing, aggregation, and report generation are implemented by later tasks.
 from __future__ import annotations
 
 import hashlib
+import io
 import json
+import logging
 import os
 import re
 import stat
+import warnings
+from contextlib import contextmanager, redirect_stderr
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any, Callable, Mapping
@@ -73,6 +77,11 @@ IMAGE_FORMAT_MEDIA_TYPES = {
     "JPEG": "image/jpeg",
     "WEBP": "image/webp",
 }
+_OS_OPEN_SUPPORT_TARGET = os.open
+_OS_SCANDIR_SUPPORT_TARGET = os.scandir
+_OS_STAT_SUPPORT_TARGET = os.stat
+_DESCRIPTOR_UNSUPPORTED_ERRORS = (NotImplementedError, TypeError)
+_DESCRIPTOR_OPERATION_ERRORS = (OSError, NotImplementedError, TypeError)
 
 
 class ConfigError(ValueError):
@@ -530,6 +539,40 @@ def _descriptor_flags(*, directory: bool) -> int | None:
     return flags
 
 
+def _descriptor_operations_supported() -> bool:
+    try:
+        return (
+            _OS_OPEN_SUPPORT_TARGET in os.supports_dir_fd
+            and _OS_SCANDIR_SUPPORT_TARGET in os.supports_fd
+            and _OS_STAT_SUPPORT_TARGET in os.supports_dir_fd
+            and _OS_STAT_SUPPORT_TARGET in os.supports_follow_symlinks
+        )
+    except (AttributeError, TypeError):
+        return False
+
+
+@contextmanager
+def _isolated_library_logger(name: str):
+    """Temporarily silence one parser logger and restore its exact state."""
+
+    logger = logging.getLogger(name)
+    previous_handlers = list(logger.handlers)
+    previous_level = logger.level
+    previous_propagate = logger.propagate
+    previous_disabled = logger.disabled
+    logger.handlers = [logging.NullHandler()]
+    logger.setLevel(logging.CRITICAL + 1)
+    logger.propagate = False
+    logger.disabled = False
+    try:
+        yield
+    finally:
+        logger.handlers = previous_handlers
+        logger.setLevel(previous_level)
+        logger.propagate = previous_propagate
+        logger.disabled = previous_disabled
+
+
 def sha256_descriptor(
     descriptor: int, *, expected_stat: os.stat_result
 ) -> tuple[str, int, os.stat_result]:
@@ -567,7 +610,11 @@ def walk_source(
     root_relative = PurePosixPath(".")
     directory_flags = _descriptor_flags(directory=True)
     file_flags = _descriptor_flags(directory=False)
-    if directory_flags is None or file_flags is None:
+    if (
+        directory_flags is None
+        or file_flags is None
+        or not _descriptor_operations_supported()
+    ):
         return [
             _warning(
                 rule,
@@ -588,7 +635,7 @@ def walk_source(
                 "declared source root does not exist on this machine",
             )
         ]
-    except OSError:
+    except _DESCRIPTOR_OPERATION_ERRORS:
         return [
             _warning(
                 rule,
@@ -609,7 +656,7 @@ def walk_source(
 
     try:
         root_descriptor = os.open(rule.resolved_path, directory_flags)
-    except OSError:
+    except _DESCRIPTOR_OPERATION_ERRORS:
         return [
             _warning(
                 rule,
@@ -623,6 +670,16 @@ def walk_source(
         try:
             with os.scandir(parent_descriptor) as iterator:
                 entries = sorted(iterator, key=lambda candidate: candidate.name)
+        except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+            warnings.append(
+                _warning(
+                    rule,
+                    logical_parent,
+                    "unsafe_source_entry",
+                    "directory descriptor traversal is unsupported",
+                )
+            )
+            return
         except OSError:
             warnings.append(
                 _warning(
@@ -649,7 +706,7 @@ def walk_source(
             relative_path = logical_parent / name
             try:
                 discovery_stat = entry.stat(follow_symlinks=False)
-            except OSError:
+            except _DESCRIPTOR_OPERATION_ERRORS:
                 warnings.append(
                     _warning(
                         rule,
@@ -686,7 +743,7 @@ def walk_source(
                         directory_flags,
                         dir_fd=parent_descriptor,
                     )
-                except OSError:
+                except _DESCRIPTOR_OPERATION_ERRORS:
                     warnings.append(
                         _warning(
                             rule,
@@ -699,7 +756,7 @@ def walk_source(
                 try:
                     try:
                         child_stat = os.fstat(child_descriptor)
-                    except OSError:
+                    except _DESCRIPTOR_OPERATION_ERRORS:
                         warnings.append(
                             _warning(
                                 rule,
@@ -728,7 +785,7 @@ def walk_source(
                             dir_fd=parent_descriptor,
                             follow_symlinks=False,
                         )
-                    except OSError:
+                    except _DESCRIPTOR_OPERATION_ERRORS:
                         final_entry_stat = None
                     if final_entry_stat is None or not _same_identity(
                         discovery_stat, final_entry_stat
@@ -781,7 +838,7 @@ def walk_source(
                     )
                 )
                 continue
-            except OSError:
+            except _DESCRIPTOR_OPERATION_ERRORS:
                 warnings.append(
                     _warning(
                         rule,
@@ -794,7 +851,7 @@ def walk_source(
             try:
                 try:
                     opened_stat = os.fstat(file_descriptor)
-                except OSError:
+                except _DESCRIPTOR_OPERATION_ERRORS:
                     warnings.append(
                         _warning(
                             rule,
@@ -825,7 +882,7 @@ def walk_source(
                             dir_fd=parent_descriptor,
                             follow_symlinks=False,
                         )
-                    except OSError:
+                    except _DESCRIPTOR_OPERATION_ERRORS:
                         final_entry_stat = None
                     if (
                         not _same_identity(discovery_stat, final_stat)
@@ -844,7 +901,16 @@ def walk_source(
                             "source file changed during the scan",
                         )
                     )
-                except (OSError, PermissionError):
+                except _DESCRIPTOR_UNSUPPORTED_ERRORS:
+                    warnings.append(
+                        _warning(
+                            rule,
+                            relative_path,
+                            "unsafe_source_entry",
+                            "source file descriptor operations are unsupported",
+                        )
+                    )
+                except OSError:
                     warnings.append(
                         _warning(
                             rule,
@@ -871,7 +937,30 @@ def walk_source(
             )
         else:
             traverse(root_descriptor, PurePosixPath())
-    except OSError:
+            try:
+                final_root_descriptor_stat = os.fstat(root_descriptor)
+                final_root_path_stat = rule.resolved_path.lstat()
+            except _DESCRIPTOR_OPERATION_ERRORS:
+                final_root_descriptor_stat = None
+                final_root_path_stat = None
+            if (
+                final_root_descriptor_stat is None
+                or final_root_path_stat is None
+                or not stat.S_ISDIR(final_root_descriptor_stat.st_mode)
+                or not stat.S_ISDIR(final_root_path_stat.st_mode)
+                or stat.S_ISLNK(final_root_path_stat.st_mode)
+                or not _same_identity(root_lstat, final_root_descriptor_stat)
+                or not _same_identity(root_lstat, final_root_path_stat)
+            ):
+                warnings.append(
+                    _warning(
+                        rule,
+                        root_relative,
+                        "unsafe_source_entry",
+                        "declared source root changed during traversal",
+                    )
+                )
+    except _DESCRIPTOR_OPERATION_ERRORS:
         warnings.append(
             _warning(
                 rule,
@@ -887,31 +976,35 @@ def walk_source(
 
 
 def _image_metadata(descriptor: int) -> tuple[str, int, int]:
-    from PIL import Image, UnidentifiedImageError
+    from PIL import Image
 
     try:
         os.lseek(descriptor, 0, os.SEEK_SET)
         with os.fdopen(os.dup(descriptor), "rb") as source:
-            with Image.open(source) as image:
-                image.load()
-                observed_media_type = IMAGE_FORMAT_MEDIA_TYPES.get(str(image.format))
-                if observed_media_type is None:
-                    raise _MetadataUnreadable
-                width, height = image.size
-    except (OSError, SyntaxError, ValueError, UnidentifiedImageError):
+            with warnings.catch_warnings():
+                warnings.simplefilter("error", Image.DecompressionBombWarning)
+                with Image.open(source) as image:
+                    observed_media_type = IMAGE_FORMAT_MEDIA_TYPES.get(
+                        str(image.format)
+                    )
+                    if observed_media_type is None:
+                        raise _MetadataUnreadable
+                    width, height = image.size
+    except Exception:
         raise _MetadataUnreadable from None
     return observed_media_type, int(width), int(height)
 
 
 def _pdf_metadata(descriptor: int) -> int:
     from pypdf import PdfReader
-    from pypdf.errors import PyPdfError
 
     try:
         os.lseek(descriptor, 0, os.SEEK_SET)
         with os.fdopen(os.dup(descriptor), "rb") as source:
-            return len(PdfReader(source, strict=True).pages)
-    except (OSError, ValueError, TypeError, KeyError, EOFError, PyPdfError):
+            with _isolated_library_logger("pypdf"):
+                with redirect_stderr(io.StringIO()):
+                    return len(PdfReader(source, strict=True).pages)
+    except Exception:
         raise _MetadataUnreadable from None
 
 
@@ -994,24 +1087,32 @@ def scan_source(
             metadata_warnings.append(pending_warning)
 
     walk_warnings = walk_source(rule, scan_file)
+    reject_entire_root = any(
+        warning.relative_path == "." and warning.code == "unsafe_source_entry"
+        for warning in walk_warnings
+    )
     rejected_paths = {
         warning.relative_path
         for warning in walk_warnings
         if warning.code in {"source_changed_during_scan", "unsafe_source_entry"}
     }
     rejected_prefixes = tuple(path + "/" for path in rejected_paths)
-    aliases = [
-        alias
-        for alias in aliases
-        if alias.relative_path not in rejected_paths
-        and not alias.relative_path.startswith(rejected_prefixes)
-    ]
-    metadata_warnings = [
-        warning
-        for warning in metadata_warnings
-        if warning.relative_path not in rejected_paths
-        and not warning.relative_path.startswith(rejected_prefixes)
-    ]
+    if reject_entire_root:
+        aliases = []
+        metadata_warnings = []
+    else:
+        aliases = [
+            alias
+            for alias in aliases
+            if alias.relative_path not in rejected_paths
+            and not alias.relative_path.startswith(rejected_prefixes)
+        ]
+        metadata_warnings = [
+            warning
+            for warning in metadata_warnings
+            if warning.relative_path not in rejected_paths
+            and not warning.relative_path.startswith(rejected_prefixes)
+        ]
     aliases.sort(key=lambda alias: (alias.relative_path, alias.sha256))
     warnings = [*walk_warnings, *metadata_warnings]
     warnings.sort(key=lambda warning: (warning.relative_path, warning.code))

@@ -3,10 +3,14 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import logging
 import os
+import sys
 import tempfile
 import traceback
 import unittest
+import warnings
+from contextlib import redirect_stderr
 from pathlib import Path
 from pathlib import PurePosixPath
 from unittest.mock import patch
@@ -985,6 +989,161 @@ class ScannerTests(unittest.TestCase):
         )
         self._assert_warnings_sanitized(warnings)
 
+    def test_declared_root_replaced_during_hash_rejects_every_old_root_alias(self) -> None:
+        (self.source / "inside.txt").write_text("inside", encoding="utf-8")
+        displaced = self.base / "displaced-source"
+        real_read = os.read
+        replaced = False
+
+        def replacing_read(descriptor: int, amount: int) -> bytes:
+            nonlocal replaced
+            chunk = real_read(descriptor, amount)
+            if chunk and not replaced:
+                replaced = True
+                self.source.rename(displaced)
+                self.source.mkdir()
+                (self.source / "never.txt").write_text("new root", encoding="utf-8")
+            return chunk
+
+        with patch("scripts.card_os_asset_inventory.os.read", side_effect=replacing_read):
+            aliases, scan_warnings = scan_source(self.rule)
+
+        self.assertTrue(replaced)
+        self.assertEqual([], aliases)
+        self.assertEqual(
+            [(".", "unsafe_source_entry")],
+            [
+                (warning.relative_path, warning.code)
+                for warning in scan_warnings
+                if warning.relative_path == "."
+            ],
+        )
+        self.assertNotIn("never.txt", [alias.relative_path for alias in aliases])
+        self._assert_warnings_sanitized(scan_warnings)
+
+    def test_pillow_bomb_warning_and_error_are_isolated_as_unreadable_metadata(self) -> None:
+        self._write_image("warning.png", image_format="PNG", size=(15, 15))
+        self._write_image("error.png", image_format="PNG", size=(20, 20))
+
+        with warnings.catch_warnings(record=True) as leaked_warnings:
+            warnings.simplefilter("always")
+            with patch.object(Image, "MAX_IMAGE_PIXELS", 150):
+                aliases, scan_warnings = scan_source(self.rule)
+
+        self.assertEqual([], leaked_warnings)
+        by_path = {alias.relative_path: alias for alias in aliases}
+        self.assertEqual({"error.png", "warning.png"}, set(by_path))
+        for alias in by_path.values():
+            self.assertEqual("unreadable", alias.metadata_status)
+            self.assertIsNone(alias.image_width)
+            self.assertIsNone(alias.image_height)
+            self.assertIsNone(alias.pdf_page_count)
+        self.assertEqual(
+            [
+                ("error.png", "metadata_unreadable"),
+                ("warning.png", "metadata_unreadable"),
+            ],
+            [(warning.relative_path, warning.code) for warning in scan_warnings],
+        )
+        self._assert_warnings_sanitized(scan_warnings)
+
+    def test_noisy_pypdf_attribute_error_is_scoped_and_retains_hashed_alias(self) -> None:
+        payload = self._write_pdf("mutated.pdf", pages=1)
+        private_path = "/machine/private/mutated.pdf"
+        stderr_capture = io.StringIO()
+        log_capture = io.StringIO()
+        logger = logging.getLogger("pypdf")
+        handler = logging.StreamHandler(log_capture)
+        logger.addHandler(handler)
+        self.addCleanup(logger.removeHandler, handler)
+        logger_state = (
+            list(logger.handlers),
+            logger.level,
+            logger.propagate,
+            logger.disabled,
+        )
+
+        def noisy_reader(*_args: object, **_kwargs: object) -> object:
+            print(private_path, file=sys.stderr)
+            logger.warning("failed reader for %s", private_path)
+            raise AttributeError(private_path)
+
+        with patch("pypdf.PdfReader", side_effect=noisy_reader):
+            with redirect_stderr(stderr_capture):
+                aliases, scan_warnings = scan_source(self.rule)
+
+        self.assertEqual("", stderr_capture.getvalue())
+        self.assertEqual("", log_capture.getvalue())
+        self.assertEqual(
+            logger_state,
+            (
+                list(logger.handlers),
+                logger.level,
+                logger.propagate,
+                logger.disabled,
+            ),
+        )
+        self.assertEqual(1, len(aliases))
+        alias = aliases[0]
+        self.assertEqual(hashlib.sha256(payload).hexdigest(), alias.sha256)
+        self.assertEqual("application/pdf", alias.media_type)
+        self.assertEqual("unreadable", alias.metadata_status)
+        self.assertIsNone(alias.pdf_page_count)
+        self.assertEqual(
+            [("mutated.pdf", "metadata_unreadable")],
+            [(warning.relative_path, warning.code) for warning in scan_warnings],
+        )
+        self._assert_warnings_sanitized(scan_warnings)
+
+    def test_missing_descriptor_platform_capability_fails_closed(self) -> None:
+        (self.source / "never.txt").write_text("never", encoding="utf-8")
+
+        with patch.object(os, "supports_dir_fd", set()):
+            aliases, scan_warnings = scan_source(self.rule)
+
+        self.assertEqual([], aliases)
+        self.assertEqual(
+            [(".", "unsafe_source_entry")],
+            [(warning.relative_path, warning.code) for warning in scan_warnings],
+        )
+        self._assert_warnings_sanitized(scan_warnings)
+
+    def test_unsupported_child_descriptor_open_fails_closed_without_path_leak(self) -> None:
+        (self.source / "child").mkdir()
+        (self.source / "child" / "never.txt").write_text("never", encoding="utf-8")
+        real_open = os.open
+        errors = (
+            NotImplementedError("/machine/private/not-supported"),
+            TypeError("/machine/private/bad-signature"),
+        )
+        for error in errors:
+            with self.subTest(error=type(error).__name__):
+                def unsupported_open(
+                    path: object,
+                    flags: int,
+                    *args: object,
+                    **kwargs: object,
+                ) -> int:
+                    if path == "child" and kwargs.get("dir_fd") is not None:
+                        raise error
+                    return real_open(path, flags, *args, **kwargs)
+
+                with patch(
+                    "scripts.card_os_asset_inventory.os.open",
+                    side_effect=unsupported_open,
+                ):
+                    aliases, scan_warnings = scan_source(self.rule)
+
+                self.assertEqual([], aliases)
+                self.assertEqual(
+                    [("child", "unsafe_source_entry")],
+                    [
+                        (warning.relative_path, warning.code)
+                        for warning in scan_warnings
+                    ],
+                )
+                self._assert_warnings_sanitized(scan_warnings)
+
     @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
     def test_directory_replaced_with_symlink_fails_closed(self) -> None:
         checked = self.source / "replace-me"
@@ -1016,7 +1175,10 @@ class ScannerTests(unittest.TestCase):
         self.assertEqual([], aliases)
         self.assertTrue(replaced)
         self.assertEqual(
-            [("replace-me", "unsafe_source_entry")],
+            [
+                (".", "unsafe_source_entry"),
+                ("replace-me", "unsafe_source_entry"),
+            ],
             [(warning.relative_path, warning.code) for warning in warnings],
         )
         self.assertNotIn("never.txt", [alias.relative_path for alias in aliases])
