@@ -769,6 +769,35 @@ class ScannerTests(unittest.TestCase):
         self.assertNotIn("never.txt", child_open_names)
         self._assert_warnings_sanitized(warnings)
 
+    @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
+    def test_symlink_reason_precedes_excluded_name_for_files_and_directories(self) -> None:
+        outside = self.base / "outside-excluded"
+        outside.mkdir()
+        outside_file = outside / "never.txt"
+        outside_file.write_text("never", encoding="utf-8")
+        (self.source / ".DS_Store").symlink_to(outside_file)
+        (self.source / "dist").symlink_to(outside, target_is_directory=True)
+        real_open = os.open
+        child_open_names: list[str] = []
+
+        def recording_open(path: object, flags: int, *args: object, **kwargs: object) -> int:
+            if isinstance(path, str) and kwargs.get("dir_fd") is not None:
+                child_open_names.append(path)
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch("scripts.card_os_asset_inventory.os.open", side_effect=recording_open):
+            aliases, warnings = scan_source(self.rule)
+
+        self.assertEqual([], aliases)
+        self.assertEqual(
+            [(".DS_Store", "symlink"), ("dist", "symlink")],
+            [(warning.relative_path, warning.code) for warning in warnings],
+        )
+        self.assertNotIn(".DS_Store", child_open_names)
+        self.assertNotIn("dist", child_open_names)
+        self.assertNotIn("never.txt", child_open_names)
+        self._assert_warnings_sanitized(warnings)
+
     def test_hashes_in_one_mib_chunks_and_does_not_mutate_source_files(self) -> None:
         payload = (b"0123456789abcdef" * 150_000) + b"tail"
         target = self.source / "large.txt"

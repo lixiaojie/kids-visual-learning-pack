@@ -647,16 +647,6 @@ def walk_source(
                 )
                 continue
             relative_path = logical_parent / name
-            if name in rule.exclude_names:
-                warnings.append(
-                    _warning(
-                        rule,
-                        relative_path,
-                        "excluded_name",
-                        "entry name is excluded by the source rule",
-                    )
-                )
-                continue
             try:
                 discovery_stat = entry.stat(follow_symlinks=False)
             except OSError:
@@ -676,6 +666,16 @@ def walk_source(
                         relative_path,
                         "symlink",
                         "symbolic links are not followed",
+                    )
+                )
+                continue
+            if name in rule.exclude_names:
+                warnings.append(
+                    _warning(
+                        rule,
+                        relative_path,
+                        "excluded_name",
+                        "entry name is excluded by the source rule",
                     )
                 )
                 continue
