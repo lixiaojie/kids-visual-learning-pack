@@ -4,8 +4,10 @@ import hashlib
 import json
 import os
 import tempfile
+import traceback
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.card_os_asset_inventory import (
     ConfigError,
@@ -97,6 +99,18 @@ class ConfigTests(unittest.TestCase):
             json.dumps(self.roots, ensure_ascii=False), encoding="utf-8"
         )
 
+    def _write_raw(self, config: str, roots: str) -> None:
+        self.config_path.write_text(config, encoding="utf-8")
+        self.roots_path.write_text(roots, encoding="utf-8")
+
+    def _assert_sanitized_error(self, error: ConfigError) -> None:
+        self.assertIsNone(error.__cause__)
+        self.assertIsNone(error.__context__)
+        rendered = "".join(
+            traceback.TracebackException.from_exception(error).format_exception_only()
+        )
+        self.assertNotIn(str(self.base), rendered)
+
     def _load(self, *, strict_roots: bool = False):
         self._write()
         return load_source_config(
@@ -154,6 +168,175 @@ class ConfigTests(unittest.TestCase):
                     self.roots["schema"] = invalid_schema
                 with self.assertRaises(ConfigError):
                     self._load()
+
+    def test_rejects_duplicate_json_keys_at_every_object_layer(self) -> None:
+        compact_config = json.dumps(
+            self.config, ensure_ascii=False, separators=(",", ":")
+        )
+        compact_roots = json.dumps(
+            self.roots, ensure_ascii=False, separators=(",", ":")
+        )
+        duplicate_configs = {
+            "top": compact_config.replace(
+                f'"schema":"{SCHEMA}"',
+                f'"schema":"{SCHEMA}","schema":"{SCHEMA}"',
+                1,
+            ),
+            "defaults": compact_config.replace(
+                '"defaults":{"include_extensions":',
+                '"defaults":{"exclude_names":[],"include_extensions":',
+                1,
+            ),
+            "source": compact_config.replace(
+                '"root_id":"sample-assets"',
+                '"root_id":"sample-assets","root_id":"sample-assets"',
+                1,
+            ),
+            "locator": compact_config.replace(
+                '"locator":{"base":"workspace"',
+                '"locator":{"base":"workspace","base":"workspace"',
+                1,
+            ),
+        }
+        for layer, config_text in duplicate_configs.items():
+            with self.subTest(layer=layer):
+                self._write_raw(config_text, compact_roots)
+                with self.assertRaises(ConfigError) as caught:
+                    load_source_config(
+                        self.config_path, self.roots_path, strict_roots=False
+                    )
+                self._assert_sanitized_error(caught.exception)
+
+        duplicate_roots = {
+            "root-map": compact_roots.replace(
+                f'"schema":"{ROOTS_SCHEMA}"',
+                f'"schema":"{ROOTS_SCHEMA}","schema":"{ROOTS_SCHEMA}"',
+                1,
+            ),
+            "bases": compact_roots.replace(
+                '"bases":{"workspace":',
+                f'"bases":{{"workspace":"{self.workspace}","workspace":',
+                1,
+            ),
+        }
+        for layer, roots_text in duplicate_roots.items():
+            with self.subTest(layer=layer):
+                self._write_raw(compact_config, roots_text)
+                with self.assertRaises(ConfigError) as caught:
+                    load_source_config(
+                        self.config_path, self.roots_path, strict_roots=False
+                    )
+                self._assert_sanitized_error(caught.exception)
+
+    def test_rejects_unknown_keys_at_every_schema_layer(self) -> None:
+        for layer in (
+            "top",
+            "defaults",
+            "source",
+            "locator",
+            "root-map",
+            "bases",
+        ):
+            with self.subTest(layer=layer):
+                self.config = self._config()
+                self.roots = {
+                    "schema": ROOTS_SCHEMA,
+                    "bases": {
+                        "workspace": str(self.workspace),
+                        "codex_archive": str(self.archive),
+                    },
+                }
+                if layer == "top":
+                    self.config["unexpected"] = "value"
+                elif layer == "defaults":
+                    self.config["defaults"]["unexpected"] = "value"  # type: ignore[index]
+                elif layer == "source":
+                    self.config["sources"][0]["unexpected"] = "value"  # type: ignore[index]
+                elif layer == "locator":
+                    self.config["sources"][0]["locator"]["unexpected"] = "value"  # type: ignore[index]
+                elif layer == "root-map":
+                    self.roots["unexpected"] = "value"
+                else:
+                    self.roots["bases"]["unexpected"] = str(self.base / "extra")  # type: ignore[index]
+                with self.assertRaises(ConfigError) as caught:
+                    self._load()
+                self._assert_sanitized_error(caught.exception)
+
+    def test_rejects_missing_required_source_field(self) -> None:
+        source = self._source()
+        del source["source_thread_id"]
+        self.config = self._config(sources=[source])
+        with self.assertRaises(ConfigError):
+            self._load()
+
+    def test_rejects_absolute_strings_in_portable_config_before_digesting(self) -> None:
+        absolute_values = (
+            "/private/portable-config-must-not-contain-this",
+            "C:\\Users\\portable-config-must-not-contain-this",
+            "\\\\server\\share\\portable-config-must-not-contain-this",
+        )
+        for absolute_value in absolute_values:
+            with self.subTest(value_kind=absolute_value[:2]):
+                self.config = self._config(
+                    sources=[self._source(source_thread_id=absolute_value)]
+                )
+                self._write()
+                with self.assertRaises(ConfigError) as caught:
+                    canonical_config_digest(self.config_path)
+                self.assertNotIn(absolute_value, str(caught.exception))
+                self._assert_sanitized_error(caught.exception)
+
+    def test_source_thread_id_must_be_null_or_canonical_codex_uuid(self) -> None:
+        valid = "019f02ca-cf3c-79e0-919d-9f8b90a076db"
+        self.config = self._config(sources=[self._source(source_thread_id=valid)])
+        self.assertEqual(valid, self._load(strict_roots=True).rules[0].source_thread_id)
+
+        invalid_values = (
+            "019F02CA-CF3C-79E0-919D-9F8B90A076DB",
+            "019f02cacf3c79e0837f59c3420a9854",
+            "not-a-thread-id",
+            "00000000-0000-0000-0000-000000000000",
+        )
+        for value in invalid_values:
+            with self.subTest(value=value):
+                self.config = self._config(
+                    sources=[self._source(source_thread_id=value)]
+                )
+                with self.assertRaises(ConfigError):
+                    self._load()
+
+    def test_parse_and_lstat_errors_have_no_path_bearing_exception_chain(self) -> None:
+        self.config_path.write_text(
+            '{"secret":"/machine/private/config",', encoding="utf-8"
+        )
+        self.roots_path.write_text("{}", encoding="utf-8")
+        with self.assertRaises(ConfigError) as parse_error:
+            load_source_config(self.config_path, self.roots_path, strict_roots=False)
+        self._assert_sanitized_error(parse_error.exception)
+        self.assertNotIn("/machine/private/config", str(parse_error.exception))
+
+        self.config = self._config()
+        self.config_path.write_text(json.dumps(self.config), encoding="utf-8")
+        missing_roots = self.base / "machine-private-missing-roots.json"
+        with self.assertRaises(ConfigError) as root_parse_error:
+            load_source_config(self.config_path, missing_roots, strict_roots=False)
+        self._assert_sanitized_error(root_parse_error.exception)
+        self.assertNotIn(str(missing_roots), str(root_parse_error.exception))
+
+        self.config = self._config()
+        self._write()
+        leaked_path = str(self.base / "machine-private-lstat")
+        with patch.object(
+            Path,
+            "lstat",
+            side_effect=OSError(5, "unsafe filesystem detail", leaked_path),
+        ):
+            with self.assertRaises(ConfigError) as lstat_error:
+                load_source_config(
+                    self.config_path, self.roots_path, strict_roots=False
+                )
+        self._assert_sanitized_error(lstat_error.exception)
+        self.assertNotIn(leaked_path, str(lstat_error.exception))
 
     def test_rejects_duplicate_or_invalid_root_ids(self) -> None:
         for invalid in ("AB", "Upper-case", "has_underscore", "a" * 65):
