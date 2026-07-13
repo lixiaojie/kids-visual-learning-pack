@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Mapping
@@ -153,6 +154,30 @@ def _safe_relative(value: Any, field: str) -> tuple[str, PurePosixPath]:
     return canonical, path
 
 
+def _lstat_existing_prefixes(path: Path, field: str) -> os.stat_result | None:
+    """Inspect every existing path component without following symbolic links."""
+
+    current = Path(path.anchor)
+    try:
+        current_stat = current.lstat()
+    except OSError as error:
+        raise ConfigError(f"{field} cannot be validated safely") from error
+    if stat.S_ISLNK(current_stat.st_mode):
+        raise ConfigError(f"{field} must not contain symlink components")
+
+    for component in path.parts[1:]:
+        current = current / component
+        try:
+            current_stat = current.lstat()
+        except FileNotFoundError:
+            return None
+        except OSError as error:
+            raise ConfigError(f"{field} cannot be validated safely") from error
+        if stat.S_ISLNK(current_stat.st_mode):
+            raise ConfigError(f"{field} must not contain symlink components")
+    return current_stat
+
+
 def _absolute_base(value: Any, field: str) -> Path:
     raw = _string(value, field)
     base = Path(raw)
@@ -161,24 +186,23 @@ def _absolute_base(value: Any, field: str) -> Path:
     normalized = Path(os.path.abspath(os.path.normpath(raw)))
     if normalized != base:
         raise ConfigError(f"{field} must be normalized")
-    if base.is_symlink() or base.resolve(strict=False) != normalized:
-        raise ConfigError(f"{field} must not contain symlink components")
-    if base.exists() and (not base.is_dir() or base.resolve(strict=True) != normalized):
+    base_stat = _lstat_existing_prefixes(normalized, field)
+    if base_stat is not None and not stat.S_ISDIR(base_stat.st_mode):
         raise ConfigError(f"{field} must name a non-symlink directory")
     return normalized
 
 
-def _resolved_root(base: Path, relative: PurePosixPath, root_id: str) -> Path:
+def _resolved_root(
+    base: Path, relative: PurePosixPath, root_id: str
+) -> tuple[Path, bool]:
     candidate = base.joinpath(*relative.parts)
     normalized = Path(os.path.abspath(os.path.normpath(str(candidate))))
     if candidate != normalized:
         raise ConfigError(f"root {root_id} has a non-normalized path")
-    if candidate.is_symlink() or candidate.resolve(strict=False) != normalized:
-        raise ConfigError(f"root {root_id} contains symlink components")
-    if candidate.exists():
-        if not candidate.is_dir() or candidate.resolve(strict=True) != normalized:
-            raise ConfigError(f"root {root_id} must be a non-symlink directory")
-    return normalized
+    root_stat = _lstat_existing_prefixes(normalized, f"root {root_id}")
+    if root_stat is not None and not stat.S_ISDIR(root_stat.st_mode):
+        raise ConfigError(f"root {root_id} must be a non-symlink directory")
+    return normalized, root_stat is not None
 
 
 def _validated_bases(roots: Mapping[str, Any]) -> dict[str, Path]:
@@ -272,14 +296,16 @@ def load_source_config(
         if len(set(include_extensions)) != len(include_extensions):
             raise ConfigError(f"source {root_id} repeats an enabled extension")
 
-        resolved_path = _resolved_root(bases[locator_base], relative_path, root_id)
+        resolved_path, root_exists = _resolved_root(
+            bases[locator_base], relative_path, root_id
+        )
         previous_root = seen_paths.get(resolved_path)
         if previous_root is not None:
             raise ConfigError(
                 f"sources {previous_root} and {root_id} resolve to the same path"
             )
         seen_paths[resolved_path] = root_id
-        if not resolved_path.exists():
+        if not root_exists:
             if strict_roots:
                 raise ConfigError(f"source root {root_id} is missing")
             warnings.append(

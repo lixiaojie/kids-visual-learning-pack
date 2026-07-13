@@ -222,6 +222,45 @@ class ConfigTests(unittest.TestCase):
         with self.assertRaises(ConfigError):
             self._load()
 
+    @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
+    def test_rejects_self_loop_and_dangling_symlinks_inside_root_locator(self) -> None:
+        links = {
+            "locator-self-loop": "locator-self-loop",
+            "locator-dangling": "missing-locator-target",
+        }
+        for name, target in links.items():
+            (self.workspace / name).symlink_to(target, target_is_directory=True)
+            with self.subTest(name=name):
+                self.config = self._config(
+                    sources=[
+                        self._source(
+                            locator={
+                                "base": "workspace",
+                                "relative": f"{name}/nested",
+                            }
+                        )
+                    ]
+                )
+                with self.assertRaises(ConfigError) as caught:
+                    self._load()
+                self.assertNotIn(str(self.base), str(caught.exception))
+
+    @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
+    def test_rejects_self_loop_and_dangling_symlinks_inside_base_mapping(self) -> None:
+        links = {
+            "base-self-loop": "base-self-loop",
+            "base-dangling": "missing-base-target",
+        }
+        for name, target in links.items():
+            (self.base / name).symlink_to(target, target_is_directory=True)
+            with self.subTest(name=name):
+                self.roots["bases"]["workspace"] = str(  # type: ignore[index]
+                    self.base / name / "nested"
+                )
+                with self.assertRaises(ConfigError) as caught:
+                    self._load()
+                self.assertNotIn(str(self.base), str(caught.exception))
+
     def test_missing_root_warns_or_fails_in_strict_mode_without_absolute_paths(self) -> None:
         self.config = self._config(
             sources=[
