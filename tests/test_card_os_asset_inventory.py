@@ -5,12 +5,14 @@ import io
 import json
 import logging
 import os
+import random
 import sys
 import tempfile
 import traceback
 import unittest
 import warnings
 from contextlib import redirect_stderr
+from dataclasses import replace
 from pathlib import Path
 from pathlib import PurePosixPath
 from unittest.mock import patch
@@ -1590,6 +1592,126 @@ class AggregationTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(ValueError, "^identity_collision$"):
                 self._build(aliases)
+
+    def test_aliases_must_match_declared_source_identity_and_safe_logical_path(self) -> None:
+        valid = self._alias("root-alpha", "safe/item.json", b"valid")
+        invalid_aliases = (
+            replace(valid, root_id="unknown-root"),
+            replace(valid, source_group="other-group"),
+            replace(valid, source_thread_id="019f02ca-cf3c-79e0-919d-9f8b90a076db"),
+            *(replace(valid, relative_path=path) for path in (
+                "",
+                ".",
+                "/absolute/item.json",
+                "../item.json",
+                "safe/../item.json",
+                "safe\\item.json",
+                "C:\\private\\item.json",
+                "C:/private/item.json",
+                "safe/\x00item.json",
+            )),
+        )
+
+        for alias in invalid_aliases:
+            with self.subTest(root_id=alias.root_id, path=repr(alias.relative_path)):
+                with self.assertRaisesRegex(ValueError, "^invalid_alias_record$"):
+                    self._build([alias])
+
+    def test_warnings_must_use_declared_roots_safe_paths_and_sanitized_fields(self) -> None:
+        valid = WarningRecord(
+            root_id="root-alpha",
+            relative_path=".",
+            code="unsafe_source_entry",
+            detail="declared source root failed descriptor safety checks",
+        )
+        invalid_warnings = (
+            replace(valid, root_id="unknown-root"),
+            replace(valid, relative_path="/machine/private/item"),
+            replace(valid, relative_path="C:\\machine\\private\\item"),
+            replace(valid, relative_path="../item"),
+            replace(valid, relative_path="nested\\item"),
+            replace(valid, code="Unstable Code"),
+            replace(valid, code="unknown_warning_code"),
+            replace(valid, detail="failed at /machine/private/item"),
+            replace(valid, detail="failed at C:\\machine\\private\\item"),
+        )
+
+        self._build([], warnings=[valid])
+        for warning in invalid_warnings:
+            with self.subTest(warning=repr(warning)):
+                with self.assertRaisesRegex(ValueError, "^invalid_warning_record$"):
+                    self._build([], warnings=[warning])
+
+    def test_repeated_exact_alias_is_an_identity_collision(self) -> None:
+        alias = self._alias("root-alpha", "same/item.json", b"same")
+
+        with self.assertRaisesRegex(ValueError, "^identity_collision$"):
+            self._build([alias, alias])
+
+    def test_same_asset_with_png_and_webp_aliases_is_not_self_derivative(self) -> None:
+        payload = b"one byte identity with two filename extensions"
+        aliases = [
+            self._alias("root-alpha", "topic/hero.png", payload),
+            self._alias("root-bravo", "topic/HERO.WEBP", payload),
+        ]
+
+        inventory = self._build(aliases)
+
+        self.assertEqual(1, len(inventory["assets"]))
+        self.assertEqual([], inventory["derivative_candidate_groups"])
+
+    def test_derivative_members_are_unique_assets_and_omit_ambiguous_identity(self) -> None:
+        aliases = [
+            self._alias("root-alpha", "topic/hero.png", b"ambiguous"),
+            self._alias("root-alpha", "topic/HERO.webp", b"ambiguous"),
+            self._alias("root-bravo", "topic/hero.png", b"source"),
+            self._alias("root-bravo", "topic/hero.webp", b"derivative"),
+        ]
+
+        inventory = self._build(aliases)
+
+        groups = inventory["derivative_candidate_groups"]
+        self.assertEqual(1, len(groups))
+        member_ids = [member["migration_asset_id"] for member in groups[0]["members"]]
+        self.assertEqual(2, len(member_ids))
+        self.assertEqual(2, len(set(member_ids)))
+        self.assertNotIn(
+            "mig_sha256_" + hashlib.sha256(b"ambiguous").hexdigest(),
+            member_ids,
+        )
+
+    def test_duplicate_aliases_or_merge_structural_evidence_and_media_types(self) -> None:
+        payload = b"shared structural content"
+        aliases = [
+            self._alias("root-alpha", "01_content/fact.json", payload),
+            self._alias("root-bravo", "notes/copy.txt", payload),
+        ]
+
+        inventory = self._build(aliases)
+        asset = inventory["assets"][0]
+
+        self.assertTrue(asset["structural_evidence"]["fact"])
+        self.assertEqual(
+            ["application/json", "text/plain"], asset["media_types"]
+        )
+        self.assertEqual(2, len(asset["source_aliases"]))
+
+    def test_aggregation_is_independent_of_random_alias_input_order(self) -> None:
+        aliases = [
+            self._alias("root-alpha", "topic/hero.png", b"png"),
+            self._alias("root-bravo", "topic/HERO.webp", b"webp"),
+            self._alias("root-alpha", "one/Caf\u00e9.json", b"first"),
+            self._alias("root-charlie", "two/CAFE\u0301.JSON", b"second"),
+            self._alias("root-alpha", "copies/shared.txt", b"shared"),
+            self._alias("root-bravo", "other/shared-copy.txt", b"shared"),
+        ]
+        expected = self._build(aliases)
+        generator = random.Random(20260713)
+
+        for _ in range(10):
+            shuffled = list(aliases)
+            generator.shuffle(shuffled)
+            self.assertEqual(expected, self._build(shuffled))
 
 
 if __name__ == "__main__":

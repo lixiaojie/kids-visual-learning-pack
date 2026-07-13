@@ -94,6 +94,20 @@ MANIFEST_BASENAMES = frozenset(
 )
 GRADE_ORDER = {grade: index for index, grade in enumerate(("A", "B", "C", "D", "legacy-gallery"))}
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+VALID_WARNING_CODES = frozenset(
+    {
+        "missing_root",
+        "unsafe_source_entry",
+        "unreadable_directory",
+        "symlink",
+        "excluded_name",
+        "unsupported_extension",
+        "unreadable_file",
+        "source_changed_during_scan",
+        "metadata_unreadable",
+        "media_type_mismatch",
+    }
+)
 _OS_OPEN_SUPPORT_TARGET = os.open
 _OS_SCANDIR_SUPPORT_TARGET = os.scandir
 _OS_STAT_SUPPORT_TARGET = os.stat
@@ -1279,6 +1293,35 @@ def _alias_payload(alias: SourceAliasRecord) -> dict[str, object]:
     }
 
 
+def _is_safe_logical_path(value: object, *, allow_root: bool) -> bool:
+    if not isinstance(value, str) or "\x00" in value or "\\" in value:
+        return False
+    if allow_root and value == ".":
+        return True
+    if not value or value == ".":
+        return False
+    posix_path = PurePosixPath(value)
+    windows_path = PureWindowsPath(value)
+    return (
+        not posix_path.is_absolute()
+        and not windows_path.is_absolute()
+        and not windows_path.drive
+        and bool(posix_path.parts)
+        and all(part not in {"", ".", ".."} for part in posix_path.parts)
+        and posix_path.as_posix() == value
+    )
+
+
+def _is_sanitized_warning_field(code: object, detail: object) -> bool:
+    return (
+        isinstance(code, str)
+        and code in VALID_WARNING_CODES
+        and isinstance(detail, str)
+        and bool(detail)
+        and not any(character in detail for character in ("/", "\\", "\x00", "\r", "\n"))
+    )
+
+
 def _register_identity(
     identities: dict[str, object], identity: str, semantic_value: object
 ) -> None:
@@ -1306,20 +1349,43 @@ def build_inventory(
     if len(rules) != len(config.rules):
         raise ValueError("identity_collision")
 
+    for warning in config.warnings:
+        if (
+            not isinstance(warning.root_id, str)
+            or warning.root_id not in rules
+            or not _is_sanitized_warning_field(warning.code, warning.detail)
+        ):
+            raise ValueError("invalid_warning_record")
+    for warning in warnings:
+        if (
+            not isinstance(warning.root_id, str)
+            or warning.root_id not in rules
+            or not _is_safe_logical_path(warning.relative_path, allow_root=True)
+            or not _is_sanitized_warning_field(warning.code, warning.detail)
+        ):
+            raise ValueError("invalid_warning_record")
+
     aliases_by_digest: dict[str, list[SourceAliasRecord]] = {}
     alias_locations: dict[tuple[str, str], SourceAliasRecord] = {}
     for alias in alias_records:
-        rule = rules.get(alias.root_id)
-        if rule is None or alias.source_group != rule.source_group:
-            raise ConfigError("alias refers to an undeclared source root")
-        if not SHA256_PATTERN.fullmatch(alias.sha256) or alias.size_bytes < 0:
-            raise ConfigError("alias has an invalid content identity")
+        rule = rules.get(alias.root_id) if isinstance(alias.root_id, str) else None
+        if (
+            rule is None
+            or not isinstance(alias.source_group, str)
+            or alias.source_group != rule.source_group
+            or alias.source_thread_id != rule.source_thread_id
+            or not _is_safe_logical_path(alias.relative_path, allow_root=False)
+            or not isinstance(alias.sha256, str)
+            or not SHA256_PATTERN.fullmatch(alias.sha256)
+            or not isinstance(alias.size_bytes, int)
+            or isinstance(alias.size_bytes, bool)
+            or alias.size_bytes < 0
+        ):
+            raise ValueError("invalid_alias_record")
         location = (alias.root_id, alias.relative_path)
         prior_alias = alias_locations.get(location)
-        if prior_alias is not None and prior_alias != alias:
-            raise ValueError("identity_collision")
         if prior_alias is not None:
-            continue
+            raise ValueError("identity_collision")
         alias_locations[location] = alias
         aliases_by_digest.setdefault(alias.sha256, []).append(alias)
 
@@ -1431,7 +1497,7 @@ def build_inventory(
     )
 
     derivative_members: dict[
-        tuple[str, str], dict[tuple[str, str, str], None]
+        tuple[str, str], dict[str, set[tuple[str, str]]]
     ] = {}
     for alias in alias_locations.values():
         extension = PurePosixPath(alias.relative_path).suffix.casefold()
@@ -1441,13 +1507,19 @@ def build_inventory(
             "source_candidate" if extension == ".png" else "derivative_candidate"
         )
         key = (alias.source_group, _normalized_stem(alias.relative_path))
-        derivative_members.setdefault(key, {})[(alias.sha256, extension, role)] = None
+        derivative_members.setdefault(key, {}).setdefault(alias.sha256, set()).add(
+            (extension, role)
+        )
 
     derivative_with_order: list[tuple[str, str, dict[str, object]]] = []
-    for (source_group, normalized_stem), member_map in derivative_members.items():
-        canonical_members = sorted(member_map)
+    for (source_group, normalized_stem), members_by_digest in derivative_members.items():
+        canonical_members = sorted(
+            (digest, *next(iter(extension_roles)))
+            for digest, extension_roles in members_by_digest.items()
+            if len(extension_roles) == 1
+        )
         extensions = {extension for _digest, extension, _role in canonical_members}
-        if extensions != {".png", ".webp"}:
+        if len(canonical_members) < 2 or extensions != {".png", ".webp"}:
             continue
         identity_payload = {
             "source_group": source_group,
