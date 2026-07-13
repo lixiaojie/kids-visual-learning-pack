@@ -21,6 +21,7 @@ Project slug: `kids-visual-learning-pack`
 
 - [Cognitive Card OS 整体设计](docs/cognitive-card-os-system-design.md)
 - [Cognitive Card OS 路线图与任务账本](docs/cognitive-card-os-roadmap.md)
+- [Cognitive Card OS 历史资产迁移清单](docs/cognitive-card-os-asset-migration-inventory.md)
 - [Pro 会员客户端执行架构](docs/superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md)
 - [订阅客户端执行基础实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-subscriber-execution-foundation-plan.md)
 

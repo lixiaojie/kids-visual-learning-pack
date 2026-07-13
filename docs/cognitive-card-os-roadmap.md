@@ -27,6 +27,8 @@
 
 M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLOY-01`。
 
+资产迁移作为并行治理工作流推进，但在 API、认证和正式导入工具完成前不写入服务器。发现清单见 [历史资产迁移清单](cognitive-card-os-asset-migration-inventory.md)。
+
 ## 3. 总览
 
 | ID | 工作流 | 状态 | 下一动作 |
@@ -42,8 +44,13 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | PROTO-01 | capability/protocol discovery | READY | 定义兼容矩阵和错误码 |
 | SKILL-01 | Skill 发布注册表 | BACKLOG | 依赖 PROTO-01 |
 | SKILL-02 | 薄 Skill 客户端 | BACKLOG | 依赖 API-01、AUTH-01、SKILL-01 |
+| MIG-01 | 历史资产发现、摘要与去重清单 | IN PROGRESS | 将发现快照转为机器清单 |
+| MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
+| MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
 | PORTAL-01 | 只读资产门户 | BACKLOG | 依赖认证和资产查询 API |
 | UPLOAD-01 | 浏览器手动上传 | BACKLOG | 依赖 AUTH-01、API-01 |
+| SITE-01 | Card OS 替换 `kids-world` | BACKLOG | 依赖门户、发布和迁移覆盖 |
+| SITE-02 | 旧站兼容与重定向 | BACKLOG | 依赖 SITE-01 切换门禁 |
 | RENDER-01 | 四卡排版与打印 PDF | BACKLOG | 依赖内容锁和资产接口 |
 | QA-01 | 严格 QA 与人工复核 | BACKLOG | 依赖 RENDER-01 |
 | PUBLISH-01 | 不可变 package 发布 | BACKLOG | 依赖 QA-01 |
@@ -157,6 +164,28 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 范围：输入收集、本地形状校验、服务发现、任务创建、包领取、摘要确认、候选上传、错误解释、离线限制和版本升级。
 - 完成条件：两台独立 Codex 客户端安装相同发布摘要，并能完成同一服务器上的任务领取与结果上传。
 
+### MIG-01 历史资产发现、摘要与去重
+
+- 状态：`IN PROGRESS`
+- 权威清单：[历史资产迁移清单](cognitive-card-os-asset-migration-inventory.md)。
+- 已完成：定位兔子完整包、古生物包、7 种深圳植物双面卡、13 个旧知识主题、三批旧网站生图及旧副本来源。
+- 待办：生成机器可读 inventory；计算 SHA-256、媒体信息和重复组；记录 Codex 任务、原路径、现站引用、权利状态、结构证据和迁移等级。
+- 完成条件：每个候选文件有稳定 `migration_asset_id`；相同内容合并来源别名；无文件在盘点阶段被移动或删除。
+
+### MIG-02 A/B 级结构化 package 导入
+
+- 状态：`BACKLOG`
+- 范围：兔子完整包，以及升级后的古生物包。
+- 依赖：MIG-01、API-01、严格 package 验证和服务器不可变存储。
+- 完成条件：所有声明文件、摘要、模板、内容锁和 QA 由目标服务器版本复算；重复 Stegosaurus 包有明确主来源和 provenance 关系。
+
+### MIG-03 C 级旧主题重制
+
+- 状态：`BACKLOG`
+- 范围：7 种深圳植物、13 个旧 `kids-world` 知识主题和可复用旧图片。
+- 依赖：TMPL-01、AGE-01、RENDER-01、QA-01、PUBLISH-01。
+- 完成条件：每个迁移主题通过现行分类、来源、命题、四卡、内容锁、打印和 QA；旧图只作为审核过的素材或参考，不继承旧发布状态。
+
 ### PORTAL-01 只读资产门户
 
 - 状态：`BACKLOG`
@@ -170,6 +199,20 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 依赖：AUTH-01、API-01。
 - 范围：查看已领取生成包、上传声明文件、显示摘要和验证结果、按错误修正重试。
 - 完成条件：不依赖 MCP 写能力即可完成 eligible packet；验证规则与薄 Skill 完全相同。
+
+### SITE-01 Card OS 替换 `kids-world`
+
+- 状态：`BACKLOG`
+- 范围：以 `/card-os/` 提供新的知识首页、搜索、package 详情、四卡、PDF、来源、QA 和历史版本。
+- 依赖：PORTAL-01、PUBLISH-01、MIG-01；13 个旧主题均有迁移或归档决定。
+- 完成条件：新站通过移动端、桌面端、权限、打印和链接验收后成为主入口；`spider-verse` 与 `paw-patrol` 继续作为旧版主题馆。
+
+### SITE-02 旧站兼容与重定向
+
+- 状态：`BACKLOG`
+- 依赖：SITE-01。
+- 范围：旧 `kids-world` 只读兼容页、旧 URL 映射、替代说明、渐进重定向和回滚开关。
+- 完成条件：已索引旧链接无静默 404；新旧 package/provenance 映射可查询；可在一次部署内回滚入口切换。
 
 ### RENDER-01 四卡与打印渲染
 
@@ -230,9 +273,11 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 下一轮只启动一个可独立验收的子项目：
 
 1. 为 `API-01 + AUTH-01 + PROTO-01` 编写统一接入边界设计；
-2. 将设计拆成服务器 HTTP 骨架、身份与权限、协议发现、任务/包/上传端点和集成测试；
-3. 在独立分支按 TDD 实现并进行逐任务审查；
-4. 完成后再设计 `SKILL-01 + SKILL-02`，不让薄 Skill 依赖尚未稳定的接口。
+2. 同步将 MIG-01 的发现快照转成只读机器清单和重复报告，但不执行服务器导入；
+3. 将接入设计拆成服务器 HTTP 骨架、身份与权限、协议发现、任务/包/上传端点和集成测试；
+4. 在独立分支按 TDD 实现并进行逐任务审查；
+5. 完成后再设计 `SKILL-01 + SKILL-02`，不让薄 Skill 依赖尚未稳定的接口；
+6. 待不可变存储和严格验证入口稳定后启动 MIG-02。
 
 门户、渲染和 MCP 不进入下一实现批次。
 
@@ -244,4 +289,5 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 记录订阅执行核心 `0.2.0` 完成状态。
 - 将“可远程领取与提交”设为当前里程碑。
 - 将 API、认证和协议发现设为下一独立设计批次。
-
+- 确认 Cognitive Card OS 将替换 `kids-world` 知识站；旧故事主题保留为旧版主题馆。
+- 扫描指定 Codex 任务及工作目录，建立历史资产迁移分级和双轨切换门禁。
