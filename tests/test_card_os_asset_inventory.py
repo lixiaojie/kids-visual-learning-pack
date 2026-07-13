@@ -19,9 +19,14 @@ from PIL import Image
 from pypdf import PdfWriter
 
 from scripts.card_os_asset_inventory import (
+    ConfigWarning,
     ConfigError,
     MEDIA_TYPES,
+    SourceAliasRecord,
+    SourceConfig,
     SourceRule,
+    WarningRecord,
+    build_inventory,
     canonical_config_digest,
     load_source_config,
     metadata_reader_versions,
@@ -1268,6 +1273,323 @@ class ScannerTests(unittest.TestCase):
                     walk_source(self.rule, broken_callback)
 
                 self.assertIs(error, caught.exception)
+
+
+class AggregationTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.rules = (
+            self._rule("root-alpha", "shared-group", "A", "strict_revalidate"),
+            self._rule("root-bravo", "shared-group", "C", "rebuild"),
+            self._rule("root-charlie", "other-group", "legacy-gallery", "legacy_gallery"),
+        )
+        self.config = SourceConfig(
+            schema=SCHEMA,
+            rules=self.rules,
+            warnings=(),
+            config_digest="sha256:" + "c" * 64,
+        )
+
+    def _rule(
+        self,
+        root_id: str,
+        source_group: str,
+        grade: str,
+        decision: str,
+    ) -> SourceRule:
+        return SourceRule(
+            root_id=root_id,
+            source_group=source_group,
+            locator_base="workspace",
+            locator_relative=f"fixtures/{root_id}",
+            resolved_path=Path(f"/unused/{root_id}"),
+            source_thread_id=None,
+            migration_grade=grade,
+            decision=decision,
+            include_extensions=tuple(DEFAULT_EXTENSIONS),
+            exclude_names=tuple(DEFAULT_EXCLUDES),
+        )
+
+    def _alias(
+        self,
+        root_id: str,
+        relative_path: str,
+        payload: bytes,
+        *,
+        media_type: str | None = None,
+    ) -> SourceAliasRecord:
+        rule = next(rule for rule in self.rules if rule.root_id == root_id)
+        extension = PurePosixPath(relative_path).suffix.casefold()
+        return SourceAliasRecord(
+            root_id=root_id,
+            relative_path=relative_path,
+            source_thread_id=rule.source_thread_id,
+            source_group=rule.source_group,
+            sha256=hashlib.sha256(payload).hexdigest(),
+            size_bytes=len(payload),
+            media_type=media_type or MEDIA_TYPES[extension],
+            image_width=None,
+            image_height=None,
+            pdf_page_count=None,
+            metadata_status="not_applicable",
+        )
+
+    def _build(
+        self,
+        aliases: list[SourceAliasRecord],
+        *,
+        warnings: list[object] | None = None,
+    ) -> dict[str, object]:
+        with patch(
+            "scripts.card_os_asset_inventory.metadata_reader_versions",
+            return_value={"pillow": "12.0.0", "pypdf": "6.0.0"},
+        ):
+            return build_inventory(
+                self.config,
+                aliases,
+                warnings or [],  # type: ignore[arg-type]
+                generated_at="2026-07-13T00:00:00Z",
+            )
+
+    def test_identical_bytes_merge_aliases_grades_decisions_and_duplicate_group(self) -> None:
+        payload = b"one content object"
+        aliases = [
+            self._alias("root-bravo", "zeta/shared.json", payload),
+            self._alias("root-alpha", "alpha/shared.json", payload),
+        ]
+
+        inventory = self._build(aliases)
+
+        self.assertEqual(1, len(inventory["assets"]))
+        asset = inventory["assets"][0]
+        digest = hashlib.sha256(payload).hexdigest()
+        self.assertEqual("mig_sha256_" + digest, asset["migration_asset_id"])
+        self.assertEqual(digest, asset["sha256"])
+        self.assertEqual(
+            [("root-alpha", "alpha/shared.json"), ("root-bravo", "zeta/shared.json")],
+            [
+                (alias["root_id"], alias["relative_path"])
+                for alias in asset["source_aliases"]
+            ],
+        )
+        self.assertEqual(["A", "C"], asset["migration_grades"])
+        self.assertEqual(["rebuild", "strict_revalidate"], asset["decisions"])
+        duplicate_id = "dup_sha256_" + digest
+        self.assertEqual(duplicate_id, asset["duplicate_group"])
+        self.assertEqual(
+            [
+                {
+                    "duplicate_group": duplicate_id,
+                    "sha256": digest,
+                    "migration_asset_id": "mig_sha256_" + digest,
+                    "alias_count": 2,
+                    "aliases": [
+                        {"root_id": "root-alpha", "relative_path": "alpha/shared.json"},
+                        {"root_id": "root-bravo", "relative_path": "zeta/shared.json"},
+                    ],
+                }
+            ],
+            inventory["duplicate_groups"],
+        )
+        self.assertEqual(2 * len(payload), inventory["summary"]["total_source_bytes"])
+        self.assertEqual(len(payload), inventory["summary"]["unique_content_bytes"])
+
+    def test_same_normalized_name_with_distinct_bytes_remains_distinct(self) -> None:
+        aliases = [
+            self._alias("root-alpha", "one/Caf\u00e9.JSON", b"first"),
+            self._alias("root-bravo", "two/CAFE\u0301.json", b"second"),
+        ]
+
+        inventory = self._build(aliases)
+
+        self.assertEqual(2, len(inventory["assets"]))
+        self.assertEqual([], inventory["duplicate_groups"])
+        normalized = "caf\u00e9.json"
+        group = inventory["same_name_candidate_groups"][0]
+        self.assertEqual(normalized, group["normalized_basename"])
+        self.assertEqual(
+            "name_sha256_" + hashlib.sha256(normalized.encode("utf-8")).hexdigest(),
+            group["group_id"],
+        )
+        self.assertEqual("review_required", group["status"])
+        self.assertEqual(
+            sorted("mig_sha256_" + alias.sha256 for alias in aliases),
+            group["members"],
+        )
+
+    def test_derivative_groups_are_partitioned_by_source_group_and_ordered(self) -> None:
+        aliases = [
+            self._alias("root-charlie", "Topic/HERO.WEBP", b"other webp"),
+            self._alias("root-alpha", "Topic/Hero.WEBP", b"shared webp"),
+            self._alias("root-bravo", "topic/hero.png", b"shared png"),
+            self._alias("root-charlie", "topic/hero.png", b"other png"),
+            self._alias("root-alpha", "unpaired/only.png", b"unpaired"),
+        ]
+
+        inventory = self._build(aliases)
+
+        groups = inventory["derivative_candidate_groups"]
+        self.assertEqual(2, len(groups))
+        for group in groups:
+            self.assertEqual("topic/hero", group["normalized_stem"])
+            self.assertEqual("review_required", group["status"])
+            self.assertEqual(
+                ["source_candidate", "derivative_candidate"],
+                [member["role"] for member in group["members"]],
+            )
+            self.assertEqual(
+                [".png", ".webp"],
+                [member["extension"] for member in group["members"]],
+            )
+            self.assertRegex(group["group_id"], r"^deriv_sha256_[0-9a-f]{64}$")
+        self.assertNotEqual(groups[0]["group_id"], groups[1]["group_id"])
+
+    def test_structural_evidence_uses_only_exact_lowercase_components_and_basenames(self) -> None:
+        positive_paths = (
+            "01_content/fact.json",
+            "01_content/semantic-core.json",
+            "01_content/final_cards.json",
+            "01_content/content_lock.json",
+            "06_qa/manifest.json",
+            "05_print/pdf/rabbit.pdf",
+        )
+        aliases = [
+            self._alias("root-alpha", path, f"payload-{index}".encode())
+            for index, path in enumerate(positive_paths)
+        ]
+        aliases.extend(
+            [
+                self._alias("root-alpha", "01_content/artifact.json", b"artifact"),
+                self._alias("root-alpha", "not_qa/qa_notes.json", b"qa negative"),
+                self._alias("root-alpha", "printable/rabbit.pdf", b"print negative"),
+                self._alias("root-alpha", "QA/manifest.JSON", b"case negative"),
+            ]
+        )
+
+        inventory = self._build(aliases)
+        by_path = {
+            asset["source_aliases"][0]["relative_path"]: asset
+            for asset in inventory["assets"]
+        }
+
+        self.assertTrue(by_path["01_content/fact.json"]["structural_evidence"]["fact"])
+        self.assertTrue(
+            by_path["01_content/semantic-core.json"]["structural_evidence"]["propositions"]
+        )
+        self.assertTrue(
+            by_path["01_content/content_lock.json"]["structural_evidence"]["content_lock"]
+        )
+        self.assertTrue(
+            by_path["01_content/final_cards.json"]["structural_evidence"]["four_cards"]
+        )
+        self.assertTrue(by_path["06_qa/manifest.json"]["structural_evidence"]["qa"])
+        self.assertTrue(
+            by_path["06_qa/manifest.json"]["structural_evidence"]["manifest"]
+        )
+        self.assertTrue(by_path["05_print/pdf/rabbit.pdf"]["structural_evidence"]["print_pdf"])
+        for negative in (
+            "01_content/artifact.json",
+            "not_qa/qa_notes.json",
+            "printable/rabbit.pdf",
+            "QA/manifest.JSON",
+        ):
+            self.assertFalse(any(by_path[negative]["structural_evidence"].values()))
+
+    def test_no_semantic_rights_package_or_preferred_alias_is_inferred(self) -> None:
+        inventory = self._build(
+            [
+                self._alias("root-bravo", "rabbit/fact.json", b"same"),
+                self._alias("root-alpha", "preferred/fact.json", b"same"),
+            ]
+        )
+        asset = inventory["assets"][0]
+
+        self.assertIsNone(asset["object_name"])
+        self.assertIsNone(asset["classification"])
+        self.assertEqual("review_required", asset["rights_status"])
+        self.assertIsNone(asset["target_package_id"])
+        self.assertNotIn("preferred_alias", asset)
+
+    def test_machine_fields_roots_readers_warnings_and_summary_are_stable(self) -> None:
+        self.config = SourceConfig(
+            schema=self.config.schema,
+            rules=self.config.rules,
+            warnings=(
+                ConfigWarning(
+                    root_id="root-charlie",
+                    code="missing_root",
+                    detail="declared source root does not exist on this machine",
+                ),
+            ),
+            config_digest=self.config.config_digest,
+        )
+        warning = WarningRecord(
+            root_id="root-alpha",
+            relative_path="ignored.bin",
+            code="unsupported_extension",
+            detail="extension .bin is not enabled for this root",
+        )
+
+        inventory = self._build([], warnings=[warning])
+
+        self.assertEqual("cognitive-card-migration-inventory-v1", inventory["schema"])
+        self.assertEqual("2026-07-13T00:00:00Z", inventory["generated_at"])
+        self.assertEqual(self.config.config_digest, inventory["config_digest"])
+        self.assertEqual(
+            {"pillow": "12.0.0", "pypdf": "6.0.0"},
+            inventory["metadata_readers"],
+        )
+        self.assertEqual(
+            [
+                {
+                    "root_id": "root-alpha",
+                    "locator": {"base": "workspace", "relative": "fixtures/root-alpha"},
+                    "status": "scanned",
+                },
+                {
+                    "root_id": "root-bravo",
+                    "locator": {"base": "workspace", "relative": "fixtures/root-bravo"},
+                    "status": "scanned",
+                },
+                {
+                    "root_id": "root-charlie",
+                    "locator": {"base": "workspace", "relative": "fixtures/root-charlie"},
+                    "status": "missing",
+                },
+            ],
+            inventory["scan_roots"],
+        )
+        self.assertEqual(
+            {
+                "source_alias_count": 0,
+                "content_object_count": 0,
+                "duplicate_group_count": 0,
+                "same_name_candidate_group_count": 0,
+                "derivative_candidate_group_count": 0,
+                "warning_count": 2,
+                "total_source_bytes": 0,
+                "unique_content_bytes": 0,
+            },
+            inventory["summary"],
+        )
+
+    def test_full_digest_ids_are_stable_and_identity_collisions_fail_closed(self) -> None:
+        aliases = [
+            self._alias("root-alpha", "a.txt", b"alpha"),
+            self._alias("root-bravo", "b.txt", b"bravo"),
+        ]
+        inventory = self._build(aliases)
+        ids = [asset["migration_asset_id"] for asset in inventory["assets"]]
+        self.assertEqual(2, len(set(ids)))
+        for asset_id, alias in zip(ids, sorted(aliases, key=lambda item: item.sha256)):
+            self.assertEqual("mig_sha256_" + alias.sha256, asset_id)
+            self.assertEqual(75, len(asset_id))
+
+        with patch(
+            "scripts.card_os_asset_inventory._migration_asset_id",
+            return_value="mig_sha256_" + "0" * 64,
+        ):
+            with self.assertRaisesRegex(ValueError, "^identity_collision$"):
+                self._build(aliases)
 
 
 if __name__ == "__main__":

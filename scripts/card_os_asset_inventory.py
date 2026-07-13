@@ -13,11 +13,12 @@ import logging
 import os
 import re
 import stat
+import unicodedata
 import warnings
 from contextlib import contextmanager, redirect_stderr
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Any, Callable, Mapping
+from typing import Any, Callable, Mapping, Sequence
 
 
 SOURCE_SCHEMA = "cognitive-card-migration-sources-v1"
@@ -77,6 +78,22 @@ IMAGE_FORMAT_MEDIA_TYPES = {
     "JPEG": "image/jpeg",
     "WEBP": "image/webp",
 }
+FACT_BASENAMES = frozenset({"fact.json", "facts.json"})
+PROPOSITION_BASENAMES = frozenset(
+    {"proposition_alignment.json", "semantic_core.json", "semantic-core.json"}
+)
+CONTENT_LOCK_BASENAMES = frozenset({"content_lock.json", "content-lock.json"})
+FOUR_CARD_BASENAMES = frozenset(
+    {"final_cards.json", "four_cards.json", "four-cards.json"}
+)
+FOUR_CARD_COMPONENTS = frozenset({"final_cards"})
+QA_COMPONENTS = frozenset({"qa", "06_qa"})
+PRINT_COMPONENTS = frozenset({"print", "05_print"})
+MANIFEST_BASENAMES = frozenset(
+    {"manifest.json", "package_manifest.json", "package-manifest.json"}
+)
+GRADE_ORDER = {grade: index for index, grade in enumerate(("A", "B", "C", "D", "legacy-gallery"))}
+SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 _OS_OPEN_SUPPORT_TARGET = os.open
 _OS_SCANDIR_SUPPORT_TARGET = os.scandir
 _OS_STAT_SUPPORT_TARGET = os.stat
@@ -1210,3 +1227,321 @@ def scan_source(
     warnings = [*walk_warnings, *metadata_warnings]
     warnings.sort(key=lambda warning: (warning.relative_path, warning.code))
     return aliases, warnings
+
+
+def _migration_asset_id(digest: str) -> str:
+    return "mig_sha256_" + digest
+
+
+def _duplicate_group_id(digest: str) -> str:
+    return "dup_sha256_" + digest
+
+
+def _normalized_basename(relative_path: str) -> str:
+    return unicodedata.normalize(
+        "NFC", PurePosixPath(relative_path).name
+    ).casefold()
+
+
+def _normalized_stem(relative_path: str) -> str:
+    path = PurePosixPath(relative_path)
+    stem_path = path.with_suffix("")
+    return unicodedata.normalize("NFC", stem_path.as_posix()).casefold()
+
+
+def _structural_evidence(relative_path: str) -> dict[str, bool]:
+    path = PurePosixPath(relative_path)
+    basename = path.name
+    components = frozenset(path.parts[:-1])
+    return {
+        "fact": basename in FACT_BASENAMES,
+        "propositions": basename in PROPOSITION_BASENAMES,
+        "content_lock": basename in CONTENT_LOCK_BASENAMES,
+        "four_cards": basename in FOUR_CARD_BASENAMES
+        or bool(components & FOUR_CARD_COMPONENTS),
+        "qa": bool(components & QA_COMPONENTS),
+        "print_pdf": path.suffix == ".pdf" and bool(components & PRINT_COMPONENTS),
+        "manifest": basename in MANIFEST_BASENAMES,
+    }
+
+
+def _alias_payload(alias: SourceAliasRecord) -> dict[str, object]:
+    return {
+        "root_id": alias.root_id,
+        "relative_path": alias.relative_path,
+        "source_thread_id": alias.source_thread_id,
+        "source_group": alias.source_group,
+        "media_type": alias.media_type,
+        "image_width": alias.image_width,
+        "image_height": alias.image_height,
+        "pdf_page_count": alias.pdf_page_count,
+        "metadata_status": alias.metadata_status,
+    }
+
+
+def _register_identity(
+    identities: dict[str, object], identity: str, semantic_value: object
+) -> None:
+    prior = identities.get(identity)
+    if prior is not None and prior != semantic_value:
+        raise ValueError("identity_collision")
+    identities[identity] = semantic_value
+
+
+def build_inventory(
+    config: SourceConfig,
+    alias_records: Sequence[SourceAliasRecord],
+    warnings: Sequence[WarningRecord],
+    *,
+    generated_at: str,
+) -> dict[str, object]:
+    """Aggregate scanned aliases into deterministic, byte-identified objects.
+
+    This pure aggregation stage deliberately does not assign the semantic
+    snapshot ``run_id`` or write any files; those are publication concerns of
+    the later atomic-output stage.
+    """
+
+    rules = {rule.root_id: rule for rule in config.rules}
+    if len(rules) != len(config.rules):
+        raise ValueError("identity_collision")
+
+    aliases_by_digest: dict[str, list[SourceAliasRecord]] = {}
+    alias_locations: dict[tuple[str, str], SourceAliasRecord] = {}
+    for alias in alias_records:
+        rule = rules.get(alias.root_id)
+        if rule is None or alias.source_group != rule.source_group:
+            raise ConfigError("alias refers to an undeclared source root")
+        if not SHA256_PATTERN.fullmatch(alias.sha256) or alias.size_bytes < 0:
+            raise ConfigError("alias has an invalid content identity")
+        location = (alias.root_id, alias.relative_path)
+        prior_alias = alias_locations.get(location)
+        if prior_alias is not None and prior_alias != alias:
+            raise ValueError("identity_collision")
+        if prior_alias is not None:
+            continue
+        alias_locations[location] = alias
+        aliases_by_digest.setdefault(alias.sha256, []).append(alias)
+
+    identity_registry: dict[str, object] = {}
+    assets: list[dict[str, object]] = []
+    duplicate_groups: list[dict[str, object]] = []
+    asset_id_by_digest: dict[str, str] = {}
+
+    for digest in sorted(aliases_by_digest):
+        aliases = sorted(
+            aliases_by_digest[digest],
+            key=lambda item: (item.root_id, item.relative_path),
+        )
+        sizes = {alias.size_bytes for alias in aliases}
+        if len(sizes) != 1:
+            raise ValueError("identity_collision")
+        asset_id = _migration_asset_id(digest)
+        _register_identity(identity_registry, asset_id, ("asset", digest))
+        asset_id_by_digest[digest] = asset_id
+
+        evidence = {
+            "fact": False,
+            "propositions": False,
+            "content_lock": False,
+            "four_cards": False,
+            "qa": False,
+            "print_pdf": False,
+            "manifest": False,
+        }
+        for alias in aliases:
+            alias_evidence = _structural_evidence(alias.relative_path)
+            for field in evidence:
+                evidence[field] = evidence[field] or alias_evidence[field]
+
+        duplicate_group: str | None = None
+        if len(aliases) >= 2:
+            duplicate_group = _duplicate_group_id(digest)
+            _register_identity(
+                identity_registry, duplicate_group, ("duplicate", digest)
+            )
+            duplicate_groups.append(
+                {
+                    "duplicate_group": duplicate_group,
+                    "sha256": digest,
+                    "migration_asset_id": asset_id,
+                    "alias_count": len(aliases),
+                    "aliases": [
+                        {
+                            "root_id": alias.root_id,
+                            "relative_path": alias.relative_path,
+                        }
+                        for alias in aliases
+                    ],
+                }
+            )
+
+        grades = sorted(
+            {rules[alias.root_id].migration_grade for alias in aliases},
+            key=GRADE_ORDER.__getitem__,
+        )
+        decisions = sorted(
+            {rules[alias.root_id].decision for alias in aliases}
+        )
+        assets.append(
+            {
+                "migration_asset_id": asset_id,
+                "sha256": digest,
+                "size_bytes": sizes.pop(),
+                "source_aliases": [_alias_payload(alias) for alias in aliases],
+                "object_name": None,
+                "classification": None,
+                "rights_status": "review_required",
+                "structural_evidence": evidence,
+                "migration_grades": grades,
+                "media_types": sorted({alias.media_type for alias in aliases}),
+                "duplicate_group": duplicate_group,
+                "target_package_id": None,
+                "decisions": decisions,
+            }
+        )
+
+    same_name_members: dict[str, set[str]] = {}
+    for alias in alias_locations.values():
+        same_name_members.setdefault(
+            _normalized_basename(alias.relative_path), set()
+        ).add(alias.sha256)
+    same_name_candidate_groups: list[dict[str, object]] = []
+    for normalized_basename, digests in same_name_members.items():
+        if len(digests) < 2:
+            continue
+        group_id = "name_sha256_" + hashlib.sha256(
+            normalized_basename.encode("utf-8")
+        ).hexdigest()
+        _register_identity(
+            identity_registry,
+            group_id,
+            ("same_name", normalized_basename),
+        )
+        same_name_candidate_groups.append(
+            {
+                "group_id": group_id,
+                "normalized_basename": normalized_basename,
+                "status": "review_required",
+                "members": sorted(asset_id_by_digest[digest] for digest in digests),
+            }
+        )
+    same_name_candidate_groups.sort(
+        key=lambda group: (group["normalized_basename"], group["group_id"])
+    )
+
+    derivative_members: dict[
+        tuple[str, str], dict[tuple[str, str, str], None]
+    ] = {}
+    for alias in alias_locations.values():
+        extension = PurePosixPath(alias.relative_path).suffix.casefold()
+        if extension not in {".png", ".webp"}:
+            continue
+        role = (
+            "source_candidate" if extension == ".png" else "derivative_candidate"
+        )
+        key = (alias.source_group, _normalized_stem(alias.relative_path))
+        derivative_members.setdefault(key, {})[(alias.sha256, extension, role)] = None
+
+    derivative_with_order: list[tuple[str, str, dict[str, object]]] = []
+    for (source_group, normalized_stem), member_map in derivative_members.items():
+        canonical_members = sorted(member_map)
+        extensions = {extension for _digest, extension, _role in canonical_members}
+        if extensions != {".png", ".webp"}:
+            continue
+        identity_payload = {
+            "source_group": source_group,
+            "normalized_stem": normalized_stem,
+            "members": [
+                {"sha256": digest, "extension": extension, "role": role}
+                for digest, extension, role in canonical_members
+            ],
+        }
+        group_id = "deriv_sha256_" + hashlib.sha256(
+            _canonical_json_bytes(identity_payload)
+        ).hexdigest()
+        _register_identity(
+            identity_registry,
+            group_id,
+            (
+                "derivative",
+                source_group,
+                normalized_stem,
+                tuple(canonical_members),
+            ),
+        )
+        display_members = sorted(
+            canonical_members,
+            key=lambda member: (
+                0 if member[2] == "source_candidate" else 1,
+                asset_id_by_digest[member[0]],
+                member[1],
+            ),
+        )
+        derivative_with_order.append(
+            (
+                source_group,
+                normalized_stem,
+                {
+                    "group_id": group_id,
+                    "status": "review_required",
+                    "normalized_stem": normalized_stem,
+                    "members": [
+                        {
+                            "migration_asset_id": asset_id_by_digest[digest],
+                            "role": role,
+                            "extension": extension,
+                        }
+                        for digest, extension, role in display_members
+                    ],
+                },
+            )
+        )
+    derivative_with_order.sort(
+        key=lambda item: (item[0], item[1], item[2]["group_id"])
+    )
+    derivative_candidate_groups = [item[2] for item in derivative_with_order]
+
+    duplicate_groups.sort(key=lambda group: group["duplicate_group"])
+    assets.sort(
+        key=lambda asset: (asset["sha256"], asset["migration_asset_id"])
+    )
+    missing_roots = {
+        warning.root_id
+        for warning in config.warnings
+        if warning.code == "missing_root"
+    }
+    scan_roots = [
+        {
+            "root_id": rule.root_id,
+            "locator": {
+                "base": rule.locator_base,
+                "relative": rule.locator_relative,
+            },
+            "status": "missing" if rule.root_id in missing_roots else "scanned",
+        }
+        for rule in sorted(config.rules, key=lambda item: item.root_id)
+    ]
+    total_source_bytes = sum(alias.size_bytes for alias in alias_locations.values())
+    unique_content_bytes = sum(asset["size_bytes"] for asset in assets)
+    return {
+        "schema": "cognitive-card-migration-inventory-v1",
+        "generated_at": generated_at,
+        "config_digest": config.config_digest,
+        "scan_roots": scan_roots,
+        "metadata_readers": metadata_reader_versions(),
+        "summary": {
+            "source_alias_count": len(alias_locations),
+            "content_object_count": len(assets),
+            "duplicate_group_count": len(duplicate_groups),
+            "same_name_candidate_group_count": len(same_name_candidate_groups),
+            "derivative_candidate_group_count": len(derivative_candidate_groups),
+            "warning_count": len(config.warnings) + len(warnings),
+            "total_source_bytes": total_source_bytes,
+            "unique_content_bytes": unique_content_bytes,
+        },
+        "assets": assets,
+        "duplicate_groups": duplicate_groups,
+        "same_name_candidate_groups": same_name_candidate_groups,
+        "derivative_candidate_groups": derivative_candidate_groups,
+    }
