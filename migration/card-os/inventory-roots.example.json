@@ -1,0 +1,7 @@
+{
+  "schema": "cognitive-card-migration-roots-v1",
+  "bases": {
+    "workspace": "/absolute/path/to/kids-visual-learning-pack",
+    "codex_archive": "/absolute/path/to/Codex"
+  }
+}

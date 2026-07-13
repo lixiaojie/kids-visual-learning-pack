@@ -1,5 +1,8 @@
 # deps
 node_modules/
+.venv/
+__pycache__/
+*.py[cod]
 
 # build outputs
 dist/
@@ -22,6 +25,7 @@ yarn-error.log*
 # temp
 tmp/
 .worktrees/
+migration/card-os/inventory-roots.local.json
 
 # raw PNG assets — keep WebP in repo, PNGs are intermediate
 boards/*/assets/**/*.png

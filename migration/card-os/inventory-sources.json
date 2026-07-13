@@ -1,0 +1,141 @@
+{
+  "schema": "cognitive-card-migration-sources-v1",
+  "defaults": {
+    "include_extensions": [
+      ".png",
+      ".webp",
+      ".jpg",
+      ".jpeg",
+      ".pdf",
+      ".json",
+      ".md",
+      ".yaml",
+      ".yml",
+      ".txt",
+      ".tsv"
+    ],
+    "exclude_names": [
+      ".git",
+      ".DS_Store",
+      "Thumbs.db",
+      "node_modules",
+      "dist",
+      "tmp",
+      "__pycache__"
+    ]
+  },
+  "sources": [
+    {
+      "root_id": "rabbit-full-v01",
+      "source_group": "rabbit-full-v01",
+      "locator": {
+        "base": "codex_archive",
+        "relative": "2026-07-11/new-chat/outputs/life/animal_mammal/rabbit/20260712_214042__rabbit__full_package__v01"
+      },
+      "source_thread_id": null,
+      "migration_grade": "A",
+      "decision": "strict_revalidate"
+    },
+    {
+      "root_id": "paleobiology-packages-20260707",
+      "source_group": "paleobiology-packages-20260707",
+      "locator": {
+        "base": "workspace",
+        "relative": "outputs"
+      },
+      "source_thread_id": null,
+      "migration_grade": "B",
+      "decision": "upgrade_revalidate"
+    },
+    {
+      "root_id": "shenzhen-plants-20260626",
+      "source_group": "shenzhen-plants-20260626",
+      "locator": {
+        "base": "codex_archive",
+        "relative": "2026-06-26/h/outputs"
+      },
+      "source_thread_id": "019f02ca-cf3c-79e0-919d-9f8b90a076db",
+      "migration_grade": "C",
+      "decision": "rebuild"
+    },
+    {
+      "root_id": "kids-world-current",
+      "source_group": "kids-world-current",
+      "locator": {
+        "base": "workspace",
+        "relative": "boards/kids-world"
+      },
+      "source_thread_id": null,
+      "migration_grade": "C",
+      "decision": "rebuild"
+    },
+    {
+      "root_id": "kids-world-batch-20260612",
+      "source_group": "kids-world-batch-20260612",
+      "locator": {
+        "base": "codex_archive",
+        "relative": "2026-06-12/files-mentioned-by-the-user-kids/outputs/kids-world-hotspot-v1-png"
+      },
+      "source_thread_id": null,
+      "migration_grade": "C",
+      "decision": "provenance_only"
+    },
+    {
+      "root_id": "kids-world-regenerated-20260614",
+      "source_group": "kids-world-regenerated-20260614",
+      "locator": {
+        "base": "codex_archive",
+        "relative": "2026-06-14/files-mentioned-by-the-user-kids/outputs/kids-world-regenerated-2026-06-14"
+      },
+      "source_thread_id": null,
+      "migration_grade": "C",
+      "decision": "provenance_only"
+    },
+    {
+      "root_id": "llm-last-image-20260614",
+      "source_group": "llm-last-image-20260614",
+      "locator": {
+        "base": "codex_archive",
+        "relative": "2026-06-14/files-mentioned-by-the-user-kids-2/outputs"
+      },
+      "source_thread_id": null,
+      "migration_grade": "D",
+      "decision": "provenance_only"
+    },
+    {
+      "root_id": "kids-world-older-copies",
+      "source_group": "kids-world-older-copies",
+      "locator": {
+        "base": "codex_archive",
+        "relative": "2026-05-12/files-mentioned-by-the-user-kids/boards/kids-world"
+      },
+      "source_thread_id": null,
+      "migration_grade": "D",
+      "decision": "provenance_only"
+    },
+    {
+      "root_id": "spider-verse",
+      "source_group": "spider-verse",
+      "locator": {
+        "base": "workspace",
+        "relative": "boards/spider-verse"
+      },
+      "source_thread_id": null,
+      "migration_grade": "legacy-gallery",
+      "decision": "legacy_gallery",
+      "additional_extensions": [".html", ".css", ".js", ".ts", ".tsx"]
+    },
+    {
+      "root_id": "paw-patrol",
+      "source_group": "paw-patrol",
+      "locator": {
+        "base": "workspace",
+        "relative": "boards/paw-patrol"
+      },
+      "source_thread_id": null,
+      "migration_grade": "legacy-gallery",
+      "decision": "legacy_gallery",
+      "additional_extensions": [".html", ".css", ".js", ".ts", ".tsx"]
+    }
+  ]
+}
