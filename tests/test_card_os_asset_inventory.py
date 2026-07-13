@@ -1276,6 +1276,77 @@ class ScannerTests(unittest.TestCase):
 
                 self.assertIs(error, caught.exception)
 
+    @unittest.skipUnless(hasattr(os, "symlink"), "symlinks unavailable")
+    def test_backslash_entries_are_skipped_at_the_nearest_safe_parent(self) -> None:
+        outside = self.base / "outside-backslash"
+        outside.mkdir()
+        (outside / "never.txt").write_text("never", encoding="utf-8")
+
+        dangerous_names = {
+            "top\\file.txt",
+            "top\\directory",
+            "nested\\file.txt",
+            "nested\\directory",
+        }
+        (self.source / "top\\file.txt").write_text("unsafe", encoding="utf-8")
+        top_directory = self.source / "top\\directory"
+        top_directory.mkdir()
+        (top_directory / "escape").symlink_to(outside, target_is_directory=True)
+        safe_parent = self.source / "safe"
+        safe_parent.mkdir()
+        (safe_parent / "nested\\file.txt").write_text("unsafe", encoding="utf-8")
+        nested_directory = safe_parent / "nested\\directory"
+        nested_directory.mkdir()
+        (nested_directory / "escape").symlink_to(outside, target_is_directory=True)
+
+        (self.source / "普通.txt").write_text("unicode", encoding="utf-8")
+        (safe_parent / "line\nbreak.txt").write_text("newline", encoding="utf-8")
+        real_open = os.open
+        opened_child_names: list[str] = []
+
+        def recording_open(path: object, flags: int, *args: object, **kwargs: object) -> int:
+            if isinstance(path, str) and kwargs.get("dir_fd") is not None:
+                opened_child_names.append(path)
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch("scripts.card_os_asset_inventory.os.open", side_effect=recording_open):
+            aliases, scan_warnings = scan_source(self.rule)
+
+        self.assertEqual(
+            {"safe/line\nbreak.txt", "普通.txt"},
+            {alias.relative_path for alias in aliases},
+        )
+        self.assertEqual(
+            [
+                (".", "unsafe_source_entry"),
+                (".", "unsafe_source_entry"),
+                ("safe", "unsafe_source_entry"),
+                ("safe", "unsafe_source_entry"),
+            ],
+            [(warning.relative_path, warning.code) for warning in scan_warnings],
+        )
+        for warning in scan_warnings:
+            self.assertFalse(
+                any(mark in warning.detail for mark in ("/", "\\", "\r", "\n"))
+            )
+        self.assertTrue(dangerous_names.isdisjoint(opened_child_names))
+        self.assertNotIn("never.txt", opened_child_names)
+        self._assert_warnings_sanitized(scan_warnings)
+
+        inventory = build_inventory(
+            SourceConfig(
+                schema=SCHEMA,
+                rules=(self.rule,),
+                warnings=(),
+                config_digest="sha256:" + ("0" * 64),
+            ),
+            aliases,
+            scan_warnings,
+            generated_at="2026-07-13T00:00:00Z",
+        )
+        self.assertEqual(2, inventory["summary"]["source_alias_count"])
+        self.assertEqual(4, inventory["summary"]["warning_count"])
+
 
 class AggregationTests(unittest.TestCase):
     def setUp(self) -> None:

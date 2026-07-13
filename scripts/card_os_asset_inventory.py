@@ -78,6 +78,7 @@ IMAGE_FORMAT_MEDIA_TYPES = {
     "JPEG": "image/jpeg",
     "WEBP": "image/webp",
 }
+UNSAFE_LOGICAL_NAME_DETAIL = "source entry has an unsafe logical name"
 FACT_BASENAMES = frozenset({"fact.json", "facts.json"})
 PROPOSITION_BASENAMES = frozenset(
     {"proposition_alignment.json", "semantic_core.json", "semantic-core.json"}
@@ -824,7 +825,7 @@ def walk_source(
                         rule,
                         logical_parent,
                         "unsafe_source_entry",
-                        "source entry has an unsafe logical name",
+                        UNSAFE_LOGICAL_NAME_DETAIL,
                     )
                 )
                 continue
@@ -838,6 +839,18 @@ def walk_source(
                         relative_path,
                         "unsafe_source_entry",
                         "source entry could not be inspected safely",
+                    )
+                )
+                continue
+            if not _is_safe_logical_path(
+                relative_path.as_posix(), allow_root=False
+            ):
+                warnings.append(
+                    _warning(
+                        rule,
+                        logical_parent,
+                        "unsafe_source_entry",
+                        UNSAFE_LOGICAL_NAME_DETAIL,
                     )
                 )
                 continue
@@ -1212,13 +1225,16 @@ def scan_source(
 
     walk_warnings = walk_source(rule, scan_file)
     reject_entire_root = any(
-        warning.relative_path == "." and warning.code == "unsafe_source_entry"
+        warning.relative_path == "."
+        and warning.code == "unsafe_source_entry"
+        and warning.detail != UNSAFE_LOGICAL_NAME_DETAIL
         for warning in walk_warnings
     )
     rejected_paths = {
         warning.relative_path
         for warning in walk_warnings
         if warning.code in {"source_changed_during_scan", "unsafe_source_entry"}
+        and warning.detail != UNSAFE_LOGICAL_NAME_DETAIL
     }
     rejected_prefixes = tuple(path + "/" for path in rejected_paths)
     if reject_entire_root:
