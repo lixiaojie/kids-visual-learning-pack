@@ -2725,7 +2725,11 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Inventory declared Cognitive Card assets")
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--roots", required=True, type=Path)
-    parser.add_argument("--output-root", required=True, type=Path)
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        help="required for full publication and --check; ignored by --dry-run-summary",
+    )
     parser.add_argument("--strict-roots", action="store_true")
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--generated-at")
@@ -2742,15 +2746,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.roots,
             strict_roots=args.strict_roots,
         )
+        if args.dry_run_summary:
+            sys.stdout.write(deterministic_json_text(build_dry_run_summary(config)))
+            return 0
+        if args.output_root is None:
+            raise ConfigError(
+                "output root is required for publication and reproducibility checks"
+            )
         output_root = validate_publication_paths(
             config,
             config_path=args.config,
             roots_path=args.roots,
             output_root=args.output_root,
         )
-        if args.dry_run_summary:
-            sys.stdout.write(deterministic_json_text(build_dry_run_summary(config)))
-            return 0
 
         aliases: list[SourceAliasRecord] = []
         scan_warnings: list[WarningRecord] = []

@@ -2692,6 +2692,34 @@ class WriterAndCliTests(unittest.TestCase):
                         ),
                     )
 
+    def test_cli_dry_run_does_not_require_output_root_but_full_and_check_do(self) -> None:
+        (self.source / "item.txt").write_text("兔子", encoding="utf-8")
+        stdout = io.StringIO()
+        with redirect_stdout(stdout), redirect_stderr(io.StringIO()):
+            status = inventory_module.main(
+                [
+                    "--config", str(self.config_path),
+                    "--roots", str(self.roots_path),
+                    "--dry-run-summary",
+                ]
+            )
+        self.assertEqual(0, status)
+        self.assertEqual(1, json.loads(stdout.getvalue())["eligible_file_count"])
+        self.assertFalse(self.output.exists())
+
+        for extra in ((), ("--check",)):
+            with self.subTest(mode=extra or ("full",)):
+                with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+                    status = inventory_module.main(
+                        [
+                            "--config", str(self.config_path),
+                            "--roots", str(self.roots_path),
+                            *extra,
+                        ]
+                    )
+                self.assertNotEqual(0, status)
+        self.assertFalse(self.output.exists())
+
     def test_cli_invalid_config_is_nonzero_and_source_tree_is_unchanged(self) -> None:
         source_file = self.source / "keep.txt"
         source_file.write_bytes(b"must remain unchanged")
