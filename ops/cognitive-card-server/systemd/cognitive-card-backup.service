@@ -1,0 +1,21 @@
+[Unit]
+Description=Verified Cognitive Card OS backup
+After=cognitive-card-server.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/cognitive-card-server/current/ops/card_os_backup.py create --database /var/lib/cognitive-card-server/card-os.sqlite3 --candidate-root /var/lib/cognitive-card-server/candidates --backup-root /var/backups/cognitive-card-server --current-release /opt/cognitive-card-server/current --retention-days 14
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/var/lib/cognitive-card-server
+ReadWritePaths=/var/backups/cognitive-card-server
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

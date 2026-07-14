@@ -1,0 +1,33 @@
+[Unit]
+Description=Cognitive Card OS API
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60s
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=cardos
+Group=cardos
+UMask=0077
+WorkingDirectory=/opt/cognitive-card-server/current
+EnvironmentFile=/etc/cognitive-card-server/card-os.env
+ExecStartPre=/usr/bin/test -d /var/lib/cognitive-card-server/candidates
+ExecStart=/opt/cognitive-card-server/current/.venv/bin/cognitive-card-api
+Restart=on-failure
+RestartSec=5s
+RuntimeDirectory=cognitive-card-server
+RuntimeDirectoryMode=0700
+RuntimeDirectoryPreserve=restart
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cognitive-card-server /run/cognitive-card-server
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_INET AF_INET6
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target
