@@ -1,6 +1,6 @@
 # Cognitive Card OS 个人服务器部署设计
 
-状态：待实施前审阅
+状态：已确认，待实施
 
 日期：2026-07-14
 
@@ -113,7 +113,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 3. 生成包含应用 wheel、依赖锁和必要部署文件的 release 归档及 SHA-256 摘要；归档排除 Git 元数据、缓存、测试临时文件、本地数据库和凭据。
 4. 把归档、摘要和发布元数据上传到服务器临时目录，服务器先验证摘要。
 5. 解压到新的 `/opt/cognitive-card-server/releases/<commit>/`，不得覆盖已有同名 release。
-6. 在 release 内创建 `.venv`，严格按 dependency lock 安装应用；保存 `python --version`、实际 `pip freeze`、Git 提交、依赖锁摘要和归档摘要到 release manifest，并验证实际依赖与锁一致。
+6. 在 release 内创建 `.venv`，严格按 dependency lock 安装应用；保留构建时 `release-manifest.json`，再把 `python --version`、实际 `pip freeze` 摘要、应用/运维 Git 提交、依赖锁摘要和归档摘要写入服务器侧 `install-manifest.json`，并验证实际依赖与锁一致。
 7. 使用 `cardos` 身份运行导入探针和应用级启动探针，确认配置路径可读、数据路径可写。
 8. 部署前完成数据库/候选目录备份并验证；随后原子切换 `current` 链接。
 9. 重启 systemd 服务，完成本机和 HTTPS 验收；验收失败立即执行回滚。
@@ -188,7 +188,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 3. 携带 `Authorization: Bearer ...`、`X-Card-OS-Protocol: 1` 和 `X-Card-OS-Skill-Release: 0.1.0` 调用受保护但不改变业务状态的 `GET /card-os/api/v1/jobs/<nonexistent-id>`，以“已通过鉴权后的稳定 404”证明认证成功；
 4. 重启应用服务，再次使用该 token 调用同一路径，证明认证状态和数据库在重启后保持；
 5. 按 token ID 撤销该 token；
-6. 再次请求同一路径必须得到 `401`，证明撤销立即生效；
+6. 再次请求同一路径必须得到 `403 AUTH_REVOKED`，与 `0.3.0` 的稳定错误契约一致，并证明撤销立即生效；
 7. 删除原始 token 临时材料，并确认数据库和日志只保留安全标识、摘要与审计事件。
 
 若任何步骤可能把原始 token 打印到 Codex 工具输出，必须改用服务器端脚本封装该步骤；不能用“之后清日志”替代零泄漏设计。
@@ -212,7 +212,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 - 本机回环 health 与 capabilities 返回预期 JSON、版本和协议范围；
 - `https://www.yutou.space/card-os/api/v1/health` 与 capabilities 通过正式域名证书返回预期 JSON；
 - `/card-os` 与 `/card-os/` 的重定向符合第 8 节；
-- 一次性 token 在服务重启前后通过受保护读取，撤销后立即变为 `401`；
+- 一次性 token 在服务重启前后通过受保护读取，撤销后立即变为 `403 AUTH_REVOKED`；
 - 服务重启后数据库状态仍存在，候选目录仍可由 `cardos` 访问；
 - Nginx 不可直接读取候选目录、数据库、环境文件或备份；
 - 手动触发备份成功，数据库完整性检查和恢复探针通过；

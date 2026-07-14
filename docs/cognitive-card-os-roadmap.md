@@ -261,7 +261,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 目标：个人服务器，域名 `www.yutou.space`。
 - 依赖：API-01、AUTH-01 的最小可运行版本。
 - 已完成：2026-07-14 完成现网只读审计并选择 systemd + Python venv + 版本化 release + Nginx 方案；正式设计见 [个人服务器部署设计](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)。
-- 待办：审阅设计，形成实施计划；随后完成服务进程、反向代理、TLS、持久化目录、非 root 运行用户、环境配置、备份、健康检查和回滚验收。
+- 实施计划：[个人服务器部署实施计划](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md)。
+- 待办：按计划完成运维工具、精确制品、服务进程、反向代理、TLS、持久化目录、非 root 运行用户、环境配置、备份、健康检查和回滚验收。
 - 完成条件：通过域名访问；重启后任务和候选资产仍在；部署不影响现有 `/kids/` 内容。
 
 ### OPS-01 容量、备份与监控
