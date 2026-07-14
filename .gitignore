@@ -25,6 +25,7 @@ yarn-error.log*
 # temp
 tmp/
 .worktrees/
+.superpowers/
 migration/card-os/inventory-roots.local.json
 
 # raw PNG assets — keep WebP in repo, PNGs are intermediate
