@@ -240,6 +240,7 @@ def begin(arguments: argparse.Namespace) -> None:
         subject=_subject(now),
         expires_at=_utc_text(now + timedelta(minutes=arguments.expires_minutes)),
     )
+    state_written = False
     try:
         http_status = _require_probe(
             arguments.base_url,
@@ -259,6 +260,7 @@ def begin(arguments: argparse.Namespace) -> None:
                 "base_url": arguments.base_url,
             },
         )
+        state_written = True
         _emit(
             {
                 "status": "ok",
@@ -277,6 +279,11 @@ def begin(arguments: argparse.Namespace) -> None:
             )
         except AcceptanceError:
             raise AcceptanceError("BEGIN_CLEANUP_FAILED") from None
+        if state_written:
+            try:
+                _unlink_state(state_file)
+            except AcceptanceError:
+                raise AcceptanceError("BEGIN_STATE_CLEANUP_FAILED") from None
         raise
 
 

@@ -323,6 +323,56 @@ else:
         self.assertFalse(self.state_file.exists())
         self.assert_no_secret(stdout, stderr)
 
+    def test_begin_removes_written_state_after_emit_failure_and_revoke(self) -> None:
+        self.server.responses = [(404, "JOB_NOT_FOUND")]
+
+        with patch.object(
+            acceptance,
+            "_emit",
+            side_effect=BrokenPipeError(ISSUED["token"]),
+        ):
+            result, stdout, stderr = self.begin()
+
+        self.assertNotEqual(0, result)
+        self.assertEqual(
+            [
+                "--database",
+                os.fspath(self.database),
+                "revoke",
+                "--token-id",
+                ISSUED["token_id"],
+            ],
+            self.auth_calls()[-1],
+        )
+        self.assertNotIn(ISSUED["token"], self.auth_calls()[-1])
+        self.assertFalse(self.state_file.exists())
+        self.assertEqual("", stdout)
+        self.assertEqual("INTERNAL_ERROR\n", stderr)
+        self.assert_no_secret(stdout, stderr)
+
+    def test_begin_reports_stable_error_when_written_state_removal_fails(self) -> None:
+        self.server.responses = [(404, "JOB_NOT_FOUND")]
+
+        with patch.object(
+            acceptance,
+            "_emit",
+            side_effect=BrokenPipeError(ISSUED["token"]),
+        ):
+            with patch.object(
+                Path,
+                "unlink",
+                side_effect=OSError(ISSUED["token"]),
+            ):
+                result, stdout, stderr = self.begin()
+
+        self.assertNotEqual(0, result)
+        self.assertIn("revoke", self.auth_calls()[-1])
+        self.assertNotIn(ISSUED["token"], self.auth_calls()[-1])
+        self.assertTrue(self.state_file.exists())
+        self.assertEqual("", stdout)
+        self.assertEqual("BEGIN_STATE_CLEANUP_FAILED\n", stderr)
+        self.assert_no_secret(stdout, stderr)
+
     def test_begin_refuses_redirect_without_sending_bearer_to_receiver(self) -> None:
         self.server.responses = [(404, "JOB_NOT_FOUND")]
         redirect_server = RedirectServer(("127.0.0.1", 0), RedirectHandler)
