@@ -127,7 +127,7 @@ Run:
 python3 -m unittest tests.test_card_os_backup -v
 ```
 
-Expected: `ModuleNotFoundError` because `ops/cognitive-card-server/card_os_backup.py` does not exist.
+Expected: file-load failure because `ops/cognitive-card-server/card_os_backup.py` does not exist; the failure must come from the missing implementation rather than a test syntax error.
 
 - [ ] **Step 3: Implement the backup state machine**
 
