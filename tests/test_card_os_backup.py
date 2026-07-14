@@ -151,6 +151,15 @@ class CardOsBackupTests(unittest.TestCase):
         self.assertTrue(unrelated_dir.is_dir())
         self.assertTrue(unverifiable_old.is_dir())
 
+    def test_retention_skips_regex_match_with_invalid_calendar_timestamp(self) -> None:
+        invalid_timestamp = self.backups / "99999999T999999Z-aaaaaaaaaaaa"
+        invalid_timestamp.mkdir()
+
+        result = self.create()
+
+        self.assertTrue(result.backup_dir.is_dir())
+        self.assertTrue(invalid_timestamp.is_dir())
+
     def test_manifest_is_canonical_portable_and_complete(self) -> None:
         extra = self.candidates / "alpha.txt"
         extra.write_text("owl", encoding="utf-8")
@@ -217,6 +226,30 @@ class CardOsBackupTests(unittest.TestCase):
         final.mkdir()
         with self.assertRaises(BackupError):
             self.create()
+
+    def test_atomic_publication_does_not_clobber_concurrent_final_path(self) -> None:
+        final = self.backups / "20260714T030000Z-dc043ba44739"
+        staging = self.backups / ".20260714T030000Z-dc043ba44739.staging"
+        original_verify = verify_backup
+        concurrent_inode: int | None = None
+
+        def verify_then_create_final(backup_dir: Path) -> dict[str, object]:
+            nonlocal concurrent_inode
+            verification = original_verify(backup_dir)
+            final.mkdir()
+            concurrent_inode = final.stat().st_ino
+            return verification
+
+        with patch.object(
+            backup_module, "verify_backup", side_effect=verify_then_create_final
+        ):
+            with self.assertRaisesRegex(BackupError, "^BACKUP_PATH_EXISTS$"):
+                self.create()
+
+        self.assertIsNotNone(concurrent_inode)
+        self.assertEqual(concurrent_inode, final.stat().st_ino)
+        self.assertEqual([], list(final.iterdir()))
+        self.assertFalse(staging.exists())
 
     def test_cli_create_and_verify_emit_only_canonical_json(self) -> None:
         create_process = subprocess.run(

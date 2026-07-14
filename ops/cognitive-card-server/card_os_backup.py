@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
+import errno
 import hashlib
 import json
 import os
@@ -304,9 +306,12 @@ def _remove_expired_backups(backup_root: Path, now: datetime, retention_days: in
             continue
         if not entry.is_dir(follow_symlinks=False):
             continue
-        timestamp = datetime.strptime(entry.name[:16], "%Y%m%dT%H%M%SZ").replace(
-            tzinfo=timezone.utc
-        )
+        try:
+            timestamp = datetime.strptime(
+                entry.name[:16], "%Y%m%dT%H%M%SZ"
+            ).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
         if timestamp >= cutoff:
             continue
         path = Path(entry.path)
@@ -315,6 +320,37 @@ def _remove_expired_backups(backup_root: Path, now: datetime, retention_days: in
         except (BackupError, OSError):
             continue
         shutil.rmtree(path)
+
+
+def _publish_no_clobber(staging_path: Path, final_path: Path) -> None:
+    library = ctypes.CDLL(None, use_errno=True)
+    staging = os.fsencode(staging_path)
+    final = os.fsencode(final_path)
+    if hasattr(library, "renameat2"):
+        rename = library.renameat2
+        rename.argtypes = [
+            ctypes.c_int,
+            ctypes.c_char_p,
+            ctypes.c_int,
+            ctypes.c_char_p,
+            ctypes.c_uint,
+        ]
+        rename.restype = ctypes.c_int
+        result = rename(-100, staging, -100, final, 1)
+    elif hasattr(library, "renamex_np"):
+        rename = library.renamex_np
+        rename.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]
+        rename.restype = ctypes.c_int
+        result = rename(staging, final, 0x00000004)
+    else:
+        raise BackupError("ATOMIC_PUBLICATION_UNAVAILABLE")
+    if result == 0:
+        return
+    error_number = ctypes.get_errno()
+    if error_number in {errno.EEXIST, errno.ENOTEMPTY}:
+        raise BackupError("BACKUP_PATH_EXISTS")
+    error = OSError(error_number, os.strerror(error_number), final_path)
+    raise BackupError("BACKUP_PUBLICATION_FAILED") from error
 
 
 def create_backup(
@@ -362,7 +398,7 @@ def create_backup(
         manifest_path.write_bytes(_canonical_json(manifest))
         manifest_path.chmod(0o600)
         verify_backup(staging_path)
-        staging_path.rename(final_path)
+        _publish_no_clobber(staging_path, final_path)
         staging_created = False
     except BaseException:
         if staging_created:
