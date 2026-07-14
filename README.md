@@ -26,6 +26,7 @@ Project slug: `kids-visual-learning-pack`
 - [订阅客户端执行基础实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-subscriber-execution-foundation-plan.md)
 - [远程 API、认证与协议实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)
 - [历史资产机器清单与去重实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)
+- [个人服务器部署设计](docs/superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)
 
 历史资产机器盘点入口：
 

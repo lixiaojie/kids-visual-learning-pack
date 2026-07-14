@@ -55,8 +55,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | QA-01 | 严格 QA 与人工复核 | BACKLOG | 依赖 RENDER-01 |
 | PUBLISH-01 | 不可变 package 发布 | BACKLOG | 依赖 QA-01 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
-| DEPLOY-01 | Card OS 服务部署 | READY | 依赖 API/AUTH 最小可运行版本 |
-| OPS-01 | 容量、备份与监控治理 | REQUIRES AUDIT | 部署前重新核实服务器状态 |
+| DEPLOY-01 | Card OS 服务部署 | READY | 审阅部署设计并编写实施计划 |
+| OPS-01 | 容量、备份与监控治理 | READY | 按已审计基线实施备份、恢复和告警 |
 | ACCEPT-01 | 兔子完整验收 | BACKLOG | 依赖发布链路 |
 | ACCEPT-02 | 第二个哺乳动物一致性验收 | BACKLOG | 依赖 ACCEPT-01 与模板族 |
 
@@ -260,14 +260,15 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 状态：`READY`
 - 目标：个人服务器，域名 `www.yutou.space`。
 - 依赖：API-01、AUTH-01 的最小可运行版本。
-- 待办：服务进程、反向代理、TLS、持久化目录、非 root 运行用户、环境配置、迁移、健康检查和回滚。
+- 已完成：2026-07-14 完成现网只读审计并选择 systemd + Python venv + 版本化 release + Nginx 方案；正式设计见 [个人服务器部署设计](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)。
+- 待办：审阅设计，形成实施计划；随后完成服务进程、反向代理、TLS、持久化目录、非 root 运行用户、环境配置、备份、健康检查和回滚验收。
 - 完成条件：通过域名访问；重启后任务和候选资产仍在；部署不影响现有 `/kids/` 内容。
 
 ### OPS-01 容量、备份与监控
 
-- 状态：`REQUIRES AUDIT`
-- 原因：服务器曾进行容量治理，但部署前必须重新采集当前磁盘、服务、备份和日志状态。
-- 待办：容量阈值、资产保留、SQLite 备份、文件快照、异地副本、恢复演练、日志轮转、证书与健康告警。
+- 状态：`READY`
+- 已审计：2026-07-14 根磁盘使用率约 54%，可用约 18 GiB；Nginx、UFW、Docker/CouchDB、域名证书和现有站点路径已核实。详细基线与部署约束见 [个人服务器部署设计](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)。
+- 待办：容量阈值、资产保留、SQLite 在线备份、候选文件快照、恢复演练、日志轮转、证书与健康告警；异地副本在本机恢复点稳定后单独实施。
 - 完成条件：容量告警早于 75%；备份新鲜度可见；恢复演练重建数据库、资产摘要和未完成任务。
 
 ### ACCEPT-01 兔子端到端验收
