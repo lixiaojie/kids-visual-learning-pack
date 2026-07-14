@@ -68,6 +68,24 @@ class ProbeServer(ThreadingHTTPServer):
     responses: list[tuple[int, str]]
 
 
+class RedirectHandler(BaseHTTPRequestHandler):
+    server: "RedirectServer"
+
+    def do_GET(self) -> None:
+        self.server.requests.append(self.path)
+        self.send_response(302)
+        self.send_header("Location", self.server.location)
+        self.end_headers()
+
+    def log_message(self, format: str, *args: object) -> None:
+        pass
+
+
+class RedirectServer(ThreadingHTTPServer):
+    location: str
+    requests: list[str]
+
+
 class CardOsAcceptanceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary_directory = tempfile.TemporaryDirectory()
@@ -126,7 +144,7 @@ else:
                 result = acceptance.main(list(arguments))
         return result, stdout.getvalue(), stderr.getvalue()
 
-    def begin(self):
+    def begin(self, *, revoke_fails: bool = False):
         return self.invoke(
             "begin",
             "--database",
@@ -139,6 +157,7 @@ else:
             os.fspath(self.auth_command),
             "--expires-minutes",
             "15",
+            revoke_fails=revoke_fails,
         )
 
     def finish(self, *, revoke_fails: bool = False):
@@ -228,6 +247,121 @@ else:
         result, stdout, stderr = self.begin()
 
         self.assertNotEqual(0, result)
+        self.assertFalse(self.state_file.exists())
+        self.assertEqual("", stdout)
+        self.assertEqual("AUTHENTICATED_READ_FAILED\n", stderr)
+        self.assert_no_secret(stdout, stderr)
+
+    def test_begin_revokes_by_id_when_probe_fails_after_issue(self) -> None:
+        self.server.responses = [(500, "INTERNAL_ERROR")]
+
+        result, stdout, stderr = self.begin()
+
+        self.assertNotEqual(0, result)
+        self.assertEqual(
+            [
+                "--database",
+                os.fspath(self.database),
+                "revoke",
+                "--token-id",
+                ISSUED["token_id"],
+            ],
+            self.auth_calls()[-1],
+        )
+        self.assertNotIn(ISSUED["token"], self.auth_calls()[-1])
+        self.assertFalse(self.state_file.exists())
+        self.assertEqual("", stdout)
+        self.assertEqual("AUTHENTICATED_READ_FAILED\n", stderr)
+        self.assert_no_secret(stdout, stderr)
+
+    def test_begin_revokes_by_id_when_state_write_fails_after_issue(self) -> None:
+        self.server.responses = [(404, "JOB_NOT_FOUND")]
+        state_parent = self.base / "state-write-failure"
+        unwritable_state = state_parent / ("x" * 300)
+
+        result, stdout, stderr = self.invoke(
+            "begin",
+            "--database",
+            os.fspath(self.database),
+            "--base-url",
+            self.base_url,
+            "--state-file",
+            os.fspath(unwritable_state),
+            "--auth-command",
+            os.fspath(self.auth_command),
+            "--expires-minutes",
+            "15",
+        )
+
+        self.assertNotEqual(0, result)
+        self.assertEqual(
+            [
+                "--database",
+                os.fspath(self.database),
+                "revoke",
+                "--token-id",
+                ISSUED["token_id"],
+            ],
+            self.auth_calls()[-1],
+        )
+        self.assertNotIn(ISSUED["token"], self.auth_calls()[-1])
+        self.assertFalse(unwritable_state.exists())
+        self.assertEqual("", stdout)
+        self.assertEqual("STATE_WRITE_FAILED\n", stderr)
+        self.assert_no_secret(stdout, stderr)
+
+    def test_begin_reports_stable_error_when_failure_cleanup_revoke_fails(self) -> None:
+        self.server.responses = [(500, "INTERNAL_ERROR")]
+
+        result, stdout, stderr = self.begin(revoke_fails=True)
+
+        self.assertNotEqual(0, result)
+        self.assertEqual("", stdout)
+        self.assertEqual("BEGIN_CLEANUP_FAILED\n", stderr)
+        self.assertIn("revoke", self.auth_calls()[-1])
+        self.assertNotIn(ISSUED["token"], self.auth_calls()[-1])
+        self.assertFalse(self.state_file.exists())
+        self.assert_no_secret(stdout, stderr)
+
+    def test_begin_refuses_redirect_without_sending_bearer_to_receiver(self) -> None:
+        self.server.responses = [(404, "JOB_NOT_FOUND")]
+        redirect_server = RedirectServer(("127.0.0.1", 0), RedirectHandler)
+        redirect_server.requests = []
+        redirect_server.location = (
+            f"http://127.0.0.1:{self.server.server_port}"
+            "/card-os/api/v1/jobs/deploy-acceptance-missing"
+        )
+        redirect_thread = threading.Thread(
+            target=redirect_server.serve_forever,
+            daemon=True,
+        )
+        redirect_thread.start()
+        self.addCleanup(redirect_server.server_close)
+        self.addCleanup(redirect_server.shutdown)
+        redirect_base_url = (
+            f"http://127.0.0.1:{redirect_server.server_port}/card-os"
+        )
+
+        result, stdout, stderr = self.invoke(
+            "begin",
+            "--database",
+            os.fspath(self.database),
+            "--base-url",
+            redirect_base_url,
+            "--state-file",
+            os.fspath(self.state_file),
+            "--auth-command",
+            os.fspath(self.auth_command),
+            "--expires-minutes",
+            "15",
+        )
+
+        self.assertNotEqual(0, result)
+        self.assertEqual(
+            ["/card-os/api/v1/jobs/deploy-acceptance-missing"],
+            redirect_server.requests,
+        )
+        self.assertEqual([], self.server.requests)
         self.assertFalse(self.state_file.exists())
         self.assertEqual("", stdout)
         self.assertEqual("AUTHENTICATED_READ_FAILED\n", stderr)

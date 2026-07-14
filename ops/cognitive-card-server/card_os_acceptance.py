@@ -27,6 +27,19 @@ class AcceptanceError(RuntimeError):
     """A safe, stable acceptance failure code."""
 
 
+class _NoRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(
+        self,
+        request: urllib.request.Request,
+        file_pointer: object,
+        code: int,
+        message: str,
+        headers: object,
+        new_url: str,
+    ) -> None:
+        return None
+
+
 def _canonical_json(value: object) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n"
 
@@ -117,7 +130,8 @@ def _probe(base_url: str, token: str) -> tuple[int, str | None]:
         method="GET",
     )
     try:
-        with urllib.request.urlopen(request) as response:
+        opener = urllib.request.build_opener(_NoRedirectHandler())
+        with opener.open(request) as response:
             status = response.status
             body = response.read()
     except urllib.error.HTTPError as error:
@@ -226,33 +240,44 @@ def begin(arguments: argparse.Namespace) -> None:
         subject=_subject(now),
         expires_at=_utc_text(now + timedelta(minutes=arguments.expires_minutes)),
     )
-    http_status = _require_probe(
-        arguments.base_url,
-        issued["token"],
-        expected_status=404,
-        expected_code="JOB_NOT_FOUND",
-        failure_code="AUTHENTICATED_READ_FAILED",
-    )
-    _write_state(
-        state_file,
-        {
-            "schema": STATE_SCHEMA,
-            "token": issued["token"],
-            "token_id": issued["token_id"],
-            "subject": issued["subject"],
-            "expires_at": issued["expires_at"],
-            "base_url": arguments.base_url,
-        },
-    )
-    _emit(
-        {
-            "status": "ok",
-            "phase": "begin",
-            "token_id": issued["token_id"],
-            "subject": issued["subject"],
-            "http_status": http_status,
-        }
-    )
+    try:
+        http_status = _require_probe(
+            arguments.base_url,
+            issued["token"],
+            expected_status=404,
+            expected_code="JOB_NOT_FOUND",
+            failure_code="AUTHENTICATED_READ_FAILED",
+        )
+        _write_state(
+            state_file,
+            {
+                "schema": STATE_SCHEMA,
+                "token": issued["token"],
+                "token_id": issued["token_id"],
+                "subject": issued["subject"],
+                "expires_at": issued["expires_at"],
+                "base_url": arguments.base_url,
+            },
+        )
+        _emit(
+            {
+                "status": "ok",
+                "phase": "begin",
+                "token_id": issued["token_id"],
+                "subject": issued["subject"],
+                "http_status": http_status,
+            }
+        )
+    except Exception:
+        try:
+            _revoke_token(
+                Path(arguments.auth_command),
+                Path(arguments.database),
+                issued["token_id"],
+            )
+        except AcceptanceError:
+            raise AcceptanceError("BEGIN_CLEANUP_FAILED") from None
+        raise
 
 
 def finish(arguments: argparse.Namespace) -> None:
