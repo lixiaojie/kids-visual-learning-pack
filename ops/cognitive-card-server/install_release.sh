@@ -4,7 +4,7 @@ umask 022
 
 API_UNIT=cognitive-card-server.service
 BACKUP_TIMER=cognitive-card-backup.timer
-RELEASE_SCHEMA=cognitive-card-server-release-v1
+RELEASE_SCHEMA=cognitive-card-server-release-v2
 INSTALL_SCHEMA=cognitive-card-server-install-v1
 
 INSTALL_TEMPORARY_DIR=""
@@ -58,6 +58,145 @@ for name, version in sorted(entries):
 '
 }
 
+install_runtime_dependencies() {
+    local python_path=$1
+    local lock_path=$2
+    local wheelhouse=$3
+    env -u PIP_INDEX_URL -u PIP_EXTRA_INDEX_URL PIP_CONFIG_FILE=/dev/null \
+        "$python_path" -m pip --isolated --disable-pip-version-check \
+        install --no-input --no-index --find-links "$wheelhouse" --requirement "$lock_path"
+}
+
+install_application_wheel() {
+    local python_path=$1
+    local wheel=$2
+    env -u PIP_INDEX_URL -u PIP_EXTRA_INDEX_URL PIP_CONFIG_FILE=/dev/null \
+        "$python_path" -m pip --isolated --disable-pip-version-check \
+        install --no-input --no-index --no-deps "$wheel"
+}
+
+ensure_private_directory() {
+    local path=$1
+    local owner=$2
+    local group=$3
+    local expected_uid=$4
+    local expected_gid=$5
+    local error_code=$6
+    python3 - "$path" <<'PY' || fail "$error_code"
+import pathlib
+import stat
+import sys
+
+path = pathlib.Path(sys.argv[1])
+try:
+    metadata = path.lstat()
+except FileNotFoundError:
+    raise SystemExit(0)
+except OSError:
+    raise SystemExit(1)
+if not stat.S_ISDIR(metadata.st_mode) or stat.S_ISLNK(metadata.st_mode):
+    raise SystemExit(1)
+PY
+    install -d -o "$owner" -g "$group" -m 0700 -- "$path" || fail "$error_code"
+    python3 - "$path" "$expected_uid" "$expected_gid" <<'PY' || fail "$error_code"
+import pathlib
+import stat
+import sys
+
+try:
+    metadata = pathlib.Path(sys.argv[1]).lstat()
+except OSError:
+    raise SystemExit(1)
+if (
+    not stat.S_ISDIR(metadata.st_mode)
+    or stat.S_ISLNK(metadata.st_mode)
+    or metadata.st_uid != int(sys.argv[2])
+    or metadata.st_gid != int(sys.argv[3])
+    or stat.S_IMODE(metadata.st_mode) != 0o700
+):
+    raise SystemExit(1)
+PY
+}
+
+validate_database_file() {
+    local database=$1
+    local expected_uid=$2
+    local expected_gid=$3
+    python3 - "$database" "$expected_uid" "$expected_gid" <<'PY' || fail UNSAFE_DATABASE
+import pathlib
+import stat
+import sys
+
+try:
+    metadata = pathlib.Path(sys.argv[1]).lstat()
+except FileNotFoundError:
+    raise SystemExit(0)
+except OSError:
+    raise SystemExit(1)
+if (
+    not stat.S_ISREG(metadata.st_mode)
+    or stat.S_ISLNK(metadata.st_mode)
+    or metadata.st_uid != int(sys.argv[2])
+    or metadata.st_gid != int(sys.argv[3])
+    or stat.S_IMODE(metadata.st_mode) != 0o600
+):
+    raise SystemExit(1)
+PY
+}
+
+probe_data_root() {
+    local data_root=$1
+    local service_user=$2
+    local expected_uid=$3
+    local expected_gid=$4
+    runuser -u "$service_user" -- python3 - "$data_root" "$expected_uid" "$expected_gid" <<'PY' \
+        || fail DATA_ROOT_NOT_WRITABLE
+import os
+import secrets
+import stat
+import sys
+
+directory_fd = -1
+probe_fd = -1
+probe_name = ""
+try:
+    directory_fd = os.open(
+        sys.argv[1], os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+    )
+    probe_name = ".card-os-write-probe-" + secrets.token_hex(16)
+    probe_fd = os.open(
+        probe_name,
+        os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0),
+        0o600,
+        dir_fd=directory_fd,
+    )
+    metadata = os.fstat(probe_fd)
+    if (
+        not stat.S_ISREG(metadata.st_mode)
+        or metadata.st_uid != int(sys.argv[2])
+        or metadata.st_gid != int(sys.argv[3])
+        or stat.S_IMODE(metadata.st_mode) != 0o600
+    ):
+        raise OSError
+    os.close(probe_fd)
+    probe_fd = -1
+    os.unlink(probe_name, dir_fd=directory_fd)
+    probe_name = ""
+except (OSError, ValueError):
+    raise SystemExit(1)
+finally:
+    if probe_fd >= 0:
+        os.close(probe_fd)
+    if probe_name and directory_fd >= 0:
+        try:
+            os.unlink(probe_name, dir_fd=directory_fd)
+        except OSError:
+            pass
+    if directory_fd >= 0:
+        os.close(directory_fd)
+PY
+}
+
 validate_archive() {
     local archive=$1
     python3 - "$archive" <<'PY' || {
@@ -80,6 +219,7 @@ fixed = {
     "release-manifest.json",
 }
 wheel_pattern = re.compile(r"^cognitive_card_server-0\.3\.0-[A-Za-z0-9_.-]+\.whl$")
+runtime_wheel_pattern = re.compile(r"^runtime-wheels/[A-Za-z0-9_.+-]+\.whl$")
 try:
     with tarfile.open(archive, "r:gz") as bundle:
         members = bundle.getmembers()
@@ -87,7 +227,12 @@ try:
         if len(names) != len(set(names)):
             raise ValueError
         wheels = [name for name in names if wheel_pattern.fullmatch(name)]
-        if len(wheels) != 1 or set(names) != fixed | set(wheels):
+        runtime_wheels = [name for name in names if runtime_wheel_pattern.fullmatch(name)]
+        if (
+            len(wheels) != 1
+            or len(runtime_wheels) != 14
+            or set(names) != fixed | set(wheels) | set(runtime_wheels)
+        ):
             raise ValueError
         for member in members:
             path = PurePosixPath(member.name)
@@ -148,7 +293,7 @@ schema = sys.argv[2]
 manifest_path = root / "release-manifest.json"
 expected_keys = {
     "schema", "application_commit", "operations_commit", "application_version",
-    "python_version", "built_at", "lock_sha256", "wheel_sha256", "files",
+    "python_version", "runtime_target", "built_at", "lock_sha256", "wheel_sha256", "files",
 }
 fixed = {
     "runtime-requirements.lock",
@@ -162,8 +307,41 @@ fixed = {
     "nginx/card-os.conf",
 }
 wheel_pattern = re.compile(r"^cognitive_card_server-0\.3\.0-[A-Za-z0-9_.-]+\.whl$")
+runtime_wheel_pattern = re.compile(r"^runtime-wheels/[A-Za-z0-9_.+-]+\.whl$")
 commit_pattern = re.compile(r"^[0-9a-f]{40}$")
 timestamp_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+runtime_target = {
+    "abi": "cp312",
+    "implementation": "cp",
+    "only_binary": ":all:",
+    "platforms": ["manylinux_2_28_x86_64", "manylinux_2_17_x86_64"],
+    "python_version": "312",
+}
+
+def normalize_name(name):
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+def parse_lock(path):
+    result = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line or line != line.strip() or line.count("==") != 1:
+            raise ValueError
+        name, version = line.split("==", 1)
+        normalized = normalize_name(name)
+        if normalized in result:
+            raise ValueError
+        result[normalized] = version
+    if not result:
+        raise ValueError
+    return result
+
+def runtime_identity(path):
+    fields = pathlib.PurePosixPath(path).name[:-4].split("-")
+    if len(fields) not in {5, 6}:
+        raise ValueError
+    if len(fields) == 6 and re.fullmatch(r"\d[0-9A-Za-z_]*", fields[2]) is None:
+        raise ValueError
+    return normalize_name(fields[0]), fields[1]
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -181,6 +359,8 @@ try:
     if not commit_pattern.fullmatch(manifest["operations_commit"]):
         raise ValueError
     if not re.fullmatch(r"\d+\.\d+\.\d+", manifest["python_version"]):
+        raise ValueError
+    if manifest["runtime_target"] != runtime_target:
         raise ValueError
     if not timestamp_pattern.fullmatch(manifest["built_at"]):
         raise ValueError
@@ -208,7 +388,22 @@ try:
             raise ValueError
         paths.append(path)
     wheels = [path for path in paths if wheel_pattern.fullmatch(path)]
-    if len(wheels) != 1 or set(paths) != fixed | set(wheels) or len(paths) != len(set(paths)):
+    runtime_wheels = [path for path in paths if runtime_wheel_pattern.fullmatch(path)]
+    locked = parse_lock(root / "runtime-requirements.lock")
+    resolved = {}
+    for path in runtime_wheels:
+        name, version = runtime_identity(path)
+        if name in resolved:
+            raise ValueError
+        resolved[name] = version
+    if (
+        len(wheels) != 1
+        or len(runtime_wheels) != 14
+        or set(resolved) != set(locked)
+        or any(resolved[name] != version for name, version in locked.items())
+        or set(paths) != fixed | set(wheels) | set(runtime_wheels)
+        or len(paths) != len(set(paths))
+    ):
         raise ValueError
     actual_files = {
         path.relative_to(root).as_posix()
@@ -457,8 +652,12 @@ main() {
         return 2
     fi
     local archive sha_file archive_dir archive_digest temporary_dir extracted
-    local release_id release_dir wheel pip_path installed_runtime normalized_lock filtered_runtime
+    local release_id release_dir wheel pip_path python_path installed_runtime normalized_lock filtered_runtime
     local operations_commit server_python runtime_digest old_current_target=""
+    local cardos_uid cardos_gid
+    local data_root=/var/lib/cognitive-card-server
+    local candidate_root=/var/lib/cognitive-card-server/candidates
+    local database=/var/lib/cognitive-card-server/card-os.sqlite3
     local old_api_active=inactive old_api_enabled=disabled
     local old_timer_active=inactive old_timer_enabled=disabled
 
@@ -493,8 +692,13 @@ main() {
     apt-get update
     apt-get install -y python3-venv sqlite3
     id cardos >/dev/null 2>&1 || useradd --system --home-dir /nonexistent --shell /usr/sbin/nologin cardos
+    cardos_uid=$(id -u cardos)
+    cardos_gid=$(id -g cardos)
     install -d -o root -g root -m 0755 /opt/cognitive-card-server/releases
-    install -d -o cardos -g cardos -m 0700 /var/lib/cognitive-card-server/candidates
+    ensure_private_directory "$data_root" cardos cardos "$cardos_uid" "$cardos_gid" UNSAFE_DATA_ROOT
+    ensure_private_directory "$candidate_root" cardos cardos "$cardos_uid" "$cardos_gid" UNSAFE_CANDIDATE_ROOT
+    validate_database_file "$database" "$cardos_uid" "$cardos_gid"
+    probe_data_root "$data_root" cardos "$cardos_uid" "$cardos_gid"
     install -d -o root -g cardos -m 0750 /etc/cognitive-card-server
     install -d -o root -g root -m 0700 /var/backups/cognitive-card-server
 
@@ -522,12 +726,13 @@ main() {
     INSTALL_RELEASE_CREATED=1
 
     python3 -m venv "$RELEASE_DIR/.venv"
+    python_path="$RELEASE_DIR/.venv/bin/python"
     pip_path="$RELEASE_DIR/.venv/bin/pip"
-    "$pip_path" install --requirement "$RELEASE_DIR/runtime-requirements.lock"
+    install_runtime_dependencies "$python_path" "$RELEASE_DIR/runtime-requirements.lock" "$RELEASE_DIR/runtime-wheels"
     wheel=$(find "$RELEASE_DIR" -maxdepth 1 -type f -name 'cognitive_card_server-0.3.0-*.whl')
     [[ -n "$wheel" && "$(printf '%s\n' "$wheel" | wc -l | tr -d ' ')" == 1 ]] || fail APPLICATION_WHEEL_INVALID
     WHEEL=$wheel
-    "$pip_path" install --no-deps "$WHEEL"
+    install_application_wheel "$python_path" "$WHEEL"
     chmod 0755 "$RELEASE_DIR/.venv/bin/cognitive-card-api"
     "$pip_path" check
 

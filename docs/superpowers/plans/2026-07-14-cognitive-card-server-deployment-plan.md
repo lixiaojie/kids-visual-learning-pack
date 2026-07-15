@@ -18,6 +18,8 @@
 - 应用只监听 `127.0.0.1:8765`；不得添加 UFW 8765 放行规则。
 - `CARD_OS_DATABASE=/var/lib/cognitive-card-server/card-os.sqlite3`。
 - `CARD_OS_CANDIDATE_ROOT=/var/lib/cognitive-card-server/candidates`。
+- 数据根 `/var/lib/cognitive-card-server` 本身以及 `candidates/` 都必须是 `cardos:cardos 0700`；已有数据库只接受非 symlink 普通文件 `cardos:cardos 0600`，不得重建或修复其内容。
+- release 必须携带与 lock 一一对应的 14 个 `runtime-wheels/*.whl`；受信任工作站只从官方 PyPI 以 CPython 3.12/Linux x86_64 target selectors 构建 wheelhouse，服务器以 `--no-index --find-links` 离线安装且不需要 package-index 出站访问。
 - `CARD_OS_MAX_REQUEST_BYTES=29360128`；`CARD_OS_MAX_DECODED_PAYLOAD_BYTES=20971520`；Nginx `client_max_body_size 30m`。
 - 现有 `/`、`/kids/`、`/sync/`、CouchDB、Docker 和其他服务不得改变行为。
 - 服务器不保存 GitHub 私钥、个人访问令牌、OpenAI API Key、ChatGPT Cookie 或 ChatGPT 身份材料。
@@ -62,6 +64,7 @@
 
 - `/opt/cognitive-card-server/releases/dc043ba4473915ebbd1a98c76dab46fcba703de3/`
 - `/opt/cognitive-card-server/current`
+- `/var/lib/cognitive-card-server/`
 - `/var/lib/cognitive-card-server/card-os.sqlite3`
 - `/var/lib/cognitive-card-server/candidates/`
 - `/etc/cognitive-card-server/card-os.env`
@@ -71,6 +74,13 @@
 - `/etc/nginx/snippets/cognitive-card-server.conf`
 - `/var/backups/cognitive-card-server/`
 - `/run/cognitive-card-server/acceptance.json`
+
+| 持久化路径 | 所有者 | 模式 | 安装器处理 |
+| --- | --- | --- | --- |
+| `/var/lib/cognitive-card-server/` | `cardos:cardos` | `0700` | 先拒绝 symlink/非目录，再收敛目录元数据；不得删除已有内容 |
+| `/var/lib/cognitive-card-server/candidates/` | `cardos:cardos` | `0700` | 数据根安全后才创建/验证；不得删除已有候选文件 |
+| `/var/lib/cognitive-card-server/card-os.sqlite3` | `cardos:cardos` | `0600` | 不存在时留给应用初始化；存在时以 `lstat` 严格验证，否则失败关闭 |
+| `/var/backups/cognitive-card-server/` | `root:root` | `0700` | 保持现有 root-only 备份边界 |
 
 ---
 
@@ -484,8 +494,9 @@ Tests must prove:
 
 - wrong HEAD returns `SOURCE_COMMIT_MISMATCH` before invoking wheel build;
 - non-empty `git status --porcelain` returns `SOURCE_WORKTREE_DIRTY`;
-- the archive contains exactly one application wheel, runtime lock, backup/acceptance scripts, env, three systemd files, Nginx snippet, include installer, and `release-manifest.json`;
-- manifest contains schema, full application commit, full governance operations commit, application version `0.3.0`, Python version, build timestamp, lock SHA-256, wheel SHA-256, and sorted SHA-256/size for every payload file;
+- the builder resolves exactly the 14 locked runtime distributions as wheels from official PyPI with isolated CPython 3.12, x86_64, `manylinux_2_28`/`manylinux_2_17`, wheel-only selectors; missing, duplicate, unexpected, wrong-version, sdist, unsafe-name, or incompatible output fails closed;
+- the archive contains exactly one application wheel, the closed `runtime-wheels/*.whl` subtree, runtime lock, backup/acceptance scripts, env, three systemd files, Nginx snippet, include installer, and `release-manifest.json`;
+- manifest uses the incompatible-format bump `cognitive-card-server-release-v2` and contains full application commit, full governance operations commit, application version `0.3.0`, Python version, exact target runtime metadata, build timestamp, lock SHA-256, wheel SHA-256, and sorted SHA-256/size for every payload file;
 - archive path traversal members are impossible because all names are generated from a closed allowlist;
 - `install_release.sh` passes `bash -n`, verifies archive digest before extraction, rejects an existing release, creates `.venv`, installs the lock before the app wheel with `--no-deps`, runs `pip check`, verifies and persists installed freeze, writes a server-side install manifest containing the archive digest, and atomically switches `current` only after all checks pass.
 
@@ -509,7 +520,17 @@ if git("status", "--porcelain"):
     raise ReleaseError("SOURCE_WORKTREE_DIRTY")
 ```
 
-Resolve the governance repository from the builder file location, require `git status --porcelain --untracked-files=no` to be empty, and record `git rev-parse HEAD` as `operations_commit`; this intentionally ignores the known user-owned untracked `outputs/` while rejecting every tracked operations change. Then run the supplied Python interpreter as:
+Resolve the governance repository from the builder file location, require `git status --porcelain --untracked-files=no` to be empty, and record `git rev-parse HEAD` as `operations_commit`; this intentionally ignores the known user-owned untracked `outputs/` while rejecting every tracked operations change. First remove inherited pip source variables, force `PIP_CONFIG_FILE=/dev/null`, and run the equivalent of:
+
+```bash
+"$PYTHON" -m pip --isolated --disable-pip-version-check download --no-input \
+  --only-binary=:all: --index-url https://pypi.org/simple \
+  --platform manylinux_2_28_x86_64 --platform manylinux_2_17_x86_64 \
+  --implementation cp --python-version 312 --abi cp312 \
+  --dest "$STAGING/runtime-wheels" --requirement runtime-requirements.lock
+```
+
+Require exactly one compatible wheel for each lock entry and no other entry. Then build the application wheel from the isolated exact-commit source snapshot as:
 
 ```bash
 "$PYTHON" -m pip wheel --no-deps --wheel-dir "$STAGING/wheel" "$SERVER_REPO"
@@ -527,12 +548,16 @@ apt-get update
 apt-get install -y python3-venv sqlite3
 id cardos >/dev/null 2>&1 || useradd --system --home-dir /nonexistent --shell /usr/sbin/nologin cardos
 install -d -o root -g root -m 0755 /opt/cognitive-card-server/releases
+validate-non-symlink-directory /var/lib/cognitive-card-server
+install -d -o cardos -g cardos -m 0700 /var/lib/cognitive-card-server
 install -d -o cardos -g cardos -m 0700 /var/lib/cognitive-card-server/candidates
+validate-existing-db-as-cardos-0600-regular-file /var/lib/cognitive-card-server/card-os.sqlite3
+run-unpredictable-exclusive-private-write-probe-as-cardos /var/lib/cognitive-card-server
 install -d -o root -g cardos -m 0750 /etc/cognitive-card-server
 install -d -o root -g root -m 0700 /var/backups/cognitive-card-server
 ```
 
-Before extraction, inspect every tar member with Python and reject absolute paths, `..`, symlinks, hardlinks, devices and any name outside the closed release allowlist. Extract into a root-owned temporary directory, parse the release ID from the manifest, require it to equal the 40-hex application commit, and fail if `/opt/cognitive-card-server/releases/$RELEASE_ID` exists. Move payload into that release, create `.venv`, install the lock, install the wheel with `--no-deps`, run `pip check`, and compare normalized `pip freeze` runtime lines with the committed lock. Persist normalized freeze as `installed-runtime.txt`; write canonical `install-manifest.json` containing schema, application commit, operations commit, archive SHA-256, server Python version, installed-runtime SHA-256 and UTC install time. Set both files `root:root 0644` before activation. Install `card-os.env` as `root:cardos 0640` only if absent; otherwise compare its non-secret keys and stop on mismatch. Install systemd units as `root:root 0644`, call `systemctl daemon-reload`, atomically switch `current` using a temporary symlink plus `mv -T`, enable/start the API, and enable the timer. Do not install or edit Nginx in this script.
+Before extraction, inspect every tar member with Python and reject absolute paths, `..`, symlinks, hardlinks, devices and any name outside the fixed assets, one application wheel, and the closed `runtime-wheels/*.whl` subtree. Extract into a root-owned temporary directory, parse the release ID from the manifest, require it to equal the 40-hex application commit, and fail if `/opt/cognitive-card-server/releases/$RELEASE_ID` exists. Move payload into that release, create `.venv`, install the lock with pip isolated `--no-index --find-links "$RELEASE_DIR/runtime-wheels"`, install the local application wheel with isolated `--no-index --no-deps`, run `pip check`, and compare normalized `pip freeze` runtime lines with the committed lock. Force `PIP_CONFIG_FILE=/dev/null` and remove inherited `PIP_INDEX_URL`/`PIP_EXTRA_INDEX_URL`; no server config or mirror may select a source. Persist normalized freeze as `installed-runtime.txt`; write canonical `install-manifest.json` containing schema, application commit, operations commit, archive SHA-256, server Python version, installed-runtime SHA-256 and UTC install time. Set both files `root:root 0644` before activation. Install `card-os.env` as `root:cardos 0640` only if absent; otherwise compare its non-secret keys and stop on mismatch. Install systemd units as `root:root 0644`, call `systemctl daemon-reload`, atomically switch `current` using a temporary symlink plus `mv -T`, enable/start the API, and enable the timer. Do not install or edit Nginx in this script.
 
 - [ ] **Step 6: Verify GREEN and commit**
 
@@ -605,8 +630,8 @@ Expected: safe JSON with `status=ok`, full application commit, full governance o
 python3 -m venv /tmp/card-os-release-verify
 mkdir -p dist/card-os-release/unpacked
 tar -xzf dist/card-os-release/cognitive-card-server-dc043ba4473915ebbd1a98c76dab46fcba703de3.tar.gz -C dist/card-os-release/unpacked
-/tmp/card-os-release-verify/bin/python -m pip install -r ops/cognitive-card-server/runtime-requirements.lock
-/tmp/card-os-release-verify/bin/python -m pip install --no-deps dist/card-os-release/unpacked/cognitive_card_server-0.3.0-py3-none-any.whl
+/tmp/card-os-release-verify/bin/python -m pip --isolated install --no-index --find-links dist/card-os-release/unpacked/runtime-wheels -r ops/cognitive-card-server/runtime-requirements.lock
+/tmp/card-os-release-verify/bin/python -m pip --isolated install --no-index --no-deps dist/card-os-release/unpacked/cognitive_card_server-0.3.0-py3-none-any.whl
 /tmp/card-os-release-verify/bin/python -m pip check
 CARD_OS_DATABASE=/tmp/card-os-release-verify.sqlite3 CARD_OS_CANDIDATE_ROOT=/tmp/card-os-release-candidates /tmp/card-os-release-verify/bin/cognitive-card-api --help
 ```
@@ -637,6 +662,7 @@ Required gate:
 - domain certificate is valid at deployment time;
 - existing Nginx configuration passes `nginx -t`;
 - the TLS site file and target TLS server block can be selected uniquely by `install_nginx_include.py`.
+- the local release manifest binds exactly the 14 locked runtime wheels and target metadata, and a clean CPython 3.12 venv resolves the complete lock with `--no-index --find-links` only; no server package index or mirror is required.
 
 Stop without mutations if any requirement fails.
 
@@ -670,6 +696,7 @@ Expected: service is active/enabled, timer enabled, exactly loopback listener, h
 
 ```bash
 systemd-analyze security cognitive-card-server.service
+namei -l /var/lib/cognitive-card-server
 namei -l /var/lib/cognitive-card-server/card-os.sqlite3
 namei -l /var/lib/cognitive-card-server/candidates
 readlink -f /opt/cognitive-card-server/current

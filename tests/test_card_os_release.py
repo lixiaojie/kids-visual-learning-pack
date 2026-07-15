@@ -5,6 +5,8 @@ import importlib.util
 import io
 import json
 import os
+import grp
+import pwd
 import shutil
 import stat
 import subprocess
@@ -50,6 +52,31 @@ PAYLOAD_ASSETS = (
     "nginx/card-os.conf",
 )
 
+RUNTIME_WHEELS = (
+    "annotated_doc-0.0.4-py3-none-any.whl",
+    "annotated_types-0.7.0-py3-none-any.whl",
+    "anyio-4.14.2-py3-none-any.whl",
+    "click-8.4.2-py3-none-any.whl",
+    "fastapi-0.139.0-py3-none-any.whl",
+    "h11-0.16.0-py3-none-any.whl",
+    "idna-3.18-py3-none-any.whl",
+    "pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "pydantic-2.13.4-py3-none-any.whl",
+    "pydantic_core-2.46.4-cp311-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "starlette-1.3.1-py3-none-any.whl",
+    "typing_extensions-4.16.0-py3-none-any.whl",
+    "typing_inspection-0.4.2-py3-none-any.whl",
+    "uvicorn-0.51.0-py3-none-any.whl",
+)
+
+RUNTIME_TARGET = {
+    "abi": "cp312",
+    "implementation": "cp",
+    "only_binary": ":all:",
+    "platforms": ["manylinux_2_28_x86_64", "manylinux_2_17_x86_64"],
+    "python_version": "312",
+}
+
 
 def load_builder_module():
     spec = importlib.util.spec_from_file_location("card_os_release_builder", BUILDER)
@@ -80,27 +107,35 @@ def git(cwd: Path, *arguments: str) -> str:
 
 def write_release_tree(root: Path, *, size_value: object = 1) -> None:
     wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
-    payload_names = [*PAYLOAD_ASSETS, wheel_name]
+    payload_names = [
+        *PAYLOAD_ASSETS,
+        wheel_name,
+        *(f"runtime-wheels/{name}" for name in RUNTIME_WHEELS),
+    ]
+    payload_bytes: dict[str, bytes] = {}
     for name in payload_names:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(b"x")
+        content = RUNTIME_LOCK.encode("utf-8") if name == "runtime-requirements.lock" else b"x"
+        path.write_bytes(content)
+        payload_bytes[name] = content
     files = [
         {
             "path": name,
-            "sha256": hashlib.sha256(b"x").hexdigest(),
-            "size": size_value if index == 0 else 1,
+            "sha256": hashlib.sha256(payload_bytes[name]).hexdigest(),
+            "size": size_value if index == 0 else len(payload_bytes[name]),
         }
         for index, name in enumerate(sorted(payload_names))
     ]
     manifest = {
-        "schema": "cognitive-card-server-release-v1",
+        "schema": "cognitive-card-server-release-v2",
         "application_commit": "1" * 40,
         "operations_commit": "2" * 40,
         "application_version": "0.3.0",
         "python_version": "3.12.9",
+        "runtime_target": RUNTIME_TARGET,
         "built_at": "2026-07-15T00:00:00Z",
-        "lock_sha256": hashlib.sha256(b"x").hexdigest(),
+        "lock_sha256": hashlib.sha256(payload_bytes["runtime-requirements.lock"]).hexdigest(),
         "wheel_sha256": hashlib.sha256(b"x").hexdigest(),
         "files": files,
     }
@@ -121,6 +156,7 @@ class BuilderFixture:
         self.log = self.base / "wheel.log"
         self.python = self.base / "fake-python"
         self.mutate_application_on_wheel = False
+        self.runtime_mode = "valid"
         self.governance.mkdir()
         self.application.mkdir()
         self.output.mkdir()
@@ -172,6 +208,36 @@ class BuilderFixture:
                 if sys.argv[1:] == ["--version"]:
                     print("Python 3.12.9")
                     raise SystemExit(0)
+                log_path = pathlib.Path(os.environ["FAKE_WHEEL_LOG"])
+                with log_path.open("a", encoding="utf-8") as stream:
+                    stream.write(json.dumps({{
+                        "arguments": sys.argv[1:],
+                        "pip_config_file": os.environ.get("PIP_CONFIG_FILE"),
+                        "pip_index_url": os.environ.get("PIP_INDEX_URL"),
+                        "pip_extra_index_url": os.environ.get("PIP_EXTRA_INDEX_URL"),
+                    }}) + "\\n")
+                if "download" in sys.argv:
+                    destination = pathlib.Path(sys.argv[sys.argv.index("--dest") + 1])
+                    destination.mkdir(parents=True, exist_ok=True)
+                    wheels = {list(RUNTIME_WHEELS)!r}
+                    mode = os.environ.get("FAKE_RUNTIME_MODE", "valid")
+                    if mode == "missing":
+                        wheels.remove("anyio-4.14.2-py3-none-any.whl")
+                    elif mode == "wrong-version":
+                        wheels[wheels.index("anyio-4.14.2-py3-none-any.whl")] = (
+                            "anyio-4.14.1-py3-none-any.whl"
+                        )
+                    elif mode == "duplicate":
+                        wheels.append("anyio-4.14.2-1-py3-none-any.whl")
+                    elif mode == "unexpected":
+                        wheels.append("unexpected-1.0-py3-none-any.whl")
+                    elif mode == "sdist":
+                        wheels.append("anyio-4.14.2.tar.gz")
+                    elif mode == "unsafe-name":
+                        wheels.append("unsafe name.whl")
+                    for name in wheels:
+                        (destination / name).write_bytes(b"runtime-wheel")
+                    raise SystemExit(0)
                 source = pathlib.Path(sys.argv[-1])
                 source_head = subprocess.run(
                     ["git", "-C", str(source), "rev-parse", "HEAD"],
@@ -194,15 +260,16 @@ class BuilderFixture:
                     }}
                 wheel_dir = pathlib.Path(sys.argv[sys.argv.index("--wheel-dir") + 1])
                 backend_artifact = source / "build" / "backend-created.txt"
-                pathlib.Path(os.environ["FAKE_WHEEL_LOG"]).write_text(json.dumps({{
-                    "arguments": sys.argv[1:],
+                with log_path.open("a", encoding="utf-8") as stream:
+                    stream.write(json.dumps({{
+                    "application_build": True,
                     "source_head": source_head,
                     "source_status": source_status,
                     "backend_artifact": str(backend_artifact),
                     "shared_object_inodes": len(
                         object_inodes(source) & object_inodes(application)
                     ),
-                }}))
+                    }}) + "\\n")
                 backend_artifact.parent.mkdir(parents=True, exist_ok=True)
                 backend_artifact.write_text("backend output")
                 if os.environ.get("FAKE_MUTATE_APPLICATION"):
@@ -219,6 +286,10 @@ class BuilderFixture:
         environment = os.environ.copy()
         environment["FAKE_WHEEL_LOG"] = os.fspath(self.log)
         environment["FAKE_APPLICATION_ROOT"] = os.fspath(self.application)
+        environment["FAKE_RUNTIME_MODE"] = self.runtime_mode
+        environment["PIP_CONFIG_FILE"] = "/tmp/attacker-pip.conf"
+        environment["PIP_INDEX_URL"] = "https://environment.invalid/simple"
+        environment["PIP_EXTRA_INDEX_URL"] = "https://extra-environment.invalid/simple"
         if self.mutate_application_on_wheel:
             environment["FAKE_MUTATE_APPLICATION"] = "1"
         return run(
@@ -235,6 +306,9 @@ class BuilderFixture:
             cwd=self.governance,
             env=environment,
         )
+
+    def commands(self) -> list[dict[str, object]]:
+        return [json.loads(line) for line in self.log.read_text(encoding="utf-8").splitlines()]
 
     def commit_application(self, message: str) -> None:
         git(self.application, "add", "-A")
@@ -300,8 +374,12 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         process = fixture.invoke()
 
         self.assertEqual(0, process.returncode, process.stderr)
-        wheel_invocation = json.loads(fixture.log.read_text(encoding="utf-8"))
-        arguments = wheel_invocation["arguments"]
+        commands = fixture.commands()
+        wheel_invocation = next(command for command in commands if command.get("application_build"))
+        arguments = next(
+            command["arguments"] for command in commands
+            if command.get("arguments", [None, None, None])[2:3] == ["wheel"]
+        )
         self.assertEqual(["-m", "pip", "wheel", "--no-deps", "--wheel-dir"], arguments[:5])
         self.assertEqual(7, len(arguments))
         wheel_dir = Path(arguments[5])
@@ -319,6 +397,46 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertFalse((fixture.application / "build").exists())
         self.assertFalse(source.exists())
         self.assertFalse(wheel_dir.exists())
+
+    def test_runtime_wheelhouse_download_is_targeted_isolated_and_official(self) -> None:
+        fixture = BuilderFixture(self)
+        process = fixture.invoke()
+
+        self.assertEqual(0, process.returncode, process.stderr)
+        download = next(
+            command for command in fixture.commands()
+            if "download" in command.get("arguments", [])
+        )
+        arguments = download["arguments"]
+        self.assertEqual(
+            [
+                "-m", "pip", "--isolated", "--disable-pip-version-check",
+                "download", "--no-input", "--only-binary=:all:",
+                "--index-url", "https://pypi.org/simple",
+                "--platform", "manylinux_2_28_x86_64",
+                "--platform", "manylinux_2_17_x86_64",
+                "--implementation", "cp", "--python-version", "312",
+                "--abi", "cp312", "--dest",
+            ],
+            arguments[:-3],
+        )
+        self.assertEqual("--requirement", arguments[-2])
+        self.assertEqual("runtime-requirements.lock", Path(arguments[-1]).name)
+        self.assertEqual(os.devnull, download["pip_config_file"])
+        self.assertIsNone(download["pip_index_url"])
+        self.assertIsNone(download["pip_extra_index_url"])
+        self.assertNotIn("--extra-index-url", arguments)
+
+    def test_runtime_wheelhouse_rejects_incomplete_or_unsafe_resolutions(self) -> None:
+        for mode in ("missing", "wrong-version", "duplicate", "unexpected", "sdist", "unsafe-name"):
+            with self.subTest(mode=mode):
+                fixture = BuilderFixture(self)
+                fixture.runtime_mode = mode
+                process = fixture.invoke()
+
+                self.assertNotEqual(0, process.returncode)
+                self.assertIn("RUNTIME_WHEELHOUSE_INVALID", process.stderr)
+                self.assertEqual([], list(fixture.output.iterdir()))
 
     def test_gitlink_is_rejected_before_wheel_execution(self) -> None:
         fixture = BuilderFixture(self)
@@ -405,13 +523,21 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual(checksum, Path(summary["sha256_file"]))
         digest = hashlib.sha256(archive.read_bytes()).hexdigest()
         self.assertEqual(f"{digest}  {archive.name}\n", checksum.read_text(encoding="ascii"))
-        wheel_command = json.loads(fixture.log.read_text(encoding="utf-8"))["arguments"]
+        wheel_command = next(
+            command["arguments"] for command in fixture.commands()
+            if command.get("arguments", [None, None, None])[2:3] == ["wheel"]
+        )
         self.assertEqual(["-m", "pip", "wheel", "--no-deps", "--wheel-dir"], wheel_command[:5])
         self.assertEqual(7, len(wheel_command))
         self.assertEqual("wheel", Path(wheel_command[5]).name)
 
         wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
-        expected_names = sorted((*PAYLOAD_ASSETS, wheel_name, "release-manifest.json"))
+        expected_names = sorted((
+            *PAYLOAD_ASSETS,
+            wheel_name,
+            *(f"runtime-wheels/{name}" for name in RUNTIME_WHEELS),
+            "release-manifest.json",
+        ))
         with tarfile.open(archive, "r:gz") as bundle:
             members = bundle.getmembers()
             self.assertEqual(expected_names, sorted(member.name for member in members))
@@ -426,11 +552,12 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
                 if member.name != "release-manifest.json"
             }
 
-        self.assertEqual("cognitive-card-server-release-v1", manifest["schema"])
+        self.assertEqual("cognitive-card-server-release-v2", manifest["schema"])
         self.assertEqual(fixture.application_commit, manifest["application_commit"])
         self.assertEqual(fixture.operations_commit, manifest["operations_commit"])
         self.assertEqual("0.3.0", manifest["application_version"])
         self.assertEqual("3.12.9", manifest["python_version"])
+        self.assertEqual(RUNTIME_TARGET, manifest["runtime_target"])
         self.assertRegex(manifest["built_at"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
         self.assertEqual(
             hashlib.sha256(payload_bytes["runtime-requirements.lock"]).hexdigest(),
@@ -448,7 +575,7 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual(expected_files, manifest["files"])
         self.assertEqual(set(manifest), {
             "schema", "application_commit", "operations_commit", "application_version",
-            "python_version", "built_at", "lock_sha256", "wheel_sha256", "files",
+            "python_version", "runtime_target", "built_at", "lock_sha256", "wheel_sha256", "files",
         })
 
 
@@ -456,6 +583,290 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
     def installer_source(self) -> str:
         self.assertTrue(INSTALLER.is_file(), "missing release installer")
         return INSTALLER.read_text(encoding="utf-8")
+
+    def write_pip_recorder(self, path: Path) -> None:
+        path.write_text(
+            textwrap.dedent(
+                f"""\
+                #!{sys.executable}
+                import json
+                import os
+                import pathlib
+                import sys
+
+                pathlib.Path(os.environ["COMMAND_LOG"]).write_text(
+                    json.dumps({{
+                        "arguments": sys.argv[1:],
+                        "pip_config_file": os.environ.get("PIP_CONFIG_FILE"),
+                        "pip_index_url": os.environ.get("PIP_INDEX_URL"),
+                        "pip_extra_index_url": os.environ.get("PIP_EXTRA_INDEX_URL"),
+                    }}),
+                    encoding="utf-8",
+                )
+                """
+            ),
+            encoding="utf-8",
+        )
+        path.chmod(0o755)
+
+    def run_installer_function(
+        self,
+        script: str,
+        *arguments: str,
+        env: dict[str, str] | None = None,
+    ) -> subprocess.CompletedProcess[str]:
+        return run(
+            "bash",
+            "-c",
+            script,
+            "installer-function",
+            os.fspath(INSTALLER),
+            *arguments,
+            cwd=ROOT,
+            env=env,
+        )
+
+    def test_runtime_install_uses_only_isolated_release_wheelhouse(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            recorder = base / "python"
+            command_log = base / "command.json"
+            lock = base / "runtime.lock"
+            wheelhouse = base / "runtime-wheels"
+            wheelhouse.mkdir()
+            home = base / "home"
+            (home / ".config" / "pip").mkdir(parents=True)
+            (home / ".config" / "pip" / "pip.conf").write_text(
+                "[global]\nindex-url=https://config.invalid/simple\n"
+                "extra-index-url=https://extra.invalid/simple\n",
+                encoding="utf-8",
+            )
+            lock.write_text("example==1.0\n", encoding="utf-8")
+            self.write_pip_recorder(recorder)
+            environment = os.environ.copy()
+            environment.update({
+                "COMMAND_LOG": os.fspath(command_log),
+                "HOME": os.fspath(home),
+                "PIP_CONFIG_FILE": os.fspath(home / ".config" / "pip" / "pip.conf"),
+                "PIP_INDEX_URL": "https://environment.invalid/simple",
+                "PIP_EXTRA_INDEX_URL": "https://extra-environment.invalid/simple",
+            })
+
+            process = self.run_installer_function(
+                'source "$1"; install_runtime_dependencies "$2" "$3" "$4"',
+                os.fspath(recorder),
+                os.fspath(lock),
+                os.fspath(wheelhouse),
+                env=environment,
+            )
+
+            self.assertEqual(0, process.returncode, process.stderr)
+            recorded = json.loads(command_log.read_text(encoding="utf-8"))
+            self.assertEqual(
+                [
+                    "-m", "pip", "--isolated", "--disable-pip-version-check",
+                    "install", "--no-input", "--no-index", "--find-links",
+                    os.fspath(wheelhouse), "--requirement", os.fspath(lock),
+                ],
+                recorded["arguments"],
+            )
+            self.assertEqual(os.devnull, recorded["pip_config_file"])
+            self.assertIsNone(recorded["pip_index_url"])
+            self.assertIsNone(recorded["pip_extra_index_url"])
+            self.assertNotIn("--extra-index-url", recorded["arguments"])
+            self.assertNotIn("--index-url", recorded["arguments"])
+
+    def test_local_wheel_install_is_isolated_no_index_and_no_deps(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            recorder = base / "python"
+            command_log = base / "command.json"
+            wheel = base / "application.whl"
+            wheel.write_bytes(b"wheel")
+            self.write_pip_recorder(recorder)
+            environment = os.environ.copy()
+            environment.update({
+                "COMMAND_LOG": os.fspath(command_log),
+                "PIP_CONFIG_FILE": "/tmp/attacker-pip.conf",
+                "PIP_INDEX_URL": "https://environment.invalid/simple",
+                "PIP_EXTRA_INDEX_URL": "https://extra-environment.invalid/simple",
+            })
+
+            process = self.run_installer_function(
+                'source "$1"; install_application_wheel "$2" "$3"',
+                os.fspath(recorder),
+                os.fspath(wheel),
+                env=environment,
+            )
+
+            self.assertEqual(0, process.returncode, process.stderr)
+            recorded = json.loads(command_log.read_text(encoding="utf-8"))
+            self.assertEqual(
+                [
+                    "-m", "pip", "--isolated", "--disable-pip-version-check",
+                    "install", "--no-input", "--no-index", "--no-deps", os.fspath(wheel),
+                ],
+                recorded["arguments"],
+            )
+            self.assertEqual(os.devnull, recorded["pip_config_file"])
+            self.assertIsNone(recorded["pip_index_url"])
+            self.assertIsNone(recorded["pip_extra_index_url"])
+
+    def test_first_install_prepares_private_data_paths_and_cleans_probe(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            data_root = base / "data"
+            candidate_root = data_root / "candidates"
+            database = data_root / "card-os.sqlite3"
+            uid = os.getuid()
+            gid = os.getgid()
+            owner = pwd.getpwuid(uid).pw_name
+            group = grp.getgrgid(gid).gr_name
+            script = r'''
+source "$1"
+runuser() {
+    [[ "$1" == -u && "$3" == -- ]] || return 97
+    shift 3
+    "$@"
+}
+ensure_private_directory "$2" "$5" "$6" "$7" "$8" UNSAFE_DATA_ROOT
+ensure_private_directory "$3" "$5" "$6" "$7" "$8" UNSAFE_CANDIDATE_ROOT
+validate_database_file "$4" "$7" "$8"
+probe_data_root "$2" "$5" "$7" "$8"
+'''
+            process = self.run_installer_function(
+                script,
+                os.fspath(data_root),
+                os.fspath(candidate_root),
+                os.fspath(database),
+                owner,
+                group,
+                str(uid),
+                str(gid),
+            )
+
+            self.assertEqual(0, process.returncode, process.stderr)
+            self.assertEqual("", process.stdout)
+            self.assertEqual(0o700, stat.S_IMODE(data_root.stat().st_mode))
+            self.assertEqual(0o700, stat.S_IMODE(candidate_root.stat().st_mode))
+            self.assertFalse(database.exists())
+            self.assertEqual([], list(data_root.glob(".card-os-write-probe-*")))
+
+    def test_safe_existing_database_and_data_are_not_modified_or_deleted(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            data_root = base / "data"
+            candidate_root = data_root / "candidates"
+            data_root.mkdir(mode=0o755)
+            candidate_root.mkdir(mode=0o755)
+            database = data_root / "card-os.sqlite3"
+            database.write_bytes(b"existing-database")
+            database.chmod(0o600)
+            sentinel = candidate_root / "existing-packet.json"
+            sentinel.write_bytes(b"existing-candidate")
+            uid = os.getuid()
+            gid = os.getgid()
+            owner = pwd.getpwuid(uid).pw_name
+            group = grp.getgrgid(gid).gr_name
+            script = r'''
+source "$1"
+runuser() { shift 3; "$@"; }
+ensure_private_directory "$2" "$5" "$6" "$7" "$8" UNSAFE_DATA_ROOT
+ensure_private_directory "$3" "$5" "$6" "$7" "$8" UNSAFE_CANDIDATE_ROOT
+validate_database_file "$4" "$7" "$8"
+probe_data_root "$2" "$5" "$7" "$8"
+'''
+            process = self.run_installer_function(
+                script,
+                os.fspath(data_root),
+                os.fspath(candidate_root),
+                os.fspath(database),
+                owner,
+                group,
+                str(uid),
+                str(gid),
+            )
+
+            self.assertEqual(0, process.returncode, process.stderr)
+            self.assertEqual(b"existing-database", database.read_bytes())
+            self.assertEqual(b"existing-candidate", sentinel.read_bytes())
+            self.assertEqual(0o700, stat.S_IMODE(data_root.stat().st_mode))
+            self.assertEqual(0o700, stat.S_IMODE(candidate_root.stat().st_mode))
+            self.assertEqual([], list(data_root.glob(".card-os-write-probe-*")))
+
+    def test_database_validation_rejects_unsafe_owner_mode_links_and_non_files(self) -> None:
+        uid = os.getuid()
+        gid = os.getgid()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            target = base / "target"
+            target.write_bytes(b"target")
+            target.chmod(0o600)
+            cases = []
+
+            wrong_owner = base / "wrong-owner.sqlite3"
+            wrong_owner.write_bytes(b"db")
+            wrong_owner.chmod(0o600)
+            cases.append((wrong_owner, uid + 1, gid))
+
+            wrong_mode = base / "wrong-mode.sqlite3"
+            wrong_mode.write_bytes(b"db")
+            wrong_mode.chmod(0o640)
+            cases.append((wrong_mode, uid, gid))
+
+            link = base / "link.sqlite3"
+            link.symlink_to(target)
+            cases.append((link, uid, gid))
+
+            directory = base / "directory.sqlite3"
+            directory.mkdir()
+            cases.append((directory, uid, gid))
+
+            for path, expected_uid, expected_gid in cases:
+                with self.subTest(path=path.name):
+                    process = self.run_installer_function(
+                        'source "$1"; validate_database_file "$2" "$3" "$4"',
+                        os.fspath(path),
+                        str(expected_uid),
+                        str(expected_gid),
+                    )
+                    self.assertNotEqual(0, process.returncode)
+                    self.assertIn("error=UNSAFE_DATABASE", process.stderr)
+                    self.assertTrue(path.exists() or path.is_symlink())
+
+    def test_data_and_candidate_roots_reject_links_and_non_directories(self) -> None:
+        uid = os.getuid()
+        gid = os.getgid()
+        owner = pwd.getpwuid(uid).pw_name
+        group = grp.getgrgid(gid).gr_name
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            directory = base / "real-directory"
+            directory.mkdir()
+            link = base / "linked-directory"
+            link.symlink_to(directory, target_is_directory=True)
+            regular = base / "regular-file"
+            regular.write_bytes(b"keep")
+
+            for path, error in (
+                (link, "UNSAFE_DATA_ROOT"),
+                (regular, "UNSAFE_DATA_ROOT"),
+                (link, "UNSAFE_CANDIDATE_ROOT"),
+                (regular, "UNSAFE_CANDIDATE_ROOT"),
+            ):
+                with self.subTest(path=path.name, error=error):
+                    process = self.run_installer_function(
+                        'source "$1"; ensure_private_directory "$2" "$3" "$4" "$5" "$6" "$7"',
+                        os.fspath(path),
+                        owner,
+                        group,
+                        str(uid),
+                        str(gid),
+                        error,
+                    )
+                    self.assertNotEqual(0, process.returncode)
+                    self.assertIn(f"error={error}", process.stderr)
+                    self.assertTrue(path.exists() or path.is_symlink())
 
     def test_installer_is_valid_bash_and_orders_irreversible_actions_last(self) -> None:
         process = run("bash", "-n", os.fspath(INSTALLER), cwd=ROOT)
@@ -469,8 +880,8 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             "validate_archive",
             'publish_release_directory "$extracted" "$RELEASE_DIR"',
             'python3 -m venv "$RELEASE_DIR/.venv"',
-            '"$pip_path" install --requirement "$RELEASE_DIR/runtime-requirements.lock"',
-            '"$pip_path" install --no-deps "$WHEEL"',
+            'install_runtime_dependencies "$python_path" "$RELEASE_DIR/runtime-requirements.lock" "$RELEASE_DIR/runtime-wheels"',
+            'install_application_wheel "$python_path" "$WHEEL"',
             '"$pip_path" check',
             "installed_runtime=",
             "write_install_manifest",
@@ -531,6 +942,35 @@ PY
                 )
                 self.assertNotEqual(0, process.returncode)
                 self.assertIn("error=RELEASE_MANIFEST_INVALID", process.stderr)
+
+    def test_release_validator_accepts_only_complete_closed_runtime_wheelhouse(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            release = Path(temporary) / "valid"
+            release.mkdir()
+            write_release_tree(release)
+            valid = run(
+                "bash", "-c", 'source "$1"; verify_release "$2"',
+                "release-validator", os.fspath(INSTALLER), os.fspath(release), cwd=ROOT,
+            )
+            self.assertEqual(0, valid.returncode, valid.stderr)
+
+        for mutation in ("missing", "unexpected", "sdist"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                release = Path(temporary) / "release"
+                release.mkdir()
+                write_release_tree(release)
+                if mutation == "missing":
+                    (release / "runtime-wheels" / RUNTIME_WHEELS[0]).unlink()
+                elif mutation == "unexpected":
+                    (release / "runtime-wheels" / "unexpected-1.0-py3-none-any.whl").write_bytes(b"x")
+                else:
+                    (release / "runtime-wheels" / "anyio-4.14.2.tar.gz").write_bytes(b"x")
+                invalid = run(
+                    "bash", "-c", 'source "$1"; verify_release "$2"',
+                    "release-validator", os.fspath(INSTALLER), os.fspath(release), cwd=ROOT,
+                )
+                self.assertNotEqual(0, invalid.returncode)
+                self.assertIn("error=RELEASE_MANIFEST_INVALID", invalid.stderr)
 
     def test_install_trap_precedes_first_fallible_temp_operation(self) -> None:
         source = self.installer_source().split("main() {", maxsplit=1)[1]
@@ -627,6 +1067,7 @@ kill -TERM $$
                     valid_names = [
                         *PAYLOAD_ASSETS,
                         "cognitive_card_server-0.3.0-py3-none-any.whl",
+                        *(f"runtime-wheels/{name}" for name in RUNTIME_WHEELS),
                         "release-manifest.json",
                     ]
                     for valid_name in valid_names:

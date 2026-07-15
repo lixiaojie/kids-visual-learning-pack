@@ -18,9 +18,17 @@ from pathlib import Path
 
 
 APPLICATION_VERSION = "0.3.0"
-MANIFEST_SCHEMA = "cognitive-card-server-release-v1"
+MANIFEST_SCHEMA = "cognitive-card-server-release-v2"
 COMMIT_PATTERN = re.compile(r"^[0-9a-fA-F]{40}$")
 WHEEL_PATTERN = re.compile(r"^cognitive_card_server-0\.3\.0-[A-Za-z0-9_.-]+\.whl$")
+RUNTIME_WHEEL_PATTERN = re.compile(r"^[A-Za-z0-9_.+-]+\.whl$")
+RUNTIME_TARGET = {
+    "abi": "cp312",
+    "implementation": "cp",
+    "only_binary": ":all:",
+    "platforms": ["manylinux_2_28_x86_64", "manylinux_2_17_x86_64"],
+    "python_version": "312",
+}
 
 PAYLOAD_ASSETS = (
     ("runtime-requirements.lock", "runtime-requirements.lock"),
@@ -52,11 +60,17 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def run_checked(arguments: list[str], *, cwd: Path | None = None) -> str:
+def run_checked(
+    arguments: list[str],
+    *,
+    cwd: Path | None = None,
+    env: dict[str, str] | None = None,
+) -> str:
     try:
         process = subprocess.run(
             arguments,
             cwd=cwd,
+            env=env,
             text=True,
             capture_output=True,
             check=False,
@@ -66,6 +80,14 @@ def run_checked(arguments: list[str], *, cwd: Path | None = None) -> str:
     if process.returncode:
         raise ReleaseError("COMMAND_FAILED")
     return process.stdout.strip()
+
+
+def isolated_pip_environment() -> dict[str, str]:
+    environment = os.environ.copy()
+    environment["PIP_CONFIG_FILE"] = os.devnull
+    environment.pop("PIP_INDEX_URL", None)
+    environment.pop("PIP_EXTRA_INDEX_URL", None)
+    return environment
 
 
 def run_checked_bytes(arguments: list[str], *, cwd: Path | None = None) -> bytes:
@@ -162,6 +184,94 @@ def python_version(python: Path) -> str:
     if match is None:
         raise ReleaseError("PYTHON_VERSION_INVALID")
     return match.group(1)
+
+
+def normalize_distribution(name: str) -> str:
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
+def parse_runtime_lock(lock_path: Path) -> dict[str, str]:
+    name_pattern = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$")
+    version_pattern = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9.!+_-]*[A-Za-z0-9])?$")
+    locked: dict[str, str] = {}
+    try:
+        lines = lock_path.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeError) as error:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID") from error
+    for line in lines:
+        if not line or line != line.strip() or line.count("==") != 1:
+            raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+        name, version = line.split("==", 1)
+        normalized = normalize_distribution(name)
+        if (
+            name_pattern.fullmatch(name) is None
+            or version_pattern.fullmatch(version) is None
+            or normalized in locked
+        ):
+            raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+        locked[normalized] = version
+    if not locked:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    return locked
+
+
+def wheel_identity(filename: str) -> tuple[str, str]:
+    if RUNTIME_WHEEL_PATTERN.fullmatch(filename) is None:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    fields = filename[:-4].split("-")
+    if len(fields) not in {5, 6}:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    distribution, version = fields[0], fields[1]
+    if not distribution or not version:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    if len(fields) == 6 and re.fullmatch(r"\d[0-9A-Za-z_]*", fields[2]) is None:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    python_tag, abi_tag, platform_tag = fields[-3:]
+    python_tags = set(python_tag.split("."))
+    abi_tags = set(abi_tag.split("."))
+    platform_tags = set(platform_tag.split("."))
+    compatible_python = bool(python_tags & {"py3", "py312", "cp312"})
+    if "abi3" in abi_tags:
+        compatible_python = compatible_python or any(
+            match is not None and int(match.group(1)) <= 12
+            for tag in python_tags
+            for match in [re.fullmatch(r"cp3(\d+)", tag)]
+        )
+    if not compatible_python or not abi_tags <= {"none", "cp312", "abi3"}:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    if not all(
+        tag == "any"
+        or re.fullmatch(r"manylinux_\d+_\d+_x86_64", tag)
+        or tag == "manylinux2014_x86_64"
+        for tag in platform_tags
+    ):
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    return normalize_distribution(distribution), version
+
+
+def validate_runtime_wheelhouse(wheelhouse: Path, lock_path: Path) -> list[Path]:
+    locked = parse_runtime_lock(lock_path)
+    resolved: dict[str, tuple[str, Path]] = {}
+    try:
+        entries = sorted(wheelhouse.iterdir(), key=lambda path: path.name)
+    except OSError as error:
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID") from error
+    for path in entries:
+        try:
+            metadata = path.lstat()
+        except OSError as error:
+            raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID") from error
+        if not stat.S_ISREG(metadata.st_mode) or path.is_symlink():
+            raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+        distribution, version = wheel_identity(path.name)
+        if distribution in resolved:
+            raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+        resolved[distribution] = (version, path)
+    if set(resolved) != set(locked) or any(
+        resolved[name][0] != version for name, version in locked.items()
+    ):
+        raise ReleaseError("RUNTIME_WHEELHOUSE_INVALID")
+    return [resolved[name][1] for name in sorted(resolved)]
 
 
 def operations_repository(ops_dir: Path) -> Path:
@@ -264,6 +374,39 @@ def build_release(
         ):
             raise ReleaseError("COMMAND_FAILED")
         validate_staged_bytes(source_dir, tree_entries)
+        lock_source = ops_dir / "runtime-requirements.lock"
+        runtime_wheel_dir = staging / "runtime-wheels"
+        runtime_wheel_dir.mkdir()
+        run_checked(
+            [
+                os.fspath(python),
+                "-m",
+                "pip",
+                "--isolated",
+                "--disable-pip-version-check",
+                "download",
+                "--no-input",
+                "--only-binary=:all:",
+                "--index-url",
+                "https://pypi.org/simple",
+                "--platform",
+                "manylinux_2_28_x86_64",
+                "--platform",
+                "manylinux_2_17_x86_64",
+                "--implementation",
+                "cp",
+                "--python-version",
+                "312",
+                "--abi",
+                "cp312",
+                "--dest",
+                os.fspath(runtime_wheel_dir),
+                "--requirement",
+                os.fspath(lock_source),
+            ],
+            env=isolated_pip_environment(),
+        )
+        runtime_wheels = validate_runtime_wheelhouse(runtime_wheel_dir, lock_source)
         wheel_dir = staging / "wheel"
         wheel_dir.mkdir()
         # The pinned backend still executes as the invoking user. This staging
@@ -279,7 +422,8 @@ def build_release(
                 "--wheel-dir",
                 os.fspath(wheel_dir),
                 os.fspath(source_dir),
-            ]
+            ],
+            env=isolated_pip_environment(),
         )
         wheels = [path for path in wheel_dir.iterdir() if path.is_file()]
         if len(wheels) != 1 or WHEEL_PATTERN.fullmatch(wheels[0].name) is None:
@@ -291,6 +435,12 @@ def build_release(
         wheel = release_dir / wheels[0].name
         shutil.copyfile(wheels[0], wheel)
         payloads.append(wheel)
+        release_wheelhouse = release_dir / "runtime-wheels"
+        release_wheelhouse.mkdir()
+        for runtime_wheel in runtime_wheels:
+            destination = release_wheelhouse / runtime_wheel.name
+            shutil.copyfile(runtime_wheel, destination)
+            payloads.append(destination)
 
         if (
             git(server_repo, "rev-parse", "HEAD").lower() != expected_commit
@@ -319,6 +469,7 @@ def build_release(
             "operations_commit": operations_commit,
             "application_version": APPLICATION_VERSION,
             "python_version": interpreter_version,
+            "runtime_target": RUNTIME_TARGET,
             "built_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "lock_sha256": sha256(lock_path),
             "wheel_sha256": sha256(wheel),

@@ -97,6 +97,7 @@ Nginx 继续独立服务：
 | --- | --- | --- |
 | `/opt/cognitive-card-server/releases/<commit>/` | 不可变应用代码和该 release 的 `.venv` | `root:root`，目录 `0755`，文件按需只读 |
 | `/opt/cognitive-card-server/current` | 指向当前 release 的原子符号链接 | `root:root` |
+| `/var/lib/cognitive-card-server/` | 持久化数据根；应用创建数据库的唯一父目录 | `cardos:cardos`，`0700` |
 | `/var/lib/cognitive-card-server/card-os.sqlite3` | 持久化数据库 | `cardos:cardos`，`0600` |
 | `/var/lib/cognitive-card-server/candidates/` | 候选结果隔离存储 | `cardos:cardos`，`0700` |
 | `/etc/cognitive-card-server/card-os.env` | 非密钥运行配置；不得写入 machine token | `root:cardos`，`0640` |
@@ -109,11 +110,11 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 每次发布使用以下流程：
 
 1. 在受信任工作站检出经过测试的精确提交；首版固定为 `dc043ba4473915ebbd1a98c76dab46fcba703de3`。
-2. 从通过测试的运行环境生成精确 runtime dependency lock，并构建应用 wheel；不能让服务器仅按 `pyproject.toml` 的宽松范围重新选择依赖版本。
-3. 生成包含应用 wheel、依赖锁和必要部署文件的 release 归档及 SHA-256 摘要；归档排除 Git 元数据、缓存、测试临时文件、本地数据库和凭据。
+2. 从通过测试的运行环境生成精确 runtime dependency lock，并在受信任工作站从官方 `https://pypi.org/simple` 以 isolated、wheel-only 模式解析完整目标 wheelhouse；目标固定为 CPython 3.12、Linux x86_64，并同时声明 `manylinux_2_28_x86_64` 与 `manylinux_2_17_x86_64` 兼容选择器。服务器不访问任何包索引。
+3. 生成包含应用 wheel、14 个精确 runtime wheels、依赖锁和必要部署文件的 release 归档及 SHA-256 摘要；不兼容于旧格式的 wheelhouse/target 字段使用 `cognitive-card-server-release-v2` schema，manifest 逐文件绑定 wheelhouse，并记录 implementation、Python version、ABI、platforms 与 only-binary 目标元数据。归档排除 sdist、额外/重复/版本漂移的 distribution、Git 元数据、缓存、测试临时文件、本地数据库和凭据。
 4. 把归档、摘要和发布元数据上传到服务器临时目录，服务器先验证摘要。
 5. 解压到新的 `/opt/cognitive-card-server/releases/<commit>/`，不得覆盖已有同名 release。
-6. 在 release 内创建 `.venv`，严格按 dependency lock 安装应用；保留构建时 `release-manifest.json`，再把 `python --version`、实际 `pip freeze` 摘要、应用/运维 Git 提交、依赖锁摘要和归档摘要写入服务器侧 `install-manifest.json`，并验证实际依赖与锁一致。
+6. 在 release 内创建 `.venv`，以 pip isolated、`--no-index` 和仅指向 release 内 `runtime-wheels/` 的 `--find-links` 离线安装 dependency lock，再以 `--no-index --no-deps` 安装本地应用 wheel；保留构建时 `release-manifest.json`，再把 `python --version`、实际 `pip freeze` 摘要、应用/运维 Git 提交、依赖锁摘要和归档摘要写入服务器侧 `install-manifest.json`，并验证实际依赖与锁一致。继承的 pip 环境变量、用户/系统配置和服务器镜像不能成为安装源。
 7. 使用 `cardos` 身份运行导入探针和应用级启动探针，确认配置路径可读、数据路径可写。
 8. 部署前完成数据库/候选目录备份并验证；随后原子切换 `current` 链接。
 9. 重启 systemd 服务，完成本机和 HTTPS 验收；验收失败立即执行回滚。
@@ -162,7 +163,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 
 ### 9.1 持久化边界
 
-代码 release 是可替换制品；数据库和候选目录是持久化状态。任何发布或回滚都不得删除、覆盖或重新初始化 `/var/lib/cognitive-card-server`。
+代码 release 是可替换制品；数据库和候选目录是持久化状态。任何发布或回滚都不得删除、覆盖或重新初始化 `/var/lib/cognitive-card-server`。安装器先拒绝 symlink 或非目录数据根，再把数据根本身收敛为 `cardos:cardos 0700`，之后才创建/验证候选目录。若数据库已存在，必须以 `lstat` 证明它是 `cardos:cardos 0600` 的非 symlink 普通文件；否则失败关闭且不改写数据。激活前由 `cardos` 以不可预测、排他创建的私有探针验证数据根可写，并只删除该探针。
 
 首版没有上一版 Card OS 数据库，因此不存在向前 schema 迁移；仍需在首次启动前创建空数据目录，并在启动后验证应用按预期初始化。未来一旦引入 schema 迁移，每个 release 必须声明迁移兼容范围和数据库回滚条件，不能假定旧代码可读取新 schema。
 
@@ -200,6 +201,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 ### 11.1 部署前门禁
 
 - 当前服务器漂移检查与第 2 节关键事实一致；
+- release manifest 声明精确 CPython 3.12/Linux x86_64 runtime target，`runtime-wheels/` 完整包含锁定的 14 个 wheel，且离线 dry resolution 成功；服务器安装不要求访问 PyPI 或任何镜像；
 - 根磁盘使用率低于 75%，内存和 inode 无异常压力；
 - `cognitive-card-server` 精确提交的完整测试仍通过；
 - 发布归档摘要与 release manifest 一致；
