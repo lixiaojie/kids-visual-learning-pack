@@ -5,8 +5,8 @@ import importlib.util
 import io
 import json
 import os
-import grp
-import pwd
+import base64
+import csv
 import shutil
 import stat
 import subprocess
@@ -15,6 +15,8 @@ import tarfile
 import tempfile
 import textwrap
 import unittest
+import warnings
+import zipfile
 from pathlib import Path
 
 
@@ -23,6 +25,7 @@ OPS = ROOT / "ops" / "cognitive-card-server"
 BUILDER = OPS / "build_release.py"
 INSTALLER = OPS / "install_release.sh"
 LOCK = OPS / "runtime-requirements.lock"
+WHEEL_AUDIT = OPS / "wheel_audit.py"
 
 RUNTIME_LOCK = """annotated-doc==0.0.4
 annotated-types==0.7.0
@@ -45,6 +48,7 @@ PAYLOAD_ASSETS = (
     "ops/card_os_backup.py",
     "ops/card_os_acceptance.py",
     "ops/install_nginx_include.py",
+    "ops/wheel_audit.py",
     "env/card-os.env",
     "systemd/cognitive-card-server.service",
     "systemd/cognitive-card-backup.service",
@@ -78,10 +82,87 @@ RUNTIME_TARGET = {
 }
 
 
+def record_digest(content: bytes) -> str:
+    encoded = base64.urlsafe_b64encode(hashlib.sha256(content).digest()).rstrip(b"=")
+    return "sha256=" + encoded.decode("ascii")
+
+
+def write_test_wheel(
+    path: Path,
+    *,
+    name: str,
+    version: str,
+    tags: tuple[str, ...] = ("py3-none-any",),
+    metadata_name: str | None = None,
+    metadata_version: str | None = None,
+    extra_members: tuple[tuple[str, bytes, int], ...] = (),
+    duplicate_member: str | None = None,
+    corrupt_record_for: str | None = None,
+    wheel_tags: tuple[str, ...] | None = None,
+    module_content: bytes = b"MARKER = 'governed'\n",
+) -> None:
+    distribution = name.replace("-", "_").replace(".", "_")
+    dist_info = f"{distribution}-{version}.dist-info"
+    module_path = f"{distribution}/__init__.py"
+    metadata = (
+        "Metadata-Version: 2.1\n"
+        f"Name: {metadata_name or name}\n"
+        f"Version: {metadata_version or version}\n\n"
+    ).encode("utf-8")
+    declared_tags = wheel_tags if wheel_tags is not None else tags
+    wheel = (
+        "Wheel-Version: 1.0\n"
+        "Generator: card-os-tests\n"
+        "Root-Is-Purelib: true\n"
+        + "".join(f"Tag: {tag}\n" for tag in declared_tags)
+        + "\n"
+    ).encode("utf-8")
+    entries: list[tuple[str, bytes, int]] = [
+        (module_path, module_content, 0o100644),
+        (f"{dist_info}/METADATA", metadata, 0o100644),
+        (f"{dist_info}/WHEEL", wheel, 0o100644),
+        *extra_members,
+    ]
+    record_path = f"{dist_info}/RECORD"
+    record_rows = []
+    for entry_name, content, _ in entries:
+        digest = "sha256=invalid" if entry_name == corrupt_record_for else record_digest(content)
+        record_rows.append((entry_name, digest, str(len(content))))
+    record_rows.append((record_path, "", ""))
+    record_buffer = io.StringIO(newline="")
+    csv.writer(record_buffer, lineterminator="\n").writerows(record_rows)
+    entries.append((record_path, record_buffer.getvalue().encode("utf-8"), 0o100644))
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as wheel_archive:
+        for entry_name, content, mode in entries:
+            info = zipfile.ZipInfo(entry_name)
+            info.create_system = 3
+            info.external_attr = mode << 16
+            wheel_archive.writestr(info, content)
+        if duplicate_member is not None:
+            duplicate = next(content for entry_name, content, _ in entries if entry_name == duplicate_member)
+            info = zipfile.ZipInfo(duplicate_member)
+            info.create_system = 3
+            info.external_attr = 0o100644 << 16
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", UserWarning)
+                wheel_archive.writestr(info, duplicate)
+
+
 def load_builder_module():
     spec = importlib.util.spec_from_file_location("card_os_release_builder", BUILDER)
     if spec is None or spec.loader is None:
         raise AssertionError("unable to load release builder")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_wheel_audit_module():
+    spec = importlib.util.spec_from_file_location("card_os_wheel_audit", WHEEL_AUDIT)
+    if spec is None or spec.loader is None:
+        raise AssertionError("unable to load wheel audit")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -105,7 +186,7 @@ def git(cwd: Path, *arguments: str) -> str:
     return process.stdout.strip()
 
 
-def write_release_tree(root: Path, *, size_value: object = 1) -> None:
+def write_release_tree(root: Path, *, size_value: object | None = None) -> None:
     wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
     payload_names = [
         *PAYLOAD_ASSETS,
@@ -116,14 +197,26 @@ def write_release_tree(root: Path, *, size_value: object = 1) -> None:
     for name in payload_names:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
-        content = RUNTIME_LOCK.encode("utf-8") if name == "runtime-requirements.lock" else b"x"
-        path.write_bytes(content)
-        payload_bytes[name] = content
+        if name == "runtime-requirements.lock":
+            path.write_text(RUNTIME_LOCK, encoding="utf-8")
+        elif name == "ops/wheel_audit.py":
+            shutil.copyfile(WHEEL_AUDIT, path)
+        elif name.endswith(".whl"):
+            fields = path.name[:-4].split("-")
+            write_test_wheel(
+                path,
+                name=fields[0].replace("_", "-"),
+                version=fields[1],
+                tags=("-".join(fields[-3:]),),
+            )
+        else:
+            path.write_bytes(b"x")
+        payload_bytes[name] = path.read_bytes()
     files = [
         {
             "path": name,
             "sha256": hashlib.sha256(payload_bytes[name]).hexdigest(),
-            "size": size_value if index == 0 else len(payload_bytes[name]),
+            "size": size_value if index == 0 and size_value is not None else len(payload_bytes[name]),
         }
         for index, name in enumerate(sorted(payload_names))
     ]
@@ -136,13 +229,141 @@ def write_release_tree(root: Path, *, size_value: object = 1) -> None:
         "runtime_target": RUNTIME_TARGET,
         "built_at": "2026-07-15T00:00:00Z",
         "lock_sha256": hashlib.sha256(payload_bytes["runtime-requirements.lock"]).hexdigest(),
-        "wheel_sha256": hashlib.sha256(b"x").hexdigest(),
+        "wheel_sha256": hashlib.sha256(
+            payload_bytes["cognitive_card_server-0.3.0-py3-none-any.whl"]
+        ).hexdigest(),
         "files": files,
     }
     (root / "release-manifest.json").write_text(
         json.dumps(manifest, sort_keys=True, separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
+
+
+class WheelAuditTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.assertTrue(WHEEL_AUDIT.is_file(), "missing governed wheel audit")
+
+    def test_valid_pure_and_abi3_wheels_pass_bounded_target_audit(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            pure = base / "demo-1.0-py3-none-any.whl"
+            abi3 = base / (
+                "core_demo-2.0-cp311-abi3-"
+                "manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            )
+            write_test_wheel(pure, name="demo", version="1.0")
+            write_test_wheel(
+                abi3,
+                name="core-demo",
+                version="2.0",
+                tags=(
+                    "cp311-abi3-manylinux_2_17_x86_64",
+                    "cp311-abi3-manylinux2014_x86_64",
+                ),
+            )
+
+            self.assertEqual(("demo", "1.0"), audit.audit_wheel(pure, "demo", "1.0"))
+            self.assertEqual(
+                ("core-demo", "2.0"),
+                audit.audit_wheel(abi3, "core-demo", "2.0"),
+            )
+
+    def test_wheel_audit_rejects_corruption_identity_zip_and_record_violations(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            cases: dict[str, Path] = {}
+
+            corrupt = base / "corrupt-1.0-py3-none-any.whl"
+            corrupt.write_bytes(b"not-a-zip")
+            cases["corrupt"] = corrupt
+
+            mislabeled = base / "demo-1.0-py3-none-any.whl"
+            write_test_wheel(mislabeled, name="demo", version="1.0", metadata_name="other")
+            cases["mislabeled"] = mislabeled
+
+            unsafe = base / "unsafe_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                unsafe,
+                name="unsafe-demo",
+                version="1.0",
+                extra_members=(("../escape", b"escape", 0o100644),),
+            )
+            cases["unsafe"] = unsafe
+
+            duplicate = base / "duplicate_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                duplicate,
+                name="duplicate-demo",
+                version="1.0",
+                duplicate_member="duplicate_demo/__init__.py",
+            )
+            cases["duplicate"] = duplicate
+
+            symlink = base / "symlink_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                symlink,
+                name="symlink-demo",
+                version="1.0",
+                extra_members=(("symlink_demo/link", b"target", 0o120777),),
+            )
+            cases["symlink"] = symlink
+
+            record = base / "record_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                record,
+                name="record-demo",
+                version="1.0",
+                corrupt_record_for="record_demo/__init__.py",
+            )
+            cases["record"] = record
+
+            tags = base / "tag_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                tags,
+                name="tag-demo",
+                version="1.0",
+                wheel_tags=("py312-none-any",),
+            )
+            cases["tags"] = tags
+
+            expected_names = {
+                "corrupt": "corrupt",
+                "mislabeled": "demo",
+                "unsafe": "unsafe-demo",
+                "duplicate": "duplicate-demo",
+                "symlink": "symlink-demo",
+                "record": "record-demo",
+                "tags": "tag-demo",
+            }
+            for label, wheel in cases.items():
+                with self.subTest(label=label), self.assertRaises(audit.WheelAuditError) as caught:
+                    audit.audit_wheel(wheel, expected_names[label], "1.0")
+                self.assertEqual("WHEEL_INVALID", str(caught.exception))
+
+    def test_wheel_audit_rejects_future_manylinux_and_invalid_abi3_floor(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            future = base / "future-1.0-cp312-cp312-manylinux_2_29_x86_64.whl"
+            old_abi = base / "old_abi-1.0-cp31-abi3-manylinux_2_17_x86_64.whl"
+            write_test_wheel(
+                future,
+                name="future",
+                version="1.0",
+                tags=("cp312-cp312-manylinux_2_29_x86_64",),
+            )
+            write_test_wheel(
+                old_abi,
+                name="old-abi",
+                version="1.0",
+                tags=("cp31-abi3-manylinux_2_17_x86_64",),
+            )
+            for wheel, name in ((future, "future"), (old_abi, "old-abi")):
+                with self.subTest(wheel=wheel.name), self.assertRaises(audit.WheelAuditError):
+                    audit.audit_wheel(wheel, name, "1.0")
 
 
 class BuilderFixture:
@@ -155,11 +376,31 @@ class BuilderFixture:
         self.output = self.base / "output"
         self.log = self.base / "wheel.log"
         self.python = self.base / "fake-python"
+        self.fake_wheels = self.base / "fake-wheels"
+        self.fake_runtime_wheels = self.fake_wheels / "runtime"
+        self.fake_application_wheel = (
+            self.fake_wheels / "cognitive_card_server-0.3.0-py3-none-any.whl"
+        )
         self.mutate_application_on_wheel = False
         self.runtime_mode = "valid"
+        self.application_mode = "valid"
         self.governance.mkdir()
         self.application.mkdir()
         self.output.mkdir()
+        self.fake_runtime_wheels.mkdir(parents=True)
+        for filename in RUNTIME_WHEELS:
+            fields = filename[:-4].split("-")
+            write_test_wheel(
+                self.fake_runtime_wheels / filename,
+                name=fields[0].replace("_", "-"),
+                version=fields[1],
+                tags=("-".join(fields[-3:]),),
+            )
+        write_test_wheel(
+            self.fake_application_wheel,
+            name="cognitive-card-server",
+            version="0.3.0",
+        )
 
         for asset in PAYLOAD_ASSETS:
             source = OPS / asset.removeprefix("ops/")
@@ -202,6 +443,7 @@ class BuilderFixture:
                 import json
                 import os
                 import pathlib
+                import shutil
                 import subprocess
                 import sys
 
@@ -219,24 +461,26 @@ class BuilderFixture:
                 if "download" in sys.argv:
                     destination = pathlib.Path(sys.argv[sys.argv.index("--dest") + 1])
                     destination.mkdir(parents=True, exist_ok=True)
-                    wheels = {list(RUNTIME_WHEELS)!r}
+                    source_wheels = pathlib.Path(os.environ["FAKE_RUNTIME_WHEELS"])
+                    for source_wheel in source_wheels.iterdir():
+                        shutil.copy2(source_wheel, destination / source_wheel.name)
                     mode = os.environ.get("FAKE_RUNTIME_MODE", "valid")
                     if mode == "missing":
-                        wheels.remove("anyio-4.14.2-py3-none-any.whl")
+                        (destination / "anyio-4.14.2-py3-none-any.whl").unlink()
                     elif mode == "wrong-version":
-                        wheels[wheels.index("anyio-4.14.2-py3-none-any.whl")] = (
-                            "anyio-4.14.1-py3-none-any.whl"
-                        )
+                        source = destination / "anyio-4.14.2-py3-none-any.whl"
+                        source.rename(destination / "anyio-4.14.1-py3-none-any.whl")
                     elif mode == "duplicate":
-                        wheels.append("anyio-4.14.2-1-py3-none-any.whl")
+                        shutil.copy2(
+                            destination / "anyio-4.14.2-py3-none-any.whl",
+                            destination / "anyio-4.14.2-1-py3-none-any.whl",
+                        )
                     elif mode == "unexpected":
-                        wheels.append("unexpected-1.0-py3-none-any.whl")
+                        (destination / "unexpected-1.0-py3-none-any.whl").write_bytes(b"unexpected")
                     elif mode == "sdist":
-                        wheels.append("anyio-4.14.2.tar.gz")
+                        (destination / "anyio-4.14.2.tar.gz").write_bytes(b"sdist")
                     elif mode == "unsafe-name":
-                        wheels.append("unsafe name.whl")
-                    for name in wheels:
-                        (destination / name).write_bytes(b"runtime-wheel")
+                        (destination / "unsafe name.whl").write_bytes(b"unsafe")
                     raise SystemExit(0)
                 source = pathlib.Path(sys.argv[-1])
                 source_head = subprocess.run(
@@ -275,7 +519,11 @@ class BuilderFixture:
                 if os.environ.get("FAKE_MUTATE_APPLICATION"):
                     (application / "changed-during-build.txt").write_text("changed")
                 wheel_dir.mkdir(parents=True, exist_ok=True)
-                (wheel_dir / "cognitive_card_server-0.3.0-py3-none-any.whl").write_bytes(b"fixture-wheel")
+                application_wheel = wheel_dir / "cognitive_card_server-0.3.0-py3-none-any.whl"
+                if os.environ.get("FAKE_APPLICATION_MODE") == "corrupt":
+                    application_wheel.write_bytes(b"corrupt-wheel")
+                else:
+                    shutil.copy2(os.environ["FAKE_APPLICATION_WHEEL"], application_wheel)
                 """
             ),
             encoding="utf-8",
@@ -286,6 +534,9 @@ class BuilderFixture:
         environment = os.environ.copy()
         environment["FAKE_WHEEL_LOG"] = os.fspath(self.log)
         environment["FAKE_APPLICATION_ROOT"] = os.fspath(self.application)
+        environment["FAKE_RUNTIME_WHEELS"] = os.fspath(self.fake_runtime_wheels)
+        environment["FAKE_APPLICATION_WHEEL"] = os.fspath(self.fake_application_wheel)
+        environment["FAKE_APPLICATION_MODE"] = self.application_mode
         environment["FAKE_RUNTIME_MODE"] = self.runtime_mode
         environment["PIP_CONFIG_FILE"] = "/tmp/attacker-pip.conf"
         environment["PIP_INDEX_URL"] = "https://environment.invalid/simple"
@@ -437,6 +688,16 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
                 self.assertNotEqual(0, process.returncode)
                 self.assertIn("RUNTIME_WHEELHOUSE_INVALID", process.stderr)
                 self.assertEqual([], list(fixture.output.iterdir()))
+
+    def test_builder_rejects_structurally_corrupt_application_wheel(self) -> None:
+        fixture = BuilderFixture(self)
+        fixture.application_mode = "corrupt"
+
+        process = fixture.invoke()
+
+        self.assertNotEqual(0, process.returncode)
+        self.assertIn("WHEEL_INVALID", process.stderr)
+        self.assertEqual([], list(fixture.output.iterdir()))
 
     def test_gitlink_is_rejected_before_wheel_execution(self) -> None:
         fixture = BuilderFixture(self)
@@ -712,6 +973,59 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             self.assertIsNone(recorded["pip_index_url"])
             self.assertIsNone(recorded["pip_extra_index_url"])
 
+    def test_real_pip_cannot_use_hostile_config_or_find_links(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            governed = base / "governed"
+            attacker = base / "attacker"
+            governed_wheel = governed / "demo-1.0-py3-none-any.whl"
+            attacker_wheel = attacker / "demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                governed_wheel,
+                name="demo",
+                version="1.0",
+                module_content=b"MARKER = 'governed'\n",
+            )
+            write_test_wheel(
+                attacker_wheel,
+                name="demo",
+                version="1.0",
+                module_content=b"MARKER = 'attacker'\n",
+            )
+            lock = base / "runtime.lock"
+            lock.write_text("demo==1.0\n", encoding="utf-8")
+            config = base / "pip.conf"
+            config.write_text(
+                f"[global]\nno-index = true\nfind-links = {attacker}\n",
+                encoding="utf-8",
+            )
+            venv = base / "venv"
+            created = run(sys.executable, "-m", "venv", os.fspath(venv), cwd=ROOT)
+            self.assertEqual(0, created.returncode, created.stderr)
+            environment = os.environ.copy()
+            environment.update({
+                "PIP_CONFIG_FILE": os.fspath(config),
+                "PIP_FIND_LINKS": os.fspath(attacker),
+                "PIP_INDEX_URL": "https://environment.invalid/simple",
+                "PIP_EXTRA_INDEX_URL": "https://extra.invalid/simple",
+            })
+            installed = self.run_installer_function(
+                'source "$1"; install_runtime_dependencies "$2" "$3" "$4"',
+                os.fspath(venv / "bin" / "python"),
+                os.fspath(lock),
+                os.fspath(governed),
+                env=environment,
+            )
+            self.assertEqual(0, installed.returncode, installed.stderr)
+            marker = run(
+                os.fspath(venv / "bin" / "python"),
+                "-c",
+                "import demo; print(demo.MARKER)",
+                cwd=ROOT,
+            )
+            self.assertEqual(0, marker.returncode, marker.stderr)
+            self.assertEqual("governed\n", marker.stdout)
+
     def test_first_install_prepares_private_data_paths_and_cleans_probe(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
@@ -720,27 +1034,13 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             database = data_root / "card-os.sqlite3"
             uid = os.getuid()
             gid = os.getgid()
-            owner = pwd.getpwuid(uid).pw_name
-            group = grp.getgrgid(gid).gr_name
             script = r'''
 source "$1"
-runuser() {
-    [[ "$1" == -u && "$3" == -- ]] || return 97
-    shift 3
-    "$@"
-}
-ensure_private_directory "$2" "$5" "$6" "$7" "$8" UNSAFE_DATA_ROOT
-ensure_private_directory "$3" "$5" "$6" "$7" "$8" UNSAFE_CANDIDATE_ROOT
-validate_database_file "$4" "$7" "$8"
-probe_data_root "$2" "$5" "$7" "$8"
+prepare_data_layout "$2" data candidates card-os.sqlite3 "$3" "$4" "$3" "$4"
 '''
             process = self.run_installer_function(
                 script,
-                os.fspath(data_root),
-                os.fspath(candidate_root),
-                os.fspath(database),
-                owner,
-                group,
+                os.fspath(base),
                 str(uid),
                 str(gid),
             )
@@ -766,23 +1066,13 @@ probe_data_root "$2" "$5" "$7" "$8"
             sentinel.write_bytes(b"existing-candidate")
             uid = os.getuid()
             gid = os.getgid()
-            owner = pwd.getpwuid(uid).pw_name
-            group = grp.getgrgid(gid).gr_name
             script = r'''
 source "$1"
-runuser() { shift 3; "$@"; }
-ensure_private_directory "$2" "$5" "$6" "$7" "$8" UNSAFE_DATA_ROOT
-ensure_private_directory "$3" "$5" "$6" "$7" "$8" UNSAFE_CANDIDATE_ROOT
-validate_database_file "$4" "$7" "$8"
-probe_data_root "$2" "$5" "$7" "$8"
+prepare_data_layout "$2" data candidates card-os.sqlite3 "$3" "$4" "$3" "$4"
 '''
             process = self.run_installer_function(
                 script,
-                os.fspath(data_root),
-                os.fspath(candidate_root),
-                os.fspath(database),
-                owner,
-                group,
+                os.fspath(base),
                 str(uid),
                 str(gid),
             )
@@ -799,46 +1089,44 @@ probe_data_root "$2" "$5" "$7" "$8"
         gid = os.getgid()
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
-            target = base / "target"
-            target.write_bytes(b"target")
-            target.chmod(0o600)
-            cases = []
-
-            wrong_owner = base / "wrong-owner.sqlite3"
-            wrong_owner.write_bytes(b"db")
-            wrong_owner.chmod(0o600)
-            cases.append((wrong_owner, uid + 1, gid))
-
-            wrong_mode = base / "wrong-mode.sqlite3"
-            wrong_mode.write_bytes(b"db")
-            wrong_mode.chmod(0o640)
-            cases.append((wrong_mode, uid, gid))
-
-            link = base / "link.sqlite3"
-            link.symlink_to(target)
-            cases.append((link, uid, gid))
-
-            directory = base / "directory.sqlite3"
-            directory.mkdir()
-            cases.append((directory, uid, gid))
-
-            for path, expected_uid, expected_gid in cases:
-                with self.subTest(path=path.name):
+            for label in ("wrong-owner", "wrong-mode", "link", "directory"):
+                with self.subTest(label=label):
+                    parent = base / label
+                    data = parent / "data"
+                    candidate = data / "candidates"
+                    candidate.mkdir(parents=True)
+                    data.chmod(0o700)
+                    candidate.chmod(0o700)
+                    database = data / "card-os.sqlite3"
+                    expected_db_uid = uid
+                    if label == "wrong-owner":
+                        database.write_bytes(b"db")
+                        database.chmod(0o600)
+                        expected_db_uid = uid + 1
+                    elif label == "wrong-mode":
+                        database.write_bytes(b"db")
+                        database.chmod(0o640)
+                    elif label == "link":
+                        target = parent / "target"
+                        target.write_bytes(b"target")
+                        target.chmod(0o600)
+                        database.symlink_to(target)
+                    else:
+                        database.mkdir()
                     process = self.run_installer_function(
-                        'source "$1"; validate_database_file "$2" "$3" "$4"',
-                        os.fspath(path),
-                        str(expected_uid),
-                        str(expected_gid),
+                        'source "$1"; prepare_data_layout "$2" data candidates card-os.sqlite3 "$3" "$4" "$5" "$4"',
+                        os.fspath(parent),
+                        str(uid),
+                        str(gid),
+                        str(expected_db_uid),
                     )
                     self.assertNotEqual(0, process.returncode)
                     self.assertIn("error=UNSAFE_DATABASE", process.stderr)
-                    self.assertTrue(path.exists() or path.is_symlink())
+                    self.assertTrue(database.exists() or database.is_symlink())
 
     def test_data_and_candidate_roots_reject_links_and_non_directories(self) -> None:
         uid = os.getuid()
         gid = os.getgid()
-        owner = pwd.getpwuid(uid).pw_name
-        group = grp.getgrgid(gid).gr_name
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
             directory = base / "real-directory"
@@ -847,26 +1135,52 @@ probe_data_root "$2" "$5" "$7" "$8"
             link.symlink_to(directory, target_is_directory=True)
             regular = base / "regular-file"
             regular.write_bytes(b"keep")
+            candidate_target = base / "real-candidate"
+            candidate_target.mkdir()
+            candidate_link = directory / "linked-candidate"
+            candidate_link.symlink_to(candidate_target, target_is_directory=True)
+            candidate_regular = directory / "candidate-file"
+            candidate_regular.write_bytes(b"keep")
 
-            for path, error in (
-                (link, "UNSAFE_DATA_ROOT"),
-                (regular, "UNSAFE_DATA_ROOT"),
-                (link, "UNSAFE_CANDIDATE_ROOT"),
-                (regular, "UNSAFE_CANDIDATE_ROOT"),
+            for path, error, data_name, candidate_name in (
+                (link, "UNSAFE_DATA_ROOT", link.name, "candidates"),
+                (regular, "UNSAFE_DATA_ROOT", regular.name, "candidates"),
+                (candidate_link, "UNSAFE_CANDIDATE_ROOT", directory.name, candidate_link.name),
+                (candidate_regular, "UNSAFE_CANDIDATE_ROOT", directory.name, candidate_regular.name),
             ):
                 with self.subTest(path=path.name, error=error):
                     process = self.run_installer_function(
-                        'source "$1"; ensure_private_directory "$2" "$3" "$4" "$5" "$6" "$7"',
-                        os.fspath(path),
-                        owner,
-                        group,
+                        'source "$1"; prepare_data_layout "$2" "$3" "$4" card-os.sqlite3 "$5" "$6" "$5" "$6"',
+                        os.fspath(base),
+                        data_name,
+                        candidate_name,
                         str(uid),
                         str(gid),
-                        error,
                     )
                     self.assertNotEqual(0, process.returncode)
                     self.assertIn(f"error={error}", process.stderr)
                     self.assertTrue(path.exists() or path.is_symlink())
+
+    def test_data_layout_uses_only_trusted_parent_descriptor_operations(self) -> None:
+        source = self.installer_source()
+        self.assertIn("prepare_data_layout", source)
+        for required in (
+            "dir_fd=parent_fd",
+            "dir_fd=data_fd",
+            "os.mkdir(",
+            "os.fchown(",
+            "os.fchmod(",
+            "follow_symlinks=False",
+            "os.fork()",
+            "os.setgid(",
+            "os.setuid(",
+            "os.O_EXCL",
+        ):
+            self.assertIn(required, source)
+        self.assertNotIn("ensure_private_directory", source)
+        self.assertNotIn("validate_database_file", source)
+        self.assertNotIn("probe_data_root", source)
+        self.assertNotRegex(source, r"install -d[^\n]+/var/lib/cognitive-card-server")
 
     def test_installer_is_valid_bash_and_orders_irreversible_actions_last(self) -> None:
         process = run("bash", "-n", os.fspath(INSTALLER), cwd=ROOT)
@@ -878,6 +1192,8 @@ probe_data_root "$2" "$5" "$7" "$8"
             "apt-get update",
             "apt-get install -y python3-venv sqlite3",
             "validate_archive",
+            'release_id=$(verify_release "$extracted")',
+            'audit_release_wheels "$extracted"',
             'publish_release_directory "$extracted" "$RELEASE_DIR"',
             'python3 -m venv "$RELEASE_DIR/.venv"',
             'install_runtime_dependencies "$python_path" "$RELEASE_DIR/runtime-requirements.lock" "$RELEASE_DIR/runtime-wheels"',
@@ -890,6 +1206,8 @@ probe_data_root "$2" "$5" "$7" "$8"
             "systemctl enable --now cognitive-card-server.service",
             "systemctl enable --now cognitive-card-backup.timer",
         )
+        for fragment in ordered:
+            self.assertIn(fragment, main_source)
         positions = [main_source.index(fragment) for fragment in ordered]
         self.assertEqual(sorted(positions), positions)
         self.assertIn("set -euo pipefail", source)
@@ -897,6 +1215,38 @@ probe_data_root "$2" "$5" "$7" "$8"
         self.assertIn('chmod 0755 "$RELEASE_DIR/.venv/bin/cognitive-card-api"', source)
         self.assertNotIn("nginx -", source)
         self.assertNotIn("/etc/nginx", source)
+
+    def test_installer_audits_manifest_bound_wheels_with_governed_payload(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            release = base / "release"
+            release.mkdir()
+            write_release_tree(release)
+            valid = self.run_installer_function(
+                'source "$1"; verify_release "$2" >/dev/null; audit_release_wheels "$2"',
+                os.fspath(release),
+            )
+            self.assertEqual(0, valid.returncode, valid.stderr)
+
+            application = release / "cognitive_card_server-0.3.0-py3-none-any.whl"
+            application.write_bytes(b"corrupt-wheel")
+            manifest_path = release / "release-manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            for item in manifest["files"]:
+                if item["path"] == application.name:
+                    item["sha256"] = hashlib.sha256(application.read_bytes()).hexdigest()
+                    item["size"] = application.stat().st_size
+            manifest["wheel_sha256"] = hashlib.sha256(application.read_bytes()).hexdigest()
+            manifest_path.write_text(
+                json.dumps(manifest, sort_keys=True, separators=(",", ":")) + "\n",
+                encoding="utf-8",
+            )
+            invalid = self.run_installer_function(
+                'source "$1"; verify_release "$2" >/dev/null; audit_release_wheels "$2"',
+                os.fspath(release),
+            )
+            self.assertNotEqual(0, invalid.returncode)
+            self.assertIn("error=WHEEL_INVALID", invalid.stderr)
 
     def test_installer_sets_safe_umask_for_service_runtime(self) -> None:
         self.assertTrue(INSTALLER.is_file(), "missing release installer")

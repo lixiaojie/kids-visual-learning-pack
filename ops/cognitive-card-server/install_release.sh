@@ -75,126 +75,176 @@ install_application_wheel() {
         install --no-input --no-index --no-deps "$wheel"
 }
 
-ensure_private_directory() {
-    local path=$1
-    local owner=$2
-    local group=$3
-    local expected_uid=$4
-    local expected_gid=$5
-    local error_code=$6
-    python3 - "$path" <<'PY' || fail "$error_code"
-import pathlib
-import stat
-import sys
-
-path = pathlib.Path(sys.argv[1])
-try:
-    metadata = path.lstat()
-except FileNotFoundError:
-    raise SystemExit(0)
-except OSError:
-    raise SystemExit(1)
-if not stat.S_ISDIR(metadata.st_mode) or stat.S_ISLNK(metadata.st_mode):
-    raise SystemExit(1)
-PY
-    install -d -o "$owner" -g "$group" -m 0700 -- "$path" || fail "$error_code"
-    python3 - "$path" "$expected_uid" "$expected_gid" <<'PY' || fail "$error_code"
-import pathlib
-import stat
-import sys
-
-try:
-    metadata = pathlib.Path(sys.argv[1]).lstat()
-except OSError:
-    raise SystemExit(1)
-if (
-    not stat.S_ISDIR(metadata.st_mode)
-    or stat.S_ISLNK(metadata.st_mode)
-    or metadata.st_uid != int(sys.argv[2])
-    or metadata.st_gid != int(sys.argv[3])
-    or stat.S_IMODE(metadata.st_mode) != 0o700
-):
-    raise SystemExit(1)
-PY
-}
-
-validate_database_file() {
-    local database=$1
-    local expected_uid=$2
-    local expected_gid=$3
-    python3 - "$database" "$expected_uid" "$expected_gid" <<'PY' || fail UNSAFE_DATABASE
-import pathlib
-import stat
-import sys
-
-try:
-    metadata = pathlib.Path(sys.argv[1]).lstat()
-except FileNotFoundError:
-    raise SystemExit(0)
-except OSError:
-    raise SystemExit(1)
-if (
-    not stat.S_ISREG(metadata.st_mode)
-    or stat.S_ISLNK(metadata.st_mode)
-    or metadata.st_uid != int(sys.argv[2])
-    or metadata.st_gid != int(sys.argv[3])
-    or stat.S_IMODE(metadata.st_mode) != 0o600
-):
-    raise SystemExit(1)
-PY
-}
-
-probe_data_root() {
-    local data_root=$1
-    local service_user=$2
-    local expected_uid=$3
-    local expected_gid=$4
-    runuser -u "$service_user" -- python3 - "$data_root" "$expected_uid" "$expected_gid" <<'PY' \
-        || fail DATA_ROOT_NOT_WRITABLE
+prepare_data_layout() {
+    python3 - "$@" <<'PY'
 import os
+import re
 import secrets
 import stat
 import sys
 
-directory_fd = -1
-probe_fd = -1
-probe_name = ""
-try:
-    directory_fd = os.open(
-        sys.argv[1], os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
-    )
-    probe_name = ".card-os-write-probe-" + secrets.token_hex(16)
-    probe_fd = os.open(
-        probe_name,
-        os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0),
-        0o600,
-        dir_fd=directory_fd,
-    )
-    metadata = os.fstat(probe_fd)
+
+class LayoutError(Exception):
+    pass
+
+
+def fail(code):
+    raise LayoutError(code)
+
+
+def component(value, code):
+    if value in {"", ".", ".."} or "/" in value or "\\" in value or not re.fullmatch(r"[A-Za-z0-9._-]+", value):
+        fail(code)
+    return value
+
+
+def open_private_directory(parent_fd, name, uid, gid, code):
+    flags = os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(name, flags, dir_fd=parent_fd)
+    except FileNotFoundError:
+        try:
+            os.mkdir(name, 0o700, dir_fd=parent_fd)
+        except FileExistsError:
+            pass
+        except OSError:
+            fail(code)
+        try:
+            descriptor = os.open(name, flags, dir_fd=parent_fd)
+        except OSError:
+            fail(code)
+    except OSError:
+        fail(code)
+    try:
+        os.fchown(descriptor, uid, gid)
+        os.fchmod(descriptor, 0o700)
+        metadata = os.fstat(descriptor)
+    except OSError:
+        os.close(descriptor)
+        fail(code)
+    if (
+        not stat.S_ISDIR(metadata.st_mode)
+        or metadata.st_uid != uid
+        or metadata.st_gid != gid
+        or stat.S_IMODE(metadata.st_mode) != 0o700
+    ):
+        os.close(descriptor)
+        fail(code)
+    return descriptor, (metadata.st_dev, metadata.st_ino)
+
+
+def validate_database(data_fd, name, uid, gid):
+    try:
+        metadata = os.stat(name, dir_fd=data_fd, follow_symlinks=False)
+    except FileNotFoundError:
+        return None
+    except OSError:
+        fail("UNSAFE_DATABASE")
     if (
         not stat.S_ISREG(metadata.st_mode)
-        or metadata.st_uid != int(sys.argv[2])
-        or metadata.st_gid != int(sys.argv[3])
+        or metadata.st_uid != uid
+        or metadata.st_gid != gid
         or stat.S_IMODE(metadata.st_mode) != 0o600
     ):
-        raise OSError
-    os.close(probe_fd)
+        fail("UNSAFE_DATABASE")
+    return (metadata.st_dev, metadata.st_ino)
+
+
+def verify_binding(parent_fd, name, identity, code):
+    try:
+        metadata = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+    except OSError:
+        fail(code)
+    if not stat.S_ISDIR(metadata.st_mode) or (metadata.st_dev, metadata.st_ino) != identity:
+        fail(code)
+
+
+def child_probe(data_fd, uid, gid):
+    probe_name = ".card-os-write-probe-" + secrets.token_hex(16)
     probe_fd = -1
-    os.unlink(probe_name, dir_fd=directory_fd)
-    probe_name = ""
-except (OSError, ValueError):
-    raise SystemExit(1)
-finally:
-    if probe_fd >= 0:
+    try:
+        if os.geteuid() == 0:
+            os.setgroups([])
+        os.setgid(gid)
+        os.setuid(uid)
+        probe_fd = os.open(
+            probe_name,
+            os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0),
+            0o600,
+            dir_fd=data_fd,
+        )
+        metadata = os.fstat(probe_fd)
+        if (
+            not stat.S_ISREG(metadata.st_mode)
+            or metadata.st_uid != uid
+            or metadata.st_gid != gid
+            or stat.S_IMODE(metadata.st_mode) != 0o600
+        ):
+            return 1
         os.close(probe_fd)
-    if probe_name and directory_fd >= 0:
+        probe_fd = -1
+        os.unlink(probe_name, dir_fd=data_fd)
+        return 0
+    except (OSError, ValueError):
+        return 1
+    finally:
+        if probe_fd >= 0:
+            os.close(probe_fd)
         try:
-            os.unlink(probe_name, dir_fd=directory_fd)
+            os.unlink(probe_name, dir_fd=data_fd)
+        except FileNotFoundError:
+            pass
         except OSError:
             pass
-    if directory_fd >= 0:
-        os.close(directory_fd)
+
+
+parent_fd = data_fd = candidate_fd = -1
+try:
+    if len(sys.argv) != 9:
+        fail("UNSAFE_DATA_ROOT")
+    parent_path = sys.argv[1]
+    data_name = component(sys.argv[2], "UNSAFE_DATA_ROOT")
+    candidate_name = component(sys.argv[3], "UNSAFE_CANDIDATE_ROOT")
+    database_name = component(sys.argv[4], "UNSAFE_DATABASE")
+    layout_uid, layout_gid = int(sys.argv[5]), int(sys.argv[6])
+    database_uid, database_gid = int(sys.argv[7]), int(sys.argv[8])
+    parent_fd = os.open(
+        parent_path, os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+    )
+    data_fd, data_identity = open_private_directory(
+        parent_fd, data_name, layout_uid, layout_gid, "UNSAFE_DATA_ROOT"
+    )
+    candidate_fd, candidate_identity = open_private_directory(
+        data_fd, candidate_name, layout_uid, layout_gid, "UNSAFE_CANDIDATE_ROOT"
+    )
+    database_identity = validate_database(
+        data_fd, database_name, database_uid, database_gid
+    )
+    pid = os.fork()
+    if pid == 0:
+        os._exit(child_probe(data_fd, layout_uid, layout_gid))
+    _, status = os.waitpid(pid, 0)
+    if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
+        fail("DATA_ROOT_NOT_WRITABLE")
+    verify_binding(parent_fd, data_name, data_identity, "UNSAFE_DATA_ROOT")
+    verify_binding(data_fd, candidate_name, candidate_identity, "UNSAFE_CANDIDATE_ROOT")
+    if validate_database(data_fd, database_name, database_uid, database_gid) != database_identity:
+        fail("UNSAFE_DATABASE")
+except (OSError, ValueError, LayoutError) as error:
+    code = str(error) if isinstance(error, LayoutError) else "UNSAFE_DATA_ROOT"
+    print(f"error={code}", file=sys.stderr)
+    raise SystemExit(1)
+finally:
+    for descriptor in (candidate_fd, data_fd, parent_fd):
+        if descriptor >= 0:
+            os.close(descriptor)
 PY
+}
+
+audit_release_wheels() {
+    local release_root=$1
+    python3 "$release_root/ops/wheel_audit.py" release --release-root "$release_root" \
+        || fail WHEEL_INVALID
 }
 
 validate_archive() {
@@ -211,6 +261,7 @@ fixed = {
     "ops/card_os_backup.py",
     "ops/card_os_acceptance.py",
     "ops/install_nginx_include.py",
+    "ops/wheel_audit.py",
     "env/card-os.env",
     "systemd/cognitive-card-server.service",
     "systemd/cognitive-card-backup.service",
@@ -300,6 +351,7 @@ fixed = {
     "ops/card_os_backup.py",
     "ops/card_os_acceptance.py",
     "ops/install_nginx_include.py",
+    "ops/wheel_audit.py",
     "env/card-os.env",
     "systemd/cognitive-card-server.service",
     "systemd/cognitive-card-backup.service",
@@ -655,9 +707,6 @@ main() {
     local release_id release_dir wheel pip_path python_path installed_runtime normalized_lock filtered_runtime
     local operations_commit server_python runtime_digest old_current_target=""
     local cardos_uid cardos_gid
-    local data_root=/var/lib/cognitive-card-server
-    local candidate_root=/var/lib/cognitive-card-server/candidates
-    local database=/var/lib/cognitive-card-server/card-os.sqlite3
     local old_api_active=inactive old_api_enabled=disabled
     local old_timer_active=inactive old_timer_enabled=disabled
 
@@ -695,10 +744,8 @@ main() {
     cardos_uid=$(id -u cardos)
     cardos_gid=$(id -g cardos)
     install -d -o root -g root -m 0755 /opt/cognitive-card-server/releases
-    ensure_private_directory "$data_root" cardos cardos "$cardos_uid" "$cardos_gid" UNSAFE_DATA_ROOT
-    ensure_private_directory "$candidate_root" cardos cardos "$cardos_uid" "$cardos_gid" UNSAFE_CANDIDATE_ROOT
-    validate_database_file "$database" "$cardos_uid" "$cardos_gid"
-    probe_data_root "$data_root" cardos "$cardos_uid" "$cardos_gid"
+    prepare_data_layout /var/lib cognitive-card-server candidates card-os.sqlite3 \
+        "$cardos_uid" "$cardos_gid" "$cardos_uid" "$cardos_gid"
     install -d -o root -g cardos -m 0750 /etc/cognitive-card-server
     install -d -o root -g root -m 0700 /var/backups/cognitive-card-server
 
@@ -715,6 +762,7 @@ main() {
     validate_archive "$temporary_dir/archive.tar.gz"
     tar --no-same-owner --no-same-permissions -xzf "$temporary_dir/archive.tar.gz" -C "$extracted"
     release_id=$(verify_release "$extracted")
+    audit_release_wheels "$extracted"
     [[ "$release_id" =~ ^[0-9a-f]{40}$ ]] || fail RELEASE_ID_INVALID
     release_dir="/opt/cognitive-card-server/releases/$release_id"
     RELEASE_DIR=$release_dir
