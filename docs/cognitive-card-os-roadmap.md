@@ -121,8 +121,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 状态：`IN PROGRESS`
 - 权威仓库：`cognitive-card-server`
 - 依赖：EXEC-01。
-- 已实现批次：服务版本 `0.3.0`，提交 `dc043ba4473915ebbd1a98c76dab46fcba703de3`；提供 health、capability、锁定任务、包签发/领取/完成、候选结果提交、状态与事件查询共 11 条路径。
-- 已验证：273 项测试连续通过；真实 Uvicorn 并发认领、重启恢复、幂等、媒体/大小限制、鉴权先于 body 解析、凭据零写入和日志脱敏均覆盖；whole-branch 审查为 Critical 0、Important 0、Minor 0。
+- 当前已审查批次：服务版本 `0.3.1`，提交 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`；提供 health、capability、锁定任务、包签发/领取/完成、候选结果提交、状态与事件查询共 11 条路径，并保留在线 WAL keeper 修复。
+- 已验证：该精确提交的完整应用测试与发布审查通过；真实 Uvicorn 并发认领、重启恢复、幂等、媒体/大小限制、鉴权先于 body 解析、凭据零写入和日志脱敏均覆盖；协议仍为 `1`，minimum Skill release 仍为 `0.1.0`。
 - 第一批端点职责：
   - 健康和 capability 查询；
   - 创建规范化任务；
@@ -132,7 +132,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
   - 上传 manifest 与候选文件；
   - 查询稳定错误和审计摘要。
 - 约束：HTTP 适配器不复制状态机；只调用现有应用服务。请求必须有大小、超时、媒体类型和幂等限制。
-- `0.3.0` 批次验收：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
+- `0.3.1` 批次验收：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
 - 未完成：通过 `www.yutou.space` 的 HTTPS 部署；把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
@@ -145,7 +145,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 不包含：ChatGPT 登录代理、ChatGPT Cookie、OpenAI Token。
 - 已实现：machine token 签发、列表和按 token ID 撤销；scope implication、过期与即时撤销；请求级仓储关闭；原始 token 只在签发时返回一次，日志和数据库仅保留安全标识/摘要。
 - 未完成：浏览器会话、面向个人服务器运维的轮换流程和正式 TLS 部署验证。
-- `0.3.0` 批次验收：machine token 最小权限生效；撤销立即阻止认领和提交；日志和数据库不含原始密钥。
+- `0.3.1` 批次验收：machine token 最小权限生效；撤销立即阻止认领和提交；日志和数据库不含原始密钥。
 - `AUTH-01` 完成条件：上述批次保持通过；浏览器会话、正式轮换/恢复流程和 TLS 部署身份边界完成验收。
 
 ### PROTO-01 协议发现与兼容
@@ -153,7 +153,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 状态：`DONE`
 - 依赖：EXEC-01。
 - 范围：server version、protocol range、packet/result schema、minimum Skill release、capability flags 和稳定升级错误。
-- 已完成：`0.3.0` capability 文档、规范无符号十进制协议头、minimum Skill release 检查，以及稳定的 `CLIENT_UPGRADE_REQUIRED` / `SERVER_UPGRADE_REQUIRED` 前置拒绝。
+- 已完成：`0.3.1` capability 文档、规范无符号十进制协议头、minimum Skill release `0.1.0` 检查，以及稳定的 `CLIENT_UPGRADE_REQUIRED` / `SERVER_UPGRADE_REQUIRED` 前置拒绝。
 - 验证：不兼容请求在任务/包工作之前拒绝；版本、运行时包和 capability 版本一致；生产文档端点关闭。
 - 完成条件：不兼容客户端在认领前收到 `CLIENT_UPGRADE_REQUIRED`；不兼容服务器在创建任务前收到 `SERVER_UPGRADE_REQUIRED`。
 
@@ -289,7 +289,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 下一轮只启动一个可独立验收的子项目：
 
-1. 执行 `DEPLOY-01`：把已验证的 `0.3.0` API/AUTH/PROTO 部署到个人服务器，完成 TLS、非 root 运行、持久化、备份和回滚门禁；
+1. 执行 `DEPLOY-01`：把已验证的 `0.3.1`（提交 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`）API/AUTH/PROTO 部署到个人服务器，完成 TLS、非 root 运行、持久化、自包含 SQLite 备份和回滚门禁；
 2. 执行 `SKILL-01`：发布不可变 Skill release、SHA-256、stable 指针和兼容回滚；
 3. 部署验证通过后解除 `SKILL-02` 阻塞，实现在两个独立 Codex 客户端上可安装的薄客户端；
 4. 人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源；
@@ -298,6 +298,11 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 门户、渲染和 MCP 不进入下一实现批次。
 
 ## 6. 更新记录
+
+### 2026-07-15
+
+- 将受治理部署链当前目标提升为已审查的应用 `0.3.1` / `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`；release schema 保持 v2，协议保持 `1`，minimum Skill release 保持 `0.1.0`。
+- 将在线备份门禁补强为：从只读在线 WAL 源完成 backup 后，先把隔离目标精确归一化为 `journal_mode=DELETE`，再做完整性、manifest 与原子发布；不得改动源 WAL。
 
 ### 2026-07-14
 

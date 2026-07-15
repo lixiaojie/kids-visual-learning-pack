@@ -1,10 +1,10 @@
 # Cognitive Card OS 个人服务器部署设计
 
-状态：已确认，待实施
+状态：已确认，实施中（0.3.1 本地治理修复待复核）
 
 日期：2026-07-14
 
-目标版本：`cognitive-card-server` `0.3.0`，提交 `dc043ba4473915ebbd1a98c76dab46fcba703de3`
+目标版本：`cognitive-card-server` `0.3.1`，提交 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`
 
 目标入口：`https://www.yutou.space/card-os/`
 
@@ -111,12 +111,12 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 
 每次发布使用以下流程：
 
-1. 在受信任工作站检出经过测试的精确提交；首版固定为 `dc043ba4473915ebbd1a98c76dab46fcba703de3`。
+1. 在受信任工作站检出经过测试的精确提交；当前部署目标固定为 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`。
 2. 从通过测试的运行环境生成精确 runtime dependency lock，并在受信任工作站从官方 `https://pypi.org/simple` 以 isolated、wheel-only 模式解析完整目标 wheelhouse；目标固定为 CPython 3.12、Linux x86_64，并同时声明 `manylinux_2_28_x86_64` 与 `manylinux_2_17_x86_64` 兼容选择器。服务器不访问任何包索引。
 3. 生成包含应用 wheel、14 个精确 runtime wheels、依赖锁、单一受治理 `ops/wheel_audit.py` 和必要部署文件的 release 归档及 SHA-256 摘要；不兼容于旧格式的 wheelhouse/target 字段使用 `cognitive-card-server-release-v2` schema，manifest 逐文件绑定 wheelhouse 和审计器，并记录 implementation、Python version、ABI、platforms 与 only-binary 目标元数据。构建器与安装器共用该审计器：要求每个 ZIP 原始成员名等于其规范 POSIX 形式，拒绝别名与碰撞；检查归档/成员/数量/解压总量上限、高压缩的解压大小边界、精确 `.dist-info`、METADATA 的 Name/Version、WHEEL 的声明标签、RECORD 全覆盖的 SHA-256/大小。标签限定为 CPython 3.12/Linux x86_64：ABI `none` 允许 `py3`/`py312`/`cp312` 与 `any` 或允许的 Linux 平台组合；平台允许 `manylinux2014_x86_64`、不高于 `manylinux_2_28_x86_64` 的显式标签，并继续校验合法 `abi3` 下限。归档排除 sdist、额外/重复/版本漂移的 distribution、Git 元数据、缓存、测试临时文件、本地数据库和凭据。
 4. 把归档、摘要和发布元数据上传到服务器临时目录，服务器先验证摘要。
 5. 解压到 root 拥有的临时目录，先完成 manifest 字节摘要验证，再从已经 manifest 绑定的 payload 运行共享 wheel 审计器；通过后才发布到新的 `/opt/cognitive-card-server/releases/<commit>/`，不得覆盖已有同名 release。
-6. 在 release 内创建 `.venv`，以 pip isolated、`--no-index` 和仅指向 release 内 `runtime-wheels/` 的 `--find-links` 离线安装 dependency lock；应用包同样使用 isolated、`--no-index --no-deps`，但必须通过仅指向已审计 release 根目录的 `--find-links` 解析精确需求 `cognitive-card-server==0.3.0`，不得把 wheel 绝对路径作为安装目标。这使 `pip freeze --all` 产生规范的 `name==version`，同时 freeze 规范器继续严格拒绝 `name @ URL`。保留构建时 `release-manifest.json`，再把 `python --version`、实际 `pip freeze` 摘要、应用/运维 Git 提交、依赖锁摘要和归档摘要写入服务器侧 `install-manifest.json`，并验证实际依赖与锁一致。继承的 pip 环境变量、用户/系统配置和服务器镜像不能成为安装源。
+6. 在 release 内创建 `.venv`，以 pip isolated、`--no-index` 和仅指向 release 内 `runtime-wheels/` 的 `--find-links` 离线安装 dependency lock；应用包同样使用 isolated、`--no-index --no-deps`，但必须通过仅指向已审计 release 根目录的 `--find-links` 解析精确需求 `cognitive-card-server==0.3.1`，不得把 wheel 绝对路径作为安装目标。这使 `pip freeze --all` 产生规范的 `name==version`，同时 freeze 规范器继续严格拒绝 `name @ URL`。保留构建时 `release-manifest.json`，再把 `python --version`、实际 `pip freeze` 摘要、应用/运维 Git 提交、依赖锁摘要和归档摘要写入服务器侧 `install-manifest.json`，并验证实际依赖与锁一致。继承的 pip 环境变量、用户/系统配置和服务器镜像不能成为安装源。
 7. 使用 `cardos` 身份运行导入探针和应用级启动探针，确认配置路径可读、数据路径可写。
 8. 部署前完成数据库/候选目录备份并验证；随后原子切换 `current` 链接。
 9. 重启 systemd 服务，完成本机和 HTTPS 验收；验收失败立即执行回滚。
@@ -134,7 +134,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 - 固定 `CARD_OS_HOST=127.0.0.1`、`CARD_OS_PORT=8765`；
 - 固定 `CARD_OS_DATABASE=/var/lib/cognitive-card-server/card-os.sqlite3`；
 - 固定 `CARD_OS_CANDIDATE_ROOT=/var/lib/cognitive-card-server/candidates`；
-- 固定 `CARD_OS_MAX_REQUEST_BYTES=29360128`、`CARD_OS_MAX_DECODED_PAYLOAD_BYTES=20971520`，与应用 `0.3.0` 保持一致；
+- 固定 `CARD_OS_MAX_REQUEST_BYTES=29360128`、`CARD_OS_MAX_DECODED_PAYLOAD_BYTES=20971520`，与应用 `0.3.1` 保持一致；
 - `Restart=on-failure`，设置有限重启间隔，避免故障热循环；
 - `NoNewPrivileges=true`、`PrivateTmp=true`、`ProtectSystem=strict`、`ProtectHome=true`；
 - `ReadWritePaths=/var/lib/cognitive-card-server`；
@@ -160,7 +160,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 - 不启用 CORS；首版只服务显式配置的受信任客户端；
 - 不为 `/var/lib/cognitive-card-server/candidates/` 或备份目录提供静态映射。
 
-变更前备份当前站点文件，变更后必须先通过 `nginx -t`，再执行无中断 reload。Nginx graceful reload 期间旧 worker 可能短暂继续返回旧路由，因此 reload 后不得用一次即时请求判定失败；应在固定短期限内按条件轮询，直到同一轮同时满足精确 `308`、`307`、health JSON 和 capabilities JSON，超时才判定失败并回滚。若配置测试失败，不 reload；若有界就绪门超时或之后的现有站点回归失败，立即恢复备份配置并再次测试、reload，恢复后也以有界条件轮询确认旧基线重新生效。
+变更前备份当前站点文件，变更后必须先通过 `nginx -t`，再执行无中断 reload。Nginx graceful reload 期间旧 worker 可能短暂继续返回旧路由，因此 reload 后不得用一次即时请求判定失败；应在固定短期限内按条件轮询，直到同一轮同时满足精确 `308`、`307`、health JSON 的 `server_version=0.3.1` 和 capabilities JSON 的协议版本 `1`，超时才判定失败并回滚。若配置测试失败，不 reload；若有界就绪门超时或之后的现有站点回归失败，立即恢复备份配置并再次测试、reload，恢复后也以有界条件轮询确认旧基线重新生效。
 
 ## 9. 数据、备份与恢复
 
@@ -176,7 +176,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 
 备份服务是唯一保留 Linux capability 的进程：它以 root 运行，并将 `CapabilityBoundingSet` 与 `AmbientCapabilities` 都精确限制为 `CAP_DAC_READ_SEARCH`。这是因为数据库保持 `cardos:cardos 0600`、候选目录保持 `cardos:cardos 0700`；清空 capability 后，即使 UID 为 root，备份进程也无法绕过 DAC 读取数据库或遍历候选目录。`CAP_DAC_READ_SEARCH` 只提供完成只读备份所需的读取与目录搜索能力，不授予绕过 DAC 的写能力；不得加入任何其他 capability。备份服务继续通过 `ReadOnlyPaths=/var/lib/cognitive-card-server` 固定只读源，并只向 root-only 的 `/var/backups/cognitive-card-server` 和 `PrivateTmp` 提供写入空间。API 服务仍以 `cardos` 运行，`CapabilityBoundingSet=` 与 `AmbientCapabilities=` 保持为空。
 
-1. 使用 SQLite 在线 backup 命令生成一致数据库快照，不直接复制活动中的数据库文件；
+1. 以 `mode=ro` 打开在线源数据库并使用 SQLite backup 命令写入隔离目标；目标仍打开时立即执行 `PRAGMA journal_mode=DELETE`，结果必须精确为小写 `delete`，随后关闭目标连接。只有这个无 `-wal`/`-shm` 依赖的自包含快照才可进入完整性校验、manifest 和发布；源数据库及其在线 WAL 模式不得被切换或改写；
 2. 对候选目录建立同一批次的文件快照；
 3. 生成包含时间、数据库摘要、候选文件摘要和源 release 的 manifest；
 4. 对备份数据库运行 `PRAGMA integrity_check`；
@@ -194,7 +194,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 3. 携带 `Authorization: Bearer ...`、`X-Card-OS-Protocol: 1` 和 `X-Card-OS-Skill-Release: 0.1.0` 调用受保护但不改变业务状态的 `GET /card-os/api/v1/jobs/<nonexistent-id>`，以“已通过鉴权后的稳定 404”证明认证成功；
 4. 重启应用服务，再次使用该 token 调用同一路径，证明认证状态和数据库在重启后保持；
 5. 按 token ID 撤销该 token；
-6. 再次请求同一路径必须得到 `403 AUTH_REVOKED`，与 `0.3.0` 的稳定错误契约一致，并证明撤销立即生效；
+6. 再次请求同一路径必须得到 `403 AUTH_REVOKED`，与 `0.3.1` 的稳定错误契约一致，并证明撤销立即生效；
 7. 删除原始 token 临时材料，并确认数据库和日志只保留安全标识、摘要与审计事件。
 
 若任何步骤可能把原始 token 打印到 Codex 工具输出，必须改用服务器端脚本封装该步骤；不能用“之后清日志”替代零泄漏设计。

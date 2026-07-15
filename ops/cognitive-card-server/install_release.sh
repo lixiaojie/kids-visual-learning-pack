@@ -75,7 +75,7 @@ install_application_wheel() {
     env -u PIP_INDEX_URL -u PIP_EXTRA_INDEX_URL PIP_CONFIG_FILE=/dev/null \
         "$python_path" -m pip --isolated --disable-pip-version-check \
         install --no-input --no-index --no-deps --find-links "$wheel_directory" \
-        cognitive-card-server==0.3.0
+        cognitive-card-server==0.3.1
 }
 
 prepare_data_layout() {
@@ -272,7 +272,7 @@ fixed = {
     "nginx/card-os.conf",
     "release-manifest.json",
 }
-wheel_pattern = re.compile(r"^cognitive_card_server-0\.3\.0-[A-Za-z0-9_.-]+\.whl$")
+wheel_pattern = re.compile(r"^cognitive_card_server-0\.3\.1-[A-Za-z0-9_.-]+\.whl$")
 runtime_wheel_pattern = re.compile(r"^runtime-wheels/[A-Za-z0-9_.+-]+\.whl$")
 try:
     with tarfile.open(archive, "r:gz") as bundle:
@@ -361,7 +361,7 @@ fixed = {
     "systemd/cognitive-card-backup.timer",
     "nginx/card-os.conf",
 }
-wheel_pattern = re.compile(r"^cognitive_card_server-0\.3\.0-[A-Za-z0-9_.-]+\.whl$")
+wheel_pattern = re.compile(r"^cognitive_card_server-0\.3\.1-[A-Za-z0-9_.-]+\.whl$")
 runtime_wheel_pattern = re.compile(r"^runtime-wheels/[A-Za-z0-9_.+-]+\.whl$")
 commit_pattern = re.compile(r"^[0-9a-f]{40}$")
 timestamp_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
@@ -407,7 +407,7 @@ try:
     canonical = (json.dumps(manifest, sort_keys=True, separators=(",", ":")) + "\n").encode()
     if raw_manifest != canonical or set(manifest) != expected_keys:
         raise ValueError
-    if manifest["schema"] != schema or manifest["application_version"] != "0.3.0":
+    if manifest["schema"] != schema or manifest["application_version"] != "0.3.1":
         raise ValueError
     if not commit_pattern.fullmatch(manifest["application_commit"]):
         raise ValueError
@@ -780,7 +780,7 @@ main() {
     python_path="$RELEASE_DIR/.venv/bin/python"
     pip_path="$RELEASE_DIR/.venv/bin/pip"
     install_runtime_dependencies "$python_path" "$RELEASE_DIR/runtime-requirements.lock" "$RELEASE_DIR/runtime-wheels"
-    wheel=$(find "$RELEASE_DIR" -maxdepth 1 -type f -name 'cognitive_card_server-0.3.0-*.whl')
+    wheel=$(find "$RELEASE_DIR" -maxdepth 1 -type f -name 'cognitive_card_server-0.3.1-*.whl')
     [[ -n "$wheel" && "$(printf '%s\n' "$wheel" | wc -l | tr -d ' ')" == 1 ]] || fail APPLICATION_WHEEL_INVALID
     WHEEL=$wheel
     install_application_wheel "$python_path" "$WHEEL"

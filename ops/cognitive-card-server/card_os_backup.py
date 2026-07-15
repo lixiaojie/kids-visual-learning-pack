@@ -99,6 +99,15 @@ def _copy_database(source_path: Path, destination_path: Path) -> dict[str, objec
         source.backup(destination)
     except sqlite3.Error as exc:
         raise BackupError("SQLITE_BACKUP_FAILED") from exc
+    else:
+        try:
+            journal_mode = destination.execute(
+                "PRAGMA journal_mode=DELETE"
+            ).fetchone()
+        except sqlite3.Error as exc:
+            raise BackupError("SQLITE_SNAPSHOT_NORMALIZATION_FAILED") from exc
+        if journal_mode != ("delete",):
+            raise BackupError("SQLITE_SNAPSHOT_NORMALIZATION_FAILED")
     finally:
         if destination is not None:
             destination.close()

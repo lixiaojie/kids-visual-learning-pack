@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 把已验证的 `cognitive-card-server` `0.3.0` 精确提交部署到 `www.yutou.space`，建立非 root 运行、不可变 release、HTTPS 代理、持久化、备份恢复、一次性 token 验收和可执行回滚。
+**Goal:** 把已验证的 `cognitive-card-server` `0.3.1` 精确提交部署到 `www.yutou.space`，建立非 root 运行、不可变 release、HTTPS 代理、持久化、备份恢复、一次性 token 验收和可执行回滚。
 
-**Architecture:** 治理仓库保存版本化运维工具、systemd/Nginx 配置和构建逻辑；应用制品来自私有服务仓库的精确提交 `dc043ba4473915ebbd1a98c76dab46fcba703de3`。服务器使用 `cardos` 用户、每 release 独立 venv、`current` 原子链接和回环 Uvicorn，现有 Nginx 只在 TLS server block 中包含受管 `/card-os` snippet，业务数据独立放在 `/var/lib/cognitive-card-server`。
+**Architecture:** 治理仓库保存版本化运维工具、systemd/Nginx 配置和构建逻辑；应用制品来自私有服务仓库的精确提交 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`。服务器使用 `cardos` 用户、每 release 独立 venv、`current` 原子链接和回环 Uvicorn，现有 Nginx 只在 TLS server block 中包含受管 `/card-os` snippet，业务数据独立放在 `/var/lib/cognitive-card-server`。
 
 **Tech Stack:** Ubuntu 24.04、Python 3.12、Python standard library、SQLite、systemd、Nginx 1.24、UFW、Bash、Git、SHA-256、`unittest`。
 
@@ -13,7 +13,7 @@
 - 权威设计：`docs/superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md`。
 - 治理与运维实现仓库：`/Users/admin/Documents/kids-visual-learning-pack`。
 - 应用源码仓库：`/Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-server`。
-- 应用 release 固定为版本 `0.3.0`、提交 `dc043ba4473915ebbd1a98c76dab46fcba703de3`；本批次不修改该应用提交。
+- 应用 release 固定为版本 `0.3.1`、提交 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`；本批次不修改该应用提交。
 - 目标服务器：`root@118.145.242.99`；正式域名：`https://www.yutou.space`。
 - 应用只监听 `127.0.0.1:8765`；不得添加 UFW 8765 放行规则。
 - `CARD_OS_DATABASE=/var/lib/cognitive-card-server/card-os.sqlite3`。
@@ -62,7 +62,7 @@
 
 ### 服务器受管路径
 
-- `/opt/cognitive-card-server/releases/dc043ba4473915ebbd1a98c76dab46fcba703de3/`
+- `/opt/cognitive-card-server/releases/c2a898cba5b8a8948c06688d8c2a387353d7cbbe/`
 - `/opt/cognitive-card-server/current`
 - `/var/lib/cognitive-card-server/`
 - `/var/lib/cognitive-card-server/card-os.sqlite3`
@@ -108,7 +108,7 @@ result = create_backup(
     current_release=current,
     now=datetime(2026, 7, 14, 3, 0, tzinfo=timezone.utc),
 )
-self.assertEqual(result.backup_dir.name, "20260714T030000Z-dc043ba44739")
+self.assertEqual(result.backup_dir.name, "20260714T030000Z-c2a898cba5b8")
 self.assertEqual(verify_backup(result.backup_dir)["status"], "ok")
 self.assertEqual(
     sqlite3.connect(result.backup_dir / "card-os.sqlite3")
@@ -159,7 +159,7 @@ class BackupError(RuntimeError):
 1. resolve and validate all four input paths;
 2. derive the release ID from `current_release.resolve().name`, require 40 lowercase hexadecimal characters, and use its first 12 characters in the batch directory name;
 3. create a hidden staging directory by concatenating `.`, the computed batch ID, and `.staging`; set mode `0700` and fail if the staging or final path exists;
-4. open the source SQLite URI with `mode=ro`, call `source.backup(destination)`, close both connections, then require `PRAGMA integrity_check` to return exactly `ok`;
+4. open the source SQLite URI with `mode=ro`, call `source.backup(destination)`, then on that isolated destination execute `PRAGMA journal_mode=DELETE` and require the exact row `delete`; close both connections only after this normalization, require that the snapshot has no `-wal`/`-shm` auxiliaries, and then require `PRAGMA integrity_check` to return exactly `ok`; never change the source journal mode or online WAL;
 5. walk candidates in sorted relative-path order using `os.scandir`, reject symlinks and non-regular files, copy each file with `shutil.copyfile`, set copied files to `0600`, and hash copied bytes rather than trusting source metadata;
 6. write canonical UTF-8 JSON with `sort_keys=True`, `separators=(",", ":")`, a final newline, and mode `0600`;
 7. call `verify_backup` against the staging directory;
@@ -466,7 +466,7 @@ git commit -m "feat(ops): add hardened Card OS service assets"
 
 **Interfaces:**
 - Builder: `build_release.py --server-repo PATH --expected-commit 40HEX --output-dir PATH --python PATH`
-- Output: `cognitive-card-server-dc043ba4473915ebbd1a98c76dab46fcba703de3.tar.gz`, matching `.sha256`, and safe summary JSON for this batch.
+- Output: `cognitive-card-server-c2a898cba5b8a8948c06688d8c2a387353d7cbbe.tar.gz`, matching `.sha256`, and safe summary JSON for this batch.
 - Installer: `install_release.sh ARCHIVE SHA256_FILE`; it never overwrites an existing release directory.
 
 - [ ] **Step 1: Commit the exact runtime lock**
@@ -506,9 +506,9 @@ Tests must prove:
 - the builder resolves exactly the 14 locked runtime distributions as wheels from official PyPI with isolated CPython 3.12, x86_64, `manylinux_2_28`/`manylinux_2_17`, wheel-only selectors; missing, duplicate, unexpected, wrong-version, sdist, unsafe-name, or incompatible output fails closed;
 - one governed `ops/wheel_audit.py`, used by both builder and installer, validates the application wheel and all runtime wheels: every raw ZIP name must equal its canonical POSIX form, entries must be safe and unique after alias elimination, archive/member/count/total-uncompressed limits are exact and highly compressed payloads remain bounded by declared uncompressed size, `.dist-info` is exact, METADATA Name/Version and complete RECORD hashes/sizes match, and expanded WHEEL tags obey the bounded CPython 3.12/Linux x86_64 policy; ABI-none `py3`/`py312`/`cp312` tags are accepted on `any` or allowed Linux platforms, while structurally corrupt, mislabeled, unsafe, alias-colliding, duplicate, symlink-mode, future-manylinux, invalid-abi3-floor, and RECORD mismatch fixtures fail closed;
 - the archive contains exactly one application wheel, the closed `runtime-wheels/*.whl` subtree, runtime lock, the governed wheel audit, backup/acceptance scripts, env, three systemd files, Nginx snippet, include installer, and `release-manifest.json`;
-- manifest uses the incompatible-format bump `cognitive-card-server-release-v2` and contains full application commit, full governance operations commit, application version `0.3.0`, Python version, exact target runtime metadata, build timestamp, lock SHA-256, wheel SHA-256, and sorted SHA-256/size for every payload file;
+- manifest keeps schema `cognitive-card-server-release-v2` and contains full application commit, full governance operations commit, application version `0.3.1`, Python version, exact target runtime metadata, build timestamp, lock SHA-256, wheel SHA-256, and sorted SHA-256/size for every payload file;
 - archive path traversal members are impossible because all names are generated from a closed allowlist;
-- `install_release.sh` passes `bash -n`, verifies archive digest before extraction, rejects an existing release, creates `.venv`, installs the lock before the application, then resolves exact `cognitive-card-server==0.3.0` with `--no-deps --no-index --find-links` restricted to the audited release root (never by direct wheel-path reference), runs `pip check`, verifies and persists a canonical installed freeze while continuing to reject direct references, writes a server-side install manifest containing the archive digest, and atomically switches `current` only after all checks pass.
+- `install_release.sh` passes `bash -n`, verifies archive digest before extraction, rejects an existing release, creates `.venv`, installs the lock before the application, then resolves exact `cognitive-card-server==0.3.1` with `--no-deps --no-index --find-links` restricted to the audited release root (never by direct wheel-path reference), runs `pip check`, verifies and persists a canonical installed freeze while continuing to reject direct references, writes a server-side install manifest containing the archive digest, and atomically switches `current` only after all checks pass.
 
 - [ ] **Step 3: Verify RED**
 
@@ -546,7 +546,7 @@ Require exactly one compatible wheel for each lock entry and no other entry. Run
 "$PYTHON" -m pip wheel --no-deps --wheel-dir "$STAGING/wheel" "$SERVER_REPO"
 ```
 
-Require one wheel named `cognitive_card_server-0.3.0-*.whl` and pass it through the same governed audit. Copy the closed allowlist, including `ops/wheel_audit.py`, into the `release` child of the staging directory, calculate SHA-256 from final copied bytes, write canonical `release-manifest.json`, create the tarball with normalized uid/gid/mtime/mode, and write a `.sha256` line containing the calculated lowercase digest, two spaces, and the archive basename. Stdout is safe JSON and never contains environment variables.
+Require one wheel named `cognitive_card_server-0.3.1-*.whl` and pass it through the same governed audit. Copy the closed allowlist, including `ops/wheel_audit.py`, into the `release` child of the staging directory, calculate SHA-256 from final copied bytes, write canonical `release-manifest.json`, create the tarball with normalized uid/gid/mtime/mode, and write a `.sha256` line containing the calculated lowercase digest, two spaces, and the archive basename. Stdout is safe JSON and never contains environment variables.
 
 - [ ] **Step 5: Implement the root installer**
 
@@ -568,7 +568,7 @@ install -d -o root -g cardos -m 0750 /etc/cognitive-card-server
 install -d -o root -g root -m 0700 /var/backups/cognitive-card-server
 ```
 
-Before extraction, inspect every tar member with Python and reject absolute paths, `..`, symlinks, hardlinks, devices and any name outside the fixed assets, the governed wheel audit, one application wheel, and the closed `runtime-wheels/*.whl` subtree. Extract into a root-owned temporary directory and verify the canonical manifest plus every payload size/digest. Only after that digest binding succeeds, execute that manifest-bound `ops/wheel_audit.py` against both the application wheel and complete runtime wheelhouse. Parse the release ID from the manifest, require it to equal the 40-hex application commit, and fail if `/opt/cognitive-card-server/releases/$RELEASE_ID` exists. Move payload into that release, create `.venv`, install the lock with pip isolated `--no-index --find-links "$RELEASE_DIR/runtime-wheels"`, then install the application with isolated `--no-index --no-deps --find-links "$RELEASE_DIR" cognitive-card-server==0.3.0`; do not install it by absolute wheel path because pip would persist a direct reference. Run `pip check`, require the complete normalized `pip freeze --all` to remain strict `name==version` data, and compare its runtime lines with the committed lock. Force `PIP_CONFIG_FILE=/dev/null` and remove inherited `PIP_INDEX_URL`/`PIP_EXTRA_INDEX_URL`; executable real-pip regressions prove both that hostile configured/environment `find-links` cannot supplement the governed source and that the exact application install produces canonical freeze while direct wheel-path installation is rejected by normalization. Persist normalized freeze as `installed-runtime.txt`; write canonical `install-manifest.json` containing schema, application commit, operations commit, archive SHA-256, server Python version, installed-runtime SHA-256 and UTC install time. Set both files `root:root 0644` before activation. Install `card-os.env` as `root:cardos 0640` only if absent; otherwise compare its non-secret keys and stop on mismatch. Install systemd units as `root:root 0644`, call `systemctl daemon-reload`, atomically switch `current` using a temporary symlink plus `mv -T`, enable/start the API, and enable the timer. Do not install or edit Nginx in this script.
+Before extraction, inspect every tar member with Python and reject absolute paths, `..`, symlinks, hardlinks, devices and any name outside the fixed assets, the governed wheel audit, one application wheel, and the closed `runtime-wheels/*.whl` subtree. Extract into a root-owned temporary directory and verify the canonical manifest plus every payload size/digest. Only after that digest binding succeeds, execute that manifest-bound `ops/wheel_audit.py` against both the application wheel and complete runtime wheelhouse. Parse the release ID from the manifest, require it to equal the 40-hex application commit, and fail if `/opt/cognitive-card-server/releases/$RELEASE_ID` exists. Move payload into that release, create `.venv`, install the lock with pip isolated `--no-index --find-links "$RELEASE_DIR/runtime-wheels"`, then install the application with isolated `--no-index --no-deps --find-links "$RELEASE_DIR" cognitive-card-server==0.3.1`; do not install it by absolute wheel path because pip would persist a direct reference. Run `pip check`, require the complete normalized `pip freeze --all` to remain strict `name==version` data, and compare its runtime lines with the committed lock. Force `PIP_CONFIG_FILE=/dev/null` and remove inherited `PIP_INDEX_URL`/`PIP_EXTRA_INDEX_URL`; executable real-pip regressions prove both that hostile configured/environment `find-links` cannot supplement the governed source and that the exact application install produces canonical freeze while direct wheel-path installation is rejected by normalization. Persist normalized freeze as `installed-runtime.txt`; write canonical `install-manifest.json` containing schema, application commit, operations commit, archive SHA-256, server Python version, installed-runtime SHA-256 and UTC install time. Set both files `root:root 0644` before activation. Install `card-os.env` as `root:cardos 0640` only if absent; otherwise compare its non-secret keys and stop on mismatch. Install systemd units as `root:root 0644`, call `systemctl daemon-reload`, atomically switch `current` using a temporary symlink plus `mv -T`, enable/start the API, and enable the timer. Do not install or edit Nginx in this script.
 
 - [ ] **Step 6: Verify GREEN and commit**
 
@@ -584,10 +584,10 @@ Expected: all four deployment test modules pass.
 
 ---
 
-### Task 5: Build and Verify the Exact 0.3.0 Release Locally
+### Task 5: Build and Verify the Exact 0.3.1 Release Locally
 
 **Files:**
-- Generated, ignored: `dist/card-os-release/cognitive-card-server-dc043ba4473915ebbd1a98c76dab46fcba703de3.tar.gz`
+- Generated, ignored: `dist/card-os-release/cognitive-card-server-c2a898cba5b8a8948c06688d8c2a387353d7cbbe.tar.gz`
 - Generated, ignored: matching `.sha256`
 - Modify: `README.md`
 - Modify: `docs/cognitive-card-os-roadmap.md`
@@ -611,7 +611,7 @@ git -C /Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-serv
 /Users/admin/Documents/kids-visual-learning-pack/.worktrees/cognitive-card-server-api-v03/.venv/bin/python -m unittest discover -s /Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-server/tests -v
 ```
 
-Expected: exact commit `dc043ba4473915ebbd1a98c76dab46fcba703de3`, empty status, 273 passing tests.
+Expected: exact commit `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`, empty status, and the reviewed application test suite passes.
 
 - [ ] **Step 3: Verify, integrate, and push the reviewed operations source**
 
@@ -628,7 +628,7 @@ Expected: deployment tests pass; tracked worktree is clean; only the user-owned 
 ```bash
 python3 ops/cognitive-card-server/build_release.py \
   --server-repo /Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-server \
-  --expected-commit dc043ba4473915ebbd1a98c76dab46fcba703de3 \
+  --expected-commit c2a898cba5b8a8948c06688d8c2a387353d7cbbe \
   --output-dir dist/card-os-release \
   --python /Users/admin/Documents/kids-visual-learning-pack/.worktrees/cognitive-card-server-api-v03/.venv/bin/python
 ```
@@ -640,9 +640,9 @@ Expected: safe JSON with `status=ok`, full application commit, full governance o
 ```bash
 python3 -m venv /tmp/card-os-release-verify
 mkdir -p dist/card-os-release/unpacked
-tar -xzf dist/card-os-release/cognitive-card-server-dc043ba4473915ebbd1a98c76dab46fcba703de3.tar.gz -C dist/card-os-release/unpacked
+tar -xzf dist/card-os-release/cognitive-card-server-c2a898cba5b8a8948c06688d8c2a387353d7cbbe.tar.gz -C dist/card-os-release/unpacked
 /tmp/card-os-release-verify/bin/python -m pip --isolated install --no-index --find-links dist/card-os-release/unpacked/runtime-wheels -r ops/cognitive-card-server/runtime-requirements.lock
-/tmp/card-os-release-verify/bin/python -m pip --isolated install --no-index --no-deps dist/card-os-release/unpacked/cognitive_card_server-0.3.0-py3-none-any.whl
+/tmp/card-os-release-verify/bin/python -m pip --isolated install --no-index --no-deps dist/card-os-release/unpacked/cognitive_card_server-0.3.1-py3-none-any.whl
 /tmp/card-os-release-verify/bin/python -m pip check
 CARD_OS_DATABASE=/tmp/card-os-release-verify.sqlite3 CARD_OS_CANDIDATE_ROOT=/tmp/card-os-release-candidates /tmp/card-os-release-verify/bin/cognitive-card-api --help
 ```
@@ -654,7 +654,7 @@ Expected: `pip check` reports no broken requirements and the API help exits zero
 ### Task 6: Run Server Drift Gate and Install the Loopback Service
 
 **Files:**
-- Remote create: `/opt/cognitive-card-server/releases/dc043ba4473915ebbd1a98c76dab46fcba703de3/`
+- Remote create: `/opt/cognitive-card-server/releases/c2a898cba5b8a8948c06688d8c2a387353d7cbbe/`
 - Remote create: `/etc/cognitive-card-server/card-os.env`
 - Remote create: three `/etc/systemd/system/cognitive-card-*.{service,timer}` files
 - Remote create: `/var/lib/cognitive-card-server/`
@@ -680,8 +680,8 @@ Stop without mutations if any requirement fails.
 - [ ] **Step 2: Upload only the release, digest, and installer**
 
 ```bash
-scp dist/card-os-release/cognitive-card-server-dc043ba4473915ebbd1a98c76dab46fcba703de3.tar.gz root@118.145.242.99:/tmp/
-scp dist/card-os-release/cognitive-card-server-dc043ba4473915ebbd1a98c76dab46fcba703de3.tar.gz.sha256 root@118.145.242.99:/tmp/
+scp dist/card-os-release/cognitive-card-server-c2a898cba5b8a8948c06688d8c2a387353d7cbbe.tar.gz root@118.145.242.99:/tmp/
+scp dist/card-os-release/cognitive-card-server-c2a898cba5b8a8948c06688d8c2a387353d7cbbe.tar.gz.sha256 root@118.145.242.99:/tmp/
 scp ops/cognitive-card-server/install_release.sh root@118.145.242.99:/tmp/install-card-os-release.sh
 ```
 
@@ -701,7 +701,7 @@ curl --fail-with-body --silent --show-error http://127.0.0.1:8765/card-os/api/v1
 curl --fail-with-body --silent --show-error http://127.0.0.1:8765/card-os/api/v1/capabilities
 ```
 
-Expected: service is active/enabled, timer enabled, exactly loopback listener, health reports `0.3.0`, and capabilities report protocol 1. Confirm `ufw status` still has no 8765 rule.
+Expected: service is active/enabled, timer enabled, exactly loopback listener, health reports `0.3.1`, and capabilities report protocol 1. Confirm `ufw status` still has no 8765 rule.
 
 - [ ] **Step 4: Verify service hardening and persistence permissions**
 
@@ -737,7 +737,7 @@ systemctl reload nginx
 systemctl is-active nginx
 ```
 
-If `nginx -t` fails, do not reload. A graceful reload can leave old workers serving the old route briefly, so do not fail on one immediate response. Poll a maximum of 10 attempts with a one-second interval; a single attempt is ready only when `/card-os` is exactly `308`, `/card-os/` is exactly `307`, health is the expected `0.3.0` JSON, and capabilities declares protocol `1`. If that bounded gate never becomes ready, or a later regression fails, restore the timestamped site file, run `nginx -t`, reload the restored configuration, and use the same bounded condition polling pattern to confirm the old baseline. Do not replace condition checks with an arbitrary unbounded sleep.
+If `nginx -t` fails, do not reload. A graceful reload can leave old workers serving the old route briefly, so do not fail on one immediate response. Poll a maximum of 10 attempts with a one-second interval; a single attempt is ready only when `/card-os` is exactly `308`, `/card-os/` is exactly `307`, health is the expected `0.3.1` JSON, and capabilities declares protocol `1`. If that bounded gate never becomes ready, or a later regression fails, restore the timestamped site file, run `nginx -t`, reload the restored configuration, and use the same bounded condition polling pattern to confirm the old baseline. Do not replace condition checks with an arbitrary unbounded sleep.
 
 - [ ] **Step 3: Verify public and protected namespace boundaries**
 
@@ -855,7 +855,7 @@ Stop the batch and execute the applicable rollback when any of these occurs:
 - archive digest, release manifest, exact application commit or dependency lock does not match;
 - service binds anything except `127.0.0.1:8765`;
 - Nginx syntax fails or `/`、`/kids/`、`/sync/` regress;
-- health/capabilities do not report application `0.3.0` and protocol 1;
+- health/capabilities do not report application `0.3.1` and protocol 1;
 - token secret appears in terminal, journald, Nginx logs or deployment record;
 - token remains usable after revoke, or acceptance state remains after finish/cleanup;
 - database/candidate ownership changes away from `cardos`;

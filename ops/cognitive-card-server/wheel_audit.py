@@ -18,7 +18,7 @@ from pathlib import Path, PurePosixPath
 
 
 APPLICATION_NAME = "cognitive-card-server"
-APPLICATION_VERSION = "0.3.0"
+APPLICATION_VERSION = "0.3.1"
 MAX_ARCHIVE_SIZE = 128 * 1024 * 1024
 MAX_ENTRIES = 4096
 MAX_MEMBER_SIZE = 64 * 1024 * 1024
@@ -310,7 +310,7 @@ def audit_release(release_root: Path) -> None:
     audit_wheelhouse(
         release_root / "runtime-wheels", release_root / "runtime-requirements.lock"
     )
-    application_wheels = sorted(release_root.glob("cognitive_card_server-0.3.0-*.whl"))
+    application_wheels = sorted(release_root.glob("cognitive_card_server-0.3.1-*.whl"))
     if len(application_wheels) != 1:
         invalid()
     audit_wheel(application_wheels[0], APPLICATION_NAME, APPLICATION_VERSION)

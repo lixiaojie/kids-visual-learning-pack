@@ -18,10 +18,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-APPLICATION_VERSION = "0.3.0"
+APPLICATION_VERSION = "0.3.1"
 MANIFEST_SCHEMA = "cognitive-card-server-release-v2"
 COMMIT_PATTERN = re.compile(r"^[0-9a-fA-F]{40}$")
-WHEEL_PATTERN = re.compile(r"^cognitive_card_server-0\.3\.0-[A-Za-z0-9_.-]+\.whl$")
+WHEEL_PATTERN = re.compile(r"^cognitive_card_server-0\.3\.1-[A-Za-z0-9_.-]+\.whl$")
 RUNTIME_TARGET = {
     "abi": "cp312",
     "implementation": "cp",

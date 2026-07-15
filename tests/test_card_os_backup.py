@@ -35,7 +35,7 @@ verify_backup = backup_module.verify_backup
 
 
 class CardOsBackupTests(unittest.TestCase):
-    RELEASE_ID = "dc043ba44739" + ("0" * 28)
+    RELEASE_ID = "c2a898cba5b8" + ("0" * 28)
     NOW = datetime(2026, 7, 14, 3, 0, tzinfo=timezone.utc)
 
     def setUp(self) -> None:
@@ -69,10 +69,29 @@ class CardOsBackupTests(unittest.TestCase):
         arguments.update(overrides)
         return create_backup(**arguments)
 
+    def open_live_wal_keeper(
+        self,
+    ) -> tuple[sqlite3.Connection, Path, tuple[int, int, str]]:
+        keeper = sqlite3.connect(self.database)
+        self.addCleanup(keeper.close)
+        self.assertEqual("wal", keeper.execute("PRAGMA journal_mode=WAL").fetchone()[0])
+        keeper.execute("PRAGMA wal_autocheckpoint=0")
+        keeper.execute("INSERT INTO probe VALUES ('hare')")
+        keeper.commit()
+        wal_path = Path(f"{self.database}-wal")
+        self.assertTrue(wal_path.is_file())
+        wal_bytes = wal_path.read_bytes()
+        wal_state = (
+            wal_path.stat().st_ino,
+            len(wal_bytes),
+            hashlib.sha256(wal_bytes).hexdigest(),
+        )
+        return keeper, wal_path, wal_state
+
     def test_creates_verified_online_backup_and_candidate_snapshot(self) -> None:
         result = self.create()
 
-        self.assertEqual(result.backup_dir.name, "20260714T030000Z-dc043ba44739")
+        self.assertEqual(result.backup_dir.name, "20260714T030000Z-c2a898cba5b8")
         self.assertEqual(verify_backup(result.backup_dir)["status"], "ok")
         with closing(
             sqlite3.connect(result.backup_dir / "card-os.sqlite3")
@@ -94,6 +113,89 @@ class CardOsBackupTests(unittest.TestCase):
                 (result.backup_dir / "candidates/packet/result.json").stat().st_mode
             ),
             0o600,
+        )
+
+    def test_live_wal_backup_is_normalized_to_self_contained_delete_snapshot(self) -> None:
+        keeper, source_wal, source_wal_state = self.open_live_wal_keeper()
+
+        result = self.create()
+        snapshot = result.backup_dir / "card-os.sqlite3"
+
+        with closing(
+            sqlite3.connect(f"{snapshot.as_uri()}?mode=ro", uri=True)
+        ) as connection:
+            self.assertEqual(
+                "delete", connection.execute("PRAGMA journal_mode").fetchone()[0]
+            )
+            self.assertEqual(
+                [("ok",)], connection.execute("PRAGMA integrity_check").fetchall()
+            )
+            self.assertEqual(
+                [("rabbit",), ("hare",)],
+                connection.execute("SELECT value FROM probe ORDER BY rowid").fetchall(),
+            )
+
+        self.assertEqual(
+            {"candidates", "card-os.sqlite3", "manifest.json"},
+            {entry.name for entry in result.backup_dir.iterdir()},
+        )
+        self.assertFalse(Path(f"{snapshot}-wal").exists())
+        self.assertFalse(Path(f"{snapshot}-shm").exists())
+        self.assertFalse(
+            (self.backups / ".20260714T030000Z-c2a898cba5b8.staging").exists()
+        )
+        self.assertEqual("wal", keeper.execute("PRAGMA journal_mode").fetchone()[0])
+        source_wal_bytes = source_wal.read_bytes()
+        self.assertEqual(
+            source_wal_state,
+            (
+                source_wal.stat().st_ino,
+                len(source_wal_bytes),
+                hashlib.sha256(source_wal_bytes).hexdigest(),
+            ),
+        )
+
+    def test_snapshot_journal_normalization_failure_is_atomic(self) -> None:
+        keeper, source_wal, source_wal_state = self.open_live_wal_keeper()
+        real_connect = sqlite3.connect
+        destination = (
+            self.backups
+            / ".20260714T030000Z-c2a898cba5b8.staging"
+            / "card-os.sqlite3"
+        )
+
+        class RejectDeleteConnection(sqlite3.Connection):
+            def execute(self, sql: str, parameters: object = ()):
+                if sql == "PRAGMA journal_mode=DELETE":
+                    raise sqlite3.OperationalError("normalization rejected")
+                return super().execute(sql, parameters)
+
+        def connect(database: object, *arguments: object, **keywords: object):
+            if os.fspath(database) == os.fspath(destination):
+                return real_connect(
+                    database,
+                    *arguments,
+                    factory=RejectDeleteConnection,
+                    **keywords,
+                )
+            return real_connect(database, *arguments, **keywords)
+
+        with patch.object(backup_module.sqlite3, "connect", side_effect=connect):
+            with self.assertRaisesRegex(
+                BackupError, "^SQLITE_SNAPSHOT_NORMALIZATION_FAILED$"
+            ):
+                self.create()
+
+        self.assertEqual([], list(self.backups.iterdir()))
+        self.assertEqual("wal", keeper.execute("PRAGMA journal_mode").fetchone()[0])
+        source_wal_bytes = source_wal.read_bytes()
+        self.assertEqual(
+            source_wal_state,
+            (
+                source_wal.stat().st_ino,
+                len(source_wal_bytes),
+                hashlib.sha256(source_wal_bytes).hexdigest(),
+            ),
         )
 
     def test_rejects_symlink_anywhere_under_candidates(self) -> None:
@@ -120,8 +222,8 @@ class CardOsBackupTests(unittest.TestCase):
             ):
                 self.create()
 
-        final = self.backups / "20260714T030000Z-dc043ba44739"
-        staging = self.backups / ".20260714T030000Z-dc043ba44739.staging"
+        final = self.backups / "20260714T030000Z-c2a898cba5b8"
+        staging = self.backups / ".20260714T030000Z-c2a898cba5b8.staging"
         self.assertFalse(final.exists())
         self.assertFalse(staging.exists())
         self.assertEqual("old", sentinel.read_text(encoding="utf-8"))
@@ -216,20 +318,20 @@ class CardOsBackupTests(unittest.TestCase):
         self.assertEqual("surprise", undeclared.read_text(encoding="utf-8"))
 
     def test_rejects_existing_staging_or_final_batch_path(self) -> None:
-        staging = self.backups / ".20260714T030000Z-dc043ba44739.staging"
+        staging = self.backups / ".20260714T030000Z-c2a898cba5b8.staging"
         staging.mkdir(mode=0o700)
         with self.assertRaises(BackupError):
             self.create()
         staging.rmdir()
 
-        final = self.backups / "20260714T030000Z-dc043ba44739"
+        final = self.backups / "20260714T030000Z-c2a898cba5b8"
         final.mkdir()
         with self.assertRaises(BackupError):
             self.create()
 
     def test_atomic_publication_does_not_clobber_concurrent_final_path(self) -> None:
-        final = self.backups / "20260714T030000Z-dc043ba44739"
-        staging = self.backups / ".20260714T030000Z-dc043ba44739.staging"
+        final = self.backups / "20260714T030000Z-c2a898cba5b8"
+        staging = self.backups / ".20260714T030000Z-c2a898cba5b8.staging"
         original_verify = verify_backup
         concurrent_inode: int | None = None
 

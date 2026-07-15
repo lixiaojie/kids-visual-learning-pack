@@ -198,7 +198,7 @@ def git(cwd: Path, *arguments: str) -> str:
 
 
 def write_release_tree(root: Path, *, size_value: object | None = None) -> None:
-    wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
+    wheel_name = "cognitive_card_server-0.3.1-py3-none-any.whl"
     payload_names = [
         *PAYLOAD_ASSETS,
         wheel_name,
@@ -235,13 +235,13 @@ def write_release_tree(root: Path, *, size_value: object | None = None) -> None:
         "schema": "cognitive-card-server-release-v2",
         "application_commit": "1" * 40,
         "operations_commit": "2" * 40,
-        "application_version": "0.3.0",
+        "application_version": "0.3.1",
         "python_version": "3.12.9",
         "runtime_target": RUNTIME_TARGET,
         "built_at": "2026-07-15T00:00:00Z",
         "lock_sha256": hashlib.sha256(payload_bytes["runtime-requirements.lock"]).hexdigest(),
         "wheel_sha256": hashlib.sha256(
-            payload_bytes["cognitive_card_server-0.3.0-py3-none-any.whl"]
+            payload_bytes["cognitive_card_server-0.3.1-py3-none-any.whl"]
         ).hexdigest(),
         "files": files,
     }
@@ -547,7 +547,7 @@ class BuilderFixture:
         self.fake_wheels = self.base / "fake-wheels"
         self.fake_runtime_wheels = self.fake_wheels / "runtime"
         self.fake_application_wheel = (
-            self.fake_wheels / "cognitive_card_server-0.3.0-py3-none-any.whl"
+            self.fake_wheels / "cognitive_card_server-0.3.1-py3-none-any.whl"
         )
         self.mutate_application_on_wheel = False
         self.runtime_mode = "valid"
@@ -567,7 +567,7 @@ class BuilderFixture:
         write_test_wheel(
             self.fake_application_wheel,
             name="cognitive-card-server",
-            version="0.3.0",
+            version="0.3.1",
         )
 
         for asset in PAYLOAD_ASSETS:
@@ -587,7 +587,7 @@ class BuilderFixture:
 
         self._init_git(self.governance)
         (self.application / "pyproject.toml").write_text(
-            "[project]\nname='cognitive-card-server'\nversion='0.3.0'\n",
+            "[project]\nname='cognitive-card-server'\nversion='0.3.1'\n",
             encoding="utf-8",
         )
         self._init_git(self.application)
@@ -687,7 +687,7 @@ class BuilderFixture:
                 if os.environ.get("FAKE_MUTATE_APPLICATION"):
                     (application / "changed-during-build.txt").write_text("changed")
                 wheel_dir.mkdir(parents=True, exist_ok=True)
-                application_wheel = wheel_dir / "cognitive_card_server-0.3.0-py3-none-any.whl"
+                application_wheel = wheel_dir / "cognitive_card_server-0.3.1-py3-none-any.whl"
                 if os.environ.get("FAKE_APPLICATION_MODE") == "corrupt":
                     application_wheel.write_bytes(b"corrupt-wheel")
                 else:
@@ -960,7 +960,7 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual(7, len(wheel_command))
         self.assertEqual("wheel", Path(wheel_command[5]).name)
 
-        wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
+        wheel_name = "cognitive_card_server-0.3.1-py3-none-any.whl"
         expected_names = sorted((
             *PAYLOAD_ASSETS,
             wheel_name,
@@ -984,7 +984,7 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual("cognitive-card-server-release-v2", manifest["schema"])
         self.assertEqual(fixture.application_commit, manifest["application_commit"])
         self.assertEqual(fixture.operations_commit, manifest["operations_commit"])
-        self.assertEqual("0.3.0", manifest["application_version"])
+        self.assertEqual("0.3.1", manifest["application_version"])
         self.assertEqual("3.12.9", manifest["python_version"])
         self.assertEqual(RUNTIME_TARGET, manifest["runtime_target"])
         self.assertRegex(manifest["built_at"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
@@ -1112,7 +1112,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             command_log = base / "command.json"
             release = base / "release"
             release.mkdir()
-            (release / "cognitive_card_server-0.3.0-py3-none-any.whl").write_bytes(b"wheel")
+            (release / "cognitive_card_server-0.3.1-py3-none-any.whl").write_bytes(b"wheel")
             self.write_pip_recorder(recorder)
             environment = os.environ.copy()
             environment.update({
@@ -1125,7 +1125,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             process = self.run_installer_function(
                 'source "$1"; install_application_wheel "$2" "$3"',
                 os.fspath(recorder),
-                os.fspath(release / "cognitive_card_server-0.3.0-py3-none-any.whl"),
+                os.fspath(release / "cognitive_card_server-0.3.1-py3-none-any.whl"),
                 env=environment,
             )
 
@@ -1135,7 +1135,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
                 [
                     "-m", "pip", "--isolated", "--disable-pip-version-check",
                     "install", "--no-input", "--no-index", "--no-deps", "--find-links",
-                    os.fspath(release), "cognitive-card-server==0.3.0",
+                    os.fspath(release), "cognitive-card-server==0.3.1",
                 ],
                 recorded["arguments"],
             )
@@ -1148,8 +1148,8 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             base = Path(temporary)
             release = base / "release"
             release.mkdir()
-            wheel = release / "cognitive_card_server-0.3.0-py3-none-any.whl"
-            write_test_wheel(wheel, name="cognitive-card-server", version="0.3.0")
+            wheel = release / "cognitive_card_server-0.3.1-py3-none-any.whl"
+            write_test_wheel(wheel, name="cognitive-card-server", version="0.3.1")
 
             direct_venv = base / "direct-venv"
             created = run(sys.executable, "-m", "venv", os.fspath(direct_venv), cwd=ROOT)
@@ -1194,7 +1194,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
                 cwd=ROOT,
             )
             self.assertEqual(0, resolved_freeze.returncode, resolved_freeze.stderr)
-            self.assertIn("cognitive-card-server==0.3.0\n", resolved_freeze.stdout)
+            self.assertIn("cognitive-card-server==0.3.1\n", resolved_freeze.stdout)
             self.assertNotIn("cognitive-card-server @ ", resolved_freeze.stdout)
             normalized = subprocess.run(
                 ["bash", "-c", 'source "$1"; normalize_freeze', "normalizer", os.fspath(INSTALLER)],
@@ -1205,7 +1205,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
                 check=False,
             )
             self.assertEqual(0, normalized.returncode, normalized.stderr)
-            self.assertIn("cognitive-card-server==0.3.0\n", normalized.stdout)
+            self.assertIn("cognitive-card-server==0.3.1\n", normalized.stdout)
 
     def test_real_pip_cannot_use_hostile_config_or_find_links(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -1455,7 +1455,7 @@ prepare_data_layout "$2" data candidates card-os.sqlite3 "$3" "$4" "$3" "$4"
             )
             self.assertEqual(0, valid.returncode, valid.stderr)
 
-            application = release / "cognitive_card_server-0.3.0-py3-none-any.whl"
+            application = release / "cognitive_card_server-0.3.1-py3-none-any.whl"
             application.write_bytes(b"corrupt-wheel")
             manifest_path = release / "release-manifest.json"
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -1643,7 +1643,7 @@ kill -TERM $$
                 with tarfile.open(archive, "w:gz") as bundle:
                     valid_names = [
                         *PAYLOAD_ASSETS,
-                        "cognitive_card_server-0.3.0-py3-none-any.whl",
+                        "cognitive_card_server-0.3.1-py3-none-any.whl",
                         *(f"runtime-wheels/{name}" for name in RUNTIME_WHEELS),
                         "release-manifest.json",
                     ]
