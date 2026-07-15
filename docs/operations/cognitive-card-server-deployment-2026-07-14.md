@@ -19,9 +19,9 @@
 | 发布归档 SHA-256 | `a8a60ca7b49287ef27c15de1d0504fc879421c0ddd7c2e63175362f306a9421d` |
 | 摘要 sidecar SHA-256 | `d7e995d6823ccd5ed226e810218a660f613dcca25826950027b95becca1328a4` |
 | 独立审核安装器 SHA-256 | `b14e87549b1233cf7dea5b795c71c62d31cdbe6e0f632fe66eccc99f44083ecc` |
-| release manifest SHA-256 | `b6dff51f...f1607`（服务器验收记录的缩写） |
-| install manifest SHA-256 | `48f96098...58021`（服务器验收记录的缩写） |
-| 已安装 runtime SHA-256 | `d1369f3c...2a851`（服务器验收记录的缩写） |
+| release manifest SHA-256 | `b6dff51f456afd25dfb9ad9fbb81d369dfe9559268093201b0292a50c62f1607` |
+| install manifest SHA-256 | `48f9609857e84b9e965706d72393d2294c4ee17ddda362839ee64b2a9de58021` |
+| 已安装 runtime SHA-256 | `d1369f3c42e48543dfe8f910eb3a3edf99cdf8ef24abd7efd6228242b962a851` |
 | 服务器 Python | `3.12.3` |
 
 服务器离线安装 14 个锁定 runtime wheels 和应用 `0.3.1`；`pip check` 通过，安装后 freeze 只含受控 `name==version`，不含 URL 或直接引用。
@@ -42,7 +42,7 @@
 
 - 活动站点：`/etc/nginx/sites-enabled/yutou-space`；该路径在验收时的 `readlink -f` 结果仍是它本身。
 - 受管 snippet：`/etc/nginx/snippets/cognitive-card-server.conf`，`root:root 0644`，SHA-256 `e8579a5deb52c71e77ae6ada0cd201fd96c07be61389f65e0e1682544dfce4a7`。
-- 活动站点 SHA-256 缩写为 `0d381092...25e9`，TLS server block 中恰有一个受管 include；`nginx -t` 通过。
+- 活动站点 SHA-256 为 `0d3810925fb1aef878fe419abbfd4d7499e9c2379ac6b4ad9e741622206525e9`，TLS server block 中恰有一个受管 include；`nginx -t` 通过。
 - 成功激活前的字节保真备份：`/var/backups/cognitive-card-server/nginx/yutou-space.20260715T080258Z.conf`，`root:root 0600`。
 - 共保留 9 份 `root:root 0600` Nginx 备份：6 份历史备份、2 次失败关闭尝试的备份和 1 份成功激活备份；不得将它们当作临时文件删除。
 
@@ -160,17 +160,58 @@ sha256sum "$BATCH/manifest.json"
 隔离恢复不得把备份写回 `/var/lib/cognitive-card-server`：
 
 ```bash
-RESTORE=$(mktemp -d /var/backups/cognitive-card-server/.restore-manual.XXXXXX)
-chmod 0700 "$RESTORE"
+set -euo pipefail
+umask 077
+
+BACKUP_ROOT=/var/backups/cognitive-card-server
+BATCH="$BACKUP_ROOT/20260715T080302Z-c2a898cba5b8"
+LIVE_DB=/var/lib/cognitive-card-server/card-os.sqlite3
+RESTORE=
+
+cleanup_restore() {
+  [[ -z "$RESTORE" ]] && return 0
+  [[ "$RESTORE" == "$BACKUP_ROOT"/.restore-manual.* ]]
+  [[ -d "$RESTORE" && ! -L "$RESTORE" ]]
+  [[ "$(stat -Lc '%U:%G %a' "$RESTORE")" == 'root:root 700' ]]
+  rm -rf -- "$RESTORE"
+}
+trap cleanup_restore EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+[[ "$(readlink -f "$BACKUP_ROOT")" == "$BACKUP_ROOT" ]]
+[[ -d "$BACKUP_ROOT" && ! -L "$BACKUP_ROOT" ]]
+[[ "$(stat -Lc '%U:%G %a' "$BACKUP_ROOT")" == 'root:root 700' ]]
+[[ -d "$BATCH" && ! -L "$BATCH" ]]
+
+/usr/bin/python3 \
+  /opt/cognitive-card-server/current/ops/card_os_backup.py verify \
+  --backup-dir "$BATCH"
+
+RESTORE=$(mktemp -d "$BACKUP_ROOT/.restore-manual.XXXXXXXX")
+[[ "$RESTORE" == "$BACKUP_ROOT"/.restore-manual.* ]]
+[[ -d "$RESTORE" && ! -L "$RESTORE" ]]
+[[ "$(stat -Lc '%U:%G %a' "$RESTORE")" == 'root:root 700' ]]
+
 install -o root -g root -m 0600 \
   "$BATCH/card-os.sqlite3" "$RESTORE/card-os.sqlite3"
-sqlite3 -readonly "$RESTORE/card-os.sqlite3" 'PRAGMA journal_mode; PRAGMA integrity_check;'
-sqlite3 -readonly "$RESTORE/card-os.sqlite3" \
-  "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"
-sqlite3 -readonly "$RESTORE/card-os.sqlite3" \
-  'SELECT COUNT(*) FROM card_os_tokens; SELECT COUNT(*) FROM subscriber_jobs; SELECT COUNT(*) FROM subscriber_job_events; SELECT COUNT(*) FROM generation_packets; SELECT COUNT(*) FROM generation_results;'
-rm -rf -- "$RESTORE"
-unset RESTORE BATCH
+
+RESTORED_DB="$RESTORE/card-os.sqlite3"
+[[ "$(sqlite3 -readonly "$RESTORED_DB" 'PRAGMA journal_mode;')" == delete ]]
+[[ "$(sqlite3 -readonly "$RESTORED_DB" 'PRAGMA integrity_check;')" == ok ]]
+
+SCHEMA_SQL="SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"
+COUNTS_SQL='SELECT COUNT(*) FROM card_os_tokens; SELECT COUNT(*) FROM subscriber_jobs; SELECT COUNT(*) FROM subscriber_job_events; SELECT COUNT(*) FROM generation_packets; SELECT COUNT(*) FROM generation_results;'
+[[ "$(sqlite3 -readonly "$RESTORED_DB" "$SCHEMA_SQL")" == \
+   "$(sqlite3 -readonly "$LIVE_DB" "$SCHEMA_SQL")" ]]
+[[ "$(sqlite3 -readonly "$RESTORED_DB" "$COUNTS_SQL")" == \
+   "$(sqlite3 -readonly "$LIVE_DB" "$COUNTS_SQL")" ]]
+
+cleanup_restore
+[[ ! -e "$RESTORE" ]]
+RESTORE=
+trap - EXIT INT TERM
+unset BACKUP_ROOT BATCH LIVE_DB RESTORED_DB SCHEMA_SQL COUNTS_SQL
 ```
 
 预期 journal mode 为 `delete`，integrity 为 `ok`，schema 与安全计数与 live 只读查询一致，演练后不留 `.restore-*` 目录。候选文件摘要已由 `card_os_backup.py verify` 按 manifest 全量重算，不用人工打开候选内容。
@@ -195,15 +236,41 @@ python3 ops/cognitive-card-server/build_release.py \
   --python "$BUILD_PYTHON"
 ```
 
-核对 builder JSON 中的应用提交、治理提交、归档路径和 SHA-256，完成独立发布审查后，上传归档、sidecar 和与该治理提交一致的安装器。在服务器先比对预期安装器摘要，再执行：
+核对 builder JSON 中的应用提交、治理提交、归档路径和 SHA-256，完成独立发布审查后，上传归档、sidecar 和与该治理提交一致的安装器。以下示例固定为本次已经审查的三个摘要；后续升级必须把三个 `EXPECTED_*` 值一起替换为该批次独立审查记录中的完整摘要，不能沿用旧值或人工目测前后缀：
 
 ```bash
-sha256sum /tmp/cognitive-card-server-release.tar.gz
-sha256sum /tmp/cognitive-card-server-release.tar.gz.sha256
-sha256sum /tmp/install_release.sh
-/tmp/install_release.sh \
-  /tmp/cognitive-card-server-release.tar.gz \
-  /tmp/cognitive-card-server-release.tar.gz.sha256
+set -euo pipefail
+
+ARCHIVE=/tmp/cognitive-card-server-release.tar.gz
+SIDECAR=/tmp/cognitive-card-server-release.tar.gz.sha256
+INSTALLER=/tmp/install_release.sh
+EXPECTED_ARCHIVE_SHA256=a8a60ca7b49287ef27c15de1d0504fc879421c0ddd7c2e63175362f306a9421d
+EXPECTED_SIDECAR_SHA256=d7e995d6823ccd5ed226e810218a660f613dcca25826950027b95becca1328a4
+EXPECTED_INSTALLER_SHA256=b14e87549b1233cf7dea5b795c71c62d31cdbe6e0f632fe66eccc99f44083ecc
+
+for digest in \
+  "$EXPECTED_ARCHIVE_SHA256" \
+  "$EXPECTED_SIDECAR_SHA256" \
+  "$EXPECTED_INSTALLER_SHA256"
+do
+  [[ "$digest" =~ ^[0-9a-f]{64}$ ]]
+done
+
+for file in "$ARCHIVE" "$SIDECAR" "$INSTALLER"
+do
+  [[ -f "$file" && ! -L "$file" ]]
+done
+
+[[ "$(sha256sum "$ARCHIVE" | awk '{print $1}')" == "$EXPECTED_ARCHIVE_SHA256" ]]
+[[ "$(sha256sum "$SIDECAR" | awk '{print $1}')" == "$EXPECTED_SIDECAR_SHA256" ]]
+[[ "$(sha256sum "$INSTALLER" | awk '{print $1}')" == "$EXPECTED_INSTALLER_SHA256" ]]
+
+(
+  cd "$(dirname "$ARCHIVE")"
+  sha256sum --check "$(basename "$SIDECAR")"
+)
+
+"$INSTALLER" "$ARCHIVE" "$SIDECAR"
 ```
 
 安装器校验 archive/manifest/wheels，仅从归档内 wheelhouse 离线安装，创建新的不可变 release 目录，原子切换 `current` 并在后置门禁失败时回滚激活。不得覆盖同名 release，不得删除 `/var/lib/cognitive-card-server` 或已验证备份。升级后重跑第 4 节全部检查和一次受保护 API 验收。
@@ -215,15 +282,45 @@ sha256sum /tmp/install_release.sh
 下列命令恢复本次成功激活前的站点字节，同时保留当前站点的 owner/group/mode。恢复后 `/card-os` 将回到部署前静态 fallback：
 
 ```bash
-SITE=$(readlink -f /etc/nginx/sites-enabled/yutou-space)
+set -euo pipefail
+
+SITE_LINK=/etc/nginx/sites-enabled/yutou-space
+EXPECTED_SITE=/etc/nginx/sites-enabled/yutou-space
 BACKUP=/var/backups/cognitive-card-server/nginx/yutou-space.20260715T080258Z.conf
+SNIPPET=/etc/nginx/snippets/cognitive-card-server.conf
+ORIGINAL_SITE_SHA256=1fd6b966fd44fee3ea2d18b5ebea99e1b1fc674838af3ed7e025bfdd1c2e02c0
+ACTIVE_SNIPPET_SHA256=e8579a5deb52c71e77ae6ada0cd201fd96c07be61389f65e0e1682544dfce4a7
+
+[[ "$ORIGINAL_SITE_SHA256" =~ ^[0-9a-f]{64}$ ]]
+[[ "$ACTIVE_SNIPPET_SHA256" =~ ^[0-9a-f]{64}$ ]]
+
+SITE=$(readlink -f -- "$SITE_LINK")
+[[ "$SITE" == "$EXPECTED_SITE" ]]
+[[ -f "$SITE" && ! -L "$SITE" ]]
+[[ -f "$BACKUP" && ! -L "$BACKUP" ]]
+[[ "$(stat -Lc '%U:%G %a' "$BACKUP")" == 'root:root 600' ]]
+[[ "$(sha256sum "$BACKUP" | awk '{print $1}')" == "$ORIGINAL_SITE_SHA256" ]]
+
 SITE_UID=$(stat -Lc %u "$SITE")
 SITE_GID=$(stat -Lc %g "$SITE")
 SITE_MODE=$(stat -Lc %a "$SITE")
+[[ "$SITE_UID" =~ ^[0-9]+$ && "$SITE_GID" =~ ^[0-9]+$ ]]
+[[ "$SITE_UID" == 0 && "$SITE_GID" == 0 ]]
+[[ "$SITE_MODE" =~ ^[0-7]{3,4}$ ]]
+
+if [[ -e "$SNIPPET" ]]; then
+  [[ -f "$SNIPPET" && ! -L "$SNIPPET" ]]
+  [[ "$(stat -Lc '%U:%G %a' "$SNIPPET")" == 'root:root 644' ]]
+  [[ "$(sha256sum "$SNIPPET" | awk '{print $1}')" == "$ACTIVE_SNIPPET_SHA256" ]]
+fi
+
 install -o "$SITE_UID" -g "$SITE_GID" -m "$SITE_MODE" "$BACKUP" "$SITE"
-rm -f /etc/nginx/snippets/cognitive-card-server.conf
+[[ "$(sha256sum "$SITE" | awk '{print $1}')" == "$ORIGINAL_SITE_SHA256" ]]
+rm -f -- "$SNIPPET"
 nginx -t
 systemctl reload nginx
+[[ -f "$BACKUP" && ! -L "$BACKUP" ]]
+[[ "$(sha256sum "$BACKUP" | awk '{print $1}')" == "$ORIGINAL_SITE_SHA256" ]]
 ```
 
 然后有界轮询 `/`、`/kids/`、`/sync/` 和旧 `/card-os/api/v1/health` baseline，不用一次即时请求判定 graceful reload 失败。不删除 `BACKUP` 或其他 Nginx 备份。
