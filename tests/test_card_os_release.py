@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import io
 import json
 import os
@@ -48,6 +49,15 @@ PAYLOAD_ASSETS = (
     "systemd/cognitive-card-backup.timer",
     "nginx/card-os.conf",
 )
+
+
+def load_builder_module():
+    spec = importlib.util.spec_from_file_location("card_os_release_builder", BUILDER)
+    if spec is None or spec.loader is None:
+        raise AssertionError("unable to load release builder")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def run(*arguments: str, cwd: Path, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
@@ -359,6 +369,29 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertNotEqual(0, process.returncode)
         self.assertIn("COMMAND_FAILED", process.stderr)
         self.assertFalse(fixture.log.exists())
+
+    def test_staged_executable_mode_must_match_git_tree(self) -> None:
+        builder = load_builder_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            git(source, "init", "-q")
+            script = source / "entrypoint.sh"
+            script.write_bytes(b"#!/bin/sh\n")
+            object_id = git(source, "hash-object", "--no-filters", "--", script.name)
+
+            for git_mode, staged_mode in (
+                ("100755", 0o644),
+                ("100644", 0o755),
+                ("100644", 0o654),
+            ):
+                with self.subTest(git_mode=git_mode, staged_mode=oct(staged_mode)):
+                    script.chmod(staged_mode)
+                    with self.assertRaises(builder.ReleaseError) as caught:
+                        builder.validate_staged_bytes(
+                            source,
+                            [(git_mode, "blob", object_id, script.name)],
+                        )
+                    self.assertEqual("COMMAND_FAILED", str(caught.exception))
 
     def test_builds_closed_normalized_release_with_dual_git_provenance(self) -> None:
         fixture = BuilderFixture(self)

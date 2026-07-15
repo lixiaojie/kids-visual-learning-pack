@@ -131,13 +131,22 @@ def validate_regular_tree(entries: list[tuple[str, str, str, str]]) -> None:
 def validate_staged_bytes(
     source_dir: Path, entries: list[tuple[str, str, str, str]]
 ) -> None:
-    for _, _, object_id, path in entries:
+    for mode, _, object_id, path in entries:
         staged = source_dir / path
         try:
             metadata = staged.lstat()
         except OSError as error:
             raise ReleaseError("COMMAND_FAILED") from error
         if not stat.S_ISREG(metadata.st_mode):
+            raise ReleaseError("COMMAND_FAILED")
+        executable_bits = metadata.st_mode & (
+            stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+        )
+        if (
+            mode == "100755" and not executable_bits & stat.S_IXUSR
+        ) or (
+            mode == "100644" and executable_bits
+        ):
             raise ReleaseError("COMMAND_FAILED")
         if git(source_dir, "hash-object", "--no-filters", "--", path).lower() != object_id:
             raise ReleaseError("COMMAND_FAILED")
