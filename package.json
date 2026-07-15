@@ -17,6 +17,8 @@
     "images:import-generated-png": "node scripts/import-kids-world-generated-images.mjs",
     "inventory:card-os": "python3 scripts/card_os_asset_inventory.py --config migration/card-os/inventory-sources.json --roots migration/card-os/inventory-roots.local.json --output-root migration/card-os/generated",
     "test:card-os-inventory": "python3 -m unittest tests.test_card_os_asset_inventory -v",
+    "test:card-os-deploy": "python3 -m unittest tests.test_card_os_backup tests.test_card_os_acceptance tests.test_card_os_deployment_assets tests.test_card_os_release -v",
+    "build:card-os-release": "python3 ops/cognitive-card-server/build_release.py",
     "test:visual-navigation": "node scripts/visual-navigation.test.mjs",
     "test:topic-interaction": "sucrase-node scripts/normalize-topic-interaction.test.ts",
     "test:scene-deck": "sucrase-node scripts/scene-deck.test.ts",
