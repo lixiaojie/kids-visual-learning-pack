@@ -19,6 +19,7 @@
 
 - [ChatGPT Pro 订阅客户端执行设计](superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md)
 - [订阅客户端执行基础实施计划](superpowers/plans/2026-07-13-cognitive-card-subscriber-execution-foundation-plan.md)
+- [个人服务器生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)
 
 ## 2. 产品目标
 
@@ -129,7 +130,7 @@ primary_domain
 - 校验客户端、包、摘要、声明路径、媒体类型、大小和幂等键；
 - 将通过校验的候选送入服务器验证，而不是直接发布。
 
-已实现的 Python 公共边界位于私有仓库 `lixiaojie/cognitive-card-server`，版本 `0.2.0`。当前完成的是无 HTTP 依赖的应用核心，不是可直接访问的网站或远程 API。
+服务端实现位于私有仓库 `lixiaojie/cognitive-card-server`。首个生产基线为 `0.3.1`：应用核心通过薄 HTTP 适配层提供 capability、认证和规范化锁定任务 API，并部署在 `https://www.yutou.space/card-os/`。该 API 不负责把自由主题直接编译为知识卡；自由输入仍须先经过受信任的分类、事实、模板和内容锁流程。
 
 ### 4.3 客户端接入层
 
@@ -319,17 +320,17 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 - 迁移不修改原文件；正式导入使用服务器隔离区和新的不可变存储键。
 - 旧内容若需事实修订，创建新 FACT、CONTENT LOCK 和 package revision，不回写伪造旧 provenance。
 
-## 13. 当前状态与下一里程碑
+## 13. 规范基线与里程碑入口
 
-截至 2026-07-13：
+系统已建立以下不可逆转的架构基线：
 
-- 分类、模板路由、年龄语言和四卡工作流已有本地规范与可执行资产；
-- 订阅执行核心已实现、通过 133 项测试并推送到私有 GitHub 仓库；
-- 当前没有订阅执行 HTTP API、Card OS 登录、远程薄 Skill 或浏览器上传入口；
-- 因此系统核心可作为 Python 库调用，但尚不能从任意 Codex 终端直接调用域名完成制卡。
-- 已发现一组兔子完整包、六个古生物包候选（五个概念）、七种深圳植物双面卡、13 个旧知识主题以及多批旧网站生图资产；尚未执行复制、删除或服务器导入。
+- 服务器通过正式域名提供 capability、Card OS 身份和规范化锁定任务 API；生产部署证据、调用和回滚命令见 [个人服务器生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
+- 模型生成仍由登录 ChatGPT Pro 的受信任客户端执行；服务器不需要 OpenAI API Key，也不接收 ChatGPT 身份材料。
+- 薄 Skill 必须通过不可变 release、摘要和兼容门禁发布，不能依赖某台电脑上的未发布本地仓库状态。
+- 当前 API 不是自由概念创建接口；自由请求必须先形成可验证的分类、事实、模板和内容锁。
+- 历史资产必须经过发现、去重、严格 package 验证和受控导入，不能因旧站曾展示而直接成为生产资产。
 
-下一里程碑是“可远程领取与提交”：完成 HTTPS API、Card OS 身份、协议发现和 Skill 发布基础，使一个受信任 Codex 客户端能在不传递 ChatGPT 凭据的情况下领取生成包并上传结果。
+动态状态、下一任务和依赖顺序只在 [Cognitive Card OS 路线图](cognitive-card-os-roadmap.md) 中维护，避免整体设计与执行账本产生两个“当前状态”。
 
 ## 14. 变更规则
 

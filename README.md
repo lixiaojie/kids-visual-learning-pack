@@ -16,18 +16,33 @@ Project slug: `kids-visual-learning-pack`
 
 ## Cognitive Card OS
 
-儿童知识卡生产能力正在升级为“薄 Skill + 个人服务器核心”。首版以 ChatGPT Pro/Codex 登录客户端执行
-模型生成，服务器统一负责知识体系、任务状态、资产、排版、QA 和发布，不依赖 OpenAI API Key：
+儿童知识卡生产能力正在升级为“薄 Skill + 个人服务器核心”。`0.3.1` 服务端核心已经部署到
+`https://www.yutou.space/card-os/`；首版仍由登录 ChatGPT Pro 的 Codex 客户端执行模型生成，
+服务器统一负责协议、任务状态、候选、资产、排版、QA 和发布，不依赖 OpenAI API Key：
 
 - [Cognitive Card OS 整体设计](docs/cognitive-card-os-system-design.md)
 - [Cognitive Card OS 路线图与任务账本](docs/cognitive-card-os-roadmap.md)
+- [生产部署证据、调用与运维手册](docs/operations/cognitive-card-server-deployment-2026-07-14.md)
 - [Cognitive Card OS 历史资产迁移清单](docs/cognitive-card-os-asset-migration-inventory.md)
 - [Pro 会员客户端执行架构](docs/superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md)
 - [订阅客户端执行基础实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-subscriber-execution-foundation-plan.md)
 - [远程 API、认证与协议实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)
 - [历史资产机器清单与去重实施计划](docs/superpowers/plans/2026-07-13-cognitive-card-asset-inventory-dedup-plan.md)
 - [个人服务器部署设计](docs/superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)
-- [个人服务器部署实施计划（DEPLOY-01 / OPS-01 实施中）](docs/superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md)
+- [个人服务器部署实施计划（DEPLOY-01 已完成；OPS-01 继续）](docs/superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md)
+
+现网公开发现入口：
+
+```bash
+curl --fail-with-body --silent --show-error \
+  https://www.yutou.space/card-os/api/v1/health
+curl --fail-with-body --silent --show-error \
+  https://www.yutou.space/card-os/api/v1/capabilities
+```
+
+受保护 API 还需要 Card OS token、协议 `1` 和 minimum Skill release `0.1.0` 请求头；完整占位符示例、
+日常检查、升级、备份恢复和回滚命令见上面的生产运维手册。当前服务只接受规范化锁定任务，
+薄 Skill 的不可变发布与跨终端安装仍按路线图中的 `SKILL-01`、`SKILL-02` 推进。
 
 历史资产机器盘点入口：
 

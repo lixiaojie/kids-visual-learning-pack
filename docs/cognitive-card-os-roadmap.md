@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-07-14
+最近更新：2026-07-15
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -39,11 +39,11 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | IN PROGRESS | 将已验证的锁定任务 API 部署到 HTTPS；自由规范化任务入口另行设计 |
-| AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 部署 machine scoped token；补浏览器会话与轮换操作面 |
+| API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；设计可信自由请求编译入口 |
+| AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | READY | 设计不可变 release、摘要、stable 与回滚 |
-| SKILL-02 | 薄 Skill 客户端 | BLOCKED | 等待 API/AUTH 部署与 SKILL-01 可安装 release |
+| SKILL-02 | 薄 Skill 客户端 | BLOCKED | 等待 SKILL-01 产出可校验安装 release |
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
@@ -55,8 +55,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | QA-01 | 严格 QA 与人工复核 | BACKLOG | 依赖 RENDER-01 |
 | PUBLISH-01 | 不可变 package 发布 | BACKLOG | 依赖 QA-01 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
-| DEPLOY-01 | Card OS 服务部署 | IN PROGRESS | 按实施计划完成本地 release 验证与服务器部署 |
-| OPS-01 | 容量、备份与监控治理 | IN PROGRESS | 按已审计基线实施备份、恢复和告警 |
+| DEPLOY-01 | Card OS 服务部署 | DONE | 按生产运维记录持续执行升级与回滚门禁 |
+| OPS-01 | 容量、备份与监控治理 | IN PROGRESS | 增加异地备份、容量及证书/健康告警 |
 | ACCEPT-01 | 兔子完整验收 | BACKLOG | 依赖发布链路 |
 | ACCEPT-02 | 第二个哺乳动物一致性验收 | BACKLOG | 依赖 ACCEPT-01 与模板族 |
 
@@ -134,7 +134,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 约束：HTTP 适配器不复制状态机；只调用现有应用服务。请求必须有大小、超时、媒体类型和幂等限制。
 - `0.3.1` 批次验收：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
-- 未完成：通过 `www.yutou.space` 的 HTTPS 部署；把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。
+- 已部署：`0.3.1` 经 `www.yutou.space/card-os` 的 HTTPS、持久化和非 root 服务验收，health/capabilities 与受保护路径均通过；见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
+- 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
 
 ### AUTH-01 Card OS 身份与权限
@@ -144,7 +145,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 范围：`read`、`submit`、`review`、`admin`；浏览器会话；CLI/Skill scoped token；撤销与轮换；审计 actor。
 - 不包含：ChatGPT 登录代理、ChatGPT Cookie、OpenAI Token。
 - 已实现：machine token 签发、列表和按 token ID 撤销；scope implication、过期与即时撤销；请求级仓储关闭；原始 token 只在签发时返回一次，日志和数据库仅保留安全标识/摘要。
-- 未完成：浏览器会话、面向个人服务器运维的轮换流程和正式 TLS 部署验证。
+- 已部署：machine token 的 TLS 路径、跨服务重启持久化和即时撤销已用一次性 token 验收；当前没有遗留长期验收 token。
+- 未完成：浏览器会话、面向个人服务器运维的正式轮换/恢复流程和长期客户端凭据操作面。
 - `0.3.1` 批次验收：machine token 最小权限生效；撤销立即阻止认领和提交；日志和数据库不含原始密钥。
 - `AUTH-01` 完成条件：上述批次保持通过；浏览器会话、正式轮换/恢复流程和 TLS 部署身份边界完成验收。
 
@@ -171,7 +173,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 - 状态：`BLOCKED`
 - 依赖：API-01、AUTH-01、PROTO-01、SKILL-01。
-- 阻塞：API/AUTH 尚未部署到个人服务器，且 SKILL-01 尚无可校验的安装 release；在此之前不发布依赖本地仓库状态的临时客户端。
+- 阻塞：API/AUTH 的最小生产部署门禁已经解除；当前只等待 SKILL-01 产出可校验、可回滚的安装 release。在此之前不发布依赖本地仓库状态的临时客户端。
 - 范围：输入收集、本地形状校验、服务发现、任务创建、包领取、摘要确认、候选上传、错误解释、离线限制和版本升级。
 - 完成条件：两台独立 Codex 客户端安装相同发布摘要，并能完成同一服务器上的任务领取与结果上传。
 
@@ -257,20 +259,21 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### DEPLOY-01 Card OS 服务部署
 
-- 状态：`IN PROGRESS`
+- 状态：`DONE`
 - 目标：个人服务器，域名 `www.yutou.space`。
 - 依赖：API-01、AUTH-01 的最小可运行版本。
-- 已完成：2026-07-14 完成现网只读审计并选择 systemd + Python venv + 版本化 release + Nginx 方案；正式设计见 [个人服务器部署设计](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)。
+- 已完成：应用 `0.3.1` / `c2a898cba5b8a8948c06688d8c2a387353d7cbbe` 已按 systemd + Python venv + 版本化 release + Nginx 方案部署；非 root 运行、HTTPS、回环监听、持久化、一次性 token 撤销、本机备份、隔离恢复和 Nginx 配置级回滚均通过。
+- 证据：[生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
+- 正式设计：[个人服务器部署设计](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)。
 - 实施计划：[个人服务器部署实施计划](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md)。
-- 待办：按计划完成运维工具、精确制品、服务进程、反向代理、TLS、持久化目录、非 root 运行用户、环境配置、备份、健康检查和回滚验收。
-- 完成条件：通过域名访问；重启后任务和候选资产仍在；部署不影响现有 `/kids/` 内容。
+- 完成条件：已满足；现有 `/`、`/kids/`、`/sync/` 行为保持不变。
 
 ### OPS-01 容量、备份与监控
 
 - 状态：`IN PROGRESS`
-- 已审计：2026-07-14 根磁盘使用率约 54%，可用约 18 GiB；Nginx、UFW、Docker/CouchDB、域名证书和现有站点路径已核实。详细基线与部署约束见 [个人服务器部署设计](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md)。
-- 待办：容量阈值、资产保留、SQLite 在线备份、候选文件快照、恢复演练、日志轮转、证书与健康告警；异地副本在本机恢复点稳定后单独实施。
-- 完成条件：容量告警早于 75%；备份新鲜度可见；恢复演练重建数据库、资产摘要和未完成任务。
+- 已完成：根磁盘使用率 55%/inode 21% 的终态基线；SQLite 在线备份、候选摘要、14 天本机保留、唯一规范批次、manifest 校验和隔离恢复演练均通过；Certbot timer 活动。
+- 待办：加密异地副本；根磁盘早于 75% 的容量/inode/备份新鲜度告警；域名证书、Certbot 和 health/capabilities 的可投递告警。操作入口见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
+- 完成条件：异地副本可验证恢复；容量告警早于 75%；备份新鲜度、证书和健康异常均能可靠投递。
 
 ### ACCEPT-01 兔子端到端验收
 
@@ -287,12 +290,12 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ## 5. 近期执行顺序
 
-下一轮只启动一个可独立验收的子项目：
+下一轮按依赖顺序一次启动一个可独立验收的子项目：
 
-1. 执行 `DEPLOY-01`：把已验证的 `0.3.1`（提交 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`）API/AUTH/PROTO 部署到个人服务器，完成 TLS、非 root 运行、持久化、自包含 SQLite 备份和回滚门禁；
-2. 执行 `SKILL-01`：发布不可变 Skill release、SHA-256、stable 指针和兼容回滚；
-3. 部署验证通过后解除 `SKILL-02` 阻塞，实现在两个独立 Codex 客户端上可安装的薄客户端；
-4. 人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源；
+1. 执行 `SKILL-01`：发布不可变 Skill release、SHA-256、stable 指针和兼容回滚；
+2. `SKILL-01` 通过后执行 `SKILL-02`：在两个独立 Codex 客户端安装同一摘要的薄客户端，并通过现网 capability、领取和提交门禁；
+3. 客户端与发布链可用后执行 `ACCEPT-01`：以兔子、深圳、`age-5-6`、中英文、打印版完成端到端验收；
+4. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源；
 5. 待严格 package 验证与服务器不可变存储就绪后启动 MIG-02。
 
 门户、渲染和 MCP 不进入下一实现批次。
@@ -301,6 +304,9 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-07-15
 
+- 完成 `DEPLOY-01`：应用 `0.3.1` 已通过正式 HTTPS、非 root systemd、持久化、回环监听、一次性 token 撤销、本机备份、隔离恢复和 Nginx 回滚门禁；生产证据与日常命令已进入权威运维记录。
+- `OPS-01` 保持 `IN PROGRESS`：本机恢复点已经验证，剩余异地备份、容量/备份新鲜度和证书/健康告警。
+- 下一执行顺序调整为 `SKILL-01`、`SKILL-02`、`ACCEPT-01`；`SKILL-02` 的服务器部署阻塞已经解除，只等待可安装 Skill release。
 - 将受治理部署链当前目标提升为已审查的应用 `0.3.1` / `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`；release schema 保持 v2，协议保持 `1`，minimum Skill release 保持 `0.1.0`。
 - 将在线备份门禁补强为：从只读在线 WAL 源完成 backup 后，先把隔离目标精确归一化为 `journal_mode=DELETE`，再做完整性、manifest 与原子发布；不得改动源 WAL。
 
