@@ -69,6 +69,38 @@ def git(cwd: Path, *arguments: str) -> str:
     return process.stdout.strip()
 
 
+def write_release_tree(root: Path, *, size_value: object = 1) -> None:
+    wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
+    payload_names = [*PAYLOAD_ASSETS, wheel_name]
+    for name in payload_names:
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"x")
+    files = [
+        {
+            "path": name,
+            "sha256": hashlib.sha256(b"x").hexdigest(),
+            "size": size_value if index == 0 else 1,
+        }
+        for index, name in enumerate(sorted(payload_names))
+    ]
+    manifest = {
+        "schema": "cognitive-card-server-release-v1",
+        "application_commit": "1" * 40,
+        "operations_commit": "2" * 40,
+        "application_version": "0.3.0",
+        "python_version": "3.12.9",
+        "built_at": "2026-07-15T00:00:00Z",
+        "lock_sha256": hashlib.sha256(b"x").hexdigest(),
+        "wheel_sha256": hashlib.sha256(b"x").hexdigest(),
+        "files": files,
+    }
+    (root / "release-manifest.json").write_text(
+        json.dumps(manifest, sort_keys=True, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+
+
 class BuilderFixture:
     def __init__(self, case: unittest.TestCase) -> None:
         temporary = tempfile.TemporaryDirectory()
@@ -290,7 +322,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             "apt-get update",
             "apt-get install -y python3-venv sqlite3",
             "validate_archive",
-            'mkdir --mode=0755 "$RELEASE_DIR"',
+            'publish_release_directory "$extracted" "$RELEASE_DIR"',
             'python3 -m venv "$RELEASE_DIR/.venv"',
             '"$pip_path" install --requirement "$RELEASE_DIR/runtime-requirements.lock"',
             '"$pip_path" install --no-deps "$WHEEL"',
@@ -305,8 +337,133 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
         positions = [main_source.index(fragment) for fragment in ordered]
         self.assertEqual(sorted(positions), positions)
         self.assertIn("set -euo pipefail", source)
+        self.assertIn("umask 022", source)
+        self.assertIn('chmod 0755 "$RELEASE_DIR/.venv/bin/cognitive-card-api"', source)
         self.assertNotIn("nginx -", source)
         self.assertNotIn("/etc/nginx", source)
+
+    def test_installer_sets_safe_umask_for_service_runtime(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            release = Path(temporary) / "release"
+            script = r'''
+umask 077
+source "$1"
+mkdir "$2"
+python3 -m venv "$2/.venv"
+printf '#!/bin/sh\n' >"$2/.venv/bin/cognitive-card-api"
+chmod 0755 "$2/.venv/bin/cognitive-card-api"
+python3 - "$2" <<'PY'
+import pathlib
+import stat
+import sys
+root = pathlib.Path(sys.argv[1])
+directories = [root, *(path for path in root.rglob("*") if path.is_dir())]
+if any(not (path.stat().st_mode & stat.S_IXOTH) for path in directories):
+    raise SystemExit(1)
+entrypoint = root / ".venv" / "bin" / "cognitive-card-api"
+mode = entrypoint.stat().st_mode
+if not (mode & stat.S_IROTH and mode & stat.S_IXOTH):
+    raise SystemExit(1)
+PY
+'''
+            process = run(
+                "bash", "-c", script, "umask-test", os.fspath(INSTALLER),
+                os.fspath(release), cwd=ROOT,
+            )
+            self.assertEqual(0, process.returncode, process.stderr)
+
+    def test_manifest_rejects_non_integer_or_negative_sizes(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        for invalid_size in (1.0, True, -1, "1"):
+            with self.subTest(size=invalid_size), tempfile.TemporaryDirectory() as temporary:
+                release = Path(temporary) / "release"
+                release.mkdir()
+                write_release_tree(release, size_value=invalid_size)
+                process = run(
+                    "bash", "-c", 'source "$1"; verify_release "$2"',
+                    "manifest-test", os.fspath(INSTALLER), os.fspath(release), cwd=ROOT,
+                )
+                self.assertNotEqual(0, process.returncode)
+                self.assertIn("error=RELEASE_MANIFEST_INVALID", process.stderr)
+
+    def test_install_trap_precedes_first_fallible_temp_operation(self) -> None:
+        source = self.installer_source().split("main() {", maxsplit=1)[1]
+        self.assertLess(source.index("trap install_cleanup EXIT"), source.index('mkdir "$extracted"'))
+
+    def test_cleanup_never_deletes_unmarked_release(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            release = Path(temporary) / "preexisting-release"
+            release.mkdir()
+            script = r'''
+source "$1"
+INSTALL_TEMPORARY_DIR=""
+INSTALL_RELEASE_DIR="$2"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=not-present
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+trap install_cleanup EXIT
+false
+'''
+            process = run(
+                "bash", "-c", script, "marker-test", os.fspath(INSTALLER),
+                os.fspath(release), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertTrue(release.is_dir())
+
+    def test_atomic_release_publication_includes_invocation_marker(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            release = base / "release"
+            staging.mkdir()
+            (staging / "payload").write_text("payload", encoding="utf-8")
+            script = r'''
+source "$1"
+INSTALL_OWNERSHIP_TOKEN=unique-token
+printf '%s\n' "$INSTALL_OWNERSHIP_TOKEN" >"$2/.install-owner"
+publish_release_directory "$2" "$3"
+'''
+            process = run(
+                "bash", "-c", script, "marker-test", os.fspath(INSTALLER),
+                os.fspath(staging), os.fspath(release), cwd=ROOT,
+            )
+            self.assertEqual(0, process.returncode, process.stderr)
+            self.assertFalse(staging.exists())
+            self.assertEqual("unique-token\n", (release / ".install-owner").read_text())
+
+    def test_signal_immediately_after_publication_cleans_only_marked_release(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            release = base / "release"
+            staging.mkdir()
+            script = r'''
+source "$1"
+INSTALL_OWNERSHIP_TOKEN=unique-token
+INSTALL_RELEASE_DIR="$3"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+printf '%s\n' "$INSTALL_OWNERSHIP_TOKEN" >"$2/.install-owner"
+trap install_cleanup EXIT
+trap 'exit 143' TERM
+publish_release_directory "$2" "$3"
+kill -TERM $$
+'''
+            process = run(
+                "bash", "-c", script, "signal-test", os.fspath(INSTALLER),
+                os.fspath(staging), os.fspath(release), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(release.exists())
 
     def test_archive_validator_rejects_traversal_and_links(self) -> None:
         self.assertTrue(INSTALLER.is_file(), "missing release installer")
@@ -380,11 +537,13 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             new_release = base / "releases" / ("2" * 40)
             old_release.mkdir(parents=True)
             new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
             current = base / "current"
             current.symlink_to(new_release)
             log = base / "systemctl.log"
             script = r'''
 source "$1"
+INSTALL_OWNERSHIP_TOKEN=test-token
 LOG_PATH="$4"
 systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
 rollback_activation "$2" "$3" "$5" active enabled active enabled 1 1
@@ -411,11 +570,13 @@ rollback_activation "$2" "$3" "$5" active enabled active enabled 1 1
             base = Path(temporary)
             new_release = base / "releases" / ("2" * 40)
             new_release.mkdir(parents=True)
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
             current = base / "current"
             current.symlink_to(new_release)
             log = base / "systemctl.log"
             script = r'''
 source "$1"
+INSTALL_OWNERSHIP_TOKEN=test-token
 LOG_PATH="$4"
 systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
 rollback_activation "$2" "$3" "" inactive disabled inactive disabled 1 0
@@ -443,10 +604,12 @@ rollback_activation "$2" "$3" "" inactive disabled inactive disabled 1 0
             new_release = base / "releases" / ("2" * 40)
             old_release.mkdir(parents=True)
             new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
             current = base / "current"
             current.symlink_to(new_release)
             script = r'''
 source "$1"
+INSTALL_OWNERSHIP_TOKEN=test-token
 systemctl() {
     if [[ "$1 $2" == "stop cognitive-card-server.service" ]]; then return 1; fi
     return 0
@@ -470,11 +633,13 @@ rollback_activation "$2" "$3" "$4" inactive disabled inactive disabled 1 0
             release = base / "release"
             staging.mkdir()
             release.mkdir()
+            (release / ".install-owner").write_text("test-token\n", encoding="ascii")
             script = r'''
 source "$1"
 INSTALL_TEMPORARY_DIR="$2"
 INSTALL_RELEASE_DIR="$3"
 INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
 INSTALL_CURRENT_LINK=""
 INSTALL_ACTIVATED=0
 INSTALL_PRESERVE_RELEASE=0
@@ -499,6 +664,7 @@ false
             staging.mkdir()
             old_release.mkdir(parents=True)
             new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
             current = base / "current"
             current.symlink_to(new_release)
             script = r'''
@@ -507,6 +673,7 @@ systemctl() { return 0; }
 INSTALL_TEMPORARY_DIR="$2"
 INSTALL_RELEASE_DIR="$3"
 INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
 INSTALL_CURRENT_PATH="$4"
 INSTALL_CURRENT_LINK=""
 INSTALL_ACTIVATED=1

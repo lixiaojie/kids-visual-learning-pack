@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+umask 022
 
 API_UNIT=cognitive-card-server.service
 BACKUP_TIMER=cognitive-card-backup.timer
@@ -20,6 +21,7 @@ INSTALL_OLD_TIMER_ACTIVE=inactive
 INSTALL_OLD_TIMER_ENABLED=disabled
 INSTALL_API_STARTED=0
 INSTALL_TIMER_STARTED=0
+INSTALL_OWNERSHIP_TOKEN=""
 
 fail() {
     printf 'error=%s\n' "$1" >&2
@@ -199,7 +201,10 @@ try:
         payload = root / path
         if not payload.is_file() or payload.is_symlink():
             raise ValueError
-        if item["size"] != payload.stat().st_size or item["sha256"] != digest(payload):
+        size = item["size"]
+        if type(size) is not int or size < 0:
+            raise ValueError
+        if size != payload.stat().st_size or item["sha256"] != digest(payload):
             raise ValueError
         paths.append(path)
     wheels = [path for path in paths if wheel_pattern.fullmatch(path)]
@@ -295,6 +300,56 @@ os.replace(sys.argv[1], sys.argv[2])
 PY
 }
 
+owns_release_directory() {
+    local release_dir=$1
+    local token=$2
+    local marker="$release_dir/.install-owner"
+    [[ -n "$token" && -f "$marker" && ! -L "$marker" ]] || return 1
+    python3 - "$marker" "$token" <<'PY'
+import pathlib
+import sys
+try:
+    content = pathlib.Path(sys.argv[1]).read_text(encoding="ascii")
+except (OSError, UnicodeError):
+    raise SystemExit(1)
+raise SystemExit(0 if content == sys.argv[2] + "\n" else 1)
+PY
+}
+
+remove_owned_release() {
+    local release_dir=$1
+    local token=$2
+    owns_release_directory "$release_dir" "$token" || return 1
+    rm -rf -- "$release_dir"
+}
+
+publish_release_directory() {
+    local staging_dir=$1
+    local release_dir=$2
+    owns_release_directory "$staging_dir" "$INSTALL_OWNERSHIP_TOKEN" || fail OWNERSHIP_MARKER_INVALID
+    python3 - "$staging_dir" "$release_dir" <<'PY' || fail RELEASE_EXISTS
+import ctypes
+import os
+import sys
+
+source = os.fsencode(sys.argv[1])
+destination = os.fsencode(sys.argv[2])
+libc = ctypes.CDLL(None, use_errno=True)
+if sys.platform == "linux":
+    operation = libc.renameat2
+    operation.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
+    result = operation(-100, source, -100, destination, 1)  # RENAME_NOREPLACE
+elif sys.platform == "darwin":
+    operation = libc.renamex_np
+    operation.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]
+    result = operation(source, destination, 4)  # RENAME_EXCL
+else:
+    raise SystemExit(1)
+if result != 0:
+    raise SystemExit(1)
+PY
+}
+
 rollback_activation() {
     local current_path=$1
     local release_dir=$2
@@ -349,7 +404,7 @@ rollback_activation() {
         fail INSTALL_ROLLBACK_FAILED
         return 1
     fi
-    rm -rf -- "$release_dir" || {
+    remove_owned_release "$release_dir" "$INSTALL_OWNERSHIP_TOKEN" || {
         fail INSTALL_ROLLBACK_FAILED
         return 1
     }
@@ -385,9 +440,9 @@ install_cleanup() {
             INSTALL_ACTIVATED=0
             INSTALL_PRESERVE_RELEASE=0
         fi
-    elif [[ "$status" != 0 && "$INSTALL_RELEASE_CREATED" == 1 \
+    elif [[ "$status" != 0 && -n "$INSTALL_RELEASE_DIR" \
         && "$INSTALL_PRESERVE_RELEASE" == 0 ]]; then
-        rm -rf -- "$INSTALL_RELEASE_DIR"
+        remove_owned_release "$INSTALL_RELEASE_DIR" "$INSTALL_OWNERSHIP_TOKEN" || true
     fi
 
     if [[ "$rollback_status" != 0 ]]; then
@@ -420,6 +475,7 @@ main() {
     INSTALL_OLD_TIMER_ENABLED=disabled
     INSTALL_API_STARTED=0
     INSTALL_TIMER_STARTED=0
+    INSTALL_OWNERSHIP_TOKEN=""
 
     archive=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1")
     sha_file=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$2")
@@ -444,11 +500,11 @@ main() {
 
     temporary_dir=$(mktemp -d /opt/cognitive-card-server/.install.XXXXXX)
     INSTALL_TEMPORARY_DIR=$temporary_dir
-    extracted="$temporary_dir/payload"
-    mkdir "$extracted"
     trap install_cleanup EXIT
     trap 'exit 130' INT
     trap 'exit 143' TERM
+    extracted="$temporary_dir/payload"
+    mkdir "$extracted"
     cp -- "$archive" "$temporary_dir/archive.tar.gz"
     [[ "$(sha256sum "$temporary_dir/archive.tar.gz" | awk '{print $1}')" == "$archive_digest" ]] \
         || fail ARCHIVE_CHANGED
@@ -459,10 +515,11 @@ main() {
     release_dir="/opt/cognitive-card-server/releases/$release_id"
     RELEASE_DIR=$release_dir
     INSTALL_RELEASE_DIR=$release_dir
-    mkdir --mode=0755 "$RELEASE_DIR" 2>/dev/null || fail RELEASE_EXISTS
+    INSTALL_OWNERSHIP_TOKEN=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
+    printf '%s\n' "$INSTALL_OWNERSHIP_TOKEN" >"$extracted/.install-owner"
+    chmod 0600 "$extracted/.install-owner"
+    publish_release_directory "$extracted" "$RELEASE_DIR"
     INSTALL_RELEASE_CREATED=1
-    mv -- "$extracted"/* "$RELEASE_DIR"/
-    rmdir "$extracted"
 
     python3 -m venv "$RELEASE_DIR/.venv"
     pip_path="$RELEASE_DIR/.venv/bin/pip"
@@ -471,6 +528,7 @@ main() {
     [[ -n "$wheel" && "$(printf '%s\n' "$wheel" | wc -l | tr -d ' ')" == 1 ]] || fail APPLICATION_WHEEL_INVALID
     WHEEL=$wheel
     "$pip_path" install --no-deps "$WHEEL"
+    chmod 0755 "$RELEASE_DIR/.venv/bin/cognitive-card-api"
     "$pip_path" check
 
     installed_runtime="$RELEASE_DIR/installed-runtime.txt"
@@ -535,6 +593,10 @@ main() {
     systemctl enable --now cognitive-card-backup.timer
     rm -rf -- "$temporary_dir"
     INSTALL_TEMPORARY_DIR=""
+    trap '' INT TERM
+    owns_release_directory "$RELEASE_DIR" "$INSTALL_OWNERSHIP_TOKEN" || fail OWNERSHIP_MARKER_INVALID
+    rm -f -- "$RELEASE_DIR/.install-owner"
+    INSTALL_RELEASE_CREATED=0
     trap - INT TERM EXIT
     printf 'status=installed release=%s\n' "$release_id"
 }
