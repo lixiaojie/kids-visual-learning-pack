@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import os
 import shutil
+import shlex
 import stat
 import subprocess
 import sys
@@ -77,13 +79,19 @@ class BuilderFixture:
         self.output = self.base / "output"
         self.log = self.base / "wheel.log"
         self.python = self.base / "fake-python"
+        self.mutate_application_on_wheel = False
         self.governance.mkdir()
         self.application.mkdir()
         self.output.mkdir()
 
         for asset in PAYLOAD_ASSETS:
             source = OPS / asset.removeprefix("ops/")
-            destination = self.governance / "ops" / "cognitive-card-server" / asset
+            destination = (
+                self.governance
+                / "ops"
+                / "cognitive-card-server"
+                / asset.removeprefix("ops/")
+            )
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
         builder_destination = self.governance / "ops" / "cognitive-card-server" / "build_release.py"
@@ -122,6 +130,8 @@ class BuilderFixture:
                     print("Python 3.12.9")
                     raise SystemExit(0)
                 pathlib.Path(os.environ["FAKE_WHEEL_LOG"]).write_text(" ".join(sys.argv[1:]))
+                if os.environ.get("FAKE_MUTATE_APPLICATION"):
+                    (pathlib.Path(sys.argv[-1]) / "changed-during-build.txt").write_text("changed")
                 wheel_dir = pathlib.Path(sys.argv[sys.argv.index("--wheel-dir") + 1])
                 wheel_dir.mkdir(parents=True, exist_ok=True)
                 (wheel_dir / "cognitive_card_server-0.3.0-py3-none-any.whl").write_bytes(b"fixture-wheel")
@@ -134,8 +144,10 @@ class BuilderFixture:
     def invoke(self, expected_commit: str | None = None) -> subprocess.CompletedProcess[str]:
         environment = os.environ.copy()
         environment["FAKE_WHEEL_LOG"] = os.fspath(self.log)
+        if self.mutate_application_on_wheel:
+            environment["FAKE_MUTATE_APPLICATION"] = "1"
         return run(
-            os.fspath(self.python),
+            sys.executable,
             os.fspath(self.builder),
             "--server-repo",
             os.fspath(self.application),
@@ -181,6 +193,28 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertIn("SOURCE_WORKTREE_DIRTY", process.stderr)
         self.assertFalse(fixture.log.exists())
 
+    def test_tracked_governance_change_stops_before_wheel_build(self) -> None:
+        fixture = BuilderFixture(self)
+        governance_lock = (
+            fixture.governance / "ops" / "cognitive-card-server" / "runtime-requirements.lock"
+        )
+        governance_lock.write_text(RUNTIME_LOCK + "unexpected==1.0\n", encoding="utf-8")
+        process = fixture.invoke()
+
+        self.assertNotEqual(0, process.returncode)
+        self.assertIn("OPERATIONS_WORKTREE_DIRTY", process.stderr)
+        self.assertFalse(fixture.log.exists())
+
+    def test_source_change_during_wheel_build_discards_release(self) -> None:
+        fixture = BuilderFixture(self)
+        fixture.mutate_application_on_wheel = True
+        process = fixture.invoke()
+
+        self.assertNotEqual(0, process.returncode)
+        self.assertIn("SOURCE_CHANGED_DURING_BUILD", process.stderr)
+        self.assertTrue(fixture.log.exists())
+        self.assertEqual([], list(fixture.output.iterdir()))
+
     def test_builds_closed_normalized_release_with_dual_git_provenance(self) -> None:
         fixture = BuilderFixture(self)
         process = fixture.invoke()
@@ -193,10 +227,11 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual(checksum, Path(summary["sha256_file"]))
         digest = hashlib.sha256(archive.read_bytes()).hexdigest()
         self.assertEqual(f"{digest}  {archive.name}\n", checksum.read_text(encoding="ascii"))
-        self.assertEqual(
-            f"-m pip wheel --no-deps --wheel-dir ",
-            fixture.log.read_text(encoding="utf-8")[:36],
-        )
+        wheel_command = shlex.split(fixture.log.read_text(encoding="utf-8"))
+        self.assertEqual(["-m", "pip", "wheel", "--no-deps", "--wheel-dir"], wheel_command[:5])
+        self.assertEqual(7, len(wheel_command))
+        self.assertEqual("wheel", Path(wheel_command[5]).name)
+        self.assertEqual(os.fspath(fixture.application), wheel_command[6])
 
         wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
         expected_names = sorted((*PAYLOAD_ASSETS, wheel_name, "release-manifest.json"))
@@ -249,24 +284,25 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
         process = run("bash", "-n", os.fspath(INSTALLER), cwd=ROOT)
         self.assertEqual(0, process.returncode, process.stderr)
         source = self.installer_source()
+        main_source = source.split("main() {", maxsplit=1)[1]
         ordered = (
             'sha256sum --check "$SHA256_FILE"',
             "apt-get update",
             "apt-get install -y python3-venv sqlite3",
             "validate_archive",
-            '[[ ! -e "$RELEASE_DIR" ]]',
+            'mkdir --mode=0755 "$RELEASE_DIR"',
             'python3 -m venv "$RELEASE_DIR/.venv"',
-            'pip install --requirement "$RELEASE_DIR/runtime-requirements.lock"',
-            'pip install --no-deps "$WHEEL"',
-            "pip check",
-            "installed-runtime.txt",
-            "install-manifest.json",
+            '"$pip_path" install --requirement "$RELEASE_DIR/runtime-requirements.lock"',
+            '"$pip_path" install --no-deps "$WHEEL"',
+            '"$pip_path" check',
+            "installed_runtime=",
+            "write_install_manifest",
             "systemctl daemon-reload",
             'mv -T "$CURRENT_LINK" /opt/cognitive-card-server/current',
             "systemctl enable --now cognitive-card-server.service",
             "systemctl enable --now cognitive-card-backup.timer",
         )
-        positions = [source.index(fragment) for fragment in ordered]
+        positions = [main_source.index(fragment) for fragment in ordered]
         self.assertEqual(sorted(positions), positions)
         self.assertIn("set -euo pipefail", source)
         self.assertNotIn("nginx -", source)
@@ -276,17 +312,36 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
         self.assertTrue(INSTALLER.is_file(), "missing release installer")
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
-            for name, kind in (("traversal.tar.gz", "traversal"), ("link.tar.gz", "link")):
+            cases = (
+                ("traversal.tar.gz", "../escape", tarfile.REGTYPE, ""),
+                ("absolute.tar.gz", "/escape", tarfile.REGTYPE, ""),
+                ("symlink.tar.gz", "runtime-requirements.lock", tarfile.SYMTYPE, "/etc/passwd"),
+                ("hardlink.tar.gz", "runtime-requirements.lock", tarfile.LNKTYPE, "/etc/passwd"),
+                ("device.tar.gz", "runtime-requirements.lock", tarfile.CHRTYPE, ""),
+            )
+            for name, member_name, member_type, link_name in cases:
                 archive = base / name
                 with tarfile.open(archive, "w:gz") as bundle:
-                    info = tarfile.TarInfo("../escape" if kind == "traversal" else "runtime-requirements.lock")
-                    if kind == "link":
-                        info.type = tarfile.SYMTYPE
-                        info.linkname = "/etc/passwd"
-                    else:
+                    valid_names = [
+                        *PAYLOAD_ASSETS,
+                        "cognitive_card_server-0.3.0-py3-none-any.whl",
+                        "release-manifest.json",
+                    ]
+                    for valid_name in valid_names:
+                        info = tarfile.TarInfo(valid_name)
+                        if valid_name == member_name:
+                            info.type = member_type
+                            info.linkname = link_name
+                        if info.type == tarfile.REGTYPE:
+                            info.size = 1
+                        bundle.addfile(
+                            info,
+                            io.BytesIO(b"x") if info.type == tarfile.REGTYPE else None,
+                        )
+                    if member_name not in valid_names:
+                        info = tarfile.TarInfo(member_name)
                         info.size = 1
-                    import io
-                    bundle.addfile(info, io.BytesIO(b"x") if kind == "traversal" else None)
+                        bundle.addfile(info, io.BytesIO(b"x"))
                 process = run(
                     "bash", "-c", 'source "$1"; validate_archive "$2"',
                     "validator", os.fspath(INSTALLER), os.fspath(archive), cwd=ROOT,
@@ -316,6 +371,165 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
         )
         self.assertNotEqual(0, invalid.returncode)
         self.assertIn("INVALID_FREEZE", invalid.stderr)
+
+    def test_activation_rollback_restores_old_current_and_service_states(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            current = base / "current"
+            current.symlink_to(new_release)
+            log = base / "systemctl.log"
+            script = r'''
+source "$1"
+LOG_PATH="$4"
+systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
+rollback_activation "$2" "$3" "$5" active enabled active enabled 1 1
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(current), os.fspath(new_release), os.fspath(log),
+                os.fspath(old_release), cwd=ROOT,
+            )
+            self.assertEqual(0, process.returncode, process.stderr)
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
+            self.assertFalse(new_release.exists())
+            commands = log.read_text(encoding="utf-8").splitlines()
+            self.assertIn("stop cognitive-card-server.service", commands)
+            self.assertIn("stop cognitive-card-backup.timer", commands)
+            self.assertIn("enable cognitive-card-server.service", commands)
+            self.assertIn("enable cognitive-card-backup.timer", commands)
+            self.assertIn("start cognitive-card-server.service", commands)
+            self.assertIn("start cognitive-card-backup.timer", commands)
+
+    def test_first_install_rollback_removes_current_and_leaves_services_inactive(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            new_release = base / "releases" / ("2" * 40)
+            new_release.mkdir(parents=True)
+            current = base / "current"
+            current.symlink_to(new_release)
+            log = base / "systemctl.log"
+            script = r'''
+source "$1"
+LOG_PATH="$4"
+systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
+rollback_activation "$2" "$3" "" inactive disabled inactive disabled 1 0
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(current), os.fspath(new_release), os.fspath(log), cwd=ROOT,
+            )
+            self.assertEqual(0, process.returncode, process.stderr)
+            self.assertFalse(current.exists())
+            self.assertFalse(current.is_symlink())
+            self.assertFalse(new_release.exists())
+            commands = log.read_text(encoding="utf-8").splitlines()
+            self.assertIn("stop cognitive-card-server.service", commands)
+            self.assertIn("disable cognitive-card-server.service", commands)
+            self.assertIn("disable cognitive-card-backup.timer", commands)
+            self.assertNotIn("start cognitive-card-server.service", commands)
+            self.assertNotIn("start cognitive-card-backup.timer", commands)
+
+    def test_failed_rollback_preserves_new_release_and_reports_stable_error(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            current = base / "current"
+            current.symlink_to(new_release)
+            script = r'''
+source "$1"
+systemctl() {
+    if [[ "$1 $2" == "stop cognitive-card-server.service" ]]; then return 1; fi
+    return 0
+}
+rollback_activation "$2" "$3" "$4" inactive disabled inactive disabled 1 0
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(current), os.fspath(new_release), os.fspath(old_release), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertIn("error=INSTALL_ROLLBACK_FAILED", process.stderr)
+            self.assertTrue(new_release.is_dir())
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
+
+    def test_exit_cleanup_before_activation_removes_partial_release(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            release = base / "release"
+            staging.mkdir()
+            release.mkdir()
+            script = r'''
+source "$1"
+INSTALL_TEMPORARY_DIR="$2"
+INSTALL_RELEASE_DIR="$3"
+INSTALL_RELEASE_CREATED=1
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+trap install_cleanup EXIT
+false
+'''
+            process = run(
+                "bash", "-c", script, "cleanup", os.fspath(INSTALLER),
+                os.fspath(staging), os.fspath(release), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(release.exists())
+
+    def test_exit_cleanup_after_activation_rolls_back_current(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            current = base / "current"
+            current.symlink_to(new_release)
+            script = r'''
+source "$1"
+systemctl() { return 0; }
+INSTALL_TEMPORARY_DIR="$2"
+INSTALL_RELEASE_DIR="$3"
+INSTALL_RELEASE_CREATED=1
+INSTALL_CURRENT_PATH="$4"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=1
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$5"
+INSTALL_OLD_API_ACTIVE=active
+INSTALL_OLD_API_ENABLED=enabled
+INSTALL_OLD_TIMER_ACTIVE=active
+INSTALL_OLD_TIMER_ENABLED=enabled
+INSTALL_API_STARTED=1
+INSTALL_TIMER_STARTED=1
+trap install_cleanup EXIT
+false
+'''
+            process = run(
+                "bash", "-c", script, "cleanup", os.fspath(INSTALLER),
+                os.fspath(staging), os.fspath(new_release), os.fspath(current),
+                os.fspath(old_release), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(new_release.exists())
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
 
 
 if __name__ == "__main__":
