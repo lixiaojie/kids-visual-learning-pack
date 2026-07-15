@@ -151,6 +151,34 @@ def build_release(
 
     with tempfile.TemporaryDirectory(prefix="card-os-release-") as temporary:
         staging = Path(temporary)
+        source_dir = staging / "source"
+        run_checked(
+            [
+                "git",
+                "clone",
+                "--no-checkout",
+                "--quiet",
+                "--",
+                os.fspath(server_repo),
+                os.fspath(source_dir),
+            ]
+        )
+        run_checked(
+            [
+                "git",
+                "-C",
+                os.fspath(source_dir),
+                "checkout",
+                "--quiet",
+                "--detach",
+                expected_commit,
+            ]
+        )
+        if (
+            git(source_dir, "rev-parse", "HEAD").lower() != expected_commit
+            or git(source_dir, "status", "--porcelain")
+        ):
+            raise ReleaseError("COMMAND_FAILED")
         wheel_dir = staging / "wheel"
         wheel_dir.mkdir()
         run_checked(
@@ -162,7 +190,7 @@ def build_release(
                 "--no-deps",
                 "--wheel-dir",
                 os.fspath(wheel_dir),
-                os.fspath(server_repo),
+                os.fspath(source_dir),
             ]
         )
         wheels = [path for path in wheel_dir.iterdir() if path.is_file()]

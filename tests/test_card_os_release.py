@@ -5,7 +5,6 @@ import io
 import json
 import os
 import shutil
-import shlex
 import stat
 import subprocess
 import sys
@@ -154,17 +153,41 @@ class BuilderFixture:
             textwrap.dedent(
                 f"""\
                 #!{sys.executable}
+                import json
                 import os
                 import pathlib
+                import subprocess
                 import sys
 
                 if sys.argv[1:] == ["--version"]:
                     print("Python 3.12.9")
                     raise SystemExit(0)
-                pathlib.Path(os.environ["FAKE_WHEEL_LOG"]).write_text(" ".join(sys.argv[1:]))
-                if os.environ.get("FAKE_MUTATE_APPLICATION"):
-                    (pathlib.Path(sys.argv[-1]) / "changed-during-build.txt").write_text("changed")
+                source = pathlib.Path(sys.argv[-1])
+                source_head = subprocess.run(
+                    ["git", "-C", str(source), "rev-parse", "HEAD"],
+                    check=True,
+                    text=True,
+                    capture_output=True,
+                ).stdout.strip()
+                source_status = subprocess.run(
+                    ["git", "-C", str(source), "status", "--porcelain"],
+                    check=True,
+                    text=True,
+                    capture_output=True,
+                ).stdout.strip()
                 wheel_dir = pathlib.Path(sys.argv[sys.argv.index("--wheel-dir") + 1])
+                backend_artifact = source / "build" / "backend-created.txt"
+                pathlib.Path(os.environ["FAKE_WHEEL_LOG"]).write_text(json.dumps({{
+                    "arguments": sys.argv[1:],
+                    "source_head": source_head,
+                    "source_status": source_status,
+                    "backend_artifact": str(backend_artifact),
+                }}))
+                backend_artifact.parent.mkdir(parents=True, exist_ok=True)
+                backend_artifact.write_text("backend output")
+                if os.environ.get("FAKE_MUTATE_APPLICATION"):
+                    application = pathlib.Path(os.environ["FAKE_APPLICATION_ROOT"])
+                    (application / "changed-during-build.txt").write_text("changed")
                 wheel_dir.mkdir(parents=True, exist_ok=True)
                 (wheel_dir / "cognitive_card_server-0.3.0-py3-none-any.whl").write_bytes(b"fixture-wheel")
                 """
@@ -176,6 +199,7 @@ class BuilderFixture:
     def invoke(self, expected_commit: str | None = None) -> subprocess.CompletedProcess[str]:
         environment = os.environ.copy()
         environment["FAKE_WHEEL_LOG"] = os.fspath(self.log)
+        environment["FAKE_APPLICATION_ROOT"] = os.fspath(self.application)
         if self.mutate_application_on_wheel:
             environment["FAKE_MUTATE_APPLICATION"] = "1"
         return run(
@@ -247,6 +271,28 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertTrue(fixture.log.exists())
         self.assertEqual([], list(fixture.output.iterdir()))
 
+    def test_wheel_build_uses_clean_exact_commit_snapshot_inside_staging(self) -> None:
+        fixture = BuilderFixture(self)
+        process = fixture.invoke()
+
+        self.assertEqual(0, process.returncode, process.stderr)
+        wheel_invocation = json.loads(fixture.log.read_text(encoding="utf-8"))
+        arguments = wheel_invocation["arguments"]
+        self.assertEqual(["-m", "pip", "wheel", "--no-deps", "--wheel-dir"], arguments[:5])
+        self.assertEqual(7, len(arguments))
+        wheel_dir = Path(arguments[5])
+        source = Path(arguments[6])
+        self.assertNotEqual(fixture.application, source)
+        self.assertNotIn(os.fspath(fixture.application), arguments)
+        self.assertEqual(wheel_dir.parent, source.parent)
+        self.assertEqual(fixture.application_commit, wheel_invocation["source_head"])
+        self.assertEqual("", wheel_invocation["source_status"])
+        self.assertEqual(
+            source / "build" / "backend-created.txt",
+            Path(wheel_invocation["backend_artifact"]),
+        )
+        self.assertFalse((fixture.application / "build").exists())
+
     def test_builds_closed_normalized_release_with_dual_git_provenance(self) -> None:
         fixture = BuilderFixture(self)
         process = fixture.invoke()
@@ -259,11 +305,10 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual(checksum, Path(summary["sha256_file"]))
         digest = hashlib.sha256(archive.read_bytes()).hexdigest()
         self.assertEqual(f"{digest}  {archive.name}\n", checksum.read_text(encoding="ascii"))
-        wheel_command = shlex.split(fixture.log.read_text(encoding="utf-8"))
+        wheel_command = json.loads(fixture.log.read_text(encoding="utf-8"))["arguments"]
         self.assertEqual(["-m", "pip", "wheel", "--no-deps", "--wheel-dir"], wheel_command[:5])
         self.assertEqual(7, len(wheel_command))
         self.assertEqual("wheel", Path(wheel_command[5]).name)
-        self.assertEqual(os.fspath(fixture.application), wheel_command[6])
 
         wheel_name = "cognitive_card_server-0.3.0-py3-none-any.whl"
         expected_names = sorted((*PAYLOAD_ASSETS, wheel_name, "release-manifest.json"))
