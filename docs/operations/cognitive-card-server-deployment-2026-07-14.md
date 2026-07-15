@@ -236,13 +236,16 @@ python3 ops/cognitive-card-server/build_release.py \
   --python "$BUILD_PYTHON"
 ```
 
-核对 builder JSON 中的应用提交、治理提交、归档路径和 SHA-256，完成独立发布审查后，上传归档、sidecar 和与该治理提交一致的安装器。以下示例固定为本次已经审查的三个摘要；后续升级必须把三个 `EXPECTED_*` 值一起替换为该批次独立审查记录中的完整摘要，不能沿用旧值或人工目测前后缀：
+核对 builder JSON 中的应用提交、治理提交、归档路径和 SHA-256，完成独立发布审查后，上传归档、sidecar 和与该治理提交一致的安装器。以下示例固定为本次已经审查的应用提交和三个摘要；后续升级必须把 `APP_COMMIT` 与三个 `EXPECTED_*` 值一起替换为该批次独立审查记录中的完整值，不能沿用旧值、改成通用文件名或人工目测前后缀：
 
 ```bash
 set -euo pipefail
 
-ARCHIVE=/tmp/cognitive-card-server-release.tar.gz
-SIDECAR=/tmp/cognitive-card-server-release.tar.gz.sha256
+APP_COMMIT=c2a898cba5b8a8948c06688d8c2a387353d7cbbe
+[[ "$APP_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+
+ARCHIVE="/tmp/cognitive-card-server-${APP_COMMIT}.tar.gz"
+SIDECAR="${ARCHIVE}.sha256"
 INSTALLER=/tmp/install_release.sh
 EXPECTED_ARCHIVE_SHA256=a8a60ca7b49287ef27c15de1d0504fc879421c0ddd7c2e63175362f306a9421d
 EXPECTED_SIDECAR_SHA256=d7e995d6823ccd5ed226e810218a660f613dcca25826950027b95becca1328a4
@@ -264,6 +267,11 @@ done
 [[ "$(sha256sum "$ARCHIVE" | awk '{print $1}')" == "$EXPECTED_ARCHIVE_SHA256" ]]
 [[ "$(sha256sum "$SIDECAR" | awk '{print $1}')" == "$EXPECTED_SIDECAR_SHA256" ]]
 [[ "$(sha256sum "$INSTALLER" | awk '{print $1}')" == "$EXPECTED_INSTALLER_SHA256" ]]
+
+[[ "$(wc -l < "$SIDECAR" | tr -d ' ')" == 1 ]]
+SIDECAR_LINE=$(<"$SIDECAR")
+EXPECTED_SIDECAR_LINE="$EXPECTED_ARCHIVE_SHA256  $(basename "$ARCHIVE")"
+[[ "$SIDECAR_LINE" == "$EXPECTED_SIDECAR_LINE" ]]
 
 (
   cd "$(dirname "$ARCHIVE")"
@@ -290,13 +298,19 @@ BACKUP=/var/backups/cognitive-card-server/nginx/yutou-space.20260715T080258Z.con
 SNIPPET=/etc/nginx/snippets/cognitive-card-server.conf
 ORIGINAL_SITE_SHA256=1fd6b966fd44fee3ea2d18b5ebea99e1b1fc674838af3ed7e025bfdd1c2e02c0
 ACTIVE_SNIPPET_SHA256=e8579a5deb52c71e77ae6ada0cd201fd96c07be61389f65e0e1682544dfce4a7
+EXPECTED_ACTIVE_SITE_SHA256=0d3810925fb1aef878fe419abbfd4d7499e9c2379ac6b4ad9e741622206525e9
 
 [[ "$ORIGINAL_SITE_SHA256" =~ ^[0-9a-f]{64}$ ]]
 [[ "$ACTIVE_SNIPPET_SHA256" =~ ^[0-9a-f]{64}$ ]]
+[[ "$EXPECTED_ACTIVE_SITE_SHA256" =~ ^[0-9a-f]{64}$ ]]
 
 SITE=$(readlink -f -- "$SITE_LINK")
 [[ "$SITE" == "$EXPECTED_SITE" ]]
 [[ -f "$SITE" && ! -L "$SITE" ]]
+if [[ "$(sha256sum "$SITE" | awk '{print $1}')" != "$EXPECTED_ACTIVE_SITE_SHA256" ]]; then
+  printf 'error=ACTIVE_SITE_DRIFT\n' >&2
+  exit 1
+fi
 [[ -f "$BACKUP" && ! -L "$BACKUP" ]]
 [[ "$(stat -Lc '%U:%G %a' "$BACKUP")" == 'root:root 600' ]]
 [[ "$(sha256sum "$BACKUP" | awk '{print $1}')" == "$ORIGINAL_SITE_SHA256" ]]
