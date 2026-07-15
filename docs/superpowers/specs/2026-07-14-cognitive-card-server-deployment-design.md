@@ -170,6 +170,8 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 
 建立 `cognitive-card-backup.service` 与对应 systemd timer，每日执行：
 
+备份服务是唯一保留 Linux capability 的进程：它以 root 运行，并将 `CapabilityBoundingSet` 与 `AmbientCapabilities` 都精确限制为 `CAP_DAC_READ_SEARCH`。这是因为数据库保持 `cardos:cardos 0600`、候选目录保持 `cardos:cardos 0700`；清空 capability 后，即使 UID 为 root，备份进程也无法绕过 DAC 读取数据库或遍历候选目录。`CAP_DAC_READ_SEARCH` 只提供完成只读备份所需的读取与目录搜索能力，不授予绕过 DAC 的写能力；不得加入任何其他 capability。备份服务继续通过 `ReadOnlyPaths=/var/lib/cognitive-card-server` 固定只读源，并只向 root-only 的 `/var/backups/cognitive-card-server` 和 `PrivateTmp` 提供写入空间。API 服务仍以 `cardos` 运行，`CapabilityBoundingSet=` 与 `AmbientCapabilities=` 保持为空。
+
 1. 使用 SQLite 在线 backup 命令生成一致数据库快照，不直接复制活动中的数据库文件；
 2. 对候选目录建立同一批次的文件快照；
 3. 生成包含时间、数据库摘要、候选文件摘要和源 release 的 manifest；

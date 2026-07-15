@@ -274,7 +274,7 @@ git commit -m "feat(ops): add one-time deployment acceptance"
 
 - [ ] **Step 1: Write failing asset contract tests**
 
-Assert the API unit contains every required directive, places both `StartLimit` directives in `[Unit]`, contains `RuntimeDirectoryPreserve=restart`, and contains none of `0.0.0.0`, `root@`, `Authorization`, or a token-shaped `ccos_v1.` string. Assert the backup unit is root-run, has read-only access to `/var/lib/cognitive-card-server`, and has write access only to `/var/backups/cognitive-card-server` plus its private temporary directory. Assert the Nginx snippet:
+Assert the API unit contains every required directive, places both `StartLimit` directives in `[Unit]`, contains `RuntimeDirectoryPreserve=restart`, keeps both `CapabilityBoundingSet=` and `AmbientCapabilities=` empty, and contains none of `0.0.0.0`, `root@`, `Authorization`, or a token-shaped `ccos_v1.` string. Assert the backup unit is root-run, has read-only access to `/var/lib/cognitive-card-server`, has write access only to `/var/backups/cognitive-card-server` plus its private temporary directory, and sets both `CapabilityBoundingSet` and `AmbientCapabilities` to exactly `CAP_DAC_READ_SEARCH` with no additional capabilities. Assert the Nginx snippet:
 
 ```python
 self.assertIn("location = /card-os", nginx)
@@ -374,8 +374,8 @@ ProtectSystem=strict
 ProtectHome=true
 ReadOnlyPaths=/var/lib/cognitive-card-server
 ReadWritePaths=/var/backups/cognitive-card-server
-CapabilityBoundingSet=
-AmbientCapabilities=
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH
+AmbientCapabilities=CAP_DAC_READ_SEARCH
 
 [Install]
 WantedBy=multi-user.target

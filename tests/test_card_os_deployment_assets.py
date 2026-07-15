@@ -80,8 +80,8 @@ ProtectSystem=strict
 ProtectHome=true
 ReadOnlyPaths=/var/lib/cognitive-card-server
 ReadWritePaths=/var/backups/cognitive-card-server
-CapabilityBoundingSet=
-AmbientCapabilities=
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH
+AmbientCapabilities=CAP_DAC_READ_SEARCH
 
 [Install]
 WantedBy=multi-user.target
@@ -164,6 +164,14 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertNotIn("StartLimitIntervalSec", service_and_install)
         self.assertNotIn("StartLimitBurst", service_and_install)
         self.assertIn("RuntimeDirectoryPreserve=restart", unit)
+        self.assertEqual(
+            ["CapabilityBoundingSet=", "AmbientCapabilities="],
+            [
+                line
+                for line in unit.splitlines()
+                if line.startswith(("CapabilityBoundingSet=", "AmbientCapabilities="))
+            ],
+        )
         for forbidden in ("0.0.0.0", "root@", "Authorization"):
             self.assertNotIn(forbidden, unit)
         self.assertIsNone(re.search(r"ccos_v1\.", unit))
@@ -181,6 +189,17 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertEqual(
             ["ReadWritePaths=/var/backups/cognitive-card-server"],
             [line for line in service.splitlines() if line.startswith("ReadWritePaths=")],
+        )
+        self.assertEqual(
+            [
+                "CapabilityBoundingSet=CAP_DAC_READ_SEARCH",
+                "AmbientCapabilities=CAP_DAC_READ_SEARCH",
+            ],
+            [
+                line
+                for line in service.splitlines()
+                if line.startswith(("CapabilityBoundingSet=", "AmbientCapabilities="))
+            ],
         )
 
     def test_nginx_snippet_matches_routing_contract(self) -> None:
