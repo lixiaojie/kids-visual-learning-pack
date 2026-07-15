@@ -120,6 +120,11 @@ location ^~ /card-os/api/ {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
 }
+
+location ^~ /card-os/ {
+    access_log off;
+    return 404;
+}
 """
 
 SITE_FIXTURE = """# A comment containing braces must not affect parsing: { }
@@ -215,6 +220,49 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertIn("client_max_body_size 30m", nginx)
         self.assertIn("access_log off", nginx)
         self.assertNotIn("/var/lib/cognitive-card-server/candidates", nginx)
+
+    def test_non_api_card_os_namespace_selects_deny_only_catch_all(self) -> None:
+        nginx = self.read_asset(NGINX_SNIPPET)
+        blocks = {
+            match.group("selector"): match.group("body")
+            for match in re.finditer(
+                r"location\s+(?P<selector>(?:=|\^~)\s+\S+)\s*\{"
+                r"(?P<body>[^{}]*)\}",
+                nginx,
+            )
+        }
+
+        def selected_location(uri: str) -> str | None:
+            exact = f"= {uri}"
+            if exact in blocks:
+                return exact
+            prefixes = [
+                selector
+                for selector in blocks
+                if selector.startswith("^~ ") and uri.startswith(selector[3:])
+            ]
+            return max(prefixes, key=lambda selector: len(selector[3:]), default=None)
+
+        sensitive_looking_paths = (
+            "/card-os/card-os.sqlite3",
+            "/card-os/candidates/",
+            "/card-os/card-os.env",
+            "/card-os/backups/",
+        )
+        for uri in sensitive_looking_paths:
+            with self.subTest(uri=uri):
+                self.assertEqual("^~ /card-os/", selected_location(uri))
+
+        deny_body = blocks.get("^~ /card-os/", "")
+        self.assertIn("access_log off;", deny_body)
+        self.assertIn("return 404;", deny_body)
+        for file_serving_directive in ("alias ", "root ", "try_files ", "proxy_pass "):
+            self.assertNotIn(file_serving_directive, deny_body)
+
+        self.assertEqual(
+            "^~ /card-os/api/",
+            selected_location("/card-os/api/v1/health"),
+        )
 
 
 class NginxIncludeInstallerTests(unittest.TestCase):

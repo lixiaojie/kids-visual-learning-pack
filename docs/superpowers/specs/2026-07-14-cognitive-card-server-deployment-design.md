@@ -152,6 +152,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 - 精确 `/card-os`：`308` 到 `/card-os/`；
 - 精确 `/card-os/`：`307` 到 `/card-os/api/v1/capabilities`，作为首版可发现入口；
 - `/card-os/api/`：代理到 `http://127.0.0.1:8765`，保留完整原始 URI，使应用继续接收 `/card-os/api/v1/...`；
+- 其余 `/card-os/` 子路径：由较短的 `^~ /card-os/` catch-all 直接返回 `404`，关闭 access log，且不得包含 `root`、`alias`、`try_files` 或 `proxy_pass`；Nginx 最长前缀规则保证较长的 `/card-os/api/` 仍进入 API 代理；
 - 传递 `Host`、客户端地址和 HTTPS 协议信息；
 - `client_max_body_size 30m`，略高于应用 28 MiB 硬限制；应用仍是最终大小校验者；
 - 连接超时 5 秒，读写超时 120 秒；
@@ -159,7 +160,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 - 不启用 CORS；首版只服务显式配置的受信任客户端；
 - 不为 `/var/lib/cognitive-card-server/candidates/` 或备份目录提供静态映射。
 
-变更前备份当前站点文件，变更后必须先通过 `nginx -t`，再执行无中断 reload。若配置测试失败，不 reload；若 reload 后现有站点回归失败，立即恢复备份配置并再次测试、reload。
+变更前备份当前站点文件，变更后必须先通过 `nginx -t`，再执行无中断 reload。Nginx graceful reload 期间旧 worker 可能短暂继续返回旧路由，因此 reload 后不得用一次即时请求判定失败；应在固定短期限内按条件轮询，直到同一轮同时满足精确 `308`、`307`、health JSON 和 capabilities JSON，超时才判定失败并回滚。若配置测试失败，不 reload；若有界就绪门超时或之后的现有站点回归失败，立即恢复备份配置并再次测试、reload，恢复后也以有界条件轮询确认旧基线重新生效。
 
 ## 9. 数据、备份与恢复
 
@@ -218,6 +219,7 @@ release 目录不允许应用进程写入。运行期唯一业务写路径是 `/
 - 本机回环 health 与 capabilities 返回预期 JSON、版本和协议范围；
 - `https://www.yutou.space/card-os/api/v1/health` 与 capabilities 通过正式域名证书返回预期 JSON；
 - `/card-os` 与 `/card-os/` 的重定向符合第 8 节；
+- 非 API 的 `/card-os/` 子路径返回非成功状态，且不能落入现有 SPA fallback；
 - 一次性 token 在服务重启前后通过受保护读取，撤销后立即变为 `403 AUTH_REVOKED`；
 - 服务重启后数据库状态仍存在，候选目录仍可由 `cardos` 访问；
 - Nginx 不可直接读取候选目录、数据库、环境文件或备份；

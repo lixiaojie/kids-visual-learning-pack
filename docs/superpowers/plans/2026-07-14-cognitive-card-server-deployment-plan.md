@@ -292,6 +292,8 @@ self.assertIn("return 308 /card-os/", nginx)
 self.assertIn("location = /card-os/", nginx)
 self.assertIn("return 307 /card-os/api/v1/capabilities", nginx)
 self.assertIn("location ^~ /card-os/api/", nginx)
+self.assertIn("location ^~ /card-os/", nginx)
+self.assertIn("return 404;", nginx)
 self.assertIn("proxy_pass http://127.0.0.1:8765;", nginx)
 self.assertIn("client_max_body_size 30m", nginx)
 self.assertIn("access_log off", nginx)
@@ -432,7 +434,14 @@ location ^~ /card-os/api/ {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
 }
+
+location ^~ /card-os/ {
+    access_log off;
+    return 404;
+}
 ```
+
+The tests must parse the exact and `^~` location blocks and model Nginx's exact-first, longest-prefix selection. Require sensitive-looking non-API paths below `/card-os/` to select the deny-only catch-all, require an API health path to select the longer `/card-os/api/` block, and reject `root`、`alias`、`try_files` or `proxy_pass` in the catch-all.
 
 The Python installer must tokenize braces after stripping `#` comments, find complete top-level `server { ... }` spans, select the unique span containing both required TLS/server-name strings, and insert the include immediately after the matching `server_name` line. Before the atomic replacement, write a name such as `yutou-space.20260714T030000Z.conf`, using the actual current UTC timestamp, under the supplied backup directory with mode `0600`. If the include already exists exactly once in the selected block, return `status=unchanged` without a second backup.
 
@@ -728,7 +737,7 @@ systemctl reload nginx
 systemctl is-active nginx
 ```
 
-If `nginx -t` fails, do not reload. If reload or regression fails, restore the timestamped site file, run `nginx -t`, and reload the restored configuration.
+If `nginx -t` fails, do not reload. A graceful reload can leave old workers serving the old route briefly, so do not fail on one immediate response. Poll a maximum of 10 attempts with a one-second interval; a single attempt is ready only when `/card-os` is exactly `308`, `/card-os/` is exactly `307`, health is the expected `0.3.0` JSON, and capabilities declares protocol `1`. If that bounded gate never becomes ready, or a later regression fails, restore the timestamped site file, run `nginx -t`, reload the restored configuration, and use the same bounded condition polling pattern to confirm the old baseline. Do not replace condition checks with an arbitrary unbounded sleep.
 
 - [ ] **Step 3: Verify public and protected namespace boundaries**
 
@@ -741,7 +750,7 @@ curl --fail-with-body --silent --show-error https://www.yutou.space/card-os/api/
 curl --fail-with-body --silent --show-error https://www.yutou.space/card-os/api/v1/capabilities
 ```
 
-Expected: `308`, `307`, then JSON health/capabilities over the valid domain certificate. Probe guessed URLs for `card-os.sqlite3`, `candidates/`, `card-os.env`, and backups; every probe must be non-success and must not return file content.
+Expected: `308`, `307`, then JSON health/capabilities over the valid domain certificate. Probe `/card-os/card-os.sqlite3`, `/card-os/candidates/`, `/card-os/card-os.env`, and `/card-os/backups/`; each must select the governed catch-all, return exactly `404`, and return no file content or SPA shell. Also probe the absolute-looking `/var/lib/cognitive-card-server/card-os.sqlite3`, `/etc/cognitive-card-server/card-os.env`, and `/var/backups/cognitive-card-server/` paths; each must remain non-success and must not return file content.
 
 - [ ] **Step 4: Begin the zero-disclosure token acceptance**
 
