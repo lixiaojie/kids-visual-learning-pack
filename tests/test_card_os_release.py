@@ -1727,6 +1727,598 @@ rollback_activation "$2" "$3" "$5" active enabled active enabled 1 1
             self.assertIn("start cognitive-card-server.service", commands)
             self.assertIn("start cognitive-card-backup.timer", commands)
 
+    def test_failed_activation_restores_old_units_reloads_and_restores_service_states(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            current = base / "current"
+            current.symlink_to(new_release)
+            unit_paths = (
+                base / "cognitive-card-server.service",
+                base / "cognitive-card-backup.service",
+                base / "cognitive-card-backup.timer",
+            )
+            for index, path in enumerate(unit_paths, start=1):
+                path.write_text(f"old-unit-{index}\n", encoding="utf-8")
+            log = base / "systemctl.log"
+            log.touch()
+            script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+INSTALL_UNIT_BACKUP_DIR="$2/unit-backups"
+backup_systemd_units "$INSTALL_UNIT_BACKUP_DIR"
+printf 'new-api-unit\n' >"$API_UNIT_PATH"
+printf 'new-backup-unit\n' >"$BACKUP_SERVICE_UNIT_PATH"
+printf 'new-backup-timer\n' >"$BACKUP_TIMER_UNIT_PATH"
+LOG_PATH="$7"
+systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_RELEASE_DIR="$4"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$5"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=1
+INSTALL_UNITS_INSTALLED=1
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$6"
+INSTALL_OLD_API_ACTIVE=active
+INSTALL_OLD_API_ENABLED=enabled
+INSTALL_OLD_TIMER_ACTIVE=active
+INSTALL_OLD_TIMER_ENABLED=enabled
+INSTALL_API_STARTED=1
+INSTALL_TIMER_STARTED=1
+trap install_cleanup EXIT
+false
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(base), os.fspath(staging), os.fspath(new_release),
+                os.fspath(current), os.fspath(old_release), os.fspath(log), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(new_release.exists())
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
+            for index, path in enumerate(unit_paths, start=1):
+                self.assertEqual(f"old-unit-{index}\n", path.read_text(encoding="utf-8"))
+            commands = log.read_text(encoding="utf-8").splitlines()
+            self.assertIn("stop cognitive-card-server.service", commands)
+            self.assertIn("stop cognitive-card-backup.timer", commands)
+            self.assertIn("daemon-reload", commands)
+            self.assertIn("enable cognitive-card-server.service", commands)
+            self.assertIn("enable cognitive-card-backup.timer", commands)
+            self.assertIn("start cognitive-card-server.service", commands)
+            self.assertIn("start cognitive-card-backup.timer", commands)
+            self.assertLess(
+                commands.index("daemon-reload"),
+                commands.index("enable cognitive-card-server.service"),
+            )
+
+    def test_unit_write_failure_restores_all_old_units_before_activation(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            source = base / "source" / "systemd"
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            source.mkdir(parents=True)
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            current = base / "current"
+            current.symlink_to(old_release)
+            unit_names = (
+                "cognitive-card-server.service",
+                "cognitive-card-backup.service",
+                "cognitive-card-backup.timer",
+            )
+            for index, name in enumerate(unit_names, start=1):
+                (base / name).write_text(f"old-unit-{index}\n", encoding="utf-8")
+                (source / name).write_text(f"new-unit-{index}\n", encoding="utf-8")
+            log = base / "systemctl.log"
+            log.touch()
+            script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+LOG_PATH="$8"
+systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
+INSTALL_CALLS=0
+install() {
+    INSTALL_CALLS=$((INSTALL_CALLS + 1))
+    if [[ "$INSTALL_CALLS" == 2 ]]; then return 1; fi
+    command install "$@"
+}
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_RELEASE_DIR="$4"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$5"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$6"
+INSTALL_OLD_API_ACTIVE=active
+INSTALL_OLD_API_ENABLED=enabled
+INSTALL_OLD_TIMER_ACTIVE=active
+INSTALL_OLD_TIMER_ENABLED=enabled
+INSTALL_API_STARTED=0
+INSTALL_TIMER_STARTED=0
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+trap install_cleanup EXIT
+install_systemd_units "$7" "$INSTALL_UNIT_BACKUP_DIR"
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(base), os.fspath(staging), os.fspath(new_release),
+                os.fspath(current), os.fspath(old_release), os.fspath(source),
+                os.fspath(log), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(new_release.exists())
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
+            for index, name in enumerate(unit_names, start=1):
+                self.assertEqual(
+                    f"old-unit-{index}\n", (base / name).read_text(encoding="utf-8")
+                )
+            self.assertEqual(["daemon-reload"], log.read_text(encoding="utf-8").splitlines())
+
+    def test_daemon_reload_failure_restores_old_units_before_activation(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            source = base / "source" / "systemd"
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            source.mkdir(parents=True)
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            current = base / "current"
+            current.symlink_to(old_release)
+            unit_names = (
+                "cognitive-card-server.service",
+                "cognitive-card-backup.service",
+                "cognitive-card-backup.timer",
+            )
+            for index, name in enumerate(unit_names, start=1):
+                (base / name).write_text(f"old-unit-{index}\n", encoding="utf-8")
+                (source / name).write_text(f"new-unit-{index}\n", encoding="utf-8")
+            log = base / "systemctl.log"
+            log.touch()
+            script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+LOG_PATH="$8"
+DAEMON_RELOADS=0
+systemctl() {
+    printf '%s\n' "$*" >>"$LOG_PATH"
+    if [[ "$*" == daemon-reload ]]; then
+        DAEMON_RELOADS=$((DAEMON_RELOADS + 1))
+        [[ "$DAEMON_RELOADS" != 1 ]]
+        return
+    fi
+}
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_RELEASE_DIR="$4"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$5"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$6"
+INSTALL_OLD_API_ACTIVE=active
+INSTALL_OLD_API_ENABLED=enabled
+INSTALL_OLD_TIMER_ACTIVE=active
+INSTALL_OLD_TIMER_ENABLED=enabled
+INSTALL_API_STARTED=0
+INSTALL_TIMER_STARTED=0
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+trap install_cleanup EXIT
+install_systemd_units "$7" "$INSTALL_UNIT_BACKUP_DIR"
+systemctl daemon-reload
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(base), os.fspath(staging), os.fspath(new_release),
+                os.fspath(current), os.fspath(old_release), os.fspath(source),
+                os.fspath(log), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(new_release.exists())
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
+            for index, name in enumerate(unit_names, start=1):
+                self.assertEqual(
+                    f"old-unit-{index}\n", (base / name).read_text(encoding="utf-8")
+                )
+            self.assertEqual(
+                ["daemon-reload", "daemon-reload"],
+                log.read_text(encoding="utf-8").splitlines(),
+            )
+
+    def test_first_install_failure_removes_new_units_and_reloads_before_activation(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            source = base / "source" / "systemd"
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            source.mkdir(parents=True)
+            new_release.mkdir(parents=True)
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            unit_names = (
+                "cognitive-card-server.service",
+                "cognitive-card-backup.service",
+                "cognitive-card-backup.timer",
+            )
+            for index, name in enumerate(unit_names, start=1):
+                (source / name).write_text(f"new-unit-{index}\n", encoding="utf-8")
+            log = base / "systemctl.log"
+            log.touch()
+            script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+LOG_PATH="$6"
+systemctl() { printf '%s\n' "$*" >>"$LOG_PATH"; }
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_RELEASE_DIR="$4"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$2/current"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET=""
+INSTALL_OLD_API_ACTIVE=inactive
+INSTALL_OLD_API_ENABLED=disabled
+INSTALL_OLD_TIMER_ACTIVE=inactive
+INSTALL_OLD_TIMER_ENABLED=disabled
+INSTALL_API_STARTED=0
+INSTALL_TIMER_STARTED=0
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+trap install_cleanup EXIT
+install_systemd_units "$5" "$INSTALL_UNIT_BACKUP_DIR"
+false
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(base), os.fspath(staging), os.fspath(new_release),
+                os.fspath(source), os.fspath(log), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(new_release.exists())
+            self.assertFalse((base / "current").exists())
+            for name in unit_names:
+                self.assertFalse((base / name).exists())
+                self.assertFalse((base / name).is_symlink())
+            self.assertEqual(["daemon-reload"], log.read_text(encoding="utf-8").splitlines())
+
+    def test_first_and_third_unit_write_failures_restore_all_old_units(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        for failure_index in (1, 3):
+            with self.subTest(failure_index=failure_index), tempfile.TemporaryDirectory() as temporary:
+                base = Path(temporary)
+                staging = base / "staging"
+                source = base / "source" / "systemd"
+                old_release = base / "releases" / ("1" * 40)
+                new_release = base / "releases" / ("2" * 40)
+                staging.mkdir()
+                source.mkdir(parents=True)
+                old_release.mkdir(parents=True)
+                new_release.mkdir()
+                (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+                current = base / "current"
+                current.symlink_to(old_release)
+                unit_names = (
+                    "cognitive-card-server.service",
+                    "cognitive-card-backup.service",
+                    "cognitive-card-backup.timer",
+                )
+                for index, name in enumerate(unit_names, start=1):
+                    (base / name).write_text(f"old-unit-{index}\n", encoding="utf-8")
+                    (source / name).write_text(f"new-unit-{index}\n", encoding="utf-8")
+                script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+systemctl() { return 0; }
+INSTALL_CALLS=0
+FAILURE_INDEX="$8"
+install() {
+    INSTALL_CALLS=$((INSTALL_CALLS + 1))
+    if [[ "$INSTALL_CALLS" == "$FAILURE_INDEX" ]]; then return 1; fi
+    command install "$@"
+}
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_RELEASE_DIR="$4"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$5"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=0
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$6"
+INSTALL_API_STARTED=0
+INSTALL_TIMER_STARTED=0
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+trap install_cleanup EXIT
+install_systemd_units "$7" "$INSTALL_UNIT_BACKUP_DIR"
+'''
+                process = run(
+                    "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                    os.fspath(base), os.fspath(staging), os.fspath(new_release),
+                    os.fspath(current), os.fspath(old_release), os.fspath(source),
+                    str(failure_index), cwd=ROOT,
+                )
+                self.assertNotEqual(0, process.returncode)
+                self.assertFalse(staging.exists())
+                self.assertFalse(new_release.exists())
+                self.assertEqual(os.fspath(old_release), os.readlink(current))
+                for index, name in enumerate(unit_names, start=1):
+                    self.assertEqual(
+                        f"old-unit-{index}\n", (base / name).read_text(encoding="utf-8")
+                    )
+
+    def test_unit_restore_preserves_regular_metadata_and_symlink(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            source = base / "source"
+            source.mkdir()
+            api = base / "cognitive-card-server.service"
+            backup_service = base / "cognitive-card-backup.service"
+            timer = base / "cognitive-card-backup.timer"
+            target = base / "linked-backup.service"
+            api.write_text("old-api\n", encoding="utf-8")
+            api.chmod(0o600)
+            target.write_text("linked\n", encoding="utf-8")
+            backup_service.symlink_to(target.name)
+            timer.write_text("old-timer\n", encoding="utf-8")
+            timer.chmod(0o640)
+            unit_paths = (api, backup_service, timer)
+            original_metadata = [path.lstat() for path in unit_paths]
+            for index, path in enumerate(unit_paths, start=1):
+                (source / path.name).write_text(f"new-unit-{index}\n", encoding="utf-8")
+            script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+systemctl() { return 0; }
+INSTALL_UNIT_BACKUP_DIR="$2/unit-backups"
+install_systemd_units "$3" "$INSTALL_UNIT_BACKUP_DIR"
+restore_systemd_units "$INSTALL_UNIT_BACKUP_DIR"
+'''
+            process = run(
+                "bash", "-c", script, "metadata", os.fspath(INSTALLER),
+                os.fspath(base), os.fspath(source), cwd=ROOT,
+            )
+            self.assertEqual(0, process.returncode, process.stderr)
+            for path, before in zip(unit_paths, original_metadata, strict=True):
+                after = path.lstat()
+                self.assertEqual(stat.S_IMODE(before.st_mode), stat.S_IMODE(after.st_mode))
+                self.assertEqual(before.st_uid, after.st_uid)
+                self.assertEqual(before.st_gid, after.st_gid)
+                self.assertEqual(stat.S_IFMT(before.st_mode), stat.S_IFMT(after.st_mode))
+            self.assertTrue(backup_service.is_symlink())
+            self.assertEqual(target.name, os.readlink(backup_service))
+
+    def test_partial_unit_restore_failure_preserves_exact_backup_directory(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            current = base / "current"
+            current.symlink_to(new_release)
+            unit_names = (
+                "cognitive-card-server.service",
+                "cognitive-card-backup.service",
+                "cognitive-card-backup.timer",
+            )
+            for index, name in enumerate(unit_names, start=1):
+                (base / name).write_text(f"old-unit-{index}\n", encoding="utf-8")
+            script = r'''
+source "$1"
+API_UNIT_PATH="$2/cognitive-card-server.service"
+BACKUP_SERVICE_UNIT_PATH="$2/cognitive-card-backup.service"
+BACKUP_TIMER_UNIT_PATH="$2/cognitive-card-backup.timer"
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+backup_systemd_units "$INSTALL_UNIT_BACKUP_DIR"
+printf 'new-api\n' >"$API_UNIT_PATH"
+printf 'new-backup\n' >"$BACKUP_SERVICE_UNIT_PATH"
+printf 'new-timer\n' >"$BACKUP_TIMER_UNIT_PATH"
+cp() {
+    if [[ "$1" == -a && "$3" == "$INSTALL_UNIT_BACKUP_DIR/cognitive-card-backup.service" ]]; then
+        return 1
+    fi
+    command cp "$@"
+}
+systemctl() { return 0; }
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_RELEASE_DIR="$4"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$5"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=1
+INSTALL_UNITS_INSTALLED=1
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$6"
+INSTALL_OLD_API_ACTIVE=active
+INSTALL_OLD_API_ENABLED=enabled
+INSTALL_OLD_TIMER_ACTIVE=active
+INSTALL_OLD_TIMER_ENABLED=enabled
+INSTALL_API_STARTED=0
+INSTALL_TIMER_STARTED=0
+trap install_cleanup EXIT
+false
+'''
+            process = run(
+                "bash", "-c", script, "rollback", os.fspath(INSTALLER),
+                os.fspath(base), os.fspath(staging), os.fspath(new_release),
+                os.fspath(current), os.fspath(old_release), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertIn("error=INSTALL_ROLLBACK_FAILED", process.stderr)
+            self.assertIn(f"rollback_backup_dir={staging / 'systemd-backup'}", process.stderr)
+            self.assertTrue(staging.is_dir())
+            self.assertTrue(new_release.is_dir())
+            backup_dir = staging / "systemd-backup"
+            for name in unit_names:
+                self.assertTrue((backup_dir / name).exists())
+                self.assertTrue((backup_dir / f"{name}.state").exists())
+
+    def test_cleanup_ignores_secondary_term_until_rollback_finishes(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            staging = base / "staging"
+            old_release = base / "releases" / ("1" * 40)
+            new_release = base / "releases" / ("2" * 40)
+            staging.mkdir()
+            old_release.mkdir(parents=True)
+            new_release.mkdir()
+            (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            current = base / "current"
+            current.symlink_to(new_release)
+            log = base / "systemctl.log"
+            script = r'''
+source "$1"
+LOG_PATH="$6"
+systemctl() {
+    printf '%s\n' "$*" >>"$LOG_PATH"
+    if [[ "$*" == "stop cognitive-card-server.service" ]]; then kill -TERM $$; fi
+    return 0
+}
+INSTALL_TEMPORARY_DIR="$2"
+INSTALL_RELEASE_DIR="$3"
+INSTALL_RELEASE_CREATED=1
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_CURRENT_PATH="$4"
+INSTALL_CURRENT_LINK=""
+INSTALL_ACTIVATED=1
+INSTALL_PRESERVE_RELEASE=0
+INSTALL_OLD_CURRENT_TARGET="$5"
+INSTALL_OLD_API_ACTIVE=active
+INSTALL_OLD_API_ENABLED=enabled
+INSTALL_OLD_TIMER_ACTIVE=active
+INSTALL_OLD_TIMER_ENABLED=enabled
+INSTALL_API_STARTED=1
+INSTALL_TIMER_STARTED=1
+trap 'exit 143' TERM
+trap install_cleanup EXIT
+false
+'''
+            process = run(
+                "bash", "-c", script, "signal", os.fspath(INSTALLER),
+                os.fspath(staging), os.fspath(new_release), os.fspath(current),
+                os.fspath(old_release), os.fspath(log), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertFalse(staging.exists())
+            self.assertFalse(new_release.exists())
+            self.assertEqual(os.fspath(old_release), os.readlink(current))
+            commands = log.read_text(encoding="utf-8").splitlines()
+            self.assertIn("enable cognitive-card-server.service", commands)
+            self.assertIn("start cognitive-card-server.service", commands)
+
+    def test_success_finalization_reports_temp_cleanup_failure_and_leaves_no_silent_residue(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            release = base / "release"
+            staging = base / "staging"
+            release.mkdir()
+            staging.mkdir()
+            (release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            script = r'''
+source "$1"
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+INSTALL_RELEASE_CREATED=1
+INSTALL_ACTIVATED=1
+INSTALL_UNITS_INSTALLED=1
+TEMP_PATH="$3"
+rm() {
+    if [[ "$1" == -rf && "$3" == "$TEMP_PATH" ]]; then return 1; fi
+    command rm "$@"
+}
+finalize_successful_install "$2" "$3" && printf 'status=installed\n'
+'''
+            process = run(
+                "bash", "-c", script, "finalize", os.fspath(INSTALLER),
+                os.fspath(release), os.fspath(staging), cwd=ROOT,
+            )
+            self.assertNotEqual(0, process.returncode)
+            self.assertIn("error=TEMPORARY_CLEANUP_FAILED", process.stderr)
+            self.assertNotIn("status=installed", process.stdout)
+            self.assertTrue(staging.is_dir())
+
+    def test_success_finalization_removes_unit_backups_before_reporting_installed(self) -> None:
+        self.assertTrue(INSTALLER.is_file(), "missing release installer")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            release = base / "release"
+            staging = base / "staging"
+            backup_dir = staging / "systemd-backup"
+            release.mkdir()
+            backup_dir.mkdir(parents=True)
+            (backup_dir / "cognitive-card-server.service").write_text(
+                "old-unit\n", encoding="utf-8"
+            )
+            (release / ".install-owner").write_text("test-token\n", encoding="ascii")
+            script = r'''
+source "$1"
+INSTALL_OWNERSHIP_TOKEN=test-token
+INSTALL_TEMPORARY_DIR="$3"
+INSTALL_UNIT_BACKUP_DIR="$3/systemd-backup"
+INSTALL_RELEASE_CREATED=1
+INSTALL_ACTIVATED=1
+INSTALL_UNITS_INSTALLED=1
+finalize_successful_install "$2" "$3"
+printf 'status=installed\n'
+'''
+            process = run(
+                "bash", "-c", script, "finalize", os.fspath(INSTALLER),
+                os.fspath(release), os.fspath(staging), cwd=ROOT,
+            )
+            self.assertEqual(0, process.returncode, process.stderr)
+            self.assertEqual("status=installed\n", process.stdout)
+            self.assertFalse(staging.exists())
+            self.assertFalse((release / ".install-owner").exists())
+
     def test_first_install_rollback_removes_current_and_leaves_services_inactive(self) -> None:
         self.assertTrue(INSTALLER.is_file(), "missing release installer")
         with tempfile.TemporaryDirectory() as temporary:
@@ -1770,10 +2362,13 @@ rollback_activation "$2" "$3" "" inactive disabled inactive disabled 1 0
             (new_release / ".install-owner").write_text("test-token\n", encoding="ascii")
             current = base / "current"
             current.symlink_to(new_release)
+            log = base / "systemctl.log"
             script = r'''
 source "$1"
 INSTALL_OWNERSHIP_TOKEN=test-token
+LOG_PATH="$5"
 systemctl() {
+    printf '%s\n' "$*" >>"$LOG_PATH"
     if [[ "$1 $2" == "stop cognitive-card-server.service" ]]; then return 1; fi
     return 0
 }
@@ -1781,12 +2376,19 @@ rollback_activation "$2" "$3" "$4" inactive disabled inactive disabled 1 0
 '''
             process = run(
                 "bash", "-c", script, "rollback", os.fspath(INSTALLER),
-                os.fspath(current), os.fspath(new_release), os.fspath(old_release), cwd=ROOT,
+                os.fspath(current), os.fspath(new_release), os.fspath(old_release),
+                os.fspath(log), cwd=ROOT,
             )
             self.assertNotEqual(0, process.returncode)
             self.assertIn("error=INSTALL_ROLLBACK_FAILED", process.stderr)
             self.assertTrue(new_release.is_dir())
             self.assertEqual(os.fspath(old_release), os.readlink(current))
+            commands = log.read_text(encoding="utf-8").splitlines()
+            self.assertIn("stop cognitive-card-server.service", commands)
+            self.assertNotIn("disable cognitive-card-server.service", commands)
+            self.assertNotIn("disable cognitive-card-backup.timer", commands)
+            self.assertNotIn("start cognitive-card-server.service", commands)
+            self.assertNotIn("start cognitive-card-backup.timer", commands)
 
     def test_exit_cleanup_before_activation_removes_partial_release(self) -> None:
         self.assertTrue(INSTALLER.is_file(), "missing release installer")

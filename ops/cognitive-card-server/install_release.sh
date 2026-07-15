@@ -4,6 +4,9 @@ umask 022
 
 API_UNIT=cognitive-card-server.service
 BACKUP_TIMER=cognitive-card-backup.timer
+API_UNIT_PATH=/etc/systemd/system/cognitive-card-server.service
+BACKUP_SERVICE_UNIT_PATH=/etc/systemd/system/cognitive-card-backup.service
+BACKUP_TIMER_UNIT_PATH=/etc/systemd/system/cognitive-card-backup.timer
 RELEASE_SCHEMA=cognitive-card-server-release-v2
 INSTALL_SCHEMA=cognitive-card-server-install-v1
 
@@ -22,6 +25,8 @@ INSTALL_OLD_TIMER_ENABLED=disabled
 INSTALL_API_STARTED=0
 INSTALL_TIMER_STARTED=0
 INSTALL_OWNERSHIP_TOKEN=""
+INSTALL_UNIT_BACKUP_DIR=""
+INSTALL_UNITS_INSTALLED=0
 
 fail() {
     printf 'error=%s\n' "$1" >&2
@@ -600,6 +605,108 @@ if result != 0:
 PY
 }
 
+backup_systemd_unit() {
+    local target=$1
+    local backup_dir=$2
+    local name=$3
+    local state_path="$backup_dir/$name.state"
+
+    if [[ -e "$target" || -L "$target" ]]; then
+        [[ ! -d "$target" || -L "$target" ]] || fail SYSTEMD_UNIT_PATH_INVALID
+        cp -a -- "$target" "$backup_dir/$name"
+        printf 'present\n' >"$state_path"
+    else
+        printf 'absent\n' >"$state_path"
+    fi
+    chmod 0600 "$state_path"
+}
+
+backup_systemd_units() {
+    local backup_dir=$1
+    mkdir -m 0700 -- "$backup_dir"
+    backup_systemd_unit "$API_UNIT_PATH" "$backup_dir" "$API_UNIT"
+    backup_systemd_unit \
+        "$BACKUP_SERVICE_UNIT_PATH" "$backup_dir" cognitive-card-backup.service
+    backup_systemd_unit "$BACKUP_TIMER_UNIT_PATH" "$backup_dir" "$BACKUP_TIMER"
+}
+
+atomic_replace_path() {
+    local source=$1
+    local target=$2
+    python3 - "$source" "$target" <<'PY'
+import os
+import sys
+os.replace(sys.argv[1], sys.argv[2])
+PY
+}
+
+install_systemd_unit_atomically() {
+    local source=$1
+    local target=$2
+    local temporary="${target}.install.$$"
+
+    [[ -f "$source" && ! -L "$source" ]] || fail SYSTEMD_UNIT_SOURCE_INVALID
+    rm -f -- "$temporary"
+    install -m 0644 "$source" "$temporary"
+    atomic_replace_path "$temporary" "$target"
+}
+
+install_systemd_units() {
+    local source_dir=$1
+    local backup_dir=$2
+
+    backup_systemd_units "$backup_dir"
+    INSTALL_UNITS_INSTALLED=1
+    install_systemd_unit_atomically \
+        "$source_dir/cognitive-card-server.service" "$API_UNIT_PATH"
+    install_systemd_unit_atomically \
+        "$source_dir/cognitive-card-backup.service" "$BACKUP_SERVICE_UNIT_PATH"
+    install_systemd_unit_atomically \
+        "$source_dir/cognitive-card-backup.timer" "$BACKUP_TIMER_UNIT_PATH"
+}
+
+restore_systemd_unit() {
+    local target=$1
+    local backup_dir=$2
+    local name=$3
+    local state temporary
+    local state_path="$backup_dir/$name.state"
+
+    [[ -f "$state_path" && ! -L "$state_path" ]] || return 1
+    state=$(<"$state_path")
+    case "$state" in
+        present)
+            [[ -e "$backup_dir/$name" || -L "$backup_dir/$name" ]] || return 1
+            [[ ! -d "$backup_dir/$name" || -L "$backup_dir/$name" ]] || return 1
+            temporary="${target}.rollback.$$"
+            rm -f -- "$temporary" || return 1
+            cp -a -- "$backup_dir/$name" "$temporary" || return 1
+            atomic_replace_path "$temporary" "$target" || return 1
+            ;;
+        absent)
+            rm -f -- "$target" || return 1
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+restore_systemd_units() {
+    local backup_dir=$1
+    local restore_status=0
+
+    restore_systemd_unit "$API_UNIT_PATH" "$backup_dir" "$API_UNIT" \
+        || restore_status=1
+    restore_systemd_unit \
+        "$BACKUP_SERVICE_UNIT_PATH" "$backup_dir" cognitive-card-backup.service \
+        || restore_status=1
+    restore_systemd_unit "$BACKUP_TIMER_UNIT_PATH" "$backup_dir" "$BACKUP_TIMER" \
+        || restore_status=1
+    systemctl daemon-reload || restore_status=1
+    [[ "$restore_status" == 0 ]]
+}
+
 rollback_activation() {
     local current_path=$1
     local release_dir=$2
@@ -611,6 +718,7 @@ rollback_activation() {
     local api_started=$8
     local timer_started=$9
     local rollback_status=0
+    local units_restored=1
 
     if [[ "$api_started" == 1 ]]; then
         systemctl stop "$API_UNIT" || rollback_status=1
@@ -625,22 +733,33 @@ rollback_activation() {
         rm -f -- "$current_path" || rollback_status=1
     fi
 
-    if [[ "$old_api_enabled" == enabled ]]; then
-        systemctl enable "$API_UNIT" || rollback_status=1
-    else
-        systemctl disable "$API_UNIT" || rollback_status=1
-    fi
-    if [[ "$old_timer_enabled" == enabled ]]; then
-        systemctl enable "$BACKUP_TIMER" || rollback_status=1
-    else
-        systemctl disable "$BACKUP_TIMER" || rollback_status=1
+    if [[ "$INSTALL_UNITS_INSTALLED" == 1 ]]; then
+        if restore_systemd_units "$INSTALL_UNIT_BACKUP_DIR"; then
+            INSTALL_UNITS_INSTALLED=0
+        else
+            units_restored=0
+            rollback_status=1
+        fi
     fi
 
-    if [[ "$old_api_active" == active && -n "$old_current_target" ]]; then
-        systemctl start "$API_UNIT" || rollback_status=1
-    fi
-    if [[ "$old_timer_active" == active && -n "$old_current_target" ]]; then
-        systemctl start "$BACKUP_TIMER" || rollback_status=1
+    if [[ "$units_restored" == 1 && "$rollback_status" == 0 ]]; then
+        if [[ "$old_api_enabled" == enabled ]]; then
+            systemctl enable "$API_UNIT" || rollback_status=1
+        else
+            systemctl disable "$API_UNIT" || rollback_status=1
+        fi
+        if [[ "$old_timer_enabled" == enabled ]]; then
+            systemctl enable "$BACKUP_TIMER" || rollback_status=1
+        else
+            systemctl disable "$BACKUP_TIMER" || rollback_status=1
+        fi
+
+        if [[ "$old_api_active" == active && -n "$old_current_target" ]]; then
+            systemctl start "$API_UNIT" || rollback_status=1
+        fi
+        if [[ "$old_timer_active" == active && -n "$old_current_target" ]]; then
+            systemctl start "$BACKUP_TIMER" || rollback_status=1
+        fi
     fi
 
     if [[ -n "$old_current_target" ]]; then
@@ -664,14 +783,19 @@ install_cleanup() {
     local status=$?
     local rollback_status=0
     trap - EXIT
+    trap '' INT TERM
     set +e
 
     if [[ -n "$INSTALL_CURRENT_LINK" ]]; then
         rm -f -- "$INSTALL_CURRENT_LINK"
     fi
-    if [[ -n "$INSTALL_TEMPORARY_DIR" ]]; then
-        rm -rf -- "$INSTALL_TEMPORARY_DIR"
-    fi
+    rm -f -- \
+        "${API_UNIT_PATH}.install.$$" \
+        "${BACKUP_SERVICE_UNIT_PATH}.install.$$" \
+        "${BACKUP_TIMER_UNIT_PATH}.install.$$" \
+        "${API_UNIT_PATH}.rollback.$$" \
+        "${BACKUP_SERVICE_UNIT_PATH}.rollback.$$" \
+        "${BACKUP_TIMER_UNIT_PATH}.rollback.$$"
 
     if [[ "$status" != 0 && "$INSTALL_ACTIVATED" == 1 ]]; then
         INSTALL_PRESERVE_RELEASE=1
@@ -690,15 +814,57 @@ install_cleanup() {
             INSTALL_ACTIVATED=0
             INSTALL_PRESERVE_RELEASE=0
         fi
-    elif [[ "$status" != 0 && -n "$INSTALL_RELEASE_DIR" \
+    elif [[ "$status" != 0 && "$INSTALL_UNITS_INSTALLED" == 1 ]]; then
+        INSTALL_PRESERVE_RELEASE=1
+        if restore_systemd_units "$INSTALL_UNIT_BACKUP_DIR"; then
+            INSTALL_UNITS_INSTALLED=0
+            INSTALL_PRESERVE_RELEASE=0
+        else
+            fail INSTALL_ROLLBACK_FAILED
+            rollback_status=1
+        fi
+    fi
+
+    if [[ "$status" != 0 && -n "$INSTALL_RELEASE_DIR" \
         && "$INSTALL_PRESERVE_RELEASE" == 0 ]]; then
         remove_owned_release "$INSTALL_RELEASE_DIR" "$INSTALL_OWNERSHIP_TOKEN" || true
+    fi
+
+    if [[ "$rollback_status" == 0 && -n "$INSTALL_TEMPORARY_DIR" ]]; then
+        rm -rf -- "$INSTALL_TEMPORARY_DIR"
+    elif [[ "$rollback_status" != 0 && -n "$INSTALL_UNIT_BACKUP_DIR" ]]; then
+        printf 'rollback_backup_dir=%s\n' "$INSTALL_UNIT_BACKUP_DIR" >&2
     fi
 
     if [[ "$rollback_status" != 0 ]]; then
         status=1
     fi
     exit "$status"
+}
+
+finalize_successful_install() {
+    local release_dir=$1
+    local temporary_dir=$2
+
+    trap '' INT TERM
+    owns_release_directory "$release_dir" "$INSTALL_OWNERSHIP_TOKEN" || {
+        fail OWNERSHIP_MARKER_INVALID
+        return 1
+    }
+    rm -f -- "$release_dir/.install-owner" || {
+        fail OWNERSHIP_MARKER_REMOVE_FAILED
+        return 1
+    }
+    INSTALL_RELEASE_CREATED=0
+    INSTALL_ACTIVATED=0
+    INSTALL_UNITS_INSTALLED=0
+    if ! rm -rf -- "$temporary_dir"; then
+        fail TEMPORARY_CLEANUP_FAILED
+        return 1
+    fi
+    INSTALL_TEMPORARY_DIR=""
+    INSTALL_UNIT_BACKUP_DIR=""
+    trap - INT TERM EXIT
 }
 
 main() {
@@ -727,6 +893,8 @@ main() {
     INSTALL_API_STARTED=0
     INSTALL_TIMER_STARTED=0
     INSTALL_OWNERSHIP_TOKEN=""
+    INSTALL_UNIT_BACKUP_DIR=""
+    INSTALL_UNITS_INSTALLED=0
 
     archive=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1")
     sha_file=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$2")
@@ -810,10 +978,6 @@ main() {
     else
         compare_environment "$RELEASE_DIR/env/card-os.env" /etc/cognitive-card-server/card-os.env
     fi
-    install -o root -g root -m 0644 "$RELEASE_DIR/systemd/cognitive-card-server.service" /etc/systemd/system/cognitive-card-server.service
-    install -o root -g root -m 0644 "$RELEASE_DIR/systemd/cognitive-card-backup.service" /etc/systemd/system/cognitive-card-backup.service
-    install -o root -g root -m 0644 "$RELEASE_DIR/systemd/cognitive-card-backup.timer" /etc/systemd/system/cognitive-card-backup.timer
-
     if [[ -L /opt/cognitive-card-server/current ]]; then
         old_current_target=$(readlink /opt/cognitive-card-server/current)
     elif [[ -e /opt/cognitive-card-server/current ]]; then
@@ -829,6 +993,8 @@ main() {
     INSTALL_OLD_TIMER_ACTIVE=$old_timer_active
     INSTALL_OLD_TIMER_ENABLED=$old_timer_enabled
 
+    INSTALL_UNIT_BACKUP_DIR="$temporary_dir/systemd-backup"
+    install_systemd_units "$RELEASE_DIR/systemd" "$INSTALL_UNIT_BACKUP_DIR"
     systemctl daemon-reload
     INSTALL_CURRENT_LINK="/opt/cognitive-card-server/.current.$$.tmp"
     rm -f -- "$INSTALL_CURRENT_LINK"
@@ -847,13 +1013,7 @@ main() {
 
     INSTALL_TIMER_STARTED=1
     systemctl enable --now cognitive-card-backup.timer
-    rm -rf -- "$temporary_dir"
-    INSTALL_TEMPORARY_DIR=""
-    trap '' INT TERM
-    owns_release_directory "$RELEASE_DIR" "$INSTALL_OWNERSHIP_TOKEN" || fail OWNERSHIP_MARKER_INVALID
-    rm -f -- "$RELEASE_DIR/.install-owner"
-    INSTALL_RELEASE_CREATED=0
-    trap - INT TERM EXIT
+    finalize_successful_install "$RELEASE_DIR" "$temporary_dir"
     printf 'status=installed release=%s\n' "$release_id"
 }
 
