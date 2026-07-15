@@ -18,6 +18,7 @@ import unittest
 import warnings
 import zipfile
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,6 +101,7 @@ def write_test_wheel(
     corrupt_record_for: str | None = None,
     wheel_tags: tuple[str, ...] | None = None,
     module_content: bytes = b"MARKER = 'governed'\n",
+    compression: int = zipfile.ZIP_STORED,
 ) -> None:
     distribution = name.replace("-", "_").replace(".", "_")
     dist_info = f"{distribution}-{version}.dist-info"
@@ -139,12 +141,14 @@ def write_test_wheel(
             info = zipfile.ZipInfo(entry_name)
             info.create_system = 3
             info.external_attr = mode << 16
+            info.compress_type = compression
             wheel_archive.writestr(info, content)
         if duplicate_member is not None:
             duplicate = next(content for entry_name, content, _ in entries if entry_name == duplicate_member)
             info = zipfile.ZipInfo(duplicate_member)
             info.create_system = 3
             info.external_attr = 0o100644 << 16
+            info.compress_type = compression
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", UserWarning)
                 wheel_archive.writestr(info, duplicate)
@@ -364,6 +368,90 @@ class WheelAuditTests(unittest.TestCase):
             for wheel, name in ((future, "future"), (old_abi, "old-abi")):
                 with self.subTest(wheel=wheel.name), self.assertRaises(audit.WheelAuditError):
                     audit.audit_wheel(wheel, name, "1.0")
+
+    def test_wheel_audit_rejects_noncanonical_posix_aliases_and_collisions(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            for label, alias in (
+                ("double-slash", "alias_demo//payload.py"),
+                ("dot-component", "alias_demo/./payload.py"),
+            ):
+                wheel = base / label / "alias_demo-1.0-py3-none-any.whl"
+                write_test_wheel(
+                    wheel,
+                    name="alias-demo",
+                    version="1.0",
+                    extra_members=(
+                        ("alias_demo/payload.py", b"canonical", 0o100644),
+                        (alias, b"alias", 0o100644),
+                    ),
+                )
+                with self.subTest(label=label), self.assertRaises(audit.WheelAuditError):
+                    audit.audit_wheel(wheel, "alias-demo", "1.0")
+
+    def test_valid_abi_none_target_tag_matrix_is_accepted(self) -> None:
+        audit = load_wheel_audit_module()
+        valid_tags = (
+            "py3-none-any",
+            "py312-none-any",
+            "cp312-none-any",
+            "py3-none-manylinux_2_17_x86_64",
+            "py312-none-manylinux2014_x86_64",
+            "cp312-none-manylinux_2_28_x86_64",
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            for index, tag in enumerate(valid_tags):
+                wheel = base / f"none_demo{index}-1.0-{tag}.whl"
+                name = f"none-demo{index}"
+                write_test_wheel(wheel, name=name, version="1.0", tags=(tag,))
+                with self.subTest(tag=tag):
+                    self.assertEqual((name, "1.0"), audit.audit_wheel(wheel, name, "1.0"))
+
+    def test_wheel_resource_limits_accept_exact_boundary_and_reject_excess(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            wheel = Path(temporary) / "limit_demo-1.0-py3-none-any.whl"
+            write_test_wheel(wheel, name="limit-demo", version="1.0")
+            with zipfile.ZipFile(wheel) as archive:
+                infos = archive.infolist()
+                boundaries = {
+                    "MAX_ARCHIVE_SIZE": wheel.stat().st_size,
+                    "MAX_ENTRIES": len(infos),
+                    "MAX_MEMBER_SIZE": max(info.file_size for info in infos),
+                    "MAX_TOTAL_SIZE": sum(info.file_size for info in infos),
+                }
+            for constant, boundary in boundaries.items():
+                with self.subTest(constant=constant, state="exact"), mock.patch.object(
+                    audit, constant, boundary
+                ):
+                    self.assertEqual(
+                        ("limit-demo", "1.0"),
+                        audit.audit_wheel(wheel, "limit-demo", "1.0"),
+                    )
+                with self.subTest(constant=constant, state="excess"), mock.patch.object(
+                    audit, constant, boundary - 1
+                ), self.assertRaises(audit.WheelAuditError):
+                    audit.audit_wheel(wheel, "limit-demo", "1.0")
+
+    def test_highly_compressed_member_is_bounded_by_uncompressed_size(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            wheel = Path(temporary) / "compressed_demo-1.0-py3-none-any.whl"
+            payload = b"A" * (256 * 1024)
+            write_test_wheel(
+                wheel,
+                name="compressed-demo",
+                version="1.0",
+                extra_members=(("compressed_demo/payload.bin", payload, 0o100644),),
+                compression=zipfile.ZIP_DEFLATED,
+            )
+            self.assertLess(wheel.stat().st_size, len(payload) // 8)
+            with mock.patch.object(audit, "MAX_MEMBER_SIZE", len(payload) - 1), self.assertRaises(
+                audit.WheelAuditError
+            ):
+                audit.audit_wheel(wheel, "compressed-demo", "1.0")
 
 
 class BuilderFixture:
@@ -978,22 +1066,16 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             base = Path(temporary)
             governed = base / "governed"
             attacker = base / "attacker"
-            governed_wheel = governed / "demo-1.0-py3-none-any.whl"
-            attacker_wheel = attacker / "demo-1.0-py3-none-any.whl"
-            write_test_wheel(
-                governed_wheel,
-                name="demo",
-                version="1.0",
-                module_content=b"MARKER = 'governed'\n",
-            )
+            governed.mkdir()
+            attacker_wheel = attacker / "attacker_only-1.0-py3-none-any.whl"
             write_test_wheel(
                 attacker_wheel,
-                name="demo",
+                name="attacker-only",
                 version="1.0",
                 module_content=b"MARKER = 'attacker'\n",
             )
             lock = base / "runtime.lock"
-            lock.write_text("demo==1.0\n", encoding="utf-8")
+            lock.write_text("attacker-only==1.0\n", encoding="utf-8")
             config = base / "pip.conf"
             config.write_text(
                 f"[global]\nno-index = true\nfind-links = {attacker}\n",
@@ -1016,15 +1098,14 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
                 os.fspath(governed),
                 env=environment,
             )
-            self.assertEqual(0, installed.returncode, installed.stderr)
-            marker = run(
+            self.assertNotEqual(0, installed.returncode, installed.stdout)
+            imported = run(
                 os.fspath(venv / "bin" / "python"),
                 "-c",
-                "import demo; print(demo.MARKER)",
+                "import attacker_only",
                 cwd=ROOT,
             )
-            self.assertEqual(0, marker.returncode, marker.stderr)
-            self.assertEqual("governed\n", marker.stdout)
+            self.assertNotEqual(0, imported.returncode)
 
     def test_first_install_prepares_private_data_paths_and_cleans_probe(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

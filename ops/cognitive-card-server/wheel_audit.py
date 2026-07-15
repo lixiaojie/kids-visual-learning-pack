@@ -48,7 +48,11 @@ def safe_member_name(name: str) -> bool:
     if not name or len(name) > 512 or "\\" in name or "\x00" in name:
         return False
     path = PurePosixPath(name)
-    return not path.is_absolute() and all(part not in {"", ".", ".."} for part in path.parts)
+    return (
+        name == path.as_posix()
+        and not path.is_absolute()
+        and all(part not in {"", ".", ".."} for part in path.parts)
+    )
 
 
 def expand_tag(tag: str) -> set[tuple[str, str, str]]:
@@ -76,8 +80,8 @@ def compatible_tag(tag: tuple[str, str, str]) -> bool:
     if not platform_ok:
         return False
 
-    if python_tag in {"py3", "py312"}:
-        return abi_tag == "none" and platform_tag == "any"
+    if python_tag in {"py3", "py312", "cp312"} and abi_tag == "none":
+        return True
     if python_tag == "cp312":
         return abi_tag in {"cp312", "abi3"} and platform_tag != "any"
     abi3 = re.fullmatch(r"cp3(\d+)", python_tag)
