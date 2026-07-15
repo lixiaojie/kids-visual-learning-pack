@@ -70,9 +70,12 @@ install_runtime_dependencies() {
 install_application_wheel() {
     local python_path=$1
     local wheel=$2
+    local wheel_directory
+    wheel_directory=$(dirname -- "$wheel")
     env -u PIP_INDEX_URL -u PIP_EXTRA_INDEX_URL PIP_CONFIG_FILE=/dev/null \
         "$python_path" -m pip --isolated --disable-pip-version-check \
-        install --no-input --no-index --no-deps "$wheel"
+        install --no-input --no-index --no-deps --find-links "$wheel_directory" \
+        cognitive-card-server==0.3.0
 }
 
 prepare_data_layout() {

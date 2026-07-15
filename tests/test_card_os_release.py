@@ -1105,13 +1105,14 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             self.assertNotIn("--extra-index-url", recorded["arguments"])
             self.assertNotIn("--index-url", recorded["arguments"])
 
-    def test_local_wheel_install_is_isolated_no_index_and_no_deps(self) -> None:
+    def test_application_install_resolves_exact_audited_distribution_offline(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
             recorder = base / "python"
             command_log = base / "command.json"
-            wheel = base / "application.whl"
-            wheel.write_bytes(b"wheel")
+            release = base / "release"
+            release.mkdir()
+            (release / "cognitive_card_server-0.3.0-py3-none-any.whl").write_bytes(b"wheel")
             self.write_pip_recorder(recorder)
             environment = os.environ.copy()
             environment.update({
@@ -1124,7 +1125,7 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             process = self.run_installer_function(
                 'source "$1"; install_application_wheel "$2" "$3"',
                 os.fspath(recorder),
-                os.fspath(wheel),
+                os.fspath(release / "cognitive_card_server-0.3.0-py3-none-any.whl"),
                 env=environment,
             )
 
@@ -1133,13 +1134,78 @@ class CardOsReleaseInstallerTests(unittest.TestCase):
             self.assertEqual(
                 [
                     "-m", "pip", "--isolated", "--disable-pip-version-check",
-                    "install", "--no-input", "--no-index", "--no-deps", os.fspath(wheel),
+                    "install", "--no-input", "--no-index", "--no-deps", "--find-links",
+                    os.fspath(release), "cognitive-card-server==0.3.0",
                 ],
                 recorded["arguments"],
             )
             self.assertEqual(os.devnull, recorded["pip_config_file"])
             self.assertIsNone(recorded["pip_index_url"])
             self.assertIsNone(recorded["pip_extra_index_url"])
+
+    def test_real_pip_application_install_produces_canonical_freeze(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            release = base / "release"
+            release.mkdir()
+            wheel = release / "cognitive_card_server-0.3.0-py3-none-any.whl"
+            write_test_wheel(wheel, name="cognitive-card-server", version="0.3.0")
+
+            direct_venv = base / "direct-venv"
+            created = run(sys.executable, "-m", "venv", os.fspath(direct_venv), cwd=ROOT)
+            self.assertEqual(0, created.returncode, created.stderr)
+            direct = run(
+                os.fspath(direct_venv / "bin" / "python"),
+                "-m", "pip", "--isolated", "--disable-pip-version-check",
+                "install", "--no-input", "--no-index", "--no-deps", os.fspath(wheel),
+                cwd=ROOT,
+            )
+            self.assertEqual(0, direct.returncode, direct.stderr)
+            direct_freeze = run(
+                os.fspath(direct_venv / "bin" / "python"),
+                "-m", "pip", "freeze", "--all",
+                cwd=ROOT,
+            )
+            self.assertEqual(0, direct_freeze.returncode, direct_freeze.stderr)
+            self.assertIn("cognitive-card-server @ file://", direct_freeze.stdout)
+            rejected = subprocess.run(
+                ["bash", "-c", 'source "$1"; normalize_freeze', "normalizer", os.fspath(INSTALLER)],
+                input=direct_freeze.stdout,
+                text=True,
+                capture_output=True,
+                cwd=ROOT,
+                check=False,
+            )
+            self.assertNotEqual(0, rejected.returncode)
+            self.assertIn("INVALID_FREEZE", rejected.stderr)
+
+            resolved_venv = base / "resolved-venv"
+            created = run(sys.executable, "-m", "venv", os.fspath(resolved_venv), cwd=ROOT)
+            self.assertEqual(0, created.returncode, created.stderr)
+            installed = self.run_installer_function(
+                'source "$1"; install_application_wheel "$2" "$3"',
+                os.fspath(resolved_venv / "bin" / "python"),
+                os.fspath(wheel),
+            )
+            self.assertEqual(0, installed.returncode, installed.stderr)
+            resolved_freeze = run(
+                os.fspath(resolved_venv / "bin" / "python"),
+                "-m", "pip", "freeze", "--all",
+                cwd=ROOT,
+            )
+            self.assertEqual(0, resolved_freeze.returncode, resolved_freeze.stderr)
+            self.assertIn("cognitive-card-server==0.3.0\n", resolved_freeze.stdout)
+            self.assertNotIn("cognitive-card-server @ ", resolved_freeze.stdout)
+            normalized = subprocess.run(
+                ["bash", "-c", 'source "$1"; normalize_freeze', "normalizer", os.fspath(INSTALLER)],
+                input=resolved_freeze.stdout,
+                text=True,
+                capture_output=True,
+                cwd=ROOT,
+                check=False,
+            )
+            self.assertEqual(0, normalized.returncode, normalized.stderr)
+            self.assertIn("cognitive-card-server==0.3.0\n", normalized.stdout)
 
     def test_real_pip_cannot_use_hostile_config_or_find_links(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
