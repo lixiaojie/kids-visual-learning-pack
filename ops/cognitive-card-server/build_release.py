@@ -8,6 +8,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tarfile
@@ -67,8 +68,79 @@ def run_checked(arguments: list[str], *, cwd: Path | None = None) -> str:
     return process.stdout.strip()
 
 
+def run_checked_bytes(arguments: list[str], *, cwd: Path | None = None) -> bytes:
+    try:
+        process = subprocess.run(
+            arguments,
+            cwd=cwd,
+            capture_output=True,
+            check=False,
+        )
+    except OSError as error:
+        raise ReleaseError("COMMAND_FAILED") from error
+    if process.returncode:
+        raise ReleaseError("COMMAND_FAILED")
+    return process.stdout
+
+
 def git(repository: Path, *arguments: str) -> str:
     return run_checked(["git", "-C", os.fspath(repository), *arguments])
+
+
+def git_tree_entries(repository: Path, commit: str) -> list[tuple[str, str, str, str]]:
+    output = run_checked_bytes(
+        [
+            "git",
+            "-C",
+            os.fspath(repository),
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            commit,
+        ]
+    )
+    entries: list[tuple[str, str, str, str]] = []
+    for record in output.split(b"\0"):
+        if not record:
+            continue
+        header, separator, path_bytes = record.partition(b"\t")
+        fields = header.split(b" ")
+        if not separator or len(fields) != 3 or not path_bytes:
+            raise ReleaseError("COMMAND_FAILED")
+        try:
+            mode = fields[0].decode("ascii")
+            object_type = fields[1].decode("ascii")
+            object_id = fields[2].decode("ascii").lower()
+        except UnicodeDecodeError as error:
+            raise ReleaseError("COMMAND_FAILED") from error
+        if COMMIT_PATTERN.fullmatch(object_id) is None:
+            raise ReleaseError("COMMAND_FAILED")
+        entries.append((mode, object_type, object_id, os.fsdecode(path_bytes)))
+    return entries
+
+
+def validate_regular_tree(entries: list[tuple[str, str, str, str]]) -> None:
+    if any(
+        mode not in {"100644", "100755"} or object_type != "blob"
+        for mode, object_type, _, _ in entries
+    ):
+        raise ReleaseError("COMMAND_FAILED")
+
+
+def validate_staged_bytes(
+    source_dir: Path, entries: list[tuple[str, str, str, str]]
+) -> None:
+    for _, _, object_id, path in entries:
+        staged = source_dir / path
+        try:
+            metadata = staged.lstat()
+        except OSError as error:
+            raise ReleaseError("COMMAND_FAILED") from error
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ReleaseError("COMMAND_FAILED")
+        if git(source_dir, "hash-object", "--no-filters", "--", path).lower() != object_id:
+            raise ReleaseError("COMMAND_FAILED")
 
 
 def canonical_json(value: object) -> bytes:
@@ -133,6 +205,8 @@ def build_release(
         raise ReleaseError("SOURCE_COMMIT_MISMATCH")
     if git(server_repo, "status", "--porcelain"):
         raise ReleaseError("SOURCE_WORKTREE_DIRTY")
+    tree_entries = git_tree_entries(server_repo, expected_commit)
+    validate_regular_tree(tree_entries)
 
     ops_dir = Path(__file__).resolve().parent
     governance_repo = operations_repository(ops_dir)
@@ -157,6 +231,7 @@ def build_release(
                 "git",
                 "clone",
                 "--no-checkout",
+                "--no-local",
                 "--quiet",
                 "--",
                 os.fspath(server_repo),
@@ -179,8 +254,12 @@ def build_release(
             or git(source_dir, "status", "--porcelain")
         ):
             raise ReleaseError("COMMAND_FAILED")
+        validate_staged_bytes(source_dir, tree_entries)
         wheel_dir = staging / "wheel"
         wheel_dir.mkdir()
+        # The pinned backend still executes as the invoking user. This staging
+        # boundary protects the live tree from ordinary build outputs; it is
+        # not an operating-system sandbox for hostile build code.
         run_checked(
             [
                 os.fspath(python),

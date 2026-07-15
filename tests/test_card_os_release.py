@@ -175,6 +175,13 @@ class BuilderFixture:
                     text=True,
                     capture_output=True,
                 ).stdout.strip()
+                application = pathlib.Path(os.environ["FAKE_APPLICATION_ROOT"])
+                def object_inodes(repository):
+                    return {{
+                        (path.stat().st_dev, path.stat().st_ino)
+                        for path in (repository / ".git" / "objects").rglob("*")
+                        if path.is_file() and not path.is_symlink()
+                    }}
                 wheel_dir = pathlib.Path(sys.argv[sys.argv.index("--wheel-dir") + 1])
                 backend_artifact = source / "build" / "backend-created.txt"
                 pathlib.Path(os.environ["FAKE_WHEEL_LOG"]).write_text(json.dumps({{
@@ -182,11 +189,13 @@ class BuilderFixture:
                     "source_head": source_head,
                     "source_status": source_status,
                     "backend_artifact": str(backend_artifact),
+                    "shared_object_inodes": len(
+                        object_inodes(source) & object_inodes(application)
+                    ),
                 }}))
                 backend_artifact.parent.mkdir(parents=True, exist_ok=True)
                 backend_artifact.write_text("backend output")
                 if os.environ.get("FAKE_MUTATE_APPLICATION"):
-                    application = pathlib.Path(os.environ["FAKE_APPLICATION_ROOT"])
                     (application / "changed-during-build.txt").write_text("changed")
                 wheel_dir.mkdir(parents=True, exist_ok=True)
                 (wheel_dir / "cognitive_card_server-0.3.0-py3-none-any.whl").write_bytes(b"fixture-wheel")
@@ -216,6 +225,11 @@ class BuilderFixture:
             cwd=self.governance,
             env=environment,
         )
+
+    def commit_application(self, message: str) -> None:
+        git(self.application, "add", "-A")
+        git(self.application, "commit", "-qm", message)
+        self.application_commit = git(self.application, "rev-parse", "HEAD")
 
 
 class CardOsReleaseBuilderTests(unittest.TestCase):
@@ -287,11 +301,64 @@ class CardOsReleaseBuilderTests(unittest.TestCase):
         self.assertEqual(wheel_dir.parent, source.parent)
         self.assertEqual(fixture.application_commit, wheel_invocation["source_head"])
         self.assertEqual("", wheel_invocation["source_status"])
+        self.assertEqual(0, wheel_invocation["shared_object_inodes"])
         self.assertEqual(
             source / "build" / "backend-created.txt",
             Path(wheel_invocation["backend_artifact"]),
         )
         self.assertFalse((fixture.application / "build").exists())
+        self.assertFalse(source.exists())
+        self.assertFalse(wheel_dir.exists())
+
+    def test_gitlink_is_rejected_before_wheel_execution(self) -> None:
+        fixture = BuilderFixture(self)
+        submodule = fixture.base / "submodule"
+        submodule.mkdir()
+        (submodule / "content.txt").write_text("submodule", encoding="utf-8")
+        fixture._init_git(submodule)
+        git(
+            fixture.application,
+            "-c",
+            "protocol.file.allow=always",
+            "submodule",
+            "add",
+            "-q",
+            os.fspath(submodule),
+            "vendor/module",
+        )
+        fixture.commit_application("add gitlink")
+
+        process = fixture.invoke()
+
+        self.assertNotEqual(0, process.returncode)
+        self.assertIn("COMMAND_FAILED", process.stderr)
+        self.assertFalse(fixture.log.exists())
+
+    def test_tracked_symlink_is_rejected_before_wheel_execution(self) -> None:
+        fixture = BuilderFixture(self)
+        (fixture.application / "escaping-link").symlink_to("../outside")
+        fixture.commit_application("add symlink")
+
+        process = fixture.invoke()
+
+        self.assertNotEqual(0, process.returncode)
+        self.assertIn("COMMAND_FAILED", process.stderr)
+        self.assertFalse(fixture.log.exists())
+
+    def test_checkout_transformed_regular_file_is_rejected_before_wheel_execution(self) -> None:
+        fixture = BuilderFixture(self)
+        (fixture.application / ".gitattributes").write_text(
+            "transformed.txt text eol=crlf\n",
+            encoding="utf-8",
+        )
+        (fixture.application / "transformed.txt").write_bytes(b"exact blob bytes\n")
+        fixture.commit_application("add checkout transformation")
+
+        process = fixture.invoke()
+
+        self.assertNotEqual(0, process.returncode)
+        self.assertIn("COMMAND_FAILED", process.stderr)
+        self.assertFalse(fixture.log.exists())
 
     def test_builds_closed_normalized_release_with_dual_git_provenance(self) -> None:
         fixture = BuilderFixture(self)
