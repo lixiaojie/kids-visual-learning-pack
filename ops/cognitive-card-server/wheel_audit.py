@@ -55,6 +55,10 @@ def safe_member_name(name: str) -> bool:
     )
 
 
+def safe_directory_name(name: str) -> bool:
+    return name.endswith("/") and safe_member_name(name[:-1])
+
+
 def expand_tag(tag: str) -> set[tuple[str, str, str]]:
     fields = tag.split("-")
     if len(fields) != 3:
@@ -184,16 +188,30 @@ def audit_wheel(path: Path, expected_name: str, expected_version: str) -> tuple[
                 invalid()
             total_size = 0
             members: dict[str, bytes] = {}
+            logical_names: set[str] = set()
             for info in infos:
+                directory = info.is_dir()
+                logical_name = info.filename[:-1] if directory else info.filename
                 if (
-                    not safe_member_name(info.filename)
-                    or info.is_dir()
+                    logical_name in logical_names
                     or info.flag_bits & 1
                     or info.file_size > MAX_MEMBER_SIZE
                 ):
                     invalid()
+                logical_names.add(logical_name)
                 mode = (info.external_attr >> 16) & 0xFFFF
                 file_type = stat.S_IFMT(mode)
+                if directory:
+                    if (
+                        not safe_directory_name(info.filename)
+                        or info.file_size != 0
+                        or info.compress_size != 0
+                        or file_type != stat.S_IFDIR
+                    ):
+                        invalid()
+                    continue
+                if not safe_member_name(info.filename):
+                    invalid()
                 if file_type not in {0, stat.S_IFREG}:
                     invalid()
                 total_size += info.file_size

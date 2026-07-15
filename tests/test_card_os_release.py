@@ -97,6 +97,7 @@ def write_test_wheel(
     metadata_name: str | None = None,
     metadata_version: str | None = None,
     extra_members: tuple[tuple[str, bytes, int], ...] = (),
+    directory_entries: tuple[tuple[str, bytes, int], ...] = (),
     duplicate_member: str | None = None,
     corrupt_record_for: str | None = None,
     wheel_tags: tuple[str, ...] | None = None,
@@ -138,6 +139,12 @@ def write_test_wheel(
     path.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as wheel_archive:
         for entry_name, content, mode in entries:
+            info = zipfile.ZipInfo(entry_name)
+            info.create_system = 3
+            info.external_attr = mode << 16
+            info.compress_type = compression
+            wheel_archive.writestr(info, content)
+        for entry_name, content, mode in directory_entries:
             info = zipfile.ZipInfo(entry_name)
             info.create_system = 3
             info.external_attr = mode << 16
@@ -389,6 +396,79 @@ class WheelAuditTests(unittest.TestCase):
                 )
                 with self.subTest(label=label), self.assertRaises(audit.WheelAuditError):
                     audit.audit_wheel(wheel, "alias-demo", "1.0")
+
+    def test_wheel_audit_accepts_safe_explicit_directories_outside_record(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            wheel = Path(temporary) / "directory_demo-1.0-py3-none-any.whl"
+            directories = (
+                ("directory_demo/", b"", 0o40755),
+                ("directory_demo-1.0.dist-info/licenses/", b"", 0o40755),
+            )
+            write_test_wheel(
+                wheel,
+                name="directory-demo",
+                version="1.0",
+                directory_entries=directories,
+            )
+
+            with zipfile.ZipFile(wheel) as archive:
+                record_path = "directory_demo-1.0.dist-info/RECORD"
+                record_names = {
+                    row[0]
+                    for row in csv.reader(
+                        io.StringIO(archive.read(record_path).decode("utf-8"), newline=""),
+                        strict=True,
+                    )
+                }
+            self.assertTrue(all(name not in record_names for name, _, _ in directories))
+            self.assertEqual(
+                ("directory-demo", "1.0"),
+                audit.audit_wheel(wheel, "directory-demo", "1.0"),
+            )
+
+    def test_wheel_audit_rejects_unsafe_explicit_directories(self) -> None:
+        audit = load_wheel_audit_module()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            cases = {
+                "alias": (("directory_demo//", b"", 0o40755),),
+                "nonempty": (("directory_demo/", b"payload", 0o40755),),
+                "symlink": (("directory_demo/", b"", 0o120777),),
+            }
+            for label, directories in cases.items():
+                wheel = base / label / "directory_demo-1.0-py3-none-any.whl"
+                write_test_wheel(
+                    wheel,
+                    name="directory-demo",
+                    version="1.0",
+                    directory_entries=directories,
+                )
+                with self.subTest(label=label), self.assertRaises(audit.WheelAuditError):
+                    audit.audit_wheel(wheel, "directory-demo", "1.0")
+
+            recorded = base / "recorded" / "directory_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                recorded,
+                name="directory-demo",
+                version="1.0",
+                extra_members=(("directory_demo/assets/", b"", 0o40755),),
+            )
+            with self.subTest(label="recorded"), self.assertRaises(audit.WheelAuditError):
+                audit.audit_wheel(recorded, "directory-demo", "1.0")
+
+            collision = base / "collision" / "directory_demo-1.0-py3-none-any.whl"
+            write_test_wheel(
+                collision,
+                name="directory-demo",
+                version="1.0",
+                extra_members=(("directory_demo/assets", b"file", 0o100644),),
+                directory_entries=(("directory_demo/assets/", b"", 0o40755),),
+            )
+            with self.subTest(label="file-directory-collision"), self.assertRaises(
+                audit.WheelAuditError
+            ):
+                audit.audit_wheel(collision, "directory-demo", "1.0")
 
     def test_valid_abi_none_target_tag_matrix_is_accepted(self) -> None:
         audit = load_wheel_audit_module()
