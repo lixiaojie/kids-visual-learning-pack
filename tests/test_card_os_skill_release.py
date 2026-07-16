@@ -425,6 +425,33 @@ class CardOsSkillReleaseTests(unittest.TestCase):
             self.assertEqual(len(source), declaration["size_bytes"])
             self.assertEqual(f"{SOURCE_FILES[relative]:04o}", declaration["mode"])
 
+    def test_validator_rejects_non_integer_protocol_metadata(self) -> None:
+        _, archive = self.build()
+
+        def replace_protocol_bound(members, field: str, value: object):
+            mutated = []
+            for info, content in members:
+                if info.filename == "cognitive-card-os/release.json":
+                    metadata = json.loads(content)
+                    metadata["protocol"][field] = value
+                    content = BUILDER.canonical_json(metadata)
+                mutated.append((info, content))
+            return mutated
+
+        for field in ("minimum", "maximum"):
+            for value in (True, 1.0):
+                with self.subTest(field=field, value=value):
+                    malformed = self.rewrite_archive(
+                        archive,
+                        lambda members, field=field, value=value: replace_protocol_bound(
+                            members, field, value
+                        ),
+                    )
+                    self.assert_error(
+                        "INVALID_RELEASE_METADATA",
+                        lambda malformed=malformed: BUILDER.validate_archive(malformed),
+                    )
+
     def test_validator_rejects_unsafe_names_and_duplicate_paths(self) -> None:
         _, archive = self.build()
         with zipfile.ZipFile(archive) as valid:

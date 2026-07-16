@@ -399,7 +399,13 @@ def _parse_release_metadata(content: bytes) -> dict[str, object]:
         _fail("INVALID_RELEASE_METADATA")
     if not isinstance(commit, str) or not COMMIT.fullmatch(commit):
         _fail("INVALID_RELEASE_METADATA")
-    if metadata.get("protocol") != PROTOCOL:
+    protocol = metadata.get("protocol")
+    if not isinstance(protocol, dict) or set(protocol) != set(PROTOCOL):
+        _fail("INVALID_RELEASE_METADATA")
+    if any(
+        type(protocol[bound]) is not int or protocol[bound] != PROTOCOL[bound]
+        for bound in PROTOCOL
+    ):
         _fail("INVALID_RELEASE_METADATA")
     if metadata.get("minimum_server_version") != MINIMUM_SERVER_VERSION:
         _fail("INVALID_RELEASE_METADATA")
