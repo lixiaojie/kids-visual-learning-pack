@@ -40,6 +40,22 @@ SOURCE_FILES = {
     "references/protocol.md": 0o644,
     "references/errors.md": 0o644,
 }
+PRODUCTION_MANIFEST = Path(
+    "/var/www/cognitive-card-skill-registry/v1/manifest.json"
+)
+
+
+def path_identity(path: Path) -> tuple[int, int, int, int] | None:
+    try:
+        status = path.lstat()
+    except FileNotFoundError:
+        return None
+    return (
+        status.st_ino,
+        status.st_mode,
+        status.st_size,
+        status.st_mtime_ns,
+    )
 
 
 class PublisherFixture:
@@ -185,7 +201,8 @@ class CardOsSkillPublisherTests(unittest.TestCase):
         self.assertTrue(PUBLISHER.verify_registry(registry_root=self.fixture.registry)["valid"])
 
     def test_inactive_release_derives_the_same_canonical_candidate_without_writing_it(self) -> None:
-        installer = self.publish_installer(activate=False)
+        production_before = path_identity(PRODUCTION_MANIFEST)
+        installer = self.publish_installer(activate=True)
         arguments = {
             "registry_root": self.fixture.registry,
             "archive": self.fixture.archive,
@@ -200,16 +217,34 @@ class CardOsSkillPublisherTests(unittest.TestCase):
         self.assertRegex(str(candidate_digest), r"^[0-9a-f]{64}$")
         self.assertFalse((self.fixture.registry / "manifest.json").exists())
         self.assertEqual([], list((self.fixture.registry / "manifests").iterdir()))
-
-        active = PUBLISHER.publish_release(
-            **arguments,
-            activate_stable=True,
+        validated = BUILDER.validate_archive(self.fixture.archive)
+        expected_candidate = {
+            "archive_sha256": validated["archive_sha256"],
+            "archive_size_bytes": validated["archive_size_bytes"],
+            "archive_url": (
+                "https://www.yutou.space/card-os/skill/v1/releases/"
+                f"{validated['version']}/cognitive-card-os.zip"
+            ),
+            "channel": "stable",
+            "installer": {
+                "sha256": installer["installer_sha256"],
+                "url": (
+                    "https://www.yutou.space/card-os/skill/v1/installers/"
+                    f"{installer['installer_sha256']}/install.sh"
+                ),
+            },
+            "minimum_server_version": validated["minimum_server_version"],
+            "protocol": validated["protocol"],
+            "published_at": "2026-07-16T01:02:03Z",
+            "schema": "cognitive-card-skill-registry-v1",
+            "source_commit": validated["source_commit"],
+            "version": validated["version"],
+        }
+        self.assertEqual(
+            hashlib.sha256(PUBLISHER.canonical_json(expected_candidate)).hexdigest(),
+            candidate_digest,
         )
-        manifest_bytes = (self.fixture.registry / "manifest.json").read_bytes()
-        self.assertEqual(candidate_digest, active["manifest_candidate_sha256"])
-        self.assertEqual(candidate_digest, active["manifest_sha256"])
-        self.assertEqual(candidate_digest, hashlib.sha256(manifest_bytes).hexdigest())
-        self.assertEqual(PUBLISHER.canonical_json(json.loads(manifest_bytes)), manifest_bytes)
+        self.assertEqual(production_before, path_identity(PRODUCTION_MANIFEST))
 
     def test_invalid_inactive_published_at_is_rejected_before_any_release_write(self) -> None:
         installer = self.publish_installer(activate=False)

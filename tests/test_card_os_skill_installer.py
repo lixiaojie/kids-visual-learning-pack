@@ -449,6 +449,25 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         self.assertEqual(0, again.returncode, again.stderr)
         self.assertEqual(before, self.snapshot(self.fixture.install_root))
 
+    def test_isolated_installs_have_identical_active_bytes_and_modes(self) -> None:
+        install_a = self.base / "isolated-a"
+        install_b = self.base / "isolated-b"
+        first = self.fixture.run(
+            "--channel", "stable", "--install-root", str(install_a)
+        )
+        second = self.fixture.run(
+            "--channel", "stable", "--install-root", str(install_b)
+        )
+        self.assertEqual(0, first.returncode, first.stderr)
+        self.assertEqual(0, second.returncode, second.stderr)
+
+        active_a = install_a / "skills" / "cognitive-card-os"
+        active_b = install_b / "skills" / "cognitive-card-os"
+        snapshot_a = self.exact_snapshot(active_a)
+        snapshot_b = self.exact_snapshot(active_b)
+        self.assertTrue(snapshot_a)
+        self.assertEqual(snapshot_a, snapshot_b)
+
     def test_default_codex_home_and_explicit_root(self) -> None:
         explicit = self.base / "explicit"
         result = self.fixture.run("--channel", "stable", "--install-root", str(explicit))
@@ -485,8 +504,21 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         old_digest = self.fixture.archive_digest
         upgraded = InstallerFixture(self.base / "upgrade", "0.2.0", b"upgrade")
         upgraded.install_root = self.fixture.install_root
-        self.assertEqual(0, upgraded.run("--version", "0.2.0").returncode)
+
         history = self.fixture.install_root / "skill-releases" / "cognitive-card-os"
+        active = self.fixture.install_root / "skills" / "cognitive-card-os"
+        before_active = self.snapshot(active)
+        before_state = (history / "state.json").read_bytes()
+        failed = upgraded.run(
+            "--version",
+            "0.2.0",
+            extra_env={"CARD_OS_INSTALL_ERROR": "after_new_active"},
+        )
+        self.assert_error(failed, "INJECTED_INSTALL_FAILURE")
+        self.assertEqual(before_active, self.snapshot(active))
+        self.assertEqual(before_state, (history / "state.json").read_bytes())
+
+        self.assertEqual(0, upgraded.run("--version", "0.2.0").returncode)
         state = json.loads((history / "state.json").read_bytes())
         self.assertEqual("0.2.0", state["active"]["version"])
         self.assertEqual({"version": "0.1.0", "archive_sha256": old_digest}, state["previous"])
@@ -1132,6 +1164,18 @@ class CardOsSkillInstallerTests(unittest.TestCase):
             else:
                 value = "link"
             result[relative] = (mode, value)
+        return result
+
+    @staticmethod
+    def exact_snapshot(path: Path) -> dict[str, tuple[int, bytes | None]]:
+        result: dict[str, tuple[int, bytes | None]] = {}
+        for item in [path, *sorted(path.rglob("*"))]:
+            relative = "." if item == path else item.relative_to(path).as_posix()
+            mode = stat.S_IMODE(item.lstat().st_mode)
+            result[relative] = (
+                mode,
+                item.read_bytes() if item.is_file() and not item.is_symlink() else None,
+            )
         return result
 
     @staticmethod

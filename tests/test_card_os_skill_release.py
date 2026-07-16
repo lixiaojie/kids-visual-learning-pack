@@ -15,7 +15,6 @@ import time
 import unittest
 import warnings
 import zipfile
-from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
@@ -55,6 +54,19 @@ BUILDER_SPEC.loader.exec_module(BUILDER)
 
 
 class CardOsSkillSourceTests(unittest.TestCase):
+    def test_repository_exposes_registry_build_and_test_gates(self) -> None:
+        package = json.loads((ROOT / "package.json").read_bytes())
+        self.assertEqual(
+            "python3 -m unittest tests.test_card_os_skill_release "
+            "tests.test_card_os_skill_installer tests.test_card_os_skill_publisher "
+            "tests.test_card_os_deployment_assets -v",
+            package["scripts"]["test:card-os-skill-registry"],
+        )
+        self.assertEqual(
+            "python3 ops/cognitive-card-skill/build_release.py",
+            package["scripts"]["build:card-os-skill"],
+        )
+
     def test_source_tree_is_the_exact_five_file_closure(self) -> None:
         self.assertTrue(
             SKILL_ROOT.is_dir(),
@@ -109,23 +121,6 @@ class CardOsSkillSourceTests(unittest.TestCase):
         self.assertEqual("cognitive-card-os", fields["name"])
         self.assertTrue(fields["description"])
         self.assertTrue(body.strip())
-
-
-@contextmanager
-def process_timezone(value: str):
-    previous = os.environ.get("TZ")
-    os.environ["TZ"] = value
-    if hasattr(time, "tzset"):
-        time.tzset()
-    try:
-        yield
-    finally:
-        if previous is None:
-            os.environ.pop("TZ", None)
-        else:
-            os.environ["TZ"] = previous
-        if hasattr(time, "tzset"):
-            time.tzset()
 
 
 class GitSkillFixture:
@@ -317,19 +312,61 @@ class CardOsSkillReleaseTests(unittest.TestCase):
             if path.is_file():
                 os.utime(path, (2_000_000_000 + index, 2_000_000_000 + index))
 
-        with process_timezone("Asia/Shanghai"):
-            _, archive_a = self.build(
-                repository=clone_a, output_root=self.base / "dist-a"
+        self.assertEqual("", subprocess.run(
+            ["git", "status", "--porcelain", "--", "skills/cognitive-card-os"],
+            cwd=clone_a,
+            check=True,
+            stdout=subprocess.PIPE,
+            text=True,
+        ).stdout)
+        self.assertEqual("", subprocess.run(
+            ["git", "status", "--porcelain", "--", "skills/cognitive-card-os"],
+            cwd=clone_b,
+            check=True,
+            stdout=subprocess.PIPE,
+            text=True,
+        ).stdout)
+
+        results: list[dict[str, object]] = []
+        for repository, output_root, timezone in (
+            (clone_a, self.base / "dist-a", "Asia/Shanghai"),
+            (clone_b, self.base / "dist-b", "UTC"),
+        ):
+            environment = os.environ.copy()
+            environment["TZ"] = timezone
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(BUILDER_PATH),
+                    "--repository",
+                    str(repository),
+                    "--expected-commit",
+                    self.commit,
+                    "--output-root",
+                    str(output_root),
+                ],
+                env=environment,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
             )
-        with process_timezone("UTC"):
-            _, archive_b = self.build(
-                repository=clone_b, output_root=self.base / "dist-b"
-            )
+            results.append(json.loads(completed.stdout))
+
+        archive_a = Path(str(results[0]["archive_path"]))
+        archive_b = Path(str(results[1]["archive_path"]))
 
         self.assertEqual(archive_a.read_bytes(), archive_b.read_bytes())
+        archive_digest = hashlib.sha256(archive_a.read_bytes()).hexdigest()
+        self.assertEqual(archive_digest, hashlib.sha256(archive_b.read_bytes()).hexdigest())
+        self.assertEqual(archive_digest, results[0]["archive_sha256"])
+        self.assertEqual(archive_digest, results[1]["archive_sha256"])
+        checksum_a = archive_a.with_name("sha256.txt").read_bytes()
+        checksum_b = archive_b.with_name("sha256.txt").read_bytes()
+        self.assertEqual(checksum_a, checksum_b)
         self.assertEqual(
-            hashlib.sha256(archive_a.read_bytes()).hexdigest(),
-            hashlib.sha256(archive_b.read_bytes()).hexdigest(),
+            f"{archive_digest}  cognitive-card-os.zip\n".encode("ascii"),
+            checksum_a,
         )
 
     def test_builder_uses_gmtime_and_canonical_two_second_clamped_zip_time(self) -> None:
