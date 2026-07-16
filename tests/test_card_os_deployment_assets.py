@@ -108,6 +108,69 @@ location = /card-os/ {
     return 307 /card-os/api/v1/capabilities;
 }
 
+location = /card-os/skill/v1/manifest.json {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    autoindex off;
+    add_header Cache-Control "no-cache" always;
+    alias /var/www/cognitive-card-skill-registry/v1/manifest.json;
+}
+
+location = /card-os/skill/v1/install.sh {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    autoindex off;
+    add_header Cache-Control "no-cache" always;
+    alias /var/www/cognitive-card-skill-registry/v1/installer-current/install.sh;
+}
+
+location = /card-os/skill/v1/install.sh.sha256 {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    autoindex off;
+    add_header Cache-Control "no-cache" always;
+    alias /var/www/cognitive-card-skill-registry/v1/installer-current/install.sh.sha256;
+}
+
+location ^~ /card-os/skill/v1/installers/ {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    autoindex off;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    alias /var/www/cognitive-card-skill-registry/v1/installers/;
+    try_files $uri =404;
+}
+
+location ^~ /card-os/skill/v1/manifests/ {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    autoindex off;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    alias /var/www/cognitive-card-skill-registry/v1/manifests/;
+    try_files $uri =404;
+}
+
+location ^~ /card-os/skill/v1/releases/ {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    autoindex off;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    alias /var/www/cognitive-card-skill-registry/v1/releases/;
+    try_files $uri =404;
+}
+
 location ^~ /card-os/api/ {
     access_log off;
     client_max_body_size 30m;
@@ -126,6 +189,25 @@ location ^~ /card-os/ {
     return 404;
 }
 """
+
+
+def parse_nginx_location_blocks(nginx: str) -> dict[str, str]:
+    blocks: dict[str, str] = {}
+    pattern = re.compile(r"location\s+((?:=|\^~)\s+\S+)\s*\{")
+    for match in pattern.finditer(nginx):
+        depth = 1
+        cursor = match.end()
+        while cursor < len(nginx) and depth:
+            if nginx[cursor] == "{":
+                depth += 1
+            elif nginx[cursor] == "}":
+                depth -= 1
+            cursor += 1
+        if depth:
+            raise AssertionError(f"unterminated Nginx location: {match.group(1)}")
+        blocks[match.group(1)] = nginx[match.end() : cursor - 1]
+    return blocks
+
 
 SITE_FIXTURE = """# A comment containing braces must not affect parsing: { }
 server {
@@ -221,16 +303,77 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertIn("access_log off", nginx)
         self.assertNotIn("/var/lib/cognitive-card-server/candidates", nginx)
 
+    def test_nginx_registry_is_exactly_read_only_and_fail_closed(self) -> None:
+        nginx = self.read_asset(NGINX_SNIPPET)
+        blocks = parse_nginx_location_blocks(nginx)
+        registry_root = "/var/www/cognitive-card-skill-registry/v1/"
+        active_aliases = {
+            "= /card-os/skill/v1/manifest.json": registry_root + "manifest.json",
+            "= /card-os/skill/v1/install.sh": (
+                registry_root + "installer-current/install.sh"
+            ),
+            "= /card-os/skill/v1/install.sh.sha256": (
+                registry_root + "installer-current/install.sh.sha256"
+            ),
+        }
+        immutable_aliases = {
+            "^~ /card-os/skill/v1/installers/": registry_root + "installers/",
+            "^~ /card-os/skill/v1/manifests/": registry_root + "manifests/",
+            "^~ /card-os/skill/v1/releases/": registry_root + "releases/",
+        }
+
+        self.assertEqual(
+            set(active_aliases) | set(immutable_aliases),
+            {selector for selector in blocks if "/card-os/skill/v1/" in selector},
+        )
+        api_offset = nginx.index("location ^~ /card-os/api/")
+        catch_all_offset = nginx.index("location ^~ /card-os/ {")
+        for selector in (*active_aliases, *immutable_aliases):
+            body = blocks[selector]
+            self.assertLess(nginx.index(f"location {selector} {{"), api_offset)
+            self.assertLess(nginx.index(f"location {selector} {{"), catch_all_offset)
+            self.assertIn("access_log off;", body)
+            self.assertIn("if ($request_method !~ ^(GET|HEAD)$)", body)
+            self.assertEqual(1, body.count("return 405;"))
+            self.assertIn("autoindex off;", body)
+            self.assertNotIn("proxy_pass", body)
+            self.assertNotIn("limit_except", body)
+            self.assertNotIn("error_page", body)
+            self.assertNotIn("rewrite", body)
+            for private_name in (
+                "candidate",
+                "database",
+                "sqlite",
+                "backup",
+                "staging",
+                "journal",
+            ):
+                self.assertNotIn(private_name, body.lower())
+
+        for selector, alias in active_aliases.items():
+            body = blocks[selector]
+            self.assertIn('add_header Cache-Control "no-cache" always;', body)
+            self.assertIn(f"alias {alias};", body)
+            self.assertNotIn("try_files", body)
+
+        for selector, alias in immutable_aliases.items():
+            body = blocks[selector]
+            self.assertIn(
+                'add_header Cache-Control "public, max-age=31536000, immutable" always;',
+                body,
+            )
+            self.assertIn(f"alias {alias};", body)
+            self.assertIn("try_files $uri =404;", body)
+
+        registry_text = "\n".join(
+            blocks[selector] for selector in (*active_aliases, *immutable_aliases)
+        )
+        self.assertEqual(6, registry_text.count(f"alias {registry_root}"))
+        self.assertNotIn("root ", registry_text)
+
     def test_non_api_card_os_namespace_selects_deny_only_catch_all(self) -> None:
         nginx = self.read_asset(NGINX_SNIPPET)
-        blocks = {
-            match.group("selector"): match.group("body")
-            for match in re.finditer(
-                r"location\s+(?P<selector>(?:=|\^~)\s+\S+)\s*\{"
-                r"(?P<body>[^{}]*)\}",
-                nginx,
-            )
-        }
+        blocks = parse_nginx_location_blocks(nginx)
 
         def selected_location(uri: str) -> str | None:
             exact = f"= {uri}"
@@ -248,6 +391,11 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
             "/card-os/candidates/",
             "/card-os/card-os.env",
             "/card-os/backups/",
+            "/card-os/skill/v1/candidates/",
+            "/card-os/skill/v1/card-os.sqlite3",
+            "/card-os/skill/v1/backups/",
+            "/card-os/skill/v1/staging/",
+            "/card-os/skill/v1/journal/",
         )
         for uri in sensitive_looking_paths:
             with self.subTest(uri=uri):
@@ -262,6 +410,12 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertEqual(
             "^~ /card-os/api/",
             selected_location("/card-os/api/v1/health"),
+        )
+        self.assertEqual(
+            "^~ /card-os/skill/v1/releases/",
+            selected_location(
+                "/card-os/skill/v1/releases/0.1.0/cognitive-card-os.zip"
+            ),
         )
 
 
