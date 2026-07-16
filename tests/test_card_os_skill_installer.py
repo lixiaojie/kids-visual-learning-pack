@@ -720,6 +720,74 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         self.assertEqual(0, recovered.returncode, recovered.stderr)
         self.assertNotIn("INVALID_CACHE", recovered.stderr)
 
+    def test_pre_journal_active_new_crash_is_reclaimed_before_next_operation(self) -> None:
+        self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
+        active = self.fixture.install_root / "skills" / "cognitive-card-os"
+        history = self.fixture.install_root / "skill-releases" / "cognitive-card-os"
+        state_before = (history / "state.json").read_bytes()
+        active_before = self.snapshot(active)
+        old_key = f"0.1.0-{self.fixture.archive_digest}"
+        old_cache_before = self.snapshot(history / old_key)
+
+        upgraded = InstallerFixture(
+            self.base / "pre-journal-upgrade", "0.2.0", b"pre-journal"
+        )
+        upgraded.install_root = self.fixture.install_root
+        interrupted = upgraded.run(
+            "--channel",
+            "stable",
+            extra_env={"CARD_OS_INSTALL_DURABILITY_FAULT": "active:new"},
+        )
+        self.assertNotEqual(0, interrupted.returncode)
+        orphan = self.fixture.install_root / "skills" / ".cognitive-card-os.new"
+        backup = self.fixture.install_root / "skills" / ".cognitive-card-os.backup"
+        self.assertTrue(orphan.is_dir())
+        self.assertFalse((history / "transaction.json").exists())
+        self.assertFalse(backup.exists())
+
+        checked = self.fixture.run(
+            "--channel",
+            "stable",
+            extra_env={"CARD_OS_INSTALL_TEST_TRACE": "1"},
+        )
+        self.assertEqual(0, checked.returncode, checked.stderr)
+        self.assertEqual(["delete:new"], self.transition_trace(checked.stderr))
+        self.assertFalse(orphan.exists())
+        self.assertEqual(active_before, self.snapshot(active))
+        self.assertEqual(state_before, (history / "state.json").read_bytes())
+        self.assertEqual(old_cache_before, self.snapshot(history / old_key))
+
+        completed = upgraded.run("--channel", "stable")
+        self.assertEqual(0, completed.returncode, completed.stderr)
+        state = json.loads((history / "state.json").read_bytes())
+        self.assertEqual("0.2.0", state["active"]["version"])
+        self.assertEqual("0.1.0", state["previous"]["version"])
+
+    def test_no_journal_unexpected_new_backup_combinations_fail_closed(self) -> None:
+        self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
+        skills = self.fixture.install_root / "skills"
+        active = skills / "cognitive-card-os"
+        new_active = skills / ".cognitive-card-os.new"
+        backup = skills / ".cognitive-card-os.backup"
+
+        cases = ("backup-only", "new-and-backup", "invalid-new")
+        for case in cases:
+            with self.subTest(case=case):
+                if new_active.exists():
+                    shutil.rmtree(new_active)
+                if backup.exists():
+                    shutil.rmtree(backup)
+                if case in {"new-and-backup", "invalid-new"}:
+                    shutil.copytree(active, new_active)
+                if case in {"backup-only", "new-and-backup"}:
+                    shutil.copytree(active, backup)
+                if case == "invalid-new":
+                    (new_active / "SKILL.md").write_bytes(b"not-a-cache-tree")
+                before = self.snapshot(self.fixture.install_root)
+                result = self.fixture.run("--channel", "stable")
+                self.assert_error(result, "INVALID_JOURNAL")
+                self.assertEqual(before, self.snapshot(self.fixture.install_root))
+
     def test_lock_rejects_true_holder_and_recovers_reused_live_pid(self) -> None:
         first = InstallerFixture(self.base / "lock-first", "0.1.0")
         self.assertEqual(0, first.run("--channel", "stable").returncode)

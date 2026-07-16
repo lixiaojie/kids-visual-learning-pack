@@ -810,6 +810,42 @@ class Store:
         self.journal_path.unlink()
         fsync_dir(self.history)
 
+    def reclaim_pre_journal_staging(self) -> None:
+        if self.journal_path.exists() or self.journal_path.is_symlink():
+            return
+        new_exists = self.new_active.exists() or self.new_active.is_symlink()
+        backup_exists = self.backup.exists() or self.backup.is_symlink()
+        if backup_exists:
+            fail("INVALID_JOURNAL")
+        if not new_exists:
+            return
+        if self.new_active.is_symlink() or not self.new_active.is_dir():
+            fail("INVALID_JOURNAL")
+
+        state = load_state(self.state_path)
+        self.validate_active(state)
+        matched_cache = False
+        try:
+            entries = tuple(self.history.iterdir())
+        except OSError:
+            fail("INVALID_JOURNAL")
+        for entry in entries:
+            name = entry.name
+            if len(name) <= 65 or name[-65] != "-":
+                continue
+            version, archive_sha = name[:-65], name[-64:]
+            if SEMVER.fullmatch(version) is None or SHA.fullmatch(archive_sha) is None:
+                continue
+            try:
+                cached = self.validate_cache(identity(version, archive_sha))
+            except InstallError:
+                fail("INVALID_JOURNAL")
+            if tree_matches(self.new_active, cached):
+                matched_cache = True
+        if not matched_cache:
+            fail("INVALID_JOURNAL")
+        self.remove_skill_entry(self.new_active)
+
 
 def copy_tree(source: Path, destination: Path) -> None:
     if destination.exists() or destination.is_symlink(): fail("INVALID_STATE")
@@ -886,6 +922,7 @@ def locked_operation(root: Path, callback):
     store.setup(); store.acquire()
     try:
         store.recover()
+        store.reclaim_pre_journal_staging()
         for staging in store.history.glob(".cache-*"):
             if staging.is_symlink() or not staging.is_dir(): fail("INVALID_CACHE")
             shutil.rmtree(staging)
