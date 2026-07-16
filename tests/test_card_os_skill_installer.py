@@ -599,7 +599,12 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         upgraded = second.run("--channel", "stable", extra_env=trace_env)
         self.assertEqual(0, upgraded.returncode, upgraded.stderr)
         self.assertEqual(
-            ["replace:active->backup", "replace:new->active", "delete:backup"],
+            [
+                "replace:active->backup",
+                "replace:new->active",
+                "replace:backup->cleanup-trash",
+                "delete:cleanup-trash",
+            ],
             self.transition_trace(upgraded.stderr),
         )
 
@@ -623,7 +628,8 @@ class CardOsSkillInstallerTests(unittest.TestCase):
                 "delete:recovery-trash",
                 "replace:active->backup",
                 "replace:new->active",
-                "delete:backup",
+                "replace:backup->cleanup-trash",
+                "delete:cleanup-trash",
             ],
             self.transition_trace(recovered.stderr),
         )
@@ -655,7 +661,8 @@ class CardOsSkillInstallerTests(unittest.TestCase):
                 "delete:recovery-trash",
                 "replace:active->backup",
                 "replace:new->active",
-                "delete:backup",
+                "replace:backup->cleanup-trash",
+                "delete:cleanup-trash",
             ],
             self.transition_trace(active_delete_recovery.stderr),
         )
@@ -679,8 +686,59 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         )
         self.assertEqual(0, committed_recovery.returncode, committed_recovery.stderr)
         self.assertEqual(
-            ["delete:backup"], self.transition_trace(committed_recovery.stderr)
+            ["replace:backup->cleanup-trash", "delete:cleanup-trash"],
+            self.transition_trace(committed_recovery.stderr),
         )
+
+    def test_committed_backup_cleanup_is_reentrant_in_success_and_recovery_paths(self) -> None:
+        for path_kind in ("normal-success", "committed-recovery"):
+            with self.subTest(path_kind=path_kind):
+                case = self.base / f"commit-cleanup-{path_kind}"
+                first = InstallerFixture(case / "first", "0.1.0")
+                self.assertEqual(0, first.run("--channel", "stable").returncode)
+                second = InstallerFixture(case / "second", "0.2.0", b"new")
+                second.install_root = first.install_root
+                history = first.install_root / "skill-releases" / "cognitive-card-os"
+                skills = first.install_root / "skills"
+
+                if path_kind == "committed-recovery":
+                    committed = second.run(
+                        "--channel",
+                        "stable",
+                        extra_env={"CARD_OS_INSTALL_FAULT": "after_state"},
+                    )
+                    self.assertNotEqual(0, committed.returncode)
+
+                interrupted = second.run(
+                    "--channel",
+                    "stable",
+                    extra_env={"CARD_OS_INSTALL_FAULT": "commit_during_cleanup"},
+                )
+                self.assertNotEqual(0, interrupted.returncode)
+                journal = json.loads((history / "transaction.json").read_bytes())
+                self.assertEqual("commit_cleanup", journal["phase"])
+                cleanup_trash = skills / ".cognitive-card-os.cleanup-trash"
+                self.assertTrue(cleanup_trash.is_dir())
+                self.assertFalse((skills / ".cognitive-card-os.backup").exists())
+                old_cache = (
+                    history
+                    / f"0.1.0-{first.archive_digest}"
+                    / "skill"
+                    / "cognitive-card-os"
+                )
+                self.assertNotEqual(
+                    self.snapshot(old_cache), self.snapshot(cleanup_trash)
+                )
+                state = json.loads((history / "state.json").read_bytes())
+                self.assertEqual("0.2.0", state["active"]["version"])
+
+                recovered = second.run("--channel", "stable")
+                self.assertEqual(0, recovered.returncode, recovered.stderr)
+                self.assertFalse((history / "transaction.json").exists())
+                self.assertFalse(cleanup_trash.exists())
+                self.assertFalse((skills / ".cognitive-card-os.backup").exists())
+                state = json.loads((history / "state.json").read_bytes())
+                self.assertEqual("0.2.0", state["active"]["version"])
 
     def test_rollback_recovery_is_reentrant_across_nested_interruptions(self) -> None:
         fault_expectations = {
@@ -861,7 +919,10 @@ class CardOsSkillInstallerTests(unittest.TestCase):
             extra_env={"CARD_OS_INSTALL_TEST_TRACE": "1"},
         )
         self.assertEqual(0, checked.returncode, checked.stderr)
-        self.assertEqual(["delete:new"], self.transition_trace(checked.stderr))
+        self.assertEqual(
+            ["replace:new->cleanup-trash", "delete:cleanup-trash"],
+            self.transition_trace(checked.stderr),
+        )
         self.assertFalse(orphan.exists())
         self.assertEqual(active_before, self.snapshot(active))
         self.assertEqual(state_before, (history / "state.json").read_bytes())
@@ -872,6 +933,79 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         state = json.loads((history / "state.json").read_bytes())
         self.assertEqual("0.2.0", state["active"]["version"])
         self.assertEqual("0.1.0", state["previous"]["version"])
+
+    def test_pre_journal_staging_cleanup_is_reentrant_after_partial_delete(self) -> None:
+        self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
+        skills = self.fixture.install_root / "skills"
+        active = skills / "cognitive-card-os"
+        history = self.fixture.install_root / "skill-releases" / "cognitive-card-os"
+        active_before = self.snapshot(active)
+        state_before = (history / "state.json").read_bytes()
+        upgraded = InstallerFixture(
+            self.base / "pre-journal-nested", "0.2.0", b"pre-journal-nested"
+        )
+        upgraded.install_root = self.fixture.install_root
+
+        staged = upgraded.run(
+            "--channel",
+            "stable",
+            extra_env={"CARD_OS_INSTALL_DURABILITY_FAULT": "active:new"},
+        )
+        self.assertNotEqual(0, staged.returncode)
+        interrupted = self.fixture.run(
+            "--channel",
+            "stable",
+            extra_env={"CARD_OS_INSTALL_FAULT": "prejournal_during_cleanup"},
+        )
+        self.assertNotEqual(0, interrupted.returncode)
+        cleanup_record = history / "cleanup.json"
+        cleanup_trash = skills / ".cognitive-card-os.cleanup-trash"
+        self.assertTrue(cleanup_record.is_file())
+        self.assertTrue(cleanup_trash.is_dir())
+        self.assertFalse((skills / ".cognitive-card-os.new").exists())
+        staged_cache = (
+            history
+            / f"0.2.0-{upgraded.archive_digest}"
+            / "skill"
+            / "cognitive-card-os"
+        )
+        self.assertNotEqual(self.snapshot(staged_cache), self.snapshot(cleanup_trash))
+
+        recovered = self.fixture.run("--channel", "stable")
+        self.assertEqual(0, recovered.returncode, recovered.stderr)
+        self.assertEqual(active_before, self.snapshot(active))
+        self.assertEqual(state_before, (history / "state.json").read_bytes())
+        self.assertFalse(cleanup_record.exists())
+        self.assertFalse(cleanup_trash.exists())
+
+    def test_check_rejects_every_unexpected_transaction_topology_without_writes(self) -> None:
+        transient_names = (
+            ".cognitive-card-os.new",
+            ".cognitive-card-os.backup",
+            ".cognitive-card-os.recovery-trash",
+            ".cognitive-card-os.cleanup-trash",
+        )
+        for name in transient_names:
+            with self.subTest(name=name):
+                case = self.base / f"check-topology-{name.removeprefix('.')}"
+                fixture = InstallerFixture(case, "0.1.0")
+                self.assertEqual(0, fixture.run("--channel", "stable").returncode)
+                skills = fixture.install_root / "skills"
+                shutil.copytree(skills / "cognitive-card-os", skills / name)
+                before = self.snapshot(fixture.install_root)
+                checked = fixture.run("--check")
+                self.assert_error(checked, "INVALID_JOURNAL")
+                self.assertEqual(before, self.snapshot(fixture.install_root))
+
+        record_case = InstallerFixture(self.base / "check-topology-record", "0.1.0")
+        self.assertEqual(0, record_case.run("--channel", "stable").returncode)
+        history = record_case.install_root / "skill-releases" / "cognitive-card-os"
+        (history / "cleanup.json").write_bytes(b"{}\n")
+        (history / "cleanup.json").chmod(0o600)
+        before = self.snapshot(record_case.install_root)
+        checked = record_case.run("--check")
+        self.assert_error(checked, "INVALID_JOURNAL")
+        self.assertEqual(before, self.snapshot(record_case.install_root))
 
     def test_no_journal_unexpected_new_backup_combinations_fail_closed(self) -> None:
         self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)

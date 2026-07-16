@@ -113,6 +113,7 @@ MANIFEST_SCHEMA = "cognitive-card-skill-registry-v1"
 RELEASE_SCHEMA = "cognitive-card-skill-release-v1"
 STATE_SCHEMA = "cognitive-card-skill-install-state-v1"
 JOURNAL_SCHEMA = "cognitive-card-skill-install-transaction-v1"
+CLEANUP_SCHEMA = "cognitive-card-skill-install-cleanup-v1"
 LOCK_OWNER_SCHEMA = "cognitive-card-skill-install-lock-owner-v1"
 SEMVER = re.compile(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\Z")
 SHA = re.compile(r"[0-9a-f]{64}\Z")
@@ -571,9 +572,11 @@ class Store:
         self.history = root / "skill-releases" / "cognitive-card-os"
         self.state_path = self.history / "state.json"
         self.journal_path = self.history / "transaction.json"
+        self.cleanup_path = self.history / "cleanup.json"
         self.new_active = self.skills / ".cognitive-card-os.new"
         self.backup = self.skills / ".cognitive-card-os.backup"
         self.recovery_trash = self.skills / ".cognitive-card-os.recovery-trash"
+        self.cleanup_trash = self.skills / ".cognitive-card-os.cleanup-trash"
         self.lock = self.history / ".lock"
         self.lock_guard = self.lock / "guard"
         self.lock_owner = self.lock / "owner.json"
@@ -591,7 +594,29 @@ class Store:
             return "backup"
         if path == self.recovery_trash:
             return "recovery-trash"
+        if path == self.cleanup_trash:
+            return "cleanup-trash"
         fail("INVALID_JOURNAL")
+
+    def transient_entries(self) -> tuple[Path, ...]:
+        return (
+            self.new_active,
+            self.backup,
+            self.recovery_trash,
+            self.cleanup_trash,
+        )
+
+    @staticmethod
+    def entry_exists(path: Path) -> bool:
+        return path.exists() or path.is_symlink()
+
+    def validate_clean_topology(self) -> None:
+        if self.entry_exists(self.journal_path):
+            fail("RECOVERY_REQUIRED")
+        if self.entry_exists(self.cleanup_path):
+            fail("INVALID_JOURNAL")
+        if any(self.entry_exists(path) for path in self.transient_entries()):
+            fail("INVALID_JOURNAL")
 
     def replace_skill_entry(self, source: Path, destination: Path) -> None:
         source_name = self.skill_entry_name(source)
@@ -599,16 +624,6 @@ class Store:
         os.replace(source, destination)
         fsync_dir(self.skills)
         trace_transition(f"replace:{source_name}->{destination_name}")
-
-    def remove_skill_entry(self, path: Path) -> None:
-        if not path.exists() and not path.is_symlink():
-            return
-        name = self.skill_entry_name(path)
-        if path.is_symlink() or not path.is_dir():
-            fail("INVALID_JOURNAL")
-        shutil.rmtree(path)
-        fsync_dir(self.skills)
-        trace_transition(f"delete:{name}")
 
     def remove_recovery_trash(self) -> None:
         path = self.recovery_trash
@@ -630,6 +645,28 @@ class Store:
         shutil.rmtree(path)
         fsync_dir(self.skills)
         trace_transition("delete:recovery-trash")
+
+    def remove_cleanup_trash(self, fault: str) -> None:
+        path = self.cleanup_trash
+        if not self.entry_exists(path):
+            return
+        if path.is_symlink() or not path.is_dir():
+            fail("INVALID_JOURNAL")
+        if os.environ.get("CARD_OS_INSTALL_FAULT") == fault:
+            victims = sorted(
+                candidate
+                for candidate in path.rglob("*")
+                if candidate.is_file() and not candidate.is_symlink()
+            )
+            if not victims:
+                fail("INVALID_JOURNAL")
+            victim = victims[0]
+            victim.unlink()
+            fsync_dir(victim.parent)
+            os._exit(97)
+        shutil.rmtree(path)
+        fsync_dir(self.skills)
+        trace_transition("delete:cleanup-trash")
 
     def materialize_active(self, source: Path) -> None:
         copy_tree(source, self.active)
@@ -778,7 +815,9 @@ class Store:
             if staging.exists(): shutil.rmtree(staging, ignore_errors=True)
 
     def read_journal(self) -> dict[str, object] | None:
-        if not self.journal_path.exists(): return None
+        if not self.entry_exists(self.journal_path): return None
+        if self.journal_path.is_symlink() or not self.journal_path.is_file():
+            fail("INVALID_JOURNAL")
         if stat.S_IMODE(self.journal_path.stat().st_mode) != 0o600:
             fail("INVALID_JOURNAL")
         value = json_canonical(read_limited(self.journal_path, 32 * 1024, "INVALID_JOURNAL"), "INVALID_JOURNAL")
@@ -786,6 +825,7 @@ class Store:
             fail("INVALID_JOURNAL")
         if value.get("phase") not in {
             "prepared", "old_moved", "new_active", "state_committed",
+            "commit_cleanup_pending", "commit_cleanup",
             "rollback_trash_pending", "rollback_active_trashed",
             "rollback_old_restored", "rollback_state_restored", "rollback_cleanup",
         }:
@@ -797,9 +837,119 @@ class Store:
                     fail("INVALID_JOURNAL")
         return value
 
+    def read_cleanup_record(self) -> dict[str, object] | None:
+        if not self.entry_exists(self.cleanup_path):
+            return None
+        if self.cleanup_path.is_symlink() or not self.cleanup_path.is_file():
+            fail("INVALID_JOURNAL")
+        if stat.S_IMODE(self.cleanup_path.stat().st_mode) != 0o600:
+            fail("INVALID_JOURNAL")
+        value = json_canonical(
+            read_limited(self.cleanup_path, 16 * 1024, "INVALID_JOURNAL"),
+            "INVALID_JOURNAL",
+        )
+        if (
+            set(value) != {"schema", "kind", "phase", "old_state", "staging"}
+            or value.get("schema") != CLEANUP_SCHEMA
+            or value.get("kind") != "pre-journal-new"
+            or value.get("phase") not in {"prepared", "cleanup"}
+            or not valid_identity(value.get("staging"))
+        ):
+            fail("INVALID_JOURNAL")
+        old_state = value.get("old_state")
+        if old_state is not None and (
+            not isinstance(old_state, dict)
+            or set(old_state) != {"schema", "active", "previous"}
+            or old_state.get("schema") != STATE_SCHEMA
+            or not valid_identity(old_state.get("active"))
+            or (
+                old_state.get("previous") is not None
+                and not valid_identity(old_state.get("previous"))
+            )
+        ):
+            fail("INVALID_JOURNAL")
+        return value
+
+    def finish_committed_cleanup(
+        self,
+        journal: dict[str, object],
+        old_state: dict[str, object] | None,
+        new_state: dict[str, object],
+        old_cached: Path | None,
+        new_cached: Path,
+    ) -> None:
+        phase = journal["phase"]
+        if load_state(self.state_path) != new_state:
+            fail("INVALID_JOURNAL")
+        if (
+            not self.active.is_dir()
+            or self.active.is_symlink()
+            or not tree_matches(self.active, new_cached)
+        ):
+            fail("INVALID_JOURNAL")
+        if self.entry_exists(self.new_active) or self.entry_exists(self.recovery_trash):
+            fail("INVALID_JOURNAL")
+        backup_exists = self.entry_exists(self.backup)
+        cleanup_exists = self.entry_exists(self.cleanup_trash)
+        if backup_exists and cleanup_exists:
+            fail("INVALID_JOURNAL")
+        for path in (self.backup, self.cleanup_trash):
+            if self.entry_exists(path) and (path.is_symlink() or not path.is_dir()):
+                fail("INVALID_JOURNAL")
+
+        if phase not in {"commit_cleanup_pending", "commit_cleanup"}:
+            if cleanup_exists:
+                fail("INVALID_JOURNAL")
+            if old_state is None and backup_exists:
+                fail("INVALID_JOURNAL")
+            if old_state is not None and (
+                not backup_exists
+                or old_cached is None
+                or not tree_matches(self.backup, old_cached)
+            ):
+                fail("INVALID_JOURNAL")
+            journal["phase"] = (
+                "commit_cleanup" if old_state is None else "commit_cleanup_pending"
+            )
+            atomic_json(self.journal_path, journal)
+            phase = journal["phase"]
+
+        if phase == "commit_cleanup_pending":
+            if old_state is None or old_cached is None:
+                fail("INVALID_JOURNAL")
+            if backup_exists:
+                if cleanup_exists or not tree_matches(self.backup, old_cached):
+                    fail("INVALID_JOURNAL")
+                self.replace_skill_entry(self.backup, self.cleanup_trash)
+                backup_exists = False
+                cleanup_exists = True
+            elif not cleanup_exists or not tree_matches(self.cleanup_trash, old_cached):
+                fail("INVALID_JOURNAL")
+            journal["phase"] = "commit_cleanup"
+            atomic_json(self.journal_path, journal)
+            phase = "commit_cleanup"
+            cleanup_exists = True
+            maybe_fault("commit_after_backup_trashed")
+
+        if phase != "commit_cleanup" or backup_exists:
+            fail("INVALID_JOURNAL")
+
+        if load_state(self.state_path) != new_state:
+            fail("INVALID_JOURNAL")
+        self.validate_active(new_state)
+        if cleanup_exists:
+            self.remove_cleanup_trash("commit_during_cleanup")
+        if load_state(self.state_path) != new_state:
+            fail("INVALID_JOURNAL")
+        self.validate_active(new_state)
+        self.journal_path.unlink()
+        fsync_dir(self.history)
+
     def recover(self, *, force_rollback: bool = False) -> None:
         journal = self.read_journal()
         if journal is None: return
+        if self.entry_exists(self.cleanup_path):
+            fail("INVALID_JOURNAL")
         old_state, new_state = journal["old_state"], journal["new_state"]
         if new_state is None: fail("INVALID_JOURNAL")
         new_cached = self.validate_cache(new_state["active"])
@@ -818,17 +968,12 @@ class Store:
             and not self.active.is_symlink()
             and tree_matches(self.active, new_cached)
         )
-        if committed and not force_rollback:
-            if self.recovery_trash.exists() or self.recovery_trash.is_symlink():
-                fail("INVALID_JOURNAL")
-            if self.backup.exists():
-                if old_state is not None:
-                    if old_cached is None or not tree_matches(self.backup, old_cached):
-                        fail("INVALID_JOURNAL")
-                self.remove_skill_entry(self.backup)
-            self.remove_skill_entry(self.new_active)
-            self.journal_path.unlink()
-            fsync_dir(self.history)
+        if phase in {"commit_cleanup_pending", "commit_cleanup"} or (
+            committed and not force_rollback
+        ):
+            self.finish_committed_cleanup(
+                journal, old_state, new_state, old_cached, new_cached
+            )
             return
 
         def exists(path: Path) -> bool:
@@ -842,9 +987,11 @@ class Store:
             journal["phase"] = value
             atomic_json(self.journal_path, journal)
 
-        for entry in (self.active, self.new_active, self.backup, self.recovery_trash):
+        for entry in (self.active, *self.transient_entries()):
             if exists(entry):
                 require_directory(entry)
+        if exists(self.cleanup_trash):
+            fail("INVALID_JOURNAL")
         allowed_current = (old_state, new_state) if old_state is not None else (None, new_state)
         if current not in allowed_current:
             fail("INVALID_JOURNAL")
@@ -1027,13 +1174,66 @@ class Store:
         self.journal_path.unlink()
         fsync_dir(self.history)
 
-    def reclaim_pre_journal_staging(self) -> None:
-        if self.journal_path.exists() or self.journal_path.is_symlink():
+    def recover_pre_journal_cleanup(self) -> None:
+        record = self.read_cleanup_record()
+        if record is None:
             return
-        new_exists = self.new_active.exists() or self.new_active.is_symlink()
-        backup_exists = self.backup.exists() or self.backup.is_symlink()
-        trash_exists = self.recovery_trash.exists() or self.recovery_trash.is_symlink()
-        if backup_exists or trash_exists:
+        if self.entry_exists(self.journal_path):
+            fail("INVALID_JOURNAL")
+        state = load_state(self.state_path)
+        if state != record["old_state"]:
+            fail("INVALID_JOURNAL")
+        self.validate_active(state)
+        cached = self.validate_cache(record["staging"])
+        if self.entry_exists(self.backup) or self.entry_exists(self.recovery_trash):
+            fail("INVALID_JOURNAL")
+        new_exists = self.entry_exists(self.new_active)
+        cleanup_exists = self.entry_exists(self.cleanup_trash)
+        if new_exists and cleanup_exists:
+            fail("INVALID_JOURNAL")
+        for path in (self.new_active, self.cleanup_trash):
+            if self.entry_exists(path) and (path.is_symlink() or not path.is_dir()):
+                fail("INVALID_JOURNAL")
+        phase = record["phase"]
+        if phase == "prepared":
+            if new_exists:
+                if not tree_matches(self.new_active, cached):
+                    fail("INVALID_JOURNAL")
+                self.replace_skill_entry(self.new_active, self.cleanup_trash)
+                new_exists = False
+                cleanup_exists = True
+            elif not cleanup_exists or not tree_matches(self.cleanup_trash, cached):
+                fail("INVALID_JOURNAL")
+            record["phase"] = "cleanup"
+            atomic_json(self.cleanup_path, record)
+            phase = "cleanup"
+            cleanup_exists = True
+            maybe_fault("prejournal_after_staging_trashed")
+        if phase == "cleanup" and new_exists:
+            fail("INVALID_JOURNAL")
+        if load_state(self.state_path) != record["old_state"]:
+            fail("INVALID_JOURNAL")
+        self.validate_active(record["old_state"])
+        if cleanup_exists:
+            self.remove_cleanup_trash("prejournal_during_cleanup")
+        if load_state(self.state_path) != record["old_state"]:
+            fail("INVALID_JOURNAL")
+        self.validate_active(record["old_state"])
+        self.cleanup_path.unlink()
+        fsync_dir(self.history)
+
+    def reclaim_pre_journal_staging(self) -> None:
+        if self.entry_exists(self.journal_path):
+            return
+        if self.entry_exists(self.cleanup_path):
+            self.recover_pre_journal_cleanup()
+            return
+        new_exists = self.entry_exists(self.new_active)
+        if (
+            self.entry_exists(self.backup)
+            or self.entry_exists(self.recovery_trash)
+            or self.entry_exists(self.cleanup_trash)
+        ):
             fail("INVALID_JOURNAL")
         if not new_exists:
             return
@@ -1042,27 +1242,38 @@ class Store:
 
         state = load_state(self.state_path)
         self.validate_active(state)
-        matched_cache = False
+        matched: dict[str, str] | None = None
         try:
             entries = tuple(self.history.iterdir())
         except OSError:
             fail("INVALID_JOURNAL")
-        for entry in entries:
+        for entry in sorted(entries, key=lambda candidate: candidate.name):
             name = entry.name
             if len(name) <= 65 or name[-65] != "-":
                 continue
             version, archive_sha = name[:-65], name[-64:]
             if SEMVER.fullmatch(version) is None or SHA.fullmatch(archive_sha) is None:
                 continue
+            item = identity(version, archive_sha)
             try:
-                cached = self.validate_cache(identity(version, archive_sha))
+                cached = self.validate_cache(item)
             except InstallError:
                 fail("INVALID_JOURNAL")
-            if tree_matches(self.new_active, cached):
-                matched_cache = True
-        if not matched_cache:
+            if tree_matches(self.new_active, cached) and matched is None:
+                matched = item
+        if matched is None:
             fail("INVALID_JOURNAL")
-        self.remove_skill_entry(self.new_active)
+        atomic_json(
+            self.cleanup_path,
+            {
+                "schema": CLEANUP_SCHEMA,
+                "kind": "pre-journal-new",
+                "phase": "prepared",
+                "old_state": state,
+                "staging": matched,
+            },
+        )
+        self.recover_pre_journal_cleanup()
 
 
 def copy_tree(source: Path, destination: Path) -> None:
@@ -1099,9 +1310,8 @@ def activate(store: Store, target: dict[str, str], desired_state: dict[str, obje
     old_state = load_state(store.state_path)
     store.validate_active(old_state)
     if (
-        store.new_active.exists() or store.new_active.is_symlink()
-        or store.backup.exists() or store.backup.is_symlink()
-        or store.recovery_trash.exists() or store.recovery_trash.is_symlink()
+        any(store.entry_exists(path) for path in store.transient_entries())
+        or store.entry_exists(store.cleanup_path)
     ):
         fail("INVALID_JOURNAL")
     copy_tree(target_tree, store.new_active)
@@ -1122,10 +1332,7 @@ def activate(store: Store, target: dict[str, str], desired_state: dict[str, obje
         maybe_fault("after_state"); maybe_error("after_state")
         journal["phase"] = "state_committed"; atomic_json(store.journal_path, journal)
         store.validate_active(desired_state)
-        if store.backup.exists():
-            if old_state is not None: store.validate_cache(old_state["active"])
-            store.remove_skill_entry(store.backup)
-        store.journal_path.unlink(); fsync_dir(store.history)
+        store.recover()
     except Exception:
         store.recover(force_rollback=True)
         raise
@@ -1191,7 +1398,7 @@ def main(args: list[str]) -> None:
     target = identity(release["version"], archive_digest)
     store = Store(root)
     if command == "check":
-        if store.journal_path.exists(): fail("RECOVERY_REQUIRED")
+        store.validate_clean_topology()
         state = load_state(store.state_path, absent_ok=False)
         store.validate_active(state)
         store.validate_cache(state["active"])
