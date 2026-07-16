@@ -5,9 +5,11 @@ import json
 import os
 import shutil
 import stat
+import struct
 import subprocess
 import tempfile
 import unittest
+import warnings
 import zipfile
 from pathlib import Path
 
@@ -64,6 +66,55 @@ def make_release(path: Path, version: str, marker: bytes = b"") -> tuple[Path, s
             info.external_attr = mode << 16
             archive.writestr(info, content)
     return path, digest(path.read_bytes())
+
+
+def central_entries(data: bytes) -> dict[str, tuple[int, int]]:
+    """Return central-header and local-header offsets keyed by decoded member name."""
+    eocd = data.rfind(b"PK\x05\x06")
+    if eocd < 0:
+        raise AssertionError("fixture ZIP has no EOCD")
+    entries = struct.unpack_from("<H", data, eocd + 10)[0]
+    position = struct.unpack_from("<I", data, eocd + 16)[0]
+    result: dict[str, tuple[int, int]] = {}
+    for _ in range(entries):
+        if data[position : position + 4] != b"PK\x01\x02":
+            raise AssertionError("fixture ZIP has invalid central directory")
+        flags = struct.unpack_from("<H", data, position + 8)[0]
+        name_size, extra_size, comment_size = struct.unpack_from("<HHH", data, position + 28)
+        raw_name = data[position + 46 : position + 46 + name_size]
+        name = raw_name.decode("utf-8" if flags & 0x800 else "cp437")
+        local_offset = struct.unpack_from("<I", data, position + 42)[0]
+        result[name] = (position, local_offset)
+        position += 46 + name_size + extra_size + comment_size
+    return result
+
+
+def mutate_zip_headers(
+    data: bytes,
+    member: str,
+    *,
+    central_name: bytes | None = None,
+    local_name: bytes | None = None,
+    external_attr: int | None = None,
+    uncompressed_size: int | None = None,
+) -> bytes:
+    changed = bytearray(data)
+    central, local = central_entries(data)[member]
+    name_size = struct.unpack_from("<H", data, central + 28)[0]
+    if central_name is not None:
+        if len(central_name) != name_size:
+            raise AssertionError("central replacement must preserve raw name length")
+        changed[central + 46 : central + 46 + name_size] = central_name
+    if local_name is not None:
+        local_size = struct.unpack_from("<H", data, local + 26)[0]
+        if len(local_name) != local_size:
+            raise AssertionError("local replacement must preserve raw name length")
+        changed[local + 30 : local + 30 + local_size] = local_name
+    if external_attr is not None:
+        struct.pack_into("<I", changed, central + 38, external_attr)
+    if uncompressed_size is not None:
+        struct.pack_into("<I", changed, central + 24, uncompressed_size)
+    return bytes(changed)
 
 
 class InstallerFixture:
@@ -132,6 +183,24 @@ shutil.copyfile(source, destination)
         }
         manifest.update(changes)
         self.manifest_path.write_bytes(canonical(manifest))
+
+    def replace_archive(self, data: bytes) -> None:
+        self.archive.write_bytes(data)
+        self.archive_digest = digest(data)
+        self.checksum_path.write_text(
+            f"{self.archive_digest}  cognitive-card-os.zip\n", encoding="ascii"
+        )
+        self.write_manifest()
+
+    def reset_archive(self) -> bytes:
+        self.archive, self.archive_digest = make_release(
+            self.archive, self.version
+        )
+        self.checksum_path.write_text(
+            f"{self.archive_digest}  cognitive-card-os.zip\n", encoding="ascii"
+        )
+        self.write_manifest()
+        return self.archive.read_bytes()
 
     def run(
         self,
@@ -243,10 +312,91 @@ class CardOsSkillInstallerTests(unittest.TestCase):
             manifest.write(b" \n")
         self.assert_error(self.fixture.run("--channel", "stable"), "INVALID_MANIFEST")
 
+    def test_published_at_requires_real_canonical_utc_datetime(self) -> None:
+        invalid = (
+            "2026-99-99T99:99:99Z",
+            "2025-02-29T00:00:00Z",
+            "2026-01-01T24:00:00Z",
+            "2026-01-01T00:00:60Z",
+            "2026-01-01T00:00:00+00:00",
+        )
+        for timestamp in invalid:
+            with self.subTest(timestamp=timestamp):
+                self.fixture.write_manifest(published_at=timestamp)
+                self.assert_error(
+                    self.fixture.run("--channel", "stable"), "INVALID_MANIFEST"
+                )
+
     def test_digest_and_unsafe_zip_fail_before_active_mutation(self) -> None:
         self.fixture.write_manifest(archive_sha256="2" * 64)
         self.assert_error(self.fixture.run("--channel", "stable"), "DIGEST_MISMATCH")
         self.assertFalse((self.fixture.install_root / "skills" / "cognitive-card-os").exists())
+
+    def test_zip_central_directory_and_unsafe_member_regressions(self) -> None:
+        member = "cognitive-card-os/SKILL.md"
+
+        def duplicate(data: bytes) -> bytes:
+            self.fixture.archive.write_bytes(data)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", UserWarning)
+                with zipfile.ZipFile(self.fixture.archive, "a") as archive:
+                    archive.writestr(member, b"duplicate")
+            return self.fixture.archive.read_bytes()
+
+        def append_member(data: bytes, name: str) -> bytes:
+            self.fixture.archive.write_bytes(data)
+            with zipfile.ZipFile(self.fixture.archive, "a") as archive:
+                archive.writestr(name, b"unexpected")
+            return self.fixture.archive.read_bytes()
+
+        raw_name = member.encode("ascii")
+        attacks = {
+            "duplicate normalized name": duplicate,
+            "symlink mode": lambda data: mutate_zip_headers(
+                data, member, external_attr=(stat.S_IFLNK | 0o777) << 16
+            ),
+            "device mode": lambda data: mutate_zip_headers(
+                data, member, external_attr=(stat.S_IFCHR | 0o600) << 16
+            ),
+            "macOS metadata": lambda data: append_member(
+                data, "__MACOSX/._SKILL.md"
+            ),
+            "undeclared closure": lambda data: append_member(
+                data, "cognitive-card-os/README.md"
+            ),
+            "central local name mismatch": lambda data: mutate_zip_headers(
+                data,
+                member,
+                local_name=raw_name[:-1] + (b"x" if raw_name[-1:] != b"x" else b"y"),
+            ),
+            "central raw NUL": lambda data: mutate_zip_headers(
+                data, member, central_name=b"\x00" + raw_name[1:]
+            ),
+            "member size limit": lambda data: mutate_zip_headers(
+                data, member, uncompressed_size=8 * 1024 * 1024 + 1
+            ),
+            "total size limit": lambda data: mutate_zip_headers(
+                mutate_zip_headers(
+                    mutate_zip_headers(
+                        data,
+                        "cognitive-card-os/SKILL.md",
+                        uncompressed_size=7 * 1024 * 1024,
+                    ),
+                    "cognitive-card-os/agents/openai.yaml",
+                    uncompressed_size=7 * 1024 * 1024,
+                ),
+                "cognitive-card-os/references/protocol.md",
+                uncompressed_size=7 * 1024 * 1024,
+            ),
+        }
+        for name, mutate in attacks.items():
+            with self.subTest(attack=name):
+                data = self.fixture.reset_archive()
+                self.fixture.replace_archive(mutate(data))
+                before = self.snapshot(self.fixture.install_root)
+                result = self.fixture.run("--channel", "stable")
+                self.assert_error(result, "UNSAFE_ARCHIVE")
+                self.assertEqual(before, self.snapshot(self.fixture.install_root))
         self.fixture.write_manifest()
         with zipfile.ZipFile(self.fixture.archive, "a") as archive:
             archive.writestr("../escape", b"bad")
@@ -296,6 +446,17 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         (active / "owned.txt").write_bytes(b"user-owned")
         before = self.snapshot(self.fixture.install_root)
         result = self.fixture.run("--channel", "stable")
+        self.assert_error(result, "UNMANAGED_ACTIVE_SKILL")
+        self.assertEqual(before, self.snapshot(self.fixture.install_root))
+
+    def test_state_bound_drift_is_refused_without_any_install_root_mutation(self) -> None:
+        self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
+        active_skill = self.fixture.install_root / "skills" / "cognitive-card-os" / "SKILL.md"
+        active_skill.write_bytes(active_skill.read_bytes() + b"drift")
+        before = self.snapshot(self.fixture.install_root)
+        upgraded = InstallerFixture(self.base / "drift-upgrade", "0.2.0", b"upgrade")
+        upgraded.install_root = self.fixture.install_root
+        result = upgraded.run("--channel", "stable")
         self.assert_error(result, "UNMANAGED_ACTIVE_SKILL")
         self.assertEqual(before, self.snapshot(self.fixture.install_root))
 
@@ -381,6 +542,124 @@ class CardOsSkillInstallerTests(unittest.TestCase):
                 self.assertFalse((first.install_root / "skills" / ".cognitive-card-os.backup").exists())
                 self.assertFalse((first.install_root / "skills" / ".cognitive-card-os.new").exists())
 
+    def test_after_state_ordinary_failure_rolls_back_immediately(self) -> None:
+        first = InstallerFixture(self.base / "ordinary-after-state-first", "0.1.0")
+        self.assertEqual(0, first.run("--channel", "stable").returncode)
+        history = first.install_root / "skill-releases" / "cognitive-card-os"
+        before_active = self.snapshot(first.install_root / "skills" / "cognitive-card-os")
+        before_state = (history / "state.json").read_bytes()
+        second = InstallerFixture(
+            self.base / "ordinary-after-state-second", "0.2.0", b"new"
+        )
+        second.install_root = first.install_root
+        failed = second.run(
+            "--channel", "stable", extra_env={"CARD_OS_INSTALL_ERROR": "after_state"}
+        )
+        self.assert_error(failed, "INJECTED_INSTALL_FAILURE")
+        self.assertEqual(
+            before_active,
+            self.snapshot(first.install_root / "skills" / "cognitive-card-os"),
+        )
+        self.assertEqual(before_state, (history / "state.json").read_bytes())
+        self.assertFalse((history / "transaction.json").exists())
+        self.assertFalse((first.install_root / "skills" / ".cognitive-card-os.backup").exists())
+        self.assertFalse((first.install_root / "skills" / ".cognitive-card-os.new").exists())
+
+    def test_skills_parent_fsync_trace_proves_activation_and_recovery_order(self) -> None:
+        trace_env = {"CARD_OS_INSTALL_TEST_TRACE": "1"}
+        first = InstallerFixture(self.base / "trace-first", "0.1.0")
+        initial = first.run("--channel", "stable", extra_env=trace_env)
+        self.assertEqual(0, initial.returncode, initial.stderr)
+        self.assertEqual(
+            ["replace:new->active"], self.transition_trace(initial.stderr)
+        )
+
+        second = InstallerFixture(self.base / "trace-second", "0.2.0", b"new")
+        second.install_root = first.install_root
+        upgraded = second.run("--channel", "stable", extra_env=trace_env)
+        self.assertEqual(0, upgraded.returncode, upgraded.stderr)
+        self.assertEqual(
+            ["replace:active->backup", "replace:new->active", "delete:backup"],
+            self.transition_trace(upgraded.stderr),
+        )
+
+        rollback_case = InstallerFixture(self.base / "trace-rollback", "0.3.0", b"next")
+        rollback_case.install_root = first.install_root
+        crashed = rollback_case.run(
+            "--channel",
+            "stable",
+            extra_env={**trace_env, "CARD_OS_INSTALL_FAULT": "after_old_moved"},
+        )
+        self.assertNotEqual(0, crashed.returncode)
+        self.assertEqual(
+            ["replace:active->backup"], self.transition_trace(crashed.stderr)
+        )
+        recovered = rollback_case.run("--channel", "stable", extra_env=trace_env)
+        self.assertEqual(0, recovered.returncode, recovered.stderr)
+        self.assertEqual(
+            [
+                "replace:backup->active",
+                "delete:new",
+                "replace:active->backup",
+                "replace:new->active",
+                "delete:backup",
+            ],
+            self.transition_trace(recovered.stderr),
+        )
+
+        active_delete_case = InstallerFixture(
+            self.base / "trace-active-delete", "0.3.1", b"active-delete"
+        )
+        active_delete_case.install_root = first.install_root
+        active_delete_crash = active_delete_case.run(
+            "--channel",
+            "stable",
+            extra_env={**trace_env, "CARD_OS_INSTALL_FAULT": "after_new_active"},
+        )
+        self.assertNotEqual(0, active_delete_crash.returncode)
+        self.assertEqual(
+            ["replace:active->backup", "replace:new->active"],
+            self.transition_trace(active_delete_crash.stderr),
+        )
+        active_delete_recovery = active_delete_case.run(
+            "--channel", "stable", extra_env=trace_env
+        )
+        self.assertEqual(
+            0, active_delete_recovery.returncode, active_delete_recovery.stderr
+        )
+        self.assertEqual(
+            [
+                "delete:active",
+                "replace:backup->active",
+                "replace:active->backup",
+                "replace:new->active",
+                "delete:backup",
+            ],
+            self.transition_trace(active_delete_recovery.stderr),
+        )
+
+        committed_case = InstallerFixture(
+            self.base / "trace-committed", "0.4.0", b"committed"
+        )
+        committed_case.install_root = first.install_root
+        committed_crash = committed_case.run(
+            "--channel",
+            "stable",
+            extra_env={**trace_env, "CARD_OS_INSTALL_FAULT": "after_state"},
+        )
+        self.assertNotEqual(0, committed_crash.returncode)
+        self.assertEqual(
+            ["replace:active->backup", "replace:new->active"],
+            self.transition_trace(committed_crash.stderr),
+        )
+        committed_recovery = committed_case.run(
+            "--channel", "stable", extra_env=trace_env
+        )
+        self.assertEqual(0, committed_recovery.returncode, committed_recovery.stderr)
+        self.assertEqual(
+            ["delete:backup"], self.transition_trace(committed_recovery.stderr)
+        )
+
     def test_tampered_previous_cache_makes_rollback_write_free(self) -> None:
         self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
         old_digest = self.fixture.archive_digest
@@ -424,6 +703,11 @@ class CardOsSkillInstallerTests(unittest.TestCase):
     @staticmethod
     def tree_digest(path: Path) -> str:
         return digest(canonical(CardOsSkillInstallerTests.snapshot(path)))
+
+    @staticmethod
+    def transition_trace(stderr: str) -> list[str]:
+        prefix = "CARD_OS_INSTALL_TEST_TRACE:"
+        return [line[len(prefix) :] for line in stderr.splitlines() if line.startswith(prefix)]
 
 
 if __name__ == "__main__":

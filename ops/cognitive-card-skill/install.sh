@@ -102,6 +102,7 @@ import tempfile
 import unicodedata
 import urllib.parse
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 REGISTRY = "https://www.yutou.space/card-os/skill/v1/"
@@ -220,7 +221,16 @@ def parse_manifest(path: Path, installer_path: Path, requested: str) -> dict[str
         fail("INCOMPATIBLE_PROTOCOL")
     if value.get("minimum_server_version") != "0.3.1":
         fail("INVALID_MANIFEST")
-    if not isinstance(value.get("published_at"), str) or not RFC3339.fullmatch(value["published_at"]):
+    published_at = value.get("published_at")
+    if not isinstance(published_at, str) or not RFC3339.fullmatch(published_at):
+        fail("INVALID_MANIFEST")
+    try:
+        parsed_published_at = datetime.strptime(
+            published_at, "%Y-%m-%dT%H:%M:%SZ"
+        ).replace(tzinfo=timezone.utc)
+    except ValueError:
+        fail("INVALID_MANIFEST")
+    if parsed_published_at.strftime("%Y-%m-%dT%H:%M:%SZ") != published_at:
         fail("INVALID_MANIFEST")
     archive_expected = REGISTRY + f"releases/{version}/cognitive-card-os.zip"
     safe_url(value.get("archive_url"), archive_expected)
@@ -410,6 +420,11 @@ def fsync_dir(path: Path) -> None:
         os.close(descriptor)
 
 
+def trace_transition(event: str) -> None:
+    if os.environ.get("CARD_OS_INSTALL_TEST_TRACE") == "1":
+        print(f"CARD_OS_INSTALL_TEST_TRACE:{event}", file=sys.stderr, flush=True)
+
+
 def extract(contents: dict[str, bytes], destination: Path) -> Path:
     destination.mkdir(mode=0o700)
     skill = destination / "cognitive-card-os"
@@ -516,6 +531,37 @@ class Store:
     def cache(self, item: dict[str, str]) -> Path:
         return self.history / f"{item['version']}-{item['archive_sha256']}"
 
+    def skill_entry_name(self, path: Path) -> str:
+        if path == self.active:
+            return "active"
+        if path == self.new_active:
+            return "new"
+        if path == self.backup:
+            return "backup"
+        fail("INVALID_JOURNAL")
+
+    def replace_skill_entry(self, source: Path, destination: Path) -> None:
+        source_name = self.skill_entry_name(source)
+        destination_name = self.skill_entry_name(destination)
+        os.replace(source, destination)
+        fsync_dir(self.skills)
+        trace_transition(f"replace:{source_name}->{destination_name}")
+
+    def remove_skill_entry(self, path: Path) -> None:
+        if not path.exists() and not path.is_symlink():
+            return
+        name = self.skill_entry_name(path)
+        if path.is_symlink() or not path.is_dir():
+            fail("INVALID_JOURNAL")
+        shutil.rmtree(path)
+        fsync_dir(self.skills)
+        trace_transition(f"delete:{name}")
+
+    def materialize_active(self, source: Path) -> None:
+        copy_tree(source, self.active)
+        fsync_dir(self.skills)
+        trace_transition("materialize:cache->active")
+
     def validate_cache(self, item: dict[str, str]) -> Path:
         cache = self.cache(item)
         if cache.is_symlink() or not cache.is_dir(): fail("INVALID_CACHE")
@@ -620,7 +666,7 @@ class Store:
                     fail("INVALID_JOURNAL")
         return value
 
-    def recover(self) -> None:
+    def recover(self, *, force_rollback: bool = False) -> None:
         journal = self.read_journal()
         if journal is None: return
         old_state, new_state = journal["old_state"], journal["new_state"]
@@ -628,11 +674,11 @@ class Store:
         new_cached = self.validate_cache(new_state["active"])
         current = load_state(self.state_path)
         committed = current == new_state and self.active.is_dir() and not self.active.is_symlink() and tree_matches(self.active, new_cached)
-        if committed:
+        if committed and not force_rollback:
             if self.backup.exists():
                 if old_state is not None: self.validate_cache(old_state["active"])
-                shutil.rmtree(self.backup)
-            if self.new_active.exists(): shutil.rmtree(self.new_active)
+                self.remove_skill_entry(self.backup)
+            self.remove_skill_entry(self.new_active)
             self.journal_path.unlink()
             fsync_dir(self.history)
             return
@@ -644,17 +690,20 @@ class Store:
                 if not tree_matches(self.active, old_cached): fail("INVALID_JOURNAL")
             else:
                 if not tree_matches(self.active, new_cached): fail("INVALID_JOURNAL")
-                shutil.rmtree(self.active)
+                self.remove_skill_entry(self.active)
         if old_state is not None:
             old_cached = self.validate_cache(old_state["active"])
-            if self.backup.exists(): os.replace(self.backup, self.active)
+            if self.backup.exists(): self.replace_skill_entry(self.backup, self.active)
             elif not self.active.exists():
-                copy_tree(old_cached, self.active)
+                self.materialize_active(old_cached)
             atomic_json(self.state_path, old_state)
         else:
             if self.backup.exists(): fail("INVALID_JOURNAL")
-            if self.state_path.exists(): self.state_path.unlink()
-        if self.new_active.exists(): shutil.rmtree(self.new_active)
+            if self.state_path.exists():
+                self.state_path.unlink()
+                fsync_dir(self.history)
+        self.remove_skill_entry(self.new_active)
+        self.validate_active(old_state)
         self.journal_path.unlink()
         fsync_dir(self.history)
 
@@ -698,10 +747,10 @@ def activate(store: Store, target: dict[str, str], desired_state: dict[str, obje
     try:
         atomic_json(store.journal_path, journal)
         maybe_fault("after_journal"); maybe_error("after_journal")
-        if store.active.exists(): os.replace(store.active, store.backup)
+        if store.active.exists(): store.replace_skill_entry(store.active, store.backup)
         maybe_fault("after_old_moved"); maybe_error("after_old_moved")
         journal["phase"] = "old_moved"; atomic_json(store.journal_path, journal)
-        os.replace(store.new_active, store.active); fsync_dir(store.skills)
+        store.replace_skill_entry(store.new_active, store.active)
         maybe_fault("after_new_active"); maybe_error("after_new_active")
         journal["phase"] = "new_active"; atomic_json(store.journal_path, journal)
         atomic_json(store.state_path, desired_state)
@@ -710,13 +759,10 @@ def activate(store: Store, target: dict[str, str], desired_state: dict[str, obje
         store.validate_active(desired_state)
         if store.backup.exists():
             if old_state is not None: store.validate_cache(old_state["active"])
-            shutil.rmtree(store.backup)
+            store.remove_skill_entry(store.backup)
         store.journal_path.unlink(); fsync_dir(store.history)
     except Exception:
-        store.recover()
-        current = load_state(store.state_path)
-        if current == desired_state and store.active.is_dir() and tree_matches(store.active, target_tree):
-            return True
+        store.recover(force_rollback=True)
         raise
     return True
 
@@ -726,6 +772,11 @@ def locked_operation(root: Path, callback):
     # Refuse an unbound active tree before creating management directories.
     if (store.active.exists() or store.active.is_symlink()) and not store.state_path.exists() and not store.journal_path.exists():
         fail("UNMANAGED_ACTIVE_SKILL")
+    # A state-bound active tree must also be proven managed before lock, cache,
+    # journal, setup, or stale-staging writes occur in this invocation.
+    if store.state_path.exists() and not store.journal_path.exists():
+        existing_state = load_state(store.state_path, absent_ok=False)
+        store.validate_active(existing_state)
     store.setup(); store.acquire()
     try:
         store.recover()
@@ -781,6 +832,8 @@ def main(args: list[str]) -> None:
         print("Verified remote release, cache, state, and active Skill.")
         return
     def install(store: Store):
+        current = load_state(store.state_path)
+        store.validate_active(current)
         store.install_cache(Path(args[5]), target, contents)
         current = load_state(store.state_path)
         store.validate_active(current)
