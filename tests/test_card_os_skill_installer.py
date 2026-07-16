@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import os
 import shutil
@@ -116,6 +117,21 @@ def mutate_zip_headers(
     if uncompressed_size is not None:
         struct.pack_into("<I", changed, central + 24, uncompressed_size)
     return bytes(changed)
+
+
+def replace_release_protocol_bound(data: bytes, field: str, value: object) -> bytes:
+    """Rewrite only canonical release.json while preserving canonical ZIP metadata."""
+    rewritten = io.BytesIO()
+    with zipfile.ZipFile(io.BytesIO(data), "r") as source:
+        members = [(info, source.read(info)) for info in source.infolist()]
+    with zipfile.ZipFile(rewritten, "w", compression=zipfile.ZIP_STORED) as target:
+        for info, content in members:
+            if info.filename == "cognitive-card-os/release.json":
+                metadata = json.loads(content)
+                metadata["protocol"][field] = value
+                content = canonical(metadata)
+            target.writestr(info, content)
+    return rewritten.getvalue()
 
 
 class InstallerFixture:
@@ -332,6 +348,22 @@ class CardOsSkillInstallerTests(unittest.TestCase):
             manifest.write(b" \n")
         self.assert_error(self.fixture.run("--channel", "stable"), "INVALID_MANIFEST")
 
+    def test_manifest_protocol_bounds_require_exact_json_integers_before_root_mutation(self) -> None:
+        for field in ("minimum", "maximum"):
+            for value in (True, 1.0, "1", None):
+                with self.subTest(field=field, value=value):
+                    protocol = {"minimum": 1, "maximum": 1}
+                    protocol[field] = value
+                    self.fixture.write_manifest(protocol=protocol)
+                    before = self.snapshot(self.fixture.install_root)
+                    result = self.fixture.run("--channel", "stable")
+                    self.assert_error(result, "INVALID_MANIFEST")
+                    self.assertEqual(before, self.snapshot(self.fixture.install_root))
+
+        self.fixture.write_manifest(protocol={"minimum": 1, "maximum": 1})
+        valid = self.fixture.run("--channel", "stable")
+        self.assertEqual(0, valid.returncode, valid.stderr)
+
     def test_published_at_requires_real_canonical_utc_datetime(self) -> None:
         invalid = (
             "2026-99-99T99:99:99Z",
@@ -351,6 +383,26 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         self.fixture.write_manifest(archive_sha256="2" * 64)
         self.assert_error(self.fixture.run("--channel", "stable"), "DIGEST_MISMATCH")
         self.assertFalse((self.fixture.install_root / "skills" / "cognitive-card-os").exists())
+
+    def test_release_protocol_bounds_require_exact_json_integers_before_root_mutation(self) -> None:
+        for field in ("minimum", "maximum"):
+            for value in (True, 1.0, "1", None):
+                with self.subTest(field=field, value=value):
+                    valid_archive = self.fixture.reset_archive()
+                    self.fixture.replace_archive(
+                        replace_release_protocol_bound(valid_archive, field, value)
+                    )
+                    before = self.snapshot(self.fixture.install_root)
+                    result = self.fixture.run("--channel", "stable")
+                    self.assert_error(result, "UNSAFE_ARCHIVE")
+                    self.assertEqual(before, self.snapshot(self.fixture.install_root))
+
+        valid_archive = self.fixture.reset_archive()
+        self.fixture.replace_archive(
+            replace_release_protocol_bound(valid_archive, "minimum", 1)
+        )
+        valid = self.fixture.run("--channel", "stable")
+        self.assertEqual(0, valid.returncode, valid.stderr)
 
     def test_zip_central_directory_and_unsafe_member_regressions(self) -> None:
         member = "cognitive-card-os/SKILL.md"

@@ -305,7 +305,13 @@ def validate_release_metadata(data: bytes) -> dict[str, object]:
         fail("UNSAFE_ARCHIVE")
     if not isinstance(value.get("source_commit"), str) or not COMMIT.fullmatch(value["source_commit"]):
         fail("UNSAFE_ARCHIVE")
-    if value.get("protocol") != {"minimum": 1, "maximum": 1}:
+    protocol = value.get("protocol")
+    if not isinstance(protocol, dict) or set(protocol) != {"minimum", "maximum"}:
+        fail("UNSAFE_ARCHIVE")
+    if any(
+        type(protocol[bound]) is not int or protocol[bound] != 1
+        for bound in ("minimum", "maximum")
+    ):
         fail("UNSAFE_ARCHIVE")
     files = value.get("files")
     if not isinstance(files, dict) or set(files) != set(SOURCE):
