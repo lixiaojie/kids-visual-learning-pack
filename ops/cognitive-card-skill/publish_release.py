@@ -13,7 +13,7 @@ import shutil
 import stat
 import tempfile
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Iterator
 
@@ -90,7 +90,24 @@ def _format_published_at(value: datetime) -> str:
         _fail("INVALID_PUBLISHED_AT")
     if normalized.microsecond:
         _fail("INVALID_PUBLISHED_AT")
-    return normalized.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return (
+        f"{normalized.year:04d}-{normalized.month:02d}-{normalized.day:02d}"
+        f"T{normalized.hour:02d}:{normalized.minute:02d}:{normalized.second:02d}Z"
+    )
+
+
+def _parse_published_at(value: object) -> datetime:
+    if not isinstance(value, str) or not RFC3339_UTC.fullmatch(value):
+        _fail("INVALID_MANIFEST")
+    try:
+        parsed = datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=timezone.utc
+        )
+    except ValueError:
+        _fail("INVALID_MANIFEST")
+    if _format_published_at(parsed) != value:
+        _fail("INVALID_MANIFEST")
+    return parsed
 
 
 def _check_process_owner() -> None:
@@ -161,30 +178,64 @@ def _safe_remove(path: Path) -> None:
         pass
 
 
-def _ensure_registry(root: Path) -> Path:
+def _prepare_registry_path(root: Path) -> Path:
     _check_process_owner()
-    root = Path(root).absolute()
-    if root.is_symlink():
+    requested = Path(root).absolute()
+    if requested.is_symlink():
+        _fail("UNSAFE_REGISTRY_SYMLINK")
+    try:
+        # Canonicalize platform aliases such as macOS /var -> /private/var,
+        # while never resolving the governed registry root itself.
+        root = requested.parent.resolve(strict=False) / requested.name
+    except (OSError, RuntimeError):
         _fail("UNSAFE_REGISTRY_SYMLINK")
     with _restrictive_umask():
         try:
             root.parent.mkdir(parents=True, exist_ok=True)
-            if not root.exists():
-                root.mkdir(mode=PUBLIC_DIRECTORY_MODE)
-                os.chmod(root, PUBLIC_DIRECTORY_MODE)
-            for name in ("installers", "manifests", "releases"):
-                child = root / name
-                if child.is_symlink():
-                    _fail("UNSAFE_REGISTRY_SYMLINK")
-                if not child.exists():
-                    child.mkdir(mode=PUBLIC_DIRECTORY_MODE)
-                    os.chmod(child, PUBLIC_DIRECTORY_MODE)
-            _fsync_directory(root)
-        except RegistryError:
-            raise
         except OSError:
             _fail("REGISTRY_IO_ERROR")
-    _check_owner_mode(root, mode=PUBLIC_DIRECTORY_MODE, directory=True)
+    current = Path(root.anchor)
+    for part in root.parent.parts[1:]:
+        current /= part
+        if current.is_symlink():
+            _fail("UNSAFE_REGISTRY_SYMLINK")
+    return root
+
+
+def _ensure_registry(root: Path) -> Path:
+    """Initialize only an absent/empty registry; fully verify any populated one."""
+    _check_process_owner()
+    root = Path(root).absolute()
+    created_root = False
+    try:
+        if root.is_symlink():
+            _fail("UNSAFE_REGISTRY_SYMLINK")
+        if not root.exists():
+            with _restrictive_umask():
+                root.mkdir(mode=PUBLIC_DIRECTORY_MODE)
+            os.chmod(root, PUBLIC_DIRECTORY_MODE)
+            created_root = True
+        _check_owner_mode(root, mode=PUBLIC_DIRECTORY_MODE, directory=True)
+        entries = list(root.iterdir())
+        if entries:
+            verify_registry(registry_root=root)
+            return root
+        with _restrictive_umask():
+            for name in ("installers", "manifests", "releases"):
+                child = root / name
+                child.mkdir(mode=PUBLIC_DIRECTORY_MODE)
+                os.chmod(child, PUBLIC_DIRECTORY_MODE)
+        _fsync_directory(root)
+    except RegistryError:
+        raise
+    except FileExistsError:
+        # A non-cooperating creator raced initialization. It owns the entry;
+        # validate it on the next call instead of completing or replacing it.
+        _fail("REGISTRY_INITIALIZATION_CONFLICT")
+    except OSError:
+        if created_root:
+            _fail("REGISTRY_IO_ERROR")
+        _fail("REGISTRY_IO_ERROR")
     return root
 
 
@@ -244,44 +295,75 @@ def _read_regular(path: Path, *, maximum: int | None = None) -> bytes:
     return content
 
 
+def _validate_immutable_directory(
+    destination: Path, expected: dict[str, bytes]
+) -> None:
+    if destination.is_symlink() or not destination.is_dir():
+        _fail("IMMUTABLE_CONFLICT")
+    try:
+        actual_names = {entry.name for entry in destination.iterdir()}
+    except OSError:
+        _fail("REGISTRY_IO_ERROR")
+    if actual_names != set(expected):
+        _fail("IMMUTABLE_CONFLICT")
+    try:
+        for name, content in expected.items():
+            path = destination / name
+            if path.is_symlink() or not path.is_file() or path.read_bytes() != content:
+                _fail("IMMUTABLE_CONFLICT")
+            _check_owner_mode(path, mode=PUBLIC_FILE_MODE, regular=True)
+    except RegistryError:
+        raise
+    except OSError:
+        _fail("REGISTRY_IO_ERROR")
+    _check_owner_mode(destination, mode=PUBLIC_DIRECTORY_MODE, directory=True)
+
+
 def _publish_immutable_directory(
     *, root: Path, staged: Path, destination: Path, expected: dict[str, bytes]
 ) -> bool:
     if destination.exists() or destination.is_symlink():
-        if destination.is_symlink() or not destination.is_dir():
-            _fail("IMMUTABLE_CONFLICT")
-        try:
-            actual_names = {entry.name for entry in destination.iterdir()}
-        except OSError:
-            _fail("REGISTRY_IO_ERROR")
-        if actual_names != set(expected):
-            _fail("IMMUTABLE_CONFLICT")
-        try:
-            for name, content in expected.items():
-                path = destination / name
-                if (
-                    path.is_symlink()
-                    or not path.is_file()
-                    or path.read_bytes() != content
-                ):
-                    _fail("IMMUTABLE_CONFLICT")
-                _check_owner_mode(path, mode=PUBLIC_FILE_MODE, regular=True)
-        except RegistryError:
-            raise
-        except OSError:
-            _fail("REGISTRY_IO_ERROR")
-        _check_owner_mode(destination, mode=PUBLIC_DIRECTORY_MODE, directory=True)
+        _validate_immutable_directory(destination, expected)
         return False
     os.chmod(staged, PUBLIC_DIRECTORY_MODE)
     for name in expected:
         os.chmod(staged / name, PUBLIC_FILE_MODE)
     _fsync_directory(staged)
     try:
-        os.rename(staged, destination)
+        # mkdir is the atomic no-overwrite reservation. Unlike rename(2), it
+        # cannot replace a raced empty destination directory. The already
+        # fsynced private staging files are then linked into our reservation.
+        os.mkdir(destination, PRIVATE_MODE)
     except FileExistsError:
-        _fail("IMMUTABLE_CONFLICT")
+        _validate_immutable_directory(destination, expected)
+        return False
     except OSError:
         _fail("REGISTRY_IO_ERROR")
+    linked: list[str] = []
+    try:
+        for name in expected:
+            os.link(staged / name, destination / name, follow_symlinks=False)
+            linked.append(name)
+        os.chmod(destination, PUBLIC_DIRECTORY_MODE)
+        _fsync_directory(destination)
+        _validate_immutable_directory(destination, expected)
+    except Exception:
+        # Remove only links whose inode still matches our private staged file,
+        # then remove the directory only if it is empty. Never delete a raced
+        # foreign entry while unwinding an incomplete publication.
+        for name in linked:
+            published = destination / name
+            staged_file = staged / name
+            try:
+                if published.lstat().st_ino == staged_file.lstat().st_ino:
+                    published.unlink()
+            except OSError:
+                pass
+        try:
+            destination.rmdir()
+        except OSError:
+            pass
+        raise
     _fsync_directory(destination.parent)
     return True
 
@@ -458,8 +540,7 @@ def _parse_manifest(content: bytes) -> dict[str, object]:
         _fail("INVALID_MANIFEST")
     if not isinstance(archive_digest, str) or not SHA256.fullmatch(archive_digest):
         _fail("INVALID_MANIFEST")
-    if not isinstance(published_at, str) or not RFC3339_UTC.fullmatch(published_at):
-        _fail("INVALID_MANIFEST")
+    _parse_published_at(published_at)
     size = payload.get("archive_size_bytes")
     if type(size) is not int or size <= 0:
         _fail("INVALID_MANIFEST")
@@ -641,9 +722,11 @@ def _activate_installer_locked(root: Path, digest: str) -> dict[str, object]:
 def publish_installer(
     *, registry_root: Path, installer: Path, activate: bool
 ) -> dict[str, object]:
-    root = _ensure_registry(Path(registry_root))
+    root = _prepare_registry_path(Path(registry_root))
     with _registry_lock(root), _restrictive_umask():
+        root = _ensure_registry(root)
         _scan_symlinks(root)
+        verify_registry(registry_root=root)
         source = Path(installer)
         if source.is_symlink() or not source.is_file():
             _fail("INVALID_INSTALLER")
@@ -680,8 +763,9 @@ def publish_installer(
 def activate_installer(
     *, registry_root: Path, installer_digest: str
 ) -> dict[str, object]:
-    root = _ensure_registry(Path(registry_root))
+    root = _prepare_registry_path(Path(registry_root))
     with _registry_lock(root), _restrictive_umask():
+        root = _ensure_registry(root)
         _scan_symlinks(root)
         verify_registry(registry_root=root)
         _validate_installer_snapshot(root, installer_digest)
@@ -696,9 +780,11 @@ def publish_release(
     published_at: datetime,
     activate_stable: bool,
 ) -> dict[str, object]:
-    root = _ensure_registry(Path(registry_root))
+    root = _prepare_registry_path(Path(registry_root))
     with _registry_lock(root), _restrictive_umask():
+        root = _ensure_registry(root)
         _scan_symlinks(root)
+        verify_registry(registry_root=root)
         _validate_installer_snapshot(root, installer_digest)
         try:
             release = BUILDER.validate_archive(Path(archive))
@@ -754,9 +840,33 @@ def publish_release(
         return {**base, **activated}
 
 
+def _next_rollback_published_at(root: Path) -> datetime:
+    candidate = _parse_published_at(_format_published_at(_utc_now()))
+    latest: datetime | None = None
+    try:
+        snapshots = list((root / "manifests").iterdir())
+    except OSError:
+        _fail("REGISTRY_IO_ERROR")
+    for snapshot in snapshots:
+        payload = _parse_manifest(_read_regular(snapshot, maximum=256 * 1024))
+        observed = _parse_published_at(payload["published_at"])
+        if latest is None or observed > latest:
+            latest = observed
+    if latest is not None and candidate <= latest:
+        try:
+            candidate = latest + timedelta(seconds=1)
+        except OverflowError:
+            _fail("MANIFEST_TIMESTAMP_EXHAUSTED")
+    # Force canonical formatting now so an unrepresentable edge cannot reach
+    # immutable publication after other validation work.
+    _format_published_at(candidate)
+    return candidate
+
+
 def activate_manifest(*, registry_root: Path, snapshot: Path) -> dict[str, object]:
-    root = _ensure_registry(Path(registry_root))
+    root = _prepare_registry_path(Path(registry_root))
     with _registry_lock(root), _restrictive_umask():
+        root = _ensure_registry(root)
         _scan_symlinks(root)
         verify_registry(registry_root=root)
         snapshot_path = Path(snapshot)
@@ -783,7 +893,7 @@ def activate_manifest(*, registry_root: Path, snapshot: Path) -> dict[str, objec
         rollback = _manifest_from_release(
             release=release,
             installer_digest=installer_digest,
-            published_at=_utc_now(),
+            published_at=_next_rollback_published_at(root),
         )
         return _activate_manifest_content(root, canonical_json(rollback))
 

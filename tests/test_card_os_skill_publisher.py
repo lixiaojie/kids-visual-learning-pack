@@ -8,6 +8,7 @@ import stat
 import subprocess
 import tempfile
 import unittest
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
@@ -133,6 +134,24 @@ class CardOsSkillPublisherTests(unittest.TestCase):
             activate_stable=activate,
         )
 
+    def registry_snapshot(self) -> list[tuple[str, str, int, bytes | str]]:
+        root = self.fixture.registry
+        if not root.exists() and not root.is_symlink():
+            return []
+        snapshot: list[tuple[str, str, int, bytes | str]] = []
+        paths = [root, *sorted(root.rglob("*"))]
+        for path in paths:
+            relative = "." if path == root else path.relative_to(root).as_posix()
+            status = path.lstat()
+            mode = stat.S_IMODE(status.st_mode)
+            if path.is_symlink():
+                snapshot.append((relative, "symlink", mode, os.readlink(path)))
+            elif path.is_dir():
+                snapshot.append((relative, "directory", mode, b""))
+            else:
+                snapshot.append((relative, "file", mode, path.read_bytes()))
+        return snapshot
+
     def test_installer_can_publish_before_release_and_switches_one_pointer(self) -> None:
         result = self.publish_installer(activate=True)
         digest = hashlib.sha256(self.fixture.installer.read_bytes()).hexdigest()
@@ -212,7 +231,65 @@ class CardOsSkillPublisherTests(unittest.TestCase):
         self.assertEqual(first, second)
         archive = self.fixture.registry / "releases" / "0.1.0" / "cognitive-card-os.zip"
         archive.write_bytes(b"conflict")
-        self.error("IMMUTABLE_CONFLICT", lambda: PUBLISHER.publish_release(**arguments))
+        self.error("INVALID_RELEASE_ARCHIVE", lambda: PUBLISHER.publish_release(**arguments))
+
+    def test_raced_empty_immutable_destination_is_never_replaced(self) -> None:
+        digest = hashlib.sha256(self.fixture.installer.read_bytes()).hexdigest()
+        canonical_root = self.fixture.registry.parent.resolve() / self.fixture.registry.name
+        destination = canonical_root / "installers" / digest
+        real_mkdir = os.mkdir
+        injected = False
+
+        def mkdir_with_raced_destination(path, mode=0o777, *, dir_fd=None):
+            nonlocal injected
+            if Path(path) == destination and not injected:
+                injected = True
+                real_mkdir(path, mode, dir_fd=dir_fd)
+            return real_mkdir(path, mode, dir_fd=dir_fd)
+
+        with mock.patch.object(PUBLISHER.os, "mkdir", side_effect=mkdir_with_raced_destination):
+            self.error("IMMUTABLE_CONFLICT", lambda: self.publish_installer(activate=False))
+        self.assertTrue(injected)
+        self.assertTrue(destination.is_dir())
+        self.assertEqual([], list(destination.iterdir()))
+
+    def test_invalid_existing_registry_is_unchanged_before_publication(self) -> None:
+        self.publish_installer(activate=False)
+        cases = (
+            ("root-mode", self.fixture.registry, 0o777),
+            ("ancestor-mode", self.fixture.registry / "installers", 0o777),
+            (
+                "descendant-mode",
+                next((self.fixture.registry / "installers").iterdir()) / "install.sh",
+                0o666,
+            ),
+        )
+        for name, path, invalid_mode in cases:
+            with self.subTest(name=name):
+                original_mode = stat.S_IMODE(path.lstat().st_mode)
+                path.chmod(invalid_mode)
+                before = deepcopy(self.registry_snapshot())
+                self.fixture.installer.write_bytes(
+                    f"#!/bin/sh\n# {name}\n".encode("ascii")
+                )
+                self.error(
+                    "INVALID_REGISTRY_MODE",
+                    lambda: self.publish_installer(activate=False),
+                )
+                self.assertEqual(before, self.registry_snapshot())
+                path.chmod(original_mode)
+
+    def test_malformed_existing_registry_is_unchanged_before_publication(self) -> None:
+        self.publish_installer(activate=False)
+        malformed = self.fixture.registry / "releases" / "not-a-version"
+        malformed.mkdir()
+        before = self.registry_snapshot()
+        self.fixture.installer.write_bytes(b"#!/bin/sh\n# must not publish\n")
+        self.error(
+            "INVALID_REGISTRY_ENTRY",
+            lambda: self.publish_installer(activate=False),
+        )
+        self.assertEqual(before, self.registry_snapshot())
 
     def test_missing_installer_and_invalid_owner_fail_closed(self) -> None:
         self.error(
@@ -356,6 +433,68 @@ class CardOsSkillPublisherTests(unittest.TestCase):
             rolled_back,
             (self.fixture.registry / "manifests" / f"{result['manifest_sha256']}.json").read_bytes(),
         )
+
+    def test_each_rollback_creates_a_new_snapshot_on_clock_collision_or_regression(self) -> None:
+        self.publish_release(activate=True)
+        original = (self.fixture.registry / "manifest.json").read_bytes()
+        original_snapshot = self.fixture.registry / "manifests" / f"{hashlib.sha256(original).hexdigest()}.json"
+        counts = [len(list((self.fixture.registry / "manifests").iterdir()))]
+        digests: list[str] = []
+        clocks = (
+            datetime(2026, 7, 16, 1, 2, 3, tzinfo=timezone.utc),
+            datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
+        )
+        snapshot = original_snapshot
+        for clock in clocks:
+            with mock.patch.object(PUBLISHER, "_utc_now", return_value=clock):
+                result = PUBLISHER.activate_manifest(
+                    registry_root=self.fixture.registry,
+                    snapshot=snapshot,
+                )
+            digests.append(str(result["manifest_sha256"]))
+            snapshot = self.fixture.registry / "manifests" / f"{digests[-1]}.json"
+            counts.append(len(list((self.fixture.registry / "manifests").iterdir())))
+        self.assertEqual([1, 2, 3], counts)
+        self.assertEqual(2, len(set(digests)))
+        timestamps = [
+            json.loads((self.fixture.registry / "manifests" / f"{digest}.json").read_bytes())["published_at"]
+            for digest in digests
+        ]
+        self.assertEqual(
+            ["2026-07-16T01:02:04Z", "2026-07-16T01:02:05Z"],
+            timestamps,
+        )
+
+    def test_manifest_rejects_impossible_or_noncanonical_utc_timestamps(self) -> None:
+        invalid = (
+            "2026-99-99T99:99:99Z",
+            "2026-02-29T01:02:03Z",
+            "2026-07-16T24:00:00Z",
+        )
+        for value in invalid:
+            with self.subTest(value=value):
+                payload = {
+                    "archive_sha256": "0" * 64,
+                    "archive_size_bytes": 1,
+                    "archive_url": "https://www.yutou.space/card-os/skill/v1/releases/0.1.0/cognitive-card-os.zip",
+                    "channel": "stable",
+                    "installer": {
+                        "sha256": "1" * 64,
+                        "url": "https://www.yutou.space/card-os/skill/v1/installers/" + "1" * 64 + "/install.sh",
+                    },
+                    "minimum_server_version": "0.3.1",
+                    "protocol": {"maximum": 1, "minimum": 1},
+                    "published_at": value,
+                    "schema": "cognitive-card-skill-registry-v1",
+                    "source_commit": "2" * 40,
+                    "version": "0.1.0",
+                }
+                self.error(
+                    "INVALID_MANIFEST",
+                    lambda payload=payload: PUBLISHER._parse_manifest(
+                        PUBLISHER.canonical_json(payload)
+                    ),
+                )
 
     def test_activate_installer_revalidates_digest_before_and_after_switch(self) -> None:
         result = self.publish_installer(activate=False)
