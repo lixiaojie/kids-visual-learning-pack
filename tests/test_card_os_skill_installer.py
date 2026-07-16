@@ -618,8 +618,9 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         self.assertEqual(0, recovered.returncode, recovered.stderr)
         self.assertEqual(
             [
+                "replace:new->recovery-trash",
                 "replace:backup->active",
-                "delete:new",
+                "delete:recovery-trash",
                 "replace:active->backup",
                 "replace:new->active",
                 "delete:backup",
@@ -649,8 +650,9 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         )
         self.assertEqual(
             [
-                "delete:active",
+                "replace:active->recovery-trash",
                 "replace:backup->active",
+                "delete:recovery-trash",
                 "replace:active->backup",
                 "replace:new->active",
                 "delete:backup",
@@ -679,6 +681,114 @@ class CardOsSkillInstallerTests(unittest.TestCase):
         self.assertEqual(
             ["delete:backup"], self.transition_trace(committed_recovery.stderr)
         )
+
+    def test_rollback_recovery_is_reentrant_across_nested_interruptions(self) -> None:
+        fault_expectations = {
+            "recovery_after_active_trashed": {
+                "phase": "rollback_trash_pending",
+                "active": False,
+                "backup": True,
+                "trash_complete": True,
+            },
+            "recovery_after_backup_restored": {
+                "phase": "rollback_active_trashed",
+                "active": True,
+                "backup": False,
+                "trash_complete": True,
+            },
+            "recovery_during_trash_cleanup": {
+                "phase": "rollback_cleanup",
+                "active": True,
+                "backup": False,
+                "trash_complete": False,
+            },
+        }
+        for recovery_fault, expected in fault_expectations.items():
+            with self.subTest(recovery_fault=recovery_fault):
+                case = self.base / recovery_fault
+                first = InstallerFixture(case / "first", "0.1.0")
+                self.assertEqual(0, first.run("--channel", "stable").returncode)
+                active = first.install_root / "skills" / "cognitive-card-os"
+                old_active = self.snapshot(active)
+                history = first.install_root / "skill-releases" / "cognitive-card-os"
+                old_state = (history / "state.json").read_bytes()
+
+                second = InstallerFixture(case / "second", "0.2.0", b"new")
+                second.install_root = first.install_root
+                interrupted_upgrade = second.run(
+                    "--channel",
+                    "stable",
+                    extra_env={"CARD_OS_INSTALL_FAULT": "after_new_active"},
+                )
+                self.assertNotEqual(0, interrupted_upgrade.returncode)
+                journal_path = history / "transaction.json"
+                journal = json.loads(journal_path.read_bytes())
+                self.assertEqual("old_moved", journal["phase"])
+
+                interrupted_recovery = second.run(
+                    "--rollback",
+                    extra_env={"CARD_OS_INSTALL_FAULT": recovery_fault},
+                )
+                self.assertNotEqual(0, interrupted_recovery.returncode)
+                journal = json.loads(journal_path.read_bytes())
+                self.assertEqual(expected["phase"], journal["phase"])
+                backup = first.install_root / "skills" / ".cognitive-card-os.backup"
+                trash = first.install_root / "skills" / ".cognitive-card-os.recovery-trash"
+                self.assertEqual(expected["active"], active.is_dir())
+                self.assertEqual(expected["backup"], backup.is_dir())
+                self.assertTrue(trash.is_dir())
+                new_cache = history / f"0.2.0-{second.archive_digest}" / "skill" / "cognitive-card-os"
+                self.assertEqual(
+                    expected["trash_complete"],
+                    self.snapshot(trash) == self.snapshot(new_cache),
+                )
+
+                recovered = second.run("--rollback")
+                self.assert_error(recovered, "ROLLBACK_UNAVAILABLE")
+                self.assertEqual(old_active, self.snapshot(active))
+                self.assertEqual(old_state, (history / "state.json").read_bytes())
+                self.assertFalse(journal_path.exists())
+                self.assertFalse(backup.exists())
+                self.assertFalse(trash.exists())
+
+    def test_recovery_trash_is_journal_bound_and_unexpected_states_fail_closed(self) -> None:
+        self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
+        skills = self.fixture.install_root / "skills"
+        active = skills / "cognitive-card-os"
+        trash = skills / ".cognitive-card-os.recovery-trash"
+        shutil.copytree(active, trash)
+        before = self.snapshot(self.fixture.install_root)
+        unexpected = self.fixture.run("--channel", "stable")
+        self.assert_error(unexpected, "INVALID_JOURNAL")
+        self.assertEqual(before, self.snapshot(self.fixture.install_root))
+        shutil.rmtree(trash)
+
+        upgraded = InstallerFixture(self.base / "trash-binding-upgrade", "0.2.0", b"new")
+        upgraded.install_root = self.fixture.install_root
+        crashed = upgraded.run(
+            "--channel", "stable", extra_env={"CARD_OS_INSTALL_FAULT": "after_new_active"}
+        )
+        self.assertNotEqual(0, crashed.returncode)
+        trashed = upgraded.run(
+            "--rollback",
+            extra_env={"CARD_OS_INSTALL_FAULT": "recovery_after_active_trashed"},
+        )
+        self.assertNotEqual(0, trashed.returncode)
+        (trash / "SKILL.md").write_bytes(b"unexpected identity")
+        history = self.fixture.install_root / "skill-releases" / "cognitive-card-os"
+        backup = skills / ".cognitive-card-os.backup"
+        before_active = self.snapshot(active)
+        before_backup = self.snapshot(backup)
+        before_trash = self.snapshot(trash)
+        before_state = (history / "state.json").read_bytes()
+        before_journal = (history / "transaction.json").read_bytes()
+        refused = upgraded.run("--rollback")
+        self.assert_error(refused, "INVALID_JOURNAL")
+        self.assertEqual(before_active, self.snapshot(active))
+        self.assertEqual(before_backup, self.snapshot(backup))
+        self.assertEqual(before_trash, self.snapshot(trash))
+        self.assertEqual(before_state, (history / "state.json").read_bytes())
+        self.assertEqual(before_journal, (history / "transaction.json").read_bytes())
 
     def test_first_install_durability_chain_and_published_cache_crash_recovery(self) -> None:
         traced = InstallerFixture(self.base / "durability-trace", "0.1.0")
