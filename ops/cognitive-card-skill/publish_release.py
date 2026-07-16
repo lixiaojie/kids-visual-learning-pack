@@ -796,6 +796,19 @@ def publish_release(
         archive_content = _read_regular(Path(archive), maximum=BUILDER.MAX_ARCHIVE_BYTES)
         if _sha256(archive_content) != digest:
             _fail("RELEASE_DIGEST_MISMATCH")
+        # Both fixture and stable publication must exercise the exact same
+        # publisher-owned channel candidate.  Construct and parse it before
+        # creating the immutable release so invalid publication metadata can
+        # never leave release bytes behind.
+        manifest = _manifest_from_release(
+            release=release,
+            installer_digest=installer_digest,
+            published_at=published_at,
+        )
+        manifest_content = canonical_json(manifest)
+        if _parse_manifest(manifest_content) != manifest:
+            _fail("INVALID_MANIFEST")
+        manifest_candidate_digest = _sha256(manifest_content)
         checksum = f"{digest}  {ARCHIVE_NAME}\n".encode("ascii")
         destination = root / "releases" / version
         with _staging_directory(root) as staging:
@@ -826,17 +839,13 @@ def publish_release(
         base = {
             "archive_path": f"releases/{version}/{ARCHIVE_NAME}",
             "archive_sha256": digest,
+            "manifest_candidate_sha256": manifest_candidate_digest,
             "status": "published",
             "version": version,
         }
         if not activate_stable:
             return base
-        manifest = _manifest_from_release(
-            release=published_release,
-            installer_digest=installer_digest,
-            published_at=published_at,
-        )
-        activated = _activate_manifest_content(root, canonical_json(manifest))
+        activated = _activate_manifest_content(root, manifest_content)
         return {**base, **activated}
 
 

@@ -184,6 +184,65 @@ class CardOsSkillPublisherTests(unittest.TestCase):
         self.assertEqual([], list((self.fixture.registry / "manifests").iterdir()))
         self.assertTrue(PUBLISHER.verify_registry(registry_root=self.fixture.registry)["valid"])
 
+    def test_inactive_release_derives_the_same_canonical_candidate_without_writing_it(self) -> None:
+        installer = self.publish_installer(activate=False)
+        arguments = {
+            "registry_root": self.fixture.registry,
+            "archive": self.fixture.archive,
+            "installer_digest": str(installer["installer_sha256"]),
+            "published_at": self.when,
+        }
+        inactive = PUBLISHER.publish_release(
+            **arguments,
+            activate_stable=False,
+        )
+        candidate_digest = inactive["manifest_candidate_sha256"]
+        self.assertRegex(str(candidate_digest), r"^[0-9a-f]{64}$")
+        self.assertFalse((self.fixture.registry / "manifest.json").exists())
+        self.assertEqual([], list((self.fixture.registry / "manifests").iterdir()))
+
+        active = PUBLISHER.publish_release(
+            **arguments,
+            activate_stable=True,
+        )
+        manifest_bytes = (self.fixture.registry / "manifest.json").read_bytes()
+        self.assertEqual(candidate_digest, active["manifest_candidate_sha256"])
+        self.assertEqual(candidate_digest, active["manifest_sha256"])
+        self.assertEqual(candidate_digest, hashlib.sha256(manifest_bytes).hexdigest())
+        self.assertEqual(PUBLISHER.canonical_json(json.loads(manifest_bytes)), manifest_bytes)
+
+    def test_invalid_inactive_published_at_is_rejected_before_any_release_write(self) -> None:
+        installer = self.publish_installer(activate=False)
+        arguments = {
+            "registry_root": self.fixture.registry,
+            "archive": self.fixture.archive,
+            "installer_digest": str(installer["installer_sha256"]),
+            "activate_stable": False,
+        }
+        before = self.registry_snapshot()
+        invalid = (
+            "not-a-datetime",
+            datetime(2026, 7, 16, 1, 2, 3),
+            datetime(2026, 7, 16, 1, 2, 3, 1, tzinfo=timezone.utc),
+        )
+        for published_at in invalid:
+            with self.subTest(published_at=published_at):
+                self.error(
+                    "INVALID_PUBLISHED_AT",
+                    lambda published_at=published_at: PUBLISHER.publish_release(
+                        **arguments,
+                        published_at=published_at,
+                    ),
+                )
+                self.assertEqual(before, self.registry_snapshot())
+                self.assertFalse(
+                    (self.fixture.registry / "releases" / "0.1.0").exists()
+                )
+                self.assertFalse((self.fixture.registry / "manifest.json").exists())
+                self.assertEqual(
+                    [], list((self.fixture.registry / "manifests").iterdir())
+                )
+
     def test_stable_manifest_is_canonical_and_derived_from_archive(self) -> None:
         installer = self.publish_installer(activate=True)
         result = PUBLISHER.publish_release(
