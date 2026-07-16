@@ -42,7 +42,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；设计可信自由请求编译入口 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
-| SKILL-01 | Skill 发布注册表 | READY | 设计不可变 release、摘要、stable 与回滚 |
+| SKILL-01 | Skill 发布注册表 | IN PROGRESS | 建立不可变 release、摘要、stable 与回滚 |
 | SKILL-02 | 薄 Skill 客户端 | BLOCKED | 等待 SKILL-01 产出可校验安装 release |
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
@@ -161,7 +161,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### SKILL-01 Skill 发布注册表
 
-- 状态：`READY`
+- 状态：`IN PROGRESS`
 - 依赖：PROTO-01。
 - 目标路径：
   - `/skill/v1/manifest.json`

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cognitive Card OS"
+  short_description: "Install and inspect verified Card OS task releases"
+  default_prompt: "Use $cognitive-card-os to inspect the verified Card OS client release boundary."
