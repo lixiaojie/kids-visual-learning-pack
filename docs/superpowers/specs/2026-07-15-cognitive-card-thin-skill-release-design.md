@@ -1,6 +1,6 @@
 # Cognitive Card OS 薄 Skill 发布与客户端设计
 
-状态：设计已确认并完成自审，待用户书面复核
+状态：用户已书面确认；已完成实施计划级顺序修正
 
 日期：2026-07-15
 
@@ -101,7 +101,7 @@ Skill 目录不增加 README、安装指南、变更日志或项目过程文档�
   "minimum_server_version": "0.3.1",
   "published_at": "<RFC 3339 UTC Z>",
   "installer": {
-    "url": "https://www.yutou.space/card-os/skill/v1/install.sh",
+    "url": "https://www.yutou.space/card-os/skill/v1/installers/<installer-sha256>/install.sh",
     "sha256": "<64 lowercase hex>"
   }
 }
@@ -111,9 +111,13 @@ Skill 目录不增加 README、安装指南、变更日志或项目过程文档�
 
 每次 stable 变化都先把新规范 manifest 发布为 `manifests/<其完整 SHA-256>.json`，再原子替换 `manifest.json`。历史 snapshot 和 release 永不覆盖。stable 回滚生成一个新的 manifest snapshot，指回已存在且重新验证的旧 release；不删除失败版本或改写历史 bytes。
 
+确定性 builder 只生成 ZIP、归档 `sha256.txt` 和归档内 `release.json`；它不接受 wall-clock `published_at`，也不生成 channel manifest。服务器 publisher 从重新验证的 `release.json`/归档元数据、已经发布的 immutable installer digest 和显式发布时刻组合 manifest。调用方不能提交自制 manifest 或另一个 source commit，从而避免 builder、publisher 和部署命令三方各自拥有一份不一致的字段。
+
 ## 6. 确定性构建
 
 构建只能从干净、精确的治理仓提交运行。构建器从 Git 索引读取 Skill 声明文件，不把未跟踪文件、工作树漂移、Git 元数据或本机绝对路径带入归档。
+
+生产构建、publish 和最终 stable gate 前都重新 fetch 私有 `origin/main`。release-source commit 不仅必须是当前 `origin/main` 的祖先；它与 remote head 在 `skills/cognitive-card-os/`、`ops/cognitive-card-skill/`、受管 Nginx 契约、相关发布/客户端测试和 `package.json` 上还必须零差异。门禁记录比较过的 remote head 和关键路径 tree/blob 摘要；若另一终端已改变这些权威路径，当前 release 视为被 supersede，停止或恢复 prior manifest，不能继续发布旧 bytes。纯文档状态更新可在 release-source commit 之后发生，但不得改变上述 release-critical tree。
 
 ZIP 规则固定如下：
 
@@ -153,11 +157,11 @@ Nginx 在现有 Card OS deny-only catch-all 之前增加更长的只读 location
 
 ## 8. 安装器
 
-用户采用三步安装，不使用管道执行：
+用户采用四步安装，不使用管道执行：
 
 ```bash
-curl -fsSLO https://www.yutou.space/card-os/skill/v1/install.sh
-curl -fsSLO https://www.yutou.space/card-os/skill/v1/install.sh.sha256
+curl -q --proto '=https' --tlsv1.2 --location --max-redirs 0 --fail --silent --show-error --remote-name https://www.yutou.space/card-os/skill/v1/install.sh
+curl -q --proto '=https' --tlsv1.2 --location --max-redirs 0 --fail --silent --show-error --remote-name https://www.yutou.space/card-os/skill/v1/install.sh.sha256
 shasum -a 256 -c install.sh.sha256
 bash install.sh --channel stable
 ```
@@ -184,7 +188,9 @@ ${CODEX_HOME:-$HOME/.codex}/skills/cognitive-card-os
 ${CODEX_HOME:-$HOME/.codex}/skill-releases/cognitive-card-os/<version>-<archive-sha256>/
 ```
 
-安装器在同一父文件系统的私有临时目录完成解压和复核，再以重命名方式替换活动真实目录；不依赖 Codex 是否跟随符号链接。已有活动目录先移入已验证历史缓存。失败时恢复原活动目录；首次安装失败不得留下半安装目录。`--rollback` 只接受缓存中摘要和 `release.json` 仍一致的版本。安装或回滚成功后提示重启 Codex。
+每个历史项同时保存原始 `cognitive-card-os.zip` 和已复核的 `skill/cognitive-card-os/` 解压树，因此回滚时可以重新计算外层归档摘要、复核 `release.json` 和闭合文件集，不能只信目录名。历史根另有当前用户私有的 `state.json` 和事务 journal；它们不进入活动 Skill 或 release。`state.json` 使用 `cognitive-card-skill-install-state-v1`，只记录经过复核的 active/previous 版本与归档摘要。`--rollback` 必须读取并重新验证 previous 指针，不能按 SemVer、目录名或 mtime 猜测“上一版”。
+
+安装器在同一父文件系统的私有临时目录完成下载、解压和复核，先把不可变缓存项原子放入历史根，再从缓存物化一个新的活动真实目录并以重命名切换；不依赖 Codex 是否跟随符号链接。若已有活动目录不能与 `state.json` 和某个完整受管缓存项逐字节对应，返回 `UNMANAGED_ACTIVE_SKILL`，不得自动归档、接管或覆盖；这保证当前本机完整生产 Skill 在正式切换前不会被安装器改写。每次 activation 先持久化可恢复 journal；若进程或主机在 active/state 多路径切换间中断，下次运行先根据 journal 和实际摘要完成或回退事务，不能继续新的安装。失败时恢复原活动目录；首次安装失败不得留下半安装目录。`--rollback` 只接受缓存中归档摘要、解压树和 `release.json` 全部一致的版本。安装或回滚成功后提示重启 Codex。
 
 ## 9. 凭据边界
 
@@ -196,7 +202,7 @@ Card OS token 永不进入 Skill 目录、release、GenerationResult、日志、
 2. Linux Secret Service，通过可用的 `secret-tool` 存取同一 service/base URL；
 3. 只有显式 `--allow-file-store` 才使用 `$XDG_CONFIG_HOME/cognitive-card-os/credentials.json`，缺省为 `$HOME/.config/cognitive-card-os/credentials.json`；父目录必须是当前用户拥有的 `0700` 非链接目录，文件必须是当前用户拥有的 `0600` 非链接普通文件。
 
-没有可用凭据存储且未显式允许文件存储时，配置失败关闭。客户端不提供把 token 写入 Skill 配置或 shell profile 的便利选项。首版长期 token 的正式轮换仍属于 `AUTH-01`；现场验收使用短期、最小 `read+submit` token，并在验收后撤销。
+没有可用凭据存储且未显式允许文件存储时，配置失败关闭。客户端不提供把 token 写入 Skill 配置或 shell profile 的便利选项。首版长期 token 的正式轮换仍属于 `AUTH-01`；现场验收使用短期、最小 `submit` scope token（服务端赋予 effective `read`），并在验收后撤销。
 
 ## 10. 薄客户端命令与协议
 
@@ -221,6 +227,8 @@ X-Card-OS-Skill-Release: 0.1.0
 
 结果提交的 `Idempotency-Key` 精确为 `ccos-v1-` 加 `SHA-256(packet_id + "\n" + canonical_request_body)` 的 64 位小写十六进制，因此同一 packet 和完全相同请求可安全重放，不同 packet 不会因结果 bytes 相同而碰撞。任何带 Authorization 的请求都使用禁用自动重定向的传输器；收到任意 `3xx` 即失败，不能把 bearer 发送到第二个地址。
 
+客户端在首次 complete/submit 前，把不含凭据的 `cognitive-card-submit-attempt-v1` 以 `0600` 非链接文件写入 `${XDG_STATE_HOME:-$HOME/.local/state}/cognitive-card-os/attempts/<packet-id>.json`。记录只含 packet ID、固定 `generated_at`、规范 body SHA-256、幂等键和排序后的 artifact path/SHA-256/size，不保存 token、base64 payload 或绝对工作目录。相同文件集再次执行 submit 时必须复用固定时间并重建、复核完全相同的 canonical bytes/key；文件或元数据变化则返回 `ATTEMPT_BODY_CHANGED` 并停止，不能悄悄生成新键。这个状态支持超时恢复和验收 exact replay，并在权限、owner、链接或摘要不符时失败关闭。
+
 客户端不调用 `/admin/locked-jobs` 或 `/admin/jobs/<job-id>/packets`，也不持有 admin token。自由概念输入、缺少 packet ID 或没有可见 packet 时，Skill 返回 `TRUSTED_UPSTREAM_REQUIRED`，并说明首版不能创建自由任务。
 
 ## 11. 本地生成与自动上传
@@ -234,10 +242,11 @@ GenerationPacket 是本地生成的唯一事实与输出边界。Skill 指导 Co
 3. 拒绝绝对路径、`..`、链接、设备、未声明文件和路径规范碰撞；
 4. 验证声明 media type、单文件 `max_bytes`、SHA-256 和实际大小；
 5. 验证全部 decoded bytes 不超过 20 MiB，规范 JSON 请求体不超过 28 MiB；
-6. 生成 `cognitive-card-generation-result-v1`，其中 `skill_release` 精确为 `0.1.0`；
-7. 先调用 complete，再以稳定幂等键上传结果。
+6. 扫描全部 decoded artifact bytes、路径/媒体元数据、`source_records`、`operator_notes` 和最终规范请求体，拒绝当前 raw token 或任意完整 `ccos_v1.<32hex>.<url-safe-secret>` 凭据形状；只返回 `CREDENTIAL_IN_RESULT`，不得回显命中内容；
+7. 生成 `cognitive-card-generation-result-v1`，其中 `skill_release` 精确为 `0.1.0`；
+8. 先调用 complete，再以稳定幂等键上传结果。
 
-服务器重新解码、复算摘要并把通过的文件保存到内容寻址隔离候选区。客户端收到 acceptance receipt 后比对 result digest 和 staged artifact 摘要；不把“上传成功”描述为“正式发布”。图片预览、搜索、四卡/PDF 展示和正式发布属于 `PORTAL-01`、`RENDER-01`、`QA-01` 与 `PUBLISH-01`。
+服务器重新解码、复算摘要并把通过的文件保存到内容寻址隔离候选区。客户端收到 acceptance receipt 后把 `result_digest` 作为服务端生成的不透明 `sha256:<64 lowercase hex>` 标识验证格式，并在精确 replay 时要求它逐字节稳定；`0.3.1` 未把该摘要算法声明为客户端可重算协议，因此客户端不得把它误当成 canonical request body SHA。客户端另行比对每个 staged artifact 的相对路径、SHA-256、大小和内容寻址 storage key；不把“上传成功”描述为“正式发布”。图片预览、搜索、四卡/PDF 展示和正式发布属于 `PORTAL-01`、`RENDER-01`、`QA-01` 与 `PUBLISH-01`。
 
 纯 ChatGPT 网页或手机没有本地 Skill 执行能力时，未来可使用 `UPLOAD-01` 浏览器手动上传；该备用表面不进入本批次。
 
@@ -252,7 +261,7 @@ GenerationPacket 是本地生成的唯一事实与输出边界。Skill 指导 Co
 - `PACKET_ALREADY_CLAIMED`、`PACKET_EXPIRED`、`LEASE_EXPIRED`、`LEASE_OWNER_MISMATCH`：刷新列表或等待重新签发；
 - `MISSING_ARTIFACT`、`UNDECLARED_ARTIFACT`、`ARTIFACT_DIGEST_MISMATCH`、`ARTIFACT_MEDIA_TYPE_MISMATCH`、`ARTIFACT_SIZE_MISMATCH`、`ARTIFACT_TOO_LARGE`、`PAYLOAD_TOO_LARGE`、`UNSUPPORTED_ARTIFACT_MEDIA_TYPE`：在本地修正后使用同一逻辑提交意图；
 - `IDEMPOTENCY_CONFLICT`：停止自动重试并要求人工检查；
-- 客户端本地 `TRUSTED_UPSTREAM_REQUIRED`、`REDIRECT_REFUSED`、`TLS_REQUIRED`、`DIGEST_MISMATCH`、`UNSAFE_ARCHIVE`：失败关闭，不降级。
+- 客户端本地 `TRUSTED_UPSTREAM_REQUIRED`、`REDIRECT_REFUSED`、`TLS_REQUIRED`、`DIGEST_MISMATCH`、`UNSAFE_ARCHIVE`、`CREDENTIAL_IN_RESULT`、`ATTEMPT_BODY_CHANGED`、`UNMANAGED_ACTIVE_SKILL`：失败关闭，不降级。
 
 网络超时只允许对 GET、幂等检查和已绑定 `Idempotency-Key` 的完全相同结果请求做有界重试。claim、complete 或改变请求 bytes 的 submit 不能盲目重试；必须先读取服务器状态。
 
@@ -267,9 +276,11 @@ GenerationPacket 是本地生成的唯一事实与输出边界。Skill 指导 Co
 <temp>/client-b/.codex
 ```
 
-两者必须从服务器安装同一 archive SHA-256，并分别证明全新安装、`doctor`、升级检查和本地回滚。一个隔离客户端再使用短期 `read+submit` token 完成现网领取与自动上传；token 随后撤销并验证拒绝。隔离根只含测试发行物和无密钥证据，原始 token 在验收结束前清除。
+两者必须从服务器安装同一 archive SHA-256，并分别证明全新安装、`doctor`、升级检查和本地回滚。一个隔离客户端再使用短期、精确 `submit` scope token（服务端按 `0.3.1` 权限规则赋予 effective `read`）完成现网领取与自动上传；token 随后撤销并验证拒绝。隔离根只含测试发行物和无密钥证据，原始 token 在验收结束前清除。
 
-`SKILL-01` 可在服务器注册表通过全部门禁后标记 `DONE`。`SKILL-02` 在代码、隔离安装和现网候选上传通过后标记 `IN PROGRESS`；只有第二台真实 Codex 电脑安装相同摘要并通过兼容检查后才标记 `DONE`。`ACCEPT-01` 打通可信上游、兔子端到端生成、服务器验收和展示前，不切换本机活动 Skill。
+完整 `0.1.0` 首次写入 production stable 后仍处于 provisional release gate。发布端必须把先前 manifest 的精确 bytes/摘要或“原本不存在”状态保存在 root-private gate state，贯穿两个隔离安装、三场 writing-skills forward test、现网领取/上传/replay/撤销和独立审查。任一门禁失败立即原子恢复旧 manifest 或旧 absence 并复核公网旧 stable/404；immutable `0.1.0` 历史保留诊断。只有全部门禁通过才提交 stable 并删除 prior-manifest backup。
+
+`SKILL-01` 先完成注册表、安装器和发布器基础设施，并只在临时发行根使用非生产 fixture 验证不可变发布、安装与回滚；它不得提前把不完整的 `0.1.0` 激活为生产 stable。`SKILL-02` 生成完整 `0.1.0` 后，才首次激活生产 stable。生产注册表全部门禁通过后把 `SKILL-01` 标记为 `DONE`；代码、隔离安装和现网候选上传通过后，`SKILL-02` 标记为 `IN PROGRESS`，只有第二台真实 Codex 电脑安装相同摘要并通过兼容检查后才标记 `DONE`。`ACCEPT-01` 打通可信上游、兔子端到端生成、服务器验收和展示前，不切换本机活动 Skill。
 
 ## 14. 测试与验收
 
@@ -321,7 +332,7 @@ Skill stable 回滚不需要修改服务器应用或数据库。客户端安装�
 
 本设计拆成两个独立实施计划并顺序执行：
 
-1. `SKILL-01` 计划：Skill 源码骨架、RED 基线、确定性 builder、manifest/release validator、安装器、服务器 publisher、Nginx 静态注册表、服务器部署与 stable rollback 验收。
-2. `SKILL-02` 计划：thin client、凭据后端、协议与错误文档、GREEN forward tests、两个隔离安装、现网领取与自动上传、路线图状态更新。
+1. `SKILL-01` 计划：Skill 源码骨架、RED 基线、确定性 builder、manifest/release validator、安装器、服务器 publisher、Nginx 静态注册表，以及临时发行根中的 fixture 发布与回滚验收；不得激活不完整的生产 stable。
+2. `SKILL-02` 计划：thin client、凭据后端、协议与错误文档、完整 `0.1.0` 构建、生产 stable 首次激活、GREEN forward tests、两个隔离安装、现网领取与自动上传、路线图状态更新。
 
-`SKILL-02` 依赖已经发布并验证的 `SKILL-01` release。不得把两者并行实现，也不得在 `SKILL-01` 评审未通过时开始客户端代码。门户、浏览器上传、自由概念编译、渲染、QA、正式发布和旧站替换不进入这两个计划。
+`SKILL-02` 依赖已经部署并验证的 `SKILL-01` 发布基础设施，而不是一个不完整的占位 release。不得把两者并行实现，也不得在 `SKILL-01` 评审未通过时开始客户端代码。门户、浏览器上传、自由概念编译、渲染、QA、正式发布和旧站替换不进入这两个计划。
