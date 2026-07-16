@@ -92,13 +92,16 @@ import hashlib
 import io
 import json
 import os
+import fcntl
 import posixpath
 import re
+import secrets
 import shutil
 import stat
 import struct
 import sys
 import tempfile
+import time
 import unicodedata
 import urllib.parse
 import zipfile
@@ -110,6 +113,7 @@ MANIFEST_SCHEMA = "cognitive-card-skill-registry-v1"
 RELEASE_SCHEMA = "cognitive-card-skill-release-v1"
 STATE_SCHEMA = "cognitive-card-skill-install-state-v1"
 JOURNAL_SCHEMA = "cognitive-card-skill-install-transaction-v1"
+LOCK_OWNER_SCHEMA = "cognitive-card-skill-install-lock-owner-v1"
 SEMVER = re.compile(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\Z")
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 COMMIT = re.compile(r"[0-9a-f]{40}\Z")
@@ -391,8 +395,12 @@ def ensure_private_directory(path: Path) -> None:
         if path.is_symlink() or not path.is_dir():
             fail("UNSAFE_INSTALL_ROOT")
         path.chmod(0o700)
+        fsync_dir(path)
     else:
         path.mkdir(mode=0o700)
+        path.chmod(0o700)
+        fsync_dir(path)
+        fsync_dir(path.parent)
 
 
 def write_exclusive(path: Path, data: bytes, mode: int) -> None:
@@ -420,6 +428,34 @@ def fsync_dir(path: Path) -> None:
         os.close(descriptor)
 
 
+def ensure_private_tree(path: Path) -> None:
+    missing: list[Path] = []
+    cursor = path
+    while not cursor.exists():
+        if cursor.is_symlink(): fail("UNSAFE_INSTALL_ROOT")
+        missing.append(cursor)
+        if cursor.parent == cursor: fail("UNSAFE_INSTALL_ROOT")
+        cursor = cursor.parent
+    if cursor.is_symlink() or not cursor.is_dir(): fail("UNSAFE_INSTALL_ROOT")
+    for directory in reversed(missing):
+        directory.mkdir(mode=0o700)
+        directory.chmod(0o700)
+        fsync_dir(directory)
+        fsync_dir(directory.parent)
+    if path.is_symlink() or not path.is_dir(): fail("UNSAFE_INSTALL_ROOT")
+
+
+def durability_checkpoint(event: str) -> None:
+    if os.environ.get("CARD_OS_INSTALL_TEST_DURABILITY_TRACE") == "1":
+        print(
+            f"CARD_OS_INSTALL_TEST_DURABILITY_TRACE:{event}",
+            file=sys.stderr,
+            flush=True,
+        )
+    if os.environ.get("CARD_OS_INSTALL_DURABILITY_FAULT") == event:
+        os._exit(98)
+
+
 def trace_transition(event: str) -> None:
     if os.environ.get("CARD_OS_INSTALL_TEST_TRACE") == "1":
         print(f"CARD_OS_INSTALL_TEST_TRACE:{event}", file=sys.stderr, flush=True)
@@ -427,6 +463,9 @@ def trace_transition(event: str) -> None:
 
 def extract(contents: dict[str, bytes], destination: Path) -> Path:
     destination.mkdir(mode=0o700)
+    destination.chmod(0o700)
+    fsync_dir(destination)
+    fsync_dir(destination.parent)
     skill = destination / "cognitive-card-os"
     skill.mkdir(mode=0o755)
     skill.chmod(0o755)
@@ -438,6 +477,7 @@ def extract(contents: dict[str, bytes], destination: Path) -> Path:
         write_exclusive(skill / name, contents[f"cognitive-card-os/{name}"], mode)
     for directory in sorted((skill / name for name in DIRS), reverse=True):
         fsync_dir(directory)
+    fsync_dir(destination)
     return skill
 
 
@@ -506,7 +546,12 @@ def load_state(path: Path, *, absent_ok: bool = True) -> dict[str, object] | Non
     return value
 
 
-def atomic_json(path: Path, value: dict[str, object], mode: int = 0o600) -> None:
+def atomic_json(
+    path: Path,
+    value: dict[str, object],
+    mode: int = 0o600,
+    durability_event: str | None = None,
+) -> None:
     temp = path.with_name(path.name + ".new")
     if temp.exists() or temp.is_symlink():
         if temp.is_dir() and not temp.is_symlink(): shutil.rmtree(temp)
@@ -514,6 +559,8 @@ def atomic_json(path: Path, value: dict[str, object], mode: int = 0o600) -> None
     write_exclusive(temp, canonical(value), mode)
     os.replace(temp, path)
     fsync_dir(path.parent)
+    if durability_event is not None:
+        durability_checkpoint(durability_event)
 
 
 class Store:
@@ -527,6 +574,9 @@ class Store:
         self.new_active = self.skills / ".cognitive-card-os.new"
         self.backup = self.skills / ".cognitive-card-os.backup"
         self.lock = self.history / ".lock"
+        self.lock_guard = self.lock / "guard"
+        self.lock_owner = self.lock / "owner.json"
+        self.lock_descriptor: int | None = None
 
     def cache(self, item: dict[str, str]) -> Path:
         return self.history / f"{item['version']}-{item['archive_sha256']}"
@@ -599,35 +649,85 @@ class Store:
 
     def setup(self) -> None:
         if self.root.exists() and (self.root.is_symlink() or not self.root.is_dir()): fail("UNSAFE_INSTALL_ROOT")
-        self.root.mkdir(mode=0o700, parents=True, exist_ok=True)
+        ensure_private_tree(self.root)
+        durability_checkpoint("setup:root")
         ensure_private_directory(self.skills)
+        durability_checkpoint("setup:skills")
         releases = self.root / "skill-releases"
         ensure_private_directory(releases)
+        durability_checkpoint("setup:releases")
         ensure_private_directory(self.history)
+        durability_checkpoint("setup:history")
 
     def acquire(self) -> None:
+        ensure_private_directory(self.lock)
+        if not self.lock_guard.exists():
+            write_exclusive(self.lock_guard, b"", 0o600)
+            fsync_dir(self.lock)
+        if (
+            self.lock_guard.is_symlink()
+            or not self.lock_guard.is_file()
+            or stat.S_IMODE(self.lock_guard.stat().st_mode) != 0o600
+        ):
+            fail("INSTALL_LOCKED")
+        flags = os.O_RDWR
+        if hasattr(os, "O_NOFOLLOW"):
+            flags |= os.O_NOFOLLOW
+        descriptor = os.open(self.lock_guard, flags)
         try:
-            self.lock.mkdir(mode=0o700)
-        except FileExistsError:
-            owner = self.lock / "pid"
+            fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except (BlockingIOError, OSError):
+            os.close(descriptor)
+            fail("INSTALL_LOCKED")
+        self.lock_descriptor = descriptor
+        if self.lock_owner.exists():
             try:
-                pid = int(owner.read_text(encoding="ascii"))
-                os.kill(pid, 0)
-            except ProcessLookupError:
-                shutil.rmtree(self.lock)
-                self.lock.mkdir(mode=0o700)
-            except (OSError, ValueError):
+                previous = json_canonical(
+                    read_limited(self.lock_owner, 4096, "INSTALL_LOCKED"),
+                    "INSTALL_LOCKED",
+                )
+            except InstallError:
+                self.release()
+                raise
+            if (
+                set(previous) != {"schema", "pid", "identity"}
+                or previous.get("schema") != LOCK_OWNER_SCHEMA
+                or type(previous.get("pid")) is not int
+                or previous["pid"] <= 0
+                or not isinstance(previous.get("identity"), str)
+                or SHA.fullmatch(previous["identity"]) is None
+            ):
+                self.release()
                 fail("INSTALL_LOCKED")
-            else:
-                fail("INSTALL_LOCKED")
-        write_exclusive(self.lock / "pid", f"{os.getpid()}\n".encode("ascii"), 0o600)
-        fsync_dir(self.lock)
+            # The advisory lock is authoritative; PID and random identity are
+            # diagnostic metadata only. A crash releases the kernel lock, so a
+            # surviving record cannot become authoritative after PID reuse.
+        current_identity = secrets.token_hex(32)
+        atomic_json(
+            self.lock_owner,
+            {"schema": LOCK_OWNER_SCHEMA, "pid": os.getpid(), "identity": current_identity},
+        )
+        fsync_dir(self.history)
+        durability_checkpoint("lock:container")
+        ready = os.environ.get("CARD_OS_INSTALL_TEST_LOCK_READY")
+        hold = os.environ.get("CARD_OS_INSTALL_TEST_HOLD_LOCK_SECONDS")
+        if ready and hold:
+            Path(ready).write_bytes(b"ready\n")
+            time.sleep(min(max(float(hold), 0.0), 10.0))
 
     def release(self) -> None:
+        descriptor = self.lock_descriptor
+        if descriptor is None:
+            return
         try:
-            (self.lock / "pid").unlink()
-            self.lock.rmdir()
-        except OSError: pass
+            if self.lock_owner.exists() and not self.lock_owner.is_symlink():
+                self.lock_owner.unlink()
+                fsync_dir(self.lock)
+                fsync_dir(self.history)
+            fcntl.flock(descriptor, fcntl.LOCK_UN)
+        finally:
+            os.close(descriptor)
+            self.lock_descriptor = None
 
     def install_cache(self, archive: Path, item: dict[str, str], contents: dict[str, bytes]) -> None:
         destination = self.cache(item)
@@ -637,6 +737,7 @@ class Store:
             return
         staging = Path(tempfile.mkdtemp(prefix=".cache-", dir=self.history))
         staging.chmod(0o700)
+        fsync_dir(self.history)
         try:
             write_exclusive(staging / "cognitive-card-os.zip", archive.read_bytes(), 0o600)
             extracted = extract(contents, staging / "skill")
@@ -645,8 +746,10 @@ class Store:
                 expected = extract(contents, Path(temporary) / "skill")
                 if not tree_matches(extracted, expected): fail("INVALID_CACHE")
             fsync_dir(staging)
+            durability_checkpoint("cache:contents")
             os.replace(staging, destination)
             fsync_dir(self.history)
+            durability_checkpoint("cache:published")
         finally:
             if staging.exists(): shutil.rmtree(staging, ignore_errors=True)
 
@@ -720,6 +823,7 @@ def copy_tree(source: Path, destination: Path) -> None:
         write_exclusive(destination / name, (source / name).read_bytes(), mode)
     for directory in sorted((destination / name for name in DIRS), reverse=True):
         fsync_dir(directory)
+    fsync_dir(destination.parent)
 
 
 def maybe_fault(name: str) -> None:
@@ -742,6 +846,7 @@ def activate(store: Store, target: dict[str, str], desired_state: dict[str, obje
     store.validate_active(old_state)
     if store.new_active.exists() or store.backup.exists(): fail("INVALID_JOURNAL")
     copy_tree(target_tree, store.new_active)
+    durability_checkpoint("active:new")
     if not tree_matches(store.new_active, target_tree): fail("INVALID_CACHE")
     journal = {"schema": JOURNAL_SCHEMA, "phase": "prepared", "old_state": old_state, "new_state": desired_state}
     try:
@@ -751,9 +856,10 @@ def activate(store: Store, target: dict[str, str], desired_state: dict[str, obje
         maybe_fault("after_old_moved"); maybe_error("after_old_moved")
         journal["phase"] = "old_moved"; atomic_json(store.journal_path, journal)
         store.replace_skill_entry(store.new_active, store.active)
+        durability_checkpoint("active:published")
         maybe_fault("after_new_active"); maybe_error("after_new_active")
         journal["phase"] = "new_active"; atomic_json(store.journal_path, journal)
-        atomic_json(store.state_path, desired_state)
+        atomic_json(store.state_path, desired_state, durability_event="state:published")
         maybe_fault("after_state"); maybe_error("after_state")
         journal["phase"] = "state_committed"; atomic_json(store.journal_path, journal)
         store.validate_active(desired_state)

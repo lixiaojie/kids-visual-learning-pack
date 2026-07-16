@@ -8,6 +8,7 @@ import stat
 import struct
 import subprocess
 import tempfile
+import time
 import unittest
 import warnings
 import zipfile
@@ -202,12 +203,12 @@ shutil.copyfile(source, destination)
         self.write_manifest()
         return self.archive.read_bytes()
 
-    def run(
+    def environment(
         self,
-        *arguments: str,
+        *,
         extra_env: dict[str, str] | None = None,
         unset_env: tuple[str, ...] = (),
-    ) -> subprocess.CompletedProcess[str]:
+    ) -> dict[str, str]:
         mapping = {
             MANIFEST_URL: str(self.manifest_path),
             self.archive_url: str(self.archive),
@@ -228,9 +229,28 @@ shutil.copyfile(source, destination)
             environment.update(extra_env)
         for name in unset_env:
             environment.pop(name, None)
+        return environment
+
+    def run(
+        self,
+        *arguments: str,
+        extra_env: dict[str, str] | None = None,
+        unset_env: tuple[str, ...] = (),
+    ) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             ["bash", str(INSTALLER), *arguments],
-            env=environment,
+            env=self.environment(extra_env=extra_env, unset_env=unset_env),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+    def popen(
+        self, *arguments: str, extra_env: dict[str, str] | None = None
+    ) -> subprocess.Popen[str]:
+        return subprocess.Popen(
+            ["bash", str(INSTALLER), *arguments],
+            env=self.environment(extra_env=extra_env),
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -660,6 +680,108 @@ class CardOsSkillInstallerTests(unittest.TestCase):
             ["delete:backup"], self.transition_trace(committed_recovery.stderr)
         )
 
+    def test_first_install_durability_chain_and_published_cache_crash_recovery(self) -> None:
+        traced = InstallerFixture(self.base / "durability-trace", "0.1.0")
+        result = traced.run(
+            "--channel", "stable", extra_env={"CARD_OS_INSTALL_TEST_DURABILITY_TRACE": "1"}
+        )
+        self.assertEqual(0, result.returncode, result.stderr)
+        events = self.durability_trace(result.stderr)
+        required = [
+            "setup:root",
+            "setup:skills",
+            "setup:releases",
+            "setup:history",
+            "lock:container",
+            "cache:contents",
+            "cache:published",
+            "active:new",
+            "active:published",
+            "state:published",
+        ]
+        cursor = 0
+        for event in events:
+            if cursor < len(required) and event == required[cursor]:
+                cursor += 1
+        self.assertEqual(len(required), cursor, events)
+
+        crashed = InstallerFixture(self.base / "durability-crash", "0.1.0")
+        interrupted = crashed.run(
+            "--channel",
+            "stable",
+            extra_env={"CARD_OS_INSTALL_DURABILITY_FAULT": "cache:published"},
+        )
+        self.assertNotEqual(0, interrupted.returncode)
+        key = f"0.1.0-{crashed.archive_digest}"
+        cache = crashed.install_root / "skill-releases" / "cognitive-card-os" / key
+        self.assertTrue((cache / "cognitive-card-os.zip").is_file())
+        self.assertTrue((cache / "skill" / "cognitive-card-os" / "release.json").is_file())
+        recovered = crashed.run("--channel", "stable")
+        self.assertEqual(0, recovered.returncode, recovered.stderr)
+        self.assertNotIn("INVALID_CACHE", recovered.stderr)
+
+    def test_lock_rejects_true_holder_and_recovers_reused_live_pid(self) -> None:
+        first = InstallerFixture(self.base / "lock-first", "0.1.0")
+        self.assertEqual(0, first.run("--channel", "stable").returncode)
+        upgraded = InstallerFixture(self.base / "lock-upgrade", "0.2.0", b"upgrade")
+        upgraded.install_root = first.install_root
+        ready = self.base / "lock-ready"
+        token = "ccos_v1." + "b" * 32 + ".owner_secret"
+        holder = upgraded.popen(
+            "--channel",
+            "stable",
+            extra_env={
+                "CARD_OS_INSTALL_TEST_LOCK_READY": str(ready),
+                "CARD_OS_INSTALL_TEST_HOLD_LOCK_SECONDS": "5",
+                "CARD_OS_TOKEN": token,
+            },
+        )
+        self.addCleanup(lambda: holder.poll() is None and holder.kill())
+        deadline = time.monotonic() + 4
+        while not ready.exists() and holder.poll() is None and time.monotonic() < deadline:
+            time.sleep(0.02)
+        if not ready.exists():
+            holder_out, holder_err = holder.communicate(timeout=1)
+            self.fail(holder_out + holder_err)
+        locked = upgraded.run("--channel", "stable")
+        self.assert_error(locked, "INSTALL_LOCKED")
+        owner_path = (
+            first.install_root / "skill-releases" / "cognitive-card-os" / ".lock" / "owner.json"
+        )
+        owner_bytes = owner_path.read_bytes()
+        owner = json.loads(owner_bytes)
+        self.assertEqual(canonical(owner), owner_bytes)
+        self.assertEqual({"schema", "pid", "identity"}, set(owner))
+        self.assertRegex(owner["identity"], r"^[0-9a-f]{64}$")
+        self.assertNotIn(str(first.install_root), owner_bytes.decode("ascii"))
+        self.assertNotIn(token, owner_bytes.decode("ascii"))
+        holder_out, holder_err = holder.communicate(timeout=10)
+        self.assertEqual(0, holder.returncode, holder_out + holder_err)
+
+        crashed = InstallerFixture(self.base / "lock-crash", "0.3.0", b"crash")
+        crashed.install_root = first.install_root
+        interrupted = crashed.run(
+            "--channel", "stable", extra_env={"CARD_OS_INSTALL_FAULT": "after_old_moved"}
+        )
+        self.assertNotEqual(0, interrupted.returncode)
+        history = first.install_root / "skill-releases" / "cognitive-card-os"
+        self.assertTrue((history / "transaction.json").is_file())
+        unrelated = subprocess.Popen(["sleep", "10"])
+        self.addCleanup(self.stop_process, unrelated)
+        stale_owner = {
+            "schema": "cognitive-card-skill-install-lock-owner-v1",
+            "pid": unrelated.pid,
+            "identity": "0" * 64,
+        }
+        owner_path.write_bytes(canonical(stale_owner))
+        owner_path.chmod(0o600)
+        recovered = crashed.run("--channel", "stable")
+        self.assertEqual(0, recovered.returncode, recovered.stderr)
+        self.assertFalse((history / "transaction.json").exists())
+        state = json.loads((history / "state.json").read_bytes())
+        self.assertEqual("0.3.0", state["active"]["version"])
+        self.stop_process(unrelated)
+
     def test_tampered_previous_cache_makes_rollback_write_free(self) -> None:
         self.assertEqual(0, self.fixture.run("--channel", "stable").returncode)
         old_digest = self.fixture.archive_digest
@@ -708,6 +830,21 @@ class CardOsSkillInstallerTests(unittest.TestCase):
     def transition_trace(stderr: str) -> list[str]:
         prefix = "CARD_OS_INSTALL_TEST_TRACE:"
         return [line[len(prefix) :] for line in stderr.splitlines() if line.startswith(prefix)]
+
+    @staticmethod
+    def durability_trace(stderr: str) -> list[str]:
+        prefix = "CARD_OS_INSTALL_TEST_DURABILITY_TRACE:"
+        return [line[len(prefix) :] for line in stderr.splitlines() if line.startswith(prefix)]
+
+    @staticmethod
+    def stop_process(process: subprocess.Popen[object]) -> None:
+        if process.poll() is None:
+            process.terminate()
+        try:
+            process.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=2)
 
 
 if __name__ == "__main__":
