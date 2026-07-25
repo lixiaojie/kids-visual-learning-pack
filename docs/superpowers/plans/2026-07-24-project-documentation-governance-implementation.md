@@ -43,7 +43,7 @@
 - `docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md`: curated local Skill installation summary.
 - `scripts/ai/check-doc-governance.sh`: read-only required-file, link, archive, and review-date checker.
 - `scripts/ai/test-doc-governance.sh`: isolated fixture tests for PASS, FAIL, and WARN behavior.
-- `scripts/ai/test-pre-commit.sh`: isolated Git fixture tests for complete index-snapshot validation, same-path recreation defenses, legal partial staging, and HANDOFF-exemption behavior.
+- `scripts/ai/test-pre-commit.sh`: isolated Git fixture tests for complete index-snapshot validation, same-path recreation defenses, and HANDOFF-exemption behavior.
 
 ### Modified Files
 

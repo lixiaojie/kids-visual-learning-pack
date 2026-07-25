@@ -241,7 +241,7 @@ test:doc-governance
 test:pre-commit
 ```
 
-`test:pre-commit` 在 `mktemp -d` 下创建隔离 Git repo，验证 Hook 对完整 index snapshot 执行基础设施检查：暂存损坏内容或暂存删除不能被工作树中的 tracked、untracked 或 ignored 同路径文件掩盖；合法 partial staging 可以通过，且 `PROJECT_CONTEXT.md`-only 暂存属于 HANDOFF 豁免。不增加 CI，不运行全量业务构建。
+`test:pre-commit` 在 `mktemp -d` 下创建隔离 Git repo，验证 Hook 对完整 index snapshot 执行基础设施检查：暂存损坏内容或暂存删除不能被工作树中的 tracked、untracked 或 ignored 同路径文件掩盖，且 `PROJECT_CONTEXT.md`-only 暂存属于 HANDOFF 豁免。Hook 语义允许 index snapshot 自身合法的 partial staging；当前 fixture 不把所有合法 partial-staging 形态列为覆盖项。不增加 CI，不运行全量业务构建。
 
 ## 10. Cross-Model Recovery Flow
 
