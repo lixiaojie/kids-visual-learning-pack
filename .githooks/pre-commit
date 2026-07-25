@@ -30,15 +30,21 @@ STAGED="$(git diff --cached --name-only --diff-filter=ACMRD)"
 # ---------------------------------------------------------------------------
 # 1. 治理/基础设施文件拒绝 partial staging
 #    check-agent-infra.sh 读取 worktree；同一受检文件若 staged 与 unstaged
-#    同时存在，index 可能与检查结果不一致，因此必须先统一内容并重新 stage。
+#    或 worktree-only/untracked 同时存在，index 可能与检查结果不一致，
+#    因此必须先统一内容并重新 stage。
 # ---------------------------------------------------------------------------
-UNSTAGED="$(git diff --name-only --diff-filter=ACMRD)"
+WORKTREE_ONLY="$(
+  {
+    git diff --name-only --diff-filter=ACMRD
+    git ls-files --others --exclude-standard
+  } | sort -u
+)"
 INFRA_RE='^(AGENTS\.md|CLAUDE\.md|PROJECT_CONTEXT\.md|README\.md|package\.json|docs/README\.md|docs/ai/|docs/archive/|docs/knowledge/codex-memory/|docs/decisions/ADR-TEMPLATE\.md|scripts/ai/|\.githooks/)'
 PARTIAL_INFRA="$(comm -12 \
   <(printf '%s\n' "$STAGED" | grep -E "$INFRA_RE" | sort -u) \
-  <(printf '%s\n' "$UNSTAGED" | grep -E "$INFRA_RE" | sort -u))"
+  <(printf '%s\n' "$WORKTREE_ONLY" | grep -E "$INFRA_RE" | sort -u))"
 if [ -n "$PARTIAL_INFRA" ]; then
-  fail "以下治理/基础设施文件同时存在 staged 和 unstaged 差异:
+  fail "以下治理/基础设施文件同时存在 staged 和 unstaged 差异（包含 worktree-only/untracked 同路径）:
 $(printf '%s\n' "$PARTIAL_INFRA" | sed 's/^/  /')
 请先统一文件内容并重新 git add，确保 Hook 检查的 worktree 与待提交 index 一致。"
   blocked=1

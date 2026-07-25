@@ -32,6 +32,7 @@ make_repo() {
   printf '%s\n' '#!/usr/bin/env bash' 'exit 0' > "$repo/scripts/ai/check-agent-infra.sh"
   chmod +x "$repo/scripts/ai/check-agent-infra.sh"
   printf '# Context\n' > "$repo/PROJECT_CONTEXT.md"
+  printf '# Docs\n' > "$repo/docs/README.md"
   printf '# Handoff\n' > "$repo/docs/ai/HANDOFF.md"
 
   git -C "$repo" init -q
@@ -64,8 +65,21 @@ else
   fail "partial-staged infra should fail closed"
 fi
 
+make_repo "$TMP_ROOT/deleted-recreated-infra"
+git -C "$TMP_ROOT/deleted-recreated-infra" rm --cached -q docs/README.md
+out="$(run_hook "$TMP_ROOT/deleted-recreated-infra")"
+rc=$?
+if [ "$rc" -ne 0 ] \
+  && printf '%s\n' "$out" | grep -F '同时存在 staged 和 unstaged 差异' >/dev/null \
+  && printf '%s\n' "$out" | grep -F 'docs/README.md' >/dev/null; then
+  pass "staged infra deletion with same-path untracked recreation is rejected"
+else
+  fail "staged deletion with same-path untracked recreation should fail closed"
+fi
+
 make_repo "$TMP_ROOT/project-context-only"
 printf '%s\n' '# Context' '' 'Updated index.' > "$TMP_ROOT/project-context-only/PROJECT_CONTEXT.md"
+printf 'unrelated scratch\n' > "$TMP_ROOT/project-context-only/unrelated.tmp"
 git -C "$TMP_ROOT/project-context-only" add PROJECT_CONTEXT.md
 out="$(run_hook "$TMP_ROOT/project-context-only")"
 rc=$?

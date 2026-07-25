@@ -24,7 +24,7 @@
 - [x] 项目相关 Codex memory 以精选 Markdown 快照保存于 docs/knowledge/codex-memory/，并标明来源、快照性质、`Last Reviewed`、`Next Review Due` 和冲突优先级
 - [x] 有明确替代证据的旧文档移入带 manifest 的 docs/archive/2026-07-24-doc-governance/，现行入口不再路由到旧版本
 - [x] scripts/ai/check-doc-governance.sh 检查规范入口、索引目标、两条 archive 映射与严格 31 天复核周期，并接入统一检查入口
-- [x] `.githooks/pre-commit` 对治理/infra partial staging fail-closed，且 `PROJECT_CONTEXT.md`-only 暂存不强制 HANDOFF
+- [x] `.githooks/pre-commit` 对治理/infra partial staging 与 staged-deletion/same-path-untracked recreation fail-closed，且 `PROJECT_CONTEXT.md`-only 暂存不强制 HANDOFF
 - [x] 不复制原始会话 JSONL、凭证、私有配置或整个全局 memory 树
 - [x] 不修改业务代码、Card OS 实现、CI 或部署配置
 - [x] `bash scripts/ai/check-doc-governance.sh` 与 `git diff --check` PASS；`bash scripts/ai/check-agent-state.sh` 为 0 FAIL，WARN 已记录
@@ -80,7 +80,7 @@
 - 已完成 Task 3：新增精选项目内 Codex memory 快照，只涵盖 Card OS 部署运维和本地 Skill 安装经验。
 - 已完成 Task 4：新增只读文档治理 checker、统一入口和 npm 便捷命令；终审 fix wave 将 fixture 扩展为 18 项，覆盖 UTC epoch day、31 天边界、远期 due、manifest 缺行/错配与既有严格日期/链接场景。
 - 已完成 Task 5：全量 Markdown inventory、隐私路径扫描、完整文档治理验证、动态交接收口和 shutdown checks。
-- 已完成 whole-branch final-review fix wave：Hook 拒绝治理/infra 的 index/worktree partial staging，新增 2 项隔离 Git fixture；design、plan 与 docs map 状态统一为 Implemented/Completed，计划已执行 checklist 全部按提交与报告证据勾选。
+- 已完成 whole-branch final-review fix wave 及窄 re-review 补丁：Hook 拒绝治理/infra 的 index/worktree partial staging，也拒绝 staged deletion 后同路径 untracked recreation；3 项隔离 Git fixture 同时确认无关 untracked 不误伤。design、plan 与 docs map 状态统一为 Implemented/Completed，计划已执行 checklist 全部按提交与报告证据勾选。
 - Task 2 的旧路径验证已收窄为 active Markdown link target；历史治理说明中的普通文本路径保留合法。
 - 实施计划日期为 2026-07-24；实际收口发生在 2026-07-25，故本文件使用实际更新日期而非计划日期。
 
@@ -94,7 +94,7 @@
 - Build: 本任务仅涉及文档与基础设施脚本，不运行全量业务构建
 - Unit Tests:
   - `npm run test:doc-governance`：PASS（18/18 fixture）
-  - `npm run test:pre-commit`：PASS（2/2 隔离 Git fixture）
+  - `npm run test:pre-commit`：PASS（3/3 隔离 Git fixture）
 - Integration Tests: 不适用
 - Lint: 仓库未确认通用 lint 命令
 - Manual Checks:

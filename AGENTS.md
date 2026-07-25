@@ -255,7 +255,7 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 - 禁止两个 Agent 同时修改同一个工作目录。
 - 串行切换 Agent 前，当前 Agent 必须先更新 `docs/ai/HANDOFF.md` 并保持 Git 状态清晰。
 - 并行成果的汇总只通过 commit / cherry-pick / merge 进行。
-- 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（`PROJECT_CONTEXT.md` 等纯文档、基础设施初始化路径豁免）。治理/基础设施受检文件若同时存在 staged 与 unstaged 差异，Hook 会 fail-closed，必须先统一内容并重新 stage，避免 worktree 检查掩盖 index 中的破损版本。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
+- 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（`PROJECT_CONTEXT.md` 等纯文档、基础设施初始化路径豁免）。治理/基础设施受检文件若同时存在 staged 与 unstaged/worktree-only 差异（包括 staged deletion 后同路径 untracked recreation），Hook 会 fail-closed，必须先统一内容并重新 stage，避免 worktree 检查掩盖 index 中的破损版本；无关 untracked 文件不受影响。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
 
 ## Documentation Governance
 
