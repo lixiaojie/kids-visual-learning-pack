@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# .githooks/pre-commit — 仓库级提交前快速检查。
+#
+# 与任何特定 Agent 无关:对 git commit 的所有入口(CLI / IDE / 各 Agent)统一生效。
+# 只做快速只读检查,不运行耗时全量测试,不修改任何文件。
+# 人工明确例外时可用 git commit --no-verify 跳过;CI(若已配置)仍会执行
+# scripts/ai/check-agent-state.sh 兜底。
+#
+# 检查项:
+#   1. 快速基础设施检查(scripts/ai/check-agent-infra.sh);
+#   2. git diff --cached --check(暂存区空白错误);
+#   3. 暂存区疑似密钥扫描(只报文件路径+字段名,不输出值);
+#   4. 暂存业务代码时,必须同时暂存 docs/ai/HANDOFF.md;
+#      纯文档/基础设施路径豁免;HANDOFF.md 尚不存在(首次建立)时跳过强制。
+#   5. 以上通过后,链式调用全局 core.hooksPath 中的 pre-commit(如存在)。
+
+set -u
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT" || exit 1
+
+fail() {
+  echo "pre-commit FAIL: $1" >&2
+}
+
+blocked=0
+
+# ---------------------------------------------------------------------------
+# 1. 快速基础设施检查
+# ---------------------------------------------------------------------------
+if [ -x scripts/ai/check-agent-infra.sh ]; then
+  infra_out="$(bash scripts/ai/check-agent-infra.sh 2>&1)"
+  infra_rc=$?
+  if [ "$infra_rc" -ne 0 ]; then
+    printf '%s\n' "$infra_out" >&2
+    fail "基础设施检查未通过(check-agent-infra.sh)。先修复 FAIL 项再提交。"
+    blocked=1
+  fi
+else
+  echo "pre-commit WARN: scripts/ai/check-agent-infra.sh 不存在,跳过基础设施检查" >&2
+fi
+
+# ---------------------------------------------------------------------------
+# 2. 暂存区空白检查
+# ---------------------------------------------------------------------------
+if ! git diff --cached --check >/dev/null 2>&1; then
+  git diff --cached --check >&2
+  fail "暂存区存在空白错误(git diff --cached --check)。"
+  blocked=1
+fi
+
+# ---------------------------------------------------------------------------
+# 3. 暂存区疑似密钥扫描(扫描暂存内容,只报路径+字段名)
+# ---------------------------------------------------------------------------
+STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
+secret_hits=""
+for f in $STAGED; do
+  case "$f" in
+    *.png|*.webp|*.jpg|*.jpeg|*.gif|*.ico|*.woff|*.woff2|*.lock|*.pdf) continue ;;
+  esac
+  blob="$(git show ":$f" 2>/dev/null)" || continue
+  if printf '%s' "$blob" | grep -qE -- '-----BEGIN [A-Z ]*PRIVATE KEY-----'; then
+    secret_hits="$secret_hits  $f (field: private-key-block)
+"
+    continue
+  fi
+  if printf '%s' "$blob" | grep -qE 'sk-[A-Za-z0-9]{20,}'; then
+    secret_hits="$secret_hits  $f (field: sk-api-key)
+"
+    continue
+  fi
+  if printf '%s' "$blob" \
+      | grep -inE '(api[_-]?key|secret|token|password|passwd)[[:space:]]*[:=][[:space:]]*["'"'"']?[A-Za-z0-9/+_.=-]{16,}' \
+      | grep -ivE 'YOUR|EXAMPLE|placeholder|dummy|example\.invalid' >/dev/null; then
+    secret_hits="$secret_hits  $f (field: api_key/secret/token/password 赋值形态)
+"
+  fi
+done
+if [ -n "$secret_hits" ]; then
+  fail "暂存区含疑似密钥(仅显示路径+字段名):
+${secret_hits}请移除后重新暂存。真实凭证不得进入 Git,参见 docs/ai/LOCAL_CONFIG.md。"
+  blocked=1
+fi
+
+# ---------------------------------------------------------------------------
+# 4. 业务代码暂存时必须同步更新 HANDOFF.md
+# ---------------------------------------------------------------------------
+EXEMPT_RE='^(AGENTS\.md|CLAUDE\.md|README\.md|\.gitignore|docs/|scripts/ai/|\.githooks/)'
+business="$(printf '%s\n' "$STAGED" | grep -vE "$EXEMPT_RE" || true)"
+if [ -n "$business" ]; then
+  if printf '%s\n' "$STAGED" | grep -qx 'docs/ai/HANDOFF.md'; then
+    :
+  elif [ ! -f docs/ai/HANDOFF.md ]; then
+    echo "pre-commit WARN: docs/ai/HANDOFF.md 尚不存在(基础设施初始化阶段),跳过 HANDOFF 强制" >&2
+  else
+    fail "暂存区包含业务代码修改,但未同步更新 docs/ai/HANDOFF.md:
+$(printf '%s\n' "$business" | sed 's/^/  /')
+按结束协议更新 HANDOFF(AGENTS.md 第 11 节)后:git add docs/ai/HANDOFF.md
+如确属人工明确例外:git commit --no-verify(CI 若已配置仍会执行 scripts/ai/check-agent-state.sh 兜底)。"
+    blocked=1
+  fi
+fi
+
+if [ "$blocked" -ne 0 ]; then
+  exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# 5. 链式调用全局 pre-commit(保留用户既有全局钩子行为)
+# ---------------------------------------------------------------------------
+GLOBAL_HOOKS="$(git config --global --get core.hooksPath 2>/dev/null || true)"
+case "$GLOBAL_HOOKS" in
+  "~"*) GLOBAL_HOOKS="$HOME${GLOBAL_HOOKS#~}" ;;
+esac
+if [ -n "$GLOBAL_HOOKS" ] \
+  && [ "$GLOBAL_HOOKS" != "$ROOT/.githooks" ] \
+  && [ -x "$GLOBAL_HOOKS/pre-commit" ]; then
+  "$GLOBAL_HOOKS/pre-commit" || exit 1
+fi
+
+exit 0

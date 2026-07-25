@@ -28,6 +28,14 @@ tmp/
 .superpowers/
 migration/card-os/inventory-roots.local.json
 
+# local secrets & private config (see docs/ai/LOCAL_CONFIG.md)
+.env
+.env.local
+.env.*.local
+*.local
+*.secret
+*.secrets
+
 # raw PNG assets — keep WebP in repo, PNGs are intermediate
 boards/*/assets/**/*.png
 boards/kids-world/public/assets/**/*.png
