@@ -5,15 +5,17 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: a9007bb（Task 5 内容提交；本次最小状态记录仅更新 HANDOFF）
-- Working Tree: 已验证 `a9007bb` 后 clean；本状态记录提交后仍应为 clean
+- Base Commit: 981c70e（审查时的 status-record HEAD；不是当前符号 `HEAD` 的声明）
+- Working Tree: 审查 `981c70e` 时 clean；本次 review fix 提交前会复核，恢复当前提交必须运行 `git rev-parse HEAD`
 - Task Status: Done（Task 1–5 均已完成；feature branch 待独立终审）
 
 ## Summary
 
 本分支以 `81f6a7f` 为基线完成跨模型文档治理闭环：`PROJECT_CONTEXT.md` 提供稳定读取顺序，`docs/README.md` 提供正式文档地图，`docs/ai/` 保持动态任务和交接真值，archive manifest 保留两份被明确替代的历史文档，项目内 memory 只保存人工筛选的次级 Markdown 快照。Task 4 增加只读 checker、13 项隔离 fixture 与统一入口；其独立 review fix 已在 `8c8545d` 完成，ledger 记录为 clean。
 
-Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报告中的 Markdown 文件；正式项目文档均由 `docs/README.md`、archive manifest 或受控根/客户端适配说明路由。隐私路径扫描未命中绝对本机路径或原始 rollout 路径，所以 `docs/README.md` 没有无证据修改。全量验证无 FAIL；统一检查唯一 WARN 是既有 secret-field-name 人工复核。
+Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报告中的 Markdown 文件；正式项目文档均由 `docs/README.md`、archive manifest 或受控根/客户端适配说明路由。隐私路径扫描未命中绝对本机路径或 raw rollout path metadata key，所以 `docs/README.md` 没有无证据修改。全量验证无 FAIL；统一检查的 WARN 均已记录。
+
+实施计划的日期为 2026-07-24，实际收口和本 HANDOFF 更新发生在 2026-07-25；Metadata 使用实际日期，不回填计划日期。
 
 ## Completed
 
@@ -63,12 +65,12 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 | --- | --- | --- |
 | `bash scripts/ai/test-doc-governance.sh` | PASS | 13/13 fixture：current、单一 missing/broken、严格日期、today、overdue WARN、URI 与 mktemp fail-closed |
 | `bash scripts/ai/check-doc-governance.sh` | PASS | required files、archive replacement、受路由链接和 31 天复核均通过 |
-| `bash scripts/ai/check-agent-state.sh` | WARN | `a9007bb` 后复跑为 0 FAIL；仅既有 secret-field-name 人工复核与旧 HANDOFF Base Commit 的信息级 WARN |
-| `bash scripts/ai/check-handoff.sh` | WARN | `a9007bb` 后复跑；仅旧 `Base Commit: d64cbfc` 落后于 HEAD。该最小状态记录将快照提交更新为 `a9007bb` |
+| `bash scripts/ai/check-agent-state.sh` | WARN | `981c70e` 审查时为 0 FAIL；既有 secret-field-name 人工复核与 HANDOFF 提交链信息级 WARN |
+| `bash scripts/ai/check-handoff.sh` | WARN | `981c70e` 审查时为 0 FAIL；内容快照与 status-record 在同一祖先链上的信息级 WARN |
 | `git diff --check` | PASS | 收口前无空白错误 |
 | `git status --short` | PASS | 收口前 clean |
 | Markdown inventory | PASS | 完整 inventory 已检查；不需调整 `docs/README.md` |
-| privacy-path scan | PASS | 受治理文件零命中绝对本机路径和 `rollout_path:` |
+| privacy-path scan | PASS | 受治理文件零命中绝对本机路径和 raw rollout path metadata key |
 | `node boards/kids-world/structure.test.mjs` | 未重跑 | 已知既有 `19 !== 18`；本任务未改 `boards/`，不可表述为本轮验证 |
 
 ## Known Failures
@@ -79,7 +81,8 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 
 - `check-agent-state.sh` 的 secret-field-name WARN 来自既有代码和文档的字段名提及；高置信 secret-value 扫描通过。本任务未弱化该扫描。
 - `check-doc-governance.sh` 的 BSD 日期路径已在当前 macOS 环境执行；GNU fallback 仅静态兼容实现，未在本轮运行。
-- `a9007bb` 是 Task 5 内容提交；紧随的最小状态记录只刷新 HANDOFF 快照，避免留下“待提交”的动态状态。
+- Task 5 内容提交为 `a9007bb`；审查过的 status-record HEAD 为 `981c70e`。本 review fix 及其后续状态记录会产生新提交；恢复时应把 `git rev-parse HEAD` 的结果视为当前符号 HEAD，不能把 `a9007bb` 或 `981c70e` 混作当前 HEAD。
+- tracked HANDOFF 不能自编码包含其自身的 commit hash；后续 status-only commit 只记录该事实、提交链和 clean state，不表示有待提交工作。
 
 ## Remaining Work
 
@@ -92,7 +95,7 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 
 ## Recovery Notes
 
-- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`。
+- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，审查时的 status-record HEAD 为 `981c70e`。
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- 本最小状态记录之外无待提交工作；提交后只运行 shutdown checks，不执行 push、merge、rebase 或 PR。
+- 本 review fix 后会创建独立 fix commit；如需 status-only commit，其 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。

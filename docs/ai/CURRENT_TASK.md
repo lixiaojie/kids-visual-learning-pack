@@ -26,7 +26,7 @@
 - [x] scripts/ai/check-doc-governance.sh 检查规范入口、索引目标与 31 天复核周期，并接入统一检查入口
 - [x] 不复制原始会话 JSONL、凭证、私有配置或整个全局 memory 树
 - [x] 不修改业务代码、Card OS 实现、CI 或部署配置
-- [x] `bash scripts/ai/check-doc-governance.sh`、`bash scripts/ai/check-agent-state.sh` 与 `git diff --check` 通过
+- [x] `bash scripts/ai/check-doc-governance.sh` 与 `git diff --check` PASS；`bash scripts/ai/check-agent-state.sh` 为 0 FAIL，WARN 已记录
 - [x] `docs/ai/HANDOFF.md` 基于实际修改和验证结果更新
 
 ## In Scope
@@ -77,6 +77,7 @@
 - 已完成 Task 4：新增只读文档治理 checker、13 项隔离 fixture、统一入口和 npm 便捷命令；review fix 已完成并记录为 clean。
 - 已完成 Task 5：全量 Markdown inventory、隐私路径扫描、完整文档治理验证、动态交接收口和 shutdown checks。
 - 本轮 inventory 未发现漏路由或误分类的正式文档；`docs/README.md` 无需调整。
+- 实施计划日期为 2026-07-24；实际收口发生在 2026-07-25，故本文件使用实际更新日期而非计划日期。
 
 ## Next Actions
 
@@ -91,10 +92,10 @@
 - Lint: 仓库未确认通用 lint 命令
 - Manual Checks:
   - `rg --files -g '*.md' -g '!node_modules/**' -g '!.worktrees/**' | sort`：本轮完成；正式文档均有路由或受控根/客户端适配说明
-  - `rg -n '/Users/|rollout_path:' PROJECT_CONTEXT.md docs/README.md docs/archive docs/knowledge docs/ai/CURRENT_TASK.md docs/ai/HANDOFF.md`：PASS（零命中）
+  - 隐私路径扫描（绝对本机路径与 raw rollout path metadata key）：PASS（零命中）
   - `bash scripts/ai/check-doc-governance.sh`：PASS
-  - `bash scripts/ai/check-agent-state.sh`：WARN，0 FAIL；仅既有 secret-field-name 人工复核 WARN
-  - `bash scripts/ai/check-handoff.sh`：本轮收口前 WARN（旧 Base Commit 落后于 HEAD）；shutdown 后复跑并以最新结果为准
+  - `bash scripts/ai/check-agent-state.sh`：WARN，0 FAIL；既有 secret-field-name 人工复核 WARN 与 HANDOFF 提交链信息级 WARN 已记录
+  - `bash scripts/ai/check-handoff.sh`：WARN，0 FAIL；tracked HANDOFF 的提交链信息级 WARN 已记录
   - `git diff --check`：PASS
   - `git status --short`：收口前 clean；提交后复核
 
