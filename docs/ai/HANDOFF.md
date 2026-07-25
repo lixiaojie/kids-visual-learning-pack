@@ -5,15 +5,17 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: 6ef6887（index-snapshot content fix）
-- Working Tree: clean；最终状态提交后无 tracked 或 untracked 变更，恢复当前符号提交必须运行 `git rev-parse HEAD`
-- Task Status: Done（Task 1–5、final-review fix wave 与 index-snapshot re-review 修复均已完成并提交；待独立复核）
+- Base Commit: cbb3d36（formal-doc behavior sync 前的 clean HEAD）
+- Working Tree: formal design/plan 的 Hook 行为描述已同步，提交后应 clean；恢复当前符号提交必须运行 `git rev-parse HEAD`
+- Task Status: Done（Task 1–5、final-review fix wave、index-snapshot 根治与 formal-doc behavior sync 均已完成；待最终独立复核）
 
 ## Summary
 
 本分支以 `81f6a7f` 为基线完成跨模型文档治理闭环：`PROJECT_CONTEXT.md` 提供稳定读取顺序，`docs/README.md` 提供正式文档地图，`docs/ai/` 保持动态任务和交接真值，archive manifest 保留两份被明确替代的历史文档，项目内 memory 只保存人工筛选的次级 Markdown 快照。
 
 whole-branch final review 发现 4 个 Important 与 2 个 Minor。fix wave 已把文档日期转换为严格 UTC epoch day，强制 `due > last` 且 `due - last <= 31`，并仅依据 `today - last > 31` 产生 overdue WARN；archive manifest 的两条映射改为 fail-closed 精确验证；`PROJECT_CONTEXT.md` 纳入纯文档豁免。连续 re-review 后，Hook 最终在 `mktemp -d` 中物化完整 index，运行快照自身的 infra checker，并将 Git 查询绑定到原始 index；准备或检查任一步失败都阻断提交，staged `.gitignore` 隐藏的同路径 recreation 也不能绕过。设计、计划与 docs map 已同步为 Approved/Implemented、Completed、Implemented/Completed。
+
+最终复核确认 index-snapshot 代码与 4/4 fixture 已关闭原 Hook finding，同时指出 design/plan 仍把行为写成“拒绝所有 partial staging”。本次仅同步正式文档为真实行为：验证完整 index snapshot，拒绝工作树掩盖暂存损坏，同时允许合法 partial staging；Hook 实现未再修改。
 
 实施计划的日期为 2026-07-24，实际收口和本 HANDOFF 更新发生在 2026-07-25；Metadata 使用实际日期，不回填计划日期。
 
@@ -38,8 +40,8 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 | `docs/ai/README.md` | 修改 | 记录日期、manifest 与 Hook 检查边界 |
 | `docs/ai/CURRENT_TASK.md` | 修改 | 记录 final-review fix wave 与验证 |
 | `docs/ai/HANDOFF.md` | 修改 | 记录实际修复、验证与提交边界 |
-| `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md` | 修改 | 标记 Completed，勾选已执行步骤并修正旧路径验证 |
-| `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md` | 修改 | 标记 Approved/Implemented 并同步实际门禁 |
+| `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md` | 修改 | 标记 Completed，勾选已执行步骤，修正旧路径验证与 index-snapshot 行为描述 |
+| `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md` | 修改 | 标记 Approved/Implemented，并说明完整 index snapshot 会拒绝掩盖暂存损坏但允许合法 partial staging |
 | `package.json` | 修改 | 增加 `test:pre-commit` |
 | `scripts/ai/check-agent-infra.sh` | 修改 | 登记 Hook 测试资产 |
 | `scripts/ai/check-doc-governance.sh` | 修改 | UTC day/31 天与 manifest fail-closed 检查 |
@@ -86,16 +88,16 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 ## Remaining Work
 
-1. 对 final fix 做独立复核。
+1. 对 formal-doc behavior sync 做最终独立复核。
 2. 复核通过后按 `finishing-a-development-branch` 交付选择。push、merge、PR 仍需单独授权。
 
 ## Exact Next Action
 
-独立复核 index-snapshot fix `6ef6887` 及其状态记录。
+独立复核 index-snapshot 实现与 formal design/plan 描述是否一致。
 
 ## Recovery Notes
 
 - 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，whole-branch review fix 起点为 `1b0fe83`。
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`，首个 index-snapshot status record 为 `ce7ba4f`。最终 clean-state commit 只记录 `6ef6887`、检查与提交边界；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
+- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`，后续状态记录为 `ce7ba4f` 与 `cbb3d36`。本 formal-doc sync commit 只修正文档行为描述；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。

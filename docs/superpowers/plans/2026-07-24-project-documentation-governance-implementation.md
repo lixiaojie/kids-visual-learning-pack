@@ -43,7 +43,7 @@
 - `docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md`: curated local Skill installation summary.
 - `scripts/ai/check-doc-governance.sh`: read-only required-file, link, archive, and review-date checker.
 - `scripts/ai/test-doc-governance.sh`: isolated fixture tests for PASS, FAIL, and WARN behavior.
-- `scripts/ai/test-pre-commit.sh`: isolated Git fixture tests for Hook partial-staging and HANDOFF-exemption behavior.
+- `scripts/ai/test-pre-commit.sh`: isolated Git fixture tests for complete index-snapshot validation, same-path recreation defenses, legal partial staging, and HANDOFF-exemption behavior.
 
 ### Modified Files
 
@@ -55,7 +55,7 @@
 - `docs/ai/HANDOFF.md`: record real changes, checks, known failures, and next action.
 - `scripts/ai/check-agent-infra.sh`: require and inspect the new governance files.
 - `scripts/ai/check-agent-state.sh`: run the new governance check as a first-class step.
-- `.githooks/pre-commit`: reject partial staging for governance/infra files and exempt `PROJECT_CONTEXT.md` from the HANDOFF requirement.
+- `.githooks/pre-commit`: materialize and validate the complete staged index snapshot, fail closed when snapshot preparation or validation fails, allow legal partial staging, and exempt `PROJECT_CONTEXT.md` from the HANDOFF requirement.
 - `package.json`: add `check:doc-governance`, `test:doc-governance`, and `test:pre-commit`.
 - Active Markdown files that still route to archived paths: update only confirmed inbound references.
 

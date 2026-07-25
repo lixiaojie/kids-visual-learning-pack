@@ -241,7 +241,7 @@ test:doc-governance
 test:pre-commit
 ```
 
-`test:pre-commit` 在 `mktemp -d` 下创建隔离 Git repo，验证治理/基础设施文件 partial staging 会 fail-closed，且 `PROJECT_CONTEXT.md`-only 暂存属于 HANDOFF 豁免。不增加 CI，不运行全量业务构建。
+`test:pre-commit` 在 `mktemp -d` 下创建隔离 Git repo，验证 Hook 对完整 index snapshot 执行基础设施检查：暂存损坏内容或暂存删除不能被工作树中的 tracked、untracked 或 ignored 同路径文件掩盖；合法 partial staging 可以通过，且 `PROJECT_CONTEXT.md`-only 暂存属于 HANDOFF 豁免。不增加 CI，不运行全量业务构建。
 
 ## 10. Cross-Model Recovery Flow
 
