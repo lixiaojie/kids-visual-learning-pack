@@ -184,8 +184,9 @@ Vercel:`vercel.json` 的 `buildCommand: npm run build`,`outputDirectory: dist`�
 ### 基础设施自检
 
 ```bash
-bash scripts/ai/check-agent-state.sh   # 统一入口:infra + task-state + handoff + git diff --check;或 npm run check:agent-state
+bash scripts/ai/check-agent-state.sh   # 统一入口:infra + doc-governance + task-state + handoff + git diff --check;或 npm run check:agent-state
 bash scripts/ai/check-doc-governance.sh # 文档地图、链接、状态与复核日期检查
+bash scripts/ai/test-doc-governance.sh  # 文档治理 checker fixture 测试;或 npm run test:doc-governance
 bash scripts/ai/check-agent-infra.sh   # 单项:基础设施完整性。或 npm run check:agent-infra
 bash scripts/ai/check-task-state.sh    # 单项:CURRENT_TASK.md 状态一致性
 bash scripts/ai/check-handoff.sh       # 单项:HANDOFF.md 时效性与完整性
@@ -240,7 +241,7 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 | `apps/miniprogram/**` | `npm run validate:miniprogram` |
 | `ops/`、`tests/`、`skills/`(Card OS) | 对应 `npm run test:card-os-*` |
 | 构建/部署脚本 | `npm run build` + `npm run check:dist` |
-| 仅基础设施文档/脚本 | `bash scripts/ai/check-agent-state.sh`（含 `git diff --check`) |
+| 仅基础设施文档/脚本 | `bash scripts/ai/test-doc-governance.sh`（涉及 checker 时）+ `bash scripts/ai/check-agent-state.sh`（含 `git diff --check`) |
 
 如果全量测试因既有问题失败，必须在 `HANDOFF.md` 记录：失败命令、失败测试、错误摘要、是否与本次修改相关、判断依据。
 

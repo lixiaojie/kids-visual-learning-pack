@@ -23,13 +23,25 @@ fail() { printf 'FAIL: %s\n' "$1"; fail_count=$((fail_count + 1)); }
 REQUIRED_FILES="
 AGENTS.md
 CLAUDE.md
+PROJECT_CONTEXT.md
+README.md
+docs/README.md
 docs/ai/README.md
 docs/ai/CURRENT_TASK.md
 docs/ai/HANDOFF.md
 docs/ai/BACKLOG.md
 docs/ai/LOCAL_CONFIG.md
 docs/ai/START_PROMPTS.md
+docs/archive/README.md
+docs/archive/2026-07-24-doc-governance/spec-v1.md
+docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md
+docs/knowledge/codex-memory/README.md
+docs/knowledge/codex-memory/memory_summary.md
+docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md
+docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md
 docs/decisions/ADR-TEMPLATE.md
+scripts/ai/check-doc-governance.sh
+scripts/ai/test-doc-governance.sh
 scripts/ai/check-task-state.sh
 scripts/ai/check-handoff.sh
 scripts/ai/check-agent-state.sh
@@ -75,11 +87,15 @@ check_headings AGENTS.md \
   "## 13. Agent-Specific Boundaries"
 
 check_headings CLAUDE.md "AGENTS.md"
+check_headings PROJECT_CONTEXT.md "# Kids Visual Learning Pack Project Context" "## Required Read Order"
+check_headings docs/README.md "# Project Documentation Map" "## Canonical Current Docs" "## Archive"
 check_headings docs/ai/CURRENT_TASK.md "## Objective" "## Acceptance Criteria" "## In Scope" "## Out of Scope" "## Verification Plan"
 check_headings docs/ai/HANDOFF.md "## Summary" "## Changed Files" "## Verification Results" "## Known Failures" "## Exact Next Action"
 check_headings docs/ai/BACKLOG.md "# Backlog"
 check_headings docs/ai/LOCAL_CONFIG.md "# Local Private Configuration" "## Prohibited"
 check_headings docs/ai/START_PROMPTS.md "## 1. 恢复当前任务" "## 4. 任务交接" "## 5. 基础设施自检"
+check_headings docs/archive/README.md "# Project Documentation Archive" "## Archive Manifest"
+check_headings docs/knowledge/codex-memory/README.md "# Codex Memory Snapshot" "## Priority and Freshness"
 check_headings docs/decisions/ADR-TEMPLATE.md "## Context" "## Decision" "## Alternatives Considered" "## Consequences" "## Verification"
 
 # ---------------------------------------------------------------------------
@@ -87,7 +103,7 @@ check_headings docs/decisions/ADR-TEMPLATE.md "## Context" "## Decision" "## Alt
 #    docs/ai/START_PROMPTS.md 按设计包含字面 TBD/TODO 字样(自检提示词),豁免。
 #    本脚本自身包含匹配模式,豁免。
 # ---------------------------------------------------------------------------
-INFRA_FILES="AGENTS.md CLAUDE.md docs/ai/README.md docs/ai/CURRENT_TASK.md docs/ai/HANDOFF.md docs/ai/BACKLOG.md docs/ai/LOCAL_CONFIG.md docs/decisions/ADR-TEMPLATE.md"
+INFRA_FILES="AGENTS.md CLAUDE.md PROJECT_CONTEXT.md README.md docs/README.md docs/ai/README.md docs/ai/CURRENT_TASK.md docs/ai/HANDOFF.md docs/ai/BACKLOG.md docs/ai/LOCAL_CONFIG.md docs/archive/README.md docs/knowledge/codex-memory/README.md docs/knowledge/codex-memory/memory_summary.md docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md docs/decisions/ADR-TEMPLATE.md"
 PLACEHOLDER_HITS=""
 for f in $INFRA_FILES; do
   [ -f "$f" ] || continue
@@ -115,7 +131,7 @@ SECRET_VALUE_HITS=""
 SECRET_MENTION_FILES=""
 
 # WARN 级豁免:这些文件按设计讨论密钥边界,不出现真实值。
-WARN_ALLOWLIST="docs/ai/LOCAL_CONFIG.md AGENTS.md docs/ai/START_PROMPTS.md scripts/ai/check-agent-infra.sh scripts/ai/check-task-state.sh scripts/ai/check-handoff.sh scripts/ai/check-agent-state.sh scripts/ai/install-hooks.sh .githooks/pre-commit"
+WARN_ALLOWLIST="docs/ai/LOCAL_CONFIG.md AGENTS.md docs/ai/START_PROMPTS.md docs/knowledge/codex-memory/README.md docs/knowledge/codex-memory/memory_summary.md docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md scripts/ai/check-agent-infra.sh scripts/ai/check-doc-governance.sh scripts/ai/test-doc-governance.sh scripts/ai/check-task-state.sh scripts/ai/check-handoff.sh scripts/ai/check-agent-state.sh scripts/ai/install-hooks.sh .githooks/pre-commit"
 
 for f in $TRACKED; do
   [ -f "$f" ] || continue

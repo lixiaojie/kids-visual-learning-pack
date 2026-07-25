@@ -6,8 +6,8 @@
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
 - Base Commit: 2d7b987
-- Working Tree: 独立 worktree；Task 3 已完成精选 memory 快照、文档地图路由和定向验证，并随本次授权提交；主 checkout 的既有 `outputs/` 未进入分支
-- Task Status: In Progress（Task 3 已实施、验证并提交，待独立 re-review）
+- Working Tree: 独立 worktree；Task 4 已完成文档治理 checker、fixture 测试、统一入口接入和范围内验证，待本次授权提交；主 checkout 的既有 `outputs/` 未进入分支
+- Task Status: In Progress（Task 4 已实施和验证，待独立 re-review）
 
 ## Summary
 
@@ -16,6 +16,8 @@
 Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/README.md`，并将 README、AGENTS 和 AI 协作流程切换到统一读取顺序。Task 2 已将两份有明确替代证据的文档移入 `docs/archive/2026-07-24-doc-governance/`，创建 manifest，并将 docs map 的 Archive 路由加入现行导航；未加入 Task 3 的 memory 路由。
 
 Task 3 已创建人工筛选的项目内 Codex memory 快照：仅含 Card OS 部署运维与本地 Cognitive Card OS Skill 安装两类经验。快照标明次级、可能过期的边界及 31 天复核日期；未复制原始会话日志、私有配置、凭证或无关项目内容。`docs/README.md` 已新增次级快照路由，不将其描述为现行实现或架构真值。
+
+Task 4 已按 TDD 顺序新增只读 `check-doc-governance.sh` 与隔离 fixture 测试。checker 可通过 `DOC_GOVERNANCE_ROOT` 和 `DOC_GOVERNANCE_TODAY` 验证所需入口、归档路径、受路由 Markdown 目标和 31 天复核日期；缺失项为 FAIL，逾期复核为不阻塞 WARN。统一 Agent state 已将该检查作为第二步，基础设施检查已覆盖新索引、archive、memory 和测试脚本；fixture 的唯一写入位于 `mktemp -d` 临时目录。
 
 ## Completed
 
@@ -54,6 +56,9 @@ Task 3 已创建人工筛选的项目内 Codex memory 快照：仅含 Card OS �
 - 完成 Task 2：在 `docs/README.md` 加入 Archive 路由；移动后的文件与提交基线原文逐字一致
 - 完成 Task 3：新建项目内 Codex memory 索引、耐久经验摘要与两份精选 rollout summary
 - 完成 Task 3：在 `docs/README.md` 加入次级快照路由，并确认只涵盖 Card OS 部署运维与本地 Skill 安装
+- 完成 Task 4：先创建 fixture 测试并确认 checker 缺失导致预期 RED，再实现最小只读 checker 并确认 GREEN（4/4）
+- 完成 Task 4：将文档治理检查接入基础设施与统一 Agent state，新增 npm 便捷命令并更新使用说明
+- 完成 Task 4：核验真实仓库文档地图、归档、memory 快照和复核日期，统一入口为 0 FAIL
 
 ## Changed Files
 
@@ -76,6 +81,13 @@ Task 3 已创建人工筛选的项目内 Codex memory 快照：仅含 Card OS �
 | `docs/knowledge/codex-memory/memory_summary.md` | 新建 | 保存两类项目经验的耐久规则 |
 | `docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md` | 新建 | 保存 Card OS 部署运维的精选经验 |
 | `docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md` | 新建 | 保存本地 Cognitive Card OS Skill 安装的精选经验 |
+| `scripts/ai/check-doc-governance.sh` | 新建 | 只读检查规范入口、受路由 Markdown 目标、归档状态与复核日期 |
+| `scripts/ai/test-doc-governance.sh` | 新建 | 使用 `mktemp -d` 内 fixture 覆盖 current、missing、broken-link、overdue 四种行为 |
+| `scripts/ai/check-agent-infra.sh` | 修改 | 纳入文档治理文件、标题、占位扫描与受控 secret-field mention allowlist |
+| `scripts/ai/check-agent-state.sh` | 修改 | 在统一入口增加文档治理检查 |
+| `package.json` | 修改 | 新增 `check:doc-governance` 与 `test:doc-governance` |
+| `AGENTS.md` | 修改 | 同步统一入口步骤与 checker 测试命令 |
+| `docs/ai/README.md` | 修改 | 说明文档治理检查顺序和 fixture 的临时写入边界 |
 
 ## Decisions Made
 
@@ -119,34 +131,37 @@ Task 3 已创建人工筛选的项目内 Codex memory 快照：仅含 Card OS �
 | Task 3 privacy scan（绝对路径、rollout 原始路径与疑似凭证模式） | PASS | 新快照未命中禁止模式 |
 | Task 3 snapshot-boundary scan | PASS | 已确认复核日期、secondary/snapshot 语义与可能过期边界 |
 | Task 3 `git diff --check` | PASS | 无空白错误 |
+| Task 4 RED：`bash scripts/ai/test-doc-governance.sh` | PASS（预期 RED） | checker 不存在时测试以 `pass=0 fail=4` 非零退出，证明 fixture 能发现缺失实现 |
+| Task 4 GREEN：`bash scripts/ai/test-doc-governance.sh` | PASS | 四个 fixture case 全部通过：current、missing required file、broken link、overdue WARN |
+| Task 4 shell/JSON syntax | PASS | 四个 shell 脚本通过 `bash -n`；`package.json` 可由 Node JSON.parse 解析 |
+| Task 4 `npm run check:doc-governance` | PASS | 所有必需文件、受路由 Markdown 目标和复核日期均通过 |
+| Task 4 `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；保留既有认证字段名人工复核 WARN 和 Base Commit 新鲜度 WARN |
+| Task 4 `git diff --check` | PASS | 无空白错误 |
 
 ## Known Failures
 
 - `node boards/kids-world/structure.test.mjs` 的既有断言失败 `19 !== 18`，来自上一 HANDOFF；本阶段未运行该命令，也未修改 `boards/`，与本任务无关。
 - `bash scripts/ai/check-agent-state.sh` 首次运行时，HANDOFF 中记录的扫描命令字面量命中了基础设施保留词；已改为语义化验证名称，属于交接文档表述问题。
-- 当前尚不存在 `scripts/ai/check-doc-governance.sh`，因此不能运行最终文档治理检查；它属于用户审阅 spec 后的实施阶段，不是当前设计阶段失败。
-- Task 1 仍未执行 `check-doc-governance.sh`：该脚本属于后续 Task，当前 worktree 尚不存在；已完成文档地图链接目标的只读核验作为本任务范围内替代验证。
-- Task 3 同样未执行 `check-doc-governance.sh`：该脚本属于后续 Task 4，当前以快照隐私、边界、链接和空白检查作为范围内验证。
 
 ## Risks and Caveats
 
-- Task 1 commit `2d7b987`、Task 2 archive commit 与 Task 3 memory snapshot commit 已完成；下一关是 Task 3 的独立 re-review。
-- `scripts/ai/check-doc-governance.sh` 尚由后续 Task 4 实现；Task 3 以隐私、快照语义、链接和空白检查作为范围内验证。
+- Task 1 commit `2d7b987`、Task 2 archive commit 与 Task 3 memory snapshot commit 已完成；Task 4 本次修改待独立 re-review 和授权提交。
+- `check-doc-governance.sh` 对日期使用 BSD `date -j -f` 与 GNU `date -d` 双路径；当前 macOS 环境已实际覆盖 BSD 路径，GNU 分支为静态兼容实现。
 - 分阶段链接不改变最终设计：archive 路由已由 Task 2 加入，memory 路由已由 Task 3 加入。
-- `bash scripts/ai/check-agent-state.sh` 对既有认证字段名只发出 review WARN；其唯一 HANDOFF WARN 为 Base Commit 在 Task 1 提交后落后于 HEAD，均非 Task 2 引入。
+- `bash scripts/ai/check-agent-state.sh` 对既有认证字段名只发出 review WARN；其 HANDOFF Base Commit 新鲜度 WARN 与本 Task checker 无关。
 - pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 记录 Task 2 的实际证据和提交后状态。
 
 ## Remaining Work
 
-1. 对 Task 3 memory 改动进行独立 re-review 并闭环发现项。
-2. Task 3 re-review clean 后更新本计划 ledger，再进入 Task 4 的文档治理检查脚本实施。
+1. 对 Task 4 文档治理 checker 改动进行独立 re-review，重点核对只读边界、fixture 隔离、日期兼容和 secret 扫描未被弱化。
+2. Task 4 review clean 后更新本计划 ledger，再进入 Task 5 final consistency pass 和完整 HANDOFF 收尾。
 
 ## Exact Next Action
 
-对已提交的 Task 3 memory 快照进行独立 re-review，核对隐私排除、snapshot/secondary/stale 边界、31 天复核日期与 docs map 路由；review clean 后进入 Task 4。
+对 Task 4 文档治理 checker 进行独立 re-review，核对只读边界、fixture 临时目录、BSD/GNU 日期兼容、统一入口顺序与 secret 扫描高置信 FAIL 规则；review clean 后进入 Task 5。
 
 ## Recovery Notes
 
-- 已完成 Task 1 commit `2d7b987`、Task 2 archive commit 与 Task 3 memory snapshot commit；Task 3 已通过范围内验证；未执行 push、merge、checkout、reset 或删除操作。
-- 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`；新增内容均为仓库内人工筛选快照。
+- 已完成 Task 1 commit `2d7b987`、Task 2 archive commit 与 Task 3 memory snapshot commit；Task 4 已通过 RED/GREEN、真实仓库、统一入口和空白检查，待本次授权提交；未执行 push、merge、checkout、reset 或删除操作。
+- 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`；Task 4 新增的 checker 只读项目文件，fixture 测试仅在 `mktemp -d` 临时目录写入并清理。
 - 若设计需要调整，直接修改 spec 与 CURRENT_TASK，并重新执行 placeholder scan、`bash scripts/ai/check-task-state.sh` 和 `git diff --check`。

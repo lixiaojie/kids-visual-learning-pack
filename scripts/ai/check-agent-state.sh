@@ -3,9 +3,10 @@
 #
 # 按序执行:
 #   1. scripts/ai/check-agent-infra.sh
-#   2. scripts/ai/check-task-state.sh
-#   3. scripts/ai/check-handoff.sh
-#   4. git diff --check
+#   2. scripts/ai/check-doc-governance.sh
+#   3. scripts/ai/check-task-state.sh
+#   4. scripts/ai/check-handoff.sh
+#   5. git diff --check
 # 汇总 PASS / WARN / FAIL;任一步骤 FAIL 时以非零退出码结束。
 # 只读:自身与各子检查均不修改文件。
 
@@ -40,6 +41,7 @@ run_step() {
 }
 
 run_step "check-agent-infra" bash scripts/ai/check-agent-infra.sh
+run_step "check-doc-governance" bash scripts/ai/check-doc-governance.sh
 run_step "check-task-state" bash scripts/ai/check-task-state.sh
 run_step "check-handoff" bash scripts/ai/check-handoff.sh
 run_step "git diff --check" git diff --check

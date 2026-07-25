@@ -61,7 +61,7 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 | `scripts/ai/check-agent-infra.sh` | 基础设施完整性只读检查 | 不修改文件 |
 | `scripts/ai/check-task-state.sh` | CURRENT_TASK 状态一致性只读检查 | 不修改文件 |
 | `scripts/ai/check-handoff.sh` | HANDOFF 时效性与完整性只读检查 | 不修改文件 |
-| `scripts/ai/check-agent-state.sh` | 统一检查入口（以上三项 + `git diff --check`) | 不修改文件 |
+| `scripts/ai/check-agent-state.sh` | 统一检查入口（基础设施、文档治理、任务状态、HANDOFF + `git diff --check`) | 不修改文件 |
 | `scripts/ai/check-doc-governance.sh` | 文档地图、链接、状态与复核日期检查 | 不修改文件 |
 | `scripts/ai/install-hooks.sh` | 安装仓库级 Git Hook（每个 clone 一次） | 不触碰用户级配置 |
 | `.githooks/pre-commit` | 提交前快速检查与 HANDOFF 强制 | 与任何特定 Agent 无关 |
@@ -132,15 +132,27 @@ bash scripts/ai/check-agent-state.sh
 npm run check:agent-state
 ```
 
-它按序执行 `check-agent-infra.sh`（基础设施完整性）、`check-task-state.sh`(CURRENT_TASK 一致性）、`check-handoff.sh`(HANDOFF 时效性）和 `git diff --check`，汇总 PASS / WARN / FAIL；任一 FAIL 时以非零退出码结束。单项脚本也可单独运行（如 `npm run check:agent-infra`)。全部脚本只读，不修改文件。
+它按序执行 `check-agent-infra.sh`（基础设施完整性）、`check-doc-governance.sh`（文档治理）、`check-task-state.sh`(CURRENT_TASK 一致性）、`check-handoff.sh`(HANDOFF 时效性）和 `git diff --check`，汇总 PASS / WARN / FAIL；任一 FAIL 时以非零退出码结束。单项脚本也可单独运行（如 `npm run check:agent-infra`)。全部检查脚本只读；`test-doc-governance.sh` 仅在 `mktemp -d` 创建的临时 fixture 中写入测试数据。
 
 文档治理检查：
 
 ```bash
 bash scripts/ai/check-doc-governance.sh
+# 或
+npm run check:doc-governance
 ```
 
 在正式文档增删、移动、替代或状态变化时运行；另外在任务事件发生时复核相关入口，并每 31 天复核一次文档地图与人工维护的项目记忆快照。脚本不得从用户目录或全局记忆自动复制内容。
+
+治理 checker 的 fixture 测试：
+
+```bash
+bash scripts/ai/test-doc-governance.sh
+# 或
+npm run test:doc-governance
+```
+
+测试仅在 `mktemp -d` 创建的临时目录内写入 fixture，退出时清理；不写入项目文件。
 
 ## 10. 如何新增 ADR
 
