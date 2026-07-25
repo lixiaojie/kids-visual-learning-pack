@@ -118,11 +118,11 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 
 ## Risks and Caveats
 
-- Task 1 commit `2d7b987` 已完成；当前没有未提交的 Task 1 改动，下一关是独立 re-review。
+- Task 1 commit `2d7b987` 已完成；Task 2 archive commit 已完成，下一关是对 Task 2 的独立 re-review。
 - `scripts/ai/check-doc-governance.sh` 尚由后续任务实现；Task 2 以归档存在性、内容保真、定向路由和空白检查作为范围内验证。
 - 分阶段链接不改变最终设计：archive 路由已由 Task 2 加入，memory 路由仍留给 Task 3。
 - `bash scripts/ai/check-agent-state.sh` 对既有认证字段名只发出 review WARN；其唯一 HANDOFF WARN 为 Base Commit 在 Task 1 提交后落后于 HEAD，均非 Task 2 引入。
-- pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 仅记录实际 Task 1 证据和提交后状态。
+- pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 记录 Task 2 的实际证据和提交后状态。
 
 ## Remaining Work
 
