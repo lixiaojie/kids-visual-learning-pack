@@ -4,9 +4,9 @@
 
 - Updated At: 2026-07-25
 - Updated By: OpenAI Codex
-- Status: Paused
-- Branch: main
-- Base Commit: b13ea1e
+- Status: In Progress
+- Branch: codex/project-doc-governance
+- Base Commit: 81f6a7f
 
 ## Objective
 
@@ -80,16 +80,15 @@
 ## Current State
 
 - 已完成：启动协议核实；读取本仓库及两个参考项目的入口、任务、交接、索引和归档结构；筛选项目相关 memory；用户批准并审阅书面设计；实施计划已落盘并完成覆盖、自洽和未完成标记自审
-- 进行中：用户已选择 Subagent-Driven；SDD/worktree 预检已完成
-- 暂停原因：当前 `main` 有未提交基础设施改动，而 SDD 必须在隔离 worktree 中逐任务 commit；等待用户授权建立 feature branch、提交当前任务基线并创建 worktree
+- 进行中：用户已授权 Subagent-Driven 所需的 feature branch、基线 commit 与隔离 worktree；准备从实施计划 Task 1 开始
 - 尚未开始：索引、归档、快照、检查脚本实施；最终验证与 HANDOFF
 - 已知问题：工作区已有未提交基础设施改动；`outputs/` 为既有未跟踪目录；既有 `node boards/kids-world/structure.test.mjs` 失败 `19 !== 18` 与本任务无关
 
 ## Next Actions
 
-1. 用户确认是否授权创建 `codex/project-doc-governance`、提交当前任务基线并建立 `.worktrees/project-doc-governance`。
-2. 授权后把当前 checkout 恢复到 `main`，在隔离 worktree 按计划逐任务 commit、评审。
-3. 完成索引、归档、memory 快照、检查脚本、验证与最终 HANDOFF；不 push、不 merge，除非另行授权。
+1. 按实施计划执行 Task 1：建立根级索引、docs map 与治理规范。
+2. 每个任务完成 implementer、task reviewer 与必要 fix/re-review 后再进入下一任务。
+3. 完成 Task 1–5、broad final review 与最终验证；不 push、不 merge，除非另行授权。
 
 ## Verification Plan
 
