@@ -226,14 +226,21 @@ function sourceForSubflowDefault(subflow: SubflowContainer): string | undefined 
   return subflow.nodes[0]?.source ?? subflow.source;
 }
 
-function normalizeBlock(topic: Topic, stageId: string, subflow: SubflowContainer): InteractionBlockViewModel {
+function normalizeBlock(
+  topic: Topic,
+  stageId: string,
+  graphStageId: string,
+  subflow: SubflowContainer,
+): InteractionBlockViewModel {
   const kind = blockKind(subflow.kind);
   const nodes = subflow.nodes.map((node) => normalizeNode(topic, node));
   const activeNodeId = subflow.defaultNodeId ?? nodes[0]?.id ?? subflow.id;
   const activeSource = sourceForSubflowDefault(subflow);
 
   return {
-    id: `${stageId}-${subflow.id}`,
+    id: graphStageId === stageId
+      ? `${stageId}-${subflow.id}`
+      : `${stageId}-${graphStageId}-${subflow.id}`,
     stageId,
     subflowId: subflow.id,
     kind,
@@ -277,10 +284,36 @@ export function normalizeTopicInteraction(topic: Topic, options: NormalizeTopicI
   const flowStages = getTopicLearningFlow(topic, options.locale);
   const graph = getTopicInteractionGraph(topic, options.locale);
   const flowWasAuthored = Boolean(topic.learningFlow?.length);
+  const graphStageIds = new Set<string>(graph.stages.map((stage) => stage.id));
+  if (flowWasAuthored) {
+    const seenStageIds = new Set<string>();
+    for (const flowStage of flowStages) {
+      if (!graphStageIds.has(flowStage.id)) {
+        throw new Error(`unknown authored learning flow stage: ${flowStage.id}`);
+      }
+      if (seenStageIds.has(flowStage.id)) {
+        throw new Error(`duplicate authored learning flow stage: ${flowStage.id}`);
+      }
+      seenStageIds.add(flowStage.id);
+    }
+  }
+  const authoredStageIds = new Set(flowStages.map((stage) => stage.id));
 
   const stages: StageViewModel[] = flowStages.map((flowStage, index) => {
-    const graphStage = graph.stages.find((stage) => stage.id === flowStage.id);
-    const blocks = (graphStage?.subflows ?? []).map((subflow) => normalizeBlock(topic, flowStage.id, subflow));
+    const graphStageIndex = graph.stages.findIndex((stage) => stage.id === flowStage.id);
+    const followingAuthoredStageIndex = graph.stages.findIndex(
+      (stage, candidateIndex) => candidateIndex > graphStageIndex && authoredStageIds.has(stage.id),
+    );
+    const nextGraphStageIndex =
+      followingAuthoredStageIndex >= 0 ? followingAuthoredStageIndex : graph.stages.length;
+    const graphStages = graphStageIndex >= 0
+      ? graph.stages.slice(graphStageIndex, nextGraphStageIndex)
+      : [];
+    const blocks = graphStages.flatMap((graphStage) =>
+      graphStage.subflows.map((subflow) =>
+        normalizeBlock(topic, flowStage.id, graphStage.id, subflow)
+      )
+    );
     return {
       id: flowStage.id,
       order: index + 1,

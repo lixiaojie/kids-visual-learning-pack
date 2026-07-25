@@ -43,10 +43,10 @@
     "validate:evidence": "node scripts/validate-evidence-coverage.mjs",
     "validate:interaction-flow": "node scripts/validate-interaction-flow.mjs",
     "validate:evidence-focus": "node scripts/validate-evidence-focus.mjs",
-    "validate:interaction-graph": "node scripts/validate-interaction-graph.mjs",
+    "validate:interaction-graph": "node scripts/validate-interaction-graph.test.mjs",
     "validate:kids-content": "./node_modules/.bin/tsc -p packages/kids-content/tsconfig.json --noEmit && node scripts/validate-kids-content-package.mjs && npm run test:topic-interaction",
     "validate:miniprogram": "node scripts/validate-miniprogram-scaffold.mjs",
-    "validate:alignment": "node scripts/validate-content-alignment.mjs"
+    "validate:alignment": "node scripts/validate-content-alignment.test.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

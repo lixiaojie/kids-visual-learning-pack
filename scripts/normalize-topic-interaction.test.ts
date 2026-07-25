@@ -12,7 +12,7 @@ const viewModel = normalizeTopicInteraction(topic, {
 
 assert.equal(viewModel.topicId, "cicada-life");
 assert.equal(viewModel.locale, "zh-CN");
-assert.ok(viewModel.stages.length >= 6, "view model should expose the current learning flow stages");
+assert.equal(viewModel.stages.length, 5, "view model should expose the authored five-stage scene flow");
 assert.equal(viewModel.initialState.activeStageId, viewModel.stages[0]?.id);
 assert.deepEqual(
   viewModel.stages.map((stage) => ({
@@ -23,17 +23,74 @@ assert.deepEqual(
   })),
   [
     { id: "observe", quality: "authored", label: "真实发现", blocks: ["hero"] },
-    { id: "classify", quality: "authored", label: "认出若虫", blocks: ["classification", "classification", "classification"] },
-    { id: "inspect", quality: "authored", label: "生命周期", blocks: ["objects", "objects", "objects"] },
-    { id: "trace", quality: "authored", label: "羽化过程", blocks: ["mechanism", "mechanism"] },
-    { id: "compare", quality: "authored", label: "易混比较", blocks: ["compare", "compare", "compare"] },
-    { id: "tasks", quality: "authored", label: "观察任务", blocks: ["task", "task", "task", "task"] },
+    {
+      id: "classify",
+      quality: "authored",
+      label: "认出它",
+      blocks: ["classification", "classification", "classification", "objects", "objects", "objects"],
+    },
+    { id: "trace", quality: "authored", label: "看变化", blocks: ["mechanism", "mechanism"] },
+    {
+      id: "compare",
+      quality: "authored",
+      label: "比一比",
+      blocks: ["compare", "compare", "compare", "task", "task", "task", "task"],
+    },
     { id: "next", quality: "authored", label: "复述延伸", blocks: ["speak", "parent", "related"] },
   ],
 );
 
+const reorderedFlowTopic = structuredClone(topic);
+reorderedFlowTopic.learningFlow = [
+  reorderedFlowTopic.learningFlow?.find((stage) => stage.id === "observe"),
+  reorderedFlowTopic.learningFlow?.find((stage) => stage.id === "trace"),
+  reorderedFlowTopic.learningFlow?.find((stage) => stage.id === "classify"),
+  reorderedFlowTopic.learningFlow?.find((stage) => stage.id === "compare"),
+  reorderedFlowTopic.learningFlow?.find((stage) => stage.id === "next"),
+].filter((stage): stage is NonNullable<typeof stage> => Boolean(stage));
+const reorderedViewModel = normalizeTopicInteraction(reorderedFlowTopic, {
+  locale: "zh-CN",
+  mode: "dev",
+  platform: "web",
+});
+assert.deepEqual(
+  Object.fromEntries(
+    reorderedViewModel.stages.map((stage) => [stage.id, stage.blocks.map((block) => block.kind)]),
+  ),
+  {
+    observe: ["hero"],
+    trace: ["mechanism", "mechanism"],
+    classify: ["classification", "classification", "classification", "objects", "objects", "objects"],
+    compare: ["compare", "compare", "compare", "task", "task", "task", "task"],
+    next: ["speak", "parent", "related"],
+  },
+  "collapsed graph stages should follow canonical graph ownership without duplicating blocks when authored navigation is reordered",
+);
+
 const allBlocks = viewModel.stages.flatMap((stage) => stage.blocks);
 assert.ok(allBlocks.length >= viewModel.stages.length, "each stage should expose at least one renderable block");
+assert.equal(
+  new Set(allBlocks.map((block) => block.id)).size,
+  allBlocks.length,
+  "collapsed graph stages must keep block ids unique",
+);
+
+const duplicateFlowTopic = structuredClone(topic);
+const duplicateStage = duplicateFlowTopic.learningFlow?.[0];
+assert.ok(duplicateStage, "authored learning flow should expose a stage to duplicate");
+duplicateFlowTopic.learningFlow = [...(duplicateFlowTopic.learningFlow ?? []), structuredClone(duplicateStage)];
+assert.throws(
+  () => normalizeTopicInteraction(duplicateFlowTopic, { locale: "zh-CN", mode: "production" }),
+  /duplicate authored learning flow stage: observe/,
+);
+
+const unknownFlowTopic = structuredClone(topic);
+assert.ok(unknownFlowTopic.learningFlow?.[0], "authored learning flow should expose a stage to mutate");
+unknownFlowTopic.learningFlow[0].id = "unknown-stage";
+assert.throws(
+  () => normalizeTopicInteraction(unknownFlowTopic, { locale: "zh-CN", mode: "production" }),
+  /unknown authored learning flow stage: unknown-stage/,
+);
 
 const taskBlock = allBlocks.find((block) => block.kind === "task");
 assert.ok(taskBlock, "cicada-life should expose a normalized task block");
@@ -76,7 +133,7 @@ const missingFocusViewModel = normalizeTopicInteraction(missingFocusTopic, {
 });
 
 assert.ok(
-  missingFocusViewModel.diagnostics.errors.some((error) => error === "tasks/cicada-sequence-01/egg missing focus region (derived)"),
+  missingFocusViewModel.diagnostics.errors.some((error) => error === "compare/cicada-sequence-01/egg missing focus region (derived)"),
   "strict diagnostics should report explicit bindings that lack focus regions",
 );
 
@@ -106,11 +163,9 @@ assert.deepEqual(
   enViewModel.stages.map((stage) => stage.label),
   [
     "Real Discovery",
-    "Recognize the Nymph",
-    "Life Cycle",
-    "Molting Process",
-    "Common Mix-ups",
-    "Observation Tasks",
+    "Recognize It",
+    "Watch Change",
+    "Compare",
     "Retell and Extend",
   ],
 );

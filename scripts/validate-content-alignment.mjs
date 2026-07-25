@@ -22,6 +22,40 @@ function relative(filePath) {
   return path.relative(root, filePath);
 }
 
+function withoutCodeComments(source) {
+  return source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
+}
+
+function withoutStringLiterals(source) {
+  let result = "";
+  let quote = null;
+  let escaped = false;
+
+  for (const character of source) {
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (character === "\\") {
+        escaped = true;
+      } else if (character === quote) {
+        quote = null;
+      }
+      result += character === "\n" ? "\n" : " ";
+      continue;
+    }
+
+    if (character === '"' || character === "'" || character === "`") {
+      quote = character;
+      result += " ";
+      continue;
+    }
+
+    result += character;
+  }
+
+  return result;
+}
+
 const topicRegistry = readJson("boards/kids-world/src/data/topic-registry.json");
 const channelPolicy = readJson("channel-policy.json");
 const imageManifest = readJson("boards/kids-world/src/data/image-generation-manifest.json");
@@ -122,31 +156,68 @@ if (fs.existsSync(path.join(root, "boards/kids-world/src/components/home/Interes
   errors.push("Story interest entrance component must be removed from home components");
 }
 
-const webTopicPagePath = path.join(root, "boards/kids-world/src/pages/TopicPage.tsx");
-const webTopicPage = fs.readFileSync(webTopicPagePath, "utf8");
-const webTopicComponentSource = [
-  webTopicPage,
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClassificationGroups.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/RepresentativeObjects.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/MechanismSteps.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ComparePairs.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClickTaskCard.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/ClickTaskDeck.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "boards/kids-world/src/components/topic/TopicVisual.tsx"), "utf8"),
-].join("\n");
-for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "resolveTopicPresentation"]) {
-  if (!webTopicPage.includes(requiredTopicFlow)) {
-    errors.push(`Web topic page must wire module visuals and learning flow: ${requiredTopicFlow}`);
+const sceneDeckContracts = [
+  {
+    label: "Web",
+    entryPaths: ["boards/kids-world/src/pages/TopicPage.tsx"],
+    componentPath: "boards/kids-world/src/components/topic/SceneDeckTopicPage.tsx",
+  },
+  {
+    label: "miniprogram",
+    entryPaths: [
+      "apps/miniprogram/src/pages/topic/index.tsx",
+      "apps/miniprogram/src/components/topic/TopicRuntimePage.tsx",
+    ],
+    componentPath: "apps/miniprogram/src/components/topic/SceneDeckTopicPage.tsx",
+  },
+];
+const requiredSceneRuntimeTokens = [
+  "normalizeTopicToSceneDeck",
+  "createInitialSceneInteractionState",
+  "reduceSceneInteractionState",
+  "resolveScenePresentation",
+];
+const requiredSceneUiTokens = [
+  "deck.scenes.map",
+  'type: "SELECT_SCENE"',
+  "activeScene.focusItems.map",
+  'type: "SELECT_FOCUS"',
+  "presentation.activeEvidence",
+  "activeScene.visual.regions.map",
+  "activeScene.contentBlocks.map",
+  "activeScene.tasks.map",
+  "task.options.map",
+  'type: "CLICK_TASK_OPTION"',
+  "taskState?.feedbackMessage",
+];
+for (const contract of sceneDeckContracts) {
+  for (const entryPath of contract.entryPaths) {
+    const entrySource = withoutCodeComments(fs.readFileSync(path.join(root, entryPath), "utf8"));
+    const importsSceneDeck =
+      /import\s+\{\s*SceneDeckTopicPage\s*\}\s+from\s+["'][^"']*SceneDeckTopicPage["']/.test(entrySource);
+    const rendersSceneDeck = /<SceneDeckTopicPage(?:\s|\/|>)/.test(
+      withoutStringLiterals(entrySource),
+    );
+    if (!importsSceneDeck || !rendersSceneDeck) {
+      errors.push(`${contract.label} topic runtime must render SceneDeckTopicPage: ${entryPath}`);
+    }
   }
-}
-for (const requiredAnchor of ["topic-objects", "topic-mechanism", "topic-compare", "topic-tasks"]) {
-  if (!webTopicComponentSource.includes(requiredAnchor)) {
-    errors.push(`Web topic page must expose learning flow anchor: ${requiredAnchor}`);
+
+  const componentSource = withoutCodeComments(
+    fs.readFileSync(path.join(root, contract.componentPath), "utf8"),
+  );
+  if (!/export\s+function\s+SceneDeckTopicPage\s*\(/.test(componentSource)) {
+    errors.push(`${contract.label} scene deck must export SceneDeckTopicPage`);
   }
-}
-for (const requiredEvidenceWire of ["resolveTopicPresentation", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
-  if (!webTopicComponentSource.includes(requiredEvidenceWire)) {
-    errors.push(`Web topic components must wire visual evidence behavior: ${requiredEvidenceWire}`);
+  for (const required of requiredSceneRuntimeTokens) {
+    if (!new RegExp(`\\b${required}\\s*\\(`).test(componentSource)) {
+      errors.push(`${contract.label} scene deck must call ${required}`);
+    }
+  }
+  for (const required of requiredSceneUiTokens) {
+    if (!componentSource.includes(required)) {
+      errors.push(`${contract.label} scene deck must wire ${required}`);
+    }
   }
 }
 
@@ -156,46 +227,26 @@ if (miniprogramConfig.includes("apps/miniprogram/src/lib/kids-content")) {
   errors.push("apps/miniprogram must not alias @yutou/kids-content to an app-local adapter");
 }
 
-const miniprogramTopicPagePath = path.join(root, "apps/miniprogram/src/pages/topic/index.tsx");
-const miniprogramTopicPage = fs.readFileSync(miniprogramTopicPagePath, "utf8");
-const miniprogramEvidenceSource = [
-  miniprogramTopicPage,
-  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ClickTaskCard.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ClickTaskDeck.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/ComparePairCard.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/InfoList.tsx"), "utf8"),
-  fs.readFileSync(path.join(root, "apps/miniprogram/src/components/topic/TopicVisual.tsx"), "utf8"),
-].join("\n");
-for (const requiredTopicFlow of ["LearningFlowRail", "getTopicLearningFlow", "getVisualSlotForTarget", "resolveTopicPresentation"]) {
-  if (!miniprogramTopicPage.includes(requiredTopicFlow)) {
-    errors.push(`miniprogram topic page must wire module visuals and learning flow: ${requiredTopicFlow}`);
-  }
-}
-for (const requiredAnchor of ["topic-objects", "topic-mechanism", "topic-compare", "topic-tasks"]) {
-  if (!miniprogramEvidenceSource.includes(requiredAnchor)) {
-    errors.push(`miniprogram topic page must expose learning flow anchor: ${requiredAnchor}`);
-  }
-}
-for (const requiredEvidenceWire of ["resolveTopicPresentation", "data-evidence-source", "evidence-panel", "data-task-option-id"]) {
-  if (!miniprogramEvidenceSource.includes(requiredEvidenceWire)) {
-    errors.push(`miniprogram topic components must wire visual evidence behavior: ${requiredEvidenceWire}`);
-  }
-}
-const comparePairCardPath = path.join(root, "apps/miniprogram/src/components/topic/ComparePairCard.tsx");
-const comparePairCardSource = fs.existsSync(comparePairCardPath) ? fs.readFileSync(comparePairCardPath, "utf8") : "";
-if (!miniprogramTopicPage.includes("ComparePairCard")) {
-  errors.push("miniprogram topic page must render comparePairs with ComparePairCard");
-}
-for (const requiredCompareField of ["pair.a.name", "pair.a.points", "pair.b.name", "pair.b.points", "pair.childConclusion"]) {
-  if (!comparePairCardSource.includes(requiredCompareField)) {
-    errors.push(`ComparePairCard must render ${requiredCompareField}`);
-  }
-}
 for (const slug of renderReadySlugs) {
   const topic = readJson(`boards/kids-world/src/data/topics/${slug}.json`);
   if ((topic.comparePairs ?? []).some((pair) => pair.a?.points?.length > 0 || pair.b?.points?.length > 0)) {
-    if (!miniprogramTopicPage.includes("ComparePairCard")) {
-      errors.push(`${slug} has compare pair points but miniprogram does not render ComparePairCard`);
+    const compareScene = topic.learningScenes?.find((scene) => scene.sceneType === "compare-split");
+    if (!compareScene) {
+      errors.push(`${slug} has compare evidence but no compare-split learning scene`);
+      continue;
+    }
+
+    const compareSources = new Set(
+      topic.comparePairs.map((pair) => `comparePairs.${pair.id}`),
+    );
+    if (!compareScene.focusItems?.some((focus) => compareSources.has(focus.source))) {
+      errors.push(`${slug} compare-split scene must focus comparePairs evidence`);
+    }
+    const hasExplanatoryContent = compareScene.contentBlocks?.some((block) =>
+      Boolean(block.body?.trim() || block.items?.some((item) => item.trim()))
+    );
+    if (!hasExplanatoryContent) {
+      errors.push(`${slug} compare-split scene must expose explanatory content`);
     }
   }
 }

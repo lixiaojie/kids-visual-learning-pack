@@ -105,8 +105,18 @@ for (const slug of slugs) {
   }
   for (const object of topic.representativeObjects) {
     const binding = requireBinding(topic, `representativeObjects.${object.id}`);
-    if (binding && !topic.visualSlots?.some((slot) => slot.id === binding.visualSlotId && (slot.target === "representativeObjects" || slot.target === `representativeObjects.${object.id}`))) {
-      errors.push(`${slug} representative object ${object.id} must use a representativeObjects visual slot`);
+    const slot = topic.visualSlots?.find((item) => item.id === binding?.visualSlotId);
+    const usesRepresentativeObjectSlot =
+      slot?.target === "representativeObjects" || slot?.target === `representativeObjects.${object.id}`;
+    const focusesObjectOnExactSlot =
+      Boolean(slot) &&
+      binding?.focus?.mode === "hotspot" &&
+      binding.focus.activeRegionIds?.includes(object.id) &&
+      binding.focus.regions?.some((region) => region.id === object.id);
+    if (binding && !usesRepresentativeObjectSlot && !focusesObjectOnExactSlot) {
+      errors.push(
+        `${slug} representative object ${object.id} must use a representativeObjects visual slot or focus its own region`,
+      );
     }
   }
   for (const step of topic.mechanism.steps) {
