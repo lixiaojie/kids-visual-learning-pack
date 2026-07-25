@@ -5,9 +5,9 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: cbb3d36（formal-doc behavior sync 前的 clean HEAD）
-- Working Tree: formal design/plan 的 Hook 行为描述已同步，提交后应 clean；恢复当前符号提交必须运行 `git rev-parse HEAD`
-- Task Status: Done（Task 1–5、final-review fix wave、index-snapshot 根治与 formal-doc behavior sync 均已完成；待最终独立复核）
+- Base Commit: 5da4a7d（整分支终审通过后的 clean HEAD）
+- Working Tree: finishing 验证结果已记录，提交后应 clean；恢复当前符号提交必须运行 `git rev-parse HEAD`
+- Task Status: Done（治理实现与整分支终审均完成；集成被既有全项目 validation failure 阻断）
 
 ## Summary
 
@@ -16,6 +16,8 @@
 whole-branch final review 发现 4 个 Important 与 2 个 Minor。fix wave 已把文档日期转换为严格 UTC epoch day，强制 `due > last` 且 `due - last <= 31`，并仅依据 `today - last > 31` 产生 overdue WARN；archive manifest 的两条映射改为 fail-closed 精确验证；`PROJECT_CONTEXT.md` 纳入纯文档豁免。连续 re-review 后，Hook 最终在 `mktemp -d` 中物化完整 index，运行快照自身的 infra checker，并将 Git 查询绑定到原始 index；准备或检查任一步失败都阻断提交，staged `.gitignore` 隐藏的同路径 recreation 也不能绕过。设计、计划与 docs map 已同步为 Approved/Implemented、Completed、Implemented/Completed。
 
 最终复核确认 index-snapshot 代码与 4/4 fixture 已关闭原 Hook finding，同时指出 design/plan 仍把行为写成“拒绝所有 partial staging”。本次仅同步正式文档为真实行为：验证完整 index snapshot，拒绝工作树掩盖暂存损坏，同时允许合法 partial staging；Hook 实现未再修改。
+
+整分支 reviewer 最终确认原 6 项与后续文档漂移全部关闭，结论为 `Ready to merge: Yes`。随后按 `finishing-a-development-branch` 运行全项目 `npm run validate`，在 `validate:interaction-graph` 发现 6 个 `cicada-life` representative object visual-slot 错误；同一失败已在 `main` 工作区复现，因此不是本治理分支引入。按 finishing gate，在全项目 suite 绿色前不提供 merge/push 菜单。
 
 实施计划的日期为 2026-07-24，实际收口和本 HANDOFF 更新发生在 2026-07-25；Metadata 使用实际日期，不回填计划日期。
 
@@ -70,6 +72,7 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 | `bash scripts/ai/check-agent-infra.sh` | WARN | 0 FAIL；既有 secret-field-name 人工复核 WARN |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；仅既有 secret-field-name 人工复核 WARN，handoff/doc/task/diff steps PASS |
 | `bash scripts/ai/check-handoff.sh` | PASS | content commit 前 Base Commit 与 `45bb139` 一致，非空工作区描述一致 |
+| `npm run validate` | FAIL | `validate:interaction-graph` 报 6 个 `cicada-life` representative object 未使用 `representativeObjects` visual slot；在 `main` 同样复现 |
 | active old-path Markdown link probe | PASS | 两个旧 active path 均无 Markdown link target；历史普通文本说明合法 |
 | `git diff --check` | PASS | content commit 前无空白错误 |
 | `git status --short` | PASS | 最终 status-only commit 后为空 |
@@ -77,6 +80,7 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 ## Known Failures
 
+- `npm run validate` 在 `validate:interaction-graph` 失败：`cicadaEggs`、`undergroundNymph`、`cicadaShell`、`newAdult`、`adultCicada`、`butterflyPupa` 未使用 `representativeObjects` visual slot。已在 `main` 原工作区用 `npm run validate:interaction-graph` 复现；本分支未修改对应业务内容，修复需另行扩展范围。
 - `node boards/kids-world/structure.test.mjs` 存在既有断言失败 `19 !== 18`。本任务未运行该命令、未修改 `boards/`，故该问题不影响本轮文档治理验证结论。
 
 ## Risks and Caveats
@@ -88,12 +92,12 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 ## Remaining Work
 
-1. 对 formal-doc behavior sync 做最终独立复核。
-2. 复核通过后按 `finishing-a-development-branch` 交付选择。push、merge、PR 仍需单独授权。
+1. 用户决定是否另行授权修复 `main` 已存在的 `cicada-life` interaction-graph 基线问题。
+2. 修复后重跑 `npm run validate`；全项目 suite 绿色后再按 `finishing-a-development-branch` 提供 merge/push/keep 选择。push、merge、PR 仍需单独授权。
 
 ## Exact Next Action
 
-独立复核 index-snapshot 实现与 formal design/plan 描述是否一致。
+等待用户决定是否扩展范围修复既有 `cicada-life` interaction-graph validation failure。
 
 ## Recovery Notes
 

@@ -81,17 +81,19 @@
 - 已完成 Task 4：新增只读文档治理 checker、统一入口和 npm 便捷命令；终审 fix wave 将 fixture 扩展为 18 项，覆盖 UTC epoch day、31 天边界、远期 due、manifest 缺行/错配与既有严格日期/链接场景。
 - 已完成 Task 5：全量 Markdown inventory、隐私路径扫描、完整文档治理验证、动态交接收口和 shutdown checks。
 - 已完成 whole-branch final-review fix wave 及后续 re-review 修复：Hook 在临时目录物化完整 index snapshot，并从快照运行 infra checker；4 项隔离 Git fixture 覆盖 staged broken/worktree clean、同路径 untracked recreation、被 staged `.gitignore` 忽略的同路径 recreation，以及 PROJECT_CONTEXT-only 豁免。design、plan 与 docs map 状态统一为 Implemented/Completed，计划已执行 checklist 全部按提交与报告证据勾选。
+- 整分支独立终审已通过并给出 `Ready to merge: Yes`。finishing 阶段随后运行全项目 `npm run validate`，在 `validate:interaction-graph` 发现 6 个既有 `cicada-life` visual-slot 错误；同一失败已在 `main` 工作区复现，本治理分支未修改相关业务文件。
 - Task 2 的旧路径验证已收窄为 active Markdown link target；历史治理说明中的普通文本路径保留合法。
 - 实施计划日期为 2026-07-24；实际收口发生在 2026-07-25，故本文件使用实际更新日期而非计划日期。
 
 ## Next Actions
 
-1. 对 final-review fix commit 做一次独立复核。
-2. 复核 clean 后，按 `finishing-a-development-branch` 的交付选择完成后续操作；不得在未经授权时 push、merge 或创建 PR。
+1. 由用户决定是否另行扩展范围，修复 `main` 已存在的 `cicada-life` interaction-graph 基线问题。
+2. 基线问题修复后重跑 `npm run validate`；全项目 suite 绿色后再进入 `finishing-a-development-branch` 的 merge/push/keep 选择。
 
 ## Verification Plan
 
 - Build: 本任务仅涉及文档与基础设施脚本，不运行全量业务构建
+- Full Project Validation: `npm run validate` 在 `validate:interaction-graph` FAIL；6 个 `cicada-life` representative object 未使用 `representativeObjects` visual slot，同样在 `main` 复现，属于本任务范围外的既有基线问题
 - Unit Tests:
   - `npm run test:doc-governance`：PASS（18/18 fixture）
   - `npm run test:pre-commit`：PASS（4/4 隔离 Git fixture）
