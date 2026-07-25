@@ -5,9 +5,9 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: ef405e8（final-review status-record；narrow re-review patch 起点）
-- Working Tree: narrow re-review patch 已完成、提交待创建；恢复当前符号提交必须运行 `git rev-parse HEAD`
-- Task Status: Done（Task 1–5、final-review fix wave 与 narrow re-review patch 均已完成；待提交与独立复核）
+- Base Commit: f20ea87（narrow re-review fix commit）
+- Working Tree: `f20ea87` 创建后 clean；当前仅本 status-record 更新待提交，恢复当前符号提交必须运行 `git rev-parse HEAD`
+- Task Status: Done（Task 1–5、final-review fix wave 与 narrow re-review patch 均已完成并提交；待独立复核）
 
 ## Summary
 
@@ -86,16 +86,16 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 ## Remaining Work
 
-1. 创建 narrow re-review fix commit，必要时以最小 status-record commit 记录其 hash 与 clean state。
+1. 创建最小 status-record commit，记录 narrow fix `f20ea87` 与 clean state。
 2. 对 final fix 做独立复核；clean 后按 `finishing-a-development-branch` 交付选择。push、merge、PR 仍需单独授权。
 
 ## Exact Next Action
 
-创建 narrow re-review fix commit 与最小 status record，然后独立复核 final fix。
+创建最小 status-record commit，然后独立复核 final fix `f20ea87`。
 
 ## Recovery Notes
 
 - 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，whole-branch review fix 起点为 `1b0fe83`。
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`。本 narrow re-review patch 将创建独立 fix commit；如再创建 status-only commit，其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
+- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，narrow re-review fix 为 `f20ea87`。本最小 status-only commit 只记录 `f20ea87`、检查与 clean state；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
