@@ -64,7 +64,7 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 | `scripts/ai/check-agent-state.sh` | 统一检查入口（基础设施、文档治理、任务状态、HANDOFF + `git diff --check`) | 不修改文件 |
 | `scripts/ai/check-doc-governance.sh` | 文档地图、链接、状态与复核日期检查 | 不修改文件 |
 | `scripts/ai/test-doc-governance.sh` | 文档治理日期、manifest 和链接的隔离 fixture 回归测试 | 只写 `mktemp -d` 临时目录 |
-| `scripts/ai/test-pre-commit.sh` | Hook partial-staging、same-path untracked recreation 与 HANDOFF 豁免的隔离 Git fixture 回归测试 | 只写 `mktemp -d` 临时目录 |
+| `scripts/ai/test-pre-commit.sh` | Hook index snapshot 隔离、same-path recreation 与 HANDOFF 豁免的隔离 Git fixture 回归测试 | 只写 `mktemp -d` 临时目录 |
 | `scripts/ai/install-hooks.sh` | 安装仓库级 Git Hook（每个 clone 一次） | 不触碰用户级配置 |
 | `.githooks/pre-commit` | 提交前快速检查与 HANDOFF 强制 | 与任何特定 Agent 无关 |
 
@@ -164,7 +164,7 @@ bash scripts/ai/test-pre-commit.sh
 npm run test:pre-commit
 ```
 
-该测试在隔离 Git 仓库中验证 staged 破损版本不能被 clean worktree 绕过、staged deletion 不能被同路径 untracked recreation 掩盖，并验证只暂存 `PROJECT_CONTEXT.md` 且存在无关 untracked 文件时不会触发 HANDOFF 强制；它不接入 `check-agent-state.sh` 的五步入口，避免每次状态检查递归或变慢。
+该测试在隔离 Git 仓库中以四个 fixture 验证：staged 破损版本不能被 clean worktree 绕过；staged deletion 不能被同路径 untracked recreation 掩盖；同一路径即使被 staged `.gitignore` 忽略也不能掩盖 deletion；只暂存 `PROJECT_CONTEXT.md` 且存在无关 untracked 文件时不会触发 HANDOFF 强制。它不接入 `check-agent-state.sh` 的五步入口，避免每次状态检查递归或变慢。
 
 ## 10. 如何新增 ADR
 
@@ -203,7 +203,7 @@ npm run hooks:install
 - CI 是服务端统一兜底：即使本地用 `git commit --no-verify` 跳过 Hook,CI（若已配置）仍应执行 `scripts/ai/check-agent-state.sh`。`--no-verify` 仅限人工明确例外场景。
 - 本机全局 `core.hooksPath`（如已配置）会被仓库级配置覆盖；`.githooks/pre-commit` 在自身检查通过后，会链式调用全局 hooks 目录中同名的 `pre-commit`（存在且可执行时），不吞掉既有全局钩子。
 - 不得把真实凭证放入 Hook、脚本或文档；Hook 只输出文件路径和字段名，不输出疑似密钥内容。
-- Hook 的快速基础设施检查读取 worktree。若同一个治理/基础设施受检文件同时存在 staged 与 unstaged/worktree-only 差异，Hook 会先拒绝提交并要求统一内容、重新 `git add`；worktree-only 集合同时包含 `git diff --name-only` 与 `git ls-files --others --exclude-standard`，因此 staged deletion 后同路径 untracked recreation 也不能掩盖 index 状态。两侧都受治理路径 allowlist 限制，无关 untracked 文件不会阻断提交。
+- Hook 的第一步用 `git checkout-index --all` 将当前 index 完整物化到 `mktemp -d` 临时快照，再从快照运行 `scripts/ai/check-agent-infra.sh`。通过 `GIT_DIR` 指回原仓库、`GIT_WORK_TREE` 指向快照，脚本的文件读取与 `git ls-files` 分别对应待提交文件树和原始 index；`mktemp`、物化、脚本存在性或 infra 检查任一步失败都阻断提交，退出时由 `trap` 清理快照，不写 worktree。
 - 只暂存 `PROJECT_CONTEXT.md` 等纯文档路径不要求同步暂存 `HANDOFF.md`；业务代码仍必须同步交接记录。
 
 ### CI 兜底（当前未启用）

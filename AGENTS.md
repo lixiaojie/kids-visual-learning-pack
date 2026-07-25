@@ -187,7 +187,7 @@ Vercel:`vercel.json` 的 `buildCommand: npm run build`,`outputDirectory: dist`�
 bash scripts/ai/check-agent-state.sh   # 统一入口:infra + doc-governance + task-state + handoff + git diff --check;或 npm run check:agent-state
 bash scripts/ai/check-doc-governance.sh # 文档地图、链接、状态与复核日期检查
 bash scripts/ai/test-doc-governance.sh  # 文档治理 checker fixture 测试;或 npm run test:doc-governance
-bash scripts/ai/test-pre-commit.sh       # Git Hook partial-staging/HANDOFF 豁免回归测试;或 npm run test:pre-commit
+bash scripts/ai/test-pre-commit.sh       # Git Hook index-snapshot/HANDOFF 豁免回归测试;或 npm run test:pre-commit
 bash scripts/ai/check-agent-infra.sh   # 单项:基础设施完整性。或 npm run check:agent-infra
 bash scripts/ai/check-task-state.sh    # 单项:CURRENT_TASK.md 状态一致性
 bash scripts/ai/check-handoff.sh       # 单项:HANDOFF.md 时效性与完整性
@@ -255,7 +255,7 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 - 禁止两个 Agent 同时修改同一个工作目录。
 - 串行切换 Agent 前，当前 Agent 必须先更新 `docs/ai/HANDOFF.md` 并保持 Git 状态清晰。
 - 并行成果的汇总只通过 commit / cherry-pick / merge 进行。
-- 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（`PROJECT_CONTEXT.md` 等纯文档、基础设施初始化路径豁免）。治理/基础设施受检文件若同时存在 staged 与 unstaged/worktree-only 差异（包括 staged deletion 后同路径 untracked recreation），Hook 会 fail-closed，必须先统一内容并重新 stage，避免 worktree 检查掩盖 index 中的破损版本；无关 untracked 文件不受影响。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
+- 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（`PROJECT_CONTEXT.md` 等纯文档、基础设施初始化路径豁免）。Hook 先用 `git checkout-index` 将完整暂存区物化到 `mktemp -d` 临时快照，再运行快照中的 `scripts/ai/check-agent-infra.sh`；文件读取来自快照，`git ls-files` 等查询仍读取原始 index。临时目录创建、快照物化、脚本缺失或 infra FAIL 均 fail-closed，worktree 中已恢复、重建或被 `.gitignore` 忽略的同路径文件不能掩盖待提交状态。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
 
 ## Documentation Governance
 

@@ -7,13 +7,12 @@
 # scripts/ai/check-agent-state.sh 兜底。
 #
 # 检查项:
-#   1. 治理/基础设施文件不得同时存在 staged 与 unstaged 差异;
-#   2. 快速基础设施检查(scripts/ai/check-agent-infra.sh);
-#   3. git diff --cached --check(暂存区空白错误);
-#   4. 暂存区疑似密钥扫描(只报文件路径+字段名,不输出值);
-#   5. 暂存业务代码时,必须同时暂存 docs/ai/HANDOFF.md;
+#   1. 将当前 index 物化到临时目录,并运行其中的快速基础设施检查;
+#   2. git diff --cached --check(暂存区空白错误);
+#   3. 暂存区疑似密钥扫描(只报文件路径+字段名,不输出值);
+#   4. 暂存业务代码时,必须同时暂存 docs/ai/HANDOFF.md;
 #      纯文档/基础设施路径豁免;HANDOFF.md 尚不存在(首次建立)时跳过强制。
-#   6. 以上通过后,链式调用全局 core.hooksPath 中的 pre-commit(如存在)。
+#   5. 以上通过后,链式调用全局 core.hooksPath 中的 pre-commit(如存在)。
 
 set -u
 
@@ -28,45 +27,45 @@ blocked=0
 STAGED="$(git diff --cached --name-only --diff-filter=ACMRD)"
 
 # ---------------------------------------------------------------------------
-# 1. 治理/基础设施文件拒绝 partial staging
-#    check-agent-infra.sh 读取 worktree；同一受检文件若 staged 与 unstaged
-#    或 worktree-only/untracked 同时存在，index 可能与检查结果不一致，
-#    因此必须先统一内容并重新 stage。
+# 1. 对当前 index 的完整快照运行快速基础设施检查
+#    文件读取来自临时快照；git ls-files 等 Git 查询仍读取原始 index。
+#    创建、物化、脚本存在性或脚本执行任一步失败都阻断提交。
 # ---------------------------------------------------------------------------
-WORKTREE_ONLY="$(
-  {
-    git diff --name-only --diff-filter=ACMRD
-    git ls-files --others --exclude-standard
-  } | sort -u
-)"
-INFRA_RE='^(AGENTS\.md|CLAUDE\.md|PROJECT_CONTEXT\.md|README\.md|package\.json|docs/README\.md|docs/ai/|docs/archive/|docs/knowledge/codex-memory/|docs/decisions/ADR-TEMPLATE\.md|scripts/ai/|\.githooks/)'
-PARTIAL_INFRA="$(comm -12 \
-  <(printf '%s\n' "$STAGED" | grep -E "$INFRA_RE" | sort -u) \
-  <(printf '%s\n' "$WORKTREE_ONLY" | grep -E "$INFRA_RE" | sort -u))"
-if [ -n "$PARTIAL_INFRA" ]; then
-  fail "以下治理/基础设施文件同时存在 staged 和 unstaged 差异（包含 worktree-only/untracked 同路径）:
-$(printf '%s\n' "$PARTIAL_INFRA" | sed 's/^/  /')
-请先统一文件内容并重新 git add，确保 Hook 检查的 worktree 与待提交 index 一致。"
+INDEX_SNAPSHOT="$(mktemp -d 2>/dev/null)"
+snapshot_rc=$?
+if [ "$snapshot_rc" -ne 0 ] || [ -z "$INDEX_SNAPSHOT" ] || [ ! -d "$INDEX_SNAPSHOT" ]; then
+  fail "无法创建 index snapshot 临时目录(mktemp -d)。"
   blocked=1
-fi
-
-# ---------------------------------------------------------------------------
-# 2. 快速基础设施检查
-# ---------------------------------------------------------------------------
-if [ -x scripts/ai/check-agent-infra.sh ]; then
-  infra_out="$(bash scripts/ai/check-agent-infra.sh 2>&1)"
-  infra_rc=$?
-  if [ "$infra_rc" -ne 0 ]; then
-    printf '%s\n' "$infra_out" >&2
-    fail "基础设施检查未通过(check-agent-infra.sh)。先修复 FAIL 项再提交。"
-    blocked=1
-  fi
 else
-  echo "pre-commit WARN: scripts/ai/check-agent-infra.sh 不存在,跳过基础设施检查" >&2
+  trap 'rm -rf "$INDEX_SNAPSHOT"' EXIT
+  ORIGINAL_GIT_DIR="$(git rev-parse --absolute-git-dir 2>/dev/null)"
+  git_dir_rc=$?
+  if [ "$git_dir_rc" -ne 0 ] || [ -z "$ORIGINAL_GIT_DIR" ] || [ ! -d "$ORIGINAL_GIT_DIR" ]; then
+    fail "无法解析原始 Git 目录，不能验证暂存区基础设施。"
+    blocked=1
+  elif ! git checkout-index --all --prefix="$INDEX_SNAPSHOT/" >/dev/null 2>&1; then
+    fail "无法将当前 index 物化到临时快照。"
+    blocked=1
+  elif [ ! -f "$INDEX_SNAPSHOT/scripts/ai/check-agent-infra.sh" ]; then
+    fail "index snapshot 缺少 scripts/ai/check-agent-infra.sh。"
+    blocked=1
+  else
+    infra_out="$(
+      GIT_DIR="$ORIGINAL_GIT_DIR" \
+      GIT_WORK_TREE="$INDEX_SNAPSHOT" \
+        bash "$INDEX_SNAPSHOT/scripts/ai/check-agent-infra.sh" 2>&1
+    )"
+    infra_rc=$?
+    if [ "$infra_rc" -ne 0 ]; then
+      printf '%s\n' "$infra_out" >&2
+      fail "暂存区基础设施检查未通过(check-agent-infra.sh)。先修复 FAIL 项再提交。"
+      blocked=1
+    fi
+  fi
 fi
 
 # ---------------------------------------------------------------------------
-# 3. 暂存区空白检查
+# 2. 暂存区空白检查
 # ---------------------------------------------------------------------------
 if ! git diff --cached --check >/dev/null 2>&1; then
   git diff --cached --check >&2
@@ -75,7 +74,7 @@ if ! git diff --cached --check >/dev/null 2>&1; then
 fi
 
 # ---------------------------------------------------------------------------
-# 4. 暂存区疑似密钥扫描(扫描暂存内容,只报路径+字段名)
+# 3. 暂存区疑似密钥扫描(扫描暂存内容,只报路径+字段名)
 # ---------------------------------------------------------------------------
 secret_hits=""
 for f in $STAGED; do
@@ -107,7 +106,7 @@ ${secret_hits}请移除后重新暂存。真实凭证不得进入 Git,参见 doc
 fi
 
 # ---------------------------------------------------------------------------
-# 5. 业务代码暂存时必须同步更新 HANDOFF.md
+# 4. 业务代码暂存时必须同步更新 HANDOFF.md
 # ---------------------------------------------------------------------------
 EXEMPT_RE='^(AGENTS\.md|CLAUDE\.md|PROJECT_CONTEXT\.md|README\.md|\.gitignore|docs/|scripts/ai/|\.githooks/)'
 business="$(printf '%s\n' "$STAGED" | grep -vE "$EXEMPT_RE" || true)"
@@ -130,7 +129,7 @@ if [ "$blocked" -ne 0 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# 6. 链式调用全局 pre-commit(保留用户既有全局钩子行为)
+# 5. 链式调用全局 pre-commit(保留用户既有全局钩子行为)
 # ---------------------------------------------------------------------------
 GLOBAL_HOOKS="$(git config --global --get core.hooksPath 2>/dev/null || true)"
 case "$GLOBAL_HOOKS" in

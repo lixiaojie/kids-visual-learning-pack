@@ -29,8 +29,27 @@ make_repo() {
   mkdir -p "$repo/.githooks" "$repo/scripts/ai" "$repo/docs/ai"
   cp "$HOOK" "$repo/.githooks/pre-commit"
   chmod +x "$repo/.githooks/pre-commit"
-  printf '%s\n' '#!/usr/bin/env bash' 'exit 0' > "$repo/scripts/ai/check-agent-infra.sh"
+  printf '%s\n' \
+    '#!/usr/bin/env bash' \
+    'set -u' \
+    'ROOT="$(cd "$(dirname "$0")/../.." && pwd)"' \
+    'cd "$ROOT" || exit 2' \
+    'if ! grep -qF "## Required Heading" AGENTS.md; then' \
+    '  echo "FAIL: missing required heading in AGENTS.md"' \
+    '  exit 1' \
+    'fi' \
+    'if [ ! -f docs/README.md ]; then' \
+    '  echo "FAIL: missing docs/README.md"' \
+    '  exit 1' \
+    'fi' \
+    'if ! git ls-files --error-unmatch AGENTS.md >/dev/null 2>&1; then' \
+    '  echo "FAIL: original index is unavailable"' \
+    '  exit 1' \
+    'fi' \
+    'exit 0' \
+    > "$repo/scripts/ai/check-agent-infra.sh"
   chmod +x "$repo/scripts/ai/check-agent-infra.sh"
+  printf '%s\n' '# Agents' '## Required Heading' > "$repo/AGENTS.md"
   printf '# Context\n' > "$repo/PROJECT_CONTEXT.md"
   printf '# Docs\n' > "$repo/docs/README.md"
   printf '# Handoff\n' > "$repo/docs/ai/HANDOFF.md"
@@ -50,19 +69,18 @@ run_hook() {
   ) 2>&1
 }
 
-make_repo "$TMP_ROOT/partial-infra"
-printf '%s\n' '#!/usr/bin/env bash' 'exit 1' > "$TMP_ROOT/partial-infra/scripts/ai/check-agent-infra.sh"
-git -C "$TMP_ROOT/partial-infra" add scripts/ai/check-agent-infra.sh
-git -C "$TMP_ROOT/partial-infra" show HEAD:scripts/ai/check-agent-infra.sh \
-  > "$TMP_ROOT/partial-infra/scripts/ai/check-agent-infra.sh"
-out="$(run_hook "$TMP_ROOT/partial-infra")"
+make_repo "$TMP_ROOT/broken-heading"
+printf '%s\n' '# Agents' > "$TMP_ROOT/broken-heading/AGENTS.md"
+git -C "$TMP_ROOT/broken-heading" add AGENTS.md
+git -C "$TMP_ROOT/broken-heading" show HEAD:AGENTS.md \
+  > "$TMP_ROOT/broken-heading/AGENTS.md"
+out="$(run_hook "$TMP_ROOT/broken-heading")"
 rc=$?
 if [ "$rc" -ne 0 ] \
-  && printf '%s\n' "$out" | grep -F '同时存在 staged 和 unstaged 差异' >/dev/null \
-  && printf '%s\n' "$out" | grep -F 'scripts/ai/check-agent-infra.sh' >/dev/null; then
-  pass "staged broken infra with clean worktree is rejected"
+  && printf '%s\n' "$out" | grep -F 'missing required heading in AGENTS.md' >/dev/null; then
+  pass "staged broken heading with restored clean worktree is rejected"
 else
-  fail "partial-staged infra should fail closed"
+  fail "staged broken heading should fail against the index snapshot"
 fi
 
 make_repo "$TMP_ROOT/deleted-recreated-infra"
@@ -70,11 +88,23 @@ git -C "$TMP_ROOT/deleted-recreated-infra" rm --cached -q docs/README.md
 out="$(run_hook "$TMP_ROOT/deleted-recreated-infra")"
 rc=$?
 if [ "$rc" -ne 0 ] \
-  && printf '%s\n' "$out" | grep -F '同时存在 staged 和 unstaged 差异' >/dev/null \
-  && printf '%s\n' "$out" | grep -F 'docs/README.md' >/dev/null; then
+  && printf '%s\n' "$out" | grep -F 'missing docs/README.md' >/dev/null; then
   pass "staged infra deletion with same-path untracked recreation is rejected"
 else
-  fail "staged deletion with same-path untracked recreation should fail closed"
+  fail "staged deletion with same-path untracked recreation should fail against the index snapshot"
+fi
+
+make_repo "$TMP_ROOT/deleted-ignored-recreation"
+git -C "$TMP_ROOT/deleted-ignored-recreation" rm --cached -q docs/README.md
+printf 'docs/README.md\n' > "$TMP_ROOT/deleted-ignored-recreation/.gitignore"
+git -C "$TMP_ROOT/deleted-ignored-recreation" add .gitignore
+out="$(run_hook "$TMP_ROOT/deleted-ignored-recreation")"
+rc=$?
+if [ "$rc" -ne 0 ] \
+  && printf '%s\n' "$out" | grep -F 'missing docs/README.md' >/dev/null; then
+  pass "staged deletion with staged ignore and ignored same-path recreation is rejected"
+else
+  fail "ignored same-path recreation should fail against the index snapshot"
 fi
 
 make_repo "$TMP_ROOT/project-context-only"
