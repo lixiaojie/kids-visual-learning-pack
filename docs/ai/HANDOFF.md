@@ -5,9 +5,9 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: 45bb139（第三轮 re-review 修复起点）
-- Working Tree: 当前有 6 个 tracked 文件包含 index-snapshot fix，尚未提交；恢复当前符号提交必须运行 `git rev-parse HEAD`
-- Task Status: Done（Task 1–5 与 final-review fix wave 已完成；第三轮 re-review 修复实现及验证进行中）
+- Base Commit: 6ef6887（index-snapshot content fix）
+- Working Tree: 当前仅本 HANDOFF status-record 更新待提交；恢复当前符号提交必须运行 `git rev-parse HEAD`
+- Task Status: Done（Task 1–5、final-review fix wave 与 index-snapshot re-review 修复均已完成并提交；待独立复核）
 
 ## Summary
 
@@ -28,7 +28,7 @@ whole-branch final review 发现 4 个 Important 与 2 个 Minor。fix wave 已�
 
 ## Changed Files
 
-final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 为 `9e5c040`，status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，其 status record 为 `45bb139`。本第三轮 patch 修改 Hook、Hook fixture、Agent 文档、CURRENT_TASK 与本 HANDOFF；下表为累计 final wave 文件：
+final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 为 `9e5c040`，status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，其 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`。下表为累计 final wave 文件：
 
 | File | Change | Reason |
 | --- | --- | --- |
@@ -67,10 +67,10 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 | `npm run check:doc-governance` | PASS | required files、精确 archive mappings、受路由链接和复核日期均通过 |
 | `bash scripts/ai/check-agent-infra.sh` | WARN | 0 FAIL；既有 secret-field-name 人工复核 WARN |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；仅既有 secret-field-name 人工复核 WARN，handoff/doc/task/diff steps PASS |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 与当前 `1b0fe83` 一致，非空工作区描述一致 |
+| `bash scripts/ai/check-handoff.sh` | PASS | content commit 前 Base Commit 与 `45bb139` 一致，非空工作区描述一致 |
 | active old-path Markdown link probe | PASS | 两个旧 active path 均无 Markdown link target；历史普通文本说明合法 |
 | `git diff --check` | PASS | content commit 前无空白错误 |
-| `git status --short` | PASS | content commit `9e5c040` 后 clean；随后仅本 status-record 更新 |
+| `git status --short` | PASS | content commit `6ef6887` 后仅本 HANDOFF status-record 更新 |
 | `node boards/kids-world/structure.test.mjs` | 未重跑 | 已知既有 `19 !== 18`；本任务未改 `boards/`，不可表述为本轮验证 |
 
 ## Known Failures
@@ -81,21 +81,21 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 - `check-agent-state.sh` 的 secret-field-name WARN 来自既有代码和文档的字段名提及；高置信 secret-value 扫描通过。本任务未弱化该扫描。
 - `check-doc-governance.sh` 的 BSD 日期路径已在当前 macOS 环境执行；GNU fallback 仅静态兼容实现，未在本轮运行。
-- Task 5 内容提交为 `a9007bb`，后续修正到 `1b0fe83`；本 final-review fix 及其后续 status record 会产生新提交。恢复时只把 `git rev-parse HEAD` 的结果视为当前符号 HEAD。
+- Task 5 内容提交为 `a9007bb`，后续修正到 `1b0fe83`；final-review 与 re-review 提交链已延伸到 `6ef6887`。恢复时只把 `git rev-parse HEAD` 的结果视为当前符号 HEAD。
 - tracked HANDOFF 不能自编码包含其自身的 commit hash；后续 status-only commit 只记录该事实、提交链和 clean state，不表示有待提交工作。
 
 ## Remaining Work
 
-1. 创建第三轮 index-snapshot content fix commit。
-2. 更新本 HANDOFF 为最小 status record 并提交；随后进行独立复核。push、merge、PR 仍需单独授权。
+1. 创建最小 status-record commit，记录 index-snapshot fix `6ef6887` 与提交后状态。
+2. 对 final fix 做独立复核；通过后按 `finishing-a-development-branch` 交付选择。push、merge、PR 仍需单独授权。
 
 ## Exact Next Action
 
-提交第三轮 index-snapshot fix；更新 status record 后独立复核。
+提交本 HANDOFF status record，然后独立复核 index-snapshot fix `6ef6887`。
 
 ## Recovery Notes
 
 - 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，whole-branch review fix 起点为 `1b0fe83`。
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`。第三轮 fix 从 `45bb139` 开始，最终采用完整 index snapshot。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
+- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`。本最小 status-only commit 只记录 `6ef6887`、检查与提交边界；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
