@@ -12,6 +12,32 @@ pass() { printf 'PASS: %s\n' "$1"; }
 warn() { printf 'WARN: %s\n' "$1"; warn_count=$((warn_count + 1)); }
 fail() { printf 'FAIL: %s\n' "$1"; fail_count=$((fail_count + 1)); }
 
+valid_iso_date() {
+  value="$1"
+  if ! printf '%s\n' "$value" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+    return 1
+  fi
+
+  if normalized="$(date -j -f "%Y-%m-%d" "$value" "+%Y-%m-%d" 2>/dev/null)" \
+    && [ "$normalized" = "$value" ]; then
+    return 0
+  fi
+
+  if normalized="$(date -d "$value" "+%Y-%m-%d" 2>/dev/null)" \
+    && [ "$normalized" = "$value" ]; then
+    return 0
+  fi
+
+  return 1
+}
+
+if ! valid_iso_date "$TODAY"; then
+  fail "invalid DOC_GOVERNANCE_TODAY: $TODAY"
+  echo "------------------------------------------------------------"
+  printf 'RESULT: FAIL (%d failure(s), %d warning(s))\n' "$fail_count" "$warn_count"
+  exit 1
+fi
+
 REQUIRED_FILES="
 AGENTS.md
 README.md
@@ -57,8 +83,11 @@ check_links() {
     link="${match#](}"
     link="${link%%#*}"
     case "$link" in
-      ""|http://*|https://*|mailto:*|\#*) continue ;;
+      ""|\#*|//*) continue ;;
     esac
+    if printf '%s\n' "$link" | grep -Eq '^[A-Za-z][A-Za-z0-9+.-]*:'; then
+      continue
+    fi
     target="$base/$link"
     if [ -e "$target" ]; then
       pass "Markdown link exists: $source -> $link"
@@ -77,14 +106,6 @@ for source in \
   check_links "$source"
 done
 
-valid_iso_date() {
-  value="$1"
-  if date -j -f "%Y-%m-%d" "$value" "+%Y-%m-%d" >/dev/null 2>&1; then
-    return 0
-  fi
-  date -d "$value" "+%Y-%m-%d" >/dev/null 2>&1
-}
-
 check_review_dates() {
   review_file="$1"
   [ -f "$review_file" ] || return 0
@@ -92,16 +113,21 @@ check_review_dates() {
   last_reviewed="$(sed -n 's/^- Last Reviewed:[[:space:]]*//p' "$review_file" | head -1)"
   next_review_due="$(sed -n 's/^- Next Review Due:[[:space:]]*//p' "$review_file" | head -1)"
 
+  last_reviewed_valid=0
   if ! valid_iso_date "$last_reviewed"; then
     fail "invalid Last Reviewed date in $review_file: $last_reviewed"
   elif [ "$last_reviewed" \> "$TODAY" ]; then
     fail "Last Reviewed is in the future in $review_file: $last_reviewed"
+    last_reviewed_valid=1
   else
     pass "Last Reviewed date is valid in $review_file: $last_reviewed"
+    last_reviewed_valid=1
   fi
 
   if ! valid_iso_date "$next_review_due"; then
     fail "invalid Next Review Due date in $review_file: $next_review_due"
+  elif [ "$last_reviewed_valid" -eq 0 ]; then
+    pass "Next Review Due date is valid in $review_file: $next_review_due"
   elif [ "$next_review_due" \< "$last_reviewed" ] || [ "$next_review_due" = "$last_reviewed" ]; then
     fail "Next Review Due must be after Last Reviewed in $review_file"
   elif [ "$TODAY" \> "$next_review_due" ]; then
