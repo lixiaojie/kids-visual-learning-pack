@@ -29,7 +29,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 echo "==> building kids-world"
-npx vite build boards/kids-world --base=./ --emptyOutDir --outDir ../../dist/kids-world
+npm run build:kids-world
 
 echo "==> building paw-patrol"
 npm run build:paw

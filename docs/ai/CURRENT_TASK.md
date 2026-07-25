@@ -4,9 +4,9 @@
 
 - Updated At: 2026-07-25
 - Updated By: OpenAI Codex
-- Status: Done
-- Branch: codex/project-doc-governance
-- Base Commit: 81f6a7f
+- Status: In Progress
+- Branch: main
+- Base Commit: 3e0d392
 
 ## Objective
 
@@ -14,9 +14,11 @@
 
 在治理任务完成并进入 finishing 验证后，修复阻断全项目 `npm run validate` 的既有 `cicada-life` interaction-graph 基线问题，同时保留精确 visual focus 绑定的运行时语义。
 
+完成用户授权的本地合并、`main` 推送和静态站点生产部署；若部署门禁暴露既有构建问题，以最小修复恢复规范构建路径，并在重新推送后完成线上验收。
+
 ## Background
 
-用户已批准治理闭环方案、精选 memory 项目内快照和有替代证据的历史文档归档，并已明确授权 `codex/project-doc-governance` 上 Task 1–5 的 feature-branch commits。2026-07-25 用户进一步授权扩大范围，修复 `main` 同样存在的 `cicada-life` interaction-graph validation failure；push、merge 和 PR 仍未授权。
+用户已批准治理闭环方案、精选 memory 项目内快照和有替代证据的历史文档归档，并已明确授权 `codex/project-doc-governance` 上 Task 1–5 的 feature-branch commits。2026-07-25 用户进一步授权扩大范围，修复 `main` 同样存在的 `cicada-life` interaction-graph validation failure；随后明确授权合并回 `main`、推送并部署到生产服务器。
 
 ## Acceptance Criteria
 
@@ -39,6 +41,12 @@
 - [x] alignment validator 检查当前 Scene Deck runtime，不再要求已废弃的旧 TopicPage 组件符号
 - [x] alignment 负向 fixture 拒绝“只有 import/comment/伪 JSX 字符串而没有真实 JSX”、非 comparePairs focus 与空 compare explanation
 - [x] `npm run validate` PASS
+- [x] `codex/project-doc-governance` fast-forward 合并回 `main` 并推送到 `origin/main`
+- [x] 部署脚本通过仓库规范 `build:kids-world` 命令加载根 `vite.config.ts`
+- [x] 部署构建回归测试先 RED 后 GREEN
+- [x] `npm run build`、`npm run check:dist` 与完整验证 PASS
+- [ ] 修复提交推送到 `origin/main`，`npm run deploy` 完成生产同步
+- [ ] 公开生产 URL 完成有界 HTTP 验收
 
 ## In Scope
 
@@ -69,17 +77,20 @@
 - `scripts/validate-content-alignment.mjs`
 - `scripts/validate-content-alignment.test.mjs`
 - `package.json`（仅调整 interaction-graph targeted regression 入口）
+- `scripts/deploy.sh`（仅修复 kids-world 规范构建入口）
+- `scripts/deploy.test.mjs`
+- `package.json`（仅增加部署回归入口与部署前门禁）
 
 ## Out of Scope
 
 - `cicada-life` 内容、图片和运行时交互语义的重写
 - 其他 topic、`apps/`、`ops/`、`skills/`、`tests/` 下的无关实现
 - `outputs/` 既有未跟踪目录
-- CI、部署配置与生产环境
+- CI、Nginx、Card OS 服务端 release、生产服务器系统服务与非静态站点目录
 - 用户级 `~/.codex/memories/`、`~/.claude/` 或其他客户端私有配置
 - 自动复制整个 memory 树或原始会话 JSONL
 - 没有明确替代证据的历史文档批量移动
-- push、merge 或 PR
+- PR、强制推送、历史重写或非本任务分支集成
 
 ## Constraints
 
@@ -108,15 +119,19 @@
 - `npm run validate` 已完整 PASS，覆盖 13 topic/overlay、230 assets、evidence、interaction、scene deck/UI、TypeScript、miniprogram 与 alignment。
 - Task 2 的旧路径验证已收窄为 active Markdown link target；历史治理说明中的普通文本路径保留合法。
 - 实施计划日期为 2026-07-24；实际收口发生在 2026-07-25，故本文件使用实际更新日期而非计划日期。
+- `codex/project-doc-governance` 已 fast-forward 合并到本地 `main`，合并后 `npm run validate` PASS，feature worktree 与本地分支已清理，`origin/main` 已推进到 `3e0d392`。
+- 首次 `npm run deploy` 在任何 rsync 前失败：`scripts/deploy.sh` 直接执行未带根配置的 Vite 命令，无法解析仅由根 `vite.config.ts` 提供 alias 的 `@yutou/kids-content`；规范 `npm run build:kids-world` 已在同一环境成功，证明部署脚本与规范构建命令发生漂移。
 
 ## Next Actions
 
-1. 用户已授权将当前 9 个路径提交到 `codex/project-doc-governance`；提交前重跑完整 validation 与 shutdown checks。
-2. commit 完成后进入 `finishing-a-development-branch` 的 merge/push/keep 选择；push、merge、PR 仍需单独授权。
+1. 为部署脚本规范构建入口增加失败回归测试并确认 RED。
+2. 将 `scripts/deploy.sh` 切换为 `npm run build:kids-world`，确认 targeted GREEN。
+3. 运行完整 build/validation/shutdown checks，提交并推送 `main`。
+4. 重新执行 `npm run deploy`，随后对生产 URL 做有界 HTTP 验收。
 
 ## Verification Plan
 
-- Build: 本修复不改前端构建产物；以完整 validation suite 覆盖内容和 TypeScript 契约
+- Build: `npm run build` + `npm run check:dist`
 - Full Project Validation: `npm run validate` PASS
 - Unit Tests:
   - `npm run test:doc-governance`：PASS（18/18 fixture）

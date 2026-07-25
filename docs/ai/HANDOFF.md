@@ -4,10 +4,10 @@
 
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
-- Branch: codex/project-doc-governance
-- Base Commit: c4237d2（扩大修复范围前的 clean HEAD）
-- Working Tree: 扩大范围修复完成，用户已授权提交当前 9 个路径；恢复时先运行 `git status --short`
-- Task Status: Done（治理实现、既有 validation failure 修复、完整验证与独立 re-review 均完成；本轮 commit 已获授权）
+- Branch: main
+- Base Commit: 3e0d392（治理分支合并并首次推送后的 clean HEAD）
+- Working Tree: 用户既有未跟踪 `outputs/`；静态部署构建修复进行中，恢复时先运行 `git status --short`
+- Task Status: In Progress（治理分支已合并并推送；首次部署在 rsync 前被既有构建入口漂移阻断）
 
 ## Summary
 
@@ -16,6 +16,8 @@
 whole-branch final review 发现 4 个 Important 与 2 个 Minor。fix wave 已把文档日期转换为严格 UTC epoch day，强制 `due > last` 且 `due - last <= 31`，并仅依据 `today - last > 31` 产生 overdue WARN；archive manifest 的两条映射改为 fail-closed 精确验证；`PROJECT_CONTEXT.md` 纳入纯文档豁免。连续 re-review 后，Hook 最终在 `mktemp -d` 中物化完整 index，运行快照自身的 infra checker，并将 Git 查询绑定到原始 index；准备或检查任一步失败都阻断提交，staged `.gitignore` 隐藏的同路径 recreation 也不能绕过。设计、计划与 docs map 已同步为 Approved/Implemented、Completed、Implemented/Completed。
 
 最终复核确认 index-snapshot 代码与 4/4 fixture 已关闭原 Hook finding，同时指出 design/plan 仍把行为写成“拒绝所有 partial staging”。本次仅同步正式文档为真实行为：验证完整 index snapshot，拒绝工作树掩盖暂存损坏，同时允许合法 partial staging；Hook 实现未再修改。
+
+2026-07-25 用户授权合并、推送和部署后，`codex/project-doc-governance` 已 fast-forward 合并到 `main`，合并后的 `npm run validate` PASS，feature worktree/分支已清理，`origin/main` 已推进到 `3e0d392`。首次 `npm run deploy` 在任何 rsync 前失败：`scripts/deploy.sh` 绕过带根 `vite.config.ts` 的规范 `build:kids-world` 命令，导致 Vite 无法解析 `@yutou/kids-content`。同环境运行 `npm run build:kids-world` 成功，根因已定位为部署脚本与规范构建入口漂移；生产服务器尚未被本轮部署修改。
 
 整分支 reviewer 最终确认原 6 项与后续文档漂移全部关闭，结论为 `Ready to merge: Yes`。随后按 `finishing-a-development-branch` 运行全项目 `npm run validate`，在 `validate:interaction-graph` 发现 6 个 `cicada-life` representative object visual-slot 错误；同一失败已在 `main` 工作区复现，因此不是本治理分支引入。按 finishing gate，在全项目 suite 绿色前不提供 merge/push 菜单。
 
@@ -63,6 +65,8 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 | `scripts/normalize-topic-interaction.test.ts` | 修改 | 锁定 5 阶段导航不丢 classification/objects 与 compare/tasks blocks |
 | `scripts/validate-content-alignment.mjs` | 修改 | 以当前 Scene Deck runtime/UI/compare-scene 代替 legacy TopicPage 符号检查 |
 | `scripts/validate-content-alignment.test.mjs` | 新建 | 隔离验证真实 JSX render、comparePairs focus 与非空 explanation 的负向边界 |
+| `scripts/deploy.sh` | 修改 | 复用规范 `build:kids-world` 命令，确保加载根 Vite alias |
+| `scripts/deploy.test.mjs` | 新建 | 锁定部署使用规范 kids-world/paw 构建入口 |
 
 ## Decisions Made
 
@@ -76,6 +80,7 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 - 用户已授权本 feature branch 的 Task 1–5 commits；push、merge 和 PR 仍未授权。
 - 用户已授权扩大当前任务范围修复既有 `cicada-life` interaction-graph failure；验证规则仍须 fail-closed，只允许通用对象 slot 或在精确 slot 上明确聚焦对象自身 region 的 binding。
 - 2026-07-25 用户已明确授权提交扩大范围修复；该授权不包含 push、merge 或 PR。
+- 2026-07-25 用户随后明确授权合并回 `main`、推送和生产部署；该授权覆盖完成部署所需的最小构建入口修复与再次推送，不包含 PR、force-push 或历史重写。
 
 ## Verification Results
 
@@ -92,10 +97,13 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 | `npm run test:topic-interaction` | PASS | 5 阶段导航保留完整 blocks，ID 唯一；重排、duplicate、unknown 与 strict focus diagnostics 通过 |
 | `npm run validate:alignment` | PASS | 13 topics/16 package files；comment-only、string-only、错误 compare focus、空 explanation 四类反例通过 |
 | `npm run validate` | PASS | 13 topic/overlay、230 assets、evidence、interaction、scene deck/UI、kids-content、miniprogram、alignment 全部通过 |
+| `npm run test:deploy` | PASS | 先因部署脚本绕过规范 kids-world build 而 RED；修复后 GREEN |
+| `npm run build` | PASS | 完整 validation 与 kids-world 静态构建通过 |
+| `npm run check:dist` | PASS | web-production 108 files |
 | 独立最终 re-review | PASS | Critical 0、Important 0、Minor 0；`Ready to finish: Yes` |
 | active old-path Markdown link probe | PASS | 两个旧 active path 均无 Markdown link target；历史普通文本说明合法 |
 | `git diff --check` | PASS | content commit 前无空白错误 |
-| `git status --short` | NON-CLEAN（预期） | 当前 9 个扩大范围修复路径待最终审查与用户 commit 授权 |
+| `git status --short` | NON-CLEAN（预期） | 当前 5 个部署修复/状态路径待提交；另有用户既有未跟踪 `outputs/` |
 | `node boards/kids-world/structure.test.mjs` | 未重跑 | 已知既有 `19 !== 18`；本任务未改 `boards/`，不可表述为本轮验证 |
 
 ## Known Failures
@@ -111,13 +119,14 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 ## Remaining Work
 
-1. 实现、验证和独立审查均无剩余工作。
-2. 执行用户已授权的本地 commit。
-3. commit 后按 `finishing-a-development-branch` 提供 merge/push/keep 选择；push、merge、PR 仍需单独授权。
+1. 增加部署构建回归测试并确认 RED。
+2. 将 `scripts/deploy.sh` 切换为规范 `npm run build:kids-world`，确认 GREEN。
+3. 完成 build、dist、validation 和 agent-state 验证，提交并推送 `main`。
+4. 重新运行 `npm run deploy` 并验收公开生产 URL。
 
 ## Exact Next Action
 
-若 `git status --short` 仍非空，执行已授权的本地 commit；若已 clean，则向用户提供 merge/push/keep 选择。
+从部署回归 RED 开始；最小修复后完成本地验证、提交、推送、生产部署与 HTTP 验收。
 
 ## Recovery Notes
 
@@ -125,3 +134,5 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
 - final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`，后续状态记录为 `ce7ba4f` 与 `cbb3d36`。本 formal-doc sync commit 只修正文档行为描述；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
+- `main` 与 `origin/main` 当前均以 `3e0d392` 为已推送基线；用户已授权为完成部署而进行必要修复、提交、再次推送和生产同步。
+- 首次部署失败发生在 kids-world build，尚未进入任何 rsync；不要把该失败描述为部分部署。
