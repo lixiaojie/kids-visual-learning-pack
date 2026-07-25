@@ -29,7 +29,7 @@
 1. 可执行代码和正式配置（`package.json`、`vite.config.ts`、`vercel.json`、`edgeone.json`、`ops/`、`scripts/`)。
 2. 自动化测试（`tests/`、`scripts/*.test.mjs`、`scripts/*.test.ts`、`boards/*/structure.test.mjs`)。
 3. 构建与部署配置（`vercel.json`、`edgeone.json`、`scripts/deploy.sh`;**本仓库没有 CI 配置文件**,`.github/` 不存在）。
-4. 正式架构文档和决策记录（`docs/architecture-iteration-v1.3.md`、`docs/architecture-review-v1.md`、`docs/spec-v1.md`、`docs/spec-v2.md`、`docs/cross-renderer-decisions.md`、`docs/superpowers/specs/`、`docs/cognitive-card-os-system-design.md`、`docs/decisions/` 下的 ADR)。
+4. 正式架构文档和决策记录（`docs/architecture-iteration-v1.3.md`、`docs/architecture-review-v1.md`、`docs/spec-v2.md`、`docs/cross-renderer-decisions.md`、`docs/superpowers/specs/`、`docs/cognitive-card-os-system-design.md`、`docs/decisions/` 下的 ADR)。
 5. `README.md` 与 `docs/project-structure.md` 等说明文档。
 6. `docs/ai/CURRENT_TASK.md`（当前执行范围）。
 7. `docs/ai/HANDOFF.md`（最近一次交接状态）。

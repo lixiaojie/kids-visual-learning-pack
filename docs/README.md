@@ -84,6 +84,10 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 
 Historical reference files remain in place until explicit replacement evidence justifies archival.
 
+## Archive
+
+[Archive Manifest](archive/README.md) records every superseded document, its retained location, reason, and replacement. Archived files are never first-read context.
+
 ## Maintenance
 
 - Update this map whenever a formal Markdown file is added, moved, superseded, or archived.

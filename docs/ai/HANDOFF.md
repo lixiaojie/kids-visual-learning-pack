@@ -6,14 +6,14 @@
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
 - Base Commit: 2d7b987
-- Working Tree: 独立 worktree clean；Task 1 implementation commit `2d7b987` 与提交后状态修正已完成，当前任务等待独立 re-review；主 checkout 的既有 `outputs/` 未进入分支
-- Task Status: In Progress（Task 1 已实施并通过自检，等待独立 review）
+- Working Tree: 独立 worktree clean；Task 2 已完成归档移动、现行入口更新、定向验证和提交，待独立 review；主 checkout 的既有 `outputs/` 未进入分支
+- Task Status: In Progress（Task 2 已实施、提交并通过自检，待独立 review）
 
 ## Summary
 
 用户已确认完整设计、书面 spec、5 任务实施计划，并授权 Subagent-Driven 所需的 feature branch、基线 commit 和隔离 worktree。当前分支 `codex/project-doc-governance` 已从包含既有 Agent 基础设施与本次设计/计划的 `81f6a7f` 启动；主 checkout 已切回 `main`，`outputs/` 未进入分支。SDD 6.2 预检发现 Task 1 的 docs map 会链接 Task 2/3 才创建的目标；用户选择方案 A：Task 1 不加入未来链接，Task 2 创建 archive 后添加 archive 路由，Task 3 创建 memory 后添加 memory 路由。
 
-Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/README.md`，并将 README、AGENTS 和 AI 协作流程切换到统一读取顺序。为满足 pre-commit 对根级 `PROJECT_CONTEXT.md` 的同步交接要求，本次最小更新本 HANDOFF；未改动 CURRENT_TASK、archive 或 memory 路由。
+Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/README.md`，并将 README、AGENTS 和 AI 协作流程切换到统一读取顺序。Task 2 已将两份有明确替代证据的文档移入 `docs/archive/2026-07-24-doc-governance/`，创建 manifest，并将 docs map 的 Archive 路由加入现行导航；未加入 Task 3 的 memory 路由。
 
 ## Completed
 
@@ -48,6 +48,8 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 - 完成 Task 1：新建根级项目上下文与文档地图，更新协作入口、工程规则、AI 基础设施说明和启动提示词
 - 核验 Task 1 前置条件：`PROJECT_CONTEXT.md` 与 `docs/README.md` 在实施前均不存在
 - 核验 Task 1 导航、41 个 docs map 链接目标与空白错误
+- 完成 Task 2：创建 archive manifest，移动两份明确被替代的文档，并从 `AGENTS.md` 的现行真值列表移除旧版本
+- 完成 Task 2：在 `docs/README.md` 加入 Archive 路由；移动后的文件与提交基线原文逐字一致
 
 ## Changed Files
 
@@ -63,6 +65,9 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 | `AGENTS.md` | 修改 | 更新必读顺序、仓库结构、治理规则与自检命令 |
 | `docs/ai/README.md` | 修改 | 记录根索引、文档地图、archive/memory 责任边界和复核规则 |
 | `docs/ai/START_PROMPTS.md` | 修改 | 更新恢复/审查/自检提示并增加定期文档治理复核 |
+| `docs/archive/README.md` | 新建 | 记录归档 manifest、替代文档和归档政策 |
+| `docs/archive/2026-07-24-doc-governance/spec-v1.md` | 移动 | 保留被 v2 替代的项目规格历史 |
+| `docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md` | 移动 | 保留被 v1.3 替代的架构迭代历史 |
 
 ## Decisions Made
 
@@ -71,7 +76,7 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 - `docs/README.md` 作为正式文档唯一导航地图
 - memory 只复制人工筛选的 Markdown 快照，不复制全局 `MEMORY.md`、原始会话 JSONL、凭证或无关项目内容
 - 首批 memory 仅包含 Card OS 部署经验和本地 Skill ZIP 安装经验
-- 首批只归档 `docs/spec-v1.md` 与 `docs/architecture-iteration-v1.2.md`；其他旧文档无明确替代证据时只标 Historical Reference 或 Needs Review
+- 首批归档范围、原路径、替代文档和理由以 [Archive Manifest](../archive/README.md) 为准；其他旧文档无明确替代证据时只标 Historical Reference 或 Needs Review
 - 定期更新采用任务事件驱动 + 31 天复核 `WARN`，不使用 cron 或自动读取用户目录
 - 设计 spec 不自动 commit；仓库规则要求 commit/push 必须由用户明确授权
 - SDD 模式要求 implementer commit 与 review package；本次不能沿用“无 commit”约束，除非用户改选 Inline Execution
@@ -99,6 +104,10 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 | Task 1 导航验证（`test`、`rg`、`git diff --check`） | PASS | 新索引存在，四个协作文档均包含规范路由，diff 无空白错误 |
 | Task 1 docs map 链接目标核验 | PASS | `docs/README.md` 的 41 个 Markdown 链接目标均存在 |
 | Task 1 `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有认证字段名提示和 Base Commit 新鲜度提示均与 Task 1 无关 |
+| Task 2 archive integrity（旧路径不存在、新路径存在、基线内容逐字比较） | PASS | 四项存在性检查与两项 `cmp` 检查均以 exit 0 结束 |
+| Task 2 current-routing scan（`AGENTS.md`、`docs/README.md`、`PROJECT_CONTEXT.md`、`docs/ai/HANDOFF.md`） | PASS | 未发现旧路径；现行入口只路由 replacement 或 Archive Manifest |
+| Task 2 `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有认证字段名扫描与 HANDOFF 的 Base Commit 新鲜度提示均与 Task 2 无关 |
+| Task 2 `git diff --check` | PASS | 无空白错误 |
 
 ## Known Failures
 
@@ -110,21 +119,22 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 ## Risks and Caveats
 
 - Task 1 commit `2d7b987` 已完成；当前没有未提交的 Task 1 改动，下一关是独立 re-review。
-- `scripts/ai/check-doc-governance.sh` 尚由后续任务实现；Task 1 以文档地图链接目标核验替代该脚本的未实现部分。
-- 分阶段链接不改变最终设计：archive 与 memory 路由仍分别留给 Task 2、Task 3。
+- `scripts/ai/check-doc-governance.sh` 尚由后续任务实现；Task 2 以归档存在性、内容保真、定向路由和空白检查作为范围内验证。
+- 分阶段链接不改变最终设计：archive 路由已由 Task 2 加入，memory 路由仍留给 Task 3。
+- `bash scripts/ai/check-agent-state.sh` 对既有认证字段名只发出 review WARN；其唯一 HANDOFF WARN 为 Base Commit 在 Task 1 提交后落后于 HEAD，均非 Task 2 引入。
 - pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 仅记录实际 Task 1 证据和提交后状态。
 
 ## Remaining Work
 
-1. 对 Task 1 commit `2d7b987` 进行独立 re-review 并闭环发现项。
-2. Task 1 re-review clean 后更新本计划 ledger，再进入 Task 2。
+1. 对 Task 2 archive 实施进行独立 re-review 并闭环发现项。
+2. Task 2 re-review clean 且提交后更新本计划 ledger，再进入 Task 3。
 
 ## Exact Next Action
 
-对 Task 1 commit `2d7b987` 进行独立 re-review，核对根级索引、docs map、规范读取顺序与 HANDOFF 提交后状态；review clean 后进入 Task 2。
+对 Task 2 archive 改动进行独立 re-review，核对 manifest、移动保真、现行入口与历史引用边界；review clean 且提交后进入 Task 3。
 
 ## Recovery Notes
 
-- 已完成 Task 1 commit `2d7b987`；未执行 push、merge、checkout、reset 或删除操作。
+- 已完成 Task 1 commit `2d7b987`；Task 2 已提交且尚待独立 review；未执行 push、merge、checkout、reset 或删除操作。
 - 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`。
 - 若设计需要调整，直接修改 spec 与 CURRENT_TASK，并重新执行 placeholder scan、`bash scripts/ai/check-task-state.sh` 和 `git diff --check`。
