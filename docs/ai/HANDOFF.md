@@ -5,9 +5,9 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: main
-- Base Commit: 3e0d392（治理分支合并并首次推送后的 clean HEAD）
-- Working Tree: 用户既有未跟踪 `outputs/`；静态部署构建修复进行中，恢复时先运行 `git status --short`
-- Task Status: In Progress（治理分支已合并并推送；首次部署在 rsync 前被既有构建入口漂移阻断）
+- Base Commit: ac60352（部署入口修复已提交并推送后的 clean HEAD）
+- Working Tree: 仅用户既有未跟踪 `outputs/`；本任务代码与状态记录均已提交
+- Task Status: Done（治理分支已合并；部署入口修复已推送；静态站点生产同步和 HTTPS 验收完成）
 
 ## Summary
 
@@ -18,6 +18,8 @@ whole-branch final review 发现 4 个 Important 与 2 个 Minor。fix wave 已�
 最终复核确认 index-snapshot 代码与 4/4 fixture 已关闭原 Hook finding，同时指出 design/plan 仍把行为写成“拒绝所有 partial staging”。本次仅同步正式文档为真实行为：验证完整 index snapshot，拒绝工作树掩盖暂存损坏，同时允许合法 partial staging；Hook 实现未再修改。
 
 2026-07-25 用户授权合并、推送和部署后，`codex/project-doc-governance` 已 fast-forward 合并到 `main`，合并后的 `npm run validate` PASS，feature worktree/分支已清理，`origin/main` 已推进到 `3e0d392`。首次 `npm run deploy` 在任何 rsync 前失败：`scripts/deploy.sh` 绕过带根 `vite.config.ts` 的规范 `build:kids-world` 命令，导致 Vite 无法解析 `@yutou/kids-content`。同环境运行 `npm run build:kids-world` 成功，根因已定位为部署脚本与规范构建入口漂移；生产服务器尚未被本轮部署修改。
+
+部署入口已改为复用规范构建命令，并增加 `scripts/deploy.test.mjs` 作为部署前门禁。回归测试完成 RED→GREEN，`npm run build`、`npm run check:dist` 与 agent-state 均通过；修复提交 `ac60352` 已推送到 `origin/main`。随后 `npm run deploy` 完成五段 rsync，公开入口、三个看板和新 kids-world JS 资源的 HTTPS 状态与媒体类型均通过验收。
 
 整分支 reviewer 最终确认原 6 项与后续文档漂移全部关闭，结论为 `Ready to merge: Yes`。随后按 `finishing-a-development-branch` 运行全项目 `npm run validate`，在 `validate:interaction-graph` 发现 6 个 `cicada-life` representative object visual-slot 错误；同一失败已在 `main` 工作区复现，因此不是本治理分支引入。按 finishing gate，在全项目 suite 绿色前不提供 merge/push 菜单。
 
@@ -100,6 +102,9 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 | `npm run test:deploy` | PASS | 先因部署脚本绕过规范 kids-world build 而 RED；修复后 GREEN |
 | `npm run build` | PASS | 完整 validation 与 kids-world 静态构建通过 |
 | `npm run check:dist` | PASS | web-production 108 files |
+| `git push origin main` | PASS | `origin/main` 已推进到部署修复提交 `ac60352` |
+| `npm run deploy` | PASS | kids-world、docs/shared、spider-verse、paw-patrol 五段同步完成 |
+| 生产 HTTPS 有界验收 | PASS | 4 个 HTML 入口均为 200；新 kids-world JS 为 200 `application/javascript` |
 | 独立最终 re-review | PASS | Critical 0、Important 0、Minor 0；`Ready to finish: Yes` |
 | active old-path Markdown link probe | PASS | 两个旧 active path 均无 Markdown link target；历史普通文本说明合法 |
 | `git diff --check` | PASS | content commit 前无空白错误 |
@@ -119,14 +124,12 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 
 ## Remaining Work
 
-1. 增加部署构建回归测试并确认 RED。
-2. 将 `scripts/deploy.sh` 切换为规范 `npm run build:kids-world`，确认 GREEN。
-3. 完成 build、dist、validation 和 agent-state 验证，提交并推送 `main`。
-4. 重新运行 `npm run deploy` 并验收公开生产 URL。
+1. 本任务无剩余实施、推送或部署工作。
+2. 保留用户既有未跟踪 `outputs/`，不要清理或提交。
 
 ## Exact Next Action
 
-从部署回归 RED 开始；最小修复后完成本地验证、提交、推送、生产部署与 HTTP 验收。
+若开始新需求，先核对 `main`、`origin/main` 和 `outputs/`，再更新 `CURRENT_TASK.md` 定义新范围。
 
 ## Recovery Notes
 
@@ -136,3 +139,4 @@ final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 
 - final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`，后续状态记录为 `ce7ba4f` 与 `cbb3d36`。本 formal-doc sync commit 只修正文档行为描述；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
 - `main` 与 `origin/main` 当前均以 `3e0d392` 为已推送基线；用户已授权为完成部署而进行必要修复、提交、再次推送和生产同步。
 - 首次部署失败发生在 kids-world build，尚未进入任何 rsync；不要把该失败描述为部分部署。
+- 成功部署已发生在 `ac60352` 推送之后；最终状态记录提交不能在 tracked HANDOFF 中自编码其自身 hash，恢复时以 `git rev-parse HEAD` 为当前符号 HEAD。

@@ -4,7 +4,7 @@
 
 - Updated At: 2026-07-25
 - Updated By: OpenAI Codex
-- Status: In Progress
+- Status: Done
 - Branch: main
 - Base Commit: 3e0d392
 
@@ -45,8 +45,8 @@
 - [x] 部署脚本通过仓库规范 `build:kids-world` 命令加载根 `vite.config.ts`
 - [x] 部署构建回归测试先 RED 后 GREEN
 - [x] `npm run build`、`npm run check:dist` 与完整验证 PASS
-- [ ] 修复提交推送到 `origin/main`，`npm run deploy` 完成生产同步
-- [ ] 公开生产 URL 完成有界 HTTP 验收
+- [x] 修复提交推送到 `origin/main`，`npm run deploy` 完成生产同步
+- [x] 公开生产 URL 完成有界 HTTP 验收
 
 ## In Scope
 
@@ -121,17 +121,18 @@
 - 实施计划日期为 2026-07-24；实际收口发生在 2026-07-25，故本文件使用实际更新日期而非计划日期。
 - `codex/project-doc-governance` 已 fast-forward 合并到本地 `main`，合并后 `npm run validate` PASS，feature worktree 与本地分支已清理，`origin/main` 已推进到 `3e0d392`。
 - 首次 `npm run deploy` 在任何 rsync 前失败：`scripts/deploy.sh` 直接执行未带根配置的 Vite 命令，无法解析仅由根 `vite.config.ts` 提供 alias 的 `@yutou/kids-content`；规范 `npm run build:kids-world` 已在同一环境成功，证明部署脚本与规范构建命令发生漂移。
+- 已新增部署入口回归测试并完成 RED→GREEN；修复提交 `ac60352` 已推送到 `origin/main`。
+- 修复后的 `npm run deploy` 完成五段 rsync；`https://www.yutou.space/kids/`、kids-world、spider-verse、paw-patrol 均返回 `200 text/html`，新 kids-world JS 资源返回 `200 application/javascript`。
 
 ## Next Actions
 
-1. 为部署脚本规范构建入口增加失败回归测试并确认 RED。
-2. 将 `scripts/deploy.sh` 切换为 `npm run build:kids-world`，确认 targeted GREEN。
-3. 运行完整 build/validation/shutdown checks，提交并推送 `main`。
-4. 重新执行 `npm run deploy`，随后对生产 URL 做有界 HTTP 验收。
+1. 本任务无剩余实施工作。
+2. 后续独立需求先更新本文件的 Objective、In Scope 与 Acceptance Criteria。
 
 ## Verification Plan
 
 - Build: `npm run build` + `npm run check:dist`
+- Deploy: `npm run deploy` + 公开入口、三个看板与新构建资源的 HTTPS 状态/类型检查
 - Full Project Validation: `npm run validate` PASS
 - Unit Tests:
   - `npm run test:doc-governance`：PASS（18/18 fixture）
