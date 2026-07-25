@@ -72,6 +72,14 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [WeChat Mini-Program Checklist](compliance/wechat-miniprogram-checklist.md) | Mini-program compliance checklist | Active |
 | [ADR Template](decisions/ADR-TEMPLATE.md) | Long-term decision record template | Canonical Current |
 
+## Codex Memory Snapshots
+
+These are manually curated, secondary retrieval material. They preserve reusable Card OS deployment safeguards and local Cognitive Card OS Skill-installation lessons, but do not establish current implementation or architecture truth.
+
+| Document | Role | Status |
+| --- | --- | --- |
+| [Codex Memory Snapshot](knowledge/codex-memory/README.md) | Curated project-local snapshot index, including Card OS deployment operations and local Skill installation lessons | Secondary Snapshot |
+
 ## Historical Reference
 
 | Document | Role | Status |

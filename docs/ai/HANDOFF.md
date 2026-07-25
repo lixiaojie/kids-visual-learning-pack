@@ -6,14 +6,16 @@
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
 - Base Commit: 2d7b987
-- Working Tree: 独立 worktree clean；Task 2 已完成归档移动、现行入口更新、定向验证和提交，待独立 review；主 checkout 的既有 `outputs/` 未进入分支
-- Task Status: In Progress（Task 2 已实施、提交并通过自检，待独立 review）
+- Working Tree: 独立 worktree；Task 3 已完成精选 memory 快照、文档地图路由和定向验证，并随本次授权提交；主 checkout 的既有 `outputs/` 未进入分支
+- Task Status: In Progress（Task 3 已实施、验证并提交，待独立 re-review）
 
 ## Summary
 
 用户已确认完整设计、书面 spec、5 任务实施计划，并授权 Subagent-Driven 所需的 feature branch、基线 commit 和隔离 worktree。当前分支 `codex/project-doc-governance` 已从包含既有 Agent 基础设施与本次设计/计划的 `81f6a7f` 启动；主 checkout 已切回 `main`，`outputs/` 未进入分支。SDD 6.2 预检发现 Task 1 的 docs map 会链接 Task 2/3 才创建的目标；用户选择方案 A：Task 1 不加入未来链接，Task 2 创建 archive 后添加 archive 路由，Task 3 创建 memory 后添加 memory 路由。
 
 Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/README.md`，并将 README、AGENTS 和 AI 协作流程切换到统一读取顺序。Task 2 已将两份有明确替代证据的文档移入 `docs/archive/2026-07-24-doc-governance/`，创建 manifest，并将 docs map 的 Archive 路由加入现行导航；未加入 Task 3 的 memory 路由。
+
+Task 3 已创建人工筛选的项目内 Codex memory 快照：仅含 Card OS 部署运维与本地 Cognitive Card OS Skill 安装两类经验。快照标明次级、可能过期的边界及 31 天复核日期；未复制原始会话日志、私有配置、凭证或无关项目内容。`docs/README.md` 已新增次级快照路由，不将其描述为现行实现或架构真值。
 
 ## Completed
 
@@ -50,6 +52,8 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 - 核验 Task 1 导航、41 个 docs map 链接目标与空白错误
 - 完成 Task 2：创建 archive manifest，移动两份明确被替代的文档，并从 `AGENTS.md` 的现行真值列表移除旧版本
 - 完成 Task 2：在 `docs/README.md` 加入 Archive 路由；移动后的文件与提交基线原文逐字一致
+- 完成 Task 3：新建项目内 Codex memory 索引、耐久经验摘要与两份精选 rollout summary
+- 完成 Task 3：在 `docs/README.md` 加入次级快照路由，并确认只涵盖 Card OS 部署运维与本地 Skill 安装
 
 ## Changed Files
 
@@ -68,6 +72,10 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 | `docs/archive/README.md` | 新建 | 记录归档 manifest、替代文档和归档政策 |
 | `docs/archive/2026-07-24-doc-governance/spec-v1.md` | 移动 | 保留被 v2 替代的项目规格历史 |
 | `docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md` | 移动 | 保留被 v1.3 替代的架构迭代历史 |
+| `docs/knowledge/codex-memory/README.md` | 新建 | 定义人工筛选快照的来源、优先级、时效和排除边界 |
+| `docs/knowledge/codex-memory/memory_summary.md` | 新建 | 保存两类项目经验的耐久规则 |
+| `docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md` | 新建 | 保存 Card OS 部署运维的精选经验 |
+| `docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md` | 新建 | 保存本地 Cognitive Card OS Skill 安装的精选经验 |
 
 ## Decisions Made
 
@@ -108,6 +116,9 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 | Task 2 current-routing scan（`AGENTS.md`、`docs/README.md`、`PROJECT_CONTEXT.md`、`docs/ai/HANDOFF.md`） | PASS | 未发现旧路径；现行入口只路由 replacement 或 Archive Manifest |
 | Task 2 `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有认证字段名扫描与 HANDOFF 的 Base Commit 新鲜度提示均与 Task 2 无关 |
 | Task 2 `git diff --check` | PASS | 无空白错误 |
+| Task 3 privacy scan（绝对路径、rollout 原始路径与疑似凭证模式） | PASS | 新快照未命中禁止模式 |
+| Task 3 snapshot-boundary scan | PASS | 已确认复核日期、secondary/snapshot 语义与可能过期边界 |
+| Task 3 `git diff --check` | PASS | 无空白错误 |
 
 ## Known Failures
 
@@ -115,26 +126,27 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 - `bash scripts/ai/check-agent-state.sh` 首次运行时，HANDOFF 中记录的扫描命令字面量命中了基础设施保留词；已改为语义化验证名称，属于交接文档表述问题。
 - 当前尚不存在 `scripts/ai/check-doc-governance.sh`，因此不能运行最终文档治理检查；它属于用户审阅 spec 后的实施阶段，不是当前设计阶段失败。
 - Task 1 仍未执行 `check-doc-governance.sh`：该脚本属于后续 Task，当前 worktree 尚不存在；已完成文档地图链接目标的只读核验作为本任务范围内替代验证。
+- Task 3 同样未执行 `check-doc-governance.sh`：该脚本属于后续 Task 4，当前以快照隐私、边界、链接和空白检查作为范围内验证。
 
 ## Risks and Caveats
 
-- Task 1 commit `2d7b987` 已完成；Task 2 archive commit 已完成，下一关是对 Task 2 的独立 re-review。
-- `scripts/ai/check-doc-governance.sh` 尚由后续任务实现；Task 2 以归档存在性、内容保真、定向路由和空白检查作为范围内验证。
-- 分阶段链接不改变最终设计：archive 路由已由 Task 2 加入，memory 路由仍留给 Task 3。
+- Task 1 commit `2d7b987`、Task 2 archive commit 与 Task 3 memory snapshot commit 已完成；下一关是 Task 3 的独立 re-review。
+- `scripts/ai/check-doc-governance.sh` 尚由后续 Task 4 实现；Task 3 以隐私、快照语义、链接和空白检查作为范围内验证。
+- 分阶段链接不改变最终设计：archive 路由已由 Task 2 加入，memory 路由已由 Task 3 加入。
 - `bash scripts/ai/check-agent-state.sh` 对既有认证字段名只发出 review WARN；其唯一 HANDOFF WARN 为 Base Commit 在 Task 1 提交后落后于 HEAD，均非 Task 2 引入。
 - pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 记录 Task 2 的实际证据和提交后状态。
 
 ## Remaining Work
 
-1. 对 Task 2 archive 实施进行独立 re-review 并闭环发现项。
-2. Task 2 re-review clean 且提交后更新本计划 ledger，再进入 Task 3。
+1. 对 Task 3 memory 改动进行独立 re-review 并闭环发现项。
+2. Task 3 re-review clean 后更新本计划 ledger，再进入 Task 4 的文档治理检查脚本实施。
 
 ## Exact Next Action
 
-对 Task 2 archive 改动进行独立 re-review，核对 manifest、移动保真、现行入口与历史引用边界；review clean 且提交后进入 Task 3。
+对已提交的 Task 3 memory 快照进行独立 re-review，核对隐私排除、snapshot/secondary/stale 边界、31 天复核日期与 docs map 路由；review clean 后进入 Task 4。
 
 ## Recovery Notes
 
-- 已完成 Task 1 commit `2d7b987`；Task 2 已提交且尚待独立 review；未执行 push、merge、checkout、reset 或删除操作。
-- 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`。
+- 已完成 Task 1 commit `2d7b987`、Task 2 archive commit 与 Task 3 memory snapshot commit；Task 3 已通过范围内验证；未执行 push、merge、checkout、reset 或删除操作。
+- 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`；新增内容均为仓库内人工筛选快照。
 - 若设计需要调整，直接修改 spec 与 CURRENT_TASK，并重新执行 placeholder scan、`bash scripts/ai/check-task-state.sh` 和 `git diff --check`。
