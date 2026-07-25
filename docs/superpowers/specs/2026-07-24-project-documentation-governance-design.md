@@ -1,7 +1,7 @@
 # 跨模型项目文档治理设计
 
 - Date: 2026-07-24
-- Status: Approved in conversation; pending written-spec review
+- Status: Approved/Implemented
 - Scope: repository documentation governance and read-only validation infrastructure
 - Related Task: `docs/ai/CURRENT_TASK.md`
 
@@ -16,9 +16,11 @@
 
 采用“治理闭环”方案：任务事件驱动更新负责日常连续性，31 天复核提醒负责长期清理；memory 只人工筛选，不自动整库复制。
 
-## 2. Current State and Gaps
+Implementation evidence: Task 1–5 landed on `codex/project-doc-governance` in commits `2d7b987` through `1b0fe83`; the final-review fix wave hardens the 31-day interval, archive mappings, and Hook index/worktree consistency.
 
-仓库已有但尚未提交的基础设施包括：
+## 2. Pre-Implementation State and Gaps (Historical)
+
+设计批准时，仓库已有但尚未提交的基础设施包括：
 
 - `AGENTS.md`：跨 Agent 唯一通用规则源；
 - `CLAUDE.md`：Claude Code 适配层；
@@ -217,26 +219,29 @@
 
 ## 9. Validation Infrastructure
 
-新增 `scripts/ai/check-doc-governance.sh`，并接入 `check-agent-infra.sh` 与 `check-agent-state.sh`。
+已实现 `scripts/ai/check-doc-governance.sh`，并接入 `check-agent-infra.sh` 与 `check-agent-state.sh`；`.githooks/pre-commit` 另以 targeted fixture 覆盖 index/worktree 一致性，不接入统一五步入口。
 
 检查范围：
 
 - 必需入口存在；
 - docs map、archive manifest、memory README 存在；
 - docs map 中的仓库相对 Markdown 路径存在；
-- archive manifest 的归档路径与替代路径存在；
-- `Last Reviewed` 与 `Next Review Due` 可解析；
-- 距最近复核超过 31 天时输出 `WARN`；
+- archive manifest 的两条明确映射必须逐项包含 original path、archive path、reason 和 replacement，缺行或错配时 `FAIL`；
+- `Last Reviewed` 与 `Next Review Due` 必须以 BSD/GNU `date` 严格 UTC round-trip 解析；
+- `Next Review Due` 必须晚于 `Last Reviewed` 且间隔不超过 31 天；
+- `today - Last Reviewed > 31` 时输出 `WARN`，不能用远期 `Next Review Due` 绕过；
 - 必需文件缺失或索引目标不存在时输出 `FAIL`；
 - 脚本只读，不移动、不生成、不刷新任何文件。
 
-`package.json` 只增加一个便捷命令：
+`package.json` 提供以下便捷命令：
 
 ```text
 check:doc-governance
+test:doc-governance
+test:pre-commit
 ```
 
-不增加 CI，不运行全量业务构建。
+`test:pre-commit` 在 `mktemp -d` 下创建隔离 Git repo，验证治理/基础设施文件 partial staging 会 fail-closed，且 `PROJECT_CONTEXT.md`-only 暂存属于 HANDOFF 豁免。不增加 CI，不运行全量业务构建。
 
 ## 10. Cross-Model Recovery Flow
 
@@ -296,13 +301,15 @@ AGENTS.md
 2. 主要 Markdown 均能从 `docs/README.md` 定位并理解角色与状态；
 3. 活动入口不再把已归档版本描述为现行文档；
 4. memory 快照带来源、复核日期和冲突优先级；
-5. 31 天未复核产生 `WARN`，缺失入口或断链产生 `FAIL`；
+5. `today - Last Reviewed > 31` 产生 `WARN`，复核间隔超过 31 天、manifest 缺行/错配、缺失入口或断链产生 `FAIL`；
 6. 不含凭证、原始会话 JSONL或无关项目 memory；
 7. `HANDOFF.md` 记录实际修改、验证、风险、剩余工作和 Exact Next Action；
 8. 以下命令通过：
 
 ```bash
 bash scripts/ai/check-doc-governance.sh
+bash scripts/ai/test-doc-governance.sh
+bash scripts/ai/test-pre-commit.sh
 bash scripts/ai/check-agent-state.sh
 git diff --check
 ```

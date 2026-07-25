@@ -51,7 +51,16 @@ make_fixture() {
     > "$fixture/docs/README.md"
   printf '# Task\n' > "$fixture/docs/ai/CURRENT_TASK.md"
   printf '# Handoff\n' > "$fixture/docs/ai/HANDOFF.md"
-  printf '# Archive\n\n[Replacement](../spec-v2.md)\n' > "$fixture/docs/archive/README.md"
+  printf '%s\n' \
+    '# Project Documentation Archive' \
+    '' \
+    '## Archive Manifest' \
+    '' \
+    '| Original Path | Archived Path | Date | Reason | Replacement |' \
+    '| --- | --- | --- | --- | --- |' \
+    '| `docs/spec-v1.md` | [spec-v1.md](2026-07-24-doc-governance/spec-v1.md) | 2026-07-24 | Superseded project specification | [spec-v2.md](../spec-v2.md) |' \
+    '| `docs/architecture-iteration-v1.2.md` | [architecture-iteration-v1.2.md](2026-07-24-doc-governance/architecture-iteration-v1.2.md) | 2026-07-24 | Superseded architecture iteration | [architecture-iteration-v1.3.md](../architecture-iteration-v1.3.md) |' \
+    > "$fixture/docs/archive/README.md"
   printf '# Archived\n' > "$fixture/docs/archive/2026-07-24-doc-governance/spec-v1.md"
   printf '# Archived\n' > "$fixture/docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md"
   printf '# Spec v2\n' > "$fixture/docs/spec-v2.md"
@@ -162,6 +171,32 @@ else
   fail "overdue review should warn without failing"
 fi
 
+cp -R "$TMP_ROOT/pass" "$TMP_ROOT/far-future-due"
+write_memory_review "$TMP_ROOT/far-future-due" "2026-07-24" "2099-01-01"
+expect_single_failure \
+  "far-future due date cannot bypass the 31-day interval" \
+  "$TMP_ROOT/far-future-due" \
+  "2026-07-24" \
+  "Next Review Due must be no more than 31 days after Last Reviewed"
+
+cp -R "$TMP_ROOT/pass" "$TMP_ROOT/over-31-days"
+write_memory_review "$TMP_ROOT/over-31-days" "2026-07-24" "2026-08-25"
+expect_single_failure \
+  "review interval over 31 days fails" \
+  "$TMP_ROOT/over-31-days" \
+  "2026-07-24" \
+  "Next Review Due must be no more than 31 days after Last Reviewed"
+
+cp -R "$TMP_ROOT/pass" "$TMP_ROOT/exactly-31-days"
+write_memory_review "$TMP_ROOT/exactly-31-days" "2026-07-24" "2026-08-24"
+out="$(run_checker "$TMP_ROOT/exactly-31-days")"
+rc=$?
+if [ "$rc" -eq 0 ] && printf '%s\n' "$out" | grep -F 'RESULT: PASS' >/dev/null; then
+  pass "review interval of exactly 31 days passes"
+else
+  fail "review interval of exactly 31 days should pass"
+fi
+
 for date_case in \
   "empty||2026-08-24|invalid Last Reviewed date" \
   "non-zero-padded|2026-7-2|2026-08-24|invalid Last Reviewed date" \
@@ -210,6 +245,39 @@ if [ "$rc" -eq 0 ] && printf '%s\n' "$out" | grep -F 'RESULT: PASS' >/dev/null; 
 else
   fail "external URI links should not be checked as project paths"
 fi
+
+cp -R "$TMP_ROOT/pass" "$TMP_ROOT/manifest-missing-row"
+printf '%s\n' \
+  '# Project Documentation Archive' \
+  '' \
+  '## Archive Manifest' \
+  '' \
+  '| Original Path | Archived Path | Date | Reason | Replacement |' \
+  '| --- | --- | --- | --- | --- |' \
+  '| `docs/architecture-iteration-v1.2.md` | [architecture-iteration-v1.2.md](2026-07-24-doc-governance/architecture-iteration-v1.2.md) | 2026-07-24 | Superseded architecture iteration | [architecture-iteration-v1.3.md](../architecture-iteration-v1.3.md) |' \
+  > "$TMP_ROOT/manifest-missing-row/docs/archive/README.md"
+expect_single_failure \
+  "missing archive manifest row fails closed" \
+  "$TMP_ROOT/manifest-missing-row" \
+  "2026-07-24" \
+  "archive manifest mapping missing or mismatched for docs/spec-v1.md"
+
+cp -R "$TMP_ROOT/pass" "$TMP_ROOT/manifest-wrong-replacement"
+printf '%s\n' \
+  '# Project Documentation Archive' \
+  '' \
+  '## Archive Manifest' \
+  '' \
+  '| Original Path | Archived Path | Date | Reason | Replacement |' \
+  '| --- | --- | --- | --- | --- |' \
+  '| `docs/spec-v1.md` | [spec-v1.md](2026-07-24-doc-governance/spec-v1.md) | 2026-07-24 | Superseded project specification | [architecture-iteration-v1.3.md](../architecture-iteration-v1.3.md) |' \
+  '| `docs/architecture-iteration-v1.2.md` | [architecture-iteration-v1.2.md](2026-07-24-doc-governance/architecture-iteration-v1.2.md) | 2026-07-24 | Superseded architecture iteration | [architecture-iteration-v1.3.md](../architecture-iteration-v1.3.md) |' \
+  > "$TMP_ROOT/manifest-wrong-replacement/docs/archive/README.md"
+expect_single_failure \
+  "wrong archive replacement fails closed" \
+  "$TMP_ROOT/manifest-wrong-replacement" \
+  "2026-07-24" \
+  "archive manifest mapping missing or mismatched for docs/spec-v1.md"
 
 mkdir -p "$TMP_ROOT/mock-bin"
 printf '%s\n' '#!/usr/bin/env bash' 'exit 1' > "$TMP_ROOT/mock-bin/mktemp"

@@ -23,7 +23,8 @@
 - [x] `AGENTS.md`、`docs/ai/README.md`、`docs/ai/START_PROMPTS.md` 写明跨模型必读顺序和定期更新规则
 - [x] 项目相关 Codex memory 以精选 Markdown 快照保存于 docs/knowledge/codex-memory/，并标明来源、快照性质、`Last Reviewed`、`Next Review Due` 和冲突优先级
 - [x] 有明确替代证据的旧文档移入带 manifest 的 docs/archive/2026-07-24-doc-governance/，现行入口不再路由到旧版本
-- [x] scripts/ai/check-doc-governance.sh 检查规范入口、索引目标与 31 天复核周期，并接入统一检查入口
+- [x] scripts/ai/check-doc-governance.sh 检查规范入口、索引目标、两条 archive 映射与严格 31 天复核周期，并接入统一检查入口
+- [x] `.githooks/pre-commit` 对治理/infra partial staging fail-closed，且 `PROJECT_CONTEXT.md`-only 暂存不强制 HANDOFF
 - [x] 不复制原始会话 JSONL、凭证、私有配置或整个全局 memory 树
 - [x] 不修改业务代码、Card OS 实现、CI 或部署配置
 - [x] `bash scripts/ai/check-doc-governance.sh` 与 `git diff --check` PASS；`bash scripts/ai/check-agent-state.sh` 为 0 FAIL，WARN 已记录
@@ -44,9 +45,12 @@
 - `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md`
 - `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md`
 - scripts/ai/check-doc-governance.sh
+- `scripts/ai/test-doc-governance.sh`
+- `scripts/ai/test-pre-commit.sh`
 - `scripts/ai/check-agent-infra.sh`
 - `scripts/ai/check-agent-state.sh`
-- `package.json`（仅增加文档治理检查便捷命令）
+- `.githooks/pre-commit`
+- `package.json`（仅增加 targeted 检查便捷命令）
 - 因归档导致的现行 Markdown 引用修正
 
 ## Out of Scope
@@ -74,30 +78,34 @@
 - 已完成 Task 1：新增稳定根索引、正式 docs map，并更新跨模型读取顺序。
 - 已完成 Task 2：归档两份有明确替代证据的文档，并以 archive manifest 记录替代关系。
 - 已完成 Task 3：新增精选项目内 Codex memory 快照，只涵盖 Card OS 部署运维和本地 Skill 安装经验。
-- 已完成 Task 4：新增只读文档治理 checker、13 项隔离 fixture、统一入口和 npm 便捷命令；review fix 已完成并记录为 clean。
+- 已完成 Task 4：新增只读文档治理 checker、统一入口和 npm 便捷命令；终审 fix wave 将 fixture 扩展为 18 项，覆盖 UTC epoch day、31 天边界、远期 due、manifest 缺行/错配与既有严格日期/链接场景。
 - 已完成 Task 5：全量 Markdown inventory、隐私路径扫描、完整文档治理验证、动态交接收口和 shutdown checks。
-- 本轮 inventory 未发现漏路由或误分类的正式文档；`docs/README.md` 无需调整。
+- 已完成 whole-branch final-review fix wave：Hook 拒绝治理/infra 的 index/worktree partial staging，新增 2 项隔离 Git fixture；design、plan 与 docs map 状态统一为 Implemented/Completed，计划已执行 checklist 全部按提交与报告证据勾选。
+- Task 2 的旧路径验证已收窄为 active Markdown link target；历史治理说明中的普通文本路径保留合法。
 - 实施计划日期为 2026-07-24；实际收口发生在 2026-07-25，故本文件使用实际更新日期而非计划日期。
 
 ## Next Actions
 
-1. 对整个 feature branch 做独立终审。
-2. 审核通过后，按 `finishing-a-development-branch` 的交付选择完成后续操作；不得在未经授权时 push、merge 或创建 PR。
+1. 对 final-review fix commit 做一次独立复核。
+2. 复核 clean 后，按 `finishing-a-development-branch` 的交付选择完成后续操作；不得在未经授权时 push、merge 或创建 PR。
 
 ## Verification Plan
 
 - Build: 本任务仅涉及文档与基础设施脚本，不运行全量业务构建
-- Unit Tests: `bash scripts/ai/test-doc-governance.sh` 本轮 PASS（13/13 fixture）
+- Unit Tests:
+  - `npm run test:doc-governance`：PASS（18/18 fixture）
+  - `npm run test:pre-commit`：PASS（2/2 隔离 Git fixture）
 - Integration Tests: 不适用
 - Lint: 仓库未确认通用 lint 命令
 - Manual Checks:
   - `rg --files -g '*.md' -g '!node_modules/**' -g '!.worktrees/**' | sort`：本轮完成；正式文档均有路由或受控根/客户端适配说明
   - 隐私路径扫描（绝对本机路径与 raw rollout path metadata key）：PASS（零命中）
-  - `bash scripts/ai/check-doc-governance.sh`：PASS
-  - `bash scripts/ai/check-agent-state.sh`：WARN，0 FAIL；既有 secret-field-name 人工复核 WARN 与 HANDOFF 提交链信息级 WARN 已记录
-  - `bash scripts/ai/check-handoff.sh`：WARN，0 FAIL；tracked HANDOFF 的提交链信息级 WARN 已记录
-  - `git diff --check`：PASS
-  - `git status --short`：收口前 clean；提交后复核
+  - `bash -n`（本轮所有改动 shell/Hook）：PASS
+  - `npm run check:doc-governance`：PASS
+  - `bash scripts/ai/check-agent-state.sh`：WARN，0 FAIL；仅既有 secret-field-name 人工复核 WARN
+  - `bash scripts/ai/check-handoff.sh`：PASS（content commit 前）
+  - `git diff --check`：PASS（content commit 前）
+  - `git status --short`：content commit 前仅包含本轮 13 个授权文件；提交后继续复核
 
 ## Relevant References
 

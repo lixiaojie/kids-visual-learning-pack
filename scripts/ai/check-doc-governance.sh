@@ -12,26 +12,34 @@ pass() { printf 'PASS: %s\n' "$1"; }
 warn() { printf 'WARN: %s\n' "$1"; warn_count=$((warn_count + 1)); }
 fail() { printf 'FAIL: %s\n' "$1"; fail_count=$((fail_count + 1)); }
 
-valid_iso_date() {
+iso_date_to_epoch_day() {
   value="$1"
   if ! printf '%s\n' "$value" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
     return 1
   fi
 
-  if normalized="$(date -j -f "%Y-%m-%d" "$value" "+%Y-%m-%d" 2>/dev/null)" \
-    && [ "$normalized" = "$value" ]; then
-    return 0
+  parsed=""
+  if parsed="$(TZ=UTC0 date -j -f "%Y-%m-%d %H:%M:%S" \
+      "$value 00:00:00" "+%Y-%m-%d|%s" 2>/dev/null)"; then
+    :
+  elif parsed="$(TZ=UTC0 date -d "$value 00:00:00" \
+      "+%Y-%m-%d|%s" 2>/dev/null)"; then
+    :
+  else
+    return 1
   fi
 
-  if normalized="$(date -d "$value" "+%Y-%m-%d" 2>/dev/null)" \
-    && [ "$normalized" = "$value" ]; then
-    return 0
+  normalized="${parsed%%|*}"
+  epoch="${parsed#*|}"
+  if [ "$normalized" != "$value" ] \
+    || ! printf '%s\n' "$epoch" | grep -Eq '^[0-9]+$'; then
+    return 1
   fi
 
-  return 1
+  printf '%s\n' "$((epoch / 86400))"
 }
 
-if ! valid_iso_date "$TODAY"; then
+if ! TODAY_DAY="$(iso_date_to_epoch_day "$TODAY")"; then
   fail "invalid DOC_GOVERNANCE_TODAY: $TODAY"
   echo "------------------------------------------------------------"
   printf 'RESULT: FAIL (%d failure(s), %d warning(s))\n' "$fail_count" "$warn_count"
@@ -74,6 +82,24 @@ for superseded_path in \
   fi
 done
 
+check_archive_mapping() {
+  original_path="$1"
+  expected_row="$2"
+  if [ -f docs/archive/README.md ] \
+    && grep -Fx -- "$expected_row" docs/archive/README.md >/dev/null; then
+    pass "archive manifest mapping valid for $original_path"
+  else
+    fail "archive manifest mapping missing or mismatched for $original_path"
+  fi
+}
+
+check_archive_mapping \
+  "docs/spec-v1.md" \
+  '| `docs/spec-v1.md` | [spec-v1.md](2026-07-24-doc-governance/spec-v1.md) | 2026-07-24 | Superseded project specification | [spec-v2.md](../spec-v2.md) |'
+check_archive_mapping \
+  "docs/architecture-iteration-v1.2.md" \
+  '| `docs/architecture-iteration-v1.2.md` | [architecture-iteration-v1.2.md](2026-07-24-doc-governance/architecture-iteration-v1.2.md) | 2026-07-24 | Superseded architecture iteration | [architecture-iteration-v1.3.md](../architecture-iteration-v1.3.md) |'
+
 check_links() {
   source="$1"
   [ -f "$source" ] || return 0
@@ -114,9 +140,10 @@ check_review_dates() {
   next_review_due="$(sed -n 's/^- Next Review Due:[[:space:]]*//p' "$review_file" | head -1)"
 
   last_reviewed_valid=0
-  if ! valid_iso_date "$last_reviewed"; then
+  last_reviewed_day=""
+  if ! last_reviewed_day="$(iso_date_to_epoch_day "$last_reviewed")"; then
     fail "invalid Last Reviewed date in $review_file: $last_reviewed"
-  elif [ "$last_reviewed" \> "$TODAY" ]; then
+  elif [ "$last_reviewed_day" -gt "$TODAY_DAY" ]; then
     fail "Last Reviewed is in the future in $review_file: $last_reviewed"
     last_reviewed_valid=1
   else
@@ -124,16 +151,26 @@ check_review_dates() {
     last_reviewed_valid=1
   fi
 
-  if ! valid_iso_date "$next_review_due"; then
+  next_review_due_day=""
+  if ! next_review_due_day="$(iso_date_to_epoch_day "$next_review_due")"; then
     fail "invalid Next Review Due date in $review_file: $next_review_due"
   elif [ "$last_reviewed_valid" -eq 0 ]; then
     pass "Next Review Due date is valid in $review_file: $next_review_due"
-  elif [ "$next_review_due" \< "$last_reviewed" ] || [ "$next_review_due" = "$last_reviewed" ]; then
+  elif [ "$next_review_due_day" -le "$last_reviewed_day" ]; then
     fail "Next Review Due must be after Last Reviewed in $review_file"
-  elif [ "$TODAY" \> "$next_review_due" ]; then
-    warn "documentation review overdue for $review_file since $next_review_due"
+  elif [ "$((next_review_due_day - last_reviewed_day))" -gt 31 ]; then
+    fail "Next Review Due must be no more than 31 days after Last Reviewed in $review_file"
   else
-    pass "documentation review current for $review_file through $next_review_due"
+    pass "review interval is within 31 days in $review_file"
+  fi
+
+  if [ "$last_reviewed_valid" -eq 1 ] \
+    && [ "$last_reviewed_day" -le "$TODAY_DAY" ]; then
+    if [ "$((TODAY_DAY - last_reviewed_day))" -gt 31 ]; then
+      warn "documentation review overdue for $review_file; Last Reviewed was $last_reviewed"
+    else
+      pass "documentation review age is within 31 days in $review_file"
+    fi
   fi
 }
 

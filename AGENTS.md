@@ -187,6 +187,7 @@ Vercel:`vercel.json` 的 `buildCommand: npm run build`,`outputDirectory: dist`�
 bash scripts/ai/check-agent-state.sh   # 统一入口:infra + doc-governance + task-state + handoff + git diff --check;或 npm run check:agent-state
 bash scripts/ai/check-doc-governance.sh # 文档地图、链接、状态与复核日期检查
 bash scripts/ai/test-doc-governance.sh  # 文档治理 checker fixture 测试;或 npm run test:doc-governance
+bash scripts/ai/test-pre-commit.sh       # Git Hook partial-staging/HANDOFF 豁免回归测试;或 npm run test:pre-commit
 bash scripts/ai/check-agent-infra.sh   # 单项:基础设施完整性。或 npm run check:agent-infra
 bash scripts/ai/check-task-state.sh    # 单项:CURRENT_TASK.md 状态一致性
 bash scripts/ai/check-handoff.sh       # 单项:HANDOFF.md 时效性与完整性
@@ -241,7 +242,7 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 | `apps/miniprogram/**` | `npm run validate:miniprogram` |
 | `ops/`、`tests/`、`skills/`(Card OS) | 对应 `npm run test:card-os-*` |
 | 构建/部署脚本 | `npm run build` + `npm run check:dist` |
-| 仅基础设施文档/脚本 | `bash scripts/ai/test-doc-governance.sh`（涉及 checker 时）+ `bash scripts/ai/check-agent-state.sh`（含 `git diff --check`) |
+| 仅基础设施文档/脚本 | `bash scripts/ai/test-doc-governance.sh`（涉及 checker 时）+ `bash scripts/ai/test-pre-commit.sh`（涉及 Hook 时）+ `bash scripts/ai/check-agent-state.sh`（含 `git diff --check`) |
 
 如果全量测试因既有问题失败，必须在 `HANDOFF.md` 记录：失败命令、失败测试、错误摘要、是否与本次修改相关、判断依据。
 
@@ -254,7 +255,7 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 - 禁止两个 Agent 同时修改同一个工作目录。
 - 串行切换 Agent 前，当前 Agent 必须先更新 `docs/ai/HANDOFF.md` 并保持 Git 状态清晰。
 - 并行成果的汇总只通过 commit / cherry-pick / merge 进行。
-- 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（纯文档、基础设施初始化等豁免规则见 Hook 输出）。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
+- 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（`PROJECT_CONTEXT.md` 等纯文档、基础设施初始化路径豁免）。治理/基础设施受检文件若同时存在 staged 与 unstaged 差异，Hook 会 fail-closed，必须先统一内容并重新 stage，避免 worktree 检查掩盖 index 中的破损版本。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
 
 ## Documentation Governance
 

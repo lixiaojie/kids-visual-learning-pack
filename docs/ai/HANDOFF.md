@@ -5,15 +5,15 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: 981c70e（审查时的 status-record HEAD；不是当前符号 `HEAD` 的声明）
-- Working Tree: 审查 `981c70e` 时 clean；本次 review fix 提交前会复核，恢复当前提交必须运行 `git rev-parse HEAD`
-- Task Status: Done（Task 1–5 均已完成；feature branch 待独立终审）
+- Base Commit: 1b0fe83（whole-branch final-review fix wave 的起点）
+- Working Tree: final-review fix 内容已完成，final content commit 待创建；恢复当前提交必须运行 `git rev-parse HEAD`
+- Task Status: Done（Task 1–5 与 final-review fix wave 均已完成；待提交与独立复核）
 
 ## Summary
 
-本分支以 `81f6a7f` 为基线完成跨模型文档治理闭环：`PROJECT_CONTEXT.md` 提供稳定读取顺序，`docs/README.md` 提供正式文档地图，`docs/ai/` 保持动态任务和交接真值，archive manifest 保留两份被明确替代的历史文档，项目内 memory 只保存人工筛选的次级 Markdown 快照。Task 4 增加只读 checker、13 项隔离 fixture 与统一入口；其独立 review fix 已在 `8c8545d` 完成，ledger 记录为 clean。
+本分支以 `81f6a7f` 为基线完成跨模型文档治理闭环：`PROJECT_CONTEXT.md` 提供稳定读取顺序，`docs/README.md` 提供正式文档地图，`docs/ai/` 保持动态任务和交接真值，archive manifest 保留两份被明确替代的历史文档，项目内 memory 只保存人工筛选的次级 Markdown 快照。
 
-Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报告中的 Markdown 文件；正式项目文档均由 `docs/README.md`、archive manifest 或受控根/客户端适配说明路由。隐私路径扫描未命中绝对本机路径或 raw rollout path metadata key，所以 `docs/README.md` 没有无证据修改。全量验证无 FAIL；统一检查的 WARN 均已记录。
+whole-branch final review 发现 4 个 Important 与 2 个 Minor。唯一 fix wave 已把文档日期转换为严格 UTC epoch day，强制 `due > last` 且 `due - last <= 31`，并仅依据 `today - last > 31` 产生 overdue WARN；archive manifest 的两条映射改为 fail-closed 精确验证；Hook 对治理/infra 受检文件的 partial staging fail-closed，并把 `PROJECT_CONTEXT.md` 纳入纯文档豁免。设计、计划与 docs map 已同步为 Approved/Implemented、Completed、Implemented/Completed。
 
 实施计划的日期为 2026-07-24，实际收口和本 HANDOFF 更新发生在 2026-07-25；Metadata 使用实际日期，不回填计划日期。
 
@@ -24,31 +24,27 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 - Task 3：新增筛选的 memory 索引、耐久规则和两份 rollout 摘要；不复制全局 memory、原始会话、凭证或私有配置。
 - Task 4：新增并接入只读文档治理 checker；fixture 13/13 通过；review fix 覆盖严格日期、外部 URI、`mktemp` fail-closed 和单一失败隔离。
 - Task 5：完成 inventory、隐私扫描、完整验证集、CURRENT_TASK Done 收口和本 HANDOFF 动态状态刷新。
+- Whole-branch final-review fix wave：文档治理 fixture 扩展到 18/18，新增 2/2 Hook fixture；2099 due、超过 31 天、manifest 缺行/错配与 staged broken/worktree clean 均不能通过，恰好 31 天与 PROJECT_CONTEXT-only staged 保持通过。
 
 ## Changed Files
 
-`git status --short` 与 `git diff --stat` 在 Task 5 收口开始时均为空。相对 feature-branch 基线 `81f6a7f`，实际变更为：
+final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean。本次内容提交包含：
 
 | File | Change | Reason |
 | --- | --- | --- |
-| `AGENTS.md` | 修改 | 统一读取顺序、治理规则与检查命令 |
-| `PROJECT_CONTEXT.md` | 新建 | 稳定根索引与读取顺序 |
-| `README.md` | 修改 | 增加跨模型协作入口 |
-| `docs/README.md` | 新建 | 正式文档唯一导航地图 |
-| `docs/ai/CURRENT_TASK.md` | 修改 | 本次任务范围、验收和完成状态 |
-| `docs/ai/HANDOFF.md` | 修改 | 基于实际分支状态的动态交接 |
-| `docs/ai/README.md` | 修改 | 协作、archive、memory 和检查边界 |
-| `docs/ai/START_PROMPTS.md` | 修改 | 恢复、交接与定期复核提示 |
-| `docs/archive/README.md` | 新建 | archive manifest 与 replacement |
-| `docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md` | 移动 | 被 v1.3 明确替代的历史保留 |
-| `docs/archive/2026-07-24-doc-governance/spec-v1.md` | 移动 | 被 v2 明确替代的历史保留 |
-| `docs/knowledge/codex-memory/**` | 新建 | 精选、次级、可复核的项目 memory 快照 |
-| `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md` | 修改 | 分阶段 archive/memory 路由的实施计划 |
-| `package.json` | 修改 | 文档治理检查便捷命令 |
-| `scripts/ai/check-agent-infra.sh` | 修改 | 基础设施检查覆盖治理资产 |
-| `scripts/ai/check-agent-state.sh` | 修改 | 统一入口接入文档治理检查 |
-| `scripts/ai/check-doc-governance.sh` | 新建 | 只读路由、archive 与 31 天复核检查 |
-| `scripts/ai/test-doc-governance.sh` | 新建 | 13 项隔离 fixture 测试 |
+| `.githooks/pre-commit` | 修改 | 对治理/infra partial staging fail-closed；PROJECT_CONTEXT 纳入豁免 |
+| `AGENTS.md` | 修改 | 同步 targeted tests 与 Hook 行为 |
+| `docs/README.md` | 修改 | design/plan 状态改为 Implemented/Completed |
+| `docs/ai/README.md` | 修改 | 记录日期、manifest 与 Hook 检查边界 |
+| `docs/ai/CURRENT_TASK.md` | 修改 | 记录 final-review fix wave 与验证 |
+| `docs/ai/HANDOFF.md` | 修改 | 记录实际修复、验证与提交边界 |
+| `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md` | 修改 | 标记 Completed，勾选已执行步骤并修正旧路径验证 |
+| `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md` | 修改 | 标记 Approved/Implemented 并同步实际门禁 |
+| `package.json` | 修改 | 增加 `test:pre-commit` |
+| `scripts/ai/check-agent-infra.sh` | 修改 | 登记 Hook 测试资产 |
+| `scripts/ai/check-doc-governance.sh` | 修改 | UTC day/31 天与 manifest fail-closed 检查 |
+| `scripts/ai/test-doc-governance.sh` | 修改 | 新增日期与 manifest 对抗 fixture |
+| `scripts/ai/test-pre-commit.sh` | 新建 | 隔离 Git repo 的 Hook 回归测试 |
 
 ## Decisions Made
 
@@ -57,20 +53,24 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 - memory 快照仅为人工筛选的次级材料；代码、测试和正式仓库文档优先，且不自动同步用户级 memory。
 - 归档保留历史并记录 replacement，不删除文档。
 - 文档治理采用任务事件更新和 31 天复核 WARN，不使用 cron 或读取用户目录。
+- `Next Review Due` 是最长 31 天周期的结构化声明；overdue 只由 `today - Last Reviewed` 决定，远期 due 不能延长周期。
+- Hook 的 infra 检查读取 worktree，因此治理/infra 同文件 partial staging 必须拒绝；targeted Hook test 不接入统一五步入口。
 - 用户已授权本 feature branch 的 Task 1–5 commits；push、merge 和 PR 仍未授权。
 
 ## Verification Results
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `bash scripts/ai/test-doc-governance.sh` | PASS | 13/13 fixture：current、单一 missing/broken、严格日期、today、overdue WARN、URI 与 mktemp fail-closed |
-| `bash scripts/ai/check-doc-governance.sh` | PASS | required files、archive replacement、受路由链接和 31 天复核均通过 |
-| `bash scripts/ai/check-agent-state.sh` | WARN | `981c70e` 审查时为 0 FAIL；既有 secret-field-name 人工复核与 HANDOFF 提交链信息级 WARN |
-| `bash scripts/ai/check-handoff.sh` | WARN | `981c70e` 审查时为 0 FAIL；内容快照与 status-record 在同一祖先链上的信息级 WARN |
-| `git diff --check` | PASS | 收口前无空白错误 |
-| `git status --short` | PASS | 收口前 clean |
-| Markdown inventory | PASS | 完整 inventory 已检查；不需调整 `docs/README.md` |
-| privacy-path scan | PASS | 受治理文件零命中绝对本机路径和 raw rollout path metadata key |
+| `bash -n`（本轮改动 shell/Hook） | PASS | checker、两组 test、infra/state 与 Hook 语法通过 |
+| `npm run test:doc-governance` | PASS | 18/18 fixture，含 2099 due、31 天边界、manifest 缺行/错配 |
+| `npm run test:pre-commit` | PASS | 2/2：staged broken/worktree clean 拒绝；PROJECT_CONTEXT-only 通过 |
+| `npm run check:doc-governance` | PASS | required files、精确 archive mappings、受路由链接和复核日期均通过 |
+| `bash scripts/ai/check-agent-infra.sh` | WARN | 0 FAIL；既有 secret-field-name 人工复核 WARN |
+| `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；仅既有 secret-field-name 人工复核 WARN，handoff/doc/task/diff steps PASS |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 与当前 `1b0fe83` 一致，非空工作区描述一致 |
+| active old-path Markdown link probe | PASS | 两个旧 active path 均无 Markdown link target；历史普通文本说明合法 |
+| `git diff --check` | PASS | content commit 前无空白错误 |
+| `git status --short` | PASS | content commit 前仅 13 个本轮授权文件；提交后继续复核 |
 | `node boards/kids-world/structure.test.mjs` | 未重跑 | 已知既有 `19 !== 18`；本任务未改 `boards/`，不可表述为本轮验证 |
 
 ## Known Failures
@@ -81,21 +81,21 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 
 - `check-agent-state.sh` 的 secret-field-name WARN 来自既有代码和文档的字段名提及；高置信 secret-value 扫描通过。本任务未弱化该扫描。
 - `check-doc-governance.sh` 的 BSD 日期路径已在当前 macOS 环境执行；GNU fallback 仅静态兼容实现，未在本轮运行。
-- Task 5 内容提交为 `a9007bb`；审查过的 status-record HEAD 为 `981c70e`。本 review fix 及其后续状态记录会产生新提交；恢复时应把 `git rev-parse HEAD` 的结果视为当前符号 HEAD，不能把 `a9007bb` 或 `981c70e` 混作当前 HEAD。
+- Task 5 内容提交为 `a9007bb`，后续修正到 `1b0fe83`；本 final-review fix 及其后续 status record 会产生新提交。恢复时只把 `git rev-parse HEAD` 的结果视为当前符号 HEAD。
 - tracked HANDOFF 不能自编码包含其自身的 commit hash；后续 status-only commit 只记录该事实、提交链和 clean state，不表示有待提交工作。
 
 ## Remaining Work
 
-1. 整个 feature branch 做独立终审，覆盖文档路由、archive replacement、memory 边界、checker 只读与 fixture 隔离。
-2. 终审通过后，按 `finishing-a-development-branch` 的交付选择执行；push、merge、PR 仍需单独授权。
+1. 创建 final-review content fix commit，随后用最小 status-record commit 记录其 hash 与 clean state。
+2. 对 final fix commit 做独立复核；clean 后按 `finishing-a-development-branch` 交付选择。push、merge、PR 仍需单独授权。
 
 ## Exact Next Action
 
-整分支独立终审，随后按 `finishing-a-development-branch` 交付选择。
+完成 final-review content fix commit 与最小 status-record commit，然后独立复核 final fix。
 
 ## Recovery Notes
 
-- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，审查时的 status-record HEAD 为 `981c70e`。
+- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，whole-branch review fix 起点为 `1b0fe83`。
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- 本 review fix 后会创建独立 fix commit；如需 status-only commit，其 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
+- final content commit 将包含本 HANDOFF 的“提交待创建”快照；随后最小 status-only commit 只记录 content commit hash、检查与 clean state。status-only commit 的自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。

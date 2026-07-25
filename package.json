@@ -15,6 +15,7 @@
     "check:agent-infra": "bash scripts/ai/check-agent-infra.sh",
     "check:doc-governance": "bash scripts/ai/check-doc-governance.sh",
     "test:doc-governance": "bash scripts/ai/test-doc-governance.sh",
+    "test:pre-commit": "bash scripts/ai/test-pre-commit.sh",
     "check:agent-state": "bash scripts/ai/check-agent-state.sh",
     "hooks:install": "bash scripts/ai/install-hooks.sh",
     "generate:site-meta": "node scripts/generate-site-meta.mjs",

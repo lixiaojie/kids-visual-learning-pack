@@ -49,7 +49,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Pro Subscriber Execution Design](superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md) | Pro-client execution architecture | Approved |
 | [Card OS Server Deployment Design](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md) | Production deployment architecture | Implemented |
 | [Card OS Thin Skill Release Design](superpowers/specs/2026-07-15-cognitive-card-thin-skill-release-design.md) | Thin Skill distribution architecture | Approved |
-| [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Active |
+| [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 
 ### Plans
 
@@ -62,7 +62,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Server Deployment](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md) | Deployment execution plan | Needs Review |
 | [Card OS Skill Registry](superpowers/plans/2026-07-15-cognitive-card-skill-registry-plan.md) | Skill registry execution plan | Needs Review |
 | [Card OS Thin Client](superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md) | Thin-client execution plan | Needs Review |
-| [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Current implementation plan | Active |
+| [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Completed documentation-governance implementation plan | Completed |
 
 ## Operations, Compliance, and Decisions
 

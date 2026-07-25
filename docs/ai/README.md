@@ -63,6 +63,8 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 | `scripts/ai/check-handoff.sh` | HANDOFF 时效性与完整性只读检查 | 不修改文件 |
 | `scripts/ai/check-agent-state.sh` | 统一检查入口（基础设施、文档治理、任务状态、HANDOFF + `git diff --check`) | 不修改文件 |
 | `scripts/ai/check-doc-governance.sh` | 文档地图、链接、状态与复核日期检查 | 不修改文件 |
+| `scripts/ai/test-doc-governance.sh` | 文档治理日期、manifest 和链接的隔离 fixture 回归测试 | 只写 `mktemp -d` 临时目录 |
+| `scripts/ai/test-pre-commit.sh` | Hook partial-staging 与 HANDOFF 豁免的隔离 Git fixture 回归测试 | 只写 `mktemp -d` 临时目录 |
 | `scripts/ai/install-hooks.sh` | 安装仓库级 Git Hook（每个 clone 一次） | 不触碰用户级配置 |
 | `.githooks/pre-commit` | 提交前快速检查与 HANDOFF 强制 | 与任何特定 Agent 无关 |
 
@@ -132,7 +134,7 @@ bash scripts/ai/check-agent-state.sh
 npm run check:agent-state
 ```
 
-它按序执行 `check-agent-infra.sh`（基础设施完整性）、`check-doc-governance.sh`（文档治理）、`check-task-state.sh`(CURRENT_TASK 一致性）、`check-handoff.sh`(HANDOFF 时效性）和 `git diff --check`，汇总 PASS / WARN / FAIL；任一 FAIL 时以非零退出码结束。单项脚本也可单独运行（如 `npm run check:agent-infra`)。全部检查脚本只读；`test-doc-governance.sh` 仅在 `mktemp -d` 创建的临时 fixture 中写入测试数据。
+它按序执行 `check-agent-infra.sh`（基础设施完整性）、`check-doc-governance.sh`（文档治理）、`check-task-state.sh`(CURRENT_TASK 一致性）、`check-handoff.sh`(HANDOFF 时效性）和 `git diff --check`，汇总 PASS / WARN / FAIL；任一 FAIL 时以非零退出码结束。单项脚本也可单独运行（如 `npm run check:agent-infra`)。全部检查脚本只读；targeted test 只在 `mktemp -d` 创建的临时 fixture 中写入测试数据。
 
 文档治理检查：
 
@@ -153,6 +155,16 @@ npm run test:doc-governance
 ```
 
 测试仅在 `mktemp -d` 创建的临时目录内写入 fixture，退出时清理；不写入项目文件。
+
+Git Hook 的 targeted fixture 测试：
+
+```bash
+bash scripts/ai/test-pre-commit.sh
+# 或
+npm run test:pre-commit
+```
+
+该测试在隔离 Git 仓库中验证 staged 破损版本不能被 clean worktree 绕过，并验证只暂存 `PROJECT_CONTEXT.md` 不会触发 HANDOFF 强制；它不接入 `check-agent-state.sh` 的五步入口，避免每次状态检查递归或变慢。
 
 ## 10. 如何新增 ADR
 
@@ -191,6 +203,8 @@ npm run hooks:install
 - CI 是服务端统一兜底：即使本地用 `git commit --no-verify` 跳过 Hook,CI（若已配置）仍应执行 `scripts/ai/check-agent-state.sh`。`--no-verify` 仅限人工明确例外场景。
 - 本机全局 `core.hooksPath`（如已配置）会被仓库级配置覆盖；`.githooks/pre-commit` 在自身检查通过后，会链式调用全局 hooks 目录中同名的 `pre-commit`（存在且可执行时），不吞掉既有全局钩子。
 - 不得把真实凭证放入 Hook、脚本或文档；Hook 只输出文件路径和字段名，不输出疑似密钥内容。
+- Hook 的快速基础设施检查读取 worktree。若同一个治理/基础设施受检文件同时存在 staged 与 unstaged 差异，Hook 会先拒绝提交并要求统一内容、重新 `git add`，防止 index 中的破损版本被 worktree 状态掩盖。
+- 只暂存 `PROJECT_CONTEXT.md` 等纯文档路径不要求同步暂存 `HANDOFF.md`；业务代码仍必须同步交接记录。
 
 ### CI 兜底（当前未启用）
 

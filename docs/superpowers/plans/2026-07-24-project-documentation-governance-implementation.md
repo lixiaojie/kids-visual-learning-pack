@@ -1,5 +1,7 @@
 # Cross-Model Project Documentation Governance Implementation Plan
 
+**Status:** Completed
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a repository-local, periodically reviewed documentation system that lets any Coding Agent recover project facts, current work, recent progress, historical context, and reusable Card OS experience without relying on one model's private session state.
@@ -7,6 +9,8 @@
 **Architecture:** Add a thin root context index and one canonical docs map over the existing `docs/ai/` task-state layer. Preserve superseded documents in a dated archive, copy only curated project-relevant memory summaries, and enforce required entrypoints, link validity, and review dates with a read-only Bash checker integrated into the existing Agent state checks.
 
 **Tech Stack:** Markdown, Bash, Git, existing `scripts/ai/` infrastructure, Node.js only for `package.json` validation
+
+**Completion Evidence:** Task 1–5 are recorded by commits `2d7b987` through `1b0fe83` and their task reports. Task 2's final active-route check uses Markdown link targets rather than banning legitimate historical prose. Task 4's original four-case GREEN was subsequently strengthened to strict date, manifest, URI, and fail-closed fixtures. Task 5 used the actual close date `2026-07-25` instead of the planned literal `2026-07-24`; `1b0fe83` records that correction. The final-review fix wave is recorded in `docs/ai/HANDOFF.md` and the ignored SDD report.
 
 ## Global Constraints
 
@@ -39,6 +43,7 @@
 - `docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md`: curated local Skill installation summary.
 - `scripts/ai/check-doc-governance.sh`: read-only required-file, link, archive, and review-date checker.
 - `scripts/ai/test-doc-governance.sh`: isolated fixture tests for PASS, FAIL, and WARN behavior.
+- `scripts/ai/test-pre-commit.sh`: isolated Git fixture tests for Hook partial-staging and HANDOFF-exemption behavior.
 
 ### Modified Files
 
@@ -50,7 +55,8 @@
 - `docs/ai/HANDOFF.md`: record real changes, checks, known failures, and next action.
 - `scripts/ai/check-agent-infra.sh`: require and inspect the new governance files.
 - `scripts/ai/check-agent-state.sh`: run the new governance check as a first-class step.
-- `package.json`: add `check:doc-governance` and `test:doc-governance`.
+- `.githooks/pre-commit`: reject partial staging for governance/infra files and exempt `PROJECT_CONTEXT.md` from the HANDOFF requirement.
+- `package.json`: add `check:doc-governance`, `test:doc-governance`, and `test:pre-commit`.
 - Active Markdown files that still route to archived paths: update only confirmed inbound references.
 
 ---
@@ -72,7 +78,7 @@
 - Produces: canonical recovery order `AGENTS.md → PROJECT_CONTEXT.md → docs/README.md → docs/ai/CURRENT_TASK.md → docs/ai/HANDOFF.md`.
 - Produces: document status vocabulary `Canonical Current`, `Active`, `Historical Reference`, `Needs Review`, and `Archived`.
 
-- [ ] **Step 1: Run the navigation precondition and confirm it fails**
+- [x] **Step 1: Run the navigation precondition and confirm it fails**
 
 Run:
 
@@ -83,7 +89,7 @@ test -f docs/README.md
 
 Expected: both commands exit non-zero because neither canonical index exists yet.
 
-- [ ] **Step 2: Create `PROJECT_CONTEXT.md`**
+- [x] **Step 2: Create `PROJECT_CONTEXT.md`**
 
 Use `apply_patch` to create a concise file with these exact sections:
 
@@ -135,7 +141,7 @@ This is a stable repository index. Current task status belongs in `docs/ai/CURRE
 Do not rely on a previous model's chat history. Recover state from the files above, verify drift against code and tests, preserve unrelated dirty changes, and update the handoff before switching tools.
 ```
 
-- [ ] **Step 3: Create `docs/README.md` as the canonical documentation map**
+- [x] **Step 3: Create `docs/README.md` as the canonical documentation map**
 
 Use Markdown links, not plain code paths, for every routed document so the governance checker can validate targets. Include these sections and entries:
 
@@ -191,7 +197,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Pro Subscriber Execution Design](superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md) | Pro-client execution architecture | Approved |
 | [Card OS Server Deployment Design](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md) | Production deployment architecture | Implemented |
 | [Card OS Thin Skill Release Design](superpowers/specs/2026-07-15-cognitive-card-thin-skill-release-design.md) | Thin Skill distribution architecture | Approved |
-| [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Active |
+| [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 
 ### Plans
 
@@ -204,7 +210,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Server Deployment](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md) | Deployment execution plan | Needs Review |
 | [Card OS Skill Registry](superpowers/plans/2026-07-15-cognitive-card-skill-registry-plan.md) | Skill registry execution plan | Needs Review |
 | [Card OS Thin Client](superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md) | Thin-client execution plan | Needs Review |
-| [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Current implementation plan | Active |
+| [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Completed documentation-governance implementation plan | Completed |
 
 ## Operations, Compliance, and Decisions
 
@@ -233,7 +239,7 @@ Historical reference files remain in place until explicit replacement evidence j
 - Run `bash scripts/ai/check-doc-governance.sh` and `bash scripts/ai/check-agent-state.sh`.
 ```
 
-- [ ] **Step 4: Add the collaboration entrypoint to `README.md`**
+- [x] **Step 4: Add the collaboration entrypoint to `README.md`**
 
 Insert after the opening project description:
 
@@ -251,7 +257,7 @@ Insert after the opening project description:
 不要依赖上一模型的会话记忆；以仓库代码、测试、正式文档和落盘任务状态为准。
 ```
 
-- [ ] **Step 5: Add documentation governance to `AGENTS.md`**
+- [x] **Step 5: Add documentation governance to `AGENTS.md`**
 
 Update Required Reading so `PROJECT_CONTEXT.md` and `docs/README.md` appear before task state. Add a `Documentation Governance` section with these normative rules:
 
@@ -267,7 +273,7 @@ Update Required Reading so `PROJECT_CONTEXT.md` and `docs/README.md` appear befo
 
 Add `bash scripts/ai/check-doc-governance.sh` to the infrastructure commands and add the new root/index files to the documented repository structure.
 
-- [ ] **Step 6: Update `docs/ai/README.md` and `docs/ai/START_PROMPTS.md`**
+- [x] **Step 6: Update `docs/ai/README.md` and `docs/ai/START_PROMPTS.md`**
 
 In `docs/ai/README.md`:
 
@@ -282,7 +288,7 @@ In `docs/ai/START_PROMPTS.md`:
 - Make prompt 5 run `bash scripts/ai/check-doc-governance.sh`.
 - Add a sixth prompt named `## 6. 定期文档治理复核` that checks actual structure, links, archive candidates, snapshot relevance, review dates, and then updates HANDOFF.
 
-- [ ] **Step 7: Verify canonical navigation**
+- [x] **Step 7: Verify canonical navigation**
 
 Run:
 
@@ -299,7 +305,7 @@ Expected:
 - every collaboration entrypoint references the same root-first order;
 - no whitespace errors.
 
-- [ ] **Step 8: Review checkpoint**
+- [x] **Step 8: Review checkpoint**
 
 Inspect only Task 1 files with `git diff -- README.md AGENTS.md PROJECT_CONTEXT.md docs/README.md docs/ai/README.md docs/ai/START_PROMPTS.md`. Do not commit unless the user has explicitly authorized commits.
 
@@ -322,7 +328,7 @@ Inspect only Task 1 files with `git diff -- README.md AGENTS.md PROJECT_CONTEXT.
 - Produces: archive manifest rows with original path, archived path, date, reason, and replacement.
 - Produces: no active first-read route to an archived version.
 
-- [ ] **Step 1: Capture the pre-move references**
+- [x] **Step 1: Capture the pre-move references**
 
 Run:
 
@@ -332,7 +338,7 @@ rg -n 'docs/spec-v1\.md|spec-v1\.md|docs/architecture-iteration-v1\.2\.md|archit
 
 Expected: active references are visible, including the current `AGENTS.md` source-of-truth list.
 
-- [ ] **Step 2: Create the archive manifest**
+- [x] **Step 2: Create the archive manifest**
 
 Create `docs/archive/README.md`:
 
@@ -356,7 +362,7 @@ Archived documents are retained for traceability and are not first-read context.
 - Keep unclear historical files in place and mark them `Historical Reference` or `Needs Review` in `docs/README.md`.
 ```
 
-- [ ] **Step 3: Move the two documents with `apply_patch`**
+- [x] **Step 3: Move the two documents with `apply_patch`**
 
 Use two `*** Move to:` patches so Git preserves content history:
 
@@ -370,7 +376,7 @@ docs/architecture-iteration-v1.2.md
 
 Do not edit the archived contents.
 
-- [ ] **Step 4: Update active references**
+- [x] **Step 4: Update active references**
 
 In `AGENTS.md`, remove both archived paths from the active Sources of Truth list and retain:
 
@@ -394,7 +400,7 @@ Append this section to `docs/README.md` after the historical-reference section:
 [Archive Manifest](archive/README.md) records every superseded document, its retained location, reason, and replacement. Archived files are never first-read context.
 ```
 
-- [ ] **Step 5: Verify archive integrity and active routing**
+- [x] **Step 5: Verify archive integrity and active routing**
 
 Run:
 
@@ -403,7 +409,7 @@ test ! -e docs/spec-v1.md
 test ! -e docs/architecture-iteration-v1.2.md
 test -f docs/archive/2026-07-24-doc-governance/spec-v1.md
 test -f docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md
-rg -n 'docs/spec-v1\.md|docs/architecture-iteration-v1\.2\.md' . -g '*.md' -g '!docs/archive/**' -g '!.worktrees/**'
+rg -n '\]\((\.\./)*(docs/)?(spec-v1\.md|architecture-iteration-v1\.2\.md)([?#][^)]*)?\)' . -g '*.md' -g '!docs/archive/**' -g '!.worktrees/**'
 git diff --check
 ```
 
@@ -411,10 +417,10 @@ Expected:
 
 - both old paths are absent;
 - both archive files exist;
-- the final `rg` has no active first-read references; manifest prose using original paths is excluded by `!docs/archive/**`;
+- the final `rg` has no active Markdown link target to either old active path (`rg` exits 1); plain-text mentions in this historical governance plan/design remain legal, while manifest rows are excluded by `!docs/archive/**`;
 - no whitespace errors.
 
-- [ ] **Step 6: Review checkpoint**
+- [x] **Step 6: Review checkpoint**
 
 Inspect archive moves and references with `git diff --stat` and `git diff -- AGENTS.md docs/archive docs/README.md`. Do not commit without explicit authorization.
 
@@ -436,7 +442,7 @@ Inspect archive moves and references with `git diff --stat` and `git diff -- AGE
 - Produces: secondary project-local retrieval material with no raw session log, credential, private configuration, or unrelated-project content.
 - Produces: metadata keys `Last Reviewed` and `Next Review Due` in `YYYY-MM-DD`.
 
-- [ ] **Step 1: Confirm the snapshot files do not exist**
+- [x] **Step 1: Confirm the snapshot files do not exist**
 
 Run:
 
@@ -447,7 +453,7 @@ test ! -e docs/knowledge/codex-memory/memory_summary.md
 
 Expected: both commands pass before snapshot creation.
 
-- [ ] **Step 2: Create the snapshot index**
+- [x] **Step 2: Create the snapshot index**
 
 Create `docs/knowledge/codex-memory/README.md` with:
 
@@ -485,7 +491,7 @@ Review every 31 days and when a completed task produces a reusable lesson not al
 Do not copy global `MEMORY.md`, raw rollout logs, credentials, private client configuration, unrelated-project memory, or machine-specific temporary state.
 ```
 
-- [ ] **Step 3: Create `memory_summary.md`**
+- [x] **Step 3: Create `memory_summary.md`**
 
 Include only these durable rules:
 
@@ -513,7 +519,7 @@ Include only these durable rules:
 These lessons are reusable patterns, not proof of current branch, deployment, permission, or installed-skill state. Verify current repository and runtime facts before acting.
 ```
 
-- [ ] **Step 4: Create the two curated rollout summaries**
+- [x] **Step 4: Create the two curated rollout summaries**
 
 The Card OS deployment summary must contain:
 
@@ -534,11 +540,11 @@ The local Skill installation summary must contain:
 
 Both files must start with a snapshot notice and must not include a raw session-log path.
 
-- [ ] **Step 5: Add snapshot routing to `docs/README.md`**
+- [x] **Step 5: Add snapshot routing to `docs/README.md`**
 
 Ensure the `Codex Memory Snapshots` section links the snapshot index and summarizes the two included subjects. Do not list the snapshot as a current implementation or architecture authority.
 
-- [ ] **Step 6: Verify privacy and snapshot boundaries**
+- [x] **Step 6: Verify privacy and snapshot boundaries**
 
 Run:
 
@@ -554,7 +560,7 @@ Expected:
 - the second command confirms review metadata and snapshot semantics;
 - no whitespace errors.
 
-- [ ] **Step 7: Review checkpoint**
+- [x] **Step 7: Review checkpoint**
 
 Inspect `git diff -- docs/knowledge/codex-memory docs/README.md`. Confirm only the two approved project subjects appear. Do not commit without explicit authorization.
 
@@ -580,7 +586,7 @@ Inspect `git diff -- docs/knowledge/codex-memory docs/README.md`. Confirm only t
 - It exits `0` and prints `RESULT: PASS` when all checks are current.
 - It never creates, modifies, moves, or refreshes project files.
 
-- [ ] **Step 1: Write the fixture test first**
+- [x] **Step 1: Write the fixture test first**
 
 Create `scripts/ai/test-doc-governance.sh` with four isolated cases:
 
@@ -708,7 +714,7 @@ printf '%s\n' "RESULT: pass=$pass_count fail=$fail_count"
 [ "$fail_count" -eq 0 ]
 ```
 
-- [ ] **Step 2: Run the test and verify RED**
+- [x] **Step 2: Run the test and verify RED**
 
 Run:
 
@@ -718,7 +724,7 @@ bash scripts/ai/test-doc-governance.sh
 
 Expected: non-zero exit because `scripts/ai/check-doc-governance.sh` does not exist.
 
-- [ ] **Step 3: Implement the minimal checker**
+- [x] **Step 3: Implement the minimal checker**
 
 Create `scripts/ai/check-doc-governance.sh`:
 
@@ -856,7 +862,7 @@ else
 fi
 ```
 
-- [ ] **Step 4: Run the fixture tests and verify GREEN**
+- [x] **Step 4: Run the fixture tests and verify GREEN**
 
 Run:
 
@@ -874,7 +880,7 @@ PASS: overdue review warns
 RESULT: pass=4 fail=0
 ```
 
-- [ ] **Step 5: Integrate the checker into Agent infrastructure**
+- [x] **Step 5: Integrate the checker into Agent infrastructure**
 
 Modify `scripts/ai/check-agent-infra.sh`:
 
@@ -899,7 +905,7 @@ run_step "git diff --check" git diff --check
 
 Update its header comment from four steps to five steps.
 
-- [ ] **Step 6: Add package scripts**
+- [x] **Step 6: Add package scripts**
 
 Add immediately after `check:agent-infra`:
 
@@ -910,7 +916,7 @@ Add immediately after `check:agent-infra`:
 
 Keep the rest of `package.json` unchanged.
 
-- [ ] **Step 7: Validate package JSON and live repository behavior**
+- [x] **Step 7: Validate package JSON and live repository behavior**
 
 Run:
 
@@ -928,7 +934,7 @@ Expected:
 - live governance check reports no failures;
 - unified Agent state reports no failures; the existing authentication-field-name review warning may remain.
 
-- [ ] **Step 8: Review checkpoint**
+- [x] **Step 8: Review checkpoint**
 
 Inspect `git diff -- scripts/ai package.json AGENTS.md docs/ai/README.md`. Confirm all scripts are read-only except the test's temporary fixture creation under `mktemp -d`. Do not commit without explicit authorization.
 
@@ -947,7 +953,7 @@ Inspect `git diff -- scripts/ai package.json AGENTS.md docs/ai/README.md`. Confi
 - Consumes: all deliverables from Tasks 1–4.
 - Produces: a complete task record and exact next action for another model.
 
-- [ ] **Step 1: Check the complete Markdown inventory**
+- [x] **Step 1: Check the complete Markdown inventory**
 
 Run:
 
@@ -961,7 +967,7 @@ Expected:
 - every project documentation category is routed from `docs/README.md` or intentionally described as a root/client adapter;
 - the second command returns no matches in newly governed files.
 
-- [ ] **Step 2: Run the complete verification set**
+- [x] **Step 2: Run the complete verification set**
 
 Run:
 
@@ -980,7 +986,7 @@ Expected:
 - the known existing secret-field-name scan may produce a non-blocking warning;
 - Git status includes only preserved prior work plus this task's documentation and infrastructure files.
 
-- [ ] **Step 3: Update `docs/ai/CURRENT_TASK.md`**
+- [x] **Step 3: Update `docs/ai/CURRENT_TASK.md`**
 
 Set:
 
@@ -993,7 +999,7 @@ Set:
 
 Do not claim a check passed unless its final command output passed.
 
-- [ ] **Step 4: Update `docs/ai/HANDOFF.md` from actual state**
+- [x] **Step 4: Update `docs/ai/HANDOFF.md` from actual state**
 
 Record:
 
@@ -1007,7 +1013,7 @@ Record:
 - Exact Next Action;
 - recovery notes and no-commit status.
 
-- [ ] **Step 5: Re-run shutdown checks after HANDOFF changes**
+- [x] **Step 5: Re-run shutdown checks after HANDOFF changes**
 
 Run:
 
@@ -1025,7 +1031,7 @@ Expected:
 - no whitespace errors;
 - final status is reported to the user.
 
-- [ ] **Step 6: Final review checkpoint**
+- [x] **Step 6: Final review checkpoint**
 
 Review the complete task diff. Do not commit or stage files unless the user explicitly authorizes it.
 

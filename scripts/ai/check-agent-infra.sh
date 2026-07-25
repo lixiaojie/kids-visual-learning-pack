@@ -42,6 +42,7 @@ docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os
 docs/decisions/ADR-TEMPLATE.md
 scripts/ai/check-doc-governance.sh
 scripts/ai/test-doc-governance.sh
+scripts/ai/test-pre-commit.sh
 scripts/ai/check-task-state.sh
 scripts/ai/check-handoff.sh
 scripts/ai/check-agent-state.sh
@@ -103,7 +104,7 @@ check_headings docs/decisions/ADR-TEMPLATE.md "## Context" "## Decision" "## Alt
 #    docs/ai/START_PROMPTS.md 按设计包含字面 TBD/TODO 字样(自检提示词),豁免。
 #    本脚本自身包含匹配模式,豁免。
 # ---------------------------------------------------------------------------
-INFRA_FILES="AGENTS.md CLAUDE.md PROJECT_CONTEXT.md README.md docs/README.md docs/ai/README.md docs/ai/CURRENT_TASK.md docs/ai/HANDOFF.md docs/ai/BACKLOG.md docs/ai/LOCAL_CONFIG.md docs/archive/README.md docs/knowledge/codex-memory/README.md docs/knowledge/codex-memory/memory_summary.md docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md docs/decisions/ADR-TEMPLATE.md"
+INFRA_FILES="AGENTS.md CLAUDE.md PROJECT_CONTEXT.md README.md docs/README.md docs/ai/README.md docs/ai/CURRENT_TASK.md docs/ai/HANDOFF.md docs/ai/BACKLOG.md docs/ai/LOCAL_CONFIG.md docs/archive/README.md docs/knowledge/codex-memory/README.md docs/knowledge/codex-memory/memory_summary.md docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md docs/decisions/ADR-TEMPLATE.md scripts/ai/test-pre-commit.sh"
 PLACEHOLDER_HITS=""
 for f in $INFRA_FILES; do
   [ -f "$f" ] || continue
@@ -131,7 +132,7 @@ SECRET_VALUE_HITS=""
 SECRET_MENTION_FILES=""
 
 # WARN 级豁免:这些文件按设计讨论密钥边界,不出现真实值。
-WARN_ALLOWLIST="docs/ai/LOCAL_CONFIG.md AGENTS.md docs/ai/START_PROMPTS.md docs/knowledge/codex-memory/README.md docs/knowledge/codex-memory/memory_summary.md docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md scripts/ai/check-agent-infra.sh scripts/ai/check-doc-governance.sh scripts/ai/test-doc-governance.sh scripts/ai/check-task-state.sh scripts/ai/check-handoff.sh scripts/ai/check-agent-state.sh scripts/ai/install-hooks.sh .githooks/pre-commit"
+WARN_ALLOWLIST="docs/ai/LOCAL_CONFIG.md AGENTS.md docs/ai/START_PROMPTS.md docs/knowledge/codex-memory/README.md docs/knowledge/codex-memory/memory_summary.md docs/knowledge/codex-memory/rollout-summaries/2026-07-11-card-os-deployment-ops.md docs/knowledge/codex-memory/rollout-summaries/2026-07-07-local-cognitive-card-os-skill-install.md scripts/ai/check-agent-infra.sh scripts/ai/check-doc-governance.sh scripts/ai/test-doc-governance.sh scripts/ai/test-pre-commit.sh scripts/ai/check-task-state.sh scripts/ai/check-handoff.sh scripts/ai/check-agent-state.sh scripts/ai/install-hooks.sh .githooks/pre-commit"
 
 for f in $TRACKED; do
   [ -f "$f" ] || continue
