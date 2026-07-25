@@ -5,8 +5,8 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: 4193a40
-- Working Tree: 独立 worktree；Task 1 文档治理改动已暂存，主 checkout 的既有 `outputs/` 未进入分支
+- Base Commit: 2d7b987
+- Working Tree: 独立 worktree；Task 1 commit `2d7b987` 已完成，当前仅有本次提交后状态修正待提交；主 checkout 的既有 `outputs/` 未进入分支
 - Task Status: In Progress（Task 1 已实施并通过自检，等待独立 review）
 
 ## Summary
@@ -109,26 +109,22 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 
 ## Risks and Caveats
 
-- 工作区已有一批来自前序任务的未提交基础设施文件；本阶段只修改 `CURRENT_TASK.md`、`HANDOFF.md` 并新增设计 spec，没有回退或覆盖无关内容。
-- `docs/ai/` 整体仍是 Git 未跟踪目录，`git status --short` 不能逐文件显示本阶段差异；Changed Files 依据实际 `apply_patch` 操作记录。
-- 正式设计与实施计划均已落盘，用户已选择 Subagent-Driven；当前只等待该模式所需的分支、commit 与 worktree 授权。
-- 尚未复制 memory、移动历史文档或新增检查脚本。
-- Task 1 尚未实施；所有任务必须在当前隔离 worktree 串行派发，禁止并行 implementer。
-- 分阶段链接改变任务内部顺序但不改变最终设计；最终 docs map 仍必须包含 archive 与 memory 两组路由。
-- pre-commit 将新增的根级 `PROJECT_CONTEXT.md` 识别为需要 HANDOFF 同步的文件；本次 Handoff 改动仅为满足该门禁并记录实际 Task 1 证据。
+- Task 1 commit `2d7b987` 已完成；当前没有未提交的 Task 1 改动，下一关是独立 re-review。
+- `scripts/ai/check-doc-governance.sh` 尚由后续任务实现；Task 1 以文档地图链接目标核验替代该脚本的未实现部分。
+- 分阶段链接不改变最终设计：archive 与 memory 路由仍分别留给 Task 2、Task 3。
+- pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 仅记录实际 Task 1 证据和提交后状态。
 
 ## Remaining Work
 
-1. 提交 Task 1 已暂存文档治理改动。
-2. 派发 fresh reviewer 审查 Task 1 commit 并闭环评审。
-3. Task 1 review clean 后更新本计划 ledger，再进入 Task 2。
+1. 对 Task 1 commit `2d7b987` 进行独立 re-review 并闭环发现项。
+2. Task 1 re-review clean 后更新本计划 ledger，再进入 Task 2。
 
 ## Exact Next Action
 
-审查 Task 1 commit 的根级索引、docs map、规范读取顺序和 HANDOFF 证据；archive 与 memory 路由仍分别留给 Task 2、Task 3。
+对 Task 1 commit `2d7b987` 进行独立 re-review，核对根级索引、docs map、规范读取顺序与 HANDOFF 提交后状态；review clean 后进入 Task 2。
 
 ## Recovery Notes
 
-- 未执行 commit、push、merge、checkout、reset 或删除操作。
+- 已完成 Task 1 commit `2d7b987`；未执行 push、merge、checkout、reset 或删除操作。
 - 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`。
 - 若设计需要调整，直接修改 spec 与 CURRENT_TASK，并重新执行 placeholder scan、`bash scripts/ai/check-task-state.sh` 和 `git diff --check`。
