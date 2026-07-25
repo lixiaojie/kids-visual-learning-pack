@@ -5,9 +5,9 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: 2f49ce8
-- Working Tree: 独立 worktree；Task 4 初版已提交为 `2f49ce8`，review 指出严格日期、URI、mktemp fail-closed 与交接状态缺口；fix round 1 已实施并待验证、提交和 re-review；主 checkout 的既有 `outputs/` 未进入分支
-- Task Status: In Progress（Task 4 review fix round 1）
+- Base Commit: 8c8545d
+- Working Tree: 独立 worktree，当前工作区 clean；Task 4 初版 `2f49ce8` 的 review finding 已在 fix commit `8c8545d` 修复，待独立 re-review；主 checkout 的既有 `outputs/` 未进入分支
+- Task Status: In Progress（Task 4 fix 已提交，待 re-review）
 
 ## Summary
 
@@ -17,7 +17,7 @@ Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/
 
 Task 3 已创建人工筛选的项目内 Codex memory 快照：仅含 Card OS 部署运维与本地 Cognitive Card OS Skill 安装两类经验。快照标明次级、可能过期的边界及 31 天复核日期；未复制原始会话日志、私有配置、凭证或无关项目内容。`docs/README.md` 已新增次级快照路由，不将其描述为现行实现或架构真值。
 
-Task 4 初版已按 TDD 顺序提交为 `2f49ce8`：只读 `check-doc-governance.sh`、隔离 fixture 测试和统一入口接入。独立 review 发现日期不是严格 ISO、URI 路由不足、`mktemp` 未 fail-closed，且 HANDOFF 错误地将已提交初版描述为待提交；当前 fix round 1 已扩展 fixture，并收紧这些边界。checker 可通过 `DOC_GOVERNANCE_ROOT` 和 `DOC_GOVERNANCE_TODAY` 验证所需入口、归档路径、受路由 Markdown 目标和 31 天复核日期；缺失项为 FAIL，逾期复核为不阻塞 WARN。fixture 的唯一写入位于经过强校验的 `mktemp -d` 临时目录。
+Task 4 初版已按 TDD 顺序提交为 `2f49ce8`：只读 `check-doc-governance.sh`、隔离 fixture 测试和统一入口接入。独立 review 发现日期不是严格 ISO、URI 路由不足、`mktemp` 未 fail-closed，且 HANDOFF 错误地将已提交初版描述为待提交；这些 finding 已在 `8c8545d` 的 fix round 1 修复，待独立 re-review。checker 可通过 `DOC_GOVERNANCE_ROOT` 和 `DOC_GOVERNANCE_TODAY` 验证所需入口、归档路径、受路由 Markdown 目标和 31 天复核日期；缺失项为 FAIL，逾期复核为不阻塞 WARN。fixture 的唯一写入位于经过强校验的 `mktemp -d` 临时目录。
 
 ## Completed
 
@@ -60,7 +60,7 @@ Task 4 初版已按 TDD 顺序提交为 `2f49ce8`：只读 `check-doc-governance
 - 完成 Task 4：将文档治理检查接入基础设施与统一 Agent state，新增 npm 便捷命令并更新使用说明
 - 完成 Task 4：核验真实仓库文档地图、归档、memory 快照和复核日期，统一入口为 0 FAIL
 - 完成 Task 4 初版提交：`2f49ce8 feat(ai): add documentation governance checks`
-- 进行中 Task 4 review fix round 1：严格日期/TODAY、外部 URI、mktemp fail-closed、fixture 单一故障和 HANDOFF 状态修复
+- 完成 Task 4 fix commit：`8c8545d fix(ai): harden documentation governance checks`
 
 ## Changed Files
 
@@ -152,23 +152,23 @@ Task 4 初版已按 TDD 顺序提交为 `2f49ce8`：只读 `check-doc-governance
 
 ## Risks and Caveats
 
-- Task 4 初版已提交为 `2f49ce8`；本轮 review fix 待完成验证、单独提交和 re-review。
+- Task 4 初版 `2f49ce8` 与 review fix `8c8545d` 均已提交；下一关是独立 re-review。
 - `check-doc-governance.sh` 对日期使用 BSD `date -j -f` 与 GNU `date -d` 双路径；当前 macOS 环境已实际覆盖 BSD 路径，GNU 分支为静态兼容实现。
 - 分阶段链接不改变最终设计：archive 路由已由 Task 2 加入，memory 路由已由 Task 3 加入。
-- `bash scripts/ai/check-agent-state.sh` 的 HANDOFF Base Commit 新鲜度 WARN 来自先前 HANDOFF 将已提交的 Task 4 初版误写为待提交；本 round 已将 Base Commit 更正为 `2f49ce8`，fix commit 后由后续收尾同步最新状态。
+- 先前 HANDOFF 将已提交的 Task 4 初版误写为待提交，已在本轮更正；任务收尾时仍须按最终 HEAD 刷新 HANDOFF Base Commit。
 - pre-commit 要求根级 `PROJECT_CONTEXT.md` 同步 HANDOFF；本次 HANDOFF 记录 Task 2 的实际证据和提交后状态。
 
 ## Remaining Work
 
-1. 完成 Task 4 review fix round 1 的验证与单独提交。
-2. 对 Task 4 修复进行独立 re-review，重点核对严格日期、外部 URI、mktemp fail-closed、fixture 隔离和 secret 扫描未被弱化；clean 后进入 Task 5。
+1. 对 Task 4 修复进行独立 re-review，重点核对严格日期、外部 URI、mktemp fail-closed、fixture 隔离和 secret 扫描未被弱化。
+2. review clean 后更新本计划 ledger，再进入 Task 5 final consistency pass 和完整 HANDOFF 收尾。
 
 ## Exact Next Action
 
-完成 Task 4 fix round 1 验证和单独 commit 后，进行独立 re-review，核对严格日期、外部 URI、mktemp fail-closed、统一入口顺序与 secret 扫描高置信 FAIL 规则；review clean 后进入 Task 5。
+对 `8c8545d` 的 Task 4 fix 进行独立 re-review，核对严格日期、外部 URI、mktemp fail-closed、统一入口顺序与 secret 扫描高置信 FAIL 规则；review clean 后进入 Task 5。
 
 ## Recovery Notes
 
-- 已完成 Task 1 commit `2d7b987`、Task 2 archive commit、Task 3 memory snapshot commit 和 Task 4 初版 `2f49ce8`；当前正在修复 Task 4 review finding，未执行 push、merge、checkout、reset 或删除操作。
+- 已完成 Task 1 commit `2d7b987`、Task 2 archive commit、Task 3 memory snapshot commit、Task 4 初版 `2f49ce8` 和 review fix `8c8545d`；未执行 push、merge、checkout、reset 或删除操作。
 - 本阶段没有修改业务代码、生产配置、CI、用户级 memory 或 `outputs/`；Task 4 新增的 checker 只读项目文件，fixture 测试仅在 `mktemp -d` 临时目录写入并清理。
 - 若设计需要调整，直接修改 spec 与 CURRENT_TASK，并重新执行 placeholder scan、`bash scripts/ai/check-task-state.sh` 和 `git diff --check`。
