@@ -5,13 +5,15 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: 81f6a7f
-- Working Tree: 独立 worktree；当前有用户裁决后的计划与状态更新，主 checkout 的既有 `outputs/` 未进入分支
-- Task Status: In Progress（用户选择分阶段加入 archive/memory 链接；准备派发 Task 1）
+- Base Commit: 4193a40
+- Working Tree: 独立 worktree；Task 1 文档治理改动已暂存，主 checkout 的既有 `outputs/` 未进入分支
+- Task Status: In Progress（Task 1 已实施并通过自检，等待独立 review）
 
 ## Summary
 
 用户已确认完整设计、书面 spec、5 任务实施计划，并授权 Subagent-Driven 所需的 feature branch、基线 commit 和隔离 worktree。当前分支 `codex/project-doc-governance` 已从包含既有 Agent 基础设施与本次设计/计划的 `81f6a7f` 启动；主 checkout 已切回 `main`，`outputs/` 未进入分支。SDD 6.2 预检发现 Task 1 的 docs map 会链接 Task 2/3 才创建的目标；用户选择方案 A：Task 1 不加入未来链接，Task 2 创建 archive 后添加 archive 路由，Task 3 创建 memory 后添加 memory 路由。
+
+Task 1 已建立稳定根索引 `PROJECT_CONTEXT.md`、正式文档地图 `docs/README.md`，并将 README、AGENTS 和 AI 协作流程切换到统一读取顺序。为满足 pre-commit 对根级 `PROJECT_CONTEXT.md` 的同步交接要求，本次最小更新本 HANDOFF；未改动 CURRENT_TASK、archive 或 memory 路由。
 
 ## Completed
 
@@ -43,6 +45,9 @@
 - 生成 Task 1 brief 前完成计划顺序复核，发现 archive/memory 未来链接冲突
 - 用户裁决采用分阶段加入链接，避免 Task 1 临时断链
 - 实施计划已调整：Archive 路由归 Task 2，Codex Memory 路由归 Task 3
+- 完成 Task 1：新建根级项目上下文与文档地图，更新协作入口、工程规则、AI 基础设施说明和启动提示词
+- 核验 Task 1 前置条件：`PROJECT_CONTEXT.md` 与 `docs/README.md` 在实施前均不存在
+- 核验 Task 1 导航、41 个 docs map 链接目标与空白错误
 
 ## Changed Files
 
@@ -52,6 +57,12 @@
 | `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md` | 新建并修订 | 保存用户批准的跨模型文档治理设计，并移除参考项目绝对路径 |
 | `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md` | 新建 | 保存 5 个任务的详细实施计划与验证命令 |
 | `docs/ai/HANDOFF.md` | 修改 | 记录本阶段实际进度、验证和下一步门禁 |
+| `PROJECT_CONTEXT.md` | 新建 | 稳定根索引、规范读取顺序与跨模型恢复边界 |
+| `docs/README.md` | 新建 | 正式文档唯一导航地图与状态 |
+| `README.md` | 修改 | 增加根级跨模型协作入口 |
+| `AGENTS.md` | 修改 | 更新必读顺序、仓库结构、治理规则与自检命令 |
+| `docs/ai/README.md` | 修改 | 记录根索引、文档地图、archive/memory 责任边界和复核规则 |
+| `docs/ai/START_PROMPTS.md` | 修改 | 更新恢复/审查/自检提示并增加定期文档治理复核 |
 
 ## Decisions Made
 
@@ -84,12 +95,17 @@
 | `bash scripts/ai/check-agent-state.sh`（修正 HANDOFF 表述后） | WARN | 0 FAIL；唯一 WARN 为既有文件中的认证相关字段名提示，与本阶段修改无关 |
 | `git diff --check` | PASS | 无空白错误 |
 | `git status --short` | PASS | 已核实工作区仍包含此前基础设施改动、本阶段设计文件及既有 `outputs/` |
+| Task 1 前置 `test -f PROJECT_CONTEXT.md; test -f docs/README.md` | PASS | 两个命令均以 exit 1 失败，确认索引在实施前不存在 |
+| Task 1 导航验证（`test`、`rg`、`git diff --check`） | PASS | 新索引存在，四个协作文档均包含规范路由，diff 无空白错误 |
+| Task 1 docs map 链接目标核验 | PASS | `docs/README.md` 的 41 个 Markdown 链接目标均存在 |
+| Task 1 `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有认证字段名提示和 Base Commit 新鲜度提示均与 Task 1 无关 |
 
 ## Known Failures
 
 - `node boards/kids-world/structure.test.mjs` 的既有断言失败 `19 !== 18`，来自上一 HANDOFF；本阶段未运行该命令，也未修改 `boards/`，与本任务无关。
 - `bash scripts/ai/check-agent-state.sh` 首次运行时，HANDOFF 中记录的扫描命令字面量命中了基础设施保留词；已改为语义化验证名称，属于交接文档表述问题。
 - 当前尚不存在 `scripts/ai/check-doc-governance.sh`，因此不能运行最终文档治理检查；它属于用户审阅 spec 后的实施阶段，不是当前设计阶段失败。
+- Task 1 仍未执行 `check-doc-governance.sh`：该脚本属于后续 Task，当前 worktree 尚不存在；已完成文档地图链接目标的只读核验作为本任务范围内替代验证。
 
 ## Risks and Caveats
 
@@ -99,16 +115,17 @@
 - 尚未复制 memory、移动历史文档或新增检查脚本。
 - Task 1 尚未实施；所有任务必须在当前隔离 worktree 串行派发，禁止并行 implementer。
 - 分阶段链接改变任务内部顺序但不改变最终设计；最终 docs map 仍必须包含 archive 与 memory 两组路由。
+- pre-commit 将新增的根级 `PROJECT_CONTEXT.md` 识别为需要 HANDOFF 同步的文件；本次 Handoff 改动仅为满足该门禁并记录实际 Task 1 证据。
 
 ## Remaining Work
 
-1. 重新生成 Task 1 brief。
-2. 派发 fresh implementer，Task 1 commit 后生成 review package 并闭环评审。
+1. 提交 Task 1 已暂存文档治理改动。
+2. 派发 fresh reviewer 审查 Task 1 commit 并闭环评审。
 3. Task 1 review clean 后更新本计划 ledger，再进入 Task 2。
 
 ## Exact Next Action
 
-重新生成 Task 1 brief，派发 fresh implementer 实施根级索引、docs map 与治理规范；archive 与 memory 路由分别留给 Task 2、Task 3。
+审查 Task 1 commit 的根级索引、docs map、规范读取顺序和 HANDOFF 证据；archive 与 memory 路由仍分别留给 Task 2、Task 3。
 
 ## Recovery Notes
 

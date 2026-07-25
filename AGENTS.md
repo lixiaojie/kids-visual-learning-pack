@@ -48,9 +48,11 @@
 开始任何工作前，至少读取:
 
 1. `AGENTS.md`（本文件）。
-2. `docs/ai/CURRENT_TASK.md`（当前任务与验收标准）。
-3. `docs/ai/HANDOFF.md`（最近交接与已知问题）。
-4. 与当前任务相关的:`README.md`、`docs/project-structure.md`、`docs/decisions/` 下相关 ADR、`docs/superpowers/specs|plans/` 下相关设计/计划。
+2. `PROJECT_CONTEXT.md`（稳定根索引与读取顺序）。
+3. `docs/README.md`（正式文档地图与状态）。
+4. `docs/ai/CURRENT_TASK.md`（当前任务与验收标准）。
+5. `docs/ai/HANDOFF.md`（最近交接与已知问题）。
+6. 与当前任务相关的:`README.md`、`docs/project-structure.md`、`docs/decisions/` 下相关 ADR、`docs/superpowers/specs|plans/` 下相关设计/计划。
 
 使用 Kimi Code 时，若客户端未自动加载本文件，使用 `docs/ai/START_PROMPTS.md` 中的启动提示词。
 
@@ -62,10 +64,12 @@
 2. 检查当前分支（`git branch --show-current`);
 3. 检查未提交修改（`git status --short`);
 4. 读取 `AGENTS.md`;
-5. 读取 `docs/ai/CURRENT_TASK.md`;
-6. 读取 `docs/ai/HANDOFF.md`;
-7. 读取与当前任务有关的架构文档和 ADR;
-8. 向用户报告以下核实结果:
+5. 读取 `PROJECT_CONTEXT.md`;
+6. 读取 `docs/README.md`;
+7. 读取 `docs/ai/CURRENT_TASK.md`;
+8. 读取 `docs/ai/HANDOFF.md`;
+9. 读取与当前任务有关的架构文档和 ADR;
+10. 向用户报告以下核实结果:
    - 仓库根目录；
    - 当前分支；
    - 未提交修改；
@@ -75,7 +79,7 @@
    - Acceptance Criteria;
    - HANDOFF 中的 Exact Next Action;
    - 本次预计修改范围；
-9. 完成上述核实后再修改文件。
+11. 完成上述核实后再修改文件。
 
 不要求通读整个仓库，只针对当前任务探索相关代码和文档。
 
@@ -83,6 +87,7 @@
 
 ```text
 .
+├── PROJECT_CONTEXT.md         # 稳定根索引与规范读取顺序
 ├── index.html                  # 所有看板的入口页
 ├── boards/                     # 各主题看板(kids-world / spider-verse / paw-patrol)
 ├── shared/                     # 跨看板共享样式与图标
@@ -95,6 +100,7 @@
 │   └── ai/                     # 多 Agent 基础设施脚本
 ├── tests/                      # Card OS Python unittest
 ├── docs/                       # 全部正式文档
+│   ├── README.md               # 唯一正式文档地图与状态
 │   ├── ai/                     # 多 Agent 任务状态与交接(CURRENT_TASK / HANDOFF / BACKLOG)
 │   ├── decisions/              # ADR(架构决策记录)
 │   ├── superpowers/specs|plans # 正式设计与实施计划
@@ -179,6 +185,7 @@ Vercel:`vercel.json` 的 `buildCommand: npm run build`,`outputDirectory: dist`�
 
 ```bash
 bash scripts/ai/check-agent-state.sh   # 统一入口:infra + task-state + handoff + git diff --check;或 npm run check:agent-state
+bash scripts/ai/check-doc-governance.sh # 文档地图、链接、状态与复核日期检查
 bash scripts/ai/check-agent-infra.sh   # 单项:基础设施完整性。或 npm run check:agent-infra
 bash scripts/ai/check-task-state.sh    # 单项:CURRENT_TASK.md 状态一致性
 bash scripts/ai/check-handoff.sh       # 单项:HANDOFF.md 时效性与完整性
@@ -247,6 +254,16 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 - 串行切换 Agent 前，当前 Agent 必须先更新 `docs/ai/HANDOFF.md` 并保持 Git 状态清晰。
 - 并行成果的汇总只通过 commit / cherry-pick / merge 进行。
 - 提交前钩子 `.githooks/pre-commit` 对所有 Git 提交入口统一生效，不与任何特定 Agent 绑定；暂存业务代码时必须同步更新并暂存 `docs/ai/HANDOFF.md`（纯文档、基础设施初始化等豁免规则见 Hook 输出）。`--no-verify` 仅限人工明确例外场景；CI（若已配置）仍会执行 `scripts/ai/check-agent-state.sh` 兜底。
+
+## Documentation Governance
+
+- `PROJECT_CONTEXT.md` is the stable root index; it must not copy dynamic task progress.
+- `docs/README.md` is the only canonical documentation map.
+- Update `CURRENT_TASK.md` when starting a task and `HANDOFF.md` at each verified phase, blocker, or model switch.
+- Update `PROJECT_CONTEXT.md` and `docs/README.md` when project structure, commands, canonical direction, or formal-document status changes.
+- Archive only with explicit replacement evidence and record every move in `docs/archive/README.md`.
+- Review the documentation map and project memory snapshot every 31 days.
+- Project memory is curated manually; no script may copy global memory automatically.
 
 ## 10. Task State Protocol
 

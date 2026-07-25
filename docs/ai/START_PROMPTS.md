@@ -13,9 +13,11 @@
 2. 检查当前分支(git branch --show-current);
 3. 检查未提交修改(git status --short);
 4. 读取 AGENTS.md;
-5. 读取 docs/ai/CURRENT_TASK.md;
-6. 读取 docs/ai/HANDOFF.md;
-7. 读取与当前任务有关的架构文档和 ADR。
+5. 读取 PROJECT_CONTEXT.md;
+6. 读取 docs/README.md;
+7. 读取 docs/ai/CURRENT_TASK.md;
+8. 读取 docs/ai/HANDOFF.md;
+9. 读取与当前任务有关的架构文档和 ADR。
 
 然后向我报告:仓库根目录、当前分支、未提交修改、当前任务目标、In Scope、Out of Scope、Acceptance Criteria、HANDOFF 中的 Exact Next Action、本次预计修改范围。
 
@@ -25,7 +27,7 @@
 ## 2. 启动新任务
 
 ```text
-请先读取 AGENTS.md、docs/ai/BACKLOG.md、相关架构文档和 ADR。
+请先读取 AGENTS.md、PROJECT_CONTEXT.md、docs/README.md、docs/ai/BACKLOG.md、相关架构文档和 ADR。
 
 当前需要处理的新任务是:
 
@@ -39,7 +41,7 @@
 ## 3. 只做代码审查
 
 ```text
-请读取 AGENTS.md、CURRENT_TASK.md、HANDOFF.md,并检查当前 Git diff。
+请读取 AGENTS.md、PROJECT_CONTEXT.md、docs/README.md、CURRENT_TASK.md、HANDOFF.md,并检查当前 Git diff。
 
 本次只做代码审查，不修改文件。
 
@@ -85,6 +87,8 @@
 检查:
 
 - AGENTS.md 是否为唯一通用规则源;
+- PROJECT_CONTEXT.md 是否保持稳定、不复制动态任务进度;
+- docs/README.md 是否为唯一正式文档地图，且链接和状态与实际结构一致;
 - CLAUDE.md 是否只做适配;
 - CURRENT_TASK、HANDOFF、BACKLOG 是否职责清晰;
 - 是否存在重复或冲突规则;
@@ -93,5 +97,22 @@
 - HANDOFF 是否能让另一个 Agent 直接接手;
 - 文档是否存在 TBD、TODO、占位符或虚构信息。
 
-只修复基础设施文件，不修改业务代码。可先运行 bash scripts/ai/check-agent-infra.sh 获得机械检查结果。
+只修复基础设施文件，不修改业务代码。先运行 bash scripts/ai/check-doc-governance.sh 和 bash scripts/ai/check-agent-infra.sh 获得机械检查结果。
+```
+
+## 6. 定期文档治理复核
+
+```text
+请执行定期文档治理复核。
+
+先读取 AGENTS.md、PROJECT_CONTEXT.md、docs/README.md、docs/ai/CURRENT_TASK.md 和 docs/ai/HANDOFF.md，然后：
+
+1. 对照实际仓库结构检查根索引、文档地图和正式 Markdown 链接；
+2. 检查文档状态、归档候选及其替代证据，不要无证据归档；
+3. 检查 docs/knowledge/codex-memory/ 的人工快照是否仍相关，并确认其不覆盖代码、测试和正式文档；
+4. 检查 Last Reviewed / Next Review Due 是否需要更新；
+5. 运行 bash scripts/ai/check-doc-governance.sh 和 bash scripts/ai/check-agent-state.sh；
+6. 基于实际 Git 状态和命令结果更新 docs/ai/HANDOFF.md，记录验证、风险、剩余工作和 Exact Next Action。
+
+不要从用户目录或全局记忆自动复制内容；只在有明确替代证据时归档文档。
 ```

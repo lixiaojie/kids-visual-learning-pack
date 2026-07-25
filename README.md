@@ -14,6 +14,18 @@ Project slug: `kids-visual-learning-pack`
 
 详细目录说明见 `docs/project-structure.md`。
 
+## 跨模型协作入口
+
+新的 Coding Agent 或模型工具先按以下顺序恢复上下文：
+
+1. [工程规则](AGENTS.md)
+2. [项目上下文](PROJECT_CONTEXT.md)
+3. [文档地图](docs/README.md)
+4. [当前任务](docs/ai/CURRENT_TASK.md)
+5. [最近交接](docs/ai/HANDOFF.md)
+
+不要依赖上一模型的会话记忆；以仓库代码、测试、正式文档和落盘任务状态为准。
+
 ## Cognitive Card OS
 
 儿童知识卡生产能力正在升级为“薄 Skill + 个人服务器核心”。`0.3.1` 服务端核心已经部署到

@@ -12,8 +12,12 @@
 
 ```text
 AGENTS.md                  # 唯一通用规则源
+PROJECT_CONTEXT.md         # 稳定根索引与规范读取顺序
 CLAUDE.md                  # Claude Code 适配层(只引用,不复制)
+docs/README.md             # 唯一正式文档地图与状态
 docs/ai/                   # 本目录:任务、交接、Backlog、启动提示词
+docs/archive/              # 已归档文档与替代指针
+docs/knowledge/codex-memory/ # 人工维护的项目记忆快照
 docs/decisions/            # ADR(架构决策记录)
 docs/                      # 正式架构文档、superpowers/specs|plans、operations、compliance
 构建/测试/校验脚本(scripts/、package.json、tests/)
@@ -43,17 +47,22 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 | 文件 | 职责 | 不是什么 |
 | --- | --- | --- |
 | `AGENTS.md` | 唯一通用工程规则源 | 不是任务状态，不是交接记录 |
+| `PROJECT_CONTEXT.md` | 稳定根索引与规范读取顺序 | 不复制动态任务进度 |
+| `docs/README.md` | 唯一正式文档地图与状态 | 不替代代码、测试、任务状态或交接记录 |
 | `CLAUDE.md` | Claude Code 适配层 | 不复制 AGENTS.md 内容 |
 | `docs/ai/CURRENT_TASK.md` | 当前正式任务与验收标准 | 不是需求池，不是历史记录 |
 | `docs/ai/HANDOFF.md` | 最近一次可靠交接 | 不是长期架构真值 |
 | `docs/ai/BACKLOG.md` | 未进入执行范围的事项 | 不是执行计划 |
 | `docs/ai/LOCAL_CONFIG.md` | 本地私有配置边界说明 | 不记录任何真实凭证 |
 | `docs/ai/START_PROMPTS.md` | 可复制的标准启动提示词 | 不是规则来源 |
+| `docs/archive/` | 已归档文档与替代指针 | 不存放尚未证实被替代的历史文件 |
+| `docs/knowledge/codex-memory/` | 人工维护的项目记忆快照 | 不替代代码、测试或正式文档 |
 | `docs/decisions/ADR-TEMPLATE.md` | ADR 模板 | 不是决策本身 |
 | `scripts/ai/check-agent-infra.sh` | 基础设施完整性只读检查 | 不修改文件 |
 | `scripts/ai/check-task-state.sh` | CURRENT_TASK 状态一致性只读检查 | 不修改文件 |
 | `scripts/ai/check-handoff.sh` | HANDOFF 时效性与完整性只读检查 | 不修改文件 |
 | `scripts/ai/check-agent-state.sh` | 统一检查入口（以上三项 + `git diff --check`) | 不修改文件 |
+| `scripts/ai/check-doc-governance.sh` | 文档地图、链接、状态与复核日期检查 | 不修改文件 |
 | `scripts/ai/install-hooks.sh` | 安装仓库级 Git Hook（每个 clone 一次） | 不触碰用户级配置 |
 | `.githooks/pre-commit` | 提交前快速检查与 HANDOFF 强制 | 与任何特定 Agent 无关 |
 
@@ -63,12 +72,14 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 - `docs/kids-world-image-generation-handoff.md`：主题级专项交接，保留原位置；仓库级最近交接以 `docs/ai/HANDOFF.md` 为准。
 - `docs/cross-renderer-decisions.md`：既有正式决策记录，保留原位置，视为 ADR 之前的决策文档；新增决策用 `docs/decisions/` 下的 ADR。
 - `.superpowers/`（已被 `.gitignore` 忽略）：会话级非正式工作记录，不作为交接真值。
+- `docs/knowledge/codex-memory/`：项目记忆快照仅作次级参考，必须人工整理；代码、测试和正式仓库文档冲突时优先。
 
 ## 4. 开始新任务的流程
 
 ```text
 读取规则(AGENTS.md)
-→ 检查 Git 状态
+→ 读取稳定根索引(PROJECT_CONTEXT.md)
+→ 读取文档地图(docs/README.md)
 → 读取 CURRENT_TASK
 → 读取 HANDOFF
 → 检查相关代码和文档
@@ -85,7 +96,7 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 当前 Agent 完成可验证的小阶段
 → 更新 HANDOFF
 → 保持 Git 状态清晰
-→ 下一 Agent 读取同一套文件(AGENTS.md / CURRENT_TASK / HANDOFF)
+→ 下一 Agent 读取同一套文件(AGENTS.md / PROJECT_CONTEXT.md / docs/README.md / CURRENT_TASK / HANDOFF)
 → 继续执行
 ```
 
@@ -103,8 +114,9 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 1. 执行 `AGENTS.md` 第 8 节的验证要求。
 2. 更新 `CURRENT_TASK.md` 的 Status 和 Current State。
 3. 更新 `HANDOFF.md`（基于真实 `git status` 与验证输出）。
-4. 长期决策补建 ADR；未完成事项移回 `BACKLOG.md`。
-5. 是否提交由用户决定；Agent 不自动 commit / push。
+4. 发生正式文档增删、移动、替代或状态变化时，同步更新 `PROJECT_CONTEXT.md` 和 `docs/README.md`。
+5. 长期决策补建 ADR；未完成事项移回 `BACKLOG.md`。
+6. 是否提交由用户决定；Agent 不自动 commit / push。
 
 ## 8. 哪些信息不能进入 Git
 
@@ -121,6 +133,14 @@ npm run check:agent-state
 ```
 
 它按序执行 `check-agent-infra.sh`（基础设施完整性）、`check-task-state.sh`(CURRENT_TASK 一致性）、`check-handoff.sh`(HANDOFF 时效性）和 `git diff --check`，汇总 PASS / WARN / FAIL；任一 FAIL 时以非零退出码结束。单项脚本也可单独运行（如 `npm run check:agent-infra`)。全部脚本只读，不修改文件。
+
+文档治理检查：
+
+```bash
+bash scripts/ai/check-doc-governance.sh
+```
+
+在正式文档增删、移动、替代或状态变化时运行；另外在任务事件发生时复核相关入口，并每 31 天复核一次文档地图与人工维护的项目记忆快照。脚本不得从用户目录或全局记忆自动复制内容。
 
 ## 10. 如何新增 ADR
 
