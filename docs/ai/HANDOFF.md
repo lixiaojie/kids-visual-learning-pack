@@ -5,8 +5,8 @@
 - Updated At: 2026-07-25
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
-- Base Commit: d64cbfc
-- Working Tree: Task 5 收口开始时 clean；本文件与 CURRENT_TASK 的收口更新待本次已授权 Task 5 commit，提交后会复核并记录最终 HEAD/status
+- Base Commit: a9007bb（Task 5 内容提交；本次最小状态记录仅更新 HANDOFF）
+- Working Tree: 已验证 `a9007bb` 后 clean；本状态记录提交后仍应为 clean
 - Task Status: Done（Task 1–5 均已完成；feature branch 待独立终审）
 
 ## Summary
@@ -63,8 +63,8 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 | --- | --- | --- |
 | `bash scripts/ai/test-doc-governance.sh` | PASS | 13/13 fixture：current、单一 missing/broken、严格日期、today、overdue WARN、URI 与 mktemp fail-closed |
 | `bash scripts/ai/check-doc-governance.sh` | PASS | required files、archive replacement、受路由链接和 31 天复核均通过 |
-| `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；仅既有 secret-field-name 人工复核 WARN，高置信 secret-value 扫描通过 |
-| `bash scripts/ai/check-handoff.sh` | WARN | 收口前运行；仅旧 `Base Commit: 8c8545d` 落后于当时 HEAD `d64cbfc`，本 HANDOFF 已更新，shutdown 后复跑 |
+| `bash scripts/ai/check-agent-state.sh` | WARN | `a9007bb` 后复跑为 0 FAIL；仅既有 secret-field-name 人工复核与旧 HANDOFF Base Commit 的信息级 WARN |
+| `bash scripts/ai/check-handoff.sh` | WARN | `a9007bb` 后复跑；仅旧 `Base Commit: d64cbfc` 落后于 HEAD。该最小状态记录将快照提交更新为 `a9007bb` |
 | `git diff --check` | PASS | 收口前无空白错误 |
 | `git status --short` | PASS | 收口前 clean |
 | Markdown inventory | PASS | 完整 inventory 已检查；不需调整 `docs/README.md` |
@@ -79,7 +79,7 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 
 - `check-agent-state.sh` 的 secret-field-name WARN 来自既有代码和文档的字段名提及；高置信 secret-value 扫描通过。本任务未弱化该扫描。
 - `check-doc-governance.sh` 的 BSD 日期路径已在当前 macOS 环境执行；GNU fallback 仅静态兼容实现，未在本轮运行。
-- Task 5 commit 后必须以最终 commit hash 与 clean status 刷新本文件；不得保留“待提交”的动态状态。
+- `a9007bb` 是 Task 5 内容提交；紧随的最小状态记录只刷新 HANDOFF 快照，避免留下“待提交”的动态状态。
 
 ## Remaining Work
 
@@ -92,7 +92,7 @@ Task 5 的完整 Markdown inventory 覆盖了根、`docs/`、skills 与生成报
 
 ## Recovery Notes
 
-- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，最近收口前 HEAD 为 `d64cbfc`。
+- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`。
 - Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
 - 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- 本文件初次写入时尚未产生 Task 5 commit；提交后会立即运行 shutdown checks，并以最小状态记录保持最终 HANDOFF 与 HEAD/status 一致。
+- 本最小状态记录之外无待提交工作；提交后只运行 shutdown checks，不执行 push、merge、rebase 或 PR。
