@@ -6,7 +6,7 @@
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
 - Base Commit: 2d7b987
-- Working Tree: 独立 worktree；Task 1 implementation commit `2d7b987` 与提交后状态修正已完成，当前任务等待独立 re-review；主 checkout 的既有 `outputs/` 未进入分支
+- Working Tree: 独立 worktree clean；Task 1 implementation commit `2d7b987` 与提交后状态修正已完成，当前任务等待独立 re-review；主 checkout 的既有 `outputs/` 未进入分支
 - Task Status: In Progress（Task 1 已实施并通过自检，等待独立 review）
 
 ## Summary
