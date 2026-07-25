@@ -226,14 +226,6 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 
 Historical reference files remain in place until explicit replacement evidence justifies archival.
 
-## Codex Memory Snapshots
-
-Link [Codex Memory Snapshot Index](knowledge/codex-memory/README.md) and state that snapshots are secondary retrieval aids.
-
-## Archive
-
-Link [Archive Manifest](archive/README.md). State that archived files are retained for traceability and are never first-read context.
-
 ## Maintenance
 
 - Update this map whenever a formal Markdown file is added, moved, superseded, or archived.
@@ -320,6 +312,7 @@ Inspect only Task 1 files with `git diff -- README.md AGENTS.md PROJECT_CONTEXT.
 - Create: `docs/archive/README.md`
 - Move: `docs/spec-v1.md` → `docs/archive/2026-07-24-doc-governance/spec-v1.md`
 - Move: `docs/architecture-iteration-v1.2.md` → `docs/archive/2026-07-24-doc-governance/architecture-iteration-v1.2.md`
+- Modify: `docs/README.md`
 - Modify: `AGENTS.md`
 - Modify: active Markdown files with confirmed inbound references to the two old paths
 
@@ -392,6 +385,14 @@ For every additional active reference reported in Step 1:
 - route architecture readers to the replacement;
 - route historical provenance readers to `docs/archive/README.md`;
 - leave references inside archived files unchanged.
+
+Append this section to `docs/README.md` after the historical-reference section:
+
+```markdown
+## Archive
+
+[Archive Manifest](archive/README.md) records every superseded document, its retained location, reason, and replacement. Archived files are never first-read context.
+```
 
 - [ ] **Step 5: Verify archive integrity and active routing**
 
