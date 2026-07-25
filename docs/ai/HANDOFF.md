@@ -6,12 +6,12 @@
 - Agent: OpenAI Codex
 - Branch: codex/project-doc-governance
 - Base Commit: 81f6a7f
-- Working Tree: 独立 worktree；当前仅有本次 SDD 启动状态更新，主 checkout 的既有 `outputs/` 未进入分支
-- Task Status: In Progress（用户已授权并完成 feature branch、基线 commit 与隔离 worktree；准备执行 Task 1）
+- Working Tree: 独立 worktree；当前仅有本次预检门禁状态更新，主 checkout 的既有 `outputs/` 未进入分支
+- Task Status: Paused（SDD 预检发现 Task 1 会产生指向 Task 2/3 未来文件的临时断链，等待用户裁决）
 
 ## Summary
 
-用户已确认完整设计、书面 spec、5 任务实施计划，并授权 Subagent-Driven 所需的 feature branch、基线 commit 和隔离 worktree。当前分支 `codex/project-doc-governance` 已从包含既有 Agent 基础设施与本次设计/计划的 `81f6a7f` 启动；主 checkout 已切回 `main`，`outputs/` 未进入分支。后续按 Task 1–5 串行 implementer → reviewer → fix/re-review，最后执行 broad final review。
+用户已确认完整设计、书面 spec、5 任务实施计划，并授权 Subagent-Driven 所需的 feature branch、基线 commit 和隔离 worktree。当前分支 `codex/project-doc-governance` 已从包含既有 Agent 基础设施与本次设计/计划的 `81f6a7f` 启动；主 checkout 已切回 `main`，`outputs/` 未进入分支。SDD 6.2 预检发现 Task 1 的 docs map 按原计划会链接 Task 2/3 才创建的 archive 与 memory 文件，导致 Task 1 独立评审时存在断链；实施尚未派发，等待用户裁决中间态策略。
 
 ## Completed
 
@@ -40,6 +40,7 @@
 - 创建隔离 worktree `.worktrees/project-doc-governance`
 - `npm install` 完成；撤销其产生的非任务 `package-lock.json` 元数据漂移
 - 创建本计划独立 SDD workspace 与 ledger
+- 生成 Task 1 brief 前完成计划顺序复核，发现 archive/memory 未来链接冲突
 
 ## Changed Files
 
@@ -95,16 +96,17 @@
 - 正式设计与实施计划均已落盘，用户已选择 Subagent-Driven；当前只等待该模式所需的分支、commit 与 worktree 授权。
 - 尚未复制 memory、移动历史文档或新增检查脚本。
 - Task 1 尚未实施；所有任务必须在当前隔离 worktree 串行派发，禁止并行 implementer。
+- 若 Task 1 保留未来链接，task reviewer 很可能把断链判为质量缺陷；推荐让 Task 1 暂不加入这两组链接，由 Task 2/3 在目标文件创建后补入。
 
 ## Remaining Work
 
-1. 生成 Task 1 brief，派发 fresh implementer。
-2. Task 1 commit 后生成 review package，派发 task reviewer 并闭环 findings。
-3. Task 1 review clean 后更新本计划 ledger，再进入 Task 2。
+1. 用户裁决 Task 1 的 archive/memory 中间态链接策略。
+2. 根据裁决更新实施计划与 Task 1 brief。
+3. 派发 fresh implementer，Task 1 commit 后生成 review package 并闭环评审。
 
 ## Exact Next Action
 
-在隔离 worktree 中生成 Task 1 brief，并派发 fresh implementer 实施根级索引、docs map 与治理规范；不要直接跳到 Task 2。
+用户确认以下两种方案之一：A（推荐）Task 1 暂不加入 archive/memory 链接，Task 2/3 创建目标后各自补入；B 保留原计划并允许 Task 1 到 Task 3 之间存在临时断链。
 
 ## Recovery Notes
 
