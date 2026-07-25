@@ -4,7 +4,7 @@
 
 - Updated At: 2026-07-25
 - Updated By: OpenAI Codex
-- Status: In Progress
+- Status: Done
 - Branch: codex/project-doc-governance
 - Base Commit: 81f6a7f
 
@@ -14,28 +14,20 @@
 
 ## Background
 
-仓库已经有一批尚未提交的多 Agent 基础设施：`AGENTS.md`、`CLAUDE.md`、`docs/ai/`、`docs/decisions/`、`scripts/ai/`、`.githooks/` 和 `package.json` 便捷命令。现状缺口是：
-
-- 没有根级薄索引，模型需要在 `README.md` 与 `docs/ai/` 之间自行推断入口；
-- 没有统一 docs 文档地图标注各文档角色、状态和替代关系；
-- 项目相关经验仍部分只存在于 `~/.codex/memories/`；
-- 历史版本与现行文档混在 `docs/` 活动路径；
-- 尚未建立“每个任务收尾 + 每月复核”的文档与 memory 更新闭环。
-
-用户已批准治理闭环方案、精选 memory 项目内快照和有替代证据的历史文档归档。
+用户已批准治理闭环方案、精选 memory 项目内快照和有替代证据的历史文档归档，并已明确授权 `codex/project-doc-governance` 上 Task 1–5 的 feature-branch commits；push、merge 和 PR 仍未授权。
 
 ## Acceptance Criteria
 
-- [ ] 根级 PROJECT_CONTEXT.md 提供稳定薄索引，不复制动态任务状态
-- [ ] docs/README.md 成为正式文档唯一导航地图，标注文档角色与状态
-- [ ] `AGENTS.md`、`docs/ai/README.md`、`docs/ai/START_PROMPTS.md` 写明跨模型必读顺序和定期更新规则
-- [ ] 项目相关 Codex memory 以精选 Markdown 快照保存于 docs/knowledge/codex-memory/，并标明来源、快照性质、`Last Reviewed`、`Next Review Due` 和冲突优先级
-- [ ] 有明确替代证据的旧文档移入带 manifest 的 docs/archive/2026-07-24-doc-governance/，现行入口不再路由到旧版本
-- [ ] scripts/ai/check-doc-governance.sh 检查规范入口、索引目标与 31 天复核周期，并接入统一检查入口
-- [ ] 不复制原始会话 JSONL、凭证、私有配置或整个全局 memory 树
-- [ ] 不修改业务代码、Card OS 实现、CI 或部署配置
-- [ ] `bash scripts/ai/check-doc-governance.sh`、`bash scripts/ai/check-agent-state.sh` 与 `git diff --check` 通过
-- [ ] `docs/ai/HANDOFF.md` 基于实际修改和验证结果更新
+- [x] 根级 PROJECT_CONTEXT.md 提供稳定薄索引，不复制动态任务状态
+- [x] docs/README.md 成为正式文档唯一导航地图，标注文档角色与状态
+- [x] `AGENTS.md`、`docs/ai/README.md`、`docs/ai/START_PROMPTS.md` 写明跨模型必读顺序和定期更新规则
+- [x] 项目相关 Codex memory 以精选 Markdown 快照保存于 docs/knowledge/codex-memory/，并标明来源、快照性质、`Last Reviewed`、`Next Review Due` 和冲突优先级
+- [x] 有明确替代证据的旧文档移入带 manifest 的 docs/archive/2026-07-24-doc-governance/，现行入口不再路由到旧版本
+- [x] scripts/ai/check-doc-governance.sh 检查规范入口、索引目标与 31 天复核周期，并接入统一检查入口
+- [x] 不复制原始会话 JSONL、凭证、私有配置或整个全局 memory 树
+- [x] 不修改业务代码、Card OS 实现、CI 或部署配置
+- [x] `bash scripts/ai/check-doc-governance.sh`、`bash scripts/ai/check-agent-state.sh` 与 `git diff --check` 通过
+- [x] `docs/ai/HANDOFF.md` 基于实际修改和验证结果更新
 
 ## In Scope
 
@@ -65,7 +57,7 @@
 - 用户级 `~/.codex/memories/`、`~/.claude/` 或其他客户端私有配置
 - 自动复制整个 memory 树或原始会话 JSONL
 - 没有明确替代证据的历史文档批量移动
-- git commit / push / merge / PR（除非用户另行明确要求）
+- push、merge 或 PR
 
 ## Constraints
 
@@ -79,39 +71,40 @@
 
 ## Current State
 
-- 已完成：启动协议核实；读取本仓库及两个参考项目的入口、任务、交接、索引和归档结构；筛选项目相关 memory；用户批准并审阅书面设计；实施计划已落盘并完成覆盖、自洽和未完成标记自审
-- 进行中：用户选择分阶段加入链接；实施计划已修正，准备重新生成 Task 1 brief 并派发 implementer
-- 尚未开始：索引、归档、快照、检查脚本实施；最终验证与 HANDOFF
-- 已知问题：工作区已有未提交基础设施改动；`outputs/` 为既有未跟踪目录；既有 `node boards/kids-world/structure.test.mjs` 失败 `19 !== 18` 与本任务无关
+- 已完成 Task 1：新增稳定根索引、正式 docs map，并更新跨模型读取顺序。
+- 已完成 Task 2：归档两份有明确替代证据的文档，并以 archive manifest 记录替代关系。
+- 已完成 Task 3：新增精选项目内 Codex memory 快照，只涵盖 Card OS 部署运维和本地 Skill 安装经验。
+- 已完成 Task 4：新增只读文档治理 checker、13 项隔离 fixture、统一入口和 npm 便捷命令；review fix 已完成并记录为 clean。
+- 已完成 Task 5：全量 Markdown inventory、隐私路径扫描、完整文档治理验证、动态交接收口和 shutdown checks。
+- 本轮 inventory 未发现漏路由或误分类的正式文档；`docs/README.md` 无需调整。
 
 ## Next Actions
 
-1. 重新生成 Task 1 brief，然后派发 fresh implementer。
-2. 完成 Task 1 implementer、task reviewer 与必要 fix/re-review 后再进入 Task 2。
-3. 完成 Task 1–5、broad final review 与最终验证；不 push、不 merge，除非另行授权。
+1. 对整个 feature branch 做独立终审。
+2. 审核通过后，按 `finishing-a-development-branch` 的交付选择完成后续操作；不得在未经授权时 push、merge 或创建 PR。
 
 ## Verification Plan
 
 - Build: 本任务仅涉及文档与基础设施脚本，不运行全量业务构建
-- Unit Tests: 不修改业务实现，不运行业务单元测试
+- Unit Tests: `bash scripts/ai/test-doc-governance.sh` 本轮 PASS（13/13 fixture）
 - Integration Tests: 不适用
 - Lint: 仓库未确认通用 lint 命令
 - Manual Checks:
-  - `bash scripts/ai/check-doc-governance.sh`
-  - `bash scripts/ai/check-agent-state.sh`
-  - 对归档前后引用执行定向 `rg`
-  - 检查 memory 快照不含凭证、本地私有配置和原始会话
-  - `git diff --check`
-  - `git status --short`
+  - `rg --files -g '*.md' -g '!node_modules/**' -g '!.worktrees/**' | sort`：本轮完成；正式文档均有路由或受控根/客户端适配说明
+  - `rg -n '/Users/|rollout_path:' PROJECT_CONTEXT.md docs/README.md docs/archive docs/knowledge docs/ai/CURRENT_TASK.md docs/ai/HANDOFF.md`：PASS（零命中）
+  - `bash scripts/ai/check-doc-governance.sh`：PASS
+  - `bash scripts/ai/check-agent-state.sh`：WARN，0 FAIL；仅既有 secret-field-name 人工复核 WARN
+  - `bash scripts/ai/check-handoff.sh`：本轮收口前 WARN（旧 Base Commit 落后于 HEAD）；shutdown 后复跑并以最新结果为准
+  - `git diff --check`：PASS
+  - `git status --short`：收口前 clean；提交后复核
 
 ## Relevant References
 
 - `AGENTS.md`
-- `docs/ai/README.md`
+- `PROJECT_CONTEXT.md`
+- `docs/README.md`
 - `docs/ai/HANDOFF.md`
-- `docs/project-structure.md`
-- `docs/cognitive-card-os-roadmap.md`
+- `docs/archive/README.md`
+- `docs/knowledge/codex-memory/README.md`
 - `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md`
 - `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md`
-- `fp-project` 参考工作区的根级上下文、文档地图、归档与 memory 快照结构（只读参考，不写入本仓库路径）
-- “成长打卡”参考项目的多 Agent 规范、任务状态和启动提示词结构（只读参考，不写入本仓库路径）
