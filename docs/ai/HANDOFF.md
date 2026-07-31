@@ -4,71 +4,69 @@
 
 - Updated At: 2026-07-31
 - Agent: Kimi Code
-- Branch: codex/card-os-thin-client-v1（worktree `.worktrees/card-os-thin-client-v1`）
-- Base Commit: f8abe20（0.1.1 release-source;origin/main = `63c2152`)
-- Working Tree: `docs/cognitive-card-os-roadmap.md` 已更新（Task 9 Step 1，待提交）；其余干净
-- Task Status: SKILL-02 收尾中；Task 1–8 与 Task 9 Step 1–4 完成（生产 stable `0.1.1` 已结束 provisional、release gate 已提交）,Task 9 Step 5 文档集成待用户授权
+- Branch: main
+- Base Commit: 9ff068f（SKILL-02 docs 集成，与 origin/main 一致）
+- Working Tree: 用户既有未跟踪 `outputs/`；本阶段仅任务建立文档
+- Task Status: SKILL-02 已收尾（仓库侧）;**抢救小切片（盘点+修复）已立项**,Status: In Progress
 
 ## Summary
 
-SKILL-02 全部实施与验收完成。主线：Task 1–6 完成薄客户端（279→280 项 thin-client 测试，门禁 0C/0I);`0.1.0` 首次激活生产 stable 后，Task 8 现网验收主流程全过但发现 macOS Keychain `auth delete` 缺陷（Important)→ provisional 回滚恢复 absence（门禁按设计工作）→ 零长度非空 buffer 修复为 `0.1.1`（评审 0C/0I、双构建字节一致 `f162ad7b…`)→ 重新发布激活 → Task 7 关键项与 Task 8 全流程在 0.1.1 重跑通过（`auth delete` 真实后端 absent 实证，Task 8 独立评审 0C/0I)→ Task 9 Step 1 roadmap 如实更新（SKILL-01 DONE、SKILL-02 IN PROGRESS 待第二台真实 Codex 电脑）、Step 2 全量验证通过（registry 81、thin-client 280、discover 535、quick_validate、祖先性 + 权威路径零差异、公网探针）、Step 3 whole-branch 最终评审 **0C/0I/4M（全为文档级记录项）通过**、Step 4 release gate 提交（root marker `e554bb56…` 绑定 remote head/tree/归档摘要；最终公网探针全过；prior-manifest quarantine 已删除——最终不可逆动作；immutable 0.1.0/0.1.1 与 manifest snapshots 保留）。
+SKILL-02 全部完成：生产 stable `0.1.1`(`f162ad7b…`,release gate 已提交、provisional 结束）,whole-branch 最终评审 0C/0I,docs 已集成 push(`origin/main = 9ff068f`)。遗留：SKILL-02 保持 IN PROGRESS 等待第二台真实 Codex 电脑安装同一摘要 + doctor（用户侧动作）；设计 spec §10 两处偏差（journal 字段、目标版本）待修订追认。
+
+用户选定下一任务为**抢救小切片（盘点+修复）**:`core/` 迁移与 package-v5 合入另行立项。本阶段建立正式任务（`docs/ai/CURRENT_TASK.md`)：从 archive tag `7f321a6` 另起抢救分支 `codex/card-os-salvage-v1`，修复 publisher fixture 失同步（19 errors）与过时 mode pin（1 failure）使存档套件转绿，处置误提交 `.superpowers` 文件/3 个未跟踪计划/library-design 修订，产出抢救清单与评审 Block 修复方案；不合入 main、不碰服务器、不动存档 tag/worktree。
 
 ## Completed
 
-- Task 1–8 全部（详见历次 HANDOFF 与 git log)。
-- Task 9 Step 1:roadmap 更新（SKILL-01 DONE;SKILL-02 IN PROGRESS;2026-07-31 记录含 0.1.0→回滚→0.1.1 全史与 journal 偏差说明）。
-- Task 9 Step 2：全量验证 + 祖先性/权威路径/公网探针。
-- Task 9 Step 3:whole-branch 最终评审 0C/0I（独立复算构建、RED/GREEN、注册表与 token 状态）。
-- Task 9 Step 4:release gate marker 提交 + 最终探针 + quarantine 删除 + fsync。
+- SKILL-02 Task 1–9 全部（详见 git log 与 `.superpowers/sdd/` 证据；生产 stable `0.1.1`)。
+- 临时构建 worktree(`/tmp/ccos-build-src`、`/tmp/ccos-build-src-011`）已清理。
+- 抢救小切片任务建立（CURRENT_TASK.md;Objective、8 条验收标准、In/Out of Scope、约束与验证计划）。
 
 ## Changed Files
 
 | File | Change | Reason |
 | --- | --- | --- |
-| `docs/cognitive-card-os-roadmap.md` | 修改（待提交） | SKILL-01 DONE、SKILL-02 IN PROGRESS、2026-07-31 全史记录 |
-| `docs/ai/HANDOFF.md` | 修改 | 本阶段交接（随 docs 提交） |
+| `docs/ai/CURRENT_TASK.md` | 重写 | 建立抢救小切片正式任务范围 |
+| `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
 
 ## Decisions Made
 
-- provisional 回滚实证了 release gate 设计价值：缺陷版本未成为正式 stable；修复以 0.1.1 发布（不可变约束），0.1.0 保留为不激活历史。
-- Task 9 Step 4 后 provisional 状态结束：0.1.1 为正式 stable;prior-manifest backup 已删（最终不可逆动作）。
-- 评审 4 条 Minor 的处置：spec §10 journal 偏差与目标版本 0.1.0→0.1.1 待设计文档下次修订追认（已在 roadmap 记录）;0.1.1 证据账本已补（`.superpowers/sdd/skill-release-live/activation-0.1.1.md`);ops 验收 harness 的 0.1.0 pin 与 repeat-delete 布尔语义为后续跟进项。
+- 抢救工作在新分支 `codex/card-os-salvage-v1`（从 archive tag `7f321a6`）进行；存档 tag 与 `.worktrees/card-os-thin-skill-v1` 保持封存只读（含其 2 modified + 3 untracked 在途状态）。
+- 抢救清单与评审 Block 修复方案文档随抢救分支提交，经评审授权后再集成 main。
+- 小切片只修 fixture/mode pin/处置杂项 + 产文档；`core/` 迁移与 package-v5 合入是后续独立任务。
 
 ## Verification Results
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `npm run test:card-os-skill-registry` | PASS | 81/81 |
-| `npm run test:card-os-thin-client` | PASS | 280/280 |
-| `python3 -m unittest discover -s tests` | PASS | 535/535 |
-| `quick_validate.py` / `git diff --check` | PASS | — |
-| 祖先性 + 15 项权威路径零差异（三次） | PASS | origin/main `63c2152` |
-| whole-branch 最终评审 | PASS | 0C/0I/4M |
-| 最终公网探针（release gate 前） | PASS | manifest/归档摘要/installer/health/站点全过 |
-| release gate marker + quarantine 删除 | PASS | marker `e554bb56…`,fsync 完成 |
+| `bash scripts/ai/check-agent-state.sh`(main) | WARN（非阻塞） | pass=3 warn=2 fail=0；已知交接格式类 |
+| SKILL-02 全量验证 | PASS | 见 Task 9 记录 |
 
 ## Known Failures
 
 - `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，与本任务无关。
-- 存档分支自身套件 19 errors + 1 failure，属封存资产。
+- 存档分支套件 19 errors + 1 failure——**即本任务要修复的对象**。
+- `bash scripts/ai/check-agent-state.sh` 的 2 项 WARN（交接格式/字段名提及类，非阻塞）。
 
 ## Risks and Caveats
 
-- SKILL-02 完成条件"第二台真实 Codex 电脑安装同一摘要并通过 doctor"未满足——该硬条件超出本任务可控范围，roadmap 已如实记录为 IN PROGRESS；到时用生产 `manifest.json` 的四步流程安装 `f162ad7b…` 并跑 doctor 即可关闭。
-- immutable `0.1.0`（含 auth delete 缺陷）仍可由 `--version 0.1.0` 安装（设计内历史保留）。
-- 设计 spec §10 journal 清单与目标版本 0.1.0 的两处偏差待 spec 修订追认（roadmap 已登记）。
+- 抢救分支基于 `7f321a6`（与 main 分叉于 `b13ea1e`)，其上 `docs/ai/` 任务状态为旧版；建分支后需同步。
+- 存档 worktree 的未提交修改（roadmap 旧版修正、library-design 修订、3 个未跟踪计划）只在存档 worktree 存在，处置决定需基于其内容与抢救分支的对应文件比对。
+- SKILL-02 的 DONE 硬条件（第二台真实 Codex 电脑）仍是用户侧动作，不随本任务推进。
 
 ## Remaining Work
 
-1. 第二台真实 Codex 电脑安装 `f162ad7b…` + doctor 后，将 SKILL-02 标记 DONE（用户侧动作）。
-2. 抢救批次（SKILL-02 之后、ACCEPT-01 之前，优先于从零重建）：迁移存档 `core/` 至服务器侧可信上游；修复 package-v5 两个评审 Block、publisher fixture 与 mode pin；处置误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订。
+1. 建抢救分支/worktree 并同步任务状态；复跑存档套件复现 19 errors + 1 failure(RED 基线）。
+2. 修复 publisher fixture 失同步 → 单跑转绿；修 mode pin；全量两轮转绿。
+3. 处置 `.superpowers` 误提交文件、3 个未跟踪计划、library-design 修订；产抢救清单 + 评审 Block 修复方案。
+4. （后续独立任务）`core/` 迁移服务器侧；package-v5 合入与生产硬化；ACCEPT-01。
 
 ## Exact Next Action
 
-SKILL-02 仓库侧工作全部完成；由用户在第二台真实 Codex 电脑上按生产 manifest 四步流程安装 `f162ad7b…` 并运行 doctor，通过后将 SKILL-02 标记 DONE。
+`git branch codex/card-os-salvage-v1 archive/card-os-thin-skill-v1-20260717` 并 `git worktree add .worktrees/card-os-salvage-v1 codex/card-os-salvage-v1`，同步 `docs/ai/` 后用 `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests` 复现 RED 基线（预期 19 errors + 1 failure)。
 
 ## Recovery Notes
 
-- 生产 stable = `0.1.1`(release gate 已提交，provisional 结束）;gate marker `/root/card-os-release-0.1.0/release-gate-0.1.1.json`。
-- release-source `f8abe20`;origin/main `63c2152`；存档 tag `archive/card-os-thin-skill-v1-20260717`=`7f321a6`。
-- 无凭据残留：全部验收 token 已撤销，Keychain 无 cognitive-card-os item,token 文件均删除；服务器 `card_os_tokens` 表零未撤销 token。
+- 本阶段基线 `9ff068f`(main == origin/main)。恢复时先 `git rev-parse HEAD` 与 `git status --short`。
+- 存档点：tag `archive/card-os-thin-skill-v1-20260717` = `7f321a6`（封存只读）。
+- 生产 stable = `0.1.1`;release gate marker `/root/card-os-release-0.1.0/release-gate-0.1.1.json`。
+- 未执行 push、merge、rebase、reset、删除；未修改 `outputs/` 与任何存档资产。
