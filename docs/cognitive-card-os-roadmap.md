@@ -42,8 +42,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；设计可信自由请求编译入口 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
-| SKILL-01 | Skill 发布注册表 | IN PROGRESS | 建立不可变 release、摘要、stable 与回滚 |
-| SKILL-02 | 薄 Skill 客户端 | BLOCKED | 等待 SKILL-01 产出可校验安装 release |
+| SKILL-01 | Skill 发布注册表 | IN PROGRESS | registry/installer 基础设施已验证；等待完整 `0.1.0` release 激活 |
+| SKILL-02 | 薄 Skill 客户端 | READY | 实现完整客户端并首次激活生产 stable |
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
@@ -163,6 +163,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 - 状态：`IN PROGRESS`
 - 依赖：PROTO-01。
+- 进展：registry/installer 基础设施已完成本地与生产门禁；生产 stable 按设计保持不存在，等待 SKILL-02 完成完整 `0.1.0` 后首次激活。
 - 目标路径：
   - `/skill/v1/manifest.json`
   - `/skill/v1/releases/<version>/cognitive-card-os.zip`
@@ -171,9 +172,9 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### SKILL-02 薄 Skill 客户端
 
-- 状态：`BLOCKED`
+- 状态：`READY`
 - 依赖：API-01、AUTH-01、PROTO-01、SKILL-01。
-- 阻塞：API/AUTH 的最小生产部署门禁已经解除；当前只等待 SKILL-01 产出可校验、可回滚的安装 release。在此之前不发布依赖本地仓库状态的临时客户端。
+- 前置条件：API/AUTH 最小生产门禁与 SKILL-01 registry/installer 基础设施均已验证；完整 `0.1.0` 由本任务实现并首次激活，不发布依赖本地仓库状态的临时客户端。
 - 范围：输入收集、本地形状校验、服务发现、任务创建、包领取、摘要确认、候选上传、错误解释、离线限制和版本升级。
 - 完成条件：两台独立 Codex 客户端安装相同发布摘要，并能完成同一服务器上的任务领取与结果上传。
 
@@ -301,6 +302,17 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 门户、渲染和 MCP 不进入下一实现批次。
 
 ## 6. 更新记录
+
+### 2026-07-31
+
+- 审计 `codex/card-os-thin-skill-v1`（领先 main 29 个提交）：其中 SKILL-02 薄客户端计划（`docs/superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md`）Task 1–9 均未执行，分支上的 `card_os_client.py` 是另一套 package-v4/v5 契约；PORTAL/RENDER/QA/PUBLISH 与恐龙模板族属越序 BACKLOG 工作；`skills/cognitive-card-os/core/` 将生产核心迁入 Skill 包的方向与本账本"服务器统一权威"约束冲突，无 ADR。分支尖端未通过自身测试套件且 Task 8 评审未关闭，已用 tag `archive/card-os-thin-skill-v1-20260717` 存档，不整体合入；生产核心归属待 ADR 决策后再定 SKILL-02 执行口径。
+- 回填 2026-07-16 的 SKILL-01 基础设施状态修正（原记录长期滞留在分支 worktree 未提交）。
+
+### 2026-07-16
+
+- 完成 SKILL-01 registry/installer 基础设施本地门禁与生产 provisional 部署：确定性构建、验证优先安装、不可变 publisher、只读 Nginx namespace、回滚和公网边界均已验证；生产 stable 与 release 按设计保持不存在。
+- `SKILL-01` 保持 `IN PROGRESS`，等待 SKILL-02 完成并激活完整 `0.1.0`；`SKILL-02` 从 `BLOCKED` 转为 `READY`。
+- 生产 installer bootstrap 指向 reviewed immutable snapshot；精确 preflight 备份保留到远端源码权威与最终基础设施 gate marker 通过。
 
 ### 2026-07-15
 

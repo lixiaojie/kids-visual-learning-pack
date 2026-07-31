@@ -2,141 +2,92 @@
 
 ## Metadata
 
-- Updated At: 2026-07-25
-- Agent: OpenAI Codex
+- Updated At: 2026-07-31
+- Agent: Kimi Code
 - Branch: main
-- Base Commit: ac60352（部署入口修复已提交并推送后的 clean HEAD）
-- Working Tree: 仅用户既有未跟踪 `outputs/`；本任务代码与状态记录均已提交
-- Task Status: Done（治理分支已合并；部署入口修复已推送；静态站点生产同步和 HTTPS 验收完成）
+- Base Commit: db3f6bd（本阶段状态提交前的 clean HEAD，与 origin/main 一致）
+- Working Tree: 用户既有未跟踪 `outputs/`；本阶段修改 `docs/cognitive-card-os-roadmap.md` 与本文件，随状态提交收口
+- Task Status: 上一正式任务保持 Done；本阶段为分支审计 + 账本事实修正，新正式任务尚未建立
 
 ## Summary
 
-本分支以 `81f6a7f` 为基线完成跨模型文档治理闭环：`PROJECT_CONTEXT.md` 提供稳定读取顺序，`docs/README.md` 提供正式文档地图，`docs/ai/` 保持动态任务和交接真值，archive manifest 保留两份被明确替代的历史文档，项目内 memory 只保存人工筛选的次级 Markdown 快照。
+用户转贴的检视建议"下一项直接选 SKILL-01"。启动核实发现该前提过时：SKILL-01 registry/installer 基础设施（Task 1–6）早已合入 main，`npm run test:card-os-skill-registry` 81 项 PASS；现网实测 `https://www.yutou.space/card-os/skill/v1/install.sh` 返回 200 + `no-cache`，`manifest.json` 按设计 404，installer last-modified 2026-07-16，即 Task 7 生产 provisional 部署也已执行。
 
-whole-branch final review 发现 4 个 Important 与 2 个 Minor。fix wave 已把文档日期转换为严格 UTC epoch day，强制 `due > last` 且 `due - last <= 31`，并仅依据 `today - last > 31` 产生 overdue WARN；archive manifest 的两条映射改为 fail-closed 精确验证；`PROJECT_CONTEXT.md` 纳入纯文档豁免。连续 re-review 后，Hook 最终在 `mktemp -d` 中物化完整 index，运行快照自身的 infra checker，并将 Git 查询绑定到原始 index；准备或检查任一步失败都阻断提交，staged `.gitignore` 隐藏的同路径 recreation 也不能绕过。设计、计划与 docs map 已同步为 Approved/Implemented、Completed、Implemented/Completed。
+对 `codex/card-os-thin-skill-v1`（领先 main 29 个提交，+22576/-4731）的审计结论：SKILL-02 薄客户端计划（2026-07-15 thin-client plan）Task 1–9 均未执行；分支的 `card_os_client.py`（2344 行）是另一套 package-v4/v5 厚客户端契约（无 doctor/auth/packets/results/jobs，无 Keychain/secret-tool、固定 base URL、`ccos-v1-` 幂等键、attempt journal、`TRUSTED_UPSTREAM_REQUIRED`）。分支实际执行的是 2026-07-16 personal-mvp（中止）与 production-recovery（Task 1–7 评审通过、Task 8 被 Block：服务端 authority 闭包可伪造 + gallery revision 资产未绑定）两组计划，并叠加 PORTAL/RENDER/QA/PUBLISH/恐龙模板族等越序 BACKLOG 工作；`skills/cognitive-card-os/core/` 约 5000 行把生产核心迁入 Skill 包，与"服务器统一权威"约束冲突且无 ADR。
 
-最终复核确认 index-snapshot 代码与 4/4 fixture 已关闭原 Hook finding，同时指出 design/plan 仍把行为写成“拒绝所有 partial staging”。本次仅同步正式文档为真实行为：验证完整 index snapshot，拒绝工作树掩盖暂存损坏，同时允许合法 partial staging；Hook 实现未再修改。
+分支尖端实测未通过自身套件：全量 386 项 = 19 errors（publisher fixture 与加固后 builder 闭包失同步，`SOURCE_TREE_CLOSURE_MISMATCH`）+ 1 failure（`validate_package_v5.py` 过时 mode pin，420 != 493），两轮独立复跑一致。首次复跑曾被本 Agent 产生的 `__pycache__` 污染，已清理并恢复 worktree 原状（2 modified + 3 untracked，与审计前一致）。
 
-2026-07-25 用户授权合并、推送和部署后，`codex/project-doc-governance` 已 fast-forward 合并到 `main`，合并后的 `npm run validate` PASS，feature worktree/分支已清理，`origin/main` 已推进到 `3e0d392`。首次 `npm run deploy` 在任何 rsync 前失败：`scripts/deploy.sh` 绕过带根 `vite.config.ts` 的规范 `build:kids-world` 命令，导致 Vite 无法解析 `@yutou/kids-content`。同环境运行 `npm run build:kids-world` 成功，根因已定位为部署脚本与规范构建入口漂移；生产服务器尚未被本轮部署修改。
+用户已决定：架构方向先深比再定；分支用 tag 存档、新任务从 main 另起新支；roadmap 中 SKILL-01/SKILL-02 的事实性状态修正单独提交 main（本次提交即该项，用户已通过选项明确授权本次提交；不含 push）。
 
-部署入口已改为复用规范构建命令，并增加 `scripts/deploy.test.mjs` 作为部署前门禁。回归测试完成 RED→GREEN，`npm run build`、`npm run check:dist` 与 agent-state 均通过；修复提交 `ac60352` 已推送到 `origin/main`。随后 `npm run deploy` 完成五段 rsync，公开入口、三个看板和新 kids-world JS 资源的 HTTPS 状态与媒体类型均通过验收。
-
-整分支 reviewer 最终确认原 6 项与后续文档漂移全部关闭，结论为 `Ready to merge: Yes`。随后按 `finishing-a-development-branch` 运行全项目 `npm run validate`，在 `validate:interaction-graph` 发现 6 个 `cicada-life` representative object visual-slot 错误；同一失败已在 `main` 工作区复现，因此不是本治理分支引入。按 finishing gate，在全项目 suite 绿色前不提供 merge/push 菜单。
-
-2026-07-25 用户已授权扩大范围修复上述基线。根因核实表明，2026-05-17 引入的验证规则只接受通用 `representativeObjects` slot，而 2026-06-03 有意 materialize 的 6 个 `cicada-life` exact bindings 分别指向 lifecycle、molting、task 与 compare slot；它们均以 `hotspot` 聚焦对象自身，且同时包含对象自身的 active region 与 materialized region。运行时 strict diagnostics 对这些绑定为零错误，因此修复目标是消除验证器与运行时契约漂移，不回退专题数据。
-
-interaction-graph 修复采用 fail-closed 双路径：通用 representative-object slot 继续通过；精确 slot 仅在 slot 确实存在，且 `hotspot`、active region 与 materialized region 都指向对象自身时通过。新增临时隔离 fixture 先复现 6 项 RED，再验证当前 6 项正例、移除 `cicadaEggs` 自身 active focus 以及引用不存在 slot 的两类反例。
-
-完整 suite 随后暴露两个同源的 Scene Deck 迁移漂移。第一，`cicada-life` 已有意压缩为 5 个 authored navigation stages，但 legacy normalizer 只按同名 graph stage 取 blocks，导致 `inspect` 和 `tasks` 内容丢失；现改为把当前 authored stage 到下一个 authored stage 之间的 graph stages 合并到同一 stage。第二，alignment validator 仍要求旧 `LearningFlowRail`、`resolveTopicPresentation` 与 `ComparePairCard`；现改为检查 Web/小程序当前 `SceneDeckTopicPage` 的 runtime、导航、focus evidence、visual regions、content blocks、tasks/feedback，以及每个含 compare evidence 的 topic 均有可解释的 `compare-split` scene。最终 `npm run validate` 全绿。
-
-独立终审首轮发现 3 个 Important。修复后，折叠来源 stage 不同于 authored stage 时 block ID 会纳入 graph stage，duplicate/unknown authored stage 直接失败，并以 authored stage 重排 fixture 证明不会重复或错配 graph blocks；alignment wrapper 以隔离 repo fixture 证明只有 import/comment、或字符串形式的伪 JSX 而无真实 JSX render 会失败，compare scene 使用非 `comparePairs.*` focus 或空 explanation 也会失败；interaction-graph 另增加 exact focus 指向不存在 slot 的反例。re-review 进一步发现伪 JSX 字符串边界，现已补充 RED→GREEN，JSX 检查会剥离注释和字符串字面量。最终窄 re-review 为 PASS，Critical/Important/Minor 均为 0，`Ready to finish: Yes`。
-
-实施计划的日期为 2026-07-24，实际收口和本 HANDOFF 更新发生在 2026-07-25；Metadata 使用实际日期，不回填计划日期。
+深度对比（两个 explore 子代理，详见其报告）：现行契约侧——已部署 0.3.1 的 packets claim/complete/results 仅在应用仓测试验证、生产零流量；SKILL-02 剩余工作为纯客户端 5 个测试文件 + 客户端脚本 + Skill 文档 + 现网门禁。分支契约侧——端到端本地生产链（分类→内容锁→渲染→package-v5→audit）真实可跑（367 项通过），但 governed upload 未实现、显式绕过 packet 协议、凭据只有 env/token-file、服务器半成 `e78c2fa` 未合并且被评审 Block；对 RENDER/QA/PUBLISH/ACCEPT 有高挽救价值。
 
 ## Completed
 
-- Task 1：新增稳定根索引、正式 docs map 和跨模型读取顺序。
-- Task 2：将 `docs/spec-v1.md` 与 `docs/architecture-iteration-v1.2.md` 原样归档至 `docs/archive/2026-07-24-doc-governance/`，并记录 replacement。
-- Task 3：新增筛选的 memory 索引、耐久规则和两份 rollout 摘要；不复制全局 memory、原始会话、凭证或私有配置。
-- Task 4：新增并接入只读文档治理 checker；fixture 13/13 通过；review fix 覆盖严格日期、外部 URI、`mktemp` fail-closed 和单一失败隔离。
-- Task 5：完成 inventory、隐私扫描、完整验证集、CURRENT_TASK Done 收口和本 HANDOFF 动态状态刷新。
-- Whole-branch final-review fix wave：文档治理 fixture 扩展到 18/18，Hook fixture 扩展到 4/4；2099 due、超过 31 天、manifest 缺行/错配、staged broken/worktree clean、staged deletion/same-path recreation（含被 staged `.gitignore` 忽略）均不能通过，恰好 31 天、PROJECT_CONTEXT-only staged 与无关 untracked 保持通过。
+- 启动协议核实：根目录、分支、工作区、必读文档、CURRENT_TASK/HANDOFF/roadmap/07-15 设计与 SKILL-01 计划。
+- 现网只读探测：skill registry installer 200/`no-cache`、manifest 404（设计内）。
+- 分支三路子审计：29 提交主题归类（12 主题）、worktree 未提交修改与 SDD 账本、SKILL-02 计划逐项核对。
+- 分支全量测试两轮复跑（第二轮 `PYTHONDONTWRITEBYTECODE=1`），并清理首轮污染恢复 worktree 原状。
+- 本地 tag `archive/card-os-thin-skill-v1-20260717` 标记分支尖端 `7f321a6`（仅本地，未 push）。
+- 两套客户端契约深度对比（现行 packet 契约 vs 分支 package-v5 契约）。
+- roadmap 事实修正：SKILL-01 进展记录、SKILL-02 `BLOCKED`→`READY`、回填 2026-07-16 更新记录、新增 2026-07-31 审计记录。
 
 ## Changed Files
 
-final-review fix wave 开始时 `HEAD=1b0fe83` 且工作区 clean；content fix 为 `9e5c040`，status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，其 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`。下表为累计 final wave 文件：
-
 | File | Change | Reason |
 | --- | --- | --- |
-| `.githooks/pre-commit` | 修改 | 对完整 index snapshot 运行 infra checker；PROJECT_CONTEXT 纳入豁免 |
-| `AGENTS.md` | 修改 | 同步 targeted tests 与 Hook 行为 |
-| `docs/README.md` | 修改 | design/plan 状态改为 Implemented/Completed |
-| `docs/ai/README.md` | 修改 | 记录日期、manifest 与 Hook 检查边界 |
-| `docs/ai/CURRENT_TASK.md` | 修改 | 记录 final-review fix wave 与验证 |
-| `docs/ai/HANDOFF.md` | 修改 | 记录实际修复、验证与提交边界 |
-| `docs/superpowers/plans/2026-07-24-project-documentation-governance-implementation.md` | 修改 | 标记 Completed，勾选已执行步骤，修正旧路径验证与 index-snapshot 行为描述 |
-| `docs/superpowers/specs/2026-07-24-project-documentation-governance-design.md` | 修改 | 标记 Approved/Implemented，并说明完整 index snapshot 会拒绝掩盖暂存损坏但允许合法 partial staging |
-| `package.json` | 修改 | 增加 `test:pre-commit`，并将 interaction-graph 入口接到正反例回归 wrapper |
-| `scripts/ai/check-agent-infra.sh` | 修改 | 登记 Hook 测试资产 |
-| `scripts/ai/check-doc-governance.sh` | 修改 | UTC day/31 天与 manifest fail-closed 检查 |
-| `scripts/ai/test-doc-governance.sh` | 修改 | 新增日期与 manifest 对抗 fixture |
-| `scripts/ai/test-pre-commit.sh` | 新建 | 隔离 Git repo 的 Hook 回归测试 |
-| `scripts/validate-interaction-graph.mjs` | 修改 | 允许具备自身 hotspot/active/materialized region 的精确对象绑定 |
-| `scripts/validate-interaction-graph.test.mjs` | 新建 | 隔离临时 fixture 覆盖 exact-focus 正例与缺 focus 反例 |
-| `packages/kids-content/src/normalize-topic-interaction.ts` | 修改 | 将被 5 阶段 authored flow 折叠的 graph stages 合并回相邻导航阶段 |
-| `scripts/normalize-topic-interaction.test.ts` | 修改 | 锁定 5 阶段导航不丢 classification/objects 与 compare/tasks blocks |
-| `scripts/validate-content-alignment.mjs` | 修改 | 以当前 Scene Deck runtime/UI/compare-scene 代替 legacy TopicPage 符号检查 |
-| `scripts/validate-content-alignment.test.mjs` | 新建 | 隔离验证真实 JSX render、comparePairs focus 与非空 explanation 的负向边界 |
-| `scripts/deploy.sh` | 修改 | 复用规范 `build:kids-world` 命令，确保加载根 Vite alias |
-| `scripts/deploy.test.mjs` | 新建 | 锁定部署使用规范 kids-world/paw 构建入口 |
+| `docs/cognitive-card-os-roadmap.md` | 修改 | SKILL-01/SKILL-02 状态事实修正；2026-07-16 回填与 2026-07-31 审计记录 |
+| `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
+
+另：本地 tag `archive/card-os-thin-skill-v1-20260717` → `7f321a6`（非文件变更，未 push）。分支 worktree 的 2 modified + 3 untracked 为既有在途状态，本阶段未触碰。
 
 ## Decisions Made
 
-- `PROJECT_CONTEXT.md` 保持稳定薄索引；`docs/ai/HANDOFF.md` 是唯一动态交接真值，不新增根级 HANDOFF。
-- `docs/README.md` 是正式文档唯一导航地图；无明确替代证据的历史文档仍保留为 Historical Reference 或 Needs Review。
-- memory 快照仅为人工筛选的次级材料；代码、测试和正式仓库文档优先，且不自动同步用户级 memory。
-- 归档保留历史并记录 replacement，不删除文档。
-- 文档治理采用任务事件更新和 31 天复核 WARN，不使用 cron 或读取用户目录。
-- `Next Review Due` 是最长 31 天周期的结构化声明；overdue 只由 `today - Last Reviewed` 决定，远期 due 不能延长周期。
-- Hook 的 infra 检查读取临时物化的完整 index snapshot；`GIT_DIR` 指向原仓库、`GIT_WORK_TREE` 指向快照，使 Git 查询与文件读取都对应待提交状态。targeted Hook test 不接入统一五步入口。
-- 用户已授权本 feature branch 的 Task 1–5 commits；push、merge 和 PR 仍未授权。
-- 用户已授权扩大当前任务范围修复既有 `cicada-life` interaction-graph failure；验证规则仍须 fail-closed，只允许通用对象 slot 或在精确 slot 上明确聚焦对象自身 region 的 binding。
-- 2026-07-25 用户已明确授权提交扩大范围修复；该授权不包含 push、merge 或 PR。
-- 2026-07-25 用户随后明确授权合并回 `main`、推送和生产部署；该授权覆盖完成部署所需的最小构建入口修复与再次推送，不包含 PR、force-push 或历史重写。
+- 用户决定：Card OS 生产核心归属（服务器 vs Skill 包）先完成深度对比再定；对比已完成，结论待用户拍板，须以 ADR 固化。
+- 用户决定：`codex/card-os-thin-skill-v1` 原样存档（已打本地 tag），不整体合入、不动其未提交修改；下一正式任务从 main 另起新支。
+- 用户授权：将 roadmap 中 SKILL-01 基础设施已验证、SKILL-02 READY 的事实性修正单独提交 main（本次提交）；push、merge、PR 未授权。
+- 审计判断：分支资产（production core、renderer、package-v5、367 项通过测试）对 RENDER/QA/PUBLISH/ACCEPT 有挽救价值，但传输层与架构归属未定前不抢救合入。
 
 ## Verification Results
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `bash -n`（本轮改动 shell/Hook） | PASS | checker、两组 test、infra/state 与 Hook 语法通过 |
-| `npm run test:doc-governance` | PASS | 18/18 fixture，含 2099 due、31 天边界、manifest 缺行/错配 |
-| `npm run test:pre-commit` | PASS | 4/4：staged broken/worktree clean、两类 staged deletion/same-path recreation 拒绝；PROJECT_CONTEXT-only + unrelated untracked 通过 |
-| `npm run check:doc-governance` | PASS | required files、精确 archive mappings、受路由链接和复核日期均通过 |
-| `bash scripts/ai/check-agent-infra.sh` | WARN | 0 FAIL；既有 secret-field-name 人工复核 WARN |
-| `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；仅既有 secret-field-name 人工复核 WARN，handoff/doc/task/diff steps PASS |
-| `bash scripts/ai/check-handoff.sh` | PASS | content commit 前 Base Commit 与 `45bb139` 一致，非空工作区描述一致 |
-| `npm run validate:interaction-graph` | PASS | 隔离 fixture 覆盖 6 个 exact-focus 正例、缺少自身 active focus 与不存在 slot 两类反例 |
-| `npm run test:topic-interaction` | PASS | 5 阶段导航保留完整 blocks，ID 唯一；重排、duplicate、unknown 与 strict focus diagnostics 通过 |
-| `npm run validate:alignment` | PASS | 13 topics/16 package files；comment-only、string-only、错误 compare focus、空 explanation 四类反例通过 |
-| `npm run validate` | PASS | 13 topic/overlay、230 assets、evidence、interaction、scene deck/UI、kids-content、miniprogram、alignment 全部通过 |
-| `npm run test:deploy` | PASS | 先因部署脚本绕过规范 kids-world build 而 RED；修复后 GREEN |
-| `npm run build` | PASS | 完整 validation 与 kids-world 静态构建通过 |
-| `npm run check:dist` | PASS | web-production 108 files |
-| `git push origin main` | PASS | `origin/main` 已推进到部署修复提交 `ac60352` |
-| `npm run deploy` | PASS | kids-world、docs/shared、spider-verse、paw-patrol 五段同步完成 |
-| 生产 HTTPS 有界验收 | PASS | 4 个 HTML 入口均为 200；新 kids-world JS 为 200 `application/javascript` |
-| 独立最终 re-review | PASS | Critical 0、Important 0、Minor 0；`Ready to finish: Yes` |
-| active old-path Markdown link probe | PASS | 两个旧 active path 均无 Markdown link target；历史普通文本说明合法 |
-| `git diff --check` | PASS | content commit 前无空白错误 |
-| `git status --short` | NON-CLEAN（预期） | 当前 5 个部署修复/状态路径待提交；另有用户既有未跟踪 `outputs/` |
-| `node boards/kids-world/structure.test.mjs` | 未重跑 | 已知既有 `19 !== 18`；本任务未改 `boards/`，不可表述为本轮验证 |
+| `npm run test:card-os-skill-registry`（main） | PASS | 81 项，含 publisher/installer/release/deployment 契约 |
+| `curl --head …/skill/v1/install.sh` | PASS | 200，`cache-control: no-cache`，last-modified 2026-07-16 |
+| `curl --head …/skill/v1/manifest.json` | PASS（设计内） | 404，stable 按设计不存在 |
+| 分支全量 `python3 -m unittest discover -s tests` | FAIL（分支既有） | 386 项 = 19 errors + 1 failure；两轮复跑一致；与 main 无关 |
+| 分支 publisher 模块单跑 | FAIL | 19/19 error，`SOURCE_TREE_CLOSURE_MISMATCH`，fixture 与 builder 失同步 |
+| 分支 release+installer+deployment 单跑 | FAIL | 77 项 1 failure，过时 mode pin 420 != 493 |
+| 分支 worktree 恢复原状核对 | PASS | 清理 `__pycache__` 后 `git status` 与审计前一致（2M+3??） |
+| `git diff --check` | PASS | 本阶段提交前 |
+| `bash scripts/ai/check-agent-state.sh` | 待提交后复跑 | 提交前 Base Commit 与 HEAD 一致 |
 
 ## Known Failures
 
-- `node boards/kids-world/structure.test.mjs` 存在既有断言失败 `19 !== 18`。本任务未运行该命令、未修改 `boards/`，故该问题不影响本轮文档治理验证结论。
+- `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，本阶段未重跑、与本次修改无关。
+- 分支 `codex/card-os-thin-skill-v1` 自身套件 19 errors + 1 failure（见上），属该分支在途状态，不影响 main。
+- 分支 Task 8 评审 2 个 Important 未关闭（服务端 authority 闭包、gallery revision 绑定），修复前对应代码不可上线。
 
 ## Risks and Caveats
 
-- `check-agent-state.sh` 的 secret-field-name WARN 来自既有代码和文档的字段名提及；高置信 secret-value 扫描通过。本任务未弱化该扫描。
-- `check-doc-governance.sh` 的 BSD 日期路径已在当前 macOS 环境执行；GNU fallback 仅静态兼容实现，未在本轮运行。
-- Task 5 内容提交为 `a9007bb`，后续修正到 `1b0fe83`；final-review 与 re-review 提交链已延伸到 `6ef6887`。恢复时只把 `git rev-parse HEAD` 的结果视为当前符号 HEAD。
-- tracked HANDOFF 不能自编码包含其自身的 commit hash；后续 status-only commit 只记录该事实、提交链和 clean state，不表示有待提交工作。
+- 深度对比结论来自两个 explore 子代理的只读报告，关键行号已交叉抽查（builder 闭包错误、客户端子命令清单、nginx 契约），未逐行复核全部 4600 行分支脚本。
+- 服务器应用源码不在本仓；packet 契约细节以 07-13 协议计划、部署记录与验收脚本为证，生产 packets/results 链路零真实流量。
+- tag 为本地 refs，未 push；若远程需要同一存档点，需用户另行授权 push tag。
+- 分支 worktree 的未提交修改（roadmap 旧版修正、library-design 48 行修订、3 个未跟踪计划）保持原样；其中 roadmap 旧版修正已被本提交以 2026-07-31 口径取代。
 
 ## Remaining Work
 
-1. 本任务无剩余实施、推送或部署工作。
-2. 保留用户既有未跟踪 `outputs/`，不要清理或提交。
+1. 用户基于深度对比选择生产核心归属（维持服务器权威 / 采纳分支方向 / 调和方案），并以 ADR 固化。
+2. 按决策重写 `docs/ai/CURRENT_TASK.md`，建立 SKILL-02（或 ADR 先行）正式任务范围。
+3. 分支抢救候选（决策后）：publisher fixture 同步、mode pin 修正、Task 8 两个 Important、误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订的处置。
+4. SKILL-02 实现（若维持现行契约）：客户端 5 个契约测试文件 + 客户端脚本 + Skill 文档 + 生产 stable 首次激活 + 双隔离安装 + 现网领取/上传验收。
 
 ## Exact Next Action
 
-若开始新需求，先核对 `main`、`origin/main` 和 `outputs/`，再更新 `CURRENT_TASK.md` 定义新范围。
+向用户呈现两套客户端契约对比结论并确认生产核心归属；随后按 `docs/decisions/ADR-TEMPLATE.md` 建 ADR 或直接重写 `docs/ai/CURRENT_TASK.md` 立 SKILL-02。
 
 ## Recovery Notes
 
-- 分支基线为 `81f6a7f`；Task 1 完成于 `6c87d6f`，Task 2 于 `c2aeded`，Task 3 于 `49efcff`，Task 4 初版于 `2f49ce8`、review fix 于 `8c8545d`，Task 5 内容提交为 `a9007bb`，whole-branch review fix 起点为 `1b0fe83`。
-- Task 4 ledger 记录 review clean；Task 5 的运行记录位于本 worktree 的 `.superpowers/sdd/2026-07-24-project-documentation-governance-implementation/`，不作为仓库交接真值。
-- 未执行 push、merge、rebase、reset、删除操作或业务代码、CI、部署、用户级 memory 的修改。
-- final-review content fix 为 `9e5c040`，首个 status record 为 `ef405e8`，首轮 re-review fix 为 `f20ea87`，对应 status record 为 `45bb139`，最终 index-snapshot fix 为 `6ef6887`，后续状态记录为 `ce7ba4f` 与 `cbb3d36`。本 formal-doc sync commit 只修正文档行为描述；其自身 hash 不能被同一 tracked HANDOFF 自编码。恢复任何后续状态均先运行 `git rev-parse HEAD` 与 `git status --short`；不执行 push、merge、rebase 或 PR。
-- `main` 与 `origin/main` 当前均以 `3e0d392` 为已推送基线；用户已授权为完成部署而进行必要修复、提交、再次推送和生产同步。
-- 首次部署失败发生在 kids-world build，尚未进入任何 rsync；不要把该失败描述为部分部署。
-- 成功部署已发生在 `ac60352` 推送之后；最终状态记录提交不能在 tracked HANDOFF 中自编码其自身 hash，恢复时以 `git rev-parse HEAD` 为当前符号 HEAD。
+- 本阶段基线 `db3f6bd`（main == origin/main）。恢复时先 `git rev-parse HEAD` 与 `git status --short`。
+- 分支存档点：tag `archive/card-os-thin-skill-v1-20260717` = `7f321a6`；merge-base 为 `b13ea1e`。
+- 分支审计细节在会话中由三个 explore 子代理报告给出；仓库内权威记录为 roadmap 2026-07-31 更新记录与本文件。
+- 未执行 push、merge、rebase、reset、删除；未修改 `outputs/`、分支 worktree 业务文件与 server worktree。
