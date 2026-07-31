@@ -47,6 +47,7 @@
 ## Decisions Made
 
 - 用户书面选定并记录：ADR-001 调和方案（Accepted)——M1 领取/提交只走 packet 契约；生产核心权威保留服务器；package-v5 上传面归入 PUBLISH-01；分支资产按批抢救。
+- 用户补充决策（2026-07-31）：存档分支抢救**优先于从零重建**（此前重新生成发现历史积累丢失）；roadmap 执行顺序已插入独立抢救批次（SKILL-02 之后、ACCEPT-01 之前），API-01 可信上游入口以存档 `core/` 为候选实现，PUBLISH-01/RENDER-01/QA-01 登记抢救来源与前置修复项。
 - 用户决定：`codex/card-os-thin-skill-v1` 原样存档（已打本地 tag），不整体合入、不动其未提交修改；SKILL-02 从 main 另起新支。
 - 用户授权：roadmap 事实修正单独提交 main（已完成，`c54c825`)；任务建立文档（ADR-001、CURRENT_TASK、roadmap ADR 记录、docs/README、HANDOFF）的提交、任务分支创建、push、merge、PR 尚未授权。
 - 审计判断：分支资产（production core、renderer、package-v5、367 项通过测试）对 RENDER/QA/PUBLISH/ACCEPT 有挽救价值，在对应批次立项并修复 fixture/评审 Block 前不合入。
@@ -80,13 +81,12 @@
 
 ## Remaining Work
 
-1. 用户授权后提交任务建立文档（ADR-001、CURRENT_TASK、roadmap、docs/README、HANDOFF)，并从 main 新建 SKILL-02 任务分支与 worktree。
-2. 按计划 Task 1–9 实施 SKILL-02（详见 CURRENT_TASK 的 Acceptance Criteria 与 Next Actions)。
-3. 分支抢救候选（对应批次立项后）：publisher fixture 同步、mode pin 修正、Task 8 两个 Important、误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订的处置。
+1. 用户授权后提交 roadmap 抢救优先更新；SKILL-02 在 worktree `.worktrees/card-os-thin-client-v1` 按计划 Task 1–9 实施。
+2. 抢救批次（SKILL-02 之后、ACCEPT-01 之前，优先于从零重建）：迁移存档 `core/` 至服务器侧可信上游；修复 package-v5 两个评审 Block、publisher fixture 与 mode pin；处置误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订。
 
 ## Exact Next Action
 
-请用户授权提交任务建立文档；随后 `git checkout -b codex/card-os-thin-client-v1` 并建 `.worktrees/card-os-thin-client-v1`，按计划 Task 1 写 `tests/test_card_os_client_transport.py` 的 RED。
+请用户授权提交本次 roadmap 更新；随后在 `.worktrees/card-os-thin-client-v1` 按计划 Task 1 写 test_card_os_client_transport 的 RED。
 
 ## Recovery Notes
 

@@ -135,7 +135,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - `0.3.1` 批次验收：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
 - 已部署：`0.3.1` 经 `www.yutou.space/card-os` 的 HTTPS、持久化和非 root 服务验收，health/capabilities 与受保护路径均通过；见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
-- 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。
+- 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。该入口是 ACCEPT-01 的真正前置；候选实现为存档 tag `archive/card-os-thin-skill-v1-20260717` 中 `skills/cognitive-card-os/core/` 的生产核心（分类 v2、27 步工作流、full-spec v4.3/v5.0、哺乳动物 v1 与恐龙 v2 模板族），按 ADR-001 须迁移到服务器侧并重新评审，不得直接从 Skill 包形态合入。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
 
 ### AUTH-01 Card OS 身份与权限
@@ -236,12 +236,14 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 - 状态：`BACKLOG`
 - 范围：固定四页顺序、文本忠实布局、图像轨、A4 PDF、字体与中英文断行、manifest 指纹。
+- 抢救来源（ADR-001）：存档分支的受治理 renderer（`render_card_candidate.py`、family style/profile、不可变 render-set 与原子指针）为候选实现；真实高视觉素材上的排版质量尚未验证。
 - 完成条件：渲染器只消费内容锁；输出字节和渲染输入均有摘要；打印 QA 通过。
 
 ### QA-01 严格 QA 与人工复核
 
 - 状态：`BACKLOG`
 - 范围：分类、模板、命题、语言、COPY、来源、未知项、安全、图像、排版、未声明文件和内容锁复算。
+- 抢救来源（ADR-001）：存档分支的 production-record 验证器、双语 registry 绑定与 `audit-package` 离线审计为候选实现；注意其"人工复核"目前只是本地 receipt，须按服务器权威模型重建。
 - 完成条件：机器 QA 通过后才进入 `awaiting_review`；人工复核有明确 actor、决策和审计记录。
 
 ### PUBLISH-01 不可变发布
@@ -249,6 +251,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 状态：`BACKLOG`
 - 依赖：QA-01。
 - 范围：package revision、manifest、四卡、PDF、来源、QA 摘要、创建历史和授权下载。
+- 抢救来源（ADR-001）：存档分支的 package-v5 客户端打包/审计工具与服务器接纳面 `e78c2fa` 是本条目的候选实现；抢救前必须先关闭两个评审 Block（服务器 authority 闭包复算、gallery revision 资产绑定），修复 publisher fixture 失同步与过时 mode pin 使分支套件转绿，并完成 withdraw、容量门禁、备份与部署硬化。
 - 完成条件：发布版本不可原地修改；撤回和替代保留历史关系。
 
 ### MCP-01 只读 MCP
@@ -293,13 +296,14 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 下一轮按依赖顺序一次启动一个可独立验收的子项目：
 
-1. 执行 `SKILL-01`：发布不可变 Skill release、SHA-256、stable 指针和兼容回滚；
-2. `SKILL-01` 通过后执行 `SKILL-02`：在两个独立 Codex 客户端安装同一摘要的薄客户端，并通过现网 capability、领取和提交门禁；
-3. 客户端与发布链可用后执行 `ACCEPT-01`：以兔子、深圳、`age-5-6`、中英文、打印版完成端到端验收；
-4. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源；
-5. 待严格 package 验证与服务器不可变存储就绪后启动 MIG-02。
+1. 执行 `SKILL-01`：发布不可变 Skill release、SHA-256、stable 指针和兼容回滚（基础设施已完成，stable 随 SKILL-02 激活）；
+2. `SKILL-01` 通过后执行 `SKILL-02`：在两个独立 Codex 客户端安装同一摘要的薄客户端，并通过现网 capability、领取和提交门禁（当前正式任务）；
+3. **抢救批次（优先于任何从零重建）**：评审并迁移存档 tag `archive/card-os-thin-skill-v1-20260717` 的生产核心至服务器侧可信上游（API-01 缺口），同步修复 package-v5 评审 Block 与测试 fixture；用户已确认此前重新生成发现历史积累丢失，故抢救优先；
+4. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`：以兔子、深圳、`age-5-6`、中英文、打印版完成端到端验收；
+5. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源；
+6. 待严格 package 验证与服务器不可变存储就绪后启动 MIG-02。
 
-门户、渲染和 MCP 不进入下一实现批次。
+门户、渲染（独立立项部分）和 MCP 不进入下一实现批次。
 
 ## 6. 更新记录
 
@@ -307,6 +311,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 - 审计 `codex/card-os-thin-skill-v1`（领先 main 29 个提交）：其中 SKILL-02 薄客户端计划（`docs/superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md`）Task 1–9 均未执行，分支上的 `card_os_client.py` 是另一套 package-v4/v5 契约；PORTAL/RENDER/QA/PUBLISH 与恐龙模板族属越序 BACKLOG 工作；`skills/cognitive-card-os/core/` 将生产核心迁入 Skill 包的方向与本账本"服务器统一权威"约束冲突。分支尖端未通过自身测试套件且 Task 8 评审未关闭，已用 tag `archive/card-os-thin-skill-v1-20260717` 存档，不整体合入。
 - 客户端契约与生产核心归属已经用户书面选定并固化为 [ADR-001](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md)：M1 领取/提交只走 packet 契约，SKILL-02 按 2026-07-15 thin-client 计划实施；生产核心权威保留服务器；package-v5 上传面归入 PUBLISH-01 后续批次；分支资产按批抢救。
+- 用户进一步确认：存档分支抢救**优先于从零重建**（此前重新生成时发现历史积累丢失）。执行顺序插入独立抢救批次（SKILL-02 之后、ACCEPT-01 之前）；API-01 可信自由请求编译入口以存档 `core/` 为候选实现，PUBLISH-01/RENDER-01/QA-01 均登记对应抢救来源与前置修复项。
 - 回填 2026-07-16 的 SKILL-01 基础设施状态修正（原记录长期滞留在分支 worktree 未提交）。
 
 ### 2026-07-16
