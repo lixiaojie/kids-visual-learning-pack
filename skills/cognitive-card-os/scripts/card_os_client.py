@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cognitive Card OS thin client (skill release 0.1.0).
+"""Cognitive Card OS thin client (skill release 0.1.1).
 
 Standard-library-only client for the Card OS API 0.3.1 contract. This slice
 implements the fail-closed transport (fixed HTTPS base URL, zero redirects,
@@ -54,7 +54,7 @@ from typing import Protocol
 BASE_URL = "https://www.yutou.space/card-os/"
 API_ROOT = "/card-os/api/v1"
 PROTOCOL_VERSION = 1
-SKILL_RELEASE = "0.1.0"
+SKILL_RELEASE = "0.1.1"
 MINIMUM_SERVER_VERSION = (0, 3, 1)
 CAPABILITIES_SCHEMA = "cognitive-card-capabilities-v1"
 DEFAULT_TIMEOUT_SECONDS = 30.0
@@ -668,8 +668,11 @@ class KeychainCredentialStore:
         try:
             # The frozen binding set has no SecKeychainItemDelete, so deletion
             # is an in-place erase to zero-length data; get() treats that as
-            # absent.
-            modify_status = self._security.modify_item_data(item_ref, None)
+            # absent. The buffer must be non-NULL: on real Security.framework
+            # a NULL pointer makes the modify a no-op (the 0.1.0 live
+            # acceptance defect), while a zero-length buffer truncates.
+            empty = ctypes.create_string_buffer(0)
+            modify_status = self._security.modify_item_data(item_ref, empty)
         finally:
             self._security.release_item(item_ref)
         if modify_status != 0:

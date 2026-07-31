@@ -392,7 +392,7 @@ class CommandTestCase(unittest.TestCase):
         headers = {k.lower(): v for k, v in record["headers"].items()}
         self.assertEqual(f"Bearer {STORED_TOKEN}", headers["authorization"])
         self.assertEqual("1", headers["x-card-os-protocol"])
-        self.assertEqual("0.1.0", headers["x-card-os-skill-release"])
+        self.assertEqual("0.1.1", headers["x-card-os-skill-release"])
         allowed = {
             "host",
             "accept",

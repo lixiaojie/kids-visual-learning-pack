@@ -81,7 +81,7 @@ SERVER_CODE_GROUPS = {
 SERVER_CODES = frozenset().union(*SERVER_CODE_GROUPS.values())
 
 # Frozen local production codes. UNSAFE_ARCHIVE is frozen by the plan but
-# reserved: card_os_client.py 0.1.0 emits the other nine.
+# reserved: card_os_client.py 0.1.1 emits the other nine.
 LOCAL_PRODUCTION_CODES = frozenset(
     {
         "TRUSTED_UPSTREAM_REQUIRED", "REDIRECT_REFUSED", "TLS_REQUIRED",
@@ -96,7 +96,7 @@ INSTALLER_ONLY_CODES = frozenset({"UNMANAGED_ACTIVE_SKILL"})
 
 ALL_DOCUMENTED_CODES = SERVER_CODES | LOCAL_PRODUCTION_CODES | INSTALLER_ONLY_CODES
 
-# Skeleton-only code that must not survive into the 0.1.0 production source.
+# Skeleton-only code that must not survive into the 0.1.1 production source.
 RETIRED_CODES = frozenset({"CLIENT_NOT_RELEASED"})
 
 _CODE_TOKEN_RE = re.compile(r"`([A-Z][A-Z0-9_]{2,63})`")
@@ -250,7 +250,7 @@ class ProtocolReferenceTests(unittest.TestCase):
     def test_enumerates_the_protected_headers(self) -> None:
         self.assertIn("Authorization: Bearer", PROTOCOL_MD)
         self.assertIn("X-Card-OS-Protocol: 1", PROTOCOL_MD)
-        self.assertIn("X-Card-OS-Skill-Release: 0.1.0", PROTOCOL_MD)
+        self.assertIn("X-Card-OS-Skill-Release: 0.1.1", PROTOCOL_MD)
         self.assertIn("Idempotency-Key", PROTOCOL_MD)
 
     def test_enumerates_the_schemas(self) -> None:

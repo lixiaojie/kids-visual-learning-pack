@@ -47,28 +47,53 @@ finally:
 
 
 class FakeSecurityFramework:
-    """Records KeychainCredentialStore calls; mimics _SecurityFramework."""
+    """Records KeychainCredentialStore calls; mimics _SecurityFramework.
+
+    The item model mirrors observed Security.framework semantics (learned
+    from the 0.1.0 live acceptance defect): a modify call with a NULL data
+    pointer is a no-op, while a zero-length non-NULL buffer truncates the
+    item data.
+    """
 
     def __init__(self) -> None:
         self.calls: list[tuple[object, ...]] = []
         self.add_status = 0
         self.modify_status = 0
-        # (status, password data, item ref) returned by find_generic_password.
-        self.find_result: tuple[int, bytes | None, int | None] = (-25300, None, None)
+        # Explicit override for find_generic_password; None answers from the
+        # item model instead.
+        self.find_result: tuple[int, bytes | None, int | None] | None = None
+        self._item: bytes | None = None
+        self._next_ref = 1000
 
     def find_generic_password(self, service: bytes, account: bytes):
         self.calls.append(("find", service, account))
-        return self.find_result
+        if self.find_result is not None:
+            return self.find_result
+        if self._item is None:
+            return (-25300, None, None)  # errSecItemNotFound
+        self._next_ref += 1
+        return (0, self._item, self._next_ref)
 
     def add_generic_password(self, service: bytes, account: bytes, data) -> int:
         self.calls.append(("add", service, account, bytes(data), data))
-        return self.add_status
+        if self.add_status != 0:
+            return self.add_status
+        if self._item is not None:
+            return -25299  # errSecDuplicateItem
+        self._item = bytes(data)
+        return 0
 
     def modify_item_data(self, item_ref: int, data) -> int:
         self.calls.append(
             ("modify", item_ref, None if data is None else bytes(data), data)
         )
-        return self.modify_status
+        if self.modify_status != 0:
+            return self.modify_status
+        if data is not None:
+            # NULL pointer: no-op on real Security.framework. Any non-NULL
+            # buffer replaces the data; a zero-length buffer truncates it.
+            self._item = bytes(data)
+        return 0
 
     def release_item(self, item_ref: int) -> None:
         self.calls.append(("release", item_ref))
@@ -389,11 +414,22 @@ class KeychainStoreTests(unittest.TestCase):
         modify = [call for call in self.security.calls if call[0] == "modify"]
         self.assertEqual(1, len(modify))
         self.assertEqual(55, modify[0][1])
-        self.assertIsNone(modify[0][2])  # erased to zero-length data
+        # Erased via a zero-length non-NULL buffer; a NULL pointer would be a
+        # no-op on real Security.framework (the 0.1.0 live defect).
+        self.assertEqual(b"", modify[0][2])
+        self.assertIsNotNone(modify[0][3])
         self.assertIn(("release", 55), self.security.calls)
         # Second delete: item now absent.
         self.security.find_result = (client._ERR_SEC_ITEM_NOT_FOUND, None, None)
         self.assertFalse(self.store.delete())
+
+    def test_delete_actually_removes_credential_data(self) -> None:
+        # Regression for the 0.1.0 live defect: with the stateful fake the
+        # erase must make get() report absence, exactly like the real backend.
+        self.store.set(FAKE_TOKEN_BYTES)
+        self.assertEqual(FAKE_TOKEN_BYTES, self.store.get())
+        self.assertTrue(self.store.delete())
+        self.assertIsNone(self.store.get())
 
     def test_delete_absent_item_returns_false_without_modify(self) -> None:
         self.security.find_result = (client._ERR_SEC_ITEM_NOT_FOUND, None, None)
