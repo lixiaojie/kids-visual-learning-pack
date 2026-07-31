@@ -42,8 +42,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；设计可信自由请求编译入口 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
-| SKILL-01 | Skill 发布注册表 | IN PROGRESS | registry/installer 基础设施已验证；等待完整 `0.1.0` release 激活 |
-| SKILL-02 | 薄 Skill 客户端 | READY | 实现完整客户端并首次激活生产 stable |
+| SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
+| SKILL-02 | 薄 Skill 客户端 | IN PROGRESS | 本机代码、双隔离安装与现网上传验收已通过；待第二台真实 Codex 电脑安装同一摘要 |
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
@@ -161,9 +161,9 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### SKILL-01 Skill 发布注册表
 
-- 状态：`IN PROGRESS`
+- 状态：`DONE`（2026-07-31，完整 `0.1.1` 生产 stable provisional 门禁通过后）
 - 依赖：PROTO-01。
-- 进展：registry/installer 基础设施已完成本地与生产门禁；生产 stable 按设计保持不存在，等待 SKILL-02 完成完整 `0.1.0` 后首次激活。
+- 进展：registry/installer 基础设施已完成本地与生产门禁；完整 `0.1.0` 于 2026-07-31 首次激活生产 stable 后，因现网验收发现客户端 `auth delete` 缺陷执行 provisional 回滚恢复 absence（门禁按设计工作），修复版 `0.1.1`（归档 `f162ad7b…`，source commit `f8abe20`）同日重新发布并激活 stable;immutable `0.1.0` 保留为不激活历史。
 - 目标路径：
   - `/skill/v1/manifest.json`
   - `/skill/v1/releases/<version>/cognitive-card-os.zip`
@@ -172,9 +172,9 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### SKILL-02 薄 Skill 客户端
 
-- 状态：`READY`
+- 状态：`IN PROGRESS`（本地代码、两个隔离安装与现网上传验收已通过；待第二台真实 Codex 电脑安装同一摘要）
 - 依赖：API-01、AUTH-01、PROTO-01、SKILL-01。
-- 前置条件：API/AUTH 最小生产门禁与 SKILL-01 registry/installer 基础设施均已验证；完整 `0.1.0` 由本任务实现并首次激活，不发布依赖本地仓库状态的临时客户端。
+- 前置条件：API/AUTH 最小生产门禁与 SKILL-01 registry/installer 基础设施均已验证；完整客户端由本任务实现并激活生产 stable（实际发布版本 `0.1.1`，见 SKILL-01 进展）。
 - 范围：输入收集、本地形状校验、服务发现、任务创建、包领取、摘要确认、候选上传、错误解释、离线限制和版本升级。
 - 完成条件：两台独立 Codex 客户端安装相同发布摘要，并能完成同一服务器上的任务领取与结果上传。
 
@@ -309,6 +309,11 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-07-31
 
+- 完成 SKILL-02 薄客户端实施（分支 `codex/card-os-thin-client-v1`，计划 Task 1–9):packet 契约客户端（transport/capability 协商、三级凭据后端、packets/jobs 命令、结果校验与自动上传）、Skill 文档与契约测试（279 项 thin-client 测试）、pre-publish 与 install/boundary forward tests 全部通过。
+- 完整 `0.1.0`（归档 `217efb34…`，source commit `6f06d7a`）首次激活生产 stable;Task 8 现网验收主流程（claim→get→本地生成→complete→submit→exact replay→`ATTEMPT_BODY_CHANGED`→撤销→403 `AUTH_REVOKED`）全部通过，但发现 macOS Keychain `auth delete` 实际不删除数据的缺陷（Important)；按计划执行 provisional 回滚恢复 manifest absence 并复验 404——provisional 门禁按设计工作。
+- 修复版 `0.1.1`（零长度非空 buffer 截断，不突破五函数绑定集；归档 `f162ad7b…`,source commit `f8abe20`）经 0C/0I 评审、双构建字节一致后发布并激活 stable;Task 7 关键项与 Task 8 全流程在新版本上重跑通过，`auth delete` 真实后端实证 absent;Task 8 独立评审 0C/0I。immutable `0.1.0` 保留为不激活历史。
+- `SKILL-01` 标记 `DONE`;`SKILL-02` 标记 `IN PROGRESS`（完成条件的"第二台真实 Codex 电脑安装同一摘要"尚未满足，该硬条件超出本任务可控范围）。
+- 客户端 attempt journal 记录 `content_lock_digest` 与 per-artifact `media_type`（满足跨调用 exact replay 的最小元数据，与设计 §10 清单存在有意偏差，待设计文档下次修订追认）。
 - 审计 `codex/card-os-thin-skill-v1`（领先 main 29 个提交）：其中 SKILL-02 薄客户端计划（`docs/superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md`）Task 1–9 均未执行，分支上的 `card_os_client.py` 是另一套 package-v4/v5 契约；PORTAL/RENDER/QA/PUBLISH 与恐龙模板族属越序 BACKLOG 工作；`skills/cognitive-card-os/core/` 将生产核心迁入 Skill 包的方向与本账本"服务器统一权威"约束冲突。分支尖端未通过自身测试套件且 Task 8 评审未关闭，已用 tag `archive/card-os-thin-skill-v1-20260717` 存档，不整体合入。
 - 客户端契约与生产核心归属已经用户书面选定并固化为 [ADR-001](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md)：M1 领取/提交只走 packet 契约，SKILL-02 按 2026-07-15 thin-client 计划实施；生产核心权威保留服务器；package-v5 上传面归入 PUBLISH-01 后续批次；分支资产按批抢救。
 - 用户进一步确认：存档分支抢救**优先于从零重建**（此前重新生成时发现历史积累丢失）。执行顺序插入独立抢救批次（SKILL-02 之后、ACCEPT-01 之前）；API-01 可信自由请求编译入口以存档 `core/` 为候选实现，PUBLISH-01/RENDER-01/QA-01 均登记对应抢救来源与前置修复项。
