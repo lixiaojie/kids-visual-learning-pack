@@ -5,10 +5,13 @@ Standard-library-only client for the Card OS API 0.3.1 contract. This slice
 implements the fail-closed transport (fixed HTTPS base URL, zero redirects,
 bounded responses, stable error codes), unauthenticated capability
 negotiation (``doctor``), the non-disclosing credential backends
-(``auth set/status/delete``) and the packet/job commands
+(``auth set/status/delete``), the packet/job commands
 (``packets list/claim/get/complete``, ``jobs status/events``) with closed
 packet-envelope validation, server-0.3.1 digest recomputation and
-timeout-triggered status reads. Result submission is added by a later task.
+timeout-triggered status reads, and result submission
+(``results submit``) with local directory closure, a credential scan, a
+private submit-attempt journal, the frozen idempotency-key formula, bounded
+same-key replay and acceptance-receipt verification.
 
 Security invariants enforced here:
 
@@ -27,6 +30,7 @@ Security invariants enforced here:
 
 from __future__ import annotations
 
+import base64
 import ctypes
 import dataclasses
 import hashlib
@@ -38,9 +42,12 @@ import shutil
 import stat
 import subprocess
 import sys
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections.abc import Callable
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
@@ -1427,6 +1434,825 @@ def _cmd_jobs_events(job_id: str, *, token: str | None = None) -> dict[str, obje
     }
 
 
+# ---------------------------------------------------------------------------
+# Result validation and upload
+#
+# ``results submit`` closes the local generation loop: the directory is
+# walked without following links, every declared required output must appear
+# exactly once, media types come only from the digest-covered packet
+# declarations, all decoded/encoded budgets are enforced, and every decoded
+# payload plus all metadata strings and the final canonical body are scanned
+# for the raw token and any complete credential shape. One canonical request
+# body is built around the generated_at fixed by the private
+# cognitive-card-submit-attempt-v1 journal, its frozen idempotency key is
+# computed once, complete runs before the upload, and only the exact same
+# bytes with the same key may be replayed (once, after a status read). The
+# acceptance receipt is re-verified against the local bytes; a staged
+# candidate is never a publication.
+# ---------------------------------------------------------------------------
+
+RESULT_SCHEMA = "cognitive-card-generation-result-v1"
+ATTEMPT_SCHEMA = "cognitive-card-submit-attempt-v1"
+CLIENT_SURFACE = "codex-cli"
+
+# Server 0.3.1 budgets (c2a898c): http/config.py
+# DEFAULT_MAX_DECODED_PAYLOAD_BYTES and http/schemas.py
+# MAX_ENCODED_PAYLOAD_CHARACTERS.
+MAX_DECODED_ARTIFACT_BYTES = 20 * 1024 * 1024
+MAX_RESULT_BODY_BYTES = 28 * 1024 * 1024
+MAX_ATTEMPT_FILE_BYTES = 64 * 1024
+
+# http/schemas.py RequiredOutputRequest caps max_bytes at 20 MiB per file.
+_MAX_DECLARED_FILE_BYTES = 20 * 1024 * 1024
+
+# subscriber/media.py ALLOWED_ARTIFACT_MEDIA_TYPES at c2a898c.
+ALLOWED_ARTIFACT_MEDIA_TYPES = frozenset(
+    {
+        "application/json",
+        "text/markdown",
+        "text/plain",
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+    }
+)
+
+_RESULT_DIGEST_RE = re.compile(r"sha256:[0-9a-f]{64}")
+_HEX64_RE = re.compile(r"[0-9a-f]{64}")
+_ATTEMPT_KEY_RE = re.compile(r"ccos-v1-[0-9a-f]{64}")
+_GENERATED_AT_RE = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,6})?Z"
+)
+
+# Safe shape source: a prefix plus character classes, never a complete
+# credential. Matches any full ccos_v1.<32 hex>.<url-safe> credential.
+_CREDENTIAL_SHAPE_RE = re.compile(rb"ccos_v1\.[0-9a-f]{32}\.[A-Za-z0-9_-]+")
+
+_RECEIPT_KEYS = frozenset(
+    {"packet_id", "result_digest", "staged_artifacts", "accepted_at", "replayed"}
+)
+_STAGED_KEYS = frozenset({"relative_path", "storage_key", "sha256", "size_bytes"})
+_ATTEMPT_KEYS = frozenset(
+    {"schema", "packet_id", "generated_at", "body_sha256", "idempotency_key",
+     "artifacts"}
+)
+_ATTEMPT_ARTIFACT_KEYS = frozenset({"relative_path", "sha256", "size_bytes"})
+
+
+def result_idempotency_key(packet_id: str, canonical_body: bytes) -> str:
+    """Frozen formula: ccos-v1- + sha256(packet_id + "\\n" + body) hex."""
+    return "ccos-v1-" + hashlib.sha256(
+        packet_id.encode("utf-8") + b"\n" + canonical_body
+    ).hexdigest()
+
+
+def _credential_in_result(category: str) -> ClientError:
+    # Only the code and the path category are reported; matched bytes,
+    # fingerprints and surrounding context never leave the scan.
+    return ClientError(
+        "CREDENTIAL_IN_RESULT",
+        f"credential-shaped content detected in the {category}; "
+        "the result was not uploaded",
+        action="remove every credential from the generated files and "
+        "regenerate them; never upload tokens",
+    )
+
+
+def _scan_for_credentials(data: bytes, token: bytes, category: str) -> None:
+    """Reject the exact raw token or any complete credential shape."""
+    if token and token in data:
+        raise _credential_in_result(category)
+    if _CREDENTIAL_SHAPE_RE.search(data) is not None:
+        raise _credential_in_result(category)
+
+
+def _scan_value_for_credentials(value: object, token: bytes, category: str) -> None:
+    """Recursively scan every string in a JSON-shaped value."""
+    if isinstance(value, str):
+        _scan_for_credentials(value.encode("utf-8"), token, category)
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            _scan_value_for_credentials(key, token, category)
+            _scan_value_for_credentials(item, token, category)
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            _scan_value_for_credentials(item, token, category)
+
+
+def _unsafe_path(message: str) -> ClientError:
+    # Path material is never echoed: an on-disk name could itself carry
+    # credential-shaped bytes that must not reach the output.
+    return ClientError(
+        "UNSAFE_ARTIFACT_PATH",
+        message,
+        action="fix the result directory so every file is a regular file "
+        "with a safe relative POSIX path",
+    )
+
+
+def _require_safe_declared_path(relative_path: str) -> None:
+    """Server 0.3.1 _require_safe_artifact_path rule, plus control chars."""
+    if (
+        not relative_path
+        or relative_path.startswith("/")
+        or "\\" in relative_path
+        or "\0" in relative_path
+        or any(ord(ch) < 0x20 or ord(ch) == 0x7F for ch in relative_path)
+    ):
+        raise _unsafe_path("the packet declares an unsafe required output path")
+    if any(segment in ("", ".", "..") for segment in relative_path.split("/")):
+        raise _unsafe_path("the packet declares an unsafe required output path")
+
+
+def _require_safe_disk_name(relative_path: str) -> None:
+    if "\\" in relative_path or any(
+        ord(ch) < 0x20 or ord(ch) == 0x7F for ch in relative_path
+    ):
+        raise _unsafe_path(
+            "result directory contains a file name that is unsafe to upload"
+        )
+
+
+def _check_normalization_collisions(relative_paths: list[str]) -> None:
+    """Reject two distinct paths that collide after Unicode normalization."""
+    seen: dict[str, str] = {}
+    for relative_path in relative_paths:
+        normalized = unicodedata.normalize("NFC", relative_path)
+        if normalized in seen and seen[normalized] != relative_path:
+            raise _unsafe_path(
+                "result directory contains paths that collide after "
+                "Unicode normalization"
+            )
+        seen[normalized] = relative_path
+
+
+def _walk_result_files(root: Path) -> dict[str, os.stat_result]:
+    """Walk without following links; return regular files by POSIX rel path."""
+    try:
+        root_info = os.lstat(root)
+    except OSError:
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            "result directory does not exist",
+            action="pass --directory pointing at the generated result files",
+        ) from None
+    if not stat.S_ISDIR(root_info.st_mode):  # lstat: a symlink is not a dir
+        if stat.S_ISLNK(root_info.st_mode):
+            raise _unsafe_path("result directory must not be a symbolic link")
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            "result path is not a directory",
+            action="pass --directory pointing at the generated result files",
+        )
+    found: dict[str, os.stat_result] = {}
+    stack: list[tuple[str, Path]] = [("", root)]
+    while stack:
+        prefix, current = stack.pop()
+        try:
+            with os.scandir(current) as entries:
+                batch = list(entries)
+        except OSError:
+            raise ClientError(
+                "REQUEST_VALIDATION_FAILED",
+                "result directory could not be read",
+                action="fix permissions on the result directory and re-run",
+            ) from None
+        for entry in batch:
+            relative = entry.name if not prefix else prefix + "/" + entry.name
+            info = entry.stat(follow_symlinks=False)
+            if stat.S_ISDIR(info.st_mode):
+                stack.append((relative, Path(entry.path)))
+                continue
+            if not stat.S_ISREG(info.st_mode):
+                # Symlinks, devices, FIFOs and sockets are never followed
+                # and never read.
+                raise _unsafe_path(
+                    "result directory contains a non-regular or linked entry"
+                )
+            _require_safe_disk_name(relative)
+            found[relative] = info
+    _check_normalization_collisions(sorted(found))
+    return found
+
+
+def _read_artifact_bytes(path: Path, expected_size: int) -> bytes:
+    """Read exactly expected_size bytes without following links."""
+    try:
+        descriptor = os.open(path, os.O_RDONLY | _O_NOFOLLOW)
+    except OSError:
+        raise _unsafe_path(
+            "result file could not be opened without following links"
+        ) from None
+    with os.fdopen(descriptor, "rb") as handle:
+        info = os.fstat(handle.fileno())
+        if not stat.S_ISREG(info.st_mode):
+            raise _unsafe_path("result entry is not a regular file")
+        payload = handle.read(expected_size + 1)
+    if len(payload) != expected_size:
+        raise ClientError(
+            "ARTIFACT_SIZE_MISMATCH",
+            "a result file changed size while it was being read",
+            action="regenerate the result files and re-run results submit",
+        )
+    return payload
+
+
+def _matches_declared_signature(media_type: str, payload: bytes) -> bool:
+    """Stdlib image signature checks mirroring the server media policy."""
+    if media_type == "image/png":
+        return payload.startswith(b"\x89PNG\r\n\x1a\n")
+    if media_type == "image/jpeg":
+        return payload.startswith(b"\xff\xd8\xff")
+    if media_type == "image/webp":
+        return (
+            len(payload) >= 12
+            and payload[:4] == b"RIFF"
+            and payload[8:12] == b"WEBP"
+        )
+    return True
+
+
+def validate_result_directory(
+    packet: dict[str, object], directory: Path
+) -> tuple[dict[str, object], bytes]:
+    """Close the result directory against the packet's required_outputs.
+
+    Returns (descriptor, decoded): the descriptor carries the sorted
+    artifact entries (relative_path, media_type, sha256, size_bytes,
+    payload_base64) plus empty source_records/operator_notes, and decoded is
+    the concatenation of all decoded artifact bytes in sorted path order.
+    """
+    required_outputs = packet["required_outputs"]  # closed packet schema
+    if not isinstance(required_outputs, list) or not required_outputs:
+        raise _drift("packet declares no required outputs")
+    declarations: dict[str, dict[str, object]] = {}
+    for output in required_outputs:
+        relative_path = output["relative_path"]
+        _require_safe_declared_path(relative_path)
+        if output["max_bytes"] > _MAX_DECLARED_FILE_BYTES:
+            raise _drift("packet declares a max_bytes above the server schema limit")
+        if relative_path in declarations:
+            raise ClientError(
+                "UNDECLARED_ARTIFACT",
+                "the packet declares the same required output path twice",
+                action="do not use this packet; report the server integrity failure",
+            )
+        declarations[relative_path] = output
+    root = Path(directory)
+    found = _walk_result_files(root)
+    if set(declarations) - set(found):
+        raise ClientError(
+            "MISSING_ARTIFACT",
+            "a declared required output is missing from the result directory",
+            action="generate every required output declared by the packet",
+        )
+    if set(found) - set(declarations):
+        raise ClientError(
+            "UNDECLARED_ARTIFACT",
+            "the result directory contains files the packet did not declare",
+            action="remove every file that is not a declared required output",
+        )
+    artifacts: list[dict[str, object]] = []
+    decoded_parts: list[bytes] = []
+    decoded_total = 0
+    for relative_path in sorted(declarations):
+        declaration = declarations[relative_path]
+        info = found[relative_path]
+        if info.st_size > declaration["max_bytes"]:
+            raise ClientError(
+                "ARTIFACT_TOO_LARGE",
+                "a result file exceeds its declared max_bytes",
+                action="shrink the file below the declared max_bytes",
+            )
+        decoded_total += info.st_size
+        if decoded_total > MAX_DECODED_ARTIFACT_BYTES:
+            raise ClientError(
+                "PAYLOAD_TOO_LARGE",
+                "decoded artifacts exceed the 20 MiB total budget",
+                action="reduce the total size of the generated files",
+            )
+        payload = _read_artifact_bytes(root / relative_path, info.st_size)
+        media_type = declaration["media_type"]
+        if media_type not in ALLOWED_ARTIFACT_MEDIA_TYPES:
+            raise ClientError(
+                "UNSUPPORTED_ARTIFACT_MEDIA_TYPE",
+                "the packet declares a media type the server never accepts",
+                action="do not use this packet; report the server integrity failure",
+            )
+        if not _matches_declared_signature(media_type, payload):
+            raise ClientError(
+                "INVALID_ARTIFACT_MEDIA",
+                "a result file does not match its declared media type signature",
+                action="regenerate the file in the declared media type",
+            )
+        artifacts.append(
+            {
+                "relative_path": relative_path,
+                "media_type": media_type,
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "size_bytes": len(payload),
+                "payload_base64": base64.b64encode(payload).decode("ascii"),
+            }
+        )
+        decoded_parts.append(payload)
+    descriptor = {
+        "artifacts": artifacts,
+        "source_records": [],
+        "operator_notes": "",
+    }
+    return descriptor, b"".join(decoded_parts)
+
+
+def _utc_now_rfc3339() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="microseconds").replace(
+        "+00:00", "Z"
+    )
+
+
+def _parse_rfc3339(value: str) -> datetime | None:
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _attempts_directory() -> Path:
+    state_home = os.environ.get("XDG_STATE_HOME")
+    if not state_home:
+        home = os.environ.get("HOME") or str(Path.home())
+        state_home = os.path.join(home, ".local", "state")
+    return Path(state_home) / "cognitive-card-os" / "attempts"
+
+
+def _attempt_file_path(packet_id: str) -> Path:
+    _id_segment(packet_id, kind="packet")  # one safe path segment, or fail
+    if packet_id in (".", ".."):
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            "packet id cannot be used as a state file name",
+            action="pass the exact server-issued packet id",
+        )
+    file_name = packet_id + ".json"
+    if Path(file_name).name != file_name:
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            "packet id cannot be used as a state file name",
+            action="pass the exact server-issued packet id",
+        )
+    return _attempts_directory() / file_name
+
+
+def _attempt_error(message: str) -> ClientError:
+    # Attempt-state errors never echo stored content.
+    return ClientError(
+        "ATTEMPT_BODY_CHANGED",
+        message,
+        action="stop and reconcile: the recorded submit attempt no longer "
+        "matches the current result; inspect jobs status before changing "
+        "anything, and never edit the attempt state by hand",
+    )
+
+
+def _verify_attempt_directory(directory: Path) -> None:
+    info = os.lstat(directory)
+    if not stat.S_ISDIR(info.st_mode):  # lstat: a symlink is not a dir
+        raise _attempt_error("attempt state directory is not a real directory")
+    if info.st_uid != os.getuid():
+        raise _attempt_error("attempt state directory is owned by another user")
+    if stat.S_IMODE(info.st_mode) != 0o700:
+        raise _attempt_error("attempt state directory must have mode 0700")
+
+
+def _validate_attempt_journal(
+    journal: object, packet_id: str
+) -> dict[str, object]:
+    if not isinstance(journal, dict) or set(journal) != _ATTEMPT_KEYS:
+        raise _attempt_error("attempt state has an unexpected shape")
+    if journal["schema"] != ATTEMPT_SCHEMA:
+        raise _attempt_error("attempt state has an unexpected schema")
+    if journal["packet_id"] != packet_id:
+        raise _attempt_error("attempt state belongs to a different packet")
+    generated_at = journal["generated_at"]
+    if (
+        not isinstance(generated_at, str)
+        or _GENERATED_AT_RE.fullmatch(generated_at) is None
+        or _parse_rfc3339(generated_at) is None
+    ):
+        raise _attempt_error("attempt state has a malformed generated_at")
+    body_sha256 = journal["body_sha256"]
+    if not isinstance(body_sha256, str) or _HEX64_RE.fullmatch(body_sha256) is None:
+        raise _attempt_error("attempt state has a malformed body digest")
+    key = journal["idempotency_key"]
+    if not isinstance(key, str) or _ATTEMPT_KEY_RE.fullmatch(key) is None:
+        raise _attempt_error("attempt state has a malformed idempotency key")
+    artifacts = journal["artifacts"]
+    if not isinstance(artifacts, list):
+        raise _attempt_error("attempt state has malformed artifacts")
+    previous: str | None = None
+    for entry in artifacts:
+        if not isinstance(entry, dict) or set(entry) != _ATTEMPT_ARTIFACT_KEYS:
+            raise _attempt_error("attempt state has a malformed artifact entry")
+        relative_path = entry["relative_path"]
+        sha256 = entry["sha256"]
+        size_bytes = entry["size_bytes"]
+        if not isinstance(relative_path, str) or not relative_path:
+            raise _attempt_error("attempt state has a malformed artifact entry")
+        if not isinstance(sha256, str) or _HEX64_RE.fullmatch(sha256) is None:
+            raise _attempt_error("attempt state has a malformed artifact entry")
+        if type(size_bytes) is not int or size_bytes < 0:
+            raise _attempt_error("attempt state has a malformed artifact entry")
+        if previous is not None and relative_path <= previous:
+            raise _attempt_error("attempt state artifacts are not strictly sorted")
+        previous = relative_path
+    return journal
+
+
+def _read_attempt(path: Path, packet_id: str) -> dict[str, object] | None:
+    """Verified attempt journal, or None when no attempt was ever recorded."""
+    try:
+        _verify_attempt_directory(path.parent)
+    except FileNotFoundError:
+        return None
+    try:
+        info = os.lstat(path)
+    except FileNotFoundError:
+        return None
+    if not stat.S_ISREG(info.st_mode):  # lstat: a symlink is not regular
+        raise _attempt_error("attempt state is not a regular file")
+    if info.st_uid != os.getuid():
+        raise _attempt_error("attempt state is owned by another user")
+    if stat.S_IMODE(info.st_mode) != 0o600:
+        raise _attempt_error("attempt state must have mode 0600")
+    if info.st_size > MAX_ATTEMPT_FILE_BYTES:
+        raise _attempt_error("attempt state exceeds the maximum accepted size")
+    descriptor = os.open(path, os.O_RDONLY | _O_NOFOLLOW)
+    with os.fdopen(descriptor, "rb") as handle:
+        raw = handle.read(MAX_ATTEMPT_FILE_BYTES + 1)
+    if len(raw) > MAX_ATTEMPT_FILE_BYTES:
+        raise _attempt_error("attempt state exceeds the maximum accepted size")
+    try:
+        journal = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        raise _attempt_error("attempt state is not valid JSON") from None
+    return _validate_attempt_journal(journal, packet_id)
+
+
+def _write_attempt(path: Path, journal: dict[str, object]) -> None:
+    """Create the attempt journal atomically; never overwrite an existing one."""
+    parent = path.parent
+    os.makedirs(parent, mode=0o700, exist_ok=True)
+    _verify_attempt_directory(parent)
+    payload = canonical_json(journal)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | _O_NOFOLLOW
+    for _ in range(16):
+        candidate = parent / (".attempt-" + secrets.token_hex(8) + ".tmp")
+        try:
+            descriptor = os.open(candidate, flags, 0o600)
+            break
+        except FileExistsError:
+            continue
+    else:
+        raise _attempt_error("could not allocate a private temp file for attempt state")
+    try:
+        view = memoryview(payload)
+        while view:
+            written = os.write(descriptor, view)
+            view = view[written:]
+        os.fsync(descriptor)
+    except BaseException:
+        os.close(descriptor)
+        candidate.unlink(missing_ok=True)
+        raise
+    os.close(descriptor)
+    try:
+        # Atomic create-exclusive: an existing journal always wins.
+        os.link(candidate, path)
+    except FileExistsError:
+        candidate.unlink(missing_ok=True)
+        raise
+    candidate.unlink(missing_ok=True)
+    dir_descriptor = os.open(parent, os.O_RDONLY)
+    try:
+        os.fsync(dir_descriptor)
+    finally:
+        os.close(dir_descriptor)
+
+
+def _build_checked_body(body_factory: Callable[[str], bytes], generated_at: str) -> bytes:
+    body = body_factory(generated_at)
+    if len(body) > MAX_RESULT_BODY_BYTES:
+        raise ClientError(
+            "PAYLOAD_TOO_LARGE",
+            "the canonical result body exceeds the 28 MiB budget",
+            action="reduce the total artifact size; the server never accepts "
+            "a larger body",
+        )
+    return body
+
+
+def load_or_create_attempt(
+    packet_id: str,
+    artifacts: tuple[dict[str, object], ...],
+    body_factory: Callable[[str], bytes],
+) -> tuple[bytes, str]:
+    """Return (canonical_body, idempotency_key) pinned by the attempt journal.
+
+    The first submit records generated_at, the body digest, the key and the
+    sorted artifact metadata in a private 0600 journal BEFORE any complete or
+    upload. Every later submit with the same packet must rebuild byte-identical
+    body and key from the recorded generated_at; any change stops locally
+    with ATTEMPT_BODY_CHANGED instead of silently starting a second logical
+    submit.
+    """
+    path = _attempt_file_path(packet_id)
+    journal = _read_attempt(path, packet_id)
+    if journal is None:
+        generated_at = _utc_now_rfc3339()
+        body = _build_checked_body(body_factory, generated_at)
+        key = result_idempotency_key(packet_id, body)
+        fresh = {
+            "schema": ATTEMPT_SCHEMA,
+            "packet_id": packet_id,
+            "generated_at": generated_at,
+            "body_sha256": hashlib.sha256(body).hexdigest(),
+            "idempotency_key": key,
+            "artifacts": [dict(entry) for entry in artifacts],
+        }
+        try:
+            _write_attempt(path, fresh)
+        except FileExistsError:
+            # Lost a creation race: verify the winning journal instead.
+            journal = _read_attempt(path, packet_id)
+        else:
+            return body, key
+    current = [dict(entry) for entry in artifacts]
+    if journal["artifacts"] != current:
+        raise _attempt_error(
+            "the result artifacts changed since the first submit attempt"
+        )
+    body = _build_checked_body(body_factory, str(journal["generated_at"]))
+    if hashlib.sha256(body).hexdigest() != journal["body_sha256"]:
+        raise _attempt_error(
+            "the rebuilt result body no longer matches the recorded attempt"
+        )
+    key = result_idempotency_key(packet_id, body)
+    if key != journal["idempotency_key"]:
+        raise _attempt_error(
+            "the rebuilt idempotency key no longer matches the recorded attempt"
+        )
+    return body, key
+
+
+def _require_current_claim(envelope: dict[str, object]) -> None:
+    """Local claimant/lease/expiry recheck before any result mutation."""
+    if envelope["expired_at"] is not None:
+        raise ClientError(
+            "PACKET_EXPIRED",
+            "the packet has been expired by the server",
+            action="run packets list to find a reissued locked packet",
+        )
+    packet = envelope["packet"]
+    now = datetime.now(timezone.utc)
+    expires_at = _parse_rfc3339(packet["expires_at"])
+    if expires_at is None:
+        raise _drift("packet has a malformed expires_at")
+    if expires_at <= now:
+        raise ClientError(
+            "PACKET_EXPIRED",
+            "the packet has passed its expires_at",
+            action="run packets list to find a reissued locked packet",
+        )
+    if envelope["claimed_by"] is None:
+        raise ClientError(
+            "LEASE_OWNER_MISMATCH",
+            "the packet is not currently claimed",
+            action="run packets claim again before submitting a result",
+        )
+    lease = envelope["lease_expires_at"]
+    if lease is None:
+        raise ClientError(
+            "LEASE_EXPIRED",
+            "the packet has no active lease",
+            action="run packets claim again before submitting a result",
+        )
+    lease_at = _parse_rfc3339(lease)
+    if lease_at is None:
+        raise _drift("packet envelope has a malformed lease_expires_at")
+    if lease_at <= now:
+        raise ClientError(
+            "LEASE_EXPIRED",
+            "the packet lease has expired",
+            action="run packets claim again to renew the lease",
+        )
+
+
+def _validate_result_receipt(
+    document: object,
+    packet_id: str,
+    artifacts: tuple[dict[str, object], ...],
+) -> dict[str, object]:
+    """Re-verify the acceptance receipt against the local artifact bytes.
+
+    result_digest is an opaque server-generated identifier: only its exact
+    sha256:<64 lowercase hex> shape is validated here, never any relation to
+    the canonical request body. Every staged artifact must match the local
+    relative path, SHA-256, size and content-addressed storage key.
+    """
+    if not isinstance(document, dict) or set(document) != _RECEIPT_KEYS:
+        raise _drift("result receipt has an unexpected shape")
+    if not isinstance(document["packet_id"], str) or document["packet_id"] != packet_id:
+        raise _drift("result receipt is for a different packet")
+    result_digest = document["result_digest"]
+    if not isinstance(result_digest, str) or _RESULT_DIGEST_RE.fullmatch(result_digest) is None:
+        raise _drift("result receipt has a malformed result_digest")
+    if not isinstance(document["accepted_at"], str):
+        raise _drift("result receipt has a malformed accepted_at")
+    if type(document["replayed"]) is not bool:
+        raise _drift("result receipt has a malformed replayed flag")
+    staged = document["staged_artifacts"]
+    if not isinstance(staged, list):
+        raise _drift("result receipt has malformed staged artifacts")
+    expected = {entry["relative_path"]: entry for entry in artifacts}
+    seen: set[str] = set()
+    for entry in staged:
+        if not isinstance(entry, dict) or set(entry) != _STAGED_KEYS:
+            raise _drift("staged artifact has an unexpected shape")
+        relative_path = entry["relative_path"]
+        if (
+            not isinstance(relative_path, str)
+            or relative_path not in expected
+            or relative_path in seen
+        ):
+            raise ClientError(
+                "STAGED_METADATA_MISMATCH",
+                "staged artifacts do not match the uploaded artifact set",
+                action="stop and report the server integrity failure",
+            )
+        seen.add(relative_path)
+        local = expected[relative_path]
+        sha256 = entry["sha256"]
+        if not isinstance(sha256, str) or _HEX64_RE.fullmatch(sha256) is None:
+            raise _drift("staged artifact has a malformed sha256")
+        if sha256 != local["sha256"]:
+            raise ClientError(
+                "CANDIDATE_DIGEST_MISMATCH",
+                "a staged artifact digest does not match the local bytes",
+                action="stop and report the server integrity failure",
+            )
+        if type(entry["size_bytes"]) is not int or entry["size_bytes"] != local["size_bytes"]:
+            raise ClientError(
+                "STAGED_METADATA_MISMATCH",
+                "a staged artifact size does not match the local bytes",
+                action="stop and report the server integrity failure",
+            )
+        if entry["storage_key"] != f"sha256/{sha256[:2]}/{sha256}":
+            raise ClientError(
+                "INVALID_STORAGE_KEY",
+                "a staged artifact storage key is not the content-addressed key",
+                action="stop and report the server integrity failure",
+            )
+    if seen != set(expected):
+        raise ClientError(
+            "STAGED_METADATA_MISMATCH",
+            "staged artifacts do not match the uploaded artifact set",
+            action="stop and report the server integrity failure",
+        )
+    return document
+
+
+def _post_result(
+    packet_id: str, body: bytes, key: str, *, token: str
+) -> dict[str, object]:
+    """POST the immutable result body with its frozen idempotency key.
+
+    A timeout leaves the upload ambiguous: the only legal retry is the exact
+    same byte string with the same Idempotency-Key, at most once, and only
+    after a status read. If the packet is no longer visible the result may
+    already be accepted, and the same-key replay is still the only safe probe.
+    """
+    path = _packet_route(packet_id, "/results")
+    try:
+        status, document = request_json(
+            "POST", path, token=token, body=body, idempotency_key=key
+        )
+    except ClientError as exc:
+        if exc.code != "HTTP_ERROR" or exc.status is not None:
+            raise
+        try:
+            _, envelope_document = request_json(
+                "GET", _packet_route(packet_id), token=token
+            )
+            _validate_packet_envelope(envelope_document)
+        except ClientError as read_error:
+            if read_error.code != "PACKET_NOT_FOUND":
+                raise ClientError(
+                    "HTTP_ERROR",
+                    "result upload did not complete and the server state "
+                    "could not be read afterwards",
+                    action="run packets list / jobs status before any retry; "
+                    "only the exact same submit may be replayed",
+                ) from None
+        status, document = request_json(
+            "POST", path, token=token, body=body, idempotency_key=key
+        )
+    if status not in (200, 201):
+        raise _drift(f"result upload returned an unexpected HTTP status {status}")
+    return document
+
+
+def submit_result(packet_id: str, directory: Path) -> dict[str, object]:
+    """Validate a generated result directory and upload it idempotently."""
+    path = _packet_route(packet_id)  # validates the id first
+    token = _cli_token()
+    _require_compatible_server()
+    _, envelope_document = request_json("GET", path, token=token)
+    # The packet envelope digest is recomputed again before result construction.
+    envelope = _validate_packet_envelope(envelope_document)
+    packet = envelope["packet"]
+    if packet["packet_id"] != packet_id:
+        raise _drift("server returned a packet for a different packet id")
+    _require_current_claim(envelope)
+    validated, decoded = validate_result_directory(packet, Path(directory))
+    token_bytes = token.encode("utf-8")
+    # Credential scan before anything is persisted, encoded further or
+    # uploaded: relative paths, media metadata, source_records,
+    # operator_notes, every decoded artifact byte string, and (below) the
+    # final canonical request body.
+    for artifact in validated["artifacts"]:
+        _scan_for_credentials(
+            str(artifact["relative_path"]).encode("utf-8"),
+            token_bytes,
+            "artifact relative path",
+        )
+        _scan_for_credentials(
+            str(artifact["media_type"]).encode("utf-8"),
+            token_bytes,
+            "artifact media metadata",
+        )
+    _scan_value_for_credentials(
+        validated["source_records"], token_bytes, "result metadata"
+    )
+    _scan_value_for_credentials(
+        validated["operator_notes"], token_bytes, "result metadata"
+    )
+    _scan_for_credentials(decoded, token_bytes, "artifact payload")
+    artifacts_meta = tuple(
+        {
+            "relative_path": artifact["relative_path"],
+            "sha256": artifact["sha256"],
+            "size_bytes": artifact["size_bytes"],
+        }
+        for artifact in validated["artifacts"]
+    )
+
+    def body_factory(generated_at: str) -> bytes:
+        return canonical_json(
+            {
+                "schema": RESULT_SCHEMA,
+                "content_lock_digest": packet["content_lock_digest"],
+                "skill_release": SKILL_RELEASE,
+                "client_surface": CLIENT_SURFACE,
+                "generated_at": generated_at,
+                "artifacts": validated["artifacts"],
+                "source_records": validated["source_records"],
+                "operator_notes": validated["operator_notes"],
+            }
+        )
+
+    body, key = load_or_create_attempt(
+        str(packet["packet_id"]), artifacts_meta, body_factory
+    )
+    _scan_for_credentials(body, token_bytes, "request body")
+    # complete before submit; an already-completed packet is confirmed via a
+    # job status read instead of failing the upload.
+    try:
+        _post_packet_mutation(
+            _packet_route(packet_id, "/complete"), packet_id, "complete", token=token
+        )
+    except ClientError as exc:
+        if exc.code != "INVALID_STATE_TRANSITION":
+            raise
+        _, job_document = request_json(
+            "GET", _job_route(str(packet["job_id"])), token=token
+        )
+        job = _validate_job(job_document)
+        if job["state"] not in ("awaiting_upload", "server_verifying"):
+            raise exc
+    receipt = _validate_result_receipt(
+        _post_result(packet_id, body, key, token=token), packet_id, artifacts_meta
+    )
+    return {
+        "status": "candidate_staged",
+        "packet_id": packet_id,
+        "result_digest": receipt["result_digest"],
+        "replayed": receipt["replayed"],
+        "accepted_at": receipt["accepted_at"],
+        "staged_artifacts": receipt["staged_artifacts"],
+        "note": "candidates are staged for server verification; review and "
+        "release are separate later steps",
+    }
+
+
 _PACKETS_USAGE = (
     "usage: card_os_client.py packets list\n"
     "       card_os_client.py packets claim PACKET_ID\n"
@@ -1437,6 +2263,10 @@ _PACKETS_USAGE = (
 _JOBS_USAGE = (
     "usage: card_os_client.py jobs status JOB_ID\n"
     "       card_os_client.py jobs events JOB_ID\n"
+)
+
+_RESULTS_USAGE = (
+    "usage: card_os_client.py results submit PACKET_ID --directory DIR\n"
 )
 
 
@@ -1470,6 +2300,18 @@ def _jobs_main(rest: list[str]) -> int:
             _emit(_cmd_jobs_events(rest[1]))
             return 0
         sys.stderr.write(_JOBS_USAGE)
+        return 2
+    except ClientError as exc:
+        _emit({"error": exc.to_dict()})
+        return 1
+
+
+def _results_main(rest: list[str]) -> int:
+    try:
+        if len(rest) == 4 and rest[0] == "submit" and rest[2] == "--directory":
+            _emit(submit_result(rest[1], Path(rest[3])))
+            return 0
+        sys.stderr.write(_RESULTS_USAGE)
         return 2
     except ClientError as exc:
         _emit({"error": exc.to_dict()})
@@ -1526,8 +2368,14 @@ def main(argv: list[str] | None = None) -> int:
         return _packets_main(args[1:])
     if args[:1] == ["jobs"]:
         return _jobs_main(args[1:])
+    if args[:1] == ["results"]:
+        return _results_main(args[1:])
     sys.stderr.write(
-        "usage: card_os_client.py doctor\n" + _AUTH_USAGE + _PACKETS_USAGE + _JOBS_USAGE
+        "usage: card_os_client.py doctor\n"
+        + _AUTH_USAGE
+        + _PACKETS_USAGE
+        + _JOBS_USAGE
+        + _RESULTS_USAGE
     )
     return 2
 
