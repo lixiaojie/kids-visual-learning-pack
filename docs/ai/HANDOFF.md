@@ -5,93 +5,80 @@
 - Updated At: 2026-07-31
 - Agent: Kimi Code
 - Branch: codex/card-os-thin-client-v1（worktree `.worktrees/card-os-thin-client-v1`）
-- Base Commit: c30322f（门禁修复提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
-- Working Tree: 复审 Minor 补测产物（results 测试 +1 项），随本提交落地；忽略目录含 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
-- Task Status: SKILL-02 实施中；Task 6 Step 2 门禁修复复审 **0C/0I 通过**(`c30322f` 可进入 Step 3);Step 3 集成/push 待用户授权
+- Base Commit: fa01bbc（Task 8 验收与回滚记录；origin/main = `05bced3`)
+- Working Tree: 0.1.1 修复产物（见 Changed Files)，随本提交落地；生产 stable = absence（待 0.1.1 发布）
+- Task Status: SKILL-02 实施中；0.1.0 缺陷已修复并升级 0.1.1（用户已确认路径）,RED→GREEN→review 完成，待集成 push 后构建发布
 
 ## Summary
 
-Task 6 Step 1 已提交（`b97f8f3`,`package.json` 新增 `test:card-os-thin-client`,266 项PASS)。Step 2 pre-release 门禁：全量测试（registry 81、thin-client 266、discover 521)、quick_validate、`git diff --check` 通过后，全新 whole-release reviewer 对 `f2a2462..b97f8f3` 给出 **Critical 0 / Important 2 / Minor 1,判定不可构建**:
+Task 8 现网验收发现的 Important 缺陷（`auth delete` 在真实 macOS Keychain 上不删除数据）已按用户确认的 0.1.1 路径修复：
 
-- **I-1**：服务器在接受结果后使 packet 对 claimant 不可见（GET 404),`submit_result` 的预检 GET 使跨调用 `results submit` 重放不可能，与计划 Task 8 Step 3（同一命令重跑须得 `replayed=true`）矛盾；旧测试 fixture 让 packet 在接受后仍可见，掩盖了该问题。
-- **I-2**:`--allow-file-store` 凭据只写不读——无平台后端的宿主上 `auth set --allow-file-store` 成功后，所有读路径以 `allow_file_store=False` 选择后端，永远读不回，形成不可行动的 `AUTH_REQUIRED` 循环。
-- **M-1**:`test_source_tree_is_the_exact_five_file_closure` 用裸 `os.walk`，被忽略目录 `__pycache__` 污染导致门禁不确定。
-
-修复（部分由因子代理额度中断而遗留的在途修改 + 本 Agent 补全，全部经测试验证）:
-
-- **I-2**：新增 `_select_read_store()`——读路径（`resolve_effective_token`、`auth status`、`auth delete`）在平台后端报 `CREDENTIAL_STORE_UNAVAILABLE` 时回退到带 owner/mode/link 门禁的 0600 文件存储（opt-in 在 set 时已显式发生，无新 CLI flag)；其他选择错误照常传播。新增 `FileStoreReadFallbackTests`(credentials）与 `FileStoreFallbackEndToEndTests`(packets,linux-no-secret-tool 端到端：set→list 带 Authorization→status→delete→AUTH_REQUIRED)。
-- **I-1**:`submit_result` 预检 GET 得 `PACKET_NOT_FOUND` 时进入 `_replay_attempt_result`：有效 attempt journal 存在则复核目录（路径集合相等、大小/SHA-256 逐文件复核）、重跑凭据扫描、用 journal 记录的 `generated_at` 与 `content_lock_digest` 重建字节一致 body 与幂等键后按原键重放（无新 complete、无状态读），要求 receipt `replayed=true` 否则 `SERVER_CONTRACT_DRIFT`；无 journal 则原始 `PACKET_NOT_FOUND` 失败关闭；任何本地不符 `ATTEMPT_BODY_CHANGED` 且零新 POST。journal 因此扩展记录 `content_lock_digest` 与 per-artifact `media_type`（纯元数据，无 payload/token/绝对路径——这是满足计划 Task 8 Step 3 跨调用重放的最小必要扩展，与设计 §10 journal 内容列表存在有意偏差，见 Decisions)。fixture 改为 `_packet_visible_until_acceptance`（接受后 GET 404，忠实服务器）;新增 `CrossInvocationReplayTests` 6 项。
-- **M-1**：闭包断言改以 `git ls-files` 跟踪文件为准（builder 读 Git index)，忽略目录污染不再影响门禁；符号链接/常规文件检查保留。
-- 文档同步：errors.md 的 `PACKET_NOT_FOUND` 条目、protocol.md 的 journal 字段与重放段、thin_skill 对应断言同步为新语义。
-
-复审（resume 原 whole-release reviewer):I-1/I-2/M-1 三条全部 **CLOSED**，滥用面（无 journal/篡改/目录不符/从未提交）逐一验证 fail-closed，最终结论 **`c30322f` 达到 Critical 0 / Important 0，可进入 Task 6 Step 3**；唯一新 Minor（可见路径 journal 复用成功分支缺集成测试）已补测（`test_visible_packet_resubmit_reuses_journal_after_failed_upload`,88/88、279/279 复跑通过）。
+- **RED**:`FakeSecurityFramework` 改为有状态并镜像真实 Security.framework 语义（NULL 指针 modify = no-op；零长度非空 buffer = 截断；非空 = 替换；重复 add = errSecDuplicateItem)；新增回归 `test_delete_actually_removes_credential_data`(set→get→delete→get 必须为 None）与更新的 `test_delete_erases_existing_item_and_is_idempotent`——对未修复代码精确 RED(2 项失败，与现网缺陷同因）。
+- **GREEN**:`KeychainCredentialStore.delete()` 改传 `ctypes.create_string_buffer(0)`（零长度非空 buffer，实测在真实后端截断数据）;75/75 通过。随后在**真实登录 Keychain** 上验证：set → present → delete → **absent**（残留 item 壳已用 `security delete-generic-password` 清理）。
+- **0.1.1 版本同步**:`SKILL_RELEASE`/模块 docstring、protocol.md 三处、四个客户端测试文件的 header/result/docs 断言；服务器 `minimum_skill_release` fixture 保持 0.1.0（不变）。服务器兼容性已核对（`c2a898c` protocol.py:SemVer 下限比较，0.1.1 ≥ 0.1.0 接受；payload 与 header 相等性由客户端单一常量保证）。
+- **独立评审**:0C/0I/2M(ops 验收 harness 的 0.1.0 pin 属服务器侧资产、重复 delete 的布尔值语义为既有设计，均不阻塞）；评审独立复现了 RED/GREEN 并确认 fake 保真度与版本完整性。
 
 ## Completed
 
-- Task 1–5 + Task 6 Step 1（见前版 HANDOFF 与 git log:`2d64264`/`a17cdca`/`5126fea`/`62588e0`/`5ebbc0f`/`b97f8f3`)。
-- Task 6 Step 2 测试门禁：registry 81、thin-client、discover、quick_validate、`git diff --check` 全绿。
-- Task 6 Step 2 whole-release 评审：0C/2I/1M（不可构建）→ I-1/I-2/M-1 全部修复。
-- 修复后全量复跑：thin-client 278/278、registry 81/81、discover 533/533、quick_validate PASS、`git diff --check` PASS、密钥扫描与 `__pycache__` 卫生检查干净。
+- Task 8 主流程验收（见前版 HANDOFF)+ provisional 回滚。
+- 缺陷修复 RED→GREEN（含真实 Keychain 验证）。
+- 0.1.1 版本同步 + 全量测试：thin-client 280/280、registry 81/81、discover 535/535、quick_validate PASS、`git diff --check` PASS。
+- 修复独立评审 0C/0I。
 
 ## Changed Files
 
 | File | Change | Reason |
 | --- | --- | --- |
-| `skills/cognitive-card-os/scripts/card_os_client.py` | 修改 | I-2 `_select_read_store`/`_auth_read_store` 回退；I-1 `_replay_attempt_result` + journal 扩展（content_lock_digest、media_type) |
-| `tests/test_card_os_client_credentials.py` | 修改（+120) | I-2 `FileStoreReadFallbackTests` |
-| `tests/test_card_os_client_packets.py` | 修改（+75) | I-2 端到端 file-store 读测试 |
-| `tests/test_card_os_client_results.py` | 修改（+149 等） | I-1 忠实 fixture + `CrossInvocationReplayTests` + journal 字段断言 |
-| `tests/test_card_os_skill_release.py` | 修改 | M-1 闭包断言改 `git ls-files` |
-| `tests/test_card_os_thin_skill.py` | 修改 | PACKET_NOT_FOUND 文档断言同步 |
-| `skills/cognitive-card-os/references/errors.md` | 修改 | PACKET_NOT_FOUND 跨调用重放语义 |
-| `skills/cognitive-card-os/references/protocol.md` | 修改 | journal 字段 + 接受后重放说明 |
+| `skills/cognitive-card-os/scripts/card_os_client.py` | 修改 | delete() 零长度 buffer 修复 + SKILL_RELEASE 0.1.1 |
+| `tests/test_card_os_client_credentials.py` | 修改 | fake 真实语义化 + 删除回归测试 |
+| `skills/cognitive-card-os/references/protocol.md` | 修改 | 版本同步 0.1.1 |
+| `tests/test_card_os_client_transport.py` / `_packets.py` / `_results.py` / `_thin_skill.py` | 修改 | 版本断言同步 |
 | `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
 
 ## Decisions Made
 
-- I-1 调和选择：**客户端经 attempt journal 重放**（而非修改设计/计划定义），因为计划 Task 8 Step 3 与设计 §10"验收 exact replay"均明文要求跨调用重放；journal 扩展 `content_lock_digest` + `media_type` 是最小必要元数据（无 payload/token/绝对路径），与设计 §10 的 journal 内容清单存在有意偏差，须在设计文档下次修订时追认（本任务不擅自改用户书面确认的 spec)。
-- journaled replay 收到 `replayed=false` 视为 `SERVER_CONTRACT_DRIFT`（同键不可能被当作新结果接受）。
-- I-2 读回退只在选择报 `CREDENTIAL_STORE_UNAVAILABLE` 时触发；`CREDENTIAL_STORE_UNSAFE` 等其他错误不回退、不掩盖。
-- M-1 闭包语义不弱化：仍断言跟踪文件恰好五件，仅忽略未跟踪/被忽略的工作树污染。
+- 修复保持计划冻结的五函数绑定集（不引入 `SecKeychainItemDelete`)，以零长度非空 buffer 实现真实截断。
+- 版本升到 0.1.1（不可变 0.1.0 已存在 registry,publisher 拒绝同版本不同字节）;CURRENT_TASK 的"0.1.0"表述在 Task 9 roadmap/状态更新时如实记录为 0.1.1。
+- 评审 Minor 记录项：`ops/cognitive-card-server/card_os_acceptance.py` 的 `SKILL_RELEASE="0.1.0"` 属服务器侧验收 harness(≥服务器下限仍可用），后续跟随；重复 `auth delete` 报 `deleted:true` 为 erase-in-place 设计的既有语义。
 
 ## Verification Results
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `npm run test:card-os-thin-client` | PASS | 279/279（复审 Minor 补测后） |
-| `npm run test:card-os-skill-registry` | PASS | 81/81(M-1 修复后） |
-| `python3 -m unittest discover -s tests` | PASS | 533/533 |
-| `quick_validate.py skills/cognitive-card-os` | PASS | "Skill is valid!" |
-| 密钥扫描形态 grep（全部改动文件） | PASS | 无命中 |
-| `find skills -name __pycache__` / `git diff --check` | PASS | 干净 |
+| 删除回归测试（对 0.1.0 代码） | RED（预期） | 2 项失败，与现网缺陷同因 |
+| `npm run test:card-os-thin-client` | PASS | 280/280 |
+| `npm run test:card-os-skill-registry` | PASS | 81/81 |
+| `python3 -m unittest discover -s tests` | PASS | 535/535 |
+| 真实 Keychain set→delete→status | PASS | absent（修复实证） |
+| `quick_validate.py` / `git diff --check` | PASS | — |
 
 ## Known Failures
 
-- `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，与本任务无关，本阶段未重跑。
-- 存档分支 `codex/card-os-thin-skill-v1` 自身套件 19 errors + 1 failure，属封存资产，不影响本分支。
-- `bash scripts/ai/check-agent-state.sh` 为 WARN 级：HANDOFF 分支字段括号后缀、Base Commit 落后 HEAD（提交在 HANDOFF 之后）等交接格式摩擦，非阻塞。
+- 生产 stable 当前 absence(404)——待 0.1.1 发布后 provisional 激活。
+- `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，与本任务无关。
+- 存档分支自身套件 19 errors + 1 failure，属封存资产。
 
 ## Risks and Caveats
 
-- I-1 修复后行为依赖服务器"幂等查找先于状态检查"(`c2a898c` repository.py:684-699)；若服务器未来调整该顺序，跨调用重放语义需重新核对。
-- 因子代理额度两次 403 中断：I-1/I-2 部分修改为中断代理遗留，已由本 Agent 逐行审读、补全并通过全部测试；复审时需关注该历史。
-- 设计 spec §10 的 journal 内容清单未含 `content_lock_digest`/`media_type`（有意偏差，待 spec 下次修订追认）。
-- 生产 packets/results 链路仍零真实流量；Task 8 现网验收为首跑。
-- main 领先本分支 1 个 docs-only 提交（`995c8b6`),Task 6 集成时处理。
+- 0.1.1 发布前生产无 stable；安装器四步流程暂时 404（设计内回滚态）。
+- 0.1.1 验收须在真实 Keychain 上重做 set/delete（已本地实证，现网验收时复核）。
+- Task 8 已消耗的 packet 不可复用；0.1.1 重跑需新建锁定 packet + token（流程已脚本化）。
+- immutable 0.1.0（含缺陷）永久保留为不激活历史，install.sh `--version 0.1.0` 仍可装到它——已记录在案，不删除历史。
 
 ## Remaining Work
 
-1. Task 6 Step 3：集成 release-source commit 进 main 并 push origin/main(**用户已授权，进行中**);Step 4 双构建字节一致；Step 5 发布不可变对象并 provisional 激活 stable;Step 6 六类公开路径验收。
-2. Task 7：两个隔离 CODEX_HOME 安装 + check/失败升级/回滚 + forward tests;Task 8：现网 scoped token 验收 + 独立评审；Task 9:roadmap + 全量验证 + whole-branch 评审 + release gate。
-3. 抢救批次（SKILL-02 之后、ACCEPT-01 之前，优先于从零重建）：迁移存档 `core/` 至服务器侧可信上游；修复 package-v5 两个评审 Block、publisher fixture 与 mode pin；处置误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订。
+1. 集成 0.1.1 release-source 进 main 并 push(**用户已授权，进行中**)→ 双构建 0.1.1（字节一致）→ 发布 + provisional 激活 → 六类公开路径探针。
+2. Task 7 关键项在 0.1.1 重跑：两个隔离根安装同一摘要、doctor、check；本机完整 Skill 边界复核。
+3. Task 8 全流程在 0.1.1 重跑：新锁定 packet/token、Agent B（或等效流程）、exact replay、ATTEMPT_BODY_CHANGED、撤销 + 403、真实 Keychain set/delete。
+4. Task 9:roadmap（如实记录 0.1.1 与 0.1.0 历史）+ 全量验证 + whole-branch 评审 + release gate。
+5. 抢救批次（SKILL-02 之后、ACCEPT-01 之前，优先于从零重建）：迁移存档 `core/` 至服务器侧可信上游；修复 package-v5 两个评审 Block、publisher fixture 与 mode pin；处置误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订。
 
 ## Exact Next Action
 
-完成 main 集成与 push 后，校验 `git merge-base --is-ancestor 6f06d7a origin/main` 与 RELEASE_AUTHORITY_PATHS 零差异，随后执行 Task 6 Step 4 双构建。
+完成 0.1.1 的 main 集成与 push 后，校验祖先性与 RELEASE_AUTHORITY_PATHS 零差异，随后双构建 0.1.1、发布并 provisional 激活、跑公开探针。
 
 ## Recovery Notes
 
-- 本阶段基线 `b97f8f3`（分支尖端，Task 6 Step 1 提交）。恢复时先 `git rev-parse HEAD` 与 `git status --short`。
-- 分支存档点：tag `archive/card-os-thin-skill-v1-20260717` = `7f321a6`（封存只读）。
-- 未执行 push、merge、rebase、reset、删除；未修改 `outputs/`、存档分支 worktree、server worktree 与 `ops/` 冻结契约。
-- 探针隔离根 `/tmp/ccos-prepublish-As96Db` 为临时目录；证据已存 worktree 忽略目录。
+- 生产 stable = absence;provisional manifest bytes 在 quarantine(`/root/card-os-release-0.1.0/rollback-quarantine/`)。
+- release-source（将更新为本修复提交）;origin/main `05bced3`；存档 tag `archive/card-os-thin-skill-v1-20260717`=`7f321a6`。
+- 无凭据残留：token 均撤销，Keychain 无 cognitive-card-os item,token 文件均删除。

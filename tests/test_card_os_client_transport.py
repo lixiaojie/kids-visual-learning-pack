@@ -236,7 +236,7 @@ class HeaderTests(TransportTestCase):
         headers = {k.lower(): v for k, v in self.server.requests[0]["headers"].items()}
         self.assertEqual(f"Bearer {FAKE_TOKEN}", headers["authorization"])
         self.assertEqual("1", headers["x-card-os-protocol"])
-        self.assertEqual("0.1.0", headers["x-card-os-skill-release"])
+        self.assertEqual("0.1.1", headers["x-card-os-skill-release"])
 
     def test_no_authorization_header_without_token(self) -> None:
         self._routes({("GET", "/card-os/api/v1/health"): _json_route(HEALTH_OK)})
@@ -483,7 +483,7 @@ class DoctorTests(TransportTestCase):
         result = client.doctor()
         self.assertEqual("ok", result["status"])
         self.assertEqual("0.3.1", result["server_version"])
-        self.assertEqual("0.1.0", result["skill_release"])
+        self.assertEqual("0.1.1", result["skill_release"])
         self.assertEqual(1, result["protocol"]["client"])
         self.assertEqual(1, result["protocol"]["server_minimum"])
         self.assertEqual(1, result["protocol"]["server_maximum"])

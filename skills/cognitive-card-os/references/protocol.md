@@ -1,6 +1,6 @@
 # Cognitive Card OS Thin Client Protocol
 
-Skill release `0.1.0` talks to the personal Card OS server only. The base URL
+Skill release `0.1.1` talks to the personal Card OS server only. The base URL
 is fixed to `https://www.yutou.space/card-os/`; the client refuses redirects,
 requires TLS, and caps every response at 4 MiB. Protocol version is the
 unsigned decimal `1`; the minimum server version is `0.3.1`.
@@ -46,7 +46,7 @@ Every authenticated request carries exactly:
 ```text
 Authorization: Bearer <token>
 X-Card-OS-Protocol: 1
-X-Card-OS-Skill-Release: 0.1.0
+X-Card-OS-Skill-Release: 0.1.1
 ```
 
 Result uploads additionally carry `Idempotency-Key`. The token comes from the
@@ -69,7 +69,7 @@ uploaded result.
   `packet_digest`, `claimed_by`, `lease_expires_at`, `created_at`, and
   `expired_at`.
 - GenerationResult: `cognitive-card-generation-result-v1` with
-  `skill_release` exactly `0.1.0` and CLIENT_SURFACE exactly `codex-cli`.
+  `skill_release` exactly `0.1.1` and CLIENT_SURFACE exactly `codex-cli`.
 - Attempt journal: `cognitive-card-submit-attempt-v1`, a private `0600`
   non-link file at
   `${XDG_STATE_HOME:-$HOME/.local/state}/cognitive-card-os/attempts/<packet-id>.json`

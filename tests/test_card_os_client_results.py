@@ -261,7 +261,7 @@ def _expected_body(generated_at: str, files: dict[str, bytes] | None = None) -> 
         {
             "schema": "cognitive-card-generation-result-v1",
             "content_lock_digest": "sha256:" + "a" * 64,
-            "skill_release": "0.1.0",
+            "skill_release": "0.1.1",
             "client_surface": CLIENT_SURFACE,
             "generated_at": generated_at,
             "artifacts": artifacts,
@@ -951,7 +951,7 @@ class SubmitTestCase(unittest.TestCase):
         headers = {k.lower(): v for k, v in record["headers"].items()}
         self.assertEqual(f"Bearer {STORED_TOKEN}", headers["authorization"])
         self.assertEqual("1", headers["x-card-os-protocol"])
-        self.assertEqual("0.1.0", headers["x-card-os-skill-release"])
+        self.assertEqual("0.1.1", headers["x-card-os-skill-release"])
         body = record["body"]
         self.assertEqual(_expected_body(generated_at), body)
         self.assertEqual(_expected_key(PACKET_ID, body), headers["idempotency-key"])
@@ -1005,7 +1005,7 @@ class HappyPathTests(SubmitTestCase):
         self.assertEqual(0, code, err)
         body = json.loads(self._results_posts()[0]["body"].decode("utf-8"))
         self.assertEqual("cognitive-card-generation-result-v1", body["schema"])
-        self.assertEqual("0.1.0", body["skill_release"])
+        self.assertEqual("0.1.1", body["skill_release"])
         self.assertEqual(CLIENT_SURFACE, body["client_surface"])
         self.assertEqual("sha256:" + "a" * 64, body["content_lock_digest"])
         self.assertEqual([], body["source_records"])
