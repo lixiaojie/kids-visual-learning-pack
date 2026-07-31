@@ -305,7 +305,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-07-31
 
-- 审计 `codex/card-os-thin-skill-v1`（领先 main 29 个提交）：其中 SKILL-02 薄客户端计划（`docs/superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md`）Task 1–9 均未执行，分支上的 `card_os_client.py` 是另一套 package-v4/v5 契约；PORTAL/RENDER/QA/PUBLISH 与恐龙模板族属越序 BACKLOG 工作；`skills/cognitive-card-os/core/` 将生产核心迁入 Skill 包的方向与本账本"服务器统一权威"约束冲突，无 ADR。分支尖端未通过自身测试套件且 Task 8 评审未关闭，已用 tag `archive/card-os-thin-skill-v1-20260717` 存档，不整体合入；生产核心归属待 ADR 决策后再定 SKILL-02 执行口径。
+- 审计 `codex/card-os-thin-skill-v1`（领先 main 29 个提交）：其中 SKILL-02 薄客户端计划（`docs/superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md`）Task 1–9 均未执行，分支上的 `card_os_client.py` 是另一套 package-v4/v5 契约；PORTAL/RENDER/QA/PUBLISH 与恐龙模板族属越序 BACKLOG 工作；`skills/cognitive-card-os/core/` 将生产核心迁入 Skill 包的方向与本账本"服务器统一权威"约束冲突。分支尖端未通过自身测试套件且 Task 8 评审未关闭，已用 tag `archive/card-os-thin-skill-v1-20260717` 存档，不整体合入。
+- 客户端契约与生产核心归属已经用户书面选定并固化为 [ADR-001](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md)：M1 领取/提交只走 packet 契约，SKILL-02 按 2026-07-15 thin-client 计划实施；生产核心权威保留服务器；package-v5 上传面归入 PUBLISH-01 后续批次；分支资产按批抢救。
 - 回填 2026-07-16 的 SKILL-01 基础设施状态修正（原记录长期滞留在分支 worktree 未提交）。
 
 ### 2026-07-16

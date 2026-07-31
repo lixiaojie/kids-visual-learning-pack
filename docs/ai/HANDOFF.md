@@ -5,9 +5,9 @@
 - Updated At: 2026-07-31
 - Agent: Kimi Code
 - Branch: main
-- Base Commit: db3f6bd（本阶段状态提交前的 clean HEAD，与 origin/main 一致）
-- Working Tree: 用户既有未跟踪 `outputs/`；本阶段修改 `docs/cognitive-card-os-roadmap.md` 与本文件，随状态提交收口
-- Task Status: 上一正式任务保持 Done；本阶段为分支审计 + 账本事实修正，新正式任务尚未建立
+- Base Commit: c54c825（roadmap 事实修正提交，与 origin/main 的差即本次本地提交）
+- Working Tree: 用户既有未跟踪 `outputs/`；任务建立文档（ADR-001、CURRENT_TASK、roadmap、docs/README、本文件）待用户授权后提交
+- Task Status: SKILL-02 已立项（CURRENT_TASK Status: In Progress），实施未开始
 
 ## Summary
 
@@ -17,9 +17,9 @@
 
 分支尖端实测未通过自身套件：全量 386 项 = 19 errors（publisher fixture 与加固后 builder 闭包失同步，`SOURCE_TREE_CLOSURE_MISMATCH`）+ 1 failure（`validate_package_v5.py` 过时 mode pin，420 != 493），两轮独立复跑一致。首次复跑曾被本 Agent 产生的 `__pycache__` 污染，已清理并恢复 worktree 原状（2 modified + 3 untracked，与审计前一致）。
 
-用户已决定：架构方向先深比再定；分支用 tag 存档、新任务从 main 另起新支；roadmap 中 SKILL-01/SKILL-02 的事实性状态修正单独提交 main（本次提交即该项，用户已通过选项明确授权本次提交；不含 push）。
+用户已决定：架构方向先深比再定；分支用 tag 存档、新任务从 main 另起新支；roadmap 中 SKILL-01/SKILL-02 的事实性状态修正单独提交 main（已完成，`c54c825`；不含 push）。
 
-深度对比（两个 explore 子代理，详见其报告）：现行契约侧——已部署 0.3.1 的 packets claim/complete/results 仅在应用仓测试验证、生产零流量；SKILL-02 剩余工作为纯客户端 5 个测试文件 + 客户端脚本 + Skill 文档 + 现网门禁。分支契约侧——端到端本地生产链（分类→内容锁→渲染→package-v5→audit）真实可跑（367 项通过），但 governed upload 未实现、显式绕过 packet 协议、凭据只有 env/token-file、服务器半成 `e78c2fa` 未合并且被评审 Block；对 RENDER/QA/PUBLISH/ACCEPT 有高挽救价值。
+深度对比（两个 explore 子代理）完成后，用户书面选定**调和方案**，已固化为 ADR-001(Accepted)：M1 领取/提交只走 packet 契约，SKILL-02 按 2026-07-15 thin-client 计划实施；生产核心权威保留服务器；package-v5 上传面归入 PUBLISH-01；分支资产按批抢救。`docs/ai/CURRENT_TASK.md` 已重写为 SKILL-02 正式任务（Objective、13 条 Acceptance Criteria、In/Out of Scope、约束与验证计划），实施尚未开始，任务分支未创建。
 
 ## Completed
 
@@ -29,23 +29,27 @@
 - 分支全量测试两轮复跑（第二轮 `PYTHONDONTWRITEBYTECODE=1`），并清理首轮污染恢复 worktree 原状。
 - 本地 tag `archive/card-os-thin-skill-v1-20260717` 标记分支尖端 `7f321a6`（仅本地，未 push）。
 - 两套客户端契约深度对比（现行 packet 契约 vs 分支 package-v5 契约）。
-- roadmap 事实修正：SKILL-01 进展记录、SKILL-02 `BLOCKED`→`READY`、回填 2026-07-16 更新记录、新增 2026-07-31 审计记录。
+- roadmap 事实修正：SKILL-01 进展记录、SKILL-02 `BLOCKED`→`READY`、回填 2026-07-16 更新记录、新增 2026-07-31 审计记录（`c54c825`，本地提交未 push）。
+- ADR-001 记录调和方案（Accepted）；`docs/README.md` 决策表登记；`docs/ai/CURRENT_TASK.md` 重写为 SKILL-02 正式任务。
 
 ## Changed Files
 
 | File | Change | Reason |
 | --- | --- | --- |
-| `docs/cognitive-card-os-roadmap.md` | 修改 | SKILL-01/SKILL-02 状态事实修正；2026-07-16 回填与 2026-07-31 审计记录 |
+| `docs/cognitive-card-os-roadmap.md` | 修改 | SKILL-01/SKILL-02 状态事实修正；2026-07-16 回填与 2026-07-31 审计/ADR 记录 |
+| `docs/decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md` | 新建 | 客户端契约与生产核心归属调和决策（用户书面选定） |
+| `docs/ai/CURRENT_TASK.md` | 重写 | 建立 SKILL-02 正式任务范围 |
+| `docs/README.md` | 修改 | 决策表登记 ADR-001 |
 | `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
 
-另：本地 tag `archive/card-os-thin-skill-v1-20260717` → `7f321a6`（非文件变更，未 push）。分支 worktree 的 2 modified + 3 untracked 为既有在途状态，本阶段未触碰。
+已提交：`docs/cognitive-card-os-roadmap.md` 与前版 HANDOFF（`c54c825`，本地未 push）。另：本地 tag `archive/card-os-thin-skill-v1-20260717` → `7f321a6`（非文件变更，未 push）。分支 worktree 的 2 modified + 3 untracked 为既有在途状态，本阶段未触碰。
 
 ## Decisions Made
 
-- 用户决定：Card OS 生产核心归属（服务器 vs Skill 包）先完成深度对比再定；对比已完成，结论待用户拍板，须以 ADR 固化。
-- 用户决定：`codex/card-os-thin-skill-v1` 原样存档（已打本地 tag），不整体合入、不动其未提交修改；下一正式任务从 main 另起新支。
-- 用户授权：将 roadmap 中 SKILL-01 基础设施已验证、SKILL-02 READY 的事实性修正单独提交 main（本次提交）；push、merge、PR 未授权。
-- 审计判断：分支资产（production core、renderer、package-v5、367 项通过测试）对 RENDER/QA/PUBLISH/ACCEPT 有挽救价值，但传输层与架构归属未定前不抢救合入。
+- 用户书面选定并记录：ADR-001 调和方案（Accepted)——M1 领取/提交只走 packet 契约；生产核心权威保留服务器；package-v5 上传面归入 PUBLISH-01；分支资产按批抢救。
+- 用户决定：`codex/card-os-thin-skill-v1` 原样存档（已打本地 tag），不整体合入、不动其未提交修改；SKILL-02 从 main 另起新支。
+- 用户授权：roadmap 事实修正单独提交 main（已完成，`c54c825`)；任务建立文档（ADR-001、CURRENT_TASK、roadmap ADR 记录、docs/README、HANDOFF）的提交、任务分支创建、push、merge、PR 尚未授权。
+- 审计判断：分支资产（production core、renderer、package-v5、367 项通过测试）对 RENDER/QA/PUBLISH/ACCEPT 有挽救价值，在对应批次立项并修复 fixture/评审 Block 前不合入。
 
 ## Verification Results
 
@@ -76,14 +80,13 @@
 
 ## Remaining Work
 
-1. 用户基于深度对比选择生产核心归属（维持服务器权威 / 采纳分支方向 / 调和方案），并以 ADR 固化。
-2. 按决策重写 `docs/ai/CURRENT_TASK.md`，建立 SKILL-02（或 ADR 先行）正式任务范围。
-3. 分支抢救候选（决策后）：publisher fixture 同步、mode pin 修正、Task 8 两个 Important、误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订的处置。
-4. SKILL-02 实现（若维持现行契约）：客户端 5 个契约测试文件 + 客户端脚本 + Skill 文档 + 生产 stable 首次激活 + 双隔离安装 + 现网领取/上传验收。
+1. 用户授权后提交任务建立文档（ADR-001、CURRENT_TASK、roadmap、docs/README、HANDOFF)，并从 main 新建 SKILL-02 任务分支与 worktree。
+2. 按计划 Task 1–9 实施 SKILL-02（详见 CURRENT_TASK 的 Acceptance Criteria 与 Next Actions)。
+3. 分支抢救候选（对应批次立项后）：publisher fixture 同步、mode pin 修正、Task 8 两个 Important、误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订的处置。
 
 ## Exact Next Action
 
-向用户呈现两套客户端契约对比结论并确认生产核心归属；随后按 `docs/decisions/ADR-TEMPLATE.md` 建 ADR 或直接重写 `docs/ai/CURRENT_TASK.md` 立 SKILL-02。
+请用户授权提交任务建立文档；随后 `git checkout -b codex/card-os-thin-client-v1` 并建 `.worktrees/card-os-thin-client-v1`，按计划 Task 1 写 `tests/test_card_os_client_transport.py` 的 RED。
 
 ## Recovery Notes
 

@@ -71,6 +71,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Content IP Risk Register](compliance/content-ip-risk-register.md) | Content and copyright constraints | Canonical Current |
 | [WeChat Mini-Program Checklist](compliance/wechat-miniprogram-checklist.md) | Mini-program compliance checklist | Active |
 | [ADR Template](decisions/ADR-TEMPLATE.md) | Long-term decision record template | Canonical Current |
+| [ADR-001 Card OS Client Contract and Production Core Ownership](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md) | Packet contract owns M1 claim/submit; production core stays server-side; package-v5 upload defers to PUBLISH-01 | Accepted |
 
 ## Codex Memory Snapshots
 
