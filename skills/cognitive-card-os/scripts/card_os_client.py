@@ -4,9 +4,11 @@
 Standard-library-only client for the Card OS API 0.3.1 contract. This slice
 implements the fail-closed transport (fixed HTTPS base URL, zero redirects,
 bounded responses, stable error codes), unauthenticated capability
-negotiation (``doctor``) and the non-disclosing credential backends
-(``auth set/status/delete``). Packet/result/job commands are added by later
-tasks.
+negotiation (``doctor``), the non-disclosing credential backends
+(``auth set/status/delete``) and the packet/job commands
+(``packets list/claim/get/complete``, ``jobs status/events``) with closed
+packet-envelope validation, server-0.3.1 digest recomputation and
+timeout-triggered status reads. Result submission is added by a later task.
 
 Security invariants enforced here:
 
@@ -27,6 +29,7 @@ from __future__ import annotations
 
 import ctypes
 import dataclasses
+import hashlib
 import json
 import os
 import re
@@ -1045,6 +1048,434 @@ def _cmd_auth_delete() -> dict[str, object]:
     return {"backend": store.backend_name, "deleted": deleted, "status": "ok"}
 
 
+# ---------------------------------------------------------------------------
+# Packet and job commands
+#
+# Centralized route building, closed-envelope validation and stable state
+# handling for the six packet/job commands. Every packet envelope is checked
+# against the closed GenerationPacket schema and its packet_digest is
+# recomputed exactly as server 0.3.1 before anything is saved or mutated.
+# Claim/complete are doctor-gated and never blindly replayed: a transport
+# failure after the POST triggers a status read instead.
+# ---------------------------------------------------------------------------
+
+PACKET_SCHEMA = "cognitive-card-generation-packet-v1"
+
+_PACKET_STRING_KEYS = (
+    "packet_id", "job_id", "execution_profile", "stage", "content_lock_digest",
+    "registry_commit", "template_fingerprint", "age_profile",
+    "language_projection", "issued_at", "expires_at", "schema",
+)
+_PACKET_LIST_KEYS = ("instructions", "forbidden_changes", "input_artifacts")
+_PACKET_KEYS = frozenset(
+    _PACKET_STRING_KEYS + _PACKET_LIST_KEYS + ("required_outputs",)
+)
+_REQUIRED_OUTPUT_KEYS = frozenset({"relative_path", "media_type", "max_bytes"})
+_ENVELOPE_KEYS = frozenset(
+    {"packet", "packet_digest", "claimed_by", "lease_expires_at",
+     "created_at", "expired_at"}
+)
+_JOB_KEYS = frozenset(
+    {"job_id", "execution_profile", "state", "content_lock_digest",
+     "registry_commit", "template_fingerprint", "age_profile",
+     "created_at", "updated_at"}
+)
+_JOB_STRING_KEYS = _JOB_KEYS
+_EVENT_KEYS = frozenset(
+    {"event_id", "job_id", "event_type", "actor", "reason", "details",
+     "occurred_at"}
+)
+_EVENT_STRING_KEYS = ("job_id", "event_type", "actor", "reason", "occurred_at")
+
+# Process-local doctor cache for the mutation gate; never persisted.
+_doctor_cache: dict[str, object] | None = None
+
+
+def recompute_packet_digest(packet: dict[str, object]) -> str:
+    """Server 0.3.1 packet digest: sha256 over the canonical packet JSON."""
+    return "sha256:" + hashlib.sha256(canonical_json(packet)).hexdigest()
+
+
+def _id_segment(value: str, *, kind: str) -> str:
+    """Validate an id as exactly one path segment and percent-encode it.
+
+    The server contract accepts any single segment; the client only rejects
+    what can never be a server-issued id. Empty values, control characters
+    and path separators are malformed; whitespace or non-ASCII means the
+    caller pasted a free-form concept, which this skill can never turn into
+    a job.
+    """
+    if (
+        not value
+        or any(ord(ch) < 0x20 or ord(ch) == 0x7F for ch in value)
+        or "/" in value
+        or "\\" in value
+    ):
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            f"{kind} id is empty or contains characters that are forbidden in a path segment",
+            action=f"pass the exact server-issued {kind} id",
+        )
+    if any(ch.isspace() or ord(ch) > 0x7E for ch in value):
+        raise ClientError(
+            "TRUSTED_UPSTREAM_REQUIRED",
+            "free-form concepts cannot be turned into jobs by this client; "
+            "a locked server packet is required",
+            action="run packets list and use the id of a visible locked packet",
+        )
+    return urllib.parse.quote(value, safe="")
+
+
+def _packet_route(packet_id: str, suffix: str = "") -> str:
+    return f"{API_ROOT}/packets/{_id_segment(packet_id, kind='packet')}{suffix}"
+
+
+def _job_route(job_id: str, suffix: str = "") -> str:
+    return f"{API_ROOT}/jobs/{_id_segment(job_id, kind='job')}{suffix}"
+
+
+def _validate_packet(packet: object) -> dict[str, object]:
+    if not isinstance(packet, dict) or set(packet) != _PACKET_KEYS:
+        raise _drift("packet document does not match the closed packet schema")
+    for key in _PACKET_STRING_KEYS:
+        if not isinstance(packet[key], str):
+            raise _drift(f"packet field {key} is not a string")
+    if packet["schema"] != PACKET_SCHEMA:
+        raise _drift("packet document has an unexpected schema")
+    for key in _PACKET_LIST_KEYS:
+        items = packet[key]
+        if not isinstance(items, list) or any(not isinstance(i, str) for i in items):
+            raise _drift(f"packet field {key} is not a list of strings")
+    required_outputs = packet["required_outputs"]
+    if not isinstance(required_outputs, list):
+        raise _drift("packet required_outputs is not a list")
+    for output in required_outputs:
+        if not isinstance(output, dict) or set(output) != _REQUIRED_OUTPUT_KEYS:
+            raise _drift("packet required_outputs entry has an unexpected shape")
+        if not isinstance(output["relative_path"], str) or not isinstance(
+            output["media_type"], str
+        ):
+            raise _drift("packet required_outputs entry has malformed fields")
+        if type(output["max_bytes"]) is not int or output["max_bytes"] < 1:
+            raise _drift("packet required_outputs entry has a malformed max_bytes")
+    return packet
+
+
+def _validate_packet_envelope(document: object) -> dict[str, object]:
+    """Closed envelope schema + digest recompute + claim/lease/expiry types."""
+    if not isinstance(document, dict) or set(document) != _ENVELOPE_KEYS:
+        raise _drift("packet envelope has an unexpected shape")
+    packet = _validate_packet(document["packet"])
+    digest = document["packet_digest"]
+    if not isinstance(digest, str):
+        raise _drift("packet envelope has a malformed packet_digest")
+    if digest != recompute_packet_digest(packet):
+        raise ClientError(
+            "DIGEST_MISMATCH",
+            "packet_digest does not match the recomputed packet digest",
+            action="do not use this packet; report the server integrity failure",
+        )
+    # Claim/lease/expiry metadata is not covered by the digest; validate its
+    # types separately.
+    claimed_by = document["claimed_by"]
+    lease_expires_at = document["lease_expires_at"]
+    created_at = document["created_at"]
+    expired_at = document["expired_at"]
+    if claimed_by is not None and not isinstance(claimed_by, str):
+        raise _drift("packet envelope has a malformed claimed_by")
+    if lease_expires_at is not None and not isinstance(lease_expires_at, str):
+        raise _drift("packet envelope has a malformed lease_expires_at")
+    if not isinstance(created_at, str):
+        raise _drift("packet envelope has a malformed created_at")
+    if expired_at is not None and not isinstance(expired_at, str):
+        raise _drift("packet envelope has a malformed expired_at")
+    return document
+
+
+def _validate_job(document: object) -> dict[str, object]:
+    if not isinstance(document, dict) or set(document) != _JOB_KEYS:
+        raise _drift("job document has an unexpected shape")
+    for key in _JOB_STRING_KEYS:
+        if not isinstance(document[key], str):
+            raise _drift(f"job field {key} is not a string")
+    return document
+
+
+def _validate_events(document: object) -> list[object]:
+    if not isinstance(document, dict) or not isinstance(document.get("events"), list):
+        raise _drift("job events document has an unexpected shape")
+    events = document["events"]
+    for event in events:
+        if not isinstance(event, dict) or set(event) != _EVENT_KEYS:
+            raise _drift("job event has an unexpected shape")
+        if type(event["event_id"]) is not int:
+            raise _drift("job event has a malformed event_id")
+        if not isinstance(event["details"], dict):
+            raise _drift("job event has malformed details")
+        for key in _EVENT_STRING_KEYS:
+            if not isinstance(event[key], str):
+                raise _drift(f"job event field {key} is not a string")
+    return events
+
+
+def _cli_token() -> str:
+    """Resolve the request credential; fail locally before any HTTP."""
+    effective = resolve_effective_token(store=_credential_store_override)
+    if effective is None:
+        raise ClientError(
+            "AUTH_REQUIRED",
+            "no client credential is configured",
+            action="run auth set --stdin to store a scoped token "
+            "(or set CARD_OS_TOKEN for a single run)",
+        )
+    return effective
+
+
+def _require_compatible_server() -> None:
+    """Doctor gate for protected mutations, cached within the process."""
+    global _doctor_cache
+    if _doctor_cache is None:
+        _doctor_cache = doctor()
+
+
+def _mutation_state_read(packet_id: str, action: str, *, token: str) -> ClientError:
+    """Build the failure for an ambiguous mutation: read state, never replay."""
+    observation: str | None = None
+    try:
+        _, document = request_json("GET", _packet_route(packet_id), token=token)
+        envelope = _validate_packet_envelope(document)
+        if action == "complete":
+            job_id = str(envelope["packet"]["job_id"])
+            _, job_document = request_json("GET", _job_route(job_id), token=token)
+            job = _validate_job(job_document)
+            observation = f"job state is {_bounded_text(job['state']) or 'unknown'}"
+        else:
+            claimed_by = _bounded_text(envelope["claimed_by"]) or "none"
+            lease = _bounded_text(envelope["lease_expires_at"]) or "none"
+            observation = f"claimed_by={claimed_by} lease_expires_at={lease}"
+    except ClientError:
+        observation = None
+    if observation is None:
+        return ClientError(
+            "HTTP_ERROR",
+            f"packet {action} did not complete and the server state could not "
+            "be read afterwards",
+            action="check packets list / jobs status before any retry; "
+            "a mutation is never blindly replayed",
+        )
+    return ClientError(
+        "HTTP_ERROR",
+        f"packet {action} did not complete; observed server state afterwards: "
+        f"{observation}",
+        action="refresh state with packets list / jobs status; "
+        "re-run only if the transition did not happen",
+    )
+
+
+def _post_packet_mutation(
+    path: str, packet_id: str, action: str, *, token: str
+) -> dict[str, object]:
+    try:
+        _, document = request_json("POST", path, token=token, body=canonical_json({}))
+    except ClientError as exc:
+        if exc.code == "HTTP_ERROR" and exc.status is None:
+            # The request may or may not have reached the server: reconcile
+            # with a status read instead of replaying the POST.
+            raise _mutation_state_read(packet_id, action, token=token) from None
+        raise
+    return _validate_packet_envelope(document)
+
+
+def _packet_summary(envelope: dict[str, object]) -> dict[str, object]:
+    packet = envelope["packet"]
+    return {
+        "packet_id": packet["packet_id"],
+        "job_id": packet["job_id"],
+        "stage": packet["stage"],
+        "execution_profile": packet["execution_profile"],
+        "age_profile": packet["age_profile"],
+        "expires_at": packet["expires_at"],
+        "packet_digest": envelope["packet_digest"],
+    }
+
+
+def _cmd_packets_list(*, token: str | None = None) -> dict[str, object]:
+    if token is None:
+        token = _cli_token()
+    _, document = request_json("GET", f"{API_ROOT}/packets/available", token=token)
+    raw_packets = document.get("packets")
+    if not isinstance(raw_packets, list):
+        raise _drift("packets document has a malformed packets list")
+    envelopes = [_validate_packet_envelope(item) for item in raw_packets]
+    if not envelopes:
+        raise ClientError(
+            "TRUSTED_UPSTREAM_REQUIRED",
+            "no locked generation packet is visible to this credential",
+            action="this client cannot create free-form jobs; "
+            "a locked packet must be issued upstream first",
+        )
+    return {
+        "status": "ok",
+        "packets": [_packet_summary(envelope) for envelope in envelopes],
+    }
+
+
+def _cmd_packets_claim(
+    packet_id: str, *, token: str | None = None
+) -> dict[str, object]:
+    path = _packet_route(packet_id, "/claim")  # validates the id first
+    if token is None:
+        token = _cli_token()
+    _require_compatible_server()
+    envelope = _post_packet_mutation(path, packet_id, "claim", token=token)
+    packet = envelope["packet"]
+    return {
+        "status": "claimed",
+        "packet_id": packet["packet_id"],
+        "job_id": packet["job_id"],
+        "lease_expires_at": envelope["lease_expires_at"],
+        "packet_digest": envelope["packet_digest"],
+    }
+
+
+def _write_new_private_file(path: Path, payload: bytes) -> None:
+    """O_EXCL|O_NOFOLLOW create at mode 0600; never overwrite, never follow."""
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | _O_NOFOLLOW
+    try:
+        descriptor = os.open(path, flags, 0o600)
+    except FileExistsError:
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            "output file already exists; refusing to overwrite it",
+            action="choose a new --output path or remove the existing file",
+        ) from None
+    except OSError:
+        raise ClientError(
+            "REQUEST_VALIDATION_FAILED",
+            "output path is not writable (missing directory or not a regular file target)",
+            action="choose a writable --output path in an existing directory",
+        ) from None
+    try:
+        view = memoryview(payload)
+        while view:
+            written = os.write(descriptor, view)
+            view = view[written:]
+        os.fsync(descriptor)
+    except BaseException:
+        os.close(descriptor)
+        path.unlink(missing_ok=True)
+        raise
+    os.close(descriptor)
+
+
+def _cmd_packets_get(
+    packet_id: str, output: str, *, token: str | None = None
+) -> dict[str, object]:
+    path = _packet_route(packet_id)  # validates the id first
+    if token is None:
+        token = _cli_token()
+    _, document = request_json("GET", path, token=token)
+    envelope = _validate_packet_envelope(document)
+    packet = envelope["packet"]
+    # The saved bytes are exactly the canonical packet JSON the digest covers.
+    _write_new_private_file(Path(output), canonical_json(packet))
+    return {
+        "status": "saved",
+        "packet_id": packet["packet_id"],
+        "job_id": packet["job_id"],
+        "packet_digest": envelope["packet_digest"],
+        "output": output,
+    }
+
+
+def _cmd_packets_complete(
+    packet_id: str, *, token: str | None = None
+) -> dict[str, object]:
+    path = _packet_route(packet_id, "/complete")  # validates the id first
+    if token is None:
+        token = _cli_token()
+    _require_compatible_server()
+    envelope = _post_packet_mutation(path, packet_id, "complete", token=token)
+    packet = envelope["packet"]
+    return {
+        "status": "completed",
+        "packet_id": packet["packet_id"],
+        "job_id": packet["job_id"],
+        "packet_digest": envelope["packet_digest"],
+        "note": "state transition recorded only; result upload and review "
+        "are separate later steps",
+    }
+
+
+def _cmd_jobs_status(job_id: str, *, token: str | None = None) -> dict[str, object]:
+    path = _job_route(job_id)  # validates the id first
+    if token is None:
+        token = _cli_token()
+    _, document = request_json("GET", path, token=token)
+    return {"status": "ok", "job": _validate_job(document)}
+
+
+def _cmd_jobs_events(job_id: str, *, token: str | None = None) -> dict[str, object]:
+    path = _job_route(job_id, "/events")  # validates the id first
+    if token is None:
+        token = _cli_token()
+    _, document = request_json("GET", path, token=token)
+    return {
+        "status": "ok",
+        "job_id": job_id,
+        "events": _validate_events(document),
+    }
+
+
+_PACKETS_USAGE = (
+    "usage: card_os_client.py packets list\n"
+    "       card_os_client.py packets claim PACKET_ID\n"
+    "       card_os_client.py packets get PACKET_ID --output FILE\n"
+    "       card_os_client.py packets complete PACKET_ID\n"
+)
+
+_JOBS_USAGE = (
+    "usage: card_os_client.py jobs status JOB_ID\n"
+    "       card_os_client.py jobs events JOB_ID\n"
+)
+
+
+def _packets_main(rest: list[str]) -> int:
+    try:
+        if rest == ["list"]:
+            _emit(_cmd_packets_list())
+            return 0
+        if len(rest) == 2 and rest[0] == "claim":
+            _emit(_cmd_packets_claim(rest[1]))
+            return 0
+        if len(rest) == 2 and rest[0] == "complete":
+            _emit(_cmd_packets_complete(rest[1]))
+            return 0
+        if len(rest) == 4 and rest[0] == "get" and rest[2] == "--output":
+            _emit(_cmd_packets_get(rest[1], rest[3]))
+            return 0
+        sys.stderr.write(_PACKETS_USAGE)
+        return 2
+    except ClientError as exc:
+        _emit({"error": exc.to_dict()})
+        return 1
+
+
+def _jobs_main(rest: list[str]) -> int:
+    try:
+        if len(rest) == 2 and rest[0] == "status":
+            _emit(_cmd_jobs_status(rest[1]))
+            return 0
+        if len(rest) == 2 and rest[0] == "events":
+            _emit(_cmd_jobs_events(rest[1]))
+            return 0
+        sys.stderr.write(_JOBS_USAGE)
+        return 2
+    except ClientError as exc:
+        _emit({"error": exc.to_dict()})
+        return 1
+
+
 _AUTH_USAGE = (
     "usage: card_os_client.py auth set --stdin [--allow-file-store]\n"
     "       card_os_client.py auth status\n"
@@ -1091,7 +1522,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args[:1] == ["auth"]:
         return _auth_main(args[1:])
-    sys.stderr.write("usage: card_os_client.py doctor\n" + _AUTH_USAGE)
+    if args[:1] == ["packets"]:
+        return _packets_main(args[1:])
+    if args[:1] == ["jobs"]:
+        return _jobs_main(args[1:])
+    sys.stderr.write(
+        "usage: card_os_client.py doctor\n" + _AUTH_USAGE + _PACKETS_USAGE + _JOBS_USAGE
+    )
     return 2
 
 
