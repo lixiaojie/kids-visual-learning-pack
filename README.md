@@ -56,6 +56,24 @@ curl --fail-with-body --silent --show-error \
 日常检查、升级、备份恢复和回滚命令见上面的生产运维手册。当前服务只接受规范化锁定任务，
 薄 Skill 的不可变发布与跨终端安装仍按路线图中的 `SKILL-01`、`SKILL-02` 推进。
 
+### 薄 Skill 安装（SKILL-02）
+
+私有 GitHub 仓库是薄 Skill 的源码权威；个人服务器 `https://www.yutou.space/card-os/` 是可安装 release 的唯一权威。
+生产 stable 首次激活（SKILL-02 发布门禁）完成后方可执行以下流程；在此之前上述 URL 按设计返回 404。
+安装固定为四步，不使用缩短参数形式，也不使用管道执行：
+
+```bash
+curl -q --proto '=https' --tlsv1.2 --location --max-redirs 0 --fail --silent --show-error --remote-name https://www.yutou.space/card-os/skill/v1/install.sh
+curl -q --proto '=https' --tlsv1.2 --location --max-redirs 0 --fail --silent --show-error --remote-name https://www.yutou.space/card-os/skill/v1/install.sh.sha256
+shasum -a 256 -c install.sh.sha256
+bash install.sh --channel stable
+```
+
+Linux 上第三步可用 `sha256sum --check install.sh.sha256`。安装器使用 `${CODEX_HOME:-$HOME/.codex}`；
+测试与并行验证必须使用隔离的 `CODEX_HOME`（例如导出到临时目录）。
+不要覆盖、改写或接管当前完整的本机 Skill 目录 `~/.codex/skills/cognitive-card-os`；
+无法对应受管缓存的已有目录会让安装器返回 `UNMANAGED_ACTIVE_SKILL` 并停止。
+
 历史资产机器盘点入口：
 
 - [便携来源配置](migration/card-os/inventory-sources.json)
