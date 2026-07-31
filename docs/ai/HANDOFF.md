@@ -5,9 +5,9 @@
 - Updated At: 2026-07-31
 - Agent: Kimi Code
 - Branch: codex/card-os-thin-client-v1（worktree `.worktrees/card-os-thin-client-v1`）
-- Base Commit: b97f8f3（Task 6 Step 1 提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
-- Working Tree: Task 6 Step 2 门禁修复产物（见 Changed Files)，随本提交落地；忽略目录含 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
-- Task Status: SKILL-02 实施中；Task 1–5 + Task 6 Step 1 已提交；Task 6 Step 2 门禁发现 2 Important + 1 Minor，已修复待复审；Step 3 集成/push 待用户授权
+- Base Commit: c30322f（门禁修复提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
+- Working Tree: 复审 Minor 补测产物（results 测试 +1 项），随本提交落地；忽略目录含 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
+- Task Status: SKILL-02 实施中；Task 6 Step 2 门禁修复复审 **0C/0I 通过**(`c30322f` 可进入 Step 3);Step 3 集成/push 待用户授权
 
 ## Summary
 
@@ -23,6 +23,8 @@ Task 6 Step 1 已提交（`b97f8f3`,`package.json` 新增 `test:card-os-thin-cli
 - **I-1**:`submit_result` 预检 GET 得 `PACKET_NOT_FOUND` 时进入 `_replay_attempt_result`：有效 attempt journal 存在则复核目录（路径集合相等、大小/SHA-256 逐文件复核）、重跑凭据扫描、用 journal 记录的 `generated_at` 与 `content_lock_digest` 重建字节一致 body 与幂等键后按原键重放（无新 complete、无状态读），要求 receipt `replayed=true` 否则 `SERVER_CONTRACT_DRIFT`；无 journal 则原始 `PACKET_NOT_FOUND` 失败关闭；任何本地不符 `ATTEMPT_BODY_CHANGED` 且零新 POST。journal 因此扩展记录 `content_lock_digest` 与 per-artifact `media_type`（纯元数据，无 payload/token/绝对路径——这是满足计划 Task 8 Step 3 跨调用重放的最小必要扩展，与设计 §10 journal 内容列表存在有意偏差，见 Decisions)。fixture 改为 `_packet_visible_until_acceptance`（接受后 GET 404，忠实服务器）;新增 `CrossInvocationReplayTests` 6 项。
 - **M-1**：闭包断言改以 `git ls-files` 跟踪文件为准（builder 读 Git index)，忽略目录污染不再影响门禁；符号链接/常规文件检查保留。
 - 文档同步：errors.md 的 `PACKET_NOT_FOUND` 条目、protocol.md 的 journal 字段与重放段、thin_skill 对应断言同步为新语义。
+
+复审（resume 原 whole-release reviewer):I-1/I-2/M-1 三条全部 **CLOSED**，滥用面（无 journal/篡改/目录不符/从未提交）逐一验证 fail-closed，最终结论 **`c30322f` 达到 Critical 0 / Important 0，可进入 Task 6 Step 3**；唯一新 Minor（可见路径 journal 复用成功分支缺集成测试）已补测（`test_visible_packet_resubmit_reuses_journal_after_failed_upload`,88/88、279/279 复跑通过）。
 
 ## Completed
 
@@ -56,7 +58,7 @@ Task 6 Step 1 已提交（`b97f8f3`,`package.json` 新增 `test:card-os-thin-cli
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `npm run test:card-os-thin-client` | PASS | 278/278(35+75+55+87+26+…，含新增 I-1/I-2 测试） |
+| `npm run test:card-os-thin-client` | PASS | 279/279（复审 Minor 补测后） |
 | `npm run test:card-os-skill-registry` | PASS | 81/81(M-1 修复后） |
 | `python3 -m unittest discover -s tests` | PASS | 533/533 |
 | `quick_validate.py skills/cognitive-card-os` | PASS | "Skill is valid!" |
@@ -79,14 +81,13 @@ Task 6 Step 1 已提交（`b97f8f3`,`package.json` 新增 `test:card-os-thin-cli
 
 ## Remaining Work
 
-1. Task 6 Step 2 复审：由 whole-release reviewer 确认 I-1/I-2/M-1 修复，要求 0C/0I 后方可进入 Step 3。
-2. Task 6 Step 3：集成 release-source commit 进 main 并 push(**需用户授权**);Step 4 双构建字节一致；Step 5 发布不可变对象并 provisional 激活 stable;Step 6 六类公开路径验收。
-3. Task 7：两个隔离 CODEX_HOME 安装 + check/失败升级/回滚 + forward tests;Task 8：现网 scoped token 验收 + 独立评审；Task 9:roadmap + 全量验证 + whole-branch 评审 + release gate。
-4. 抢救批次（SKILL-02 之后、ACCEPT-01 之前）。
+1. Task 6 Step 3：集成 release-source commit 进 main 并 push origin/main(**需用户授权**);Step 4 双构建字节一致；Step 5 发布不可变对象并 provisional 激活 stable;Step 6 六类公开路径验收。
+2. Task 7：两个隔离 CODEX_HOME 安装 + check/失败升级/回滚 + forward tests;Task 8：现网 scoped token 验收 + 独立评审；Task 9:roadmap + 全量验证 + whole-branch 评审 + release gate。
+3. 抢救批次（SKILL-02 之后、ACCEPT-01 之前）。
 
 ## Exact Next Action
 
-请 whole-release reviewer（可 resume 原评审代理）复审 I-1/I-2/M-1 修复，取得 0C/0I 结论后提交本阶段修复；随后就 Task 6 Step 3 的集成与 push 向用户请求授权。
+就 Task 6 Step 3 向用户请求授权：将 release-source commit 集成进治理仓 main 并 push 私有 origin/main（计划要求 `git merge-base --is-ancestor <release-source-commit> origin/main` 且 RELEASE_AUTHORITY_PATHS 与远端零差异后才可构建发布）。
 
 ## Recovery Notes
 

@@ -1166,6 +1166,58 @@ class AttemptJournalTests(SubmitTestCase):
         self.assertTrue(second_receipt["replayed"])
         self.assertEqual("candidate_staged", second_receipt["status"])
 
+    def test_visible_packet_resubmit_reuses_journal_after_failed_upload(self) -> None:
+        # The first attempt wrote the journal and completed the packet, but
+        # the results POST failed server-side. The packet is still visible,
+        # so the re-run must reuse the recorded journal (successful rebuild
+        # branch of load_or_create_attempt), confirm the already-completed
+        # state via a job status read, and replay the identical bytes/key.
+        _write_files(self.result_dir)
+        self._serve_doctor()
+        self._routes(
+            {
+                ("GET", PACKET_PATH): _json_route(_envelope()),
+                ("POST", COMPLETE_PATH): _stateful_route(
+                    [
+                        (200, _envelope()),
+                        (409, _error_envelope("INVALID_STATE_TRANSITION")),
+                    ]
+                ),
+                ("GET", JOB_PATH): _json_route(_job_dict(state="awaiting_upload")),
+                ("POST", RESULTS_PATH): _stateful_route(
+                    [
+                        (500, _error_envelope("INTERNAL_ERROR")),
+                        (201, _receipt(replayed=False)),
+                    ]
+                ),
+            }
+        )
+        code, _out, _err = self._submit()
+        self.assertEqual(1, code)
+        self.assertTrue(self._attempt_path().exists())
+        requests_before = len(self.server.requests)
+        code, out, err = self._submit()
+        self.assertEqual(0, code, err)
+        self.assertEqual(
+            [
+                ("GET", PACKET_PATH),
+                ("POST", COMPLETE_PATH),
+                ("GET", JOB_PATH),
+                ("POST", RESULTS_PATH),
+            ],
+            self.methods_paths()[requests_before:],
+        )
+        posts = self._results_posts()
+        self.assertEqual(2, len(posts))
+        # Identical immutable bytes with the same key across both attempts.
+        self.assertEqual(posts[0]["body"], posts[1]["body"])
+        first_headers = {k.lower(): v for k, v in posts[0]["headers"].items()}
+        second_headers = {k.lower(): v for k, v in posts[1]["headers"].items()}
+        self.assertEqual(
+            first_headers["idempotency-key"], second_headers["idempotency-key"]
+        )
+        self.assertEqual("candidate_staged", json.loads(out)["status"])
+
     def test_changed_artifacts_stop_with_attempt_body_changed(self) -> None:
         _write_files(self.result_dir)
         self._serve_submit()
