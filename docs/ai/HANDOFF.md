@@ -5,9 +5,9 @@
 - Updated At: 2026-07-31
 - Agent: Kimi Code
 - Branch: codex/card-os-thin-client-v1（worktree `.worktrees/card-os-thin-client-v1`）
-- Base Commit: 62588e0（Task 4 提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
-- Working Tree: 仅 Task 5 产物（见 Changed Files)；忽略目录新增 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
-- Task Status: SKILL-02 实施中；Task 1–4 已提交，Task 5(Skill 文档 + pre-publish probes）已完成 RED→GREEN→probes→review，随本提交落地
+- Base Commit: 5ebbc0f（Task 5 提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
+- Working Tree: 仅 Task 6 Step 1 产物（package.json)；忽略目录含 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
+- Task Status: SKILL-02 实施中；Task 1–5 已提交，Task 6 Step 1（统一测试入口）完成，Step 2 门禁进行中，Step 3 集成/push 待用户授权
 
 ## Summary
 
@@ -36,6 +36,7 @@ Pre-publish probes（计划 Step 4)：五文件源码闭包复制进全新隔离
 | `skills/cognitive-card-os/agents/openai.yaml` | 重生成（4 行） | 与 SKILL.md 一致的展示元数据 |
 | `README.md` | +18 行（单节） | 权威声明 + 四步 bootstrap + 隔离 CODEX_HOME |
 | `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
+| `package.json` | +1 行 | Task 6 Step 1：新增 `test:card-os-thin-client` 统一入口 |
 
 忽略目录证据：`.superpowers/sdd/skill-forward-prepublish/{upload,boundary,comparison}.md`（不入 Git)。`tests/test_card_os_skill_release.py` 经评审确认内容无关，未改动。
 
@@ -58,6 +59,7 @@ Pre-publish probes（计划 Step 4)：五文件源码闭包复制进全新隔离
 | `quick_validate.py skills/cognitive-card-os` | PASS | "Skill is valid!" |
 | 密钥扫描形态 grep（全部改动文件） | PASS | 无命中；无完整 `ccos_v1.` 字面量 |
 | `git diff --check` | PASS | 提交前 |
+| `npm run test:card-os-thin-client`（新入口） | PASS | 266/266(35+69+49+81+32),Task 6 Step 1 |
 
 ## Known Failures
 
