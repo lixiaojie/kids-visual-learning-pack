@@ -1,4 +1,4 @@
 interface:
   display_name: "Cognitive Card OS"
-  short_description: "Install and inspect verified Card OS task releases"
-  default_prompt: "Use $cognitive-card-os to inspect the verified Card OS client release boundary."
+  short_description: "Run verified Card OS tasks and upload candidates"
+  default_prompt: "Use $cognitive-card-os to claim a locked task and upload its verified candidate outputs."
