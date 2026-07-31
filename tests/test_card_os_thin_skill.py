@@ -308,11 +308,16 @@ class ErrorsReferenceTests(unittest.TestCase):
         section = extract_section(ERRORS_MD, "Local client codes", level=2)
         self.assertEqual(LOCAL_PRODUCTION_CODES, extract_backtick_codes(section))
 
-    def test_packet_not_found_documents_cross_invocation_failure(self) -> None:
+    def test_packet_not_found_documents_cross_invocation_replay(self) -> None:
         section = extract_section(ERRORS_MD, "packet/state", level=3)
         self.assertRegex(section, r"(?i)cross-invocation")
         self.assertRegex(section, r"(?i)invisible to the claimant")
-        self.assertRegex(section, r"(?i)exact replay")
+        # Gate I-1 reconciliation: with a valid attempt journal and unchanged
+        # files the cross-invocation submit replays (replayed=true); without
+        # a journal it fails closed.
+        self.assertRegex(section, r"(?i)attempt journal")
+        self.assertRegex(section, r"(?i)replayed=true")
+        self.assertRegex(section, r"(?i)fails closed")
 
     def test_installer_only_codes_are_marked_not_emitted(self) -> None:
         section = extract_section(ERRORS_MD, "Installer-only codes", level=2)

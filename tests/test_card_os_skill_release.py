@@ -73,20 +73,34 @@ class CardOsSkillSourceTests(unittest.TestCase):
             "missing governed Skill source: skills/cognitive-card-os",
         )
 
-        actual_files: set[str] = set()
-        for directory, directory_names, file_names in os.walk(
+        # The closure is evaluated against tracked files: the deterministic
+        # builder reads the Git index, so ignored worktree pollution (for
+        # example a stale __pycache__ from a direct import) must not make
+        # this release gate non-deterministic.
+        listing = subprocess.run(
+            ["git", "ls-files", "-z", "--", "skills/cognitive-card-os"],
+            cwd=ROOT,
+            capture_output=True,
+            check=True,
+        )
+        tracked = [
+            entry
+            for entry in listing.stdout.decode("utf-8").split("\0")
+            if entry
+        ]
+        actual_files = {
+            (ROOT / entry).relative_to(SKILL_ROOT).as_posix() for entry in tracked
+        }
+        for relative in actual_files:
+            path = SKILL_ROOT / relative
+            self.assertFalse(path.is_symlink(), f"file is a symlink: {relative}")
+            self.assertTrue(path.is_file(), f"not a regular file: {relative}")
+        for directory, directory_names, _file_names in os.walk(
             SKILL_ROOT, followlinks=False
         ):
-            directory_path = Path(directory)
             for name in directory_names:
-                path = directory_path / name
+                path = Path(directory) / name
                 self.assertFalse(path.is_symlink(), f"directory is a symlink: {path}")
-            for name in file_names:
-                path = directory_path / name
-                relative = path.relative_to(SKILL_ROOT).as_posix()
-                actual_files.add(relative)
-                self.assertFalse(path.is_symlink(), f"file is a symlink: {relative}")
-                self.assertTrue(path.is_file(), f"not a regular file: {relative}")
 
         self.assertEqual(set(SOURCE_FILES), actual_files)
         self.assertTrue(FORBIDDEN_AUXILIARY_FILES.isdisjoint(actual_files))

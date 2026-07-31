@@ -781,7 +781,12 @@ def _unsafe_store(message: str) -> ClientError:
 
 
 class FileCredentialStore:
-    """0600 JSON file fallback; only reachable through --allow-file-store."""
+    """0600 JSON file fallback.
+
+    Writes require the explicit --allow-file-store opt-in; reads also reach
+    this store whenever no platform backend exists on the host, so a
+    credential stored through the opt-in is never write-only.
+    """
 
     backend_name = "file"
 
@@ -930,9 +935,26 @@ def select_credential_store(
     )
 
 
+def _select_read_store() -> CredentialStore:
+    """Selection for read/delete paths: platform backend, else the file store.
+
+    The --allow-file-store opt-in happens once at auth set time, so a host
+    without any platform backend must still read, report and delete the
+    credential it wrote: when selection reports CREDENTIAL_STORE_UNAVAILABLE
+    the read paths fall back to the gated 0600 file store. The file store's
+    owner/mode/link gates keep this fail-closed; any other selection error
+    propagates unchanged.
+    """
+    try:
+        return select_credential_store(platform=sys.platform, allow_file_store=False)
+    except ClientError as exc:
+        if exc.code != "CREDENTIAL_STORE_UNAVAILABLE":
+            raise
+        return FileCredentialStore()
+
+
 def resolve_effective_token(
     *,
-    allow_file_store: bool = False,
     environ: dict[str, str] | None = None,
     store: CredentialStore | None = None,
 ) -> str | None:
@@ -940,7 +962,8 @@ def resolve_effective_token(
 
     The environment override is ephemeral: it is read here, takes precedence
     over any stored credential, is never persisted and is never copied into
-    errors.
+    errors. When no platform backend exists, the store read falls back to
+    the gated 0600 file store (see _select_read_store).
     """
     environment = os.environ if environ is None else environ
     override = environment.get("CARD_OS_TOKEN")
@@ -948,9 +971,7 @@ def resolve_effective_token(
         return override
     if store is None:
         try:
-            store = select_credential_store(
-                platform=sys.platform, allow_file_store=allow_file_store
-            )
+            store = _select_read_store()
         except ClientError:
             return None
     try:
@@ -1024,6 +1045,13 @@ def _auth_store(allow_file_store: bool) -> CredentialStore:
     )
 
 
+def _auth_read_store() -> CredentialStore:
+    """Store for status/delete: the opt-in already happened at auth set time."""
+    if _credential_store_override is not None:
+        return _credential_store_override
+    return _select_read_store()
+
+
 def _cmd_auth_set(*, allow_file_store: bool) -> dict[str, object]:
     # Exactly one read; bounded so an endless stream cannot exhaust memory.
     raw = sys.stdin.buffer.read(MAX_TOKEN_BYTES + 2)
@@ -1040,7 +1068,7 @@ def _cmd_auth_set(*, allow_file_store: bool) -> dict[str, object]:
 
 
 def _cmd_auth_status() -> dict[str, object]:
-    store = _auth_store(False)
+    store = _auth_read_store()
     present = store.get() is not None
     return {
         "backend": store.backend_name,
@@ -1050,7 +1078,7 @@ def _cmd_auth_status() -> dict[str, object]:
 
 
 def _cmd_auth_delete() -> dict[str, object]:
-    store = _auth_store(False)
+    store = _auth_read_store()
     deleted = store.delete()
     return {"backend": store.backend_name, "deleted": deleted, "status": "ok"}
 
@@ -1494,9 +1522,11 @@ _RECEIPT_KEYS = frozenset(
 _STAGED_KEYS = frozenset({"relative_path", "storage_key", "sha256", "size_bytes"})
 _ATTEMPT_KEYS = frozenset(
     {"schema", "packet_id", "generated_at", "body_sha256", "idempotency_key",
-     "artifacts"}
+     "content_lock_digest", "artifacts"}
 )
-_ATTEMPT_ARTIFACT_KEYS = frozenset({"relative_path", "sha256", "size_bytes"})
+_ATTEMPT_ARTIFACT_KEYS = frozenset(
+    {"relative_path", "media_type", "sha256", "size_bytes"}
+)
 
 
 def result_idempotency_key(packet_id: str, canonical_body: bytes) -> str:
@@ -1845,6 +1875,12 @@ def _validate_attempt_journal(
     key = journal["idempotency_key"]
     if not isinstance(key, str) or _ATTEMPT_KEY_RE.fullmatch(key) is None:
         raise _attempt_error("attempt state has a malformed idempotency key")
+    content_lock_digest = journal["content_lock_digest"]
+    if (
+        not isinstance(content_lock_digest, str)
+        or _RESULT_DIGEST_RE.fullmatch(content_lock_digest) is None
+    ):
+        raise _attempt_error("attempt state has a malformed content lock digest")
     artifacts = journal["artifacts"]
     if not isinstance(artifacts, list):
         raise _attempt_error("attempt state has malformed artifacts")
@@ -1853,9 +1889,12 @@ def _validate_attempt_journal(
         if not isinstance(entry, dict) or set(entry) != _ATTEMPT_ARTIFACT_KEYS:
             raise _attempt_error("attempt state has a malformed artifact entry")
         relative_path = entry["relative_path"]
+        media_type = entry["media_type"]
         sha256 = entry["sha256"]
         size_bytes = entry["size_bytes"]
         if not isinstance(relative_path, str) or not relative_path:
+            raise _attempt_error("attempt state has a malformed artifact entry")
+        if media_type not in ALLOWED_ARTIFACT_MEDIA_TYPES:
             raise _attempt_error("attempt state has a malformed artifact entry")
         if not isinstance(sha256, str) or _HEX64_RE.fullmatch(sha256) is None:
             raise _attempt_error("attempt state has a malformed artifact entry")
@@ -1957,12 +1996,12 @@ def load_or_create_attempt(
 ) -> tuple[bytes, str]:
     """Return (canonical_body, idempotency_key) pinned by the attempt journal.
 
-    The first submit records generated_at, the body digest, the key and the
-    sorted artifact metadata in a private 0600 journal BEFORE any complete or
-    upload. Every later submit with the same packet must rebuild byte-identical
-    body and key from the recorded generated_at; any change stops locally
-    with ATTEMPT_BODY_CHANGED instead of silently starting a second logical
-    submit.
+    The first submit records generated_at, the body digest, the key, the
+    content lock digest and the sorted artifact metadata in a private 0600
+    journal BEFORE any complete or upload. Every later submit with the same
+    packet must rebuild byte-identical body and key from the recorded
+    generated_at; any change stops locally with ATTEMPT_BODY_CHANGED instead
+    of silently starting a second logical submit.
     """
     path = _attempt_file_path(packet_id)
     journal = _read_attempt(path, packet_id)
@@ -1970,12 +2009,20 @@ def load_or_create_attempt(
         generated_at = _utc_now_rfc3339()
         body = _build_checked_body(body_factory, generated_at)
         key = result_idempotency_key(packet_id, body)
+        # The content lock digest is recorded so a cross-invocation replay
+        # can rebuild the byte-identical body after the accepted packet
+        # becomes invisible to this claimant. It is packet metadata, never
+        # payload bytes.
+        content_lock_digest = json.loads(body.decode("utf-8"))[
+            "content_lock_digest"
+        ]
         fresh = {
             "schema": ATTEMPT_SCHEMA,
             "packet_id": packet_id,
             "generated_at": generated_at,
             "body_sha256": hashlib.sha256(body).hexdigest(),
             "idempotency_key": key,
+            "content_lock_digest": content_lock_digest,
             "artifacts": [dict(entry) for entry in artifacts],
         }
         try:
@@ -2160,12 +2207,145 @@ def _post_result(
     return document
 
 
+def _replay_attempt_result(
+    packet_id: str,
+    directory: Path,
+    *,
+    token: str,
+    original_error: ClientError,
+) -> dict[str, object]:
+    """Replay a recorded submit after the accepted packet became invisible.
+
+    Server 0.3.1 hides an accepted packet from its claimant, so the
+    pre-flight GET fails with PACKET_NOT_FOUND. A valid attempt journal
+    proves this client already built exactly one immutable body for this
+    packet: re-verify the directory against the journal, rebuild the
+    byte-identical body and key, and replay them. The server's idempotency
+    layer answers before any state check, so the replay returns the stored
+    receipt with replayed=true; a never-submitted packet keeps failing
+    closed with the original PACKET_NOT_FOUND, and any local mismatch stops
+    with ATTEMPT_BODY_CHANGED before any upload.
+    """
+    journal = _read_attempt(_attempt_file_path(packet_id), packet_id)
+    if journal is None:
+        raise original_error
+    root = Path(directory)
+    found = _walk_result_files(root)
+    recorded = journal["artifacts"]
+    if {str(entry["relative_path"]) for entry in recorded} != set(found):
+        raise _attempt_error(
+            "the result directory no longer matches the recorded attempt"
+        )
+    token_bytes = token.encode("utf-8")
+    artifacts: list[dict[str, object]] = []
+    decoded_parts: list[bytes] = []
+    for entry in recorded:  # journal artifact order is strictly sorted
+        relative_path = str(entry["relative_path"])
+        try:
+            _require_safe_declared_path(relative_path)
+        except ClientError:
+            raise _attempt_error(
+                "attempt state records an unsafe artifact path"
+            ) from None
+        media_type = str(entry["media_type"])
+        info = found[relative_path]
+        if info.st_size != entry["size_bytes"]:
+            raise _attempt_error(
+                "a result file size no longer matches the recorded attempt"
+            )
+        payload = _read_artifact_bytes(root / relative_path, info.st_size)
+        sha256 = hashlib.sha256(payload).hexdigest()
+        if sha256 != entry["sha256"]:
+            raise _attempt_error(
+                "a result file digest no longer matches the recorded attempt"
+            )
+        _scan_for_credentials(
+            relative_path.encode("utf-8"), token_bytes, "artifact relative path"
+        )
+        _scan_for_credentials(
+            media_type.encode("utf-8"), token_bytes, "artifact media metadata"
+        )
+        artifacts.append(
+            {
+                "relative_path": relative_path,
+                "media_type": media_type,
+                "sha256": sha256,
+                "size_bytes": len(payload),
+                "payload_base64": base64.b64encode(payload).decode("ascii"),
+            }
+        )
+        decoded_parts.append(payload)
+    _scan_for_credentials(b"".join(decoded_parts), token_bytes, "artifact payload")
+
+    def body_factory(generated_at: str) -> bytes:
+        return canonical_json(
+            {
+                "schema": RESULT_SCHEMA,
+                "content_lock_digest": journal["content_lock_digest"],
+                "skill_release": SKILL_RELEASE,
+                "client_surface": CLIENT_SURFACE,
+                "generated_at": generated_at,
+                "artifacts": artifacts,
+                "source_records": [],
+                "operator_notes": "",
+            }
+        )
+
+    body = _build_checked_body(body_factory, str(journal["generated_at"]))
+    if hashlib.sha256(body).hexdigest() != journal["body_sha256"]:
+        raise _attempt_error(
+            "the rebuilt result body no longer matches the recorded attempt"
+        )
+    key = result_idempotency_key(packet_id, body)
+    if key != journal["idempotency_key"]:
+        raise _attempt_error(
+            "the rebuilt idempotency key no longer matches the recorded attempt"
+        )
+    _scan_for_credentials(body, token_bytes, "request body")
+    artifacts_meta = tuple(
+        {
+            "relative_path": artifact["relative_path"],
+            "media_type": artifact["media_type"],
+            "sha256": artifact["sha256"],
+            "size_bytes": artifact["size_bytes"],
+        }
+        for artifact in artifacts
+    )
+    receipt = _validate_result_receipt(
+        _post_result(packet_id, body, key, token=token), packet_id, artifacts_meta
+    )
+    if receipt["replayed"] is not True:
+        # The recorded key was already accepted once; answering the exact
+        # replay as a new result is server contract drift.
+        raise _drift("a journaled replay was accepted as a new result")
+    return {
+        "status": "candidate_staged",
+        "packet_id": packet_id,
+        "result_digest": receipt["result_digest"],
+        "replayed": receipt["replayed"],
+        "accepted_at": receipt["accepted_at"],
+        "staged_artifacts": receipt["staged_artifacts"],
+        "note": "candidates are staged for server verification; review and "
+        "release are separate later steps",
+    }
+
+
 def submit_result(packet_id: str, directory: Path) -> dict[str, object]:
     """Validate a generated result directory and upload it idempotently."""
     path = _packet_route(packet_id)  # validates the id first
     token = _cli_token()
     _require_compatible_server()
-    _, envelope_document = request_json("GET", path, token=token)
+    try:
+        _, envelope_document = request_json("GET", path, token=token)
+    except ClientError as exc:
+        if exc.code != "PACKET_NOT_FOUND":
+            raise
+        # The packet may already be accepted and therefore invisible: the
+        # attempt journal drives the exact replay, or the original error
+        # propagates when no attempt was ever recorded.
+        return _replay_attempt_result(
+            packet_id, Path(directory), token=token, original_error=exc
+        )
     # The packet envelope digest is recomputed again before result construction.
     envelope = _validate_packet_envelope(envelope_document)
     packet = envelope["packet"]
@@ -2199,6 +2379,7 @@ def submit_result(packet_id: str, directory: Path) -> dict[str, object]:
     artifacts_meta = tuple(
         {
             "relative_path": artifact["relative_path"],
+            "media_type": artifact["media_type"],
             "sha256": artifact["sha256"],
             "size_bytes": artifact["size_bytes"],
         }

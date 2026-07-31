@@ -74,8 +74,8 @@ uploaded result.
   non-link file at
   `${XDG_STATE_HOME:-$HOME/.local/state}/cognitive-card-os/attempts/<packet-id>.json`
   holding only the packet ID, the fixed `generated_at`, the canonical body
-  SHA-256, the idempotency key, and the sorted artifact path/SHA-256/size
-  list — never tokens or payloads.
+  SHA-256, the idempotency key, the content lock digest, and the sorted
+  artifact path/media type/SHA-256/size list — never tokens or payloads.
 
 ## Packet digest
 
@@ -99,7 +99,10 @@ Idempotency-Key = "ccos-v1-" + sha256(packet_id + "\n" + canonical_request_body)
 
 Only the exact same byte string with the same key may be replayed, at most
 once, after a status read. Any changed file or metadata yields
-`ATTEMPT_BODY_CHANGED` instead of a silently new key.
+`ATTEMPT_BODY_CHANGED` instead of a silently new key. After acceptance the
+packet becomes invisible to the claimant; a later `results submit` with
+unchanged files then replays the recorded body and key through the attempt
+journal and the server answers with the stored receipt (replayed=true).
 
 ## Limits and media policy
 

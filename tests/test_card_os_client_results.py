@@ -394,6 +394,22 @@ def _stateful_route(responses: list[tuple[int, dict[str, object]]]):
     return route
 
 
+def _packet_visible_until_acceptance(handler: _FixtureHandler) -> None:
+    """Mirror server 0.3.1 get_visible_packet: after a result POST the job
+    leaves ACTIVE_CLIENT_PACKET_STATES, so the claimant's GET fails with
+    PACKET_NOT_FOUND (service.py:199-228 + policy.py:11-13 at c2a898c)."""
+    accepted = any(
+        (record["method"], record["path"]) == ("POST", RESULTS_PATH)
+        for record in handler.server.requests
+    )
+    if accepted:
+        handler._respond(
+            404, json.dumps(_error_envelope("PACKET_NOT_FOUND")).encode()
+        )
+    else:
+        handler._respond(200, json.dumps(_envelope()).encode())
+
+
 def _stall_then(document: dict[str, object], status: int = 201):
     """Stall the first request past the client timeout, then serve normally."""
     calls: list[int] = []
@@ -1036,6 +1052,9 @@ class AttemptJournalTests(SubmitTestCase):
                 "generated_at",
                 "body_sha256",
                 "idempotency_key",
+                # Recorded so a cross-invocation replay can rebuild the body
+                # after the accepted packet becomes invisible (gate I-1).
+                "content_lock_digest",
                 "artifacts",
             },
             set(journal),
@@ -1046,10 +1065,18 @@ class AttemptJournalTests(SubmitTestCase):
         self.assertIsNotNone(
             re.fullmatch(r"ccos-v1-[0-9a-f]{64}", journal["idempotency_key"])
         )
+        self.assertIsNotNone(
+            re.fullmatch(r"sha256:[0-9a-f]{64}", journal["content_lock_digest"])
+        )
+        media_types = {
+            CARD_PATH: "application/json",
+            NOTE_PATH: "text/markdown",
+        }
         self.assertEqual(
             [
                 {
                     "relative_path": path,
+                    "media_type": media_types[path],
                     "sha256": hashlib.sha256(FILES[path]).hexdigest(),
                     "size_bytes": len(FILES[path]),
                 }
@@ -1092,18 +1119,20 @@ class AttemptJournalTests(SubmitTestCase):
         self.assertEqual([], self._results_posts())
 
     def test_exact_replay_reuses_generated_at_key_and_body(self) -> None:
+        # The fixture mirrors the real server: once the first result POST is
+        # accepted the claimant's packet GET fails with PACKET_NOT_FOUND, so
+        # the cross-invocation re-run must replay through the attempt journal.
         _write_files(self.result_dir)
         self._serve_doctor()
         self._routes(
             {
-                ("GET", PACKET_PATH): _json_route(_envelope()),
+                ("GET", PACKET_PATH): _packet_visible_until_acceptance,
                 ("POST", COMPLETE_PATH): _stateful_route(
                     [
                         (200, _envelope()),
                         (409, _error_envelope("INVALID_STATE_TRANSITION")),
                     ]
                 ),
-                ("GET", JOB_PATH): _json_route(_job_dict(state="awaiting_upload")),
                 ("POST", RESULTS_PATH): _stateful_route(
                     [(201, _receipt(replayed=False)), (200, _receipt(replayed=True))]
                 ),
@@ -1112,9 +1141,16 @@ class AttemptJournalTests(SubmitTestCase):
         code, out, err = self._submit()
         self.assertEqual(0, code, err)
         first_receipt = json.loads(out)
+        requests_before = len(self.server.requests)
         code, out, err = self._submit()
         self.assertEqual(0, code, err)
         second_receipt = json.loads(out)
+        # The replay issues no new complete and no status read: exactly one
+        # packet GET (now 404) and exactly one new POST with the same bytes.
+        self.assertEqual(
+            [("GET", PACKET_PATH), ("POST", RESULTS_PATH)],
+            self.methods_paths()[requests_before:],
+        )
         posts = self._results_posts()
         self.assertEqual(2, len(posts))
         first_headers = {k.lower(): v for k, v in posts[0]["headers"].items()}
@@ -1238,6 +1274,126 @@ class AttemptJournalTests(SubmitTestCase):
                 / f"{PACKET_ID}.json"
             ).exists()
         )
+
+
+class CrossInvocationReplayTests(SubmitTestCase):
+    """After acceptance the packet is invisible; the attempt journal drives
+    the cross-invocation replay, and every local mismatch fails closed."""
+
+    def _serve_accepted_packet(self) -> None:
+        self._serve_doctor()
+        self._routes(
+            {
+                ("GET", PACKET_PATH): _packet_visible_until_acceptance,
+                ("POST", COMPLETE_PATH): _json_route(_envelope()),
+                ("POST", RESULTS_PATH): _stateful_route(
+                    [(201, _receipt(replayed=False)), (200, _receipt(replayed=True))]
+                ),
+            }
+        )
+
+    def _accepted_submit(self) -> int:
+        _write_files(self.result_dir)
+        self._serve_accepted_packet()
+        code, _out, err = self._submit()
+        self.assertEqual(0, code, err)
+        return len(self.server.requests)
+
+    def test_changed_copy_after_acceptance_stops_before_any_post(self) -> None:
+        requests_before = self._accepted_submit()
+        note = self.result_dir / NOTE_PATH
+        note.write_bytes(NOTE_BYTES + b"changed\n")
+        code, out, err = self._submit()
+        self.assertEqual(1, code)
+        self.assertEqual("ATTEMPT_BODY_CHANGED", json.loads(out)["error"]["code"])
+        # Only the doomed pre-flight packet GET happened; no new POST.
+        self.assertEqual(
+            [("GET", PACKET_PATH)], self.methods_paths()[requests_before:]
+        )
+        self.assertEqual(1, len(self._results_posts()))
+        self.assert_no_token(out, err)
+
+    def test_extra_file_after_acceptance_stops_before_any_post(self) -> None:
+        requests_before = self._accepted_submit()
+        (self.result_dir / "extra.txt").write_bytes(b"surprise")
+        code, out, err = self._submit()
+        self.assertEqual(1, code)
+        self.assertEqual("ATTEMPT_BODY_CHANGED", json.loads(out)["error"]["code"])
+        self.assertEqual(
+            [("GET", PACKET_PATH)], self.methods_paths()[requests_before:]
+        )
+        self.assertEqual(1, len(self._results_posts()))
+        self.assert_no_token(out, err)
+
+    def test_missing_file_after_acceptance_stops_before_any_post(self) -> None:
+        requests_before = self._accepted_submit()
+        (self.result_dir / NOTE_PATH).unlink()
+        code, out, err = self._submit()
+        self.assertEqual(1, code)
+        self.assertEqual("ATTEMPT_BODY_CHANGED", json.loads(out)["error"]["code"])
+        self.assertEqual(
+            [("GET", PACKET_PATH)], self.methods_paths()[requests_before:]
+        )
+        self.assertEqual(1, len(self._results_posts()))
+        self.assert_no_token(out, err)
+
+    def test_tampered_journal_after_acceptance_fails_closed_without_echo(self) -> None:
+        requests_before = self._accepted_submit()
+        attempt = self._attempt_path()
+        journal = json.loads(attempt.read_text(encoding="utf-8"))
+        tampered = {**journal, "body_sha256": "0" * 64}
+        attempt.write_text(json.dumps(tampered), encoding="utf-8")
+        os.chmod(attempt, 0o600)
+        code, out, err = self._submit()
+        self.assertEqual(1, code)
+        self.assertEqual("ATTEMPT_BODY_CHANGED", json.loads(out)["error"]["code"])
+        self.assertNotIn(json.dumps(tampered), out)
+        self.assertEqual(
+            [("GET", PACKET_PATH)], self.methods_paths()[requests_before:]
+        )
+        self.assertEqual(1, len(self._results_posts()))
+        self.assert_no_token(out, err)
+
+    def test_missing_journal_keeps_packet_not_found(self) -> None:
+        # No attempt was ever recorded: the invisible packet still fails
+        # closed with PACKET_NOT_FOUND and nothing is uploaded.
+        _write_files(self.result_dir)
+        self._serve_doctor()
+        self._routes(
+            {
+                ("GET", PACKET_PATH): _json_route(
+                    _error_envelope("PACKET_NOT_FOUND"), status=404
+                )
+            }
+        )
+        code, out, err = self._submit()
+        self.assertEqual(1, code)
+        self.assertEqual("PACKET_NOT_FOUND", json.loads(out)["error"]["code"])
+        self.assertEqual([], self._results_posts())
+        self.assertFalse(self._attempt_path().exists())
+        self.assert_no_token(out, err)
+
+    def test_replayed_receipt_must_carry_the_replayed_flag(self) -> None:
+        # A server that answers a journaled replay with replayed=false is
+        # contract drift: the same key can never be accepted as a new result.
+        requests_before = self._accepted_submit()
+        self._routes(
+            {
+                ("POST", RESULTS_PATH): _json_route(
+                    _receipt(replayed=False), status=201
+                )
+            }
+        )
+        code, out, err = self._submit()
+        self.assertEqual(1, code)
+        self.assertEqual(
+            "SERVER_CONTRACT_DRIFT", json.loads(out)["error"]["code"]
+        )
+        self.assertEqual(
+            [("GET", PACKET_PATH), ("POST", RESULTS_PATH)],
+            self.methods_paths()[requests_before:],
+        )
+        self.assert_no_token(out, err)
 
 
 class CredentialInResultTests(SubmitTestCase):

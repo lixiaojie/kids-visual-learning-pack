@@ -996,6 +996,81 @@ class AuthRequiredTests(CommandTestCase):
         self.assertNotIn(FAKE_TOKEN, err)
 
 
+class FileStoreFallbackEndToEndTests(CommandTestCase):
+    """End to end on a simulated linux host without secret-tool: a credential
+    stored through auth set --stdin --allow-file-store authorizes protected
+    commands through the read-side file fallback."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        client._credential_store_override = None  # real selection path
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.config_home = Path(self._tmp.name) / "config"
+        self._fallback_env = unittest.mock.patch.dict(
+            os.environ,
+            {"XDG_CONFIG_HOME": str(self.config_home)},
+            clear=False,
+        )
+        self._fallback_env.start()
+        self.addCleanup(self._fallback_env.stop)
+        self._platform_patcher = unittest.mock.patch.object(sys, "platform", "linux")
+        self._platform_patcher.start()
+        self.addCleanup(self._platform_patcher.stop)
+        self._secret_patcher = unittest.mock.patch.object(
+            client, "_secret_tool_available", return_value=False
+        )
+        self._secret_patcher.start()
+        self.addCleanup(self._secret_patcher.stop)
+
+    @property
+    def credential_path(self) -> Path:
+        return self.config_home / "cognitive-card-os" / "credentials.json"
+
+    def _auth_set_file_store(self):
+        fake_stdin = type("Stdin", (), {"buffer": io.BytesIO(FAKE_TOKEN.encode() + b"\n")})()
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            with unittest.mock.patch.object(sys, "stdin", fake_stdin):
+                code = client.main(["auth", "set", "--stdin", "--allow-file-store"])
+        return code, out.getvalue(), err.getvalue()
+
+    def test_file_store_credential_authorizes_packets_list(self) -> None:
+        self._routes(
+            {("GET", PACKETS_AVAILABLE_PATH): _json_route({"packets": [_envelope()]})}
+        )
+        code, out, err = self._auth_set_file_store()
+        self.assertEqual(0, code, err)
+        self.assertEqual("file", json.loads(out)["backend"])
+
+        code, out, err = self.run_cli(["packets", "list"])
+        self.assertEqual(0, code, err)
+        self.assertEqual(1, len(self.server.requests))
+        headers = {
+            k.lower(): v for k, v in self.server.requests[0]["headers"].items()
+        }
+        self.assertEqual(f"Bearer {FAKE_TOKEN}", headers["authorization"])
+        self.assert_no_token(out, err)
+
+        code, out, err = self.run_cli(["auth", "status"])
+        self.assertEqual(0, code, err)
+        payload = json.loads(out)
+        self.assertEqual("file", payload["backend"])
+        self.assertEqual("present", payload["credential"])
+
+        code, out, err = self.run_cli(["auth", "delete"])
+        self.assertEqual(0, code, err)
+        self.assertTrue(json.loads(out)["deleted"])
+        self.assertFalse(self.credential_path.exists())
+
+        # After deletion the protected command fails locally again.
+        code, out, err = self.run_cli(["packets", "list"])
+        self.assertEqual(1, code)
+        self.assertEqual("AUTH_REQUIRED", json.loads(out)["error"]["code"])
+        self.assertEqual(1, len(self.server.requests))
+        self.assert_no_token(out, err)
+
+
 class DoctorGateTests(CommandTestCase):
     """Mutations run doctor first, cached within the process only."""
 

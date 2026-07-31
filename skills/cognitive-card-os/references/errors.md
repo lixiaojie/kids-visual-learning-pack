@@ -35,7 +35,7 @@ to a known code.
 ### packet/state
 
 - `JOB_NOT_FOUND` — refresh/reconcile state: the job is unknown; re-read available packets.
-- `PACKET_NOT_FOUND` — refresh/reconcile state: the packet is not visible. After server acceptance a packet becomes invisible to the claimant, so a fresh cross-invocation results submit fails closed with this code; the supported path is same-attempt exact replay within timeout recovery.
+- `PACKET_NOT_FOUND` — refresh/reconcile state: the packet is not visible. After server acceptance a packet becomes invisible to the claimant; a cross-invocation results submit with a valid attempt journal and unchanged files then replays the recorded bytes with the recorded key (replayed=true), while one without a journal fails closed with this code.
 - `PACKET_ALREADY_CLAIMED` — refresh/reconcile state: another claimant holds the packet; list again and pick a visible one.
 - `PACKET_EXPIRED` — refresh/reconcile state: the packet expired; wait for reissue or choose another.
 - `LEASE_EXPIRED` — refresh/reconcile state: the claim lease lapsed; claim again if the packet is still visible.

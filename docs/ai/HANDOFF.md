@@ -5,89 +5,92 @@
 - Updated At: 2026-07-31
 - Agent: Kimi Code
 - Branch: codex/card-os-thin-client-v1（worktree `.worktrees/card-os-thin-client-v1`）
-- Base Commit: 5ebbc0f（Task 5 提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
-- Working Tree: 仅 Task 6 Step 1 产物（package.json)；忽略目录含 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
-- Task Status: SKILL-02 实施中；Task 1–5 已提交，Task 6 Step 1（统一测试入口）完成，Step 2 门禁进行中，Step 3 集成/push 待用户授权
+- Base Commit: b97f8f3（Task 6 Step 1 提交；main 另有 docs-only 的 995c8b6 抢救优先更新）
+- Working Tree: Task 6 Step 2 门禁修复产物（见 Changed Files)，随本提交落地；忽略目录含 `.superpowers/sdd/skill-forward-prepublish/` 探针证据；主工作区 `outputs/` 未触碰
+- Task Status: SKILL-02 实施中；Task 1–5 + Task 6 Step 1 已提交；Task 6 Step 2 门禁发现 2 Important + 1 Minor，已修复待复审；Step 3 集成/push 待用户授权
 
 ## Summary
 
-Task 5 由全新 implementer 子代理执行：`tests/test_card_os_thin_skill.py`(32 个测试）对骨架 31/31 RED，随后改写 `SKILL.md`(56 行，只链两个 references，含计划四行决策表）、`references/protocol.md`(127 行）、`references/errors.md`(99 行，57 个冻结服务器码分五组 + 10 个本地码 + installer-only `UNMANAGED_ACTIVE_SKILL` 标注不发射）、确定性重生成 `agents/openai.yaml`(4 行，未手改）、README +17 行（源码权威/发行权威、四步 bootstrap、隔离 CODEX_HOME、禁止覆盖本机完整 Skill)。代码集合断言用反引号 ALL-CAPS 提取并做集合相等（分组逐项 + 68 码宇宙并集）。`tests/test_card_os_skill_release.py` 经核实内容无关、无需同步（评审确认该判断成立）。
+Task 6 Step 1 已提交（`b97f8f3`,`package.json` 新增 `test:card-os-thin-client`,266 项PASS)。Step 2 pre-release 门禁：全量测试（registry 81、thin-client 266、discover 521)、quick_validate、`git diff --check` 通过后，全新 whole-release reviewer 对 `f2a2462..b97f8f3` 给出 **Critical 0 / Important 2 / Minor 1,判定不可构建**:
 
-Pre-publish probes（计划 Step 4)：五文件源码闭包复制进全新隔离 `CODEX_HOME`(/tmp/ccos-prepublish-As96Db)，标注 `unreleased-source-probe`；两个全新代理（未泄露设计/期望/基线诊断）分别执行原始 baseline prompt 2(upload）与 prompt 3(boundary)。Prompt 2：代理按 doctor → auth status → packets list 工作流停在 `AUTH_REQUIRED`，以 ChatGPT Pro 本地生成 + 自动 submit 为主路径，未要求 OpenAI API Key、未虚构任务。Prompt 3：判定自由概念，返回 `TRUSTED_UPSTREAM_REQUIRED`，未发明 job。证据（含与 baseline 的 prompt-for-prompt 对照）存于 `.superpowers/sdd/skill-forward-prepublish/`（忽略目录；本探针未使用真实凭据，无脱敏负担）。此探针不是最终 writing-skills GREEN gate(prompt 1 需 Task 6 stable 激活，prompt 2 完整场景在 Task 8)。
+- **I-1**：服务器在接受结果后使 packet 对 claimant 不可见（GET 404),`submit_result` 的预检 GET 使跨调用 `results submit` 重放不可能，与计划 Task 8 Step 3（同一命令重跑须得 `replayed=true`）矛盾；旧测试 fixture 让 packet 在接受后仍可见，掩盖了该问题。
+- **I-2**:`--allow-file-store` 凭据只写不读——无平台后端的宿主上 `auth set --allow-file-store` 成功后，所有读路径以 `allow_file_store=False` 选择后端，永远读不回，形成不可行动的 `AUTH_REQUIRED` 循环。
+- **M-1**:`test_source_tree_is_the_exact_five_file_closure` 用裸 `os.walk`，被忽略目录 `__pycache__` 污染导致门禁不确定。
 
-独立 reviewer 子代理结论：Critical 0 / Important 0 / Minor 3，全部已在提交前修正（`UNSAFE_ARCHIVE` 测试注释改述为冻结保留码；protocol.md 补 `CARD_OS_TOKEN` 临时变量与 attempt journal 精确路径——`CARD_OS_TOKEN` 不用反引号以免污染代码宇宙并集断言；README 补"stable 首次激活后方可执行"可用性说明）。修正后 53/53 PASS,quick_validate 通过。
+修复（部分由因子代理额度中断而遗留的在途修改 + 本 Agent 补全，全部经测试验证）:
+
+- **I-2**：新增 `_select_read_store()`——读路径（`resolve_effective_token`、`auth status`、`auth delete`）在平台后端报 `CREDENTIAL_STORE_UNAVAILABLE` 时回退到带 owner/mode/link 门禁的 0600 文件存储（opt-in 在 set 时已显式发生，无新 CLI flag)；其他选择错误照常传播。新增 `FileStoreReadFallbackTests`(credentials）与 `FileStoreFallbackEndToEndTests`(packets,linux-no-secret-tool 端到端：set→list 带 Authorization→status→delete→AUTH_REQUIRED)。
+- **I-1**:`submit_result` 预检 GET 得 `PACKET_NOT_FOUND` 时进入 `_replay_attempt_result`：有效 attempt journal 存在则复核目录（路径集合相等、大小/SHA-256 逐文件复核）、重跑凭据扫描、用 journal 记录的 `generated_at` 与 `content_lock_digest` 重建字节一致 body 与幂等键后按原键重放（无新 complete、无状态读），要求 receipt `replayed=true` 否则 `SERVER_CONTRACT_DRIFT`；无 journal 则原始 `PACKET_NOT_FOUND` 失败关闭；任何本地不符 `ATTEMPT_BODY_CHANGED` 且零新 POST。journal 因此扩展记录 `content_lock_digest` 与 per-artifact `media_type`（纯元数据，无 payload/token/绝对路径——这是满足计划 Task 8 Step 3 跨调用重放的最小必要扩展，与设计 §10 journal 内容列表存在有意偏差，见 Decisions)。fixture 改为 `_packet_visible_until_acceptance`（接受后 GET 404，忠实服务器）;新增 `CrossInvocationReplayTests` 6 项。
+- **M-1**：闭包断言改以 `git ls-files` 跟踪文件为准（builder 读 Git index)，忽略目录污染不再影响门禁；符号链接/常规文件检查保留。
+- 文档同步：errors.md 的 `PACKET_NOT_FOUND` 条目、protocol.md 的 journal 字段与重放段、thin_skill 对应断言同步为新语义。
 
 ## Completed
 
-- Task 1–4:RED→GREEN→review→commit(`2d64264`/`a17cdca`/`5126fea`/`62588e0`)。
-- Task 5 RED:31/31 失败（骨架无工作流、充斥 `CLIENT_NOT_RELEASED`)。
-- Task 5 GREEN:53/53(thin_skill 32 + skill_release 21);client 四套件 234/234;installer+publisher 51/51;quick_validate "Skill is valid!"。
-- Task 5 Step 4 pre-publish probes：两场景通过（见 Summary)，证据落盘。
-- Task 5 独立评审：0C/0I/3M，三条 Minor 已修正并复跑。
+- Task 1–5 + Task 6 Step 1（见前版 HANDOFF 与 git log:`2d64264`/`a17cdca`/`5126fea`/`62588e0`/`5ebbc0f`/`b97f8f3`)。
+- Task 6 Step 2 测试门禁：registry 81、thin-client、discover、quick_validate、`git diff --check` 全绿。
+- Task 6 Step 2 whole-release 评审：0C/2I/1M（不可构建）→ I-1/I-2/M-1 全部修复。
+- 修复后全量复跑：thin-client 278/278、registry 81/81、discover 533/533、quick_validate PASS、`git diff --check` PASS、密钥扫描与 `__pycache__` 卫生检查干净。
 
 ## Changed Files
 
 | File | Change | Reason |
 | --- | --- | --- |
-| `tests/test_card_os_thin_skill.py` | 新建（423 行，32 测试） | Task 5 Skill 内容/契约测试 |
-| `skills/cognitive-card-os/SKILL.md` | 重写（56 行） | packet 工作流 + 决策表 + 失败关闭边界 |
-| `skills/cognitive-card-os/references/protocol.md` | 重写（129 行） | 命令/路由/头/schema/digest/限额/凭据 |
-| `skills/cognitive-card-os/references/errors.md` | 重写（99 行） | 68 码全集分组 + 动作映射 |
-| `skills/cognitive-card-os/agents/openai.yaml` | 重生成（4 行） | 与 SKILL.md 一致的展示元数据 |
-| `README.md` | +18 行（单节） | 权威声明 + 四步 bootstrap + 隔离 CODEX_HOME |
+| `skills/cognitive-card-os/scripts/card_os_client.py` | 修改 | I-2 `_select_read_store`/`_auth_read_store` 回退；I-1 `_replay_attempt_result` + journal 扩展（content_lock_digest、media_type) |
+| `tests/test_card_os_client_credentials.py` | 修改（+120) | I-2 `FileStoreReadFallbackTests` |
+| `tests/test_card_os_client_packets.py` | 修改（+75) | I-2 端到端 file-store 读测试 |
+| `tests/test_card_os_client_results.py` | 修改（+149 等） | I-1 忠实 fixture + `CrossInvocationReplayTests` + journal 字段断言 |
+| `tests/test_card_os_skill_release.py` | 修改 | M-1 闭包断言改 `git ls-files` |
+| `tests/test_card_os_thin_skill.py` | 修改 | PACKET_NOT_FOUND 文档断言同步 |
+| `skills/cognitive-card-os/references/errors.md` | 修改 | PACKET_NOT_FOUND 跨调用重放语义 |
+| `skills/cognitive-card-os/references/protocol.md` | 修改 | journal 字段 + 接受后重放说明 |
 | `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
-| `package.json` | +1 行 | Task 6 Step 1：新增 `test:card-os-thin-client` 统一入口 |
-
-忽略目录证据：`.superpowers/sdd/skill-forward-prepublish/{upload,boundary,comparison}.md`（不入 Git)。`tests/test_card_os_skill_release.py` 经评审确认内容无关，未改动。
 
 ## Decisions Made
 
-- `tests/test_card_os_skill_release.py` 不同步：该文件只断言结构闭包、frontmatter 形状与卫生模式，与文档内容无关；评审确认成立（计划中的 "Modify" 为预判性列出）。
-- openai.yaml 由 `generate_openai_yaml.py` 确定性重生成后用 quick_validate 校验，未手改；生成器与校验器需 `/usr/bin/python3`（系统 Python 带 PyYAML，默认 python3 3.14 无 yaml 模块）。
-- 文档中 `CARD_OS_TOKEN`/`CLIENT_SURFACE`/PIL 等非码 ALL-CAPS 词一律不加反引号，以保持 68 码宇宙并集断言的严格性。
-- README bootstrap 标注"生产 stable 首次激活后方可执行，此前按设计 404"，避免被读成现已可安装。
-- 探针代理对生产各执行一次只读无认证 `doctor`（与 baseline 条件一致），无其他现网接触。
+- I-1 调和选择：**客户端经 attempt journal 重放**（而非修改设计/计划定义），因为计划 Task 8 Step 3 与设计 §10"验收 exact replay"均明文要求跨调用重放；journal 扩展 `content_lock_digest` + `media_type` 是最小必要元数据（无 payload/token/绝对路径），与设计 §10 的 journal 内容清单存在有意偏差，须在设计文档下次修订时追认（本任务不擅自改用户书面确认的 spec)。
+- journaled replay 收到 `replayed=false` 视为 `SERVER_CONTRACT_DRIFT`（同键不可能被当作新结果接受）。
+- I-2 读回退只在选择报 `CREDENTIAL_STORE_UNAVAILABLE` 时触发；`CREDENTIAL_STORE_UNSAFE` 等其他错误不回退、不掩盖。
+- M-1 闭包语义不弱化：仍断言跟踪文件恰好五件，仅忽略未跟踪/被忽略的工作树污染。
 
 ## Verification Results
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `python3 -m unittest tests.test_card_os_thin_skill -v`（对骨架） | RED（预期） | 31/31 失败 |
-| `python3 -m unittest tests.test_card_os_thin_skill tests.test_card_os_skill_release` | PASS | 53/53(Minor 修正后复跑） |
-| client 四套件 | PASS | 234/234,Task 1–4 未被破坏 |
-| `tests.test_card_os_skill_installer tests.test_card_os_skill_publisher` | PASS | 51/51 |
+| `npm run test:card-os-thin-client` | PASS | 278/278(35+75+55+87+26+…，含新增 I-1/I-2 测试） |
+| `npm run test:card-os-skill-registry` | PASS | 81/81(M-1 修复后） |
+| `python3 -m unittest discover -s tests` | PASS | 533/533 |
 | `quick_validate.py skills/cognitive-card-os` | PASS | "Skill is valid!" |
-| 密钥扫描形态 grep（全部改动文件） | PASS | 无命中；无完整 `ccos_v1.` 字面量 |
-| `git diff --check` | PASS | 提交前 |
-| `npm run test:card-os-thin-client`（新入口） | PASS | 266/266(35+69+49+81+32),Task 6 Step 1 |
+| 密钥扫描形态 grep（全部改动文件） | PASS | 无命中 |
+| `find skills -name __pycache__` / `git diff --check` | PASS | 干净 |
 
 ## Known Failures
 
 - `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，与本任务无关，本阶段未重跑。
 - 存档分支 `codex/card-os-thin-skill-v1` 自身套件 19 errors + 1 failure，属封存资产，不影响本分支。
+- `bash scripts/ai/check-agent-state.sh` 为 WARN 级：HANDOFF 分支字段括号后缀、Base Commit 落后 HEAD（提交在 HANDOFF 之后）等交接格式摩擦，非阻塞。
 
 ## Risks and Caveats
 
-- 反引号提取纪律：未来文档若给非码 ALL-CAPS 词加反引号会导致并集断言失败（有意严格，但会有噪声）。
-- SKILL.md 简洁度预算（≤8 KiB、≤120 行）与部分单行正则断言是 implementer 选择，后续文档换行需注意。
-- `UNSAFE_ARCHIVE` 为计划冻结保留码，0.1.0 客户端不发射（测试注释已如实改述）。
-- 结转 Minor 记录（不阻塞）:attempt I/O 窄竞态非 ClientError 逃逸（Task 4 M3)；图片仅魔数校验、服务器 PIL 权威（已在 protocol.md/errors.md 说明）;Task 3 M1/M2、Task 2 Keychain delete 返回值语义（见前版 HANDOFF)。
+- I-1 修复后行为依赖服务器"幂等查找先于状态检查"(`c2a898c` repository.py:684-699)；若服务器未来调整该顺序，跨调用重放语义需重新核对。
+- 因子代理额度两次 403 中断：I-1/I-2 部分修改为中断代理遗留，已由本 Agent 逐行审读、补全并通过全部测试；复审时需关注该历史。
+- 设计 spec §10 的 journal 内容清单未含 `content_lock_digest`/`media_type`（有意偏差，待 spec 下次修订追认）。
 - 生产 packets/results 链路仍零真实流量；Task 8 现网验收为首跑。
 - main 领先本分支 1 个 docs-only 提交（`995c8b6`),Task 6 集成时处理。
 
 ## Remaining Work
 
-1. Task 6:`package.json` 增加 `test:card-os-thin-client` → pre-release 门禁（全测试 + 全新 reviewer 0C/0I)→ 集成并 push `origin/main`(**需用户授权**)→ 双构建字节一致 → 发布不可变对象并 provisional 激活 stable → 六类公开路径验收。
-2. Task 7：两个隔离 CODEX_HOME 安装 + check/失败升级/回滚 + install/boundary forward tests;Task 8：现网 scoped token claim→complete→submit→replay→撤销 + 独立评审；Task 9:roadmap 更新 + 全量验证 + whole-branch 评审 + release gate 提交。
-3. 抢救批次（SKILL-02 之后、ACCEPT-01 之前）：迁移存档 `core/`；修复 package-v5 评审 Block、publisher fixture 与 mode pin；处置 `.superpowers` 误提交文件等。
+1. Task 6 Step 2 复审：由 whole-release reviewer 确认 I-1/I-2/M-1 修复，要求 0C/0I 后方可进入 Step 3。
+2. Task 6 Step 3：集成 release-source commit 进 main 并 push(**需用户授权**);Step 4 双构建字节一致；Step 5 发布不可变对象并 provisional 激活 stable;Step 6 六类公开路径验收。
+3. Task 7：两个隔离 CODEX_HOME 安装 + check/失败升级/回滚 + forward tests;Task 8：现网 scoped token 验收 + 独立评审；Task 9:roadmap + 全量验证 + whole-branch 评审 + release gate。
+4. 抢救批次（SKILL-02 之后、ACCEPT-01 之前）。
 
 ## Exact Next Action
 
-按计划 Task 6 Step 1：在 worktree 给 `package.json` 增加 `test:card-os-thin-client` 入口，跑全部客户端测试，提交 `test(card-os): gate the thin client release`；随后 Step 2 pre-release 门禁（`npm run test:card-os-skill-registry`、`npm run test:card-os-thin-client`、全量 unittest、quick_validate、`git diff --check`)+ 全新 reviewer 评审全部 release 代码（要求 0C/0I)。Step 3 的集成与 push 必须先取得用户授权。
+请 whole-release reviewer（可 resume 原评审代理）复审 I-1/I-2/M-1 修复，取得 0C/0I 结论后提交本阶段修复；随后就 Task 6 Step 3 的集成与 push 向用户请求授权。
 
 ## Recovery Notes
 
-- 本阶段基线 `62588e0`（分支尖端，Task 4 提交）。恢复时先 `git rev-parse HEAD` 与 `git status --short`。
+- 本阶段基线 `b97f8f3`（分支尖端，Task 6 Step 1 提交）。恢复时先 `git rev-parse HEAD` 与 `git status --short`。
 - 分支存档点：tag `archive/card-os-thin-skill-v1-20260717` = `7f321a6`（封存只读）。
 - 未执行 push、merge、rebase、reset、删除；未修改 `outputs/`、存档分支 worktree、server worktree 与 `ops/` 冻结契约。
-- 探针隔离根 `/tmp/ccos-prepublish-As96Db` 为临时目录，可随系统清理；证据已存入 worktree 忽略目录。
+- 探针隔离根 `/tmp/ccos-prepublish-As96Db` 为临时目录；证据已存 worktree 忽略目录。

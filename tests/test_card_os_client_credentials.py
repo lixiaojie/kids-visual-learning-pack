@@ -816,6 +816,126 @@ class CliAuthTests(CliMixin, unittest.TestCase):
         self.assertIn("usage:", err)
 
 
+class FileStoreReadFallbackTests(CliMixin, unittest.TestCase):
+    """The --allow-file-store opt-in must be readable after auth set.
+
+    On a host without any platform backend (simulated here as linux without
+    secret-tool) selection raises CREDENTIAL_STORE_UNAVAILABLE, and every
+    read path then falls back to the gated 0600 file store: auth status and
+    auth delete operate on it, resolve_effective_token reads it, and unsafe
+    permissions stay fail-closed with CREDENTIAL_STORE_UNSAFE.
+    """
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.config_home = Path(self._tmp.name) / "config"
+        self._saved_override = client._credential_store_override
+        self.addCleanup(self._restore)
+        client._credential_store_override = None  # real selection path
+        self._env_patcher = unittest.mock.patch.dict(
+            os.environ,
+            {"CARD_OS_TOKEN": "", "XDG_CONFIG_HOME": str(self.config_home)},
+            clear=False,
+        )
+        self._env_patcher.start()
+        self.addCleanup(self._env_patcher.stop)
+        self._platform_patcher = unittest.mock.patch.object(sys, "platform", "linux")
+        self._platform_patcher.start()
+        self.addCleanup(self._platform_patcher.stop)
+        self._secret_patcher = unittest.mock.patch.object(
+            client, "_secret_tool_available", return_value=False
+        )
+        self._secret_patcher.start()
+        self.addCleanup(self._secret_patcher.stop)
+
+    def _restore(self) -> None:
+        client._credential_store_override = self._saved_override
+
+    @property
+    def credential_path(self) -> Path:
+        return self.config_home / "cognitive-card-os" / "credentials.json"
+
+    def _auth_set_file_store(self):
+        return self.run_cli(
+            ["auth", "set", "--stdin", "--allow-file-store"],
+            stdin_data=FAKE_TOKEN_BYTES + b"\n",
+        )
+
+    def test_set_status_delete_roundtrip_through_the_file_fallback(self) -> None:
+        code, out, err, _ = self._auth_set_file_store()
+        self.assertEqual(0, code, err)
+        self.assertEqual("file", json.loads(out)["backend"])
+        info = os.lstat(self.credential_path)
+        self.assertEqual(0o600, stat.S_IMODE(info.st_mode))
+
+        code, out, err, _ = self.run_cli(["auth", "status"])
+        self.assertEqual(0, code, err)
+        payload = json.loads(out)
+        self.assertEqual("file", payload["backend"])
+        self.assertEqual("present", payload["credential"])
+        self.assertNotIn(FAKE_TOKEN[:12], out)
+
+        code, out, err, _ = self.run_cli(["auth", "delete"])
+        self.assertEqual(0, code, err)
+        payload = json.loads(out)
+        self.assertEqual("file", payload["backend"])
+        self.assertTrue(payload["deleted"])
+        self.assertFalse(self.credential_path.exists())
+
+        code, out, err, _ = self.run_cli(["auth", "status"])
+        self.assertEqual(0, code, err)
+        self.assertEqual("absent", json.loads(out)["credential"])
+        self.assert_no_token(out, err)
+
+    def test_resolve_effective_token_reads_the_file_fallback(self) -> None:
+        code, _out, err, _ = self._auth_set_file_store()
+        self.assertEqual(0, code, err)
+        self.assertEqual(FAKE_TOKEN, client.resolve_effective_token())
+
+    def test_env_token_still_takes_precedence_over_the_file_fallback(self) -> None:
+        code, _out, err, _ = self._auth_set_file_store()
+        self.assertEqual(0, code, err)
+        with unittest.mock.patch.dict(
+            os.environ, {"CARD_OS_TOKEN": STORED_TOKEN}, clear=False
+        ):
+            self.assertEqual(STORED_TOKEN, client.resolve_effective_token())
+
+    def test_unsafe_permissions_fail_closed_on_read(self) -> None:
+        code, _out, err, _ = self._auth_set_file_store()
+        self.assertEqual(0, code, err)
+        os.chmod(self.credential_path, 0o644)
+        code, out, err, _ = self.run_cli(["auth", "status"])
+        self.assertEqual(1, code)
+        self.assertEqual(
+            "CREDENTIAL_STORE_UNSAFE", json.loads(out)["error"]["code"]
+        )
+        self.assert_no_token(out, err)
+        with self.assertRaises(client.ClientError) as ctx:
+            client.resolve_effective_token()
+        self.assertEqual("CREDENTIAL_STORE_UNSAFE", ctx.exception.code)
+
+    def test_selection_errors_other_than_unavailability_do_not_fall_back(self) -> None:
+        # Only CREDENTIAL_STORE_UNAVAILABLE triggers the file fallback; a
+        # genuine selection failure keeps propagating unchanged.
+        with unittest.mock.patch.object(
+            client,
+            "select_credential_store",
+            side_effect=client.ClientError(
+                "CREDENTIAL_STORE_UNSAFE", "backend present but unsafe"
+            ),
+        ):
+            code, out, err, _ = self.run_cli(["auth", "status"])
+            self.assertEqual(1, code)
+            self.assertEqual(
+                "CREDENTIAL_STORE_UNSAFE", json.loads(out)["error"]["code"]
+            )
+            # resolve_effective_token keeps its historical contract: any
+            # selection failure resolves to None (AUTH_REQUIRED downstream).
+            self.assertIsNone(client.resolve_effective_token())
+        self.assert_no_token(out, err)
+
+
 class LeakageSweepTests(CliMixin, unittest.TestCase):
     """On every failure path the fake token appears in no output or error."""
 
