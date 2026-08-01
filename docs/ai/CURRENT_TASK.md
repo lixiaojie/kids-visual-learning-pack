@@ -70,5 +70,5 @@
 
 - `docs/decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md`
 - `docs/cognitive-card-os-system-design.md`、`docs/cognitive-card-os-roadmap.md`(API-01 条目）
-- 抢救分支 `codex/card-os-salvage-v1`:`docs/superpowers/specs/2026-07-31-card-os-archived-branch-salvage-inventory.md`、`2026-07-31-card-os-package-v5-review-block-repair-plan.md`、`skills/cognitive-card-os/core/`
+- 抢救分支 codex/card-os-salvage-v1（仅存于该分支）：抢救清单与 package-v5 评审 Block 修复方案两份 2026-07-31 文档，以及 core/ 全部资产（34 文件）
 - 服务器应用仓 commit `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`（只读）
