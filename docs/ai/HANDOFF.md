@@ -2,77 +2,96 @@
 
 ## Metadata
 
-- Updated At: 2026-07-31
-- Agent: Kimi Code
+- Updated At: 2026-08-01
+- Agent: OpenAI Codex（修订草案）+ Kimi Code（评审与 §8.3 增补）
 - Branch: main
-- Base Commit: 4500ab8（抢救任务建立，本地未 push)
-- Working Tree: API-01 任务建立与设计草案（见 Changed Files)，随本提交落地；用户既有未跟踪 `outputs/`
-- Task Status: **API-01 已立项（Status: In Progress)，设计草案已产出，待用户书面审阅**
+- Base Commit: 7e0d086（本地 main；`origin/main` 仍停在更早状态，未获 push 授权）
+- Working Tree: API-01 修订设计、CURRENT_TASK/HANDOFF；用户既有未跟踪 `outputs/`
+- Task Status: **API-01 修订草案已完成，待用户书面审阅；未进入实施**
 
 ## Summary
 
-SKILL-02 与抢救小切片完成后，用户书面确认迁移方向：厚客户端历史积累迁服务器侧（可信上游编译器）,RENDER/QA/PUBLISH 管线不新写、直接以厚客户端能力覆盖（lift-and-harden，过信任边界重审/运行时钉住/输入面重验三道）。据此：
+用户澄清本版本核心目标：以过去多轮迭代形成的生产管线为质量基线，当前没有模型 API，因此由受信 Codex + ChatGPT Pro 客户端按规范完成新任务生成并上传；服务器保留规范、任务、候选和验收的控制面权威，并为未来服务器 API 完成全部生成预留同一执行合同。
 
-1. 评估并排除了全量合入与 cherry-pick 方案（冲突面：已发布 0.1.1 源码闭包、SKILL-01 冻结契约）;A+B 策略（分支保留资产 + 文档结论上 main）已报告。
-2. 向用户阐明两版本核心差异（薄 = 已发布的 packet 契约 M1 通道；厚 = 权威位置错误的完整生产线，为原料）。
-3. 产出迁移评估：历史积累分四类（知识规范/模板族 = 内容寻址迁移；确定性脚本 = 服务器模块；推理工作流 = 只能可信上游执行，这是方案关键）;"同一机制"由 core 快照唯一权威 + packet digest 绑定保证，而非终端本地副本。
-4. 按用户选定建立 API-01 正式任务（CURRENT_TASK.md，目标 = 本阶段只产设计草案供书面确认，不实施）。
+原设计经过两路独立评审后存在五类主要问题：服务器只校验摘要形状、source manifest 仅 27/34 文件带内容摘要、packet 前置输入锁与 core 最终 CONTENT LOCK 混用、sealed input 无跨执行器传递方式、LLM 工作区与提交凭据未隔离。用户要求修订。
 
-**设计草案** `docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md` 已产出，要点：可信上游编译器（受信终端 + 短期 admin token，复用 Task 8 已验证的 admin 导入路径）;core 快照选项 A（服务器应用仓受治理资产，零新端点）为推荐、选项 B（只读端点）留待 RENDER-01 前重评；三个绑定字段规则（`registry_commit`/`template_fingerprint`/`content_lock_digest`);core 工作流 → LockedJobRequest/PacketIssueRequest 逐字段权威转换表（已对照 `c2a898c` 核实无发明字段）；服务器 M1 链路零改动；RENDER/QA/PUBLISH 接口预留；兔子端到端验收方案；实施分解三子批（快照导入 → 编译器确定性部分 → 人工在环校准 + 现网验收）。
+修订设计采用方案 B：服务器保存不可变 sealed generation input，当前 `ClientSubscriptionPipelineExecutor` 与未来 `ServerApiPipelineExecutor` 共用 compile + generate 两阶段合同。API-01 增加 input store/read、原子 compiled-job、最小 `compiler_import` scope 和 executor capability 门禁；公开 core 浏览与服务器模型 API 继续延期。
 
 ## Completed
 
-- 合入方案评估（全量/cherry-pick 排除，A+B 推荐）与两版本核心差异分析（用户要求）。
-- 迁移方向评估（可信上游编译器；lift-and-harden 映射表）; 用户书面确认方向并选定"立项先出设计草案"。
-- API-01 任务建立（CURRENT_TASK.md,7 条验收标准）。
-- 设计草案 + `docs/README.md` 设计表登记（状态 Draft)。
+- 根据用户目标修正“服务器权威”的定义：控制面与验收权威，不等于当前执行 LLM。
+- 重写 API-01 设计草案，加入三方案比较并采用服务器 sealed input store。
+- 定义 `cognitive-card-core-snapshot-v1` 完整成员摘要与 root digest，修复现有 27/34 摘要缺口。
+- 区分 generation input lock 与 production-record-v1 final content lock；现有 packet `content_lock_digest` 在 API-01 v1 映射前置输入锁。
+- 定义客户端/未来 API 共用的 `PipelineExecutor.compile` + `PipelineExecutor.generate` 合同。
+- 将首版 required output 收敛为单个规范 `production/production-record.json`，由服务器运行 production-record 关系闭包验证。
+- 明确新增服务器面：immutable input store/read、原子 compiled-jobs、`compiler_import` scope、executor capability/claim 门禁。
+- 明确已发布 `0.1.1` 不修改且不能 claim API-01 compiled packet；API-01 使用新增兼容客户端 capability。
+- 同步 `docs/ai/CURRENT_TASK.md` 的 Objective、Acceptance Criteria、Constraints 与 Next Actions。
 
 ## Changed Files
 
 | File | Change | Reason |
 | --- | --- | --- |
-| `docs/ai/CURRENT_TASK.md` | 重写 | 建立 API-01 正式任务（设计先行） |
-| `docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md` | 新建 | API-01 设计草案 |
-| `docs/README.md` | 修改 | 设计表登记新草案 |
-| `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
+| `docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md` | 全面修订 | 对齐当前客户端执行、未来 API 执行的核心目标并关闭评审问题 |
+| `docs/ai/CURRENT_TASK.md` | 更新 | 将修订目标、验收标准和兼容约束关联到正式任务 |
+| `docs/ai/HANDOFF.md` | 更新 | 记录真实修订、验证、剩余工作与恢复入口 |
+
+用户既有 `outputs/` 保持未跟踪，未读取、未修改、未纳入本次范围。
 
 ## Decisions Made
 
-- 用户书面：迁移方向 = 可信上游编译器；RENDER/QA/PUBLISH 采用 lift-and-harden（厚客户端能力覆盖，不新写服务器管线）。
-- 设计草案推荐 core 快照选项 A（服务器应用仓受治理资产，零新 HTTP 端点）;B（只读端点）留作开放问题。
-- 抢救分支与 worktree 保留为资产来源；不合入 main（代码）。
+- 当前和未来只有一套生产管线；执行位置通过 pipeline executor 替换。
+- 当前客户端同时承担 compile/free-request 与 generate/packet 两个推理阶段；确定性 submitter、resolver、validator 不属于 LLM executor。
+- 服务器应用仓保存不可变 core snapshot；未来只有在 snapshot 发布节奏与应用明显脱钩时才拆独立治理仓。
+- 公开 core snapshot 浏览端点可延期，但 executor 所需的 sealed input store/read 必须进入 API-01。
+- `GenerationPacket v1` 字段集合保持不变；API-01 的新 capability 与任务可见性由服务器元数据和 credential 门禁承担。
+- API-01 不授权任何实现、部署、生产操作、commit 或 push。
 
 ## Verification Results
 
-| Command | Result | Notes |
+| Command / Check | Result | Notes |
 | --- | --- | --- |
-| 转换表字段对照 `c2a898c` schema | PASS | LockedJobRequest/PacketIssueRequest/GenerationPacket/stage 枚举/正则逐项核实，无发明字段 |
-| `bash scripts/ai/check-agent-state.sh` | 待提交后复跑 | — |
+| server `c2a898c` schema 逐字段核对 | PASS | LockedJobRequest 与 PacketIssueRequest 字段、枚举和正则未被误写成已部署新字段 |
+| placeholder / stale-term scan | PASS | 无占位项；已清除旧 executor 命名和旧方案陈述 |
+| `git diff --check` | PASS | 修订文档无 whitespace error |
+| `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；check-doc-governance、task-state、handoff、git diff 全部 PASS；仅既有 secret-related field-name 清单 WARN，无高置信密钥值 |
 
 ## Known Failures
 
-- `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，与本任务无关。
-- `check-agent-state.sh` 的 2 项 WARN（交接格式类，非阻塞）。
+- `node boards/kids-world/structure.test.mjs` 既有 `19 !== 18`，与本次纯设计文档修订无关。
+- `check-agent-state.sh` 本次报告 1 项既有 secret-related field-name 清单 WARN；扫描同时确认无高置信密钥值，与本次修订无关。
 
 ## Risks and Caveats
 
-- 设计草案状态为 Draft，未获用户书面确认前 API-01 不得实施。
-- core 工作流 → packet 的转换规则首次正确性风险已记录（实施时先人工在环校准 2–3 个概念）。
-- 快照存放仓（服务器应用仓 vs 治理仓分发）与选项 B 是否提前，是草案中的显式开放问题，需用户定夺。
+- 修订草案仍待用户书面确认；未确认前不得建立 API-01 实施任务。
+- generation-input-v1 完整 JSON Schema、compiled-jobs 幂等键、sealed input 保留期和 capability-bound credential 细节留到实施设计，但不得改变已冻结的 executor-neutral 方向。
+- `content_lock_digest` 承载 generation input lock 是对现有 v1 字段的兼容映射；实施测试与日志必须始终区分 packet 输入锁和 production record 最终内容锁。
+- 新 capability 门禁需要服务器与新客户端配套实现；旧 `0.1.1` 只能继续执行既有 M1 packet。
 
 ## Remaining Work
 
-1. 用户书面审阅设计草案（确认或修订）。
-2. 获确认后立项实施 API-01-IMPL-1/2/3（快照导入、编译器、人工在环校准 + 现网验收）。
-3. main 侧未 push 提交（`4500ab8`、本阶段 docs）的 push 待用户授权；抢救成果是否集成 main 待定。
-4. 后续批次：RENDER-01、QA-01、PUBLISH-01（先修 Block)、ACCEPT-01;SKILL-02 DONE 条件（第二台 Codex 电脑）仍为用户侧动作。
+1. 用户书面审阅修订设计草案，确认或提出修改。
+2. 获确认后，另行建立 API-01-IMPL-1..5 的实施任务；不得沿用当前设计任务直接编码。
+3. 实施前补 generation-input-v1 JSON Schema、idempotency、retention 和 credential 细节并按批评审。
+4. 本地 main 尚未 push；commit/push 均待用户另行授权。
+
+## Kimi Code 增补记录（2026-08-01，用户指示）
+
+Kimi Code 评审修订草案：结论为实质性进步、建议接受（sealed input store、两阶段 executor 合同、两级锁、34 成员全摘要、凭据隔离、原子 compiled-jobs、capability 门禁、单一 production record 输出均核实为正确修复；27/34 摘要缺口、stage 枚举、job_id 正则、`input_artifacts` 类型等事实陈述抽查属实）。发现一个残留缺口：§8.1 要求领取端执行 core workflow + resolver + validator，而 §10.3 延期了 core 下载端点，执行侧代码到达路径缺失。按用户指示增补：
+
+- 设计 §8.3「执行侧代码与规范的分发」：执行侧资产（workflow 指引、resolver、production-record validator 及 references 子集）随新增 executor capability Skill release 版本化分发（复用 SKILL-01 注册表/安装器，摘要绑定、可回滚，不改 `0.1.1` 字节）；编译侧完整 snapshot 不下发；release↔snapshot 兼容由服务器 capability metadata 钉死；§8.2 的"snapshot release"对 API 执行器指服务器本地读取，§10.3 延期决定不受影响。
+- §15 已冻结决定同步增加该条。
+- 小点记录：`packets/available` 按 capability 过滤已在 §10.1 覆盖；`compiler_import` 新 scope（超出 `c2a898c` 冻结枚举）属服务器 auth 变更批次，§15 已挂开放项；sealed input 保留期默认值留给实施设计。
 
 ## Exact Next Action
 
-请用户审阅 `docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md` 并给出书面确认或修订意见。
+请用户审阅修订草案（含 §8.3 增补），重点确认：方案 B、两级 lock、API-01 新增 input/control surface、旧 `0.1.1` 与新 executor capability 的兼容边界、执行侧代码经 governed release 分发。
 
 ## Recovery Notes
 
-- 本阶段基线 `4500ab8`(main，本地未 push)。恢复时先 `git rev-parse HEAD` 与 `git status --short`。
-- 生产 stable `0.1.1`;release gate marker 在服务器 root 私有目录；抢救分支 `codex/card-os-salvage-v1` 尖端 `4d5ffe4`。
-- 存档 tag（附注标签 `d172dcd` → `7f321a6c…`）与存档 worktree 封存零修改。
+- 恢复时先执行 `git rev-parse HEAD`、`git branch --show-current`、`git status --short`。
+- 本次基线是 main `7e0d086`；设计原提交是其父提交 `083492e`。
+- 服务器 schema 只读证据位于 `.worktrees/cognitive-card-server-release-0.3.1`，HEAD `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`。
+- 抢救资产来源位于分支/worktree `codex/card-os-salvage-v1`；存档 tag/worktree 未修改。
+- 用户既有 `outputs/` 必须继续保留，不清理、不提交。
