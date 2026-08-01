@@ -39,7 +39,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；设计可信自由请求编译入口 |
+| API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；可信上游编译入口修订设计已确认（2026-08-01)，实施分批立项 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -306,6 +306,10 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 门户、渲染（独立立项部分）和 MCP 不进入下一实现批次。
 
 ## 6. 更新记录
+
+### 2026-08-01
+
+- API-01 可信自由请求编译入口修订设计（`docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md`）经用户书面确认：executor-neutral compile/generate 两阶段合同、服务器不可变 sealed input store、两级内容锁、完整 34 成员 core snapshot manifest、compiler/submitter 凭据隔离、原子 compiled-jobs、executor capability 门禁（旧 `0.1.1` 不可见/不可 claim)、执行侧代码经 governed Skill release 分发；实施按 IMPL-1..5 分批另行立项，不授权任何实现与生产变更。
 
 ### 2026-07-31
 
