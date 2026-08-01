@@ -5,75 +5,70 @@
 - Updated At: 2026-07-31
 - Updated By: Kimi Code
 - Status: In Progress
-- Branch: main（实施前新建抢救任务分支与 worktree）
-- Base Commit: 9ff068f
+- Branch: main
+- Base Commit: 4500ab8
 
 ## Objective
 
-对存档分支 `codex/card-os-thin-skill-v1`（封存于 tag `archive/card-os-thin-skill-v1-20260717` = `7f321a6`）的可抢救资产完成**盘点与修复**小切片：从 archive tag 另起抢救分支，修复 publisher fixture 失同步与过时 mode pin 使分支测试套件转绿，逐项处置误提交的 `.superpowers` 文件、3 个未跟踪计划与 library-design 未提交修订，产出抢救清单（资产→目标批次映射）与 package-v5 两个评审 Block 的修复方案文档。本切片**不**迁移 `core/`、**不**合入任何资产到 main、**不**触碰服务器。
+设计 API-01 可信自由请求编译入口：把存档抢救回来的生产核心（`core/` 知识规范、模板族、确定性脚本与工作流）迁移为**服务器侧内容寻址权威快照 + 可信上游编译器**，使任何 Codex 终端的薄客户端都能领取由同一套规范编译出的锁定 GenerationPacket 并按同一机制生成高质量结果。本阶段只产出**设计草案**供用户书面确认，不实施。
 
 ## Background
 
-2026-07-31 SKILL-02 完成（生产 stable `0.1.1`,release gate 已提交，SKILL-02 保持 IN PROGRESS 等待第二台真实 Codex 电脑——用户侧动作）。按 roadmap 2026-07-31 记录（用户书面决定）：存档分支抢救**优先于从零重建**，执行顺序为 SKILL-02 之后、ACCEPT-01 之前。用户 2026-07-31 选定先执行小切片（盘点+修复）,`core/` 迁移与 package-v5 合入另行立项。
-
-存档分支状态（2026-07-31 审计）：套件 386 项 = 19 errors(publisher fixture 与加固后 builder 闭包失同步，`SOURCE_TREE_CLOSURE_MISMATCH`)+ 1 failure(`validate_package_v5.py` 过时 mode pin,420 != 493)；另有 367 项通过。分支 worktree 有 2 modified + 3 untracked 既有在途修改（roadmap 旧版修正、library-design 48 行修订、3 个未跟踪计划），保持原样不得触碰。package-v5 两个评审 Block：服务端 authority 闭包可伪造、gallery revision 资产未绑定。
+- 2026-07-31 SKILL-02 完成（生产 stable `0.1.1`,release gate 已提交）;M1 领取/提交只走 packet 契约（ADR-001)。
+- 2026-07-31 抢救小切片完成（`codex/card-os-salvage-v1`，套件 386/386 转绿）：抢救清单与 package-v5 评审 Block 修复方案已产出。
+- 用户 2026-07-31 书面决定迁移方向：**可信上游编译器**（厚客户端历史积累迁服务器侧）；并指示渲染/QA/发布管线不新写服务器版本，**直接以厚客户端对应能力覆盖（lift-and-harden)**，但每个模块上服务器须过信任边界重审、运行时钉住、输入面重验三道。
+- 关键事实：服务器应用（FastAPI）无 LLM;`core/SKILL.md` 的 CLASSIFICATION/FACT/SEMANTIC CORE 等是推理在环步骤，只能由可信上游（登录 ChatGPT Pro 的受信 Codex 终端）执行；服务器 `0.3.1` 已部署 `POST /admin/locked-jobs` 与 `POST /admin/jobs/{id}/packets`(locked_job_admin_import=true,free_form_job_creation=false)。
 
 ## Acceptance Criteria
 
-- [ ] 抢救分支 `codex/card-os-salvage-v1` 从 tag `archive/card-os-thin-skill-v1-20260717` 创建于 `.worktrees/card-os-salvage-v1`；存档 tag 与 `.worktrees/card-os-thin-skill-v1` 全程零修改（开工与收工各核对一次 `git status` 与 tag 指向）
-- [ ] publisher fixture 与 builder 闭包重新同步，publisher 模块单跑转绿（19 errors 清零）
-- [ ] 过时 mode pin 修正（420 != 493 失败清零）
-- [ ] 抢救分支全量套件转绿（两轮独立复跑一致；`PYTHONDONTWRITEBYTECODE=1`，结束后无 `__pycache__` 污染）
-- [ ] 误提交的 `.superpowers` 文件、3 个未跟踪计划文档、library-design 未提交修订逐项处置并记录理由（处置动作限于抢救分支/主仓文档，不动存档 worktree 原件）
-- [ ] 抢救清单文档：资产（production core、renderer、package-v5、审计工具、模板族等）→ 目标批次（API-01/RENDER-01/QA-01/PUBLISH-01/ACCEPT-01）映射、现状与前置修复项
-- [ ] package-v5 两个评审 Block 的修复方案文档（仅方案，不实施）
-- [ ] 不合入 main、不修改服务器、不进行生产操作；每个可验证阶段结束更新 HANDOFF
+- [ ] 设计草案覆盖：core 快照的服务器侧存储与内容寻址形态、快照版本与 packet `registry_commit`/`template_fingerprint`/`content_lock_digest` 的绑定规则
+- [ ] 设计草案覆盖：可信上游编译器的运行位置、凭据模型（短期 admin scope)、编译流程（自由概念 → core 工作流 → admin 导入）
+- [ ] 设计草案覆盖：core 工作流产出 → LockedJobRequest(6 字段）+ PacketIssueRequest 的权威转换表（以服务器 `c2a898c` schema 为准）
+- [ ] 设计草案明确：服务器 `0.3.1` M1 链路零改动的边界；如需要服务器新增面（快照存储/读取端点），列为显式选项并给出推荐
+- [ ] 设计草案覆盖：RENDER-01/QA-01/PUBLISH-01 的 lift-and-harden 接口预留（渲染器、QA 门、package-v5 与两个评审 Block 修复的挂点）
+- [ ] 设计草案覆盖：安全边界（薄客户端零权威、token 处理、digest 绑定、失败关闭）与验收方案（兔子自由概念端到端）
+- [ ] 用户对设计草案给出书面确认或修订意见
+- [ ] `docs/ai/HANDOFF.md` 已更新
 
 ## In Scope
 
-- 新抢救分支 `codex/card-os-salvage-v1` 与 worktree `.worktrees/card-os-salvage-v1`（从 archive tag `7f321a6` 创建）
-- 抢救分支上的测试 fixture、发布/验证工具脚本（publisher、builder、validate_package_v5 等）修复
-- 抢救清单与评审 Block 修复方案文档（随抢救分支提交，后续经评审授权后再集成 main)
-- `docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md`、`docs/cognitive-card-os-roadmap.md`（状态记录，main 侧）
+- `docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md`（新建，设计草案）
+- `docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md`
+- 设计所需的只读调研：服务器应用仓 `c2a898c` schema、存档/抢救分支 `core/` 内容
 
 ## Out of Scope
 
-- `core/` 迁移至服务器侧可信上游（另行立项，涉及服务器应用仓）
-- package-v5 上传面合入 main 或服务器接纳面 `e78c2fa` 的合并与生产硬化（PUBLISH-01 批次）
-- 存档 tag `archive/card-os-thin-skill-v1-20260717`、存档 worktree `.worktrees/card-os-thin-skill-v1` 及其未提交修改（只读）
-- 服务器应用、Nginx、数据库、registry 的任何改动；任何生产操作
-- `outputs/`、其他 worktree 的在途状态、用户级 `~/.codex/` 配置
-- SKILL-02 的 DONE 条件（第二台真实 Codex 电脑，用户侧）
-- push、merge、PR（需用户另行授权）;ACCEPT-01
+- API-01 的任何实施（编译器代码、服务器改动、core 快照导入）——设计获书面确认后另行立项实施
+- RENDER-01/QA-01/PUBLISH-01 的立项与实施（本设计只预留接口）
+- package-v5 评审 Block 修复的实施（方案已在抢救分支）
+- `core/` 迁移本身（属 API-01 实施阶段）
+- 生产任何操作、push、merge、PR（需用户另行授权）
+- 存档 tag/worktree（只读）
 
 ## Constraints
 
-- 抢救分支只做修复与文档，不改变被抢救资产的功能行为；评审 Block 只产出方案
-- 修复必须让真实套件转绿，不得删除/跳过测试或用假实现掩盖失败
-- 不含凭据、本机绝对路径进 Git；测试运行避免 `__pycache__` 污染
-- 每个修复遵循 RED（复现失败）→ 最小修复 → 聚焦测试 → review → commit，不揉提交
-- 提交前钩子要求暂存业务代码时同步更新并暂存 `docs/ai/HANDOFF.md`
+- 设计必须保持：服务器统一权威、薄客户端零权威、自由概念只能经可信上游编译为锁定 packet、不可信客户端失败关闭
+- 厚客户端资产复用遵循 lift-and-harden 三道：信任边界重审、运行时钉住、输入面重验
+- 不改变已发布的薄客户端 `0.1.1` 与 SKILL-01 冻结契约
+- 设计文档中的转换表必须逐项对照服务器 `c2a898c` 的 LockedJobRequest/PacketIssueRequest/GenerationPacket schema，不得发明字段
 
 ## Current State
 
-- 2026-07-31:SKILL-02 完成并收尾（main `9ff068f`)；用户选定抢救小切片；本文件建立任务。
-- 抢救分支与 worktree 未创建；存档审计证据在 roadmap 2026-07-31 记录与 SKILL-02 各版 HANDOFF。
+- 2026-07-31：任务建立；设计草案编写中。
 
 ## Next Actions
 
-1. 从 archive tag `7f321a6` 创建 `codex/card-os-salvage-v1` 与 `.worktrees/card-os-salvage-v1`，同步 `docs/ai/` 任务状态。
-2. 复跑存档套件复现 19 errors + 1 failure(RED 基线），逐项修复 publisher fixture 与 mode pin。
+1. 编写设计草案并提交 main（本地，push 待授权）。
+2. 请用户书面审阅设计草案。
 
 ## Verification Plan
 
-- Focused: publisher 模块单跑、`validate_package_v5` 相关测试（修复后转绿）
-- Full: 抢救分支全量 `python3 -m unittest discover -s tests`（两轮，`PYTHONDONTWRITEBYTECODE=1`)
-- Archive integrity: tag 指向与存档 worktree `git status` 开工/收工核对
-- Governance: `bash scripts/ai/check-agent-state.sh`、`git diff --check`
+- 设计草案内部一致性：转换表与服务器 `c2a898c` schema 逐字段核对（grep 验证无发明字段）
+- `bash scripts/ai/check-agent-state.sh`、`git diff --check`
 
 ## Relevant References
 
-- tag `archive/card-os-thin-skill-v1-20260717` = `7f321a6`（封存只读）
-- `docs/cognitive-card-os-roadmap.md`（2026-07-31 记录：抢救优先与批次映射）
-- `docs/decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md`（分支资产按批抢救）
-- `docs/ai/HANDOFF.md`(SKILL-02 各阶段记录）
+- `docs/decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md`
+- `docs/cognitive-card-os-system-design.md`、`docs/cognitive-card-os-roadmap.md`(API-01 条目）
+- 抢救分支 `codex/card-os-salvage-v1`:`docs/superpowers/specs/2026-07-31-card-os-archived-branch-salvage-inventory.md`、`2026-07-31-card-os-package-v5-review-block-repair-plan.md`、`skills/cognitive-card-os/core/`
+- 服务器应用仓 commit `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`（只读）
