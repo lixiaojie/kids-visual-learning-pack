@@ -6,7 +6,7 @@
 - Agent: Kimi Code
 - Branch: main(kids);服务器仓分支 codex/api-01-core-snapshot
 - Base Commit: b5b202c(IMPL-1 任务建立，已 push)
-- Working Tree: roadmap IMPL-1 记录（待提交）；用户既有未跟踪 `outputs/`
+- Working Tree: 仅用户既有未跟踪 `outputs/`；全部工作已提交，kids main == origin/main(`c595fbe`)
 - Task Status: **API-01-IMPL-1 完成**（快照工具 + 导入 + catalog，评审修复全部落地）；服务器仓分支待 push（需授权）;IMPL-2 待立项
 
 ## Summary
@@ -32,7 +32,7 @@ API-01-IMPL-1 完成（服务器应用仓 worktree `.worktrees/cognitive-card-se
 | （服务器仓）`src/cognitive_card_server/core_snapshot/` | 新建 5 文件（710 行） | 快照生成/校验/catalog/CLI |
 | （服务器仓）`tests/test_core_snapshot.py` | 新建（~550 行，35 测试） | 固定向量 + 闭包/负向/回归 |
 | （服务器仓）`core-snapshots/47d2cb65…/`(35 文件）+ `catalog.json` | 新建 | 真实快照导入与激活 |
-| `docs/cognitive-card-os-roadmap.md` | 修改（待提交） | IMPL-1 完成记录 |
+| `docs/cognitive-card-os-roadmap.md` | 修改 | IMPL-1 完成记录（`c595fbe`，已 push) |
 | `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
 
 ## Decisions Made
@@ -71,7 +71,7 @@ API-01-IMPL-1 完成（服务器应用仓 worktree `.worktrees/cognitive-card-se
 
 ## Exact Next Action
 
-向用户报告 IMPL-1 完成并请求 push 服务器仓分支；随后按设计 §16 建立 API-01-IMPL-2 任务。
+下一位 Agent：向用户请求 push 服务器仓分支 `codex/api-01-core-snapshot`（两个提交 `2837c8b`/`9c1b82b`)；随后按设计 §16 建立 API-01-IMPL-2(input contract）正式任务。接手提示词已交付用户。
 
 ## Recovery Notes
 
