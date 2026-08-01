@@ -309,6 +309,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-08-01
 
+- 完成 API-01-IMPL-1(core snapshot，服务器应用仓分支 `codex/api-01-core-snapshot`，本地未 push):`cognitive-card-core-snapshot-v1` 生成/校验/catalog 工具 + 35 项测试转绿；34 成员完整快照（snapshot_id `sha256:47d2cb65…d4c1`，源自抢救分支 `4d5ffe4`）导入 `core-snapshots/` 并在 catalog 激活（registry_commit `2837c8b`)；独立评审发现 1 Important（忽略文件可进入快照）与 3 Minor，已全部修复并补回归测试；服务器应用零行为变更（既有套件 307/309，仅 2 项 real-uvicorn 集成测试在基线同样失败，属本地环境问题）。
 - API-01 可信自由请求编译入口修订设计（`docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md`）经用户书面确认：executor-neutral compile/generate 两阶段合同、服务器不可变 sealed input store、两级内容锁、完整 34 成员 core snapshot manifest、compiler/submitter 凭据隔离、原子 compiled-jobs、executor capability 门禁（旧 `0.1.1` 不可见/不可 claim)、执行侧代码经 governed Skill release 分发；实施按 IMPL-1..5 分批另行立项，不授权任何实现与生产变更。
 
 ### 2026-07-31
