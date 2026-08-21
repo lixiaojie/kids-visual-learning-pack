@@ -23,14 +23,16 @@
 
 ## 2. 产品目标
 
-Cognitive Card OS 将一个明确的学习对象转化为可追溯、年龄适配、中英文一致并可打印的四卡知识包：
+Cognitive Card OS 由服务器管理一个可追溯的 Knowledge Core，再将其分别用于学习设计和多种 Projection family。Knowledge Core 固定事实、范围、来源、未知项与安全边界；Learning Plan 和 Learning Path 决定面向特定受众的学习负荷；Projection 只组织已被学习路径引用的内容，不能新增事实。
+
+首个兼容 Projection family 是 `four-card`，它继续把一个已锁定的学习路径投影为可追溯、年龄适配、中英文一致并可打印的四卡知识包：
 
 1. 中文观察卡；
 2. 英文观察卡；
 3. 中文知识卡；
 4. 英文知识卡。
 
-系统需要支持自然对象、古生物、地点、基础设施、历史、过程、现象、抽象规则等不同领域和概念形态。不同领域和形态使用适合自己的模板族；同一大类下保持稳定结构，不为单个对象任意改造模板。
+系统需要支持自然对象、古生物、地点、基础设施、历史、过程、现象、抽象规则等不同领域和概念形态。不同领域和形态可以使用适合自己的 Projection family；同一 family 下保持稳定结构，不为单个对象任意改造模板。现有四卡运行时和 package 保持兼容，历史包只在受控迁移中映射和验证，不自动升级。
 
 首个可用版本以登录 ChatGPT Pro 的 Codex 客户端执行模型生成，不要求 OpenAI API Key。个人服务器负责统一知识规则、任务、模板、资产、QA、发布和跨终端同步。
 
@@ -38,43 +40,41 @@ Cognitive Card OS 将逐步替换现有 `kids-world` 知识网站并成为新的
 
 ## 3. 核心原则
 
-### 3.1 一个事实源，四个投影
+### 3.1 一个受治理 Knowledge Core，多种 Projection
 
-- 先建立 `FACT`、`SEMANTIC CORE` 和稳定 `proposition_id`，再生成四张卡。
-- CN 与 EN 可以使用不同句式和难度，但必须保持事实、确定性、来源、未知项和安全边界一致。
-- 观察任务和 COPY 必须来自同语言知识卡上实际显示的命题文本。
-- 知识卡不放置抄写或描摹任务；COPY 只属于观察卡行动区。
+- 先建立 Knowledge Core 中稳定的 `FACT`、`SEMANTIC CORE`、Evidence、Knowledge Scope 和 `proposition_id`，再建立 Learning Plan、Learning Path 与 Projection。
+- Projection 只能消费 Learning Path node 和已引用命题；展示或渲染变化不得回写或新增 Knowledge Core 事实。
+- `four-card` family 中，CN 与 EN 可以使用不同句式和难度，但必须保持事实、确定性、来源、未知项和安全边界一致。
+- `four-card` family 中，观察任务和 COPY 必须来自同语言知识卡上实际显示的命题文本；知识卡不放置抄写或描摹任务，COPY 只属于观察卡行动区。
 
-### 3.2 分类决定模板，年龄只改变表达负荷
+### 3.2 分类定义 Knowledge Scope，Learning Plan 决定学习负荷
 
-主路由由以下字段共同决定：
+分类首先形成 Knowledge Scope，而不是唯一 Projection router：
 
 ```text
 primary_domain
 + primary_form
 + object_subtype
-+ age.main.profile_id
-+ CN/EN language profile
 ```
 
 - 主领域和主形态各有且只有一个。
-- 次领域和次形态只能激活模板已经声明的可选模块。
-- 次要维度不得改变四页顺序、锁定区、主形态包或结构指纹。
-- 同一概念跨年龄段分别解析，不混合难度。
+- 次领域和次形态只能扩展已声明的 Knowledge Scope 单元，不能伪造新的事实权威。
+- audience、language、depth、duration、usage context 和学习目标属于 Learning Plan；Learning Path 决定顺序、先修和练习。
+- 同一概念可针对不同年龄与语言建立独立 Learning Plan，但不得混合难度或改写 Knowledge Core。
 - 当前正式年龄配置为 `age-3-4` 与 `age-5-6`；未来 8、10、15 岁需要分别新增并验证年龄配置，而不是扩宽现有区间。
 
 ### 3.3 内容锁先于图像和正式产物
 
-`CONTENT LOCK` 固定以下内容或其摘要：
+`final content lock` 固定以下内容或其摘要：
 
-- 分类与模板身份；
-- FACT、SEMANTIC CORE、命题和来源；
-- 四卡最终文本及对应关系；
-- COPY 和图像元素；
+- `knowledge-core`、`learning-spec` 与 `projection-spec` 的身份、revision 和 canonical 摘要；
+- Knowledge Core 的 FACT、SEMANTIC CORE、命题、来源与 Knowledge Scope；
+- Learning Plan、Learning Path、Projection Blueprint 与 Renderer Binding；
+- Projection 所需的 COPY、图像/其他资产要求及其对应关系；
 - 未知项、安全边界和混淆边界；
-- 年龄、语言、模板族和结构指纹。
+- audience、年龄、语言、模板族和结构指纹。
 
-图像提示、排版、PDF、QA 和发布只消费内容锁，不能在后续阶段新增事实或改写锁定文本。
+图像提示、排版、PDF、QA 和发布只消费内容锁，不能在后续阶段新增事实或改写锁定对象。
 
 ### 3.4 服务器是生产权威，客户端只是模型执行器
 
@@ -86,39 +86,37 @@ primary_domain
 ## 4. 系统架构
 
 ```text
-知识与模板控制层
-  分类枚举、领域知识框架、形态包、年龄/语言适配、模板族、FACT、命题、CONTENT LOCK
-                                  |
-                                  v
-服务器执行核心
-  任务状态、GenerationPacket、租约、候选结果、幂等、审计、中断恢复
+八个逻辑层（服务器权威）
+  1. Evidence / Source：来源身份、证据片段、质量与使用边界
+  2. Proposition Graph：事实命题、关系、未知项、安全与时间状态
+  3. Knowledge Scope：知识单元、纳入、排除与未解决问题
+  4. Learning Plan：受众、语言、深度、时长、目标与使用场景
+  5. Learning Path：节点、顺序、先修、问题和练习
+  6. Projection Blueprint：family 与内容槽位
+  7. Renderer Binding：目标媒介、组件映射、资产要求、能力与 QA profile
+  8. Artifact Package：manifest、锁、QA 与不可变产物
+
+Knowledge Core = 第 1–3 层。Operations / Governance 是横跨八层的责任，
+负责 revision、复核、freshness、发布、备份与审计，不是第 8 层。
                                   |
                                   v
 客户端接入层
   薄 Skill、CLI、只读 MCP、浏览器手动上传
-  ChatGPT Pro 仅在客户端执行
-                                  |
-                                  v
-生产与发布层
-  四卡排版、图像、打印 PDF、严格 QA、人工复核、不可变发布
-                                  |
-                                  v
-资产与运维层
-  SQLite 元数据、不可变文件、Skill 版本、备份、监控、容量与恢复
+  ChatGPT Pro 仅在客户端执行；客户端只执行服务器签发的 executor-neutral GenerationPacket
 ```
 
-### 4.1 知识与模板控制层
+### 4.1 知识、学习与 Projection 控制层
 
 职责：
 
 - 维护受控领域、概念形态和领域自有 subtype；
-- 为不同 `primary_domain + primary_form` 提供领域知识轴和形态任务轴；
-- 为同一大类提供稳定模板族及结构版本；
-- 分别维护年龄和语言适配器；
-- 构建 FACT、命题、语义核心、图像元素和内容锁；
+- 为不同 `primary_domain + primary_form` 提供领域知识轴和 Knowledge Scope 输入；
+- 构建 FACT、命题、语义核心、来源、未知项、安全边界和内容锁；
+- 分别维护 Learning Plan 的年龄和语言适配器，以及 Learning Path；
+- 为同一 Projection family 提供稳定 Blueprint、Renderer Binding 与结构版本；
 - 在模板缺失或分类有实质歧义时停止，而不是猜测。
 
-模板族结构升级使用新的 family major；兼容调整使用语义化 `template_version`。兔子必须路由到 `life + entity + animal/mammal`，不能拥有独立于其他哺乳动物的私有页面骨架。
+Projection family 结构升级使用新的 family major；兼容调整使用语义化 `template_version`。兔子必须形成 `life + entity + animal/mammal` 的 Knowledge Scope，不能以私有页面骨架替代受治理范围。
 
 ### 4.2 服务器执行核心
 
@@ -146,12 +144,12 @@ primary_domain
 
 薄 Skill 只包含触发、输入收集、协议发现、本地校验、领取/上传帮助、摘要校验和错误映射。知识注册表、完整模板库、生产资产、ChatGPT 凭据和渲染器不放在薄 Skill 中。
 
-### 4.4 生产与发布层
+### 4.4 Artifact、生产与发布层
 
 职责：
 
-- 从同一内容锁生成固定顺序的四张卡；
-- 使用受控排版生成文本忠实版本和打印 PDF；
+- 从同一内容锁生成 family 定义的 Artifact；`four-card` family 继续生成固定顺序的四张卡；
+- 使用受控排版生成与 family 对应的文本忠实版本和打印 PDF；
 - 对图像执行视觉、事实、文本和版面 QA；
 - 保存 manifest、来源、摘要、模板指纹和 QA 报告；
 - 通过人工复核后发布不可变 package revision；
@@ -185,43 +183,42 @@ primary_domain
 ```text
 用户请求
 -> INPUT CHECK
--> 分类和模板路由
--> FACT / SEMANTIC CORE / proposition_id
--> LEARNING AXES
--> 年龄与 CN/EN 投影
--> CONTENT LOCK
--> 分阶段 GenerationPacket
+-> Knowledge Core（FACT / SEMANTIC CORE / proposition_id / evidence）
+-> Knowledge Scope（纳入、排除、未知项）
+-> Learning Plan（audience / language / depth / duration）
+-> Learning Path（顺序、先修、问题、练习）
+-> Projection Blueprint（family / slots）
+-> Renderer Binding（capabilities / QA profile）
+-> `knowledge-core` + `learning-spec` + `projection-spec` final content lock
+-> 分阶段 executor-neutral GenerationPacket
 -> Codex + ChatGPT Pro 生成候选
--> 服务端隔离、校验、审计
--> 四卡与打印渲染
--> 严格 QA
--> 人工复核
--> 不可变发布
+-> 服务端隔离、跨对象 closure、Artifact manifest 校验、审计
+-> family 对应渲染、严格 QA、人工复核、不可变发布
 -> 门户查看、下载和打印
 ```
 
-服务中断、客户端退出或租约过期不得丢失任务历史。恢复以服务器持久化状态为准，不以某个终端的聊天上下文为准。
+MVP 的四个物理治理对象为 `knowledge-core`、`learning-spec`、`projection-spec` 与 `manifest`；Artifact 文件由 manifest 闭包声明，不引入第五个治理对象。服务中断、客户端退出或租约过期不得丢失任务历史。恢复以服务器持久化状态为准，不以某个终端的聊天上下文为准。
 
 ## 7. 年龄、语言与同类一致性
 
 ### 7.1 单主版本原则
 
-每次请求根据提供年龄选择一个主版本。只有明确要求多个年龄段且跨度足够大时，调用方才展开为多个单年龄带请求。每个版本独立路由、生成、验证和发布。
+每次 Learning Plan 根据提供年龄选择一个主版本。只有明确要求多个年龄段且跨度足够大时，调用方才展开为多个单年龄带 Learning Plan。每个 Plan 独立生成、验证和发布，但引用同一 Knowledge Core 时不得改写事实。
 
 ### 7.2 年龄升级策略
 
-年龄配置控制：
+Learning Plan 中的年龄和语言配置控制：
 
 - 句子长度和词汇难度；
 - 观察密度和比较复杂度；
 - COPY、描摹、口头复述和独立阅读负荷；
 - 因果、系统和证据解释深度。
 
-年龄配置不得改变事实命题。新增 8、10、15 岁配置前，分别建立语言、任务、认知负荷和 QA 规则及跨对象夹具。
+年龄或语言配置不得改变事实命题、来源、未知项或安全边界。新增 8、10、15 岁配置前，分别建立语言、任务、认知负荷和 QA 规则及跨对象夹具。
 
 ### 7.3 同类模板一致性
 
-一个模板族至少使用两个同类对象验收。`animal/mammal` 的首组验收对象为兔子和另一个哺乳动物。允许内容槽位因对象不同而为空或填充，但固定页面、锁定区、任务槽语义和结构指纹必须一致。
+一个 Projection family 至少使用两个同类对象验收。`four-card` 的 `animal/mammal` 首组验收对象为兔子和另一个哺乳动物。允许内容槽位因对象不同而为空或填充，但固定页面、锁定区、任务槽语义和结构指纹必须一致。
 
 ## 8. 协议和身份
 
@@ -258,21 +255,21 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 - 跨终端测试：两个独立 Codex 安装发现相同服务器和 Skill 摘要；
 - 运维测试：服务重启、备份恢复、容量告警和证书检查。
 
-任何正式包都必须通过四页顺序、共享命题、年龄/语言、COPY 来源、内容锁、来源、未知项、图像和打印 QA，再进入人工复核。
+任何正式包都必须通过共享的跨对象 closure：对象引用、来源、未知项、安全边界、资产声明、两级锁和 manifest 均可复算；随后通过所属 Projection family 的结构、Renderer Binding、图像、打印和 QA 门禁，才进入人工复核。`four-card` family 额外要求四页顺序、共享命题、年龄/语言一致与 COPY 来源。
 
 ## 11. 交付阶段
 
-系统按可独立验收的批次推进：
+已建立的基础能力（精确状态、依赖和遗留条件以路线图为准）包括：订阅执行核心、现网 HTTPS 锁定任务 API、protocol discovery、Skill 发布注册表和服务器部署。它们不是 `KNOW-02` 之后才开始的阶段；现有 API/持久化继续作为它所依赖的基线。
 
-1. 知识体系、分类、年龄语言和模板注册表；
-2. 订阅执行核心；
-3. HTTPS API、Card OS 认证和客户端协议；
-4. 薄 Skill 发布、安装、升级与回滚；
-5. 只读资产门户和手动上传；
-6. 四卡排版、严格 QA、打印与发布；
-7. 只读 MCP 和跨终端验证；
-8. 服务器部署、备份、监控和容量治理；
-9. 兔子完整交付及第二个哺乳动物一致性验收。
+从当前状态起，后续按可独立验收的批次推进：
+
+1. `KNOW-02` Knowledge Core 四对象纯合同：服务器权威 validator、cross-object closure 与 rabbit/geometry/time/four-card fixtures；无 HTTP、DB 或 runtime wiring；
+2. 本地 authoring MVP：最多两个确认点的受治理输入与人工治理指标实测；
+3. 服务器 revision、current 与 freshness 管理，并与既有 API/持久化基线受控集成；
+4. 完成现有 API、认证、薄 Skill、备份与运维工作流中的遗留治理项；
+5. four-card converter、其他 Projection family、Renderer、严格 QA、打印与发布；
+6. Portal、只读 MCP、迁移和跨终端验证；
+7. 兔子完整交付及第二个哺乳动物一致性验收。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 
@@ -329,6 +326,7 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 - 薄 Skill 必须通过不可变 release、摘要和兼容门禁发布，不能依赖某台电脑上的未发布本地仓库状态。
 - 当前 API 不是自由概念创建接口；自由请求必须先形成可验证的分类、事实、模板和内容锁。
 - 历史资产必须经过发现、去重、严格 package 验证和受控导入，不能因旧站曾展示而直接成为生产资产。
+- [ADR-002](decisions/ADR-002-knowledge-core-and-projection-architecture.md) 已确认一个受治理 Knowledge Core、Learning Plan/Path 与多种 Projection family 的长期分层；[已批准设计](superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md) 定义其合同语义。`KNOW-02` 先验证四个治理对象和闭包，现有 four-card runtime 在过渡期间继续兼容。
 
 动态状态、下一任务和依赖顺序只在 [Cognitive Card OS 路线图](cognitive-card-os-roadmap.md) 中维护，避免整体设计与执行账本产生两个“当前状态”。
 

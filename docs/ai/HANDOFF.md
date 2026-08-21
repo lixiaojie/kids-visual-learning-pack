@@ -2,79 +2,72 @@
 
 ## Metadata
 
-- Updated At: 2026-08-01
-- Agent: Kimi Code
-- Branch: main(kids);服务器仓分支 codex/api-01-core-snapshot
-- Base Commit: b5b202c(IMPL-1 任务建立，已 push)
-- Working Tree: 仅用户既有未跟踪 `outputs/`；全部工作已提交，kids main == origin/main(`c595fbe`)
-- Task Status: **API-01-IMPL-1 完成**（快照工具 + 导入 + catalog，评审修复全部落地）；服务器仓分支待 push（需授权）;IMPL-2 待立项
+- Updated At: 2026-08-21
+- Agent: OpenAI Codex
+- Branch: main
+- Base Commit: 0257a86
+- Server Worktree Branch: `codex/knowledge-core-contract-v1`
+- Server Worktree Base Commit: `9c1b82be69df2da8348f66970a993e9c1984ce6d`
+- Server Worktree HEAD: `120e5fcc48e4e6cabb1a28678379f687553c0788`
+- Working Tree: kids 保留本轮批准的 canonical docs、ADR、Spec、Plan、evidence 与 AUTHOR-01 closure，以及用户既有未跟踪 `outputs/`；server 状态与 commit identity 见下方验证表，`.venv` 被忽略。
+- Task Status: **AUTHOR-01 local authoring vertical slice is DONE, verified, and committed on the isolated server branch. The next product step is one real-topic authoring trial, not more framework work. No push, merge, deploy, current switch, service start, or second-computer verification is authorized.**
 
 ## Summary
 
-API-01-IMPL-1 完成（服务器应用仓 worktree `.worktrees/cognitive-card-server-api-01`，分支 `codex/api-01-core-snapshot`):
+`AUTHOR-01` 已在现有 `KNOW-02` 四对象合同上形成第一条可用闭环。server 分支 `codex/knowledge-core-contract-v1` 已从 base `9c1b82b` 前移到实现 commit `120e5fc`；标准库 CLI `knowledge_contract.authoring` 把已经提供来源、证据和命题的结构化 request 确定性编译为 `knowledge-core.json`、`learning-spec.json`、`projection-spec.json`、`manifest.json`、`validation.json` 和 `artifacts/index.html`，通过 Publish validation 后才原子写入 `<topic>/revision-NNNN/`。
 
-1. **RED→GREEN**:33 项测试先 RED（模块不存在），新增 `src/cognitive_card_server/core_snapshot/`(model/builder/validator/catalog/cli，共 710 行）转 GREEN；零既有文件改动。
-2. **真实快照**：从抢救分支 `4d5ffe4` 的 core/(34 文件，detached worktree 用后已删）生成 `cognitive-card-core-snapshot-v1`,snapshot_id `sha256:47d2cb6534f9b20b082d984d2d4fe04f8a00ef825b6de7ca793c1a33fdb6d4c1`；导入 `core-snapshots/47d2cb65…/`(manifest + 全部成员，3 个脚本 0755 余 0644)；固定测试向量（fixture → root `f0f48af6…`）经评审独立复算一致；与抢救源逐字节核对零偏差。
-3. **catalog**：两阶段提交解决自引用——先提交导入（`2837c8b`)，再 `catalog-add` 激活（registry_commit=`2837c8b`,`9c1b82b`);catalog 只增不改、单 active。
-4. **独立评审**:1 Important(`git status --untracked-files=all` 不报告忽略文件，忽略文件可进入快照且不可从 origin_commit 恢复——已实证绕过）+ 3 Minor(validator 对符号链接目录失明、凭据 regex 漏复数形式、若干记录项）。全部已修：`_verify_git_state` 增加 prefix 级 `--ignored=matching` 检查（`IGNORED_SOURCE_ENTRY`)、validator 显式拒绝符号链接目录、regex 增加 `credentials?`/`secrets?`（保持 `style_tokens.yaml` 通过）；补 3 个回归测试，35/35 转绿。
-5. **回归**:fastapi/httpx 经隔离 venv(`/tmp/ccos-server-venv`）补齐后全量 309 项中 307 通过；2 项 real-uvicorn 集成测试 502，**在未改动基线 `c2a898c` 同样失败**（本地环境问题，与本次无关）。
+CLI 对 `single/composite` 默认选 `chaptered-guide`，对 `progressive` 默认选 `progressive-exploration`，只有显式 request 才选 `four-card`。浏览页完整 HTML escape 输入，并明确标注仅为结构化 authoring preview、不是最终儿童 Renderer。重复 revision、缺失证据和合同校验失败均返回稳定 JSON 错误；测试证明不会覆盖历史 revision 或留下 topic 半成品。
 
-## Completed
+实现遵守本轮最小边界：不联网、不调用 LLM、不发明事实，不接 HTTP、DB、subscriber、auth、Portal、正式 Renderer 或部署。没有修改既有 API-01 worktree，也没有读取、修改、删除或纳入用户既有 `outputs/`。
 
-- IMPL-1 任务建立与 push(kids `b5b202c`)。
-- core_snapshot 子包 + 35 项测试；真实 34 成员快照导入与 catalog 激活（`2837c8b`、`9c1b82b`，服务器仓本地）。
-- 独立评审 + 1I/3M 修复 + 回归测试。
+本批先记录真实文件系统 RED：5 项测试均因 authoring module 尚不存在而失败；随后最小实现转为 5/5 GREEN。新 synthetic rabbit request 与 README 命令使用同一真实 CLI。当前成功包只物化零 issue 的 Publish 结果；任何 validation issue 会作为 `AUTHORING_CONTRACT_INVALID` 交还上层，不在 CLI 内追问或自动降级。
 
 ## Changed Files
 
-| File | Change | Reason |
+| Repository | File set | State |
 | --- | --- | --- |
-| （服务器仓）`src/cognitive_card_server/core_snapshot/` | 新建 5 文件（710 行） | 快照生成/校验/catalog/CLI |
-| （服务器仓）`tests/test_core_snapshot.py` | 新建（~550 行，35 测试） | 固定向量 + 闭包/负向/回归 |
-| （服务器仓）`core-snapshots/47d2cb65…/`(35 文件）+ `catalog.json` | 新建 | 真实快照导入与激活 |
-| `docs/cognitive-card-os-roadmap.md` | 修改 | IMPL-1 完成记录（`c595fbe`，已 push) |
-| `docs/ai/HANDOFF.md` | 修改 | 本阶段交接 |
-
-## Decisions Made
-
-- 凭据扫描 regex 采用分隔符边界 + `credentials?`/`secrets?` 复数（`style_tokens.yaml` 为合法 core 成员）;`token` 保持单数形式。
-- catalog 采用"先导入提交、后 catalog-add"两阶段，registry_commit 指向导入提交（`2837c8b`)。
-- 评审 Important 修复选择"拒绝前缀内任何忽略文件"（而非静默排除），与设计"clean committed checkout"语义一致。
+| kids | `docs/knowledge-core-contract-pilot-evidence.md` | 新建；记录真实 identity、fixture、boundary、复杂度边界与验证结果 |
+| kids | `docs/cognitive-card-os-roadmap.md`, `docs/README.md`, `docs/ai/CURRENT_TASK.md`, `docs/ai/HANDOFF.md` | 更新；`KNOW-02` DONE、证据地图、复审终态与本交接 |
+| server | `README.md`, `examples/authoring/rabbit-composite.json`, `src/cognitive_card_server/knowledge_contract/{__init__.py,authoring.py,model.py,validator.py}`, `tests/{test_knowledge_contract_authoring.py,test_knowledge_contract_fixtures.py,test_knowledge_contract_model.py,test_knowledge_contract_validation.py}` | 已提交为 `120e5fc`；未 push/merge |
 
 ## Verification Results
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `tests.test_core_snapshot` | PASS | 35/35（含固定向量与 3 个评审回归） |
-| 真实快照 `verify` CLI | PASS | 盘上独立复算 |
-| 快照与抢救源逐字节核对（评审） | PASS | 34 文件零偏差 |
-| 固定向量独立复算（评审） | PASS | 与钉住值一致 |
-| 全量（隔离 venv) | 307/309 | 2 项 real-uvicorn 502 在基线同现，环境性 |
-| 抢救源忽略文件检查 | PASS | core/ 下无忽略文件 |
+| server identity/status and changed-file union | PASS | branch `codex/knowledge-core-contract-v1`; `HEAD` `120e5fc`; worktree clean；commit 相对 `9c1b82b` 为上表 10 个路径 |
+| `PYTHONPATH=src python3 -m unittest tests.test_knowledge_contract_authoring -v` | PASS | 2026-08-21 fresh run: `Ran 5 tests`, `OK` |
+| contract + authoring focused suite | PASS | 2026-08-21 fresh run: `Ran 133 tests`, `OK` |
+| `UV_CACHE_DIR=/tmp/cognitive-card-uv-cache uv run --extra test python -m unittest discover -s tests -v` | PASS | 2026-08-21 fresh run with declared test dependencies: `Ran 444 tests`, `OK` |
+| `python3 -m py_compile ...authoring.py ...test_knowledge_contract_authoring.py` | PASS | 新模块与测试语法编译通过 |
+| documented rabbit example CLI smoke | PASS | 临时目录生成预期 6 个文件；validation 为 Publish valid，浏览页包含非最终 Renderer 声明 |
+| server `git diff --check` | PASS | 无空白错误 |
+| `bash scripts/ai/check-doc-governance.sh` | PASS | 文档地图、链接和 review 日期均通过 |
+| `bash scripts/ai/check-agent-state.sh` | WARN | 0 failure；仅既有 secret-related field-name scan warning，未压制、未发现高置信 secret value |
+| kids `git diff --check` | PASS | 无空白错误 |
 
 ## Known Failures
 
-- 服务器仓 `tests/test_http_integration.py` 2 项 real-uvicorn 测试在本机环境 502（基线 `c2a898c` 同现，与 IMPL-1 无关；生产 3.12 venv 无此问题）。
-- `node boards/kids-world/structure.test.mjs` 既有失败，与本任务无关。
+- 先前系统 Python 无 test dependencies 时出现的 5 个 HTTP import errors 已通过项目声明依赖环境重跑澄清；完整 suite 当前没有已知失败。
+- `node boards/kids-world/structure.test.mjs` 的既有 `19 !== 18` 断言失败未在本纯合同/文档批次重跑。
 
 ## Risks and Caveats
 
-- 服务器仓分支 `codex/api-01-core-snapshot`（含快照资产）尚未 push;IMPL-2 依赖其存在。
-- 评审 M-3 记录项：路径替换测试目前只覆盖 size pin(inode pin 理论残存，威胁模型内可接受）;`import_snapshot` 并发 rename 竞态以 OSError 逃逸（CLI 已映射 exit 3)。
-- 快照部署到生产 `/opt/cognitive-card-server/` 属后续批次（与 IMPL-3 服务器面一起），本批不部署。
+- 当前 request 只支持一个 source，且所有新命题按 `timeless/fresh` 编译；多来源、定期更新和事件触发字段应由真实主题试产暴露需求后再加，不能把当前 synthetic 示例当成完整知识生产能力。
+- 当前只有每个 revision 内的结构化 `artifacts/index.html`，还没有跨主题 library 首页或正式儿童 Renderer。
+- CLI 成功路径零交互；本批没有测量真实主题的人工治理时间，也没有实现 warning 后二次确认 UI。合同 issue 会 fail closed 并交还上层。
+- server commit `120e5fc` 尚未 push/merge；任何 push、merge、deployment 或 runtime wiring 都需要新的明确授权。
 
 ## Remaining Work
 
-1. 用户授权后：push 服务器仓分支 `codex/api-01-core-snapshot`。
-2. 立项 IMPL-2(input contract:generation-input-v1 schema、resolver/validator、template composite、固定向量）。
-3. 后续：IMPL-3..5、RENDER-01、QA-01、PUBLISH-01、ACCEPT-01。
+1. 选择一个真实且范围可控的主题，基于可信来源填写 authoring request，生成首个非 synthetic revision。
+2. 直接检查本地浏览页与 JSON 产物，记录“内容填写、学习路径、Projection 默认、更新属性”四类实际摩擦，再只修阻断闭环的缺陷。
 
 ## Exact Next Action
 
-下一位 Agent：向用户请求 push 服务器仓分支 `codex/api-01-core-snapshot`（两个提交 `2837c8b`/`9c1b82b`)；随后按设计 §16 建立 API-01-IMPL-2(input contract）正式任务。接手提示词已交付用户。
+In the server worktree, copy `examples/authoring/rabbit-composite.json` to a temporary request for one real topic, replace all synthetic source/evidence/propositions with verified material, run the documented CLI into a new temporary library root, and inspect the generated `artifacts/index.html`; do not add another framework layer first.
 
 ## Recovery Notes
 
-- kids 仓基线 `b5b202c`(== origin/main 前状态）；服务器仓基线 `c2a898c`。
-- 快照：snapshot_id `sha256:47d2cb65…d4c1`,registry_commit `2837c8b`；抢救分支 `4d5ffe4`；存档 tag 封存。
-- 生产 stable `0.1.1`，本批零现网接触。
+- kids：在仓库根目录运行 `git status --short`、`bash scripts/ai/check-agent-state.sh`、`git diff --check`；保留用户 `outputs/` 不动。
+- server：进入 `.worktrees/cognitive-card-server-knowledge-core`，先运行 `git branch --show-current`、`git rev-parse HEAD`、`git status --short`、`git diff --name-only` 与 `git ls-files --others --exclude-standard`；不要修改 `.worktrees/cognitive-card-server-api-01`。
+- 真实合同细节及 full-suite 基线限制见 [Pilot Evidence](../knowledge-core-contract-pilot-evidence.md)。

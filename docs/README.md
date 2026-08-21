@@ -50,6 +50,8 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Server Deployment Design](superpowers/specs/2026-07-14-cognitive-card-server-deployment-design.md) | Production deployment architecture | Implemented |
 | [Card OS Thin Skill Release Design](superpowers/specs/2026-07-15-cognitive-card-thin-skill-release-design.md) | Thin Skill distribution architecture | Approved |
 | [Card OS Trusted Upstream Compiler Design](superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md) | API-01 trusted upstream compiler and core snapshot design | Approved |
+| [Card OS Knowledge Core and Projection Design](superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md) | Knowledge-first content model, learning layers, multi-projection architecture, and complexity budget | Approved |
+| [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 
 ### Plans
@@ -63,6 +65,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Server Deployment](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md) | Deployment execution plan | Needs Review |
 | [Card OS Skill Registry](superpowers/plans/2026-07-15-cognitive-card-skill-registry-plan.md) | Skill registry execution plan | Needs Review |
 | [Card OS Thin Client](superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md) | Thin-client execution plan | Needs Review |
+| [Card OS Knowledge Core Contract Pilot](superpowers/plans/2026-08-19-knowledge-core-contract-pilot-implementation-plan.md) | Completed canonical-doc convergence and server-authoritative four-object contract fixture plan | Completed |
 | [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Completed documentation-governance implementation plan | Completed |
 
 ## Operations, Compliance, and Decisions
@@ -73,6 +76,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [WeChat Mini-Program Checklist](compliance/wechat-miniprogram-checklist.md) | Mini-program compliance checklist | Active |
 | [ADR Template](decisions/ADR-TEMPLATE.md) | Long-term decision record template | Canonical Current |
 | [ADR-001 Card OS Client Contract and Production Core Ownership](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md) | Packet contract owns M1 claim/submit; production core stays server-side; package-v5 upload defers to PUBLISH-01 | Accepted |
+| [ADR-002 Card OS Knowledge Core and Projection Architecture](decisions/ADR-002-knowledge-core-and-projection-architecture.md) | Knowledge Core owns facts and scope; learning design and multiple projections remain downstream | Accepted |
 
 ## Codex Memory Snapshots
 

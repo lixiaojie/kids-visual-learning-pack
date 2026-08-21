@@ -2,72 +2,78 @@
 
 ## Metadata
 
-- Updated At: 2026-08-01
-- Updated By: Kimi Code
-- Status: In Progress
-- Branch: main（实施在服务器应用仓新分支）
-- Base Commit: d205388
+- Updated At: 2026-08-21
+- Updated By: OpenAI Codex
+- Status: Done
+- Branch: main（kids 任务治理）；codex/knowledge-core-contract-v1（服务器隔离实现）
+- Base Commit: kids 0257a86；server 9c1b82be69df2da8348f66970a993e9c1984ce6d
+- Server Implementation Commit: 120e5fcc48e4e6cabb1a28678379f687553c0788
 
 ## Objective
 
-实施 API-01-IMPL-1(core snapshot)：按已确认设计 §5/§14.1，从抢救分支 `codex/card-os-salvage-v1` 的 `skills/cognitive-card-os/core/`（34 文件）生成完整的 `cognitive-card-core-snapshot-v1` manifest（每成员 path/mode/size_bytes/sha256、成员按 UTF-8 路径字节升序、root digest、snapshot_id、source identity、origin commit、生成工具版本），在服务器应用仓以受治理资产形式导入 `core-snapshots/<snapshot_root_sha256>/` 并建立只增不改的 snapshot catalog，配套闭包校验工具与固定测试向量、全部负向用例。本批次不触碰服务器应用行为（零 HTTP 面、零运行时变更）。
+实现最小 local authoring MVP，跑通“结构化主题输入 → 四个治理对象 → Publish 校验 → revision 产物目录 → 本地浏览页”的单条端到端路径。首版复用已验证的 Knowledge Core Contract，不引入联网生成、服务器 API、数据库或正式 Renderer。
 
 ## Background
 
-- API-01 修订设计已于 2026-08-01 获用户书面确认（`docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md`,Approved)；实施按 §16 分批，每批单独立项，本批为 IMPL-1。
-- 用户已授权本批立项与后续 push(kids 仓 main 已 push 至 `d205388`)。
-- 快照来源：抢救分支 `codex/card-os-salvage-v1`（尖端 `4d5ffe4`,core/ 自 `7f321a6` 起未变）；现有 `source-manifest.json` 只有 27/34 文件带摘要，不能直接充当内容寻址 manifest（设计 §5.1)。
-- 服务器应用仓：`/Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-server`,main @ `c2a898c`（生产 0.3.1，干净）;worktree 惯例使用 kids 仓 `.worktrees/`（已被忽略）。
-- `registry_commit` 规则：记录**首次引入该不可变 snapshot 的精确服务器仓 commit**（设计 §5.2)。
+- `KNOW-02` 四对象合同已完成并通过独立复审；合同与 AUTHOR-01 已固化到 server commit `120e5fc`。
+- 当前 Codex/人工负责提供来源、证据和命题；authoring 工具只做确定性标准化、编译、校验与物化，不自行发明事实。
+- 用户要求优先形成实际功能闭环，减少研发框架投入；本批按 bounded 设计直接 TDD，不新增架构 Spec 或实施计划。
 
 ## Acceptance Criteria
 
-- [ ] 快照生成工具（Python 3 标准库）从干净、精确 commit 的 checkout 读取 34 文件，打开后复核 stat;dirty tree、错误 commit、symlink、绝对路径/`.`/`..`/空段/反斜杠/NUL、未声明文件一律拒绝
-- [ ] manifest 满足设计 §5.1：除自身外每成员 path/mode/size_bytes/sha256；成员 UTF-8 路径字节升序；`snapshot_root_sha256 = sha256(canonical_json(member_records))`;`snapshot_id = "sha256:" + root`;schema、source identity、origin commit、工具版本为说明字段（不进 root digest)
-- [ ] 固定测试向量：同一输入跨两次生成 root digest 逐字节一致；manifest canonical JSON（排序键、紧凑分隔符、末尾单换行）
-- [ ] 快照导入服务器仓 `core-snapshots/<snapshot_root_sha256>/`（含 manifest 与全部成员文件，root-owned 语义在部署时保证）；重复导入仅允许逐字节相同的幂等复核
-- [ ] snapshot catalog（只增不改）记录 `registry_commit`/`snapshot_id`/`manifest_schema`/`state`(active)；格式与设计 §5.2 一致
-- [ ] 负向用例全覆盖：缺失、篡改、额外文件、symlink、dirty/wrong commit、路径替换、重复声明、非 canonical manifest
-- [ ] 服务器应用现有测试套件全绿（零行为变更的证明）；新工具测试全绿
-- [ ] 抢救分支、存档 tag/worktree 零修改；每个可验证阶段更新 HANDOFF
+- [x] 标准库 CLI 可读取简化 authoring request，生成四对象 JSON、validation 记录和 `artifacts/index.html`
+- [x] 输出目录按安全 topic slug 与 revision 隔离，目标已存在时 fail closed 且不改写既有文件
+- [x] `single/composite` 默认 `chaptered-guide`，`progressive` 默认 `progressive-exploration`；`four-card` 仅显式请求时启用
+- [x] 生成的 bundle 通过现有 Publish validation；无效输入输出稳定错误且不留下半成品目录
+- [x] 浏览页只展示来源、命题、知识单元、学习路径、Projection slots 和验证结果，不声称是最终儿童 Renderer
+- [x] 提供一个 synthetic rabbit composite 示例请求与本地运行说明
+- [x] CLI 不交互追问；成功包保存 Publish validation issue list，任何 validation issue 都以结构化错误交还上层且不物化目录
+- [x] focused authoring/contract tests PASS；使用 server 声明的 test dependencies 跑完整 suite `444` 项 PASS；文档与 handoff 同步
+- [x] server 实现已按用户 2026-08-21 授权 commit；未 push、merge、deploy、启动服务、修改生产配置或执行第二台电脑验证
 
 ## In Scope
 
-- 服务器应用仓（新任务分支 + worktree):`core-snapshots/`、`tools/`（或仓内等价工具目录）、对应测试目录的新增内容
-- kids 仓：`docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md`、`docs/cognitive-card-os-roadmap.md`(API-01 进展记录）
+- server src/cognitive_card_server/knowledge_contract/authoring.py
+- server `src/cognitive_card_server/knowledge_contract/__init__.py`
+- server tests/test_knowledge_contract_authoring.py
+- server examples/authoring/rabbit-composite.json
+- server `README.md`
+- kids `docs/cognitive-card-os-roadmap.md`
+- kids `docs/ai/CURRENT_TASK.md`
+- kids `docs/ai/HANDOFF.md`
 
 ## Out of Scope
 
-- 服务器应用任何运行时/HTTP/DB 变更（IMPL-2/3 的事）；编译器（IMPL-2);executor(IMPL-4)；验收（IMPL-5)
-- 生产部署与任何现网操作；服务器仓 origin push（需用户另行授权）
-- `e78c2fa`（package-v5 接纳面，PUBLISH-01）与其 worktree
-- 抢救分支、存档 tag/worktree、kids 仓其他 worktree 的在途状态
-- RENDER-01/QA-01/PUBLISH-01
+- LLM/API/联网检索或事实自动生成
+- Web 表单、HTTP route、数据库、server revision/current API
+- 正式儿童 Renderer、图片、PDF、打印 QA、Portal 与部署
+- four-card `production-record` converter 与历史迁移
+- 覆盖用户既有 `outputs/`
+- commit、push、merge、部署和第二台电脑验证
 
 ## Constraints
 
-- 生成只从干净、精确 commit 的 checkout 读取；manifest 生成与校验两个实现路径（生成器输出必须经独立校验器复核）
-- 成员内容与摘要不进日志/审计以外的任何地方；快照中不含凭据（生成器含凭据形状扫描则更好，参照 builder 既有规则）
-- 每个可验证单元 RED → 最小 GREEN → 聚焦测试 → review → commit，不揉提交
-- 不改变服务器 `0.3.1` 任何已部署行为；`c2a898c` 保持生产运行版本
-
-## Current State
-
-- 2026-08-01：任务建立；服务器仓分支与 worktree 未创建。
-
-## Next Actions
-
-1. 服务器仓建分支 `codex/api-01-core-snapshot` 与 worktree(kids `.worktrees/`)。
-2. RED：先写快照 manifest 固定向量与闭包负向测试，再实现生成/校验工具转 GREEN。
+- 直接调用现有 `knowledge_contract` model/validator，不复制或弱化四对象 schema。
+- Python 标准库实现；所有写入先在同父目录临时目录完成，Publish validation 通过后再原子落位。
+- 输入必须显式包含来源和命题；缺失事实治理信息时 fail closed，不生成占位知识。
+- 浏览页必须 HTML escape 所有输入文本，不执行用户提供的 HTML/脚本。
+- 普通路径不增加交互式确认；Projection 使用确定性默认值，可由显式字段覆盖。
 
 ## Verification Plan
 
-- Unit: 新工具与导入/catalog 测试（服务器仓 `python3 -m unittest discover -s tests` 或仓内既有等价入口）
-- Regression: 服务器应用既有全套测试（零行为变更）
-- Governance(kids 仓）:`bash scripts/ai/check-agent-state.sh`、`git diff --check`
+```bash
+PYTHONPATH=src python3 -m unittest tests.test_knowledge_contract_authoring -v
+PYTHONPATH=src python3 -m unittest tests.test_knowledge_contract_model tests.test_knowledge_contract_validation tests.test_knowledge_contract_fixtures tests.test_knowledge_contract_authoring -v
+PYTHONPATH=src python3 -m unittest discover -s tests -v
+python3 -m py_compile src/cognitive_card_server/knowledge_contract/authoring.py tests/test_knowledge_contract_authoring.py
+```
+- server/kids `git diff --check`
+- `bash scripts/ai/check-agent-state.sh`
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md`(Approved,§5/§14.1/§16)
-- 抢救分支 codex/card-os-salvage-v1（快照来源，只读）
-- 服务器应用仓 commit `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`（基线）
+- `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`
+- `docs/superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md`
+- `docs/knowledge-core-contract-pilot-evidence.md`
+- `docs/cognitive-card-os-system-design.md`
+- `docs/cognitive-card-os-roadmap.md`

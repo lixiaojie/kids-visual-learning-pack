@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-07-15
+最近更新：2026-08-21
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -34,6 +34,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | ID | 工作流 | 状态 | 下一动作 |
 | --- | --- | --- | --- |
 | GOV-01 | 总设计与唯一任务账本 | DONE | 后续变更持续更新 |
+| KNOW-02 | Knowledge Core four-object contract | DONE | 四对象纯合同、fixtures、证据与独立复审完成；下一步进入最小 local authoring MVP |
+| AUTHOR-01 | Local authoring vertical slice | DONE | 标准库 CLI 已跑通结构化输入、四对象、Publish 校验和可浏览 revision 目录；下一步做真实主题试产 |
 | KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
@@ -43,7 +45,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
-| SKILL-02 | 薄 Skill 客户端 | IN PROGRESS | 本机代码、双隔离安装与现网上传验收已通过；待第二台真实 Codex 电脑安装同一摘要 |
+| SKILL-02 | 薄 Skill 客户端 | IN PROGRESS | 本机代码、双隔离安装与现网上传验收已通过；保留第二台真实 Codex 电脑安装同一摘要的历史完成条件 |
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
@@ -68,6 +70,26 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 权威仓库：`kids-visual-learning-pack`
 - 产物：整体设计、路线图、README 导航、子系统文档索引。
 - 完成条件：整体边界、权威来源、路线图状态语义和文档更新规则明确。
+
+### KNOW-02 Knowledge Core 四对象合同
+
+- 状态：`DONE`
+- 权威仓库：`cognitive-card-server`；产品架构、批准设计与任务治理权威为 `kids-visual-learning-pack`。
+- 依赖：[ADR-002](decisions/ADR-002-knowledge-core-and-projection-architecture.md)、[Knowledge Core 已批准设计](superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md)，以及 API-01 snapshot base `9c1b82b`。
+- 完成批次：从 `codex/api-01-core-snapshot` @ `9c1b82b` 创建隔离分支 `codex/knowledge-core-contract-v1`，实现并验证 `knowledge-core`、`learning-spec`、`projection-spec`、`manifest` 四对象的 pure validator、稳定错误、temporal/stage gate、跨对象 closure、两级 lock 和 manifest 校验。
+- 验收证据：兔子 composite、几何 progressive、合成 time-sensitive revision 和 `four-card` compatibility fixture 的正反向验证通过；Projection/Renderer 变化不能改写 Knowledge Core；过期知识不能错误发布；未声明 fact/artifact 被拒绝。见 [Pilot Evidence](knowledge-core-contract-pilot-evidence.md)。
+- 非范围：HTTP route、SQLite/schema、subscriber/auth、renderer、Portal、部署和生产接线；本地 authoring MVP、实际 four-card `production-record` converter、服务器 revision/current/freshness 管理与 Portal 分别在后续批次立项。
+- Review evidence：2026-08-21 fresh focused suite `128` 项通过，变更 allowlist 和 runtime-reference scan 证明零 HTTP/DB/runtime wiring；补齐 `pyproject.toml` 声明的 test dependencies 后，contract + authoring 所在完整 suite `444` 项全部通过。原 2 Critical、4 Important、1 Minor 以及后续两项文档 residual 均已关闭，docs-only scoped re-review 和 targeted recheck 为 CLEAN。
+
+### AUTHOR-01 Local authoring vertical slice
+
+- 状态：`DONE`
+- 权威仓库：`cognitive-card-server`；任务治理为 `kids-visual-learning-pack`。
+- 目标：结构化主题输入经现有四对象合同编译和 Publish 校验后，原子写入可长期保留的 revision 目录，并生成结构化本地浏览页。
+- 首批边界：当前 Codex/人工提供来源与命题；CLI 不联网、不生成事实、不接 HTTP/DB/Portal/正式 Renderer。
+- 完成结果：rabbit composite 示例端到端通过；无效输入和重复 revision fail closed；产物含四对象、validation 记录与 escaped HTML 浏览页；默认 Projection 按 scope 路由，`four-card` 只在显式请求时使用。
+- 验收证据：2026-08-21 fresh authoring suite `5` 项、contract + authoring suite `133` 项均通过，`py_compile` 和 server `git diff --check` 通过；使用声明 test dependencies 的完整 suite `444` 项全部通过。实现已提交到隔离 server 分支 commit `120e5fc`，未 push/merge。
+- 下一步：选择一个真实主题，人工/Codex 基于可信来源填写 request，生成首个非 synthetic revision 并直接检查浏览产物；先记录真实使用摩擦，再决定是否增加 library index、更多来源或 temporal authoring 字段。
 
 ### KNOW-01 分类与对象类型覆盖
 
@@ -296,16 +318,23 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 下一轮按依赖顺序一次启动一个可独立验收的子项目：
 
-1. 执行 `SKILL-01`：发布不可变 Skill release、SHA-256、stable 指针和兼容回滚（基础设施已完成，stable 随 SKILL-02 激活）；
-2. `SKILL-01` 通过后执行 `SKILL-02`：在两个独立 Codex 客户端安装同一摘要的薄客户端，并通过现网 capability、领取和提交门禁（当前正式任务）；
+1. 用 `AUTHOR-01` 现有 CLI 完成一个真实、范围可控的主题试产，直接检查 revision JSON 与本地浏览页，记录真实内容治理和使用摩擦；
+2. 只修复试产中阻断功能闭环的缺陷；多来源、temporal authoring、library 首页等能力按真实需求排序，不预先扩建框架；
 3. **抢救批次（优先于任何从零重建）**：评审并迁移存档 tag `archive/card-os-thin-skill-v1-20260717` 的生产核心至服务器侧可信上游（API-01 缺口），同步修复 package-v5 评审 Block 与测试 fixture；用户已确认此前重新生成发现历史积累丢失，故抢救优先；
 4. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`：以兔子、深圳、`age-5-6`、中英文、打印版完成端到端验收；
-5. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源；
-6. 待严格 package 验证与服务器不可变存储就绪后启动 MIG-02。
+5. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源。
 
 门户、渲染（独立立项部分）和 MCP 不进入下一实现批次。
 
 ## 6. 更新记录
+
+### 2026-08-19
+
+- 用户书面批准 [ADR-002](decisions/ADR-002-knowledge-core-and-projection-architecture.md) 与 Knowledge Core 设计；[Knowledge Core Contract Pilot 实施计划](superpowers/plans/2026-08-19-knowledge-core-contract-pilot-implementation-plan.md) 已获执行审阅通过。
+- 新增 `KNOW-02`：以 API-01 snapshot base `9c1b82b` 为基线，在隔离分支验证 Knowledge Core 四对象纯合同、闭包、两级锁和 rabbit/geometry/time/four-card fixtures；本批零 HTTP、DB 或 runtime wiring。
+- 将本地 authoring MVP、实际 four-card converter、服务器 revision/current/freshness 管理与 Portal 明确拆为后续批次；近期执行顺序不再把第二台电脑验证列为当前动作，未改变 `SKILL-02` 的历史完成条件。
+- `KNOW-02` 合同与 [Pilot Evidence](knowledge-core-contract-pilot-evidence.md) 已完成并随 AUTHOR-01 固化到 server commit `120e5fc`；2026-08-21 fresh 结果为 `128` 项 focused PASS、零 runtime 引用，声明依赖环境下完整 suite `444` 项 PASS。原 2 Critical、4 Important、1 Minor 及两项文档 residual 均已关闭，状态为 `DONE`。
+- `AUTHOR-01` 已完成最小 local authoring vertical slice：标准库 CLI 从已提供来源/命题的 request 生成四对象、Publish validation、不可覆盖 revision 目录和 escaped HTML 浏览页；fresh authoring/combined suites 为 `5/133` 项 PASS，完整 suite `444` 项 PASS。下一步直接做真实主题试产。
 
 ### 2026-08-01
 

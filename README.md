@@ -28,12 +28,14 @@ Project slug: `kids-visual-learning-pack`
 
 ## Cognitive Card OS
 
-儿童知识卡生产能力正在升级为“薄 Skill + 个人服务器核心”。`0.3.1` 服务端核心已经部署到
+儿童知识卡生产能力正在升级为“薄 Skill + 个人服务器核心”。长期内容方向是：由服务器管理一个受治理的 Knowledge Core（事实、范围、来源、未知项与安全边界），再派生 Learning Plan、Learning Path 和多种 Projection family；现有固定四卡是首个保持兼容的 `four-card` Projection family，不是唯一内容模型。`0.3.1` 服务端核心已经部署到
 `https://www.yutou.space/card-os/`；首版仍由登录 ChatGPT Pro 的 Codex 客户端执行模型生成，
 服务器统一负责协议、任务状态、候选、资产、排版、QA 和发布，不依赖 OpenAI API Key：
 
 - [Cognitive Card OS 整体设计](docs/cognitive-card-os-system-design.md)
 - [Cognitive Card OS 路线图与任务账本](docs/cognitive-card-os-roadmap.md)
+- [Knowledge Core 与 Projection 架构决策（ADR-002）](docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md)
+- [Knowledge Core 与 Projection 已批准设计](docs/superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md)
 - [生产部署证据、调用与运维手册](docs/operations/cognitive-card-server-deployment-2026-07-14.md)
 - [Cognitive Card OS 历史资产迁移清单](docs/cognitive-card-os-asset-migration-inventory.md)
 - [Pro 会员客户端执行架构](docs/superpowers/specs/2026-07-13-cognitive-card-pro-subscriber-execution-design.md)

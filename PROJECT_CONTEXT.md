@@ -30,6 +30,8 @@ This is a stable repository index. Current task status belongs in `docs/ai/CURRE
 - Current cross-renderer architecture baseline: `docs/architecture-iteration-v1.3.md`.
 - Cognitive Card OS normative entrypoint: `docs/cognitive-card-os-system-design.md`.
 - Cognitive Card OS active task ledger: `docs/cognitive-card-os-roadmap.md`.
+- Cognitive Card OS long-term architecture decision: `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`; one governed Knowledge Core feeds learning design and multiple Projection families, while `four-card` remains the compatible first family.
+- Knowledge Core contract semantics: `docs/superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md`.
 - Production operations truth: `docs/operations/cognitive-card-server-deployment-2026-07-14.md`.
 
 ## Working State
