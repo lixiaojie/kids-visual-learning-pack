@@ -252,8 +252,8 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 - 安全测试：凭据字段、路径、摘要、大小、撤销和权限；
 - 代表性端到端测试：兔子 `age-5-6` 中英文打印包；
 - 同类一致性测试：第二个哺乳动物使用相同模板族；
-- 跨终端测试：两个独立 Codex 安装发现相同服务器和 Skill 摘要；
-- 运维测试：服务重启、备份恢复、容量告警和证书检查。
+- 跨终端测试：多终端阶段由 `SKILL-03` 承担；单人 MVP 不要求第二台独立 Codex 安装（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）；
+- 运维测试：服务重启与本机备份恢复；容量告警和证书检查不作为单人主路径门禁；
 
 任何正式包都必须通过共享的跨对象 closure：对象引用、来源、未知项、安全边界、资产声明、两级锁和 manifest 均可复算；随后通过所属 Projection family 的结构、Renderer Binding、图像、打印和 QA 门禁，才进入人工复核。`four-card` family 额外要求四页顺序、共享命题、年龄/语言一致与 COPY 来源。
 
@@ -261,15 +261,15 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 
 已建立的基础能力（精确状态、依赖和遗留条件以路线图为准）包括：订阅执行核心、现网 HTTPS 锁定任务 API、protocol discovery、Skill 发布注册表和服务器部署。它们不是 `KNOW-02` 之后才开始的阶段；现有 API/持久化继续作为它所依赖的基线。
 
-从当前状态起，后续按可独立验收的批次推进：
+从当前状态起，按单人知识主路径推进（精确状态以路线图为准；[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）：
 
-1. `KNOW-02` Knowledge Core 四对象纯合同：服务器权威 validator、cross-object closure 与 rabbit/geometry/time/four-card fixtures；无 HTTP、DB 或 runtime wiring；
-2. 本地 authoring MVP：最多两个确认点的受治理输入与人工治理指标实测；
-3. 服务器 revision、current 与 freshness 管理，并与既有 API/持久化基线受控集成；
-4. 完成现有 API、认证、薄 Skill、备份与运维工作流中的遗留治理项；
-5. four-card converter、其他 Projection family、Renderer、严格 QA、打印与发布；
-6. Portal、只读 MCP、迁移和跨终端验证；
-7. 兔子完整交付及第二个哺乳动物一致性验收。
+1. `KNOW-02` Knowledge Core 四对象纯合同：已完成。
+2. 本地 authoring MVP：已完成。
+3. 服务器 revision、current 与 freshness 管理及 loopback HTTP 接线：本地完成，未进生产。
+4. **`BROWSE-01` 知识浏览与 Projection 确认（确认点 1）**：本地已完成（静态 HTML + 只读 GET）；未 merge 进生产；不等于 PORTAL-01。
+5. **`CONV-01` four-card converter**：本地已完成（显式 four-card current → 接合 generation-input）；未 merge 进生产；不写出 production-record 本体。随后按需接现网 executor，抢救 Renderer、QA、打印与发布。
+6. 第二台电脑、加密异地备份、浏览器会话、公网 Portal、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
+7. 兔子完整交付及第二个哺乳动物一致性验收仍依赖发布链路，不提前把 SITE-01 拉进主路径。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 
@@ -327,6 +327,7 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 - 当前 API 不是自由概念创建接口；自由请求必须先形成可验证的分类、事实、模板和内容锁。
 - 历史资产必须经过发现、去重、严格 package 验证和受控导入，不能因旧站曾展示而直接成为生产资产。
 - [ADR-002](decisions/ADR-002-knowledge-core-and-projection-architecture.md) 已确认一个受治理 Knowledge Core、Learning Plan/Path 与多种 Projection family 的长期分层；[已批准设计](superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md) 定义其合同语义。`KNOW-02` 先验证四个治理对象和闭包，现有 four-card runtime 在过渡期间继续兼容。
+- [ADR-004](decisions/ADR-004-single-operator-main-flow.md) 确认当前按单人维护、单人使用跑通知识主路径；第二台电脑、加密异地备份与公网 Portal 后置。确认点 1 由 `BROWSE-01` 承担，不等于 `PORTAL-01`。
 
 动态状态、下一任务和依赖顺序只在 [Cognitive Card OS 路线图](cognitive-card-os-roadmap.md) 中维护，避免整体设计与执行账本产生两个“当前状态”。
 

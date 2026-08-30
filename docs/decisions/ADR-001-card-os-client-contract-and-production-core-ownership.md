@@ -5,6 +5,7 @@
 - Owners: 项目所有者（用户书面选定调和方案）
 - Related Task: SKILL-02（`docs/ai/CURRENT_TASK.md`）
 - Related Files: `docs/superpowers/specs/2026-07-15-cognitive-card-thin-skill-release-design.md`、`docs/superpowers/plans/2026-07-15-cognitive-card-thin-client-plan.md`、`docs/cognitive-card-os-roadmap.md`、tag `archive/card-os-thin-skill-v1-20260717`
+- Amended: 2026-08-30 [ADR-004](ADR-004-single-operator-main-flow.md) 取代本文件 Verification 中「两台独立 Codex 客户端才可标记 SKILL-02 DONE」；packet 契约与生产核心归属不变。
 
 ## Context
 
@@ -71,7 +72,7 @@ M1（可远程领取与提交）的完成条件是"两台独立 Codex 客户端�
 ## Verification
 
 - `docs/ai/CURRENT_TASK.md` 的 SKILL-02 范围与本 ADR 一致；实施产物只含 packet 契约客户端。
-- SKILL-02 完成条件（两台独立 Codex 客户端、相同摘要、现网领取/上传）通过后方可在 roadmap 标记 DONE。
+- SKILL-02 单人完成条件（本机代码、隔离安装、现网领取/上传）由 [ADR-004](ADR-004-single-operator-main-flow.md) 关闭；第二台电脑改为 `SKILL-03`，不再作为本 ADR 的 DONE 门禁。
 - 后续任何把 `core/` 资产引入 main 的提交必须引用对应批次任务的 CURRENT_TASK 范围与本 ADR。
 
 ## References

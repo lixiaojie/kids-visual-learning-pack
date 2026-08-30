@@ -55,8 +55,8 @@ curl --fail-with-body --silent --show-error \
 ```
 
 受保护 API 还需要 Card OS token、协议 `1` 和 minimum Skill release `0.1.0` 请求头；完整占位符示例、
-日常检查、升级、备份恢复和回滚命令见上面的生产运维手册。当前服务只接受规范化锁定任务，
-薄 Skill 的不可变发布与跨终端安装仍按路线图中的 `SKILL-01`、`SKILL-02` 推进。
+日常检查、升级、备份恢复和回滚命令见上面的生产运维手册。当前服务只接受规范化锁定任务。
+薄 Skill 的不可变发布与单人安装门禁见路线图 `SKILL-01`、`SKILL-02`（均已 DONE）；第二终端见 `SKILL-03`。
 
 ### 薄 Skill 安装（SKILL-02）
 

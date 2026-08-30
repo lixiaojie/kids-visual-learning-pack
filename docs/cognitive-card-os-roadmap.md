@@ -21,13 +21,17 @@
 
 ## 2. 当前里程碑
 
-**M1：可远程领取与提交**
+**单人知识主路径**
 
-目标：一个安装薄 Skill 的受信任 Codex 客户端，通过 `www.yutou.space` 发现服务、登录 Card OS、领取生成包并上传候选结果；整个流程不需要 OpenAI API Key，也不传递 ChatGPT 身份。
+目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLOY-01`。
+本里程碑当前切片：`CONV-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。下一刀为现网 executor 路径，仍不 merge `main`。
 
-资产迁移作为并行治理工作流推进，但在 API、认证和正式导入工具完成前不写入服务器。发现清单见 [历史资产迁移清单](cognitive-card-os-asset-migration-inventory.md)。
+**M1（历史，单人门禁已关闭）**
+
+原目标：安装薄 Skill 的受信任 Codex 客户端，经 `www.yutou.space` 领取生成包并上传候选。单人侧已由本机代码、双隔离安装与现网上传满足（`SKILL-01` / `SKILL-02` / `DEPLOY-01` / `PROTO-01`）。第二台真实电脑改为 `SKILL-03`。`API-01` 的自由概念编译入口与 `AUTH-01` 浏览器会话仍不阻塞知识主路径。
+
+资产迁移作为并行治理工作流推进，但在正式导入工具完成前不写入服务器。发现清单见 [历史资产迁移清单](cognitive-card-os-asset-migration-inventory.md)。
 
 ## 3. 总览
 
@@ -43,20 +47,23 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | LIB-01 | 知识库 candidate / 不可变 revision / current | DONE | 进程内 library 已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
 | PROJ-01 | Projection family 选择面 | DONE | 已本地提交进 `9e0c353`；未 merge 进 main |
 | WIRE-01 | HTTP/DB 受控接线 | DONE | loopback HTTP 已接 library / 选择面 / 接合 current 门禁；已本地提交 `9e0c353`；未 merge 进 main |
-| KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试 |
+| BROWSE-01 | 知识浏览与 Projection 确认 | DONE | 静态 HTML + 只读 GET 已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
+| CONV-01 | four-card converter | DONE | 接合密封已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
+| KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试；不阻塞 BROWSE-01 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
 | API-01 | HTTPS 写入 API | IN PROGRESS | 集成分支含 LIB-01 `b672949` 与 PROJ-01/WIRE-01 `9e0c353`；功能分支未 merge 进 main；现网仍 `0.3.1` |
-| AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
+| AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
-| SKILL-02 | 薄 Skill 客户端 | IN PROGRESS | 本机代码、双隔离安装与现网上传验收已通过；保留第二台真实 Codex 电脑安装同一摘要的历史完成条件 |
+| SKILL-02 | 薄 Skill 客户端 | DONE | 单人门禁：本机、双隔离安装、现网上传已通过；第二台电脑改 SKILL-03 |
+| SKILL-03 | 第二终端同一摘要 | BACKLOG | 多终端阶段再做；不阻塞主路径 |
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
-| PORTAL-01 | 只读资产门户 | BACKLOG | 依赖认证和资产查询 API |
+| PORTAL-01 | 只读资产门户 | BACKLOG | 已发布 Artifact 画廊；不替代 BROWSE-01 |
 | UPLOAD-01 | 浏览器手动上传 | BACKLOG | 依赖 AUTH-01、API-01 |
 | SITE-01 | Card OS 替换 `kids-world` | BACKLOG | 依赖门户、发布和迁移覆盖 |
 | SITE-02 | 旧站兼容与重定向 | BACKLOG | 依赖 SITE-01 切换门禁 |
@@ -65,7 +72,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | PUBLISH-01 | 不可变 package 发布 | BACKLOG | 依赖 QA-01 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
 | DEPLOY-01 | Card OS 服务部署 | DONE | 按生产运维记录持续执行升级与回滚门禁 |
-| OPS-01 | 容量、备份与监控治理 | IN PROGRESS | 增加异地备份、容量及证书/健康告警 |
+| OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
+| OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
 | ACCEPT-01 | 兔子完整验收 | BACKLOG | 依赖发布链路 |
 | ACCEPT-02 | 第二个哺乳动物一致性验收 | BACKLOG | 依赖 ACCEPT-01 与模板族 |
 
@@ -199,6 +207,26 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 验收证据：`tests.test_http_knowledge_library` 6 项 PASS；与 library / projection-family / generation-input / 接合 / authoring / contract / HTTP compiled 合计 focused `200` 项 PASS；含 auth registry 的 HTTP 回归 `251` 项 PASS。已本地提交 `9e0c353`（14 文件，含 PROJ-01）。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
 - 非范围：新 SQLite 表、Portal、Renderer、改 v1 FACT 合同、生产 env 必填项。
 
+### BROWSE-01 知识浏览与 Projection 确认
+
+- 状态：`DONE`（实现与 focused 测试完成；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（实现）；设计与任务治理为 `kids-visual-learning-pack`。
+- 依赖：[ADR-004](decisions/ADR-004-single-operator-main-flow.md)、[独立设计](superpowers/specs/2026-08-30-knowledge-browse-projection-confirmation-design.md)、LIB-01、PROJ-01、WIRE-01。
+- 目标：确认点 1 的人机界面——列出 topic / current / 历史 revision，只读展示 Knowledge Core，展示 Projection family 选择面。默认确认不写盘；覆盖 family 仍走 CLI 重编译。
+- 完成结果：CLI `browse` 写出 `index.html` 与 `{topic}__revision-NNNN.html`；兔子 current chosen 为 `chaptered-guide` 且 `four-card` 为 discouraged；几何 current chosen 为 `progressive-exploration`。loopback GET 列出 topic / revisions / 四对象只读视图。不写 Knowledge Core，不等于 PORTAL-01。
+- 验收证据：server `knowledge-pipeline-v1` 上 browse + library / projection-family / HTTP library / auth registry / generation-input / authoring / contract / HTTP compiled 合计 focused `241` 项 PASS。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
+- 非范围：浏览器会话、公网 Portal、UI 内 publish、CONV-01、Renderer、现网。
+
+### CONV-01 four-card converter
+
+- 状态：`DONE`（实现与 focused 测试完成；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（实现）；设计与任务治理为 `kids-visual-learning-pack`。
+- 依赖：BROWSE-01、接合 lock、ADR-001 抢救边界、[独立设计](superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md)。
+- 目标：把 library current 的四对象映射为现有接合 generation-input，使四卡 executor 能密封同一主题。须处理 knowledge-core `source_id` 含点号与 FACT `source_id` 不允许点号的映射。
+- 完成结果：CLI `convert` 只读 current；family 必须为显式 `four-card`；FACT `source_id` 把 `.`/`_` 换成 `-`，碰撞 fail closed；磁盘 knowledge-core 不被改写。`canonical_claim` 临时同时填入 FACT `cn`/`en`。不写 production-record 本体。
+- 验收证据：server `knowledge-pipeline-v1` 上 converter 10 项 + library / browse / HTTP / projection-family / generation-input / join / authoring / contract / auth 合计 focused `248` 项 PASS。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
+- 非范围：新 Projection family、PORTAL-01、完整 RENDER/QA/PUBLISH、写出 production-record 本体、现网。
+
 ### KNOW-01 分类与对象类型覆盖
 
 - 状态：`IN PROGRESS`
@@ -273,13 +301,13 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 - 状态：`IN PROGRESS`
 - 依赖：API-01 的路由边界。
-- 范围：`read`、`submit`、`review`、`admin`；浏览器会话；CLI/Skill scoped token；撤销与轮换；审计 actor。
+- 范围：`read`、`submit`、`review`、`admin`；CLI/Skill scoped token；撤销与轮换；审计 actor。浏览器会话不在单人主路径上，见 ADR-004。
 - 不包含：ChatGPT 登录代理、ChatGPT Cookie、OpenAI Token。
 - 已实现：machine token 签发、列表和按 token ID 撤销；scope implication、过期与即时撤销；请求级仓储关闭；原始 token 只在签发时返回一次，日志和数据库仅保留安全标识/摘要。
 - 已部署：machine token 的 TLS 路径、跨服务重启持久化和即时撤销已用一次性 token 验收；当前没有遗留长期验收 token。
-- 未完成：浏览器会话、面向个人服务器运维的正式轮换/恢复流程和长期客户端凭据操作面。
+- 未完成：浏览器会话、面向个人服务器运维的正式轮换/恢复流程和长期客户端凭据操作面。这些不阻塞 BROWSE-01（首版用 loopback 静态 HTML 或本机 token）。
 - `0.3.1` 批次验收：machine token 最小权限生效；撤销立即阻止认领和提交；日志和数据库不含原始密钥。
-- `AUTH-01` 完成条件：上述批次保持通过；浏览器会话、正式轮换/恢复流程和 TLS 部署身份边界完成验收。
+- `AUTH-01` 完成条件：machine token 批次保持通过。浏览器会话留到多用户/公网 Portal 阶段，不作为单人主路径完成条件。
 
 ### PROTO-01 协议发现与兼容
 
@@ -303,11 +331,19 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### SKILL-02 薄 Skill 客户端
 
-- 状态：`IN PROGRESS`（本地代码、两个隔离安装与现网上传验收已通过；待第二台真实 Codex 电脑安装同一摘要）
+- 状态：`DONE`（2026-08-30，[ADR-004](decisions/ADR-004-single-operator-main-flow.md) 关闭单人门禁）
 - 依赖：API-01、AUTH-01、PROTO-01、SKILL-01。
-- 前置条件：API/AUTH 最小生产门禁与 SKILL-01 registry/installer 基础设施均已验证；完整客户端由本任务实现并激活生产 stable（实际发布版本 `0.1.1`，见 SKILL-01 进展）。
+- 已完成：本机代码、两个隔离 `CODEX_HOME` 安装、生产 stable `0.1.1`、现网领取与候选上传。
 - 范围：输入收集、本地形状校验、服务发现、任务创建、包领取、摘要确认、候选上传、错误解释、离线限制和版本升级。
-- 完成条件：两台独立 Codex 客户端安装相同发布摘要，并能完成同一服务器上的任务领取与结果上传。
+- 完成条件（单人）：上述本机与现网路径通过。历史「两台独立 Codex 电脑」改由 `SKILL-03` 承担，不再阻塞本任务。
+
+### SKILL-03 第二终端同一摘要
+
+- 状态：`BACKLOG`
+- 依赖：SKILL-02、多终端实际需求。
+- 范围：第二台真实 Codex 电脑安装与生产 stable 相同的归档摘要，完成 doctor 与同一服务器上的领取/上传。
+- 完成条件：两台独立客户端、相同摘要、同一服务器任务闭环。
+- 非范围：不阻塞单人知识主路径或 BROWSE-01。
 
 ### MIG-01 历史资产发现、摘要与去重
 
@@ -339,7 +375,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 - 状态：`BACKLOG`
 - 目标入口：`https://www.yutou.space/card-os/`
-- 范围：搜索、筛选、四卡预览、PDF、manifest、来源、QA、摘要、版本历史和状态隔离。
+- 范围：已发布 Artifact 的搜索、筛选、四卡预览、PDF、manifest、来源、QA、摘要、版本历史和状态隔离。
+- 与 BROWSE-01 的边界：本任务不承担确认点 1（源头知识浏览与 Projection 选择）。BROWSE-01 先于本任务，且不依赖本任务。
 - 完成条件：未授权用户看不到 owner-only、隔离或草稿资产；发布版本可稳定下载。
 
 ### UPLOAD-01 浏览器手动上传
@@ -403,12 +440,20 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 实施计划：[个人服务器部署实施计划](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md)。
 - 完成条件：已满足；现有 `/`、`/kids/`、`/sync/` 行为保持不变。
 
-### OPS-01 容量、备份与监控
+### OPS-01 本机备份与恢复
 
-- 状态：`IN PROGRESS`
+- 状态：`DONE`（2026-08-30，[ADR-004](decisions/ADR-004-single-operator-main-flow.md) 关闭单人门禁）
 - 已完成：根磁盘使用率 55%/inode 21% 的终态基线；SQLite 在线备份、候选摘要、14 天本机保留、唯一规范批次、manifest 校验和隔离恢复演练均通过；Certbot timer 活动。
-- 待办：加密异地副本；根磁盘早于 75% 的容量/inode/备份新鲜度告警；域名证书、Certbot 和 health/capabilities 的可投递告警。操作入口见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
-- 完成条件：异地副本可验证恢复；容量告警早于 75%；备份新鲜度、证书和健康异常均能可靠投递。
+- 单人完成条件：本机恢复点可验证。不把本机副本描述为完整灾难恢复。
+- 操作入口见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
+
+### OPS-02 异地拷贝与告警
+
+- 状态：`BACKLOG`
+- 简化设计：不建加密复制服务、不建告警栈。需要时由维护者把已验证的 `/var/backups/cognitive-card-server` 拷到第二块盘或另一台机器，并抽查一次隔离恢复。
+- 后期可选：根磁盘早于 75% 的容量/inode/备份新鲜度提醒；证书与 health 失败的可投递告警。
+- 完成条件：至少一份与本机备份分离的可恢复拷贝，或明确记录「单人接受仅本机风险」。
+- 非范围：不阻塞 BROWSE-01 或知识主路径。
 
 ### ACCEPT-01 兔子端到端验收
 
@@ -425,21 +470,24 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ## 5. 近期执行顺序
 
-下一轮按依赖顺序一次启动一个可独立验收的子项目：
+下一轮按单人知识主路径一次启动一个可独立验收的子项目（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）：
 
-1. 工作区按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 收敛到知识管线三角色；已合入切片撤 checkout。AUTHOR 本地提交 `1facb79`，generation-input 本地提交 `4ca3e0e`（含接合），均未 push。
-2. **接合合同**：已本地提交 `4ca3e0e`。focused `18` 项 PASS（v1 `11` + join `7`）。接合 lock 摘要四对象 `final_content_lock`（与 AUTHOR `rabbit-composite` manifest 对照一致）；同一 FACT、不同 knowledge-core revision 产生不同接合 lock；FACT 中不存在于 knowledge-core 的 `proposition_id` fail closed。v1 FACT 密封合同未改。功能分支未 merge 进 `main`。
-3. **集成分支**：已开 `knowledge-pipeline-v1`（基线 `1facb79`，merge `4ca3e0e` @ `3001ba1`，authoring 接合 lock `1f9c42f`，LIB-01 `b672949`，PROJ-01/WIRE-01 `9e0c353`）。ADR-002 §18 服务器管理批次已落地。选择面与 HTTP/DB 接线已本地提交。未 merge 进 server `main`，未 push。
-4. 分类接入（KNOW-01）和年龄/语言表达（AGE-01）保持独立立项，不因预览未展示而删 Plan 元数据。
-5. 存档生产核心（tag `archive/card-os-thin-skill-v1-20260717`）仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层，也不再为该切片保持长期 worktree。
-6. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
+1. **BROWSE-01**（本地完成）：知识浏览 + Projection 确认。CLI 静态 HTML + 只读 GET；未 merge server `main`。
+2. **CONV-01**（本地完成）：显式 four-card current → 接合 generation-input。CLI `convert`；未 merge server `main`。
+3. 现网 executor 路径继续用 `0.3.1` packet 契约；不把 `knowledge-pipeline-v1` merge 进 server `main`，除非用户另行授权。
+4. 分类接入（KNOW-01）和年龄/语言表达（AGE-01）保持独立，不阻塞浏览。
+5. 存档生产核心仍按 ADR-001 留给 CONV/RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。
+6. `SKILL-03`、`OPS-02`、浏览器会话、PORTAL-01、SITE-01、MCP **不进入**下一实现批次。
 
-门户、渲染（独立立项部分）和 MCP 不进入下一实现批次。
+工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色；集成分支 `knowledge-pipeline-v1` 含未提交的 BROWSE-01 与 CONV-01 实现，未 merge、未 push。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
 
 ## 6. 更新记录
 
 ### 2026-08-30
 
+- CONV-01：显式 four-card current → 接合 generation-input。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`。CLI `convert` 映射 `source_id` 点号；默认 chaptered-guide 拒绝。`knowledge-pipeline-v1` focused `248` 项 PASS。未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push、未现网。
+- BROWSE-01：确认点 1 静态 HTML + 只读 GET。CLI `browse` 写出列表与 revision 页；兔子/几何选择面与 unlist 历史浏览已由 focused 测试覆盖。`knowledge-pipeline-v1` focused `241` 项 PASS。未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push、未现网。
+- [ADR-004](decisions/ADR-004-single-operator-main-flow.md) 接受：单人维护、单人使用，主流程优先。新增 `BROWSE-01`（现为 `DONE`）与独立设计 `docs/superpowers/specs/2026-08-30-knowledge-browse-projection-confirmation-design.md`；`CONV-01` 现为 `DONE`。`SKILL-02` 单人门禁 `DONE`，第二台电脑改 `SKILL-03`。`OPS-01` 本机恢复点 `DONE`，加密异地与告警改 `OPS-02`（简化为可选手工拷贝，不设计加密复制服务）。PORTAL-01 明确不替代确认点 1。
 - WIRE-01：HTTP/DB 受控接线。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md`。`knowledge-pipeline-v1` 上 focused HTTP library + 回归合计 `200` 项 PASS，含 auth registry 的 HTTP 套件 `251` 项 PASS。已与 PROJ-01 一并本地提交 `9e0c353`；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
 - PROJ-01：Projection family 选择面。独立设计 `docs/superpowers/specs/2026-08-30-projection-family-selection-design.md`。`knowledge-pipeline-v1` 上 focused projection-family 9 项 + 回归合计 `187` 项 PASS。已与 WIRE-01 一并本地提交 `9e0c353`；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
 - ADR-002 §18 / LIB-01：在 `knowledge-pipeline-v1` 增加知识库 candidate 接收、不可变 revision、current pointer 与 `unlist_current` 解析。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-library-revision-current-design.md`。对照设计补路径安全与验收缺口测试后 focused library+回归 `178` 项 PASS。已本地提交 `b672949`（5 文件）；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。

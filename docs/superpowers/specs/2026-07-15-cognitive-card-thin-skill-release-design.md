@@ -4,6 +4,8 @@
 
 日期：2026-07-15
 
+修订：2026-08-30 [ADR-004](../../decisions/ADR-004-single-operator-main-flow.md) 关闭 SKILL-02 单人门禁；「第二台真实 Codex 电脑」改为路线图 `SKILL-03`，不再要求本设计把 SKILL-02 保持 `IN PROGRESS`。
+
 目标版本：`cognitive-card-os` `0.1.0`
 
 发布入口：`https://www.yutou.space/card-os/skill/v1/`
@@ -29,7 +31,7 @@
 - Codex 客户端以 Skill 自动上传为主；浏览器手动上传只作为后续备用通道。
 - `0.1.0` 只执行服务器已存在的锁定任务。自由概念请求必须明确返回可信上游尚未编译，不能伪装为已创建任务。
 - 首版先在隔离 `CODEX_HOME` 中验证，不覆盖当前本机完整 `cognitive-card-os`。正式切换等待 `ACCEPT-01` 通过。
-- 在第二台真实 Codex 电脑安装同一摘要前，`SKILL-02` 保持 `IN PROGRESS`。
+- 在第二台真实 Codex 电脑安装同一摘要前，`SKILL-02` 保持 `IN PROGRESS`。（历史条款；2026-08-30 起由 [ADR-004](../../decisions/ADR-004-single-operator-main-flow.md) 关闭，第二台电脑改 `SKILL-03`。）
 
 ## 3. 权威边界与仓库布局
 
@@ -280,7 +282,7 @@ GenerationPacket 是本地生成的唯一事实与输出边界。Skill 指导 Co
 
 完整 `0.1.0` 首次写入 production stable 后仍处于 provisional release gate。发布端必须把先前 manifest 的精确 bytes/摘要或“原本不存在”状态保存在 root-private gate state，贯穿两个隔离安装、三场 writing-skills forward test、现网领取/上传/replay/撤销和独立审查。任一门禁失败立即原子恢复旧 manifest 或旧 absence 并复核公网旧 stable/404；immutable `0.1.0` 历史保留诊断。只有全部门禁通过才提交 stable 并删除 prior-manifest backup。
 
-`SKILL-01` 先完成注册表、安装器和发布器基础设施，并只在临时发行根使用非生产 fixture 验证不可变发布、安装与回滚；它不得提前把不完整的 `0.1.0` 激活为生产 stable。`SKILL-02` 生成完整 `0.1.0` 后，才首次激活生产 stable。生产注册表全部门禁通过后把 `SKILL-01` 标记为 `DONE`；代码、隔离安装和现网候选上传通过后，`SKILL-02` 标记为 `IN PROGRESS`，只有第二台真实 Codex 电脑安装相同摘要并通过兼容检查后才标记 `DONE`。`ACCEPT-01` 打通可信上游、兔子端到端生成、服务器验收和展示前，不切换本机活动 Skill。
+`SKILL-01` 先完成注册表、安装器和发布器基础设施，并只在临时发行根使用非生产 fixture 验证不可变发布、安装与回滚；它不得提前把不完整的 `0.1.0` 激活为生产 stable。`SKILL-02` 生成完整 `0.1.0` 后，才首次激活生产 stable。生产注册表全部门禁通过后把 `SKILL-01` 标记为 `DONE`；代码、隔离安装和现网候选上传通过后，`SKILL-02` 在 2026-08-30 起按 [ADR-004](../../decisions/ADR-004-single-operator-main-flow.md) 单人门禁标记 `DONE`；第二台真实 Codex 电脑改为路线图 `SKILL-03`。`ACCEPT-01` 打通可信上游、兔子端到端生成、服务器验收和展示前，不切换本机活动 Skill。
 
 ## 14. 测试与验收
 

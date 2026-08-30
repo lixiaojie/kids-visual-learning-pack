@@ -54,6 +54,8 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Knowledge Library Revision and Current Design](superpowers/specs/2026-08-30-knowledge-library-revision-current-design.md) | Server-side candidate intake, immutable four-object revisions, current pointer, and unlist_current | Approved |
 | [Projection Family Selection Design](superpowers/specs/2026-08-30-projection-family-selection-design.md) | Deterministic Projection family recommendation, alternatives, and explicit override without a fifth governed object | Approved |
 | [Knowledge Library HTTP/DB Wiring Design](superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md) | Controlled loopback HTTP adapters for the file-backed knowledge library and join-path compiled jobs against current | Approved |
+| [Knowledge Browse and Projection Confirmation Design](superpowers/specs/2026-08-30-knowledge-browse-projection-confirmation-design.md) | Confirmation-point-1 UI: read-only library browse plus projection-family selection; not PORTAL-01 | Approved |
+| [Knowledge Four-Card Converter Design](superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md) | CONV-01: library current to joined four-card generation-input; source_id mapping; not production-record emit | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 
@@ -81,6 +83,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [ADR-001 Card OS Client Contract and Production Core Ownership](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md) | Packet contract owns M1 claim/submit; production core stays server-side; package-v5 upload defers to PUBLISH-01 | Accepted |
 | [ADR-002 Card OS Knowledge Core and Projection Architecture](decisions/ADR-002-knowledge-core-and-projection-architecture.md) | Knowledge Core owns facts and scope; learning design and multiple projections remain downstream | Accepted |
 | [ADR-003 Knowledge Pipeline Workspace and Branch Governance](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) | Kids governs, server stores knowledge, thin Skill executes; live worktrees are capped until the join contract exists | Accepted |
+| [ADR-004 Single-Operator Main Flow](decisions/ADR-004-single-operator-main-flow.md) | 单人主路径优先；SKILL-02/OPS-01 单人门禁关闭；BROWSE-01 是确认点 1，不等于 PORTAL-01 | Accepted |
 
 ## Codex Memory Snapshots
 

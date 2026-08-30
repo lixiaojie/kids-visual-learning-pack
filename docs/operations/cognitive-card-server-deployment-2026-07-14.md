@@ -352,13 +352,14 @@ systemctl is-enabled cognitive-card-backup.timer
 
 保留 `/var/lib/cognitive-card-server`、`/var/backups/cognitive-card-server`、`/opt/cognitive-card-server/releases/` 和所有摘要/安装 manifest；首次回滚不等于删数据。只有证明数据损坏且选定了已验证备份时，才可制定单独数据恢复方案。
 
-## 8. OPS-01 剩余工作
+## 8. OPS-01 / OPS-02
 
-本次已完成本机 SQLite/候选备份、manifest 验证、隔离恢复和 14 天保留基础，但不能把它描述为完整灾难恢复。`OPS-01` 继续保持 `IN PROGRESS`，剩余项为：
+本次已完成本机 SQLite/候选备份、manifest 验证、隔离恢复和 14 天保留基础。按 [ADR-004](../decisions/ADR-004-single-operator-main-flow.md)，`OPS-01` 单人门禁以此为本机恢复点完成，**不把本机副本描述为完整灾难恢复**。
 
-1. 建立加密、可校验、可恢复的异地备份副本及失败告警；
-2. 对根分区在 `75%` 之前告警，并监控 inode、备份新鲜度和保留清理；
-3. 建立域名证书到期、Certbot 失败和公开 health/capabilities 失败的可投递告警。
+`OPS-02`（BACKLOG，不阻塞知识主路径）简化为：
+
+1. 需要时把已验证的 `/var/backups/cognitive-card-server` 拷到第二块盘或另一台机器，并抽查一次隔离恢复；不设计加密复制服务或告警栈。
+2. 后期可选：根分区在 `75%` 之前的容量/inode/备份新鲜度提醒；证书、Certbot 与公开 health/capabilities 失败的可投递告警。
 
 审计时还记录了一张与 Card OS 域名证书无关的 IP 证书预计于 `2026-07-20` 到期；它是独立 OPS 风险，不影响本次 `www.yutou.space` 证书验收，但应单独确认使用方并处理。
 

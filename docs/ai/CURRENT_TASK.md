@@ -5,73 +5,74 @@
 - Updated At: 2026-08-30
 - Updated By: Cursor Grok 4.6
 - Status: Done
-- Branch: kids `main`（治理）；server 集成功位 `knowledge-pipeline-v1` @ `9e0c353`
-- Base Commit: kids 本批治理基线；pipeline `9e0c353`（PROJ-01 + WIRE-01）；功能分支 `1facb79` / `4ca3e0e`；server main `c2a898c`
+- Branch: kids `main`；实现在 server `knowledge-pipeline-v1`
+- Base Commit: kids `c1c7b20`；server 本批开始前含未提交 BROWSE-01，基线 `9e0c353`
 
 ## Objective
 
-用户已授权 HTTP/DB 受控接线。在 `knowledge-pipeline-v1` 把知识库与 Projection 选择面接到现有 loopback HTTP 与 SQLite 任务面：HTTP 适配器只调用已有 library / selector；接合 generation-input 必须对应 library current；v1 FACT 密封路径保持兼容。不 merge 进 server `main`，不 push、不现网。
+实现 CONV-01：把已 publish 的 library current（且 Projection family 为显式 `four-card`）映射为现有接合 generation-input，使四卡 executor 能密封同一主题。处理 knowledge-core `source_id` 点号与 FACT `source_id` 不允许点号的映射。不写 Knowledge Core，不扩 PORTAL-01，不 merge server `main`，不现网。
 
 ## Background
 
-- LIB-01 与 PROJ-01 已是进程内 / CLI 能力；KNOW-02 明确当时零 HTTP/DB wiring。
-- 现网 `0.3.1` 与 server `main` `c2a898c` 只有锁定任务 / generation-input / compiled-jobs。
-- generation-input HTTP 原先只校验 v1 FACT 密封；接合 schema 无法入库，compiled-jobs 也不核对四对象 current。
-- API-01：HTTP 适配器不复制状态机；只调用现有应用服务。
-- ADR-002：不新增第五个治理对象；revision 仍是文件目录，current 仍是 pointer。
+- BROWSE-01 已提供确认点 1。接合 `assemble_from_knowledge_revision` 已存在，但 FACT 仍需人工拼装。
+- Authoring 生成 `src.{topic}.{slug}`（允许点号）；v1 FACT `_SOURCE_ID` 为 `^[a-z][a-z0-9-]{1,63}$`。
+- 兔子默认 chosen 是 `chaptered-guide`；four-card 须显式 `projection.family` 后重新 publish，才允许转换。
 
 ## Acceptance Criteria
 
-- [x] 独立设计已写入 `docs/superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md`，并登记到 `docs/README.md`
-- [x] HTTP 可 accept-candidate、publish、读取 current、unlist、refresh；适配器不复制 library 写入规则
-- [x] HTTP 可返回 Projection family 选择面；不持久化选择记录
-- [x] 接合 generation-input 仅当 library current identity 匹配时才能存储并创建 SQLite compiled-job
-- [x] v1 FACT 密封的 generation-input / compiled-jobs 行为不变
-- [x] `four-card` 仍须 opt-in；不改 AUTHOR-05 默认表；不改四对象 schema
-- [x] 既有 authoring、library、projection-family、generation-input、接合、contract、HTTP compiled focused 测试仍通过
-- [x] 未 merge 进 server `main`；未 push、未现网；未 add `uv.lock`
+- [x] 显式 four-card 的已 publish current 经 CLI `convert` 写出接合密封，并通过 `validate_joined_generation_input`
+- [x] FACT `source_id` 不含点号；knowledge-core 磁盘上的 `source_id` 仍含点号（转换只读）
+- [x] 默认 chaptered-guide 兔子 current 拒绝转换（`CONVERTER_FAMILY_NOT_FOUR_CARD`）
+- [x] 无 current / unlist 拒绝转换；点号映射碰撞 fail closed
+- [x] 仅改 Projection 时 Knowledge Core 摘要不变；接合 lock 可变
+- [x] 不新增 SQLite 表、不改四对象 schema、不改 v1 FACT 合同、不生成 production-record 本体（那是 executor 输出）
+- [x] 未 merge server `main`；未 push；未现网；未扩 PORTAL-01
 
 ## In Scope
 
-- kids：`docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md`、`docs/cognitive-card-os-roadmap.md`、独立设计 Spec、`docs/README.md`
-- server `knowledge-pipeline-v1`（`.worktrees/cognitive-card-server-knowledge-core`）：
-  - knowledge library HTTP 适配（含 bundle 从 JSON 重建）
-  - 接合 generation-input / compiled-jobs 对 library current 的门禁
-  - Projection family HTTP 查询
-  - KnowledgeContractError 稳定 HTTP 映射
-  - focused tests 与 README 本地用法
+Kids 治理：
+
+- `docs/ai/CURRENT_TASK.md`
+- `docs/ai/HANDOFF.md`
+- `docs/cognitive-card-os-roadmap.md`（CONV-01 状态与近期顺序）
+- `docs/cognitive-card-os-system-design.md`（仅交付阶段第 5 条）
+- `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`
+- `docs/README.md`（仅增加本设计一行）
+
+Server 实现（cognitive-card-server worktree，分支 `knowledge-pipeline-v1`）：
+
+- `source_id` 点号→连字符映射与 FACT 投影
+- library current → 接合 generation-input
+- CLI `convert`、focused 测试、server README 转换命令
+- 不修改 `uv.lock`
 
 ## Out of Scope
 
-- 把 `knowledge-pipeline-v1` 或功能分支 merge 进 server `main`
-- push、deploy、现网、改生产 env 必填项
-- 新 SQLite 表或把四对象 JSON 写入数据库
-- Portal、Renderer、four-card converter、新 Projection family
-- 改 AUTHOR-05 默认表；改 v1 FACT 密封合同
-- 撤 generation-input / thin-skill worktree；add `uv.lock`
+- PORTAL-01、RENDER-01、QA-01、PUBLISH-01、浏览器会话、公网
+- 写出 production-record 本体或跑现网 executor
+- 新 Projection family；把分类写入 Knowledge Core（KNOW-01）
+- 儿童中文 claim（AGE-01）；本批允许把 `canonical_claim` 同时填入 FACT `cn`/`en`
+- merge server `main`；push；deploy；现网
+- 改四对象 schema、v1 FACT 合同、ADR-001 packet 契约
+- 提交 kids `outputs/`；覆盖用户未提交的无关文档
 
 ## Constraints
 
-- 活 checkout：继续占用 knowledge-core 工位上的 `knowledge-pipeline-v1`；不新建第 4 个 server worktree。
-- 不覆盖用户未提交修改；两侧未跟踪的 `uv.lock` 不纳入提交。
-- HTTP 鉴权先于 body；写路径进 `PROTECTED_ROUTES`。
-- library 仍为文件目录加 current pointer；SQLite 只继续存 jobs/packets/tokens。
-- 不自动 push；不 merge 进 server `main`。
+- 实现只落在 server `knowledge-pipeline-v1`；kids 只更新任务账本、设计、交接与交付阶段一句。
+- 只转换 **current** 且 family 为 `four-card`；不从历史 revision 建执行密封。
+- 分类 / 地点等 four-card request 由 CLI `--request` 提供，不从 Knowledge Core 发明。
+- 不覆盖用户未提交修改；不 add `uv.lock`。
 
 ## Verification Plan
 
-- 在 `knowledge-pipeline-v1` worktree：
-  - `PYTHONPATH=src python3 -m unittest tests.test_http_knowledge_library tests.test_http_compiled tests.test_projection_family tests.test_knowledge_library tests.test_generation_input tests.test_generation_input_knowledge_revision tests.test_knowledge_contract_authoring tests.test_knowledge_contract_validation tests.test_knowledge_contract_fixtures tests.test_knowledge_contract_model`
-  - 额外 HTTP 回归：`tests.test_http_auth tests.test_http_admin tests.test_http_public tests.test_http_subscriber`
-- `git merge-base --is-ancestor HEAD c2a898c` 为非 0；server `main` 仍为 `c2a898c`
-- kids：`git diff --check`、`bash scripts/ai/check-handoff.sh`、`bash scripts/ai/check-agent-state.sh`
+- server focused converter + library / browse / HTTP / projection-family / authoring / contract / generation-input / join 回归
+- server 仍在 `knowledge-pipeline-v1`，未 merge `main`
+- kids：`git diff --check`；`bash scripts/ai/check-handoff.sh`；`bash scripts/ai/check-task-state.sh`；`bash scripts/ai/check-agent-state.sh`
 
 ## Relevant References
 
+- `docs/decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md`
 - `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`
-- `docs/decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md`
-- `docs/superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md` §13.2、§18.5
-- `docs/superpowers/specs/2026-08-30-knowledge-library-revision-current-design.md`
-- `docs/superpowers/specs/2026-08-30-projection-family-selection-design.md`
-- `docs/superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md`
-- `docs/cognitive-card-os-roadmap.md` API-01、LIB-01、PROJ-01、WIRE-01、§5 第 3 项
+- `docs/decisions/ADR-004-single-operator-main-flow.md`
+- `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`
+- `docs/cognitive-card-os-roadmap.md`
