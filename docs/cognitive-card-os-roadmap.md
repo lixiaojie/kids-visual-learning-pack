@@ -397,11 +397,12 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 下一轮按依赖顺序一次启动一个可独立验收的子项目：
 
-1. `AUTHOR-02`/`AUTHOR-03`/`AUTHOR-04` 试产与 `AUTHOR-05` 字段证据已完成；无合同收缩。AUTHOR 工作区已本地提交 `1facb79`（`codex/knowledge-core-contract-v1`）。抢救批次 IMPL-2/IMPL-3/IMPL-4、兔子 snapshot 兼容修复，以及新 snapshot 上的本机 A→B→C generate 已在 `codex/api-01-generation-input-v1` 本地提交 `878a28d`。均未 push/merge。不提前做分类默认或 current/index；
-2. 分类接入（KNOW-01）、年龄/语言表达（AGE-01）和 library current/index 保持独立立项，不因预览未展示而删 Plan 元数据；
-3. **抢救批次（优先于任何从零重建）**：评审并迁移存档 tag `archive/card-os-thin-skill-v1-20260717` 的生产核心至服务器侧可信上游（API-01 缺口），同步修复 package-v5 评审 Block 与测试 fixture；用户已确认此前重新生成发现历史积累丢失，故抢救优先；
-4. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`：以兔子、深圳、`age-5-6`、中英文、打印版完成端到端验收；
-5. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源。
+1. 工作区按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 收敛到知识管线三角色；已合入切片撤 checkout。AUTHOR 本地提交 `1facb79`，generation-input 本地提交 `878a28d`，均未 push。
+2. **接合合同（下一实施批次）**：generation-input lock 必须摘要四对象精确 revision，禁止平行 FACT 作为知识源。通过测试前不得把 `knowledge-core-contract-v1` 与 `api-01-generation-input-v1` merge 成一条分支。
+3. 服务器保存 candidate / 不可变 revision / current pointer（ADR-002 §18 服务器管理批次）。之后才做 Projection family 选择面。
+4. 分类接入（KNOW-01）、年龄/语言表达（AGE-01）和 library current/index 保持独立立项，不因预览未展示而删 Plan 元数据。
+5. 存档生产核心（tag `archive/card-os-thin-skill-v1-20260717`）仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层，也不再为该切片保持长期 worktree。
+6. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
 
 门户、渲染（独立立项部分）和 MCP 不进入下一实现批次。
 
@@ -409,6 +410,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-08-30
 
+- [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 接受：工作区按知识管线三角色治理；活 checkout 设上限；generation-input 与四对象存储在接合合同测试通过前不得 merge。server 活 checkout 已收成 main + knowledge-core + generation-input；kids 撤掉 5 个已合入/归档 worktree，thin-skill 因未提交文档未强制删除。
 - 用户授权后三个工作区分别本地提交，未混提交、未 push：knowledge-core `1facb79`（AUTHOR-02/03/04）；IMPL-2 `878a28d`（IMPL-2/3/4 + snapshot compat + catalog 新条目）；kids 三份任务文档另一次 commit。ae563e introducing commit 为 `878a28d`；catalog `registry_commit` 仍为 `9c1b82b`。
 - 新 snapshot 上兔子 A→B→C generate 本机 loopback 已跑通：全新 `/tmp/card-os-impl4-rabbit-ae563e.*`，短期 job-bound 0600 token，seal lock `sha256:15b8ea8b5ceb…ce2a`，packet `gp_3216c83d9a4340b2bb2a5bd3c23c6d06`（未复用 `gp_453f503267f24e7aa40c65dd3db1cc06`），`build_rabbit_record` 写出的 production record 经 `ae563e` validator 退出 0，`submit-directory` 为 `candidate_staged` 201。token 已撤销，loopback 已停。未接现网。
 - 兔子/mammal snapshot 兼容修复：新不可变 snapshot `sha256:ae563ea0…1f20` active，旧 `47d2…d4c1` retained。mammal `page_zones`、life/mammal learning-axis、rabbit visual vocabulary、safety 文本与 sealed FACT 对齐；空 unknowns / 空 uncertainty 不再被恐龙假设拒绝。focused 107 项 PASS（含 9 项 compat）。独立评审五闭包 PASS。未接现网。

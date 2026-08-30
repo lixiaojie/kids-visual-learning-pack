@@ -111,6 +111,8 @@ Kimi Code 的项目级能力已在当前版本核实：会自动读取项目根�
 通过 commit / cherry-pick / merge 汇总
 ```
 
+Card OS 另受 [ADR-003](../decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 约束：kids 只做治理；知识权威在 `cognitive-card-server`；常态活 checkout 为 kids `main` + server 主工作区 + 至多两条功能工位（存储 / 四卡执行）。已完成切片撤 worktree，靠 tag 与分支名归档。搬迁后先 `git worktree repair` 再 `prune`。
+
 ## 7. 任务结束流程
 
 1. 执行 `AGENTS.md` 第 8 节的验证要求。

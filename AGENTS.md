@@ -204,6 +204,7 @@ bash scripts/ai/install-hooks.sh       # 安装仓库级 Git Hook(每个 clone �
 - 跨渲染端（EdgeOne H5 / 微信小程序）的既有决策（如小程序全展开静态渲染、不做 active-group 高亮）记录在 `docs/cross-renderer-decisions.md`，属于有意简化，不是 parity bug。来源:`docs/cross-renderer-decisions.md`。
 - 架构迭代基线与拆分策略（H5 与小程序两条线独立推进）见 `docs/architecture-iteration-v1.3.md`。
 - Card OS：服务器统一负责协议、任务状态、候选、资产、排版、QA 和发布；薄 Skill 不保存 OpenAI API Key；现网只接受规范化锁定任务。来源:`README.md`、`docs/cognitive-card-os-system-design.md`。
+- Card OS 工作区按知识管线三角色划分（kids 治理、server 知识权威、薄 Skill 执行器）；活 checkout 有上限，不得把四对象存储与 FACT/generation-input 提前焊成一条分支。来源:`docs/decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md`。
 - Card OS 生产部署、升级、备份、回滚的门禁见 `docs/operations/cognitive-card-server-deployment-2026-07-14.md`。
 - `scripts/deploy.sh` 只上传构建产物与静态文件，不触碰服务器 nginx 配置。来源:`scripts/deploy.sh` 注释。
 

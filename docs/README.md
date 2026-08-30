@@ -77,6 +77,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [ADR Template](decisions/ADR-TEMPLATE.md) | Long-term decision record template | Canonical Current |
 | [ADR-001 Card OS Client Contract and Production Core Ownership](decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md) | Packet contract owns M1 claim/submit; production core stays server-side; package-v5 upload defers to PUBLISH-01 | Accepted |
 | [ADR-002 Card OS Knowledge Core and Projection Architecture](decisions/ADR-002-knowledge-core-and-projection-architecture.md) | Knowledge Core owns facts and scope; learning design and multiple projections remain downstream | Accepted |
+| [ADR-003 Knowledge Pipeline Workspace and Branch Governance](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) | Kids governs, server stores knowledge, thin Skill executes; live worktrees are capped until the join contract exists | Accepted |
 
 ## Codex Memory Snapshots
 

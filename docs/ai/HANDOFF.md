@@ -5,84 +5,82 @@
 - Updated At: 2026-08-30
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 5986d8d64bdde940b449ad54ea68cbe19a383c39
-- Kids HEAD: `5986d8d64bdde940b449ad54ea68cbe19a383c39` plus this docs commit
-- Server Branch: `codex/api-01-generation-input-v1`
-- Server Worktree: `/Users/admin/projects/family/kids-visual-learning-pack/.worktrees/cognitive-card-server-api-01-impl-2`
-- Server Base: `878a28d08e951a6985f429e69acbbe74ac5088a0`
-- Server Knowledge-Core Worktree: `/Users/admin/projects/family/kids-visual-learning-pack/.worktrees/cognitive-card-server-knowledge-core`
-- Knowledge-Core Branch: `codex/knowledge-core-contract-v1`
-- Knowledge-Core HEAD: `1facb79be751e7251fe5b06e6fc8444236069ae1`
-- Working Tree: kids 三份任务文档待本 commit；`outputs/` 仍排除；两 server worktree 仅剩未跟踪 `uv.lock`
-- Task Status: **Done。用户授权后三个工作区已分别本地提交，未混提交、未 push/merge/deploy。ae563e introducing commit 为 `878a28d08e951a6985f429e69acbbe74ac5088a0`；catalog `registry_commit` 仍为 `9c1b82be69df2da8348f66970a993e9c1984ce6d`。**
+- Base Commit: 34d5bbcb6d93b617bf551284b933370b182328f3
+- Kids HEAD: this commit of ADR-003 and governance docs
+- Server Branch: `codex/knowledge-core-contract-v1` 与 `codex/api-01-generation-input-v1` 均未 merge
+- Server Worktree: `/Users/admin/projects/family/kids-visual-learning-pack/.worktrees/cognitive-card-server-api-01-impl-2` @ `878a28d`
+- Server Knowledge-Core Worktree: `/Users/admin/projects/family/kids-visual-learning-pack/.worktrees/cognitive-card-server-knowledge-core` @ `1facb79`
+- Server main checkout: `/Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-server` @ `c2a898c`
+- Working Tree: `outputs/` 仍排除；thin-skill worktree 有未提交文档故未撤
+- Task Status: **Done（治理与安全收敛已提交）。ADR-003 已写。server 活 checkout 已收成 main + knowledge-core + generation-input。kids 已撤 5 个合入/归档 worktree；`card-os-thin-skill-v1` 因脏工作区未 `--force`。未实现接合代码，未 push。**
 
 ## Summary
 
-三个隔离工作区按授权分别提交。knowledge-core `codex/knowledge-core-contract-v1` commit `1facb79be751e7251fe5b06e6fc8444236069ae1`（AUTHOR-02/03/04 真实兔子、几何渐进、时效替代试产）。IMPL-2 `codex/api-01-generation-input-v1` commit `878a28d08e951a6985f429e69acbbe74ac5088a0`（generation-input、pipeline、snapshot compat、catalog 新条目；`47d2` retained、`ae563e` active）。kids `main` 本批只提交三份任务文档，排除 `outputs/`。两侧 `uv.lock` 未纳入。未 `--no-verify`，未访问现网。
+用户确认知识管线为工作区轴线，并要求收敛过多分支。本批新增 ADR-003（三角色、活 checkout 上限、接合门禁后再 merge）。对已搬迁的 server worktree 先 `repair` 再 `prune`，去掉 Documents 幽灵登记。server 删除已合入分支 `backup-wal-keeper`、`release-0.3.1`、`feature/subscriber-execution-foundation`，并撤掉 api-01 / api-v03 / backup / release 四个 checkout。kids 修了同样的 gitdir 漂移后撤掉 asset-inventory、server-deploy、thin-client、salvage、harness；本地删除已合入的 `codex/asset-inventory-v1`、`codex/card-os-server-deploy`、`codex/card-os-thin-client-v1`、`codex-part-a-edgeone-miniprogram-ready`。thin-skill worktree 留着：有未提交的 07-16 library 计划/设计改动。接合合同未写代码。
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| knowledge-core | commit `1facb79`：authoring.py、authoring tests、README、四份 examples | committed, not pushed |
-| IMPL-2 | commit `878a28d`：generation_input/、pipeline/、HTTP/auth、snapshot `ae563e…/`、catalog 新条目、compat tests | committed, not pushed |
-| kids | `docs/ai/CURRENT_TASK.md` | 本批授权提交任务标 Done |
-| kids | `docs/cognitive-card-os-roadmap.md` | 记录本地 commit 与 introducing hash |
-| kids | `docs/ai/HANDOFF.md` | 本交接 |
+| kids | `docs/decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md` | 本 commit 新增 |
+| kids | `docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md`、`docs/cognitive-card-os-roadmap.md` | 本 commit |
+| kids | `docs/README.md`、`docs/ai/README.md`、`PROJECT_CONTEXT.md`、`AGENTS.md` | ADR-003 引用，本 commit |
+| kids | 五个已退役 worktree 目录 | 已从磁盘移除 |
+| server | worktree 登记与三个已合入本地分支 | repair/prune/remove/`branch -d`；无代码 commit |
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `/Users/admin/projects/family/kids-visual-learning-pack` 的 `main` | 只改任务三文档；不动 `outputs/`；不改 `skills/cognitive-card-os/` |
-| generate / loopback | server IMPL-2 worktree @ `878a28d` | 已本地提交；产物仍在 `/tmp`；凭据 `/tmp/card-os-tokens/` |
-| AUTHOR | knowledge-core worktree @ `1facb79` | 已本地提交；勿与 IMPL 混 push |
+| kids 治理 | `~/projects/family/kids-visual-learning-pack` `main` | 规范与任务；不存知识 revision |
+| 知识存储 | `.worktrees/cognitive-card-server-knowledge-core` @ `1facb79` | 四对象 authoring；勿与 IMPL 混 merge |
+| 四卡执行 | `.worktrees/cognitive-card-server-api-01-impl-2` @ `878a28d` | generation-input；接合测试前保持隔离 |
+| 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
+| 例外 | `.worktrees/card-os-thin-skill-v1` | 脏；未强制删除 |
 
 ## Verification Results
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| knowledge-core `tests.test_knowledge_contract_authoring` | PASS | 17 tests, 0.930s, OK；`git diff --check` 退出 0 |
-| IMPL-2 focused unittest | PASS | `test_generation_input` / `test_pipeline` / `test_snapshot_compat` / `test_http_compiled` / `test_auth_service` / `test_http_auth` 共 53 tests OK；`git diff --check` 退出 0 |
-| knowledge-core commit | PASS | `1facb79`；暂存 7 文件；`uv.lock` 未纳入 |
-| IMPL-2 commit | PASS | `878a28d`；68 文件；`uv.lock` 未纳入；catalog `registry_commit` 仍为 `9c1b82b` |
-| ae563e introducing commit | PASS | 交接层记录 `878a28d08e951a6985f429e69acbbe74ac5088a0`；未改 catalog 字段 |
-| kids `skills/cognitive-card-os/` | PASS | `git status --short` 无该路径 |
-| `git diff --check` (kids) | PASS | 文档更新后退出 0 |
-| `bash scripts/ai/check-handoff.sh` | PASS | 见本批 kids 验证 |
-| `bash scripts/ai/check-agent-state.sh` | WARN | 0 fail；既有 secret 字段名 WARN 与文档复核到期 WARN，与本批无关 |
-| 未 push/merge/deploy | PASS | 三仓均仍本地；未打现网 HTTPS |
+| server `worktree repair` + `prune` | PASS | 5 条 family 路径登记修复；tmp subscriber 幽灵登记已 prune |
+| server 活 `worktree list` | PASS | 仅 main、knowledge-core、generation-input |
+| server `branch -d` 已合入 | PASS | 删除 backup-wal-keeper / release-0.3.1 / subscriber-execution-foundation |
+| kids `worktree repair` + remove | PASS | 5 个 worktree 已撤；thin-skill 因脏文件拒绝无 force 删除 |
+| kids `branch -d` 已合入 | PASS | asset-inventory、server-deploy、thin-client、part-a |
+| 独立提交分支仍在 | PASS | salvage、thin-skill、harness、api-01-core-snapshot、remote-api-v03 |
+| 未 `--force` thin-skill | PASS | 2 modified + 3 untracked 07-16 docs |
+| 未 merge / push / 现网 | PASS | |
+| kids `git diff --check` | PASS | 文档更新后 |
+| `bash scripts/ai/check-handoff.sh` | PASS | 见本批结束验证 |
+| `bash scripts/ai/check-agent-state.sh` | WARN | 既有 secret 字段名与文档复核到期，与本批无关 |
 
 ## Known Failures
 
 - full suite 2 项 real-uvicorn 502 与 kids-world `19 !== 18` 仍在，与本批无关。
-- catalog 新条目 `registry_commit=9c1b82be69df2da8348f66970a993e9c1984ce6d` 指向不含本次 snapshot 文件的 worktree base。catalog 只增不改；真实 introducing commit 现为 `878a28d08e951a6985f429e69acbbe74ac5088a0`，只记在交接层。
+- catalog `registry_commit=9c1b82b` 诚实性缺口仍只记在交接层。
+- kids `.worktrees/card-os-thin-skill-v1` 未撤：未提交 `docs/cognitive-card-os-roadmap.md`、`docs/superpowers/specs/2026-07-16-cognitive-card-client-production-library-design.md`，以及三份 07-16 plan 未跟踪文件。
 
 ## Risks and Caveats
 
-- 本机 loopback 不是现网；`--base-url` 不得指向 `https://www.yutou.space`。
-- 两 server 分支仅本地 commit，未 push；合并前需各自 review。
-- 两侧未跟踪 `uv.lock` 仍在工作区，不要误加。
-- 新 snapshot 的 safety 文本是全局的：用 ae563e 跑恐龙 generate 时 FACT 也必须用 `只看、不抓。`；旧博物馆长句只存在于 retained 47d2。
-- 先前 job-bound token 已撤销；0600 文件仍可能在 `/tmp/card-os-tokens/`，不可再用于认证。
+- 先 repair 再 prune 是硬顺序；对 Documents 旧路径直接 prune 会毁掉 family checkout。
+- server 主工作区仍在 `~/Documents/Codex/...`，与本机 `~/projects` 约定不一致；本批未搬迁。
+- origin 仍有 `codex-part-a-edgeone-miniprogram-ready`；只删了本地分支。
+- 接合合同未实现：两条 server 功能分支仍必须隔离。
 
 ## Remaining Work
 
-1. 未授权前不要 push/merge/deploy，不要打现网 HTTPS。
-2. 下一产品工作未立项：不要自动开始 KNOW-01 / AGE-01 / ACCEPT-01。
+1. 用户决定 thin-skill 脏文档：提交到该分支、迁到治理仓、或丢弃后再 `worktree remove`。
+2. 下一产品任务：generation-input lock 摘要四对象 revision（新 CURRENT_TASK，新 integration worktree）。
+3. 未授权前不要 push/merge/deploy。
 
 ## Exact Next Action
 
-在用户明确授权 push 之前不要推送。若继续产品工作，先更新 `CURRENT_TASK.md` 再实施。推荐下一动作（需用户点名）：
-
-1. 分别 push `codex/knowledge-core-contract-v1` 与 `codex/api-01-generation-input-v1`，不要混成一次 push。
-2. 或另开任务：恐龙 generate（ae563e safety 必须用 `只看、不抓。`）、KNOW-01、AGE-01，或 ACCEPT-01 前置评审。
-3. kids `outputs/` 仍排除；两侧 `uv.lock` 仍不要提交。
+先更新 `CURRENT_TASK.md` 再开接合合同实施。在那之前不要 merge `codex/knowledge-core-contract-v1` 与 `codex/api-01-generation-input-v1`。若先处理 thin-skill 脏工作区：打开 `.worktrees/card-os-thin-skill-v1`，决定那 5 个文件去留，然后再撤 checkout。不要 `--force`。不要 push。
 
 ## Recovery Notes
 
-- kids：`/Users/admin/projects/family/kids-visual-learning-pack`；任务三文档。
-- IMPL-2：`.worktrees/cognitive-card-server-api-01-impl-2` @ `878a28d`。
-- AUTHOR：`.worktrees/cognitive-card-server-knowledge-core` @ `1facb79`。
-- generate 产物：`/tmp/card-os-impl4-rabbit-ae563e.aPwNww`；凭据目录 `/tmp/card-os-tokens/`（已撤销）。
+- kids：`/Users/admin/projects/family/kids-visual-learning-pack`；本批治理文档在此 commit。
+- 活 server：knowledge-core `1facb79`；generation-input `878a28d`；main `c2a898c`。
+- 保留无 checkout 的分支：`codex/card-os-salvage-v1`、`codex/harness-v1`、`codex/api-01-core-snapshot`、`codex/remote-api-v03`。
+- tag：`archive/card-os-thin-skill-v1-20260717`。
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
