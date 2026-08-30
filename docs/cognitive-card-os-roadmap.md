@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-08-21
+最近更新：2026-08-30
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -35,7 +35,11 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | --- | --- | --- | --- |
 | GOV-01 | 总设计与唯一任务账本 | DONE | 后续变更持续更新 |
 | KNOW-02 | Knowledge Core four-object contract | DONE | 四对象纯合同、fixtures、证据与独立复审完成；下一步进入最小 local authoring MVP |
-| AUTHOR-01 | Local authoring vertical slice | DONE | 标准库 CLI 已跑通结构化输入、四对象、Publish 校验和可浏览 revision 目录；下一步做真实主题试产 |
+| AUTHOR-01 | Local authoring vertical slice | DONE | 标准库 CLI 已跑通结构化输入、四对象、Publish 校验和可浏览 revision 目录 |
+| AUTHOR-02 | 真实兔子复合主题试产 | DONE | 4 个真实来源、8 条命题、4 个知识单元已闭环；下一步试产 progressive 几何主题 |
+| AUTHOR-03 | 真实几何渐进主题试产 | DONE | 平面→立体→高维的显式先修链、必修/选修 Plan 与分阶段 Projection 已闭环；下一步试产时效性主题 |
+| AUTHOR-04 | 合成时效主题试产 | DONE | review due、expiry、block/unlist 与 revision 替代已由 CLI 闭环；下一步汇总三类试产摩擦 |
+| AUTHOR-05 | 三类试产字段消费证据 | DONE | 无字段达到三次未消费门槛；不改合同；分类/年龄表达/current pointer 仍为后续立项 |
 | KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
@@ -89,7 +93,81 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - 首批边界：当前 Codex/人工提供来源与命题；CLI 不联网、不生成事实、不接 HTTP/DB/Portal/正式 Renderer。
 - 完成结果：rabbit composite 示例端到端通过；无效输入和重复 revision fail closed；产物含四对象、validation 记录与 escaped HTML 浏览页；默认 Projection 按 scope 路由，`four-card` 只在显式请求时使用。
 - 验收证据：2026-08-21 fresh authoring suite `5` 项、contract + authoring suite `133` 项均通过，`py_compile` 和 server `git diff --check` 通过；使用声明 test dependencies 的完整 suite `444` 项全部通过。实现已提交到隔离 server 分支 commit `120e5fc`，未 push/merge。
-- 下一步：选择一个真实主题，人工/Codex 基于可信来源填写 request，生成首个非 synthetic revision 并直接检查浏览产物；先记录真实使用摩擦，再决定是否增加 library index、更多来源或 temporal authoring 字段。
+- 后续：真实内容试产由 `AUTHOR-02` 承接。
+
+### AUTHOR-02 真实兔子复合主题试产
+
+- 状态：`DONE`
+- 权威仓库：`cognitive-card-server`；任务治理为 `kids-visual-learning-pack`。
+- 完成结果：基于 Merck Veterinary Manual 与 RSPCA 的 4 个机构页面，形成外观与运动、牙齿与消化、行为与需要、饲养与安全 4 个知识单元和 8 条命题；每条命题绑定自己的来源与 evidence span。Learning Plan 为 `age-5-6`、中英双语、入门深度、15 分钟亲子共读，composite 默认选择 `chaptered-guide`，未强制 four-card。
+- 最小缺口修复：真实试产证明单来源 request 会错误压平 provenance，因此增加兼容旧 `source` 的 `sources + source_slug`；同时允许命题声明 temporal 复核策略，生物基础事实按 730 天 slow-changing 复核，行为与照护建议按 365 天 periodic 复核。两项均由 focused regression test 保护。
+- 产物检查：临时 revision 目录包含四对象、manifest、`validation.json` 与 escaped HTML 共 6 个文件；Publish validation 为 valid、issues 为 0；直接 CLI 编译耗时 `0.06s`。产物只写 `/tmp`，未写用户 `outputs/`。
+- 本地提交：AUTHOR-02/03/04 实现与试产夹具已提交到隔离 server 分支 `codex/knowledge-core-contract-v1` commit `1facb79`，未 push/merge。
+- 真实摩擦记录：人工需要决定 4 个单元边界、8 条命题的来源归属、unknown/confusion/safety 边界及复核周期；默认 Projection 无需改写。事实检索、阅读与治理的总人工耗时未单独埋点，不能给出可信总时长。`age-5-6` 与双语当前只被保存为 Learning Plan 元数据，结构浏览页仍直接显示英文 canonical claim；分类信息也尚未进入 authoring request。这些不阻断结构化闭环，留待后续批次，不扩建当前框架。
+- 后续：用 progressive 几何主题验证逐步深入路径；再用时效性主题验证更新/过期行为。正式儿童表达、图片、PDF、library current/index、Portal 与服务器存储仍保持独立立项。
+
+### AUTHOR-03 真实几何渐进主题试产
+
+- 状态：`DONE`
+- 权威仓库：`cognitive-card-server`；任务治理为 `kids-visual-learning-pack`。
+- 完成结果：基于 OpenStax 平面/三维坐标教材页与 Plus Maths 高维空间文章，形成平面、立体和更高维 3 个知识单元、6 条命题。Knowledge Core 显式保存 2 条 `prerequisite_of`，Learning Path 派生对应 `prerequisite` edges；循环图在 revision 写入前拒绝。
+- Plan / Projection：`age-5-6`、中英双语、入门、15 分钟亲子学习；平面和立体为 required，更高维为 optional。默认 `progressive-exploration` 为 3 个阶段分别建立 slot，不使用 four-card，也不在 Projection 增加数学事实。
+- 最小缺口修复：authoring request 兼容增加顶层 `prerequisites` 与 `learning.optional_unit_slugs`；progressive Projection 由单一不透明 slot 调整为每个路径节点一个 slot。无显式先修关系的旧 progressive request 继续保留数组顺序生成 `next` 的兼容行为。
+- 产物检查：临时 revision `/tmp/cognitive-card-author03.0JlqVj/geometry/revision-0001` 含四对象、manifest、`validation.json` 和 escaped HTML 共 6 个文件；Publish validation 为 valid、issues 为 0；直接 CLI 编译耗时 `0.06s`。authoring/contract/full suites 分别为 `12/140/451` 项 PASS。
+- 真实摩擦记录：每条命题仍需人工选择来源、边界和复核周期；本主题 6 条稳定数学命题重复填写相同 1095 天策略，提示未来可能需要受控默认，但两次试产证据还不足以扩建。分类仍未进入 request，年龄与语言仍只保存为 Plan 元数据，结构预览仍显示英文 canonical claim；均不阻断本次知识结构闭环。
+- 后续：用合成但时效机制真实的主题验证 review due、expiry、block/unlist 与 revision 替代。完成三类试产后再决定 library current/index、分类接入和年龄/语言表达适配，不提前进入 Portal、Renderer 或服务器存储。
+
+### AUTHOR-04 合成时效主题试产
+
+- 状态：`DONE`
+- 权威仓库：`cognitive-card-server`；任务治理为 `kids-visual-learning-pack`。
+- 完成结果：合成 after-school slot fixture 证明过期命题默认 Publish CLI fail closed；`block_publish` 与 `unlist_current` 在 Publish 均报告 `KNOWLEDGE_EXPIRED` 且不写目录。`temporal.reviewed_at` 可早于 `authored_at`，使 review due 可被计算；Publish 因 freshness/health 门禁拒绝，`--stage candidate` 物化 `REVIEW_DUE` 警告与 `degraded` health。revision 2 保留 superseded 历史命题、原 temporal 记录和 `supersedes` 关系，新命题可 Publish，final-content lock 与 revision 1 不同。Projection 显式 `time-sensitive-brief`。
+- 最小缺口修复：authoring 按 temporal 计算 `freshness`；命题可声明 `standing`/`revision`；顶层 `supersedes`；superseded 命题不进入当前 unit/path；CLI `--stage candidate`；Publish 只对 blocking error fail closed，warnings 写入 `validation.json`。
+- 产物检查：临时 library `/tmp/cognitive-card-author04/fixture-after-school-slot` 含 revision-0001（candidate）与 revision-0002（publish）。authoring/contract suites `17/145` PASS。声明依赖 full suite `456` 项中 454 PASS；2 项既有 `test_real_uvicorn_*` 返回 502，属本地 HTTP 环境，与本批无关。
+- 真实摩擦记录：`unlist_current` 在无 current pointer 时与 `block_publish` 的 CLI 行为相同，区别留给后续 library current/index。review due 不能在 Publish 下物化，必须 Candidate。替代 revision 仍需人工同时给出 superseded 命题与 `supersedes` 对。分类、年龄/语言儿童正文仍未消费。证据仍不足以增加全局 temporal 默认。
+- 后续：汇总 AUTHOR-02/03/04 未消费字段和重复默认；之后按证据决定 library current/index、分类接入和年龄/语言表达。抢救批次、Portal 与 Renderer 保持独立。
+
+### AUTHOR-05 三类试产字段消费与默认策略证据
+
+- 状态：`DONE`
+- 权威仓库：`kids-visual-learning-pack`（治理）；对照物为 server `examples/authoring/` 与 `authoring.py`。
+- 样本：AUTHOR-02 `rabbit-real.json`；AUTHOR-03 `geometry-progressive-real.json`；AUTHOR-04 `schedule-expired-synthetic.json` + `schedule-replacement-synthetic.json`（同一主题的过期与替代，计为一次时效试产）。
+- 门槛：连续三次未进入四对象，或三次都手工改写**同一**默认，才允许收缩字段或增加受控默认。HTML 预览未展示不等于未消费。
+- 本批代码：未改四对象合同，未改 authoring 默认。
+
+对照表（C = 进入 Knowledge Core / Learning / Projection；P = 进入 HTML 预览；空 = 该试产未出现或恒为空）：
+
+| 字段或决策 | A02 兔子 | A03 几何 | A04 时效 | 三次门槛 | 本批 |
+| --- | --- | --- | --- | --- | --- |
+| `sources[]` + `source_slug` | C | C | C | 已消费 | 保留 |
+| `prerequisites` | 无 | C | 无 | 未三次出现 | 保留可选 |
+| `optional_unit_slugs` | 无 | C | 无 | 未三次出现 | 保留可选 |
+| `supersedes` + `standing` | 无 | 无 | C | 一次 | 保留 |
+| `projection.family` 显式 | 默认 chaptered-guide | 默认 progressive-exploration | 显式 time-sensitive-brief | 默认路由 2/3 可用 | 不改默认表 |
+| `learning.audience_profiles` = age-5-6 | C 非 P | C 非 P | C 非 P | 三次写入 Plan，预览不用 | 不删字段；表达适配另立项 |
+| `learning.languages` 含 zh-CN | C 非 P | C 非 P | C 非 P | 三次无中文 claim | 同上 |
+| `claim` / `claim_language=en` | C+P 英文 | C+P 英文 | C+P 英文 | 三次无儿童中文正文 | 不改合同 |
+| `temporal` 整块手写 | 每命题 730 或 365 | 每命题 1095 | 每命题 7 日 + 到期 | 三次都手写，但**默认值不同** | 不加全局 interval |
+| `temporal.valid_from` | 恒 null | 恒 null | 恒 null | 三次空值 | **达标可改为可选 omit**；本批推迟（exact keys 防漏填仍有价值） |
+| `temporal.event_triggers` | [] | [] | 仅 replacement 非空 | 未三次空 | 保留 |
+| `temporal.expiry_behavior` | 均为 warn | 均为 warn | block_publish / unlist 试过 | 已按主题分化 | 保留 |
+| `source.published_at` | 恒 null | 有日期 | 恒 null | 未三次空 | 保留 |
+| `source.valid_until` | 恒 null | 恒 null | 有日期 | 未三次空 | 保留 |
+| `unknowns` / `confusion_boundary` / `safety_scope` | 有空有填 | 有空有填 | 有填 | 已消费 | 保留 |
+| request 内分类 domain/form/subtype | 无此键 | 无此键 | 无此键 | 三次不在 authoring schema | **不是收缩，是未立项接入 KNOW-01** |
+| library current / `unlist_current` 下架 | 无 | 无 | Publish 与 block 同码 | 三次无 current pointer | 不改 validator；current/index 另立项 |
+| four-card / 图片 / PDF | 无 | 无 | 无 | 故意 Out of Scope | 不在本证据触发 |
+
+人工结构选择（三次都要人做，不自动默认）：单元切分、命题归属来源、unknown/confusion/safety、复核周期、先修边、必修/选修、是否替代。
+
+结论：
+
+1. 不加全局 temporal 默认（interval 730/1095/7 不一致）。
+2. 不从 request 删除 Plan 年龄/语言；它们已进 learning-spec，缺的是儿童表达 Projection（AGE-01），不是未消费。
+3. 分类接入、library current/index、中文 claim 投影均为**新能力**，未达“删字段”门槛。
+4. 唯一触及三次空值的可选项是 authoring 层 `valid_from` 可省略；推迟到下一次有人被 null 填表明显拖慢时再做。
+
+- 后续：抢救批次（存档生产核心 → 可信上游）优先于从零重建；分类/AGE 表达/current pointer 按独立任务，不混入 authoring CLI。
 
 ### KNOW-01 分类与对象类型覆盖
 
@@ -158,6 +236,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
 - 已部署：`0.3.1` 经 `www.yutou.space/card-os` 的 HTTPS、持久化和非 root 服务验收，health/capabilities 与受保护路径均通过；见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
 - 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。该入口是 ACCEPT-01 的真正前置；候选实现为存档 tag `archive/card-os-thin-skill-v1-20260717` 中 `skills/cognitive-card-os/core/` 的生产核心（分类 v2、27 步工作流、full-spec v4.3/v5.0、哺乳动物 v1 与恐龙 v2 模板族），按 ADR-001 须迁移到服务器侧并重新评审，不得直接从 Skill 包形态合入。
+- 抢救进度：API-01-IMPL-1 snapshot 已在 `codex/api-01-core-snapshot`；API-01-IMPL-2/3/4 确定性封印、sealed-input store、compiled-jobs 与 prepare/submit 辅助已在隔离分支 `codex/api-01-generation-input-v1` 本地提交 `878a28d`（基线 `9c1b82b`，未 push）。兔子/mammal production-record 兼容 snapshot `sha256:ae563e…1f20` 已导入并将 `47d2…d4c1` retained；introducing commit 为 `878a28d`，catalog `registry_commit` 仍为 `9c1b82b`。本机 loopback 已用全新 `/tmp` 与短期 job-bound token 完成 A→B→C：seal lock `sha256:15b8ea…ce2a`，新 packet（未复用 `gp_453f…cc06`），snapshot validator 退出 0，`submit-directory` 为 `candidate_staged`。自由概念仍失败关闭。未接现网。不得把当前状态描述为可执行生产流程。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
 
 ### AUTH-01 Card OS 身份与权限
@@ -318,8 +397,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 下一轮按依赖顺序一次启动一个可独立验收的子项目：
 
-1. 用 `AUTHOR-01` 现有 CLI 完成一个真实、范围可控的主题试产，直接检查 revision JSON 与本地浏览页，记录真实内容治理和使用摩擦；
-2. 只修复试产中阻断功能闭环的缺陷；多来源、temporal authoring、library 首页等能力按真实需求排序，不预先扩建框架；
+1. `AUTHOR-02`/`AUTHOR-03`/`AUTHOR-04` 试产与 `AUTHOR-05` 字段证据已完成；无合同收缩。AUTHOR 工作区已本地提交 `1facb79`（`codex/knowledge-core-contract-v1`）。抢救批次 IMPL-2/IMPL-3/IMPL-4、兔子 snapshot 兼容修复，以及新 snapshot 上的本机 A→B→C generate 已在 `codex/api-01-generation-input-v1` 本地提交 `878a28d`。均未 push/merge。不提前做分类默认或 current/index；
+2. 分类接入（KNOW-01）、年龄/语言表达（AGE-01）和 library current/index 保持独立立项，不因预览未展示而删 Plan 元数据；
 3. **抢救批次（优先于任何从零重建）**：评审并迁移存档 tag `archive/card-os-thin-skill-v1-20260717` 的生产核心至服务器侧可信上游（API-01 缺口），同步修复 package-v5 评审 Block 与测试 fixture；用户已确认此前重新生成发现历史积累丢失，故抢救优先；
 4. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`：以兔子、深圳、`age-5-6`、中英文、打印版完成端到端验收；
 5. 并行治理项继续人工复核 MIG-01 的 170 个重复组、159 个同名候选和 138 个衍生候选，不自动删除或选择来源。
@@ -327,6 +406,17 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 门户、渲染（独立立项部分）和 MCP 不进入下一实现批次。
 
 ## 6. 更新记录
+
+### 2026-08-30
+
+- 用户授权后三个工作区分别本地提交，未混提交、未 push：knowledge-core `1facb79`（AUTHOR-02/03/04）；IMPL-2 `878a28d`（IMPL-2/3/4 + snapshot compat + catalog 新条目）；kids 三份任务文档另一次 commit。ae563e introducing commit 为 `878a28d`；catalog `registry_commit` 仍为 `9c1b82b`。
+- 新 snapshot 上兔子 A→B→C generate 本机 loopback 已跑通：全新 `/tmp/card-os-impl4-rabbit-ae563e.*`，短期 job-bound 0600 token，seal lock `sha256:15b8ea8b5ceb…ce2a`，packet `gp_3216c83d9a4340b2bb2a5bd3c23c6d06`（未复用 `gp_453f503267f24e7aa40c65dd3db1cc06`），`build_rabbit_record` 写出的 production record 经 `ae563e` validator 退出 0，`submit-directory` 为 `candidate_staged` 201。token 已撤销，loopback 已停。未接现网。
+- 兔子/mammal snapshot 兼容修复：新不可变 snapshot `sha256:ae563ea0…1f20` active，旧 `47d2…d4c1` retained。mammal `page_zones`、life/mammal learning-axis、rabbit visual vocabulary、safety 文本与 sealed FACT 对齐；空 unknowns / 空 uncertainty 不再被恐龙假设拒绝。focused 107 项 PASS（含 9 项 compat）。独立评审五闭包 PASS。未接现网。
+- `API-01-IMPL-4` 确定性切片已落地（focused 98 项 PASS）。新 snapshot 上兔子 generate 本机 A→B→C 已跑通（validator 退出 0、`candidate_staged`）。未接现网。
+- `API-01-IMPL-3` sealed-input store、`compiler_import` 写入、受限 GET、原子 compiled-jobs 与 executor 门禁已在同一隔离分支落地。focused HTTP/auth/generation-input 回归 92 项 PASS。未接 Codex。
+- `API-01-IMPL-2` generation-input 纯合同在隔离 server 分支 `codex/api-01-generation-input-v1`（基线 IMPL-1 `9c1b82b`）落地：schema、snapshot catalog 绑定、模板 resolver 复算、template composite 固定向量、generation input lock、FACT/source/unknown 闭包。focused suite 11 项 PASS。未接 HTTP/DB。未启动 Codex。
+- `AUTHOR-04` 合成时效试产完成：CLI 对过期 Publish fail closed；review due 走 Candidate；revision 替代保留 superseded 历史。authoring/contract `17/145` PASS。
+- `AUTHOR-05` 三类试产字段证据完成：无全局 temporal 默认；`valid_from` 三次空值但推迟可选化；分类/AGE/current 另立项。未改合同。
 
 ### 2026-08-19
 
