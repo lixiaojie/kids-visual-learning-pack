@@ -6,7 +6,7 @@
 - Updated By: Cursor Grok 4.6
 - Status: Done
 - Branch: kids `main`；实现在 server `knowledge-pipeline-v1`
-- Base Commit: kids `c1c7b20`；server 本批开始前含未提交 BROWSE-01，基线 `9e0c353`
+- Base Commit: kids `a85a785`；server `knowledge-pipeline-v1` @ `e9bfd22`（基线 `9e0c353`）
 
 ## Objective
 

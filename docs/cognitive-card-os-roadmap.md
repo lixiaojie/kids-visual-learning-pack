@@ -47,8 +47,8 @@
 | LIB-01 | 知识库 candidate / 不可变 revision / current | DONE | 进程内 library 已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
 | PROJ-01 | Projection family 选择面 | DONE | 已本地提交进 `9e0c353`；未 merge 进 main |
 | WIRE-01 | HTTP/DB 受控接线 | DONE | loopback HTTP 已接 library / 选择面 / 接合 current 门禁；已本地提交 `9e0c353`；未 merge 进 main |
-| BROWSE-01 | 知识浏览与 Projection 确认 | DONE | 静态 HTML + 只读 GET 已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
-| CONV-01 | four-card converter | DONE | 接合密封已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
+| BROWSE-01 | 知识浏览与 Projection 确认 | DONE | 已本地提交进 `e9bfd22`；未 merge 进 main |
+| CONV-01 | four-card converter | DONE | 已本地提交进 `e9bfd22`；未 merge 进 main |
 | KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试；不阻塞 BROWSE-01 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
@@ -214,7 +214,7 @@
 - 依赖：[ADR-004](decisions/ADR-004-single-operator-main-flow.md)、[独立设计](superpowers/specs/2026-08-30-knowledge-browse-projection-confirmation-design.md)、LIB-01、PROJ-01、WIRE-01。
 - 目标：确认点 1 的人机界面——列出 topic / current / 历史 revision，只读展示 Knowledge Core，展示 Projection family 选择面。默认确认不写盘；覆盖 family 仍走 CLI 重编译。
 - 完成结果：CLI `browse` 写出 `index.html` 与 `{topic}__revision-NNNN.html`；兔子 current chosen 为 `chaptered-guide` 且 `four-card` 为 discouraged；几何 current chosen 为 `progressive-exploration`。loopback GET 列出 topic / revisions / 四对象只读视图。不写 Knowledge Core，不等于 PORTAL-01。
-- 验收证据：server `knowledge-pipeline-v1` 上 browse + library / projection-family / HTTP library / auth registry / generation-input / authoring / contract / HTTP compiled 合计 focused `241` 项 PASS。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
+- 验收证据：server `knowledge-pipeline-v1` 上 browse + library / projection-family / HTTP library / auth registry / generation-input / authoring / contract / HTTP compiled 合计 focused `241` 项 PASS。已与 CONV-01 一并本地提交 `e9bfd22`。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
 - 非范围：浏览器会话、公网 Portal、UI 内 publish、CONV-01、Renderer、现网。
 
 ### CONV-01 four-card converter
@@ -224,7 +224,7 @@
 - 依赖：BROWSE-01、接合 lock、ADR-001 抢救边界、[独立设计](superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md)。
 - 目标：把 library current 的四对象映射为现有接合 generation-input，使四卡 executor 能密封同一主题。须处理 knowledge-core `source_id` 含点号与 FACT `source_id` 不允许点号的映射。
 - 完成结果：CLI `convert` 只读 current；family 必须为显式 `four-card`；FACT `source_id` 把 `.`/`_` 换成 `-`，碰撞 fail closed；磁盘 knowledge-core 不被改写。`canonical_claim` 临时同时填入 FACT `cn`/`en`。不写 production-record 本体。
-- 验收证据：server `knowledge-pipeline-v1` 上 converter 10 项 + library / browse / HTTP / projection-family / generation-input / join / authoring / contract / auth 合计 focused `248` 项 PASS。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
+- 验收证据：server `knowledge-pipeline-v1` 上 converter 10 项 + library / browse / HTTP / projection-family / generation-input / join / authoring / contract / auth 合计 focused `248` 项 PASS。已本地提交 `e9bfd22`。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
 - 非范围：新 Projection family、PORTAL-01、完整 RENDER/QA/PUBLISH、写出 production-record 本体、现网。
 
 ### KNOW-01 分类与对象类型覆盖
@@ -479,13 +479,13 @@
 5. 存档生产核心仍按 ADR-001 留给 CONV/RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。
 6. `SKILL-03`、`OPS-02`、浏览器会话、PORTAL-01、SITE-01、MCP **不进入**下一实现批次。
 
-工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色；集成分支 `knowledge-pipeline-v1` 含未提交的 BROWSE-01 与 CONV-01 实现，未 merge、未 push。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
+工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色；集成分支 `knowledge-pipeline-v1` 含 BROWSE-01 与 CONV-01（本地提交 `e9bfd22`），未 merge、未 push。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
 
 ## 6. 更新记录
 
 ### 2026-08-30
 
-- CONV-01：显式 four-card current → 接合 generation-input。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`。CLI `convert` 映射 `source_id` 点号；默认 chaptered-guide 拒绝。`knowledge-pipeline-v1` focused `248` 项 PASS。未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push、未现网。
+- CONV-01：显式 four-card current → 接合 generation-input。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`。CLI `convert` 映射 `source_id` 点号；默认 chaptered-guide 拒绝。`knowledge-pipeline-v1` focused `248` 项 PASS。已与 BROWSE-01 一并本地提交 `e9bfd22`；kids 治理 `a85a785`。未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push、未现网。
 - BROWSE-01：确认点 1 静态 HTML + 只读 GET。CLI `browse` 写出列表与 revision 页；兔子/几何选择面与 unlist 历史浏览已由 focused 测试覆盖。`knowledge-pipeline-v1` focused `241` 项 PASS。未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push、未现网。
 - [ADR-004](decisions/ADR-004-single-operator-main-flow.md) 接受：单人维护、单人使用，主流程优先。新增 `BROWSE-01`（现为 `DONE`）与独立设计 `docs/superpowers/specs/2026-08-30-knowledge-browse-projection-confirmation-design.md`；`CONV-01` 现为 `DONE`。`SKILL-02` 单人门禁 `DONE`，第二台电脑改 `SKILL-03`。`OPS-01` 本机恢复点 `DONE`，加密异地与告警改 `OPS-02`（简化为可选手工拷贝，不设计加密复制服务）。PORTAL-01 明确不替代确认点 1。
 - WIRE-01：HTTP/DB 受控接线。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md`。`knowledge-pipeline-v1` 上 focused HTTP library + 回归合计 `200` 项 PASS，含 auth registry 的 HTTP 套件 `251` 项 PASS。已与 PROJ-01 一并本地提交 `9e0c353`；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
