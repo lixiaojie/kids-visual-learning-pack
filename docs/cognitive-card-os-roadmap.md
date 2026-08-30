@@ -45,7 +45,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | IN PROGRESS | 保持现网锁定任务 API；可信上游编译入口修订设计已确认（2026-08-01)，实施分批立项 |
+| API-01 | HTTPS 写入 API | IN PROGRESS | 接合合同已本地提交 `4ca3e0e`；保持现网锁定任务 API；未 merge 两条功能分支 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -236,7 +236,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
 - 已部署：`0.3.1` 经 `www.yutou.space/card-os` 的 HTTPS、持久化和非 root 服务验收，health/capabilities 与受保护路径均通过；见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
 - 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。该入口是 ACCEPT-01 的真正前置；候选实现为存档 tag `archive/card-os-thin-skill-v1-20260717` 中 `skills/cognitive-card-os/core/` 的生产核心（分类 v2、27 步工作流、full-spec v4.3/v5.0、哺乳动物 v1 与恐龙 v2 模板族），按 ADR-001 须迁移到服务器侧并重新评审，不得直接从 Skill 包形态合入。
-- 抢救进度：API-01-IMPL-1 snapshot 已在 `codex/api-01-core-snapshot`；API-01-IMPL-2/3/4 确定性封印、sealed-input store、compiled-jobs 与 prepare/submit 辅助已在隔离分支 `codex/api-01-generation-input-v1` 本地提交 `878a28d`（基线 `9c1b82b`，未 push）。兔子/mammal production-record 兼容 snapshot `sha256:ae563e…1f20` 已导入并将 `47d2…d4c1` retained；introducing commit 为 `878a28d`，catalog `registry_commit` 仍为 `9c1b82b`。本机 loopback 已用全新 `/tmp` 与短期 job-bound token 完成 A→B→C：seal lock `sha256:15b8ea…ce2a`，新 packet（未复用 `gp_453f…cc06`），snapshot validator 退出 0，`submit-directory` 为 `candidate_staged`。自由概念仍失败关闭。未接现网。不得把当前状态描述为可执行生产流程。
+- 抢救进度：API-01-IMPL-1 snapshot 已在 `codex/api-01-core-snapshot`；API-01-IMPL-2/3/4 确定性封印、sealed-input store、compiled-jobs 与 prepare/submit 辅助已在隔离分支 `codex/api-01-generation-input-v1` 本地提交 `878a28d`（基线 `9c1b82b`，未 push）。接合合同（四对象 revision lock）已在同一分支本地提交 `4ca3e0e`；未 add `uv.lock`；v1 FACT 密封合同未改。兔子/mammal production-record 兼容 snapshot `sha256:ae563e…1f20` 已导入并将 `47d2…d4c1` retained；introducing commit 为 `878a28d`，catalog `registry_commit` 仍为 `9c1b82b`。本机 loopback 已用全新 `/tmp` 与短期 job-bound token 完成 A→B→C：seal lock `sha256:15b8ea…ce2a`，新 packet（未复用 `gp_453f…cc06`），snapshot validator 退出 0，`submit-directory` 为 `candidate_staged`。自由概念仍失败关闭。未接现网。不得把当前状态描述为可执行生产流程。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
 
 ### AUTH-01 Card OS 身份与权限
@@ -397,9 +397,9 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 下一轮按依赖顺序一次启动一个可独立验收的子项目：
 
-1. 工作区按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 收敛到知识管线三角色；已合入切片撤 checkout。AUTHOR 本地提交 `1facb79`，generation-input 本地提交 `878a28d`，均未 push。
-2. **接合合同（下一实施批次）**：generation-input lock 必须摘要四对象精确 revision，禁止平行 FACT 作为知识源。通过测试前不得把 `knowledge-core-contract-v1` 与 `api-01-generation-input-v1` merge 成一条分支。
-3. 服务器保存 candidate / 不可变 revision / current pointer（ADR-002 §18 服务器管理批次）。之后才做 Projection family 选择面。
+1. 工作区按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 收敛到知识管线三角色；已合入切片撤 checkout。AUTHOR 本地提交 `1facb79`，generation-input 本地提交 `4ca3e0e`（含接合），均未 push。
+2. **接合合同**：已本地提交 `4ca3e0e`。focused `18` 项 PASS（v1 `11` + join `7`）。接合 lock 摘要四对象 `final_content_lock`（与 AUTHOR `rabbit-composite` manifest 对照一致）；同一 FACT、不同 knowledge-core revision 产生不同接合 lock；FACT 中不存在于 knowledge-core 的 `proposition_id` fail closed。v1 FACT 密封合同未改。未 merge，未开 `knowledge-pipeline-v1`。
+3. 用户明确授权后才允许开 `knowledge-pipeline-v1`，按「存储先、执行后」迁入。随后才是服务器保存 candidate / 不可变 revision / current pointer（ADR-002 §18 服务器管理批次）。之后才做 Projection family 选择面。
 4. 分类接入（KNOW-01）、年龄/语言表达（AGE-01）和 library current/index 保持独立立项，不因预览未展示而删 Plan 元数据。
 5. 存档生产核心（tag `archive/card-os-thin-skill-v1-20260717`）仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层，也不再为该切片保持长期 worktree。
 6. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
@@ -410,6 +410,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-08-30
 
+- 接合合同已在 `codex/api-01-generation-input-v1` 本地提交 `4ca3e0e`（6 文件；未 add `uv.lock`）。focused `18` 项 PASS。`merge-base --is-ancestor 1facb79 HEAD` 与反向均为非 0。未开 `knowledge-pipeline-v1`，未 merge，未 push。
 - [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 接受：工作区按知识管线三角色治理；活 checkout 设上限；generation-input 与四对象存储在接合合同测试通过前不得 merge。server 活 checkout 已收成 main + knowledge-core + generation-input；kids 撤掉 5 个已合入/归档 worktree，thin-skill 因未提交文档未强制删除。
 - 用户授权后三个工作区分别本地提交，未混提交、未 push：knowledge-core `1facb79`（AUTHOR-02/03/04）；IMPL-2 `878a28d`（IMPL-2/3/4 + snapshot compat + catalog 新条目）；kids 三份任务文档另一次 commit。ae563e introducing commit 为 `878a28d`；catalog `registry_commit` 仍为 `9c1b82b`。
 - 新 snapshot 上兔子 A→B→C generate 本机 loopback 已跑通：全新 `/tmp/card-os-impl4-rabbit-ae563e.*`，短期 job-bound 0600 token，seal lock `sha256:15b8ea8b5ceb…ce2a`，packet `gp_3216c83d9a4340b2bb2a5bd3c23c6d06`（未复用 `gp_453f503267f24e7aa40c65dd3db1cc06`），`build_rabbit_record` 写出的 production record 经 `ae563e` validator 退出 0，`submit-directory` 为 `candidate_staged` 201。token 已撤销，loopback 已停。未接现网。
