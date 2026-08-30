@@ -41,13 +41,14 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 | AUTHOR-04 | 合成时效主题试产 | DONE | review due、expiry、block/unlist 与 revision 替代已由 CLI 闭环；下一步汇总三类试产摩擦 |
 | AUTHOR-05 | 三类试产字段消费证据 | DONE | 无字段达到三次未消费门槛；不改合同；分类/AGE 仍独立；current pointer 见 LIB-01 |
 | LIB-01 | 知识库 candidate / 不可变 revision / current | DONE | 进程内 library 已在 `knowledge-pipeline-v1` 验证；未 merge 进 main |
-| PROJ-01 | Projection family 选择面 | DONE | 进程内推荐/备选已在集成分支验证；未提交、未 merge 进 main |
+| PROJ-01 | Projection family 选择面 | DONE | 已本地提交进 `9e0c353`；未 merge 进 main |
+| WIRE-01 | HTTP/DB 受控接线 | DONE | loopback HTTP 已接 library / 选择面 / 接合 current 门禁；已本地提交 `9e0c353`；未 merge 进 main |
 | KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
 | AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | IN PROGRESS | 集成分支含 LIB-01 `b672949` + 未提交 PROJ-01；功能分支未 merge 进 main；现网仍 `0.3.1` |
+| API-01 | HTTPS 写入 API | IN PROGRESS | 集成分支含 LIB-01 `b672949` 与 PROJ-01/WIRE-01 `9e0c353`；功能分支未 merge 进 main；现网仍 `0.3.1` |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | 补浏览器会话、正式轮换与长期客户端凭据操作面 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -182,12 +183,21 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### PROJ-01 Projection family 选择面
 
-- 状态：`DONE`（实现与 focused 测试完成；未提交到 `knowledge-pipeline-v1`，未 merge 进 main，未 push）
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交进 `9e0c353`，未 merge 进 main，未 push）
 - 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
 - 依赖：[ADR-002](decisions/ADR-002-knowledge-core-and-projection-architecture.md) §9.3、[独立设计](superpowers/specs/2026-08-30-projection-family-selection-design.md)、AUTHOR-05 默认表、LIB-01。
-- 完成结果：`select_projection_family` 返回 recommended / chosen / options（eligible 或 discouraged）；省略 family 时三类试产 chosen 与 AUTHOR-05 默认表相同；`four-card` 不自动选中；未知 family fail closed。authoring 用 chosen 填 blueprint，HTML 预览展示理由，package 文件集合不变。无 HTTP/SQLite，无第五个治理对象。
-- 验收证据：`tests.test_projection_family` 9 项 PASS；与 library / generation-input / 接合 / authoring / contract 合计 focused `187` 项 PASS。server 工作区未提交（`projection_family/`、authoring、README、测试）。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
+- 完成结果：`select_projection_family` 返回 recommended / chosen / options（eligible 或 discouraged）；省略 family 时三类试产 chosen 与 AUTHOR-05 默认表相同；`four-card` 不自动选中；未知 family fail closed。authoring 用 chosen 填 blueprint，HTML 预览展示理由，package 文件集合不变。无第五个治理对象。
+- 验收证据：`tests.test_projection_family` 9 项 PASS；与 library / generation-input / 接合 / authoring / contract 合计 focused `187` 项 PASS。已与 WIRE-01 一并本地提交 `9e0c353`（14 文件）。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
 - 非范围：新 family、改四对象 schema、改默认表使兔子/几何换 family、Portal/Renderer。
+
+### WIRE-01 HTTP/DB 受控接线
+
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `9e0c353`，未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
+- 依赖：[独立设计](superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md)、LIB-01、PROJ-01、接合 lock `4ca3e0e`。
+- 完成结果：loopback HTTP 调用现有 `KnowledgeLibrary` 与 `select_projection_family`；接合 generation-input 仅当 library current identity 匹配时才能写入 GenerationInputStore 并创建 SQLite compiled-job；v1 FACT 密封路径不变。无新 SQLite 表，无第五个治理对象，未接现网。
+- 验收证据：`tests.test_http_knowledge_library` 6 项 PASS；与 library / projection-family / generation-input / 接合 / authoring / contract / HTTP compiled 合计 focused `200` 项 PASS；含 auth registry 的 HTTP 回归 `251` 项 PASS。已本地提交 `9e0c353`（14 文件，含 PROJ-01）。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
+- 非范围：新 SQLite 表、Portal、Renderer、改 v1 FACT 合同、生产 env 必填项。
 
 ### KNOW-01 分类与对象类型覆盖
 
@@ -419,7 +429,7 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 1. 工作区按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 收敛到知识管线三角色；已合入切片撤 checkout。AUTHOR 本地提交 `1facb79`，generation-input 本地提交 `4ca3e0e`（含接合），均未 push。
 2. **接合合同**：已本地提交 `4ca3e0e`。focused `18` 项 PASS（v1 `11` + join `7`）。接合 lock 摘要四对象 `final_content_lock`（与 AUTHOR `rabbit-composite` manifest 对照一致）；同一 FACT、不同 knowledge-core revision 产生不同接合 lock；FACT 中不存在于 knowledge-core 的 `proposition_id` fail closed。v1 FACT 密封合同未改。功能分支未 merge 进 `main`。
-3. **集成分支**：已开 `knowledge-pipeline-v1`（基线 `1facb79`，merge `4ca3e0e` @ `3001ba1`，authoring 接合 lock `1f9c42f`，LIB-01 `b672949`）。ADR-002 §18 服务器管理批次已落地。PROJ-01 选择面已在同分支实现并通过 focused `187` 项，尚未提交。未 merge 进 server `main`，未 push。之后才做 HTTP/DB 受控接线。
+3. **集成分支**：已开 `knowledge-pipeline-v1`（基线 `1facb79`，merge `4ca3e0e` @ `3001ba1`，authoring 接合 lock `1f9c42f`，LIB-01 `b672949`，PROJ-01/WIRE-01 `9e0c353`）。ADR-002 §18 服务器管理批次已落地。选择面与 HTTP/DB 接线已本地提交。未 merge 进 server `main`，未 push。
 4. 分类接入（KNOW-01）和年龄/语言表达（AGE-01）保持独立立项，不因预览未展示而删 Plan 元数据。
 5. 存档生产核心（tag `archive/card-os-thin-skill-v1-20260717`）仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层，也不再为该切片保持长期 worktree。
 6. 客户端、发布链与可信上游可用后执行 `ACCEPT-01`。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
@@ -430,7 +440,8 @@ M1 包含：`API-01`、`AUTH-01`、`PROTO-01`、`SKILL-01`、`SKILL-02`、`DEPLO
 
 ### 2026-08-30
 
-- PROJ-01：Projection family 选择面。独立设计 `docs/superpowers/specs/2026-08-30-projection-family-selection-design.md`。`knowledge-pipeline-v1` 上 focused projection-family 9 项 + 回归合计 `187` 项 PASS。未提交、未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
+- WIRE-01：HTTP/DB 受控接线。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md`。`knowledge-pipeline-v1` 上 focused HTTP library + 回归合计 `200` 项 PASS，含 auth registry 的 HTTP 套件 `251` 项 PASS。已与 PROJ-01 一并本地提交 `9e0c353`；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
+- PROJ-01：Projection family 选择面。独立设计 `docs/superpowers/specs/2026-08-30-projection-family-selection-design.md`。`knowledge-pipeline-v1` 上 focused projection-family 9 项 + 回归合计 `187` 项 PASS。已与 WIRE-01 一并本地提交 `9e0c353`；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
 - ADR-002 §18 / LIB-01：在 `knowledge-pipeline-v1` 增加知识库 candidate 接收、不可变 revision、current pointer 与 `unlist_current` 解析。独立设计 `docs/superpowers/specs/2026-08-30-knowledge-library-revision-current-design.md`。对照设计补路径安全与验收缺口测试后 focused library+回归 `178` 项 PASS。已本地提交 `b672949`（5 文件）；未 add `uv.lock`；server `main` 仍 `c2a898c`；未 push。
 - 用户授权后开 `knowledge-pipeline-v1`：从 knowledge-core `1facb79` 建分支，merge 迁入 `4ca3e0e`（`3001ba1`），authoring lock 改为接合 revision（`1f9c42f`）。focused generation-input+authoring `36` 项、contract `128` 项 PASS。功能分支尖端未动；server `main` 仍 `c2a898c`。未 push、未现网。
 - 接合合同已在 `codex/api-01-generation-input-v1` 本地提交 `4ca3e0e`（6 文件；未 add `uv.lock`）。focused `18` 项 PASS。`merge-base --is-ancestor 1facb79 HEAD` 与反向在功能分支上均为非 0；集成分支上两者均为祖先。

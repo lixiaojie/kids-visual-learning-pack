@@ -53,6 +53,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Knowledge Core and Projection Design](superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md) | Knowledge-first content model, learning layers, multi-projection architecture, and complexity budget | Approved |
 | [Knowledge Library Revision and Current Design](superpowers/specs/2026-08-30-knowledge-library-revision-current-design.md) | Server-side candidate intake, immutable four-object revisions, current pointer, and unlist_current | Approved |
 | [Projection Family Selection Design](superpowers/specs/2026-08-30-projection-family-selection-design.md) | Deterministic Projection family recommendation, alternatives, and explicit override without a fifth governed object | Approved |
+| [Knowledge Library HTTP/DB Wiring Design](superpowers/specs/2026-08-30-knowledge-library-http-db-wiring-design.md) | Controlled loopback HTTP adapters for the file-backed knowledge library and join-path compiled jobs against current | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 
