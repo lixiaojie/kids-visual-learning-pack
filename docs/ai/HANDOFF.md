@@ -6,7 +6,7 @@
 - Agent: Cursor Grok 4.6
 - Branch: main
 - Base Commit: 16e16f8
-- Kids HEAD: 本提交
+- Kids HEAD: 8ef1fb8 `docs(card-os): record TMPL-01 template registry and TEMPLATE_GAP`
 - Server Branch: `knowledge-pipeline-v1` @ `cbaf2b4`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -66,7 +66,7 @@ TMPL-01 把 four-card 模板族做成 `template-registry-v1`：精确 mammal / d
 | `.venv/bin/python -m unittest tests.test_template_registry` | PASS | 10 项 |
 | `.venv/bin/python -m unittest` template + classification + authoring + converter + accept + projection + library + browse + HTTP library + joined + generation-input + AGE + lock | PASS | 136 项 |
 | `git diff --check` | PASS | kids 文档与 server |
-| `bash scripts/ai/check-handoff.sh` | 本提交后跑 | Base Commit `16e16f8` |
+| `bash scripts/ai/check-handoff.sh` | 本提交后跑 | Base Commit `16e16f8`；Kids HEAD `8ef1fb8` |
 | `bash scripts/ai/check-task-state.sh` | 本提交后跑 | Status Done，验收全勾 |
 | `bash scripts/ai/check-agent-state.sh` | 本提交后跑 | 预期既有 WARN |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `cbaf2b4` |
@@ -97,7 +97,7 @@ TMPL-01 把 four-card 模板族做成 `template-registry-v1`：精确 mammal / d
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main`；本提交记录 kids SHA。
+- kids：`kids-visual-learning-pack` `main` @ `8ef1fb8`；本提交记录 kids SHA。
 - 活 server：`knowledge-pipeline-v1` @ `cbaf2b4`；KNOW-01 `4083ce7`；ACCEPT-01 `10b14c8`；PUBLISH-01 `7a127b4`；QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 无 `--request` 复跑：`python3 -m cognitive_card_server.four_card_accept --authoring examples/authoring/rabbit-real.json --repo-root . --work-root /tmp/card-os-accept-01 --actor owner --now 2026-08-31T04:00:00Z`
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
