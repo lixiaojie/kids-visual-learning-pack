@@ -17,7 +17,7 @@
 
 ## 2. 非目标
 
-- 不等于 [SITE-02](../../cognitive-card-os-roadmap.md)：不做旧 hash/URL 一对一映射、替代说明页、一次部署回滚开关接线。
+- 不等于 [SITE-02](2026-08-31-card-os-legacy-url-and-rollback-design.md)：旧 hash/URL 一对一映射、替代说明页、一次部署回滚开关接线见该设计。
 - 不等于 MIG-02 / MIG-03：不把 13 个 C 级主题重制成四卡 package。
 - 不替代 [BROWSE-01](2026-08-30-knowledge-browse-projection-confirmation-design.md)。
 - 不把 Projection family 写入 Knowledge Core。

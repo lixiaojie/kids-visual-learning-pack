@@ -65,6 +65,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Template Family Registry Design](superpowers/specs/2026-08-31-template-family-registry-design.md) | TMPL-01: four-card family coverage, stable skeletons, TEMPLATE_GAP, cross-object fixtures; not PORTAL | Approved |
 | [Published Artifact Gallery Design](superpowers/specs/2026-08-31-published-artifact-gallery-design.md) | PORTAL-01: read-only published package gallery; not BROWSE-01; not a knowledge CMS | Approved |
 | [Card OS Kids-World Knowledge Entry Design](superpowers/specs/2026-08-31-card-os-kids-world-knowledge-entry-design.md) | SITE-01: parallel gallery then cut over the knowledge home; not SITE-02 URL mapping | Approved |
+| [Card OS Legacy URL and Rollback Design](superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md) | SITE-02: old kids-world URL mapping, substitute pages, and one-deploy activeMode rollback | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Card OS ACCEPT-01 Evidence](cognitive-card-os-accept-01-evidence.md) | Verified local rabbit print pack: four cards, A4 PDF, approved QA, immutable package, same-version local view | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |

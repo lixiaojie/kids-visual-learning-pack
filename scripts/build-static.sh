@@ -26,6 +26,9 @@ echo "==> copy root + shared"
 cp index.html dist/
 cp -r shared dist/
 
+echo "==> render legacy topic pages"
+node scripts/render-knowledge-entry.mjs --check-hub --legacy-out dist/boards
+
 if [ "$CHANNEL" != "web-production" ]; then
   echo "==> copy spider-verse"
   cp -r boards/spider-verse dist/boards/

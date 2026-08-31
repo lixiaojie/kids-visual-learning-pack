@@ -57,7 +57,7 @@
 
 1. 仓库内交付 `activeMode=card-os` 的入口合同、根 `index.html` 与 Nginx snippet。
 2. 授权现网时先 reload Nginx 画廊反代，再部署静态根入口。
-3. SITE-02 再补旧 URL 映射与一次部署回滚。
+3. SITE-02 把根 hub 接到 `activeMode` 生成器，并为 13 个冻结 slug 提供 hash 映射与独立路径替代说明页。一次部署回滚：`activeMode=parallel` → `node scripts/render-knowledge-entry.mjs --write-hub` → 既有静态部署。
 
 ## Verification
 

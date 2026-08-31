@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
+import { resolveTopicSlug } from "../lib/legacy-topic-route";
 
 function resolveSlug(): string | null {
-  const params = new URLSearchParams(window.location.search);
-  const queryTopic = params.get("topic");
-  if (queryTopic) return decodeURIComponent(queryTopic);
-
-  const match = window.location.hash.match(/^#topic\/(.+)$/);
-  return match?.[1] ? decodeURIComponent(match[1]) : null;
+  return resolveTopicSlug(window.location.search, window.location.hash);
 }
 
 export function useHashRoute() {

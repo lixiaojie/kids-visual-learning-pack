@@ -9,6 +9,7 @@ import {
   type SceneInteractionState,
 } from "@yutou/kids-content/scene-deck";
 import type { Locale, Topic } from "@yutou/kids-content";
+import { KnowledgeEntryNotice } from "../home/KnowledgeEntryNotice";
 import { GeneratedImage } from "../shared/GeneratedImage";
 
 type Props = {
@@ -81,6 +82,7 @@ export function SceneDeckTopicPage({ topic, locale }: Props) {
         <ArrowLeft size={18} />
         {locale === "zh-CN" ? "返回探索地图" : "Back to map"}
       </a>
+      <KnowledgeEntryNotice locale={locale} />
 
       <header className="scene-deck-hero">
         <p>{topic.subtitle}</p>

@@ -17,6 +17,11 @@
       "secondaryId": "kids-world"
     }
   },
+  "reservedPageHashes": [
+    "worlds",
+    "recent-observation"
+  ],
+  "legacyPathPattern": "boards/{slug}/index.html",
   "frozenKidsWorldTopics": [
     "insects-and-spiders",
     "cicada-life",

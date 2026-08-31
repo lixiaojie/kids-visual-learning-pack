@@ -35,6 +35,15 @@ requireFile("shared/icons/favicon.ico");
 requireFile("shared/icons/og-image.jpg");
 requireFile("release-manifest.json");
 
+const knowledgeEntry = JSON.parse(
+  fs.readFileSync(path.join(root, "shared/knowledge-entry.json"), "utf8"),
+);
+for (const slug of knowledgeEntry.frozenKidsWorldTopics) {
+  requireFile(`boards/${slug}/index.html`);
+}
+
+if (channel !== "web-production") {
+
 if (channel !== "web-production") {
   requireFile("boards/paw-patrol/index.html");
   requireFile("boards/spider-verse/index.html");
@@ -86,6 +95,18 @@ if (channel === "web-production") {
   for (const board of ["paw-patrol", "spider-verse"]) {
     if (fs.existsSync(path.join(distDir, "boards", board))) {
       errors.push(`production dist publishes hidden board directory: boards/${board}`);
+    }
+  }
+  for (const slug of knowledgeEntry.frozenKidsWorldTopics) {
+    const stub = readText(path.join(distDir, "boards", slug, "index.html"));
+    if (!stub.includes(`#topic/${slug}`)) {
+      errors.push(`legacy stub boards/${slug}/index.html is missing the archive topic hash`);
+    }
+    if (!stub.includes(knowledgeEntry.cardOsPublicUrl)) {
+      errors.push(`legacy stub boards/${slug}/index.html is missing the Card OS gallery link`);
+    }
+    if (/http-equiv=["']refresh["']/i.test(stub)) {
+      errors.push(`legacy stub boards/${slug}/index.html must not auto-refresh`);
     }
   }
 }

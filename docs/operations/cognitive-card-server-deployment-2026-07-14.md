@@ -59,6 +59,15 @@
 
 SITE-01 待应用路由（仓库内 snippet 已改，**尚未** reload 生产 Nginx）：精确 `/card-os/` 与 `/card-os/packages/` GET/HEAD 反代 `127.0.0.1:8765` 画廊；`/card-os/api/v1/capabilities` 保持 API JSON；敏感非画廊路径仍 catch-all 404。现网仍以上表 0.3.1 证据为准，直到授权部署。
 
+SITE-02 一次部署回滚（仓库内已接线，**本批不执行**）。把知识主 CTA 交回旧站时：
+
+1. 确认现网仍需要旧站作为主入口，而不是只关掉画廊；
+2. 把 `shared/knowledge-entry.json` 的 `activeMode` 改为 `parallel`；
+3. 运行 `node scripts/render-knowledge-entry.mjs --write-hub`；
+4. 按既有 `scripts/deploy.sh` 做一次静态部署（含重建 kids-world，以便档案说明随模式变化）。
+
+不要恢复根入口 `http-equiv refresh`。`parallel` 只交换主 CTA。Card OS 次入口在 Nginx 未应用 SITE-01 snippet 时仍可能落到 capabilities 307。
+
 ### 2.3 一次性 token 验收（仅安全元数据）
 
 - token ID：`972f366b71db85801f504cc12360568d`。

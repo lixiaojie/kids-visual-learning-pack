@@ -34,6 +34,9 @@ npm run build:kids-world
 echo "==> building paw-patrol"
 npm run build:paw
 
+echo "==> render legacy topic pages"
+node scripts/render-knowledge-entry.mjs --check-hub --legacy-out dist/legacy-topics
+
 echo "==> uploading root entry"
 rsync -av "${EXCLUDE[@]}" index.html "$HOST:$DEST/"
 
@@ -42,6 +45,11 @@ rsync -av --delete "${EXCLUDE[@]}" shared docs "$HOST:$DEST/"
 
 echo "==> uploading kids-world (built dist)"
 rsync -av --delete dist/kids-world/ "$HOST:$DEST/boards/kids-world/"
+
+echo "==> uploading legacy topic stubs"
+rsync -av dist/legacy-topics/ "$HOST:$DEST/boards/"
+
+echo "==> uploading spider-verse (static)"
 
 echo "==> uploading spider-verse (static)"
 rsync -av --delete "${EXCLUDE[@]}" boards/spider-verse/ "$HOST:$DEST/boards/spider-verse/"
