@@ -5,8 +5,8 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 52963bb
-- Kids HEAD: 52963bb `docs(ai): record SITE-01 kids commit SHA`
+- Base Commit: 44e0990
+- Kids HEAD: 44e0990 `feat(card-os): map legacy kids-world URLs and wire one-deploy entry rollback`
 - Server Branch: `knowledge-pipeline-v1` @ `fd696c2`（本批未改）
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -127,7 +127,7 @@ SITE-02 给 13 个冻结主题接上旧 URL 映射，并把根 hub 接到 `activ
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main`；SITE-02 本提交记录 kids SHA。
+- kids：`kids-visual-learning-pack` `main` @ `44e0990`；SITE-02 已本地提交。
 - 活 server：`knowledge-pipeline-v1` @ `fd696c2`；本批未改。
 - 入口合同：`shared/knowledge-entry.json`
 - 生成 hub：`node scripts/render-knowledge-entry.mjs --write-hub`
