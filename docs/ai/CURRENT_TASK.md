@@ -15,7 +15,7 @@
 ## Background
 
 - KNOW-01 已在 `knowledge-pipeline-v1` 本地提交 `4083ce7`。分类 `gap` 单元格允许登记，但模板解析仍可能落到 snapshot 受控 fallback。
-- Snapshot 已有哺乳动物精确族（3–4 / 5–6）与恐龙 v2，以及 `domain_form_families.json` 的 domain/form 紧凑族。
+- Snapshot 已有哺乳动物精确族（3–4 / 5–6）与恐龙 v2，以及紧凑 domain/form 族。
 - ACCEPT-02 依赖本任务：第二个哺乳动物必须解析为同一模板族和固定骨架。
 
 ## Acceptance Criteria
@@ -73,4 +73,4 @@
 - `docs/decisions/ADR-004-single-operator-main-flow.md`
 - `docs/cognitive-card-os-system-design.md` §3.2 / §4.1 / §7.3
 - `docs/superpowers/specs/2026-08-31-classification-registry-design.md`
-- snapshot `references/template-routing.md` 与 `assets/templates/families/`
+- snapshot `references/template-routing.md` 与 family 资产（服务器 core snapshot，不在 kids 仓根路径）

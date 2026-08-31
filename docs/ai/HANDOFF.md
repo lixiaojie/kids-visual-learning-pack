@@ -5,7 +5,7 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 16e16f8
+- Base Commit: af2a565
 - Kids HEAD: 8ef1fb8 `docs(card-os): record TMPL-01 template registry and TEMPLATE_GAP`
 - Server Branch: `knowledge-pipeline-v1` @ `cbaf2b4`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
@@ -66,9 +66,9 @@ TMPL-01 把 four-card 模板族做成 `template-registry-v1`：精确 mammal / d
 | `.venv/bin/python -m unittest tests.test_template_registry` | PASS | 10 项 |
 | `.venv/bin/python -m unittest` template + classification + authoring + converter + accept + projection + library + browse + HTTP library + joined + generation-input + AGE + lock | PASS | 136 项 |
 | `git diff --check` | PASS | kids 文档与 server |
-| `bash scripts/ai/check-handoff.sh` | 本提交后跑 | Base Commit `16e16f8`；Kids HEAD `8ef1fb8` |
-| `bash scripts/ai/check-task-state.sh` | 本提交后跑 | Status Done，验收全勾 |
-| `bash scripts/ai/check-agent-state.sh` | 本提交后跑 | 预期既有 WARN |
+| `bash scripts/ai/check-handoff.sh` | WARN | Base Commit 在 SHA 记录提交后落后 1；0 FAIL |
+| `bash scripts/ai/check-task-state.sh` | PASS | 修正 CURRENT_TASK 中不存在的根路径引用后 |
+| `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL 预期；既有 secret 字段名 WARN + 文档复核到期 |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `cbaf2b4` |
 
 ## Known Failures
