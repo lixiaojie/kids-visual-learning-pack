@@ -269,9 +269,10 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 4. **`BROWSE-01` 知识浏览与 Projection 确认（确认点 1）**：本地已完成（静态 HTML + 只读 GET）；未 merge 进生产；不等于 PORTAL-01。
 5. **`CONV-01` four-card converter** 与 **`RUN-01` 本机执行接合密封**：本地已完成（显式 four-card current → 接合 generation-input → loopback compiled-job / executor → validator 退出 0）；未 merge 进生产；转换器不写出 production-record 本体。
 6. **`AGE-01` 年龄与中文表达适配**：本地已完成（`age-3-4` / `age-5-6` 服务器适配器；命题、确定性、安全边界不随年龄改写）；未 merge 进生产。
-7. **`RENDER-01` 四卡排版与 A4 PDF**：本地已完成（内容锁 + `copy_plan` → 四页 PNG 与 A4 PDF）；已本地提交 `1ef6edc`；未 merge 进生产。其后按路线图 §5 做 QA / PUBLISH。
-8. 第二台电脑、加密异地备份、浏览器会话、公网 Portal、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
-9. 兔子完整交付及第二个哺乳动物一致性验收仍依赖发布链路，不提前把 SITE-01 拉进主路径。
+7. **`RENDER-01` 四卡排版与 A4 PDF**：本地已完成（内容锁 + `copy_plan` → 四页 PNG 与 A4 PDF）；已本地提交 `1ef6edc`；未 merge 进生产。
+8. **`QA-01` 严格 QA 与人工复核**：本地已完成（机器 QA 通过后才 `awaiting_review`；人工决策绑定 actor 与审计）；已本地提交 `37a5927`；未 merge 进生产。其后按路线图 §5 做 PUBLISH。
+9. 第二台电脑、加密异地备份、浏览器会话、公网 Portal、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
+10. 兔子完整交付及第二个哺乳动物一致性验收仍依赖发布链路，不提前把 SITE-01 拉进主路径。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 
