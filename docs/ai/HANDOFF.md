@@ -5,14 +5,14 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 823eff4
-- Kids HEAD: 823eff4 `docs(ai): record RENDER-01 kids commit SHA`；本提交记录 QA-01
+- Base Commit: d7d59f1
+- Kids HEAD: d7d59f1 `docs(card-os): record QA-01 machine QA and human review`
 - Server Branch: `knowledge-pipeline-v1` @ `37a5927`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
 - Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`
 - Working Tree: kids 本提交后仅 `outputs/` 未跟踪；server 仅 `uv.lock` 未跟踪
-- Task Status: **Done（QA-01 已本地提交 server `37a5927`；kids 本提交）。** 未 merge server `main`；未 push；未现网。
+- Task Status: **Done（QA-01 已本地提交 server `37a5927`；kids `d7d59f1`）。** 未 merge server `main`；未 push；未现网。
 
 ## Summary
 
@@ -30,12 +30,12 @@ QA-01 把 RENDER-01 的锁定四卡产物送进服务器权威机器门禁：锁
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 本提交：QA-01 Done |
-| kids | `docs/ai/HANDOFF.md` | 本提交：记录 server `37a5927` |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本提交：QA-01 / `37a5927` |
-| kids | `docs/cognitive-card-os-system-design.md` | 本提交：交付阶段第 8 条 |
-| kids | `docs/README.md` | 本提交：QA-01 设计条目 |
-| kids | `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md` | 本提交 |
+| kids | `docs/ai/CURRENT_TASK.md` | `d7d59f1`：QA-01 Done |
+| kids | `docs/ai/HANDOFF.md` | 本提交：记录 kids SHA `d7d59f1` |
+| kids | `docs/cognitive-card-os-roadmap.md` | `d7d59f1`：QA-01 / `37a5927` |
+| kids | `docs/cognitive-card-os-system-design.md` | `d7d59f1`：交付阶段第 8 条 |
+| kids | `docs/README.md` | `d7d59f1`：QA-01 设计条目 |
+| kids | `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md` | `d7d59f1` |
 | kids | `outputs/` | 未跟踪；不纳入 |
 | server | `src/cognitive_card_server/four_card_qa/` | 已提交 `37a5927` |
 | server | `tests/test_four_card_qa.py` | 已提交 `37a5927` |
@@ -53,7 +53,7 @@ QA-01 把 RENDER-01 的锁定四卡产物送进服务器权威机器门禁：锁
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` | 任务账本与 QA-01 设计本提交 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `d7d59f1` | 任务账本与 QA-01 设计已提交 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `37a5927` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
@@ -65,7 +65,7 @@ QA-01 把 RENDER-01 的锁定四卡产物送进服务器权威机器门禁：锁
 | `.venv/bin/python -m unittest tests.test_four_card_qa tests.test_four_card_render tests.test_age_language_adapter tests.test_four_card_converter tests.test_knowledge_library tests.test_knowledge_browse tests.test_http_knowledge_library tests.test_joined_executor tests.test_knowledge_contract_authoring` | PASS | 97 项 |
 | `.venv/bin/python -m unittest discover -s tests` | WARN | 584 项中 582 PASS；2 项 real-uvicorn 502 既有 |
 | `git diff --check` | PASS | kids 文档 + server QA |
-| `bash scripts/ai/check-handoff.sh` | PASS | 提交前 Base Commit `823eff4` |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `d7d59f1` 对齐 QA-01 kids 提交 |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `37a5927`；仅 `uv.lock` 未跟踪 |
@@ -95,7 +95,7 @@ QA-01 把 RENDER-01 的锁定四卡产物送进服务器权威机器门禁：锁
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main`；本提交记录 QA-01。
+- kids：`kids-visual-learning-pack` `main` @ `d7d59f1`；本提交只记录该 SHA。
 - 活 server：`knowledge-pipeline-v1` @ `37a5927`（QA-01）；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
 - 规范：ADR-001/002/004、系统总设计 §10、QA-01 设计、RENDER-01 产物合同。
