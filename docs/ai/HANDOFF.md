@@ -5,97 +5,74 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 44e0990
-- Kids HEAD: 44e0990 `feat(card-os): map legacy kids-world URLs and wire one-deploy entry rollback`
-- Server Branch: `knowledge-pipeline-v1` @ `fd696c2`（本批未改）
-- Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
+- Base Commit: 3432e83
+- Kids HEAD: 3432e83 `docs(ai): record SITE-02 kids commit SHA`
+- Server Branch: `knowledge-pipeline-v1` @ `fd696c2`（本批未改 server 代码；未 merge `main`）
+- Server Worktree: `.worktrees/cognitive-card-server-knowledge-core`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
-- Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`
-- Working Tree: 本提交后仅 `outputs/` 未跟踪
-- Task Status: **Done（SITE-02 已本地提交）。** 未 merge server `main`；未 push；未现网。
+- Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`（现网 `current` 已不指向它）
+- Working Tree: DEPLOY-02 任务文档与运维记录未提交；既有 `outputs/` 未跟踪
+- Task Status: **Done（DEPLOY-02 现网已落地）。** 未 merge server `main`；未 push kids。
 
 ## Summary
 
-SITE-02 给 13 个冻结主题接上旧 URL 映射，并把根 hub 接到 `activeMode` 生成器。短 hash / 规范 hash / query 打开旧主题；`boards/{slug}/index.html` 是替代说明页（构建与 `deploy.sh` 生成，不提交 13 份手写 HTML）。`activeMode=parallel` 时 `renderHubHtml` 把主 CTA 交回旧站。默认仍是 `card-os`。未改 `/card-os/` Nginx。
+DEPLOY-02 已按硬顺序落地：从 `knowledge-pipeline-v1` @ `fd696c2` 打 release 并安装到 `127.0.0.1:8765`（画廊与 health/capabilities 并存）→ 种子 ACCEPT-01 `rabbit` public current → reload 仓库 Nginx snippet → `scripts/deploy.sh` 根 hub 与 13 个 stub。公网 `/card-os/` 是画廊，不再 307 到 capabilities。来源 schema 未改。
 
 ## Completed
 
-- 设计：`docs/superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md`
-- 合同：`reservedPageHashes`、`legacyPathPattern`
-- 根 hub 生成器与 `parallel` 回滚证明；`card-os` 生成结果与提交的 `index.html` 字节一致
-- kids-world 短 hash 解析与入口说明随 `activeMode` 变化
-- 构建/部署写入替代说明页；stub 上传不加 `--delete`
-- 未 merge、未 push、未现网
+- 本机 `npm run test:knowledge-entry`、`npm run test:deploy`、`npm run validate`、`npm run test:card-os-deploy`（95 项，需非沙箱）PASS
+- release 归档 SHA-256 `6a3b8cd2bf336f65da454003ca135904613880af9410dfce2ce4b7eb295ca9ed`；ops commit `3432e83`
+- 生产 `current` → `fd696c2a8cab5400a5d78669031a501390ab5318`；Uvicorn 仍只听回环
+- 画廊列出 `rabbit`；PDF `200` 1728853 bytes
+- Nginx snippet `d3d38a36…`；替换前备份 `…20260831T083618Z.pre-deploy-02.conf`
+- 根 CTA 进画廊；`#dinosaurs` 打开冻结主题；`/kids/boards/dinosaurs/` 替代说明页非 404
+- 运维记录第 10 节已追加；0.3.1 历史表未改写
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 本提交：SITE-02 Done |
-| kids | `docs/ai/HANDOFF.md` | 本提交：本交接 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本提交：SITE-02 DONE |
-| kids | `docs/cognitive-card-os-system-design.md` | 本提交：§11 / §12.3 |
-| kids | `docs/README.md` | 本提交：SITE-02 设计条目 |
-| kids | `docs/superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md` | 本提交 |
-| kids | `docs/superpowers/specs/2026-08-31-card-os-kids-world-knowledge-entry-design.md` | 本提交：指向 SITE-02 设计 |
-| kids | `docs/decisions/ADR-005-knowledge-entry-cutover-without-topic-remakes.md` | 本提交：回滚步骤 |
-| kids | `docs/operations/cognitive-card-server-deployment-2026-07-14.md` | 本提交：一次部署回滚步骤 |
-| kids | `shared/knowledge-entry.json` | 本提交：hash/路径合同字段 |
-| kids | `scripts/knowledge-entry.mjs` | 本提交 |
-| kids | `scripts/render-knowledge-entry.mjs` | 本提交 |
-| kids | `scripts/knowledge-entry.test.mjs` | 本提交 |
-| kids | `scripts/legacy-topic-route.test.ts` | 本提交 |
-| kids | `scripts/build-static.sh` | 本提交：生成 stub |
-| kids | `scripts/deploy.sh` | 本提交：生成并 rsync stub（无 `--delete`） |
-| kids | `scripts/deploy.test.mjs` | 本提交 |
-| kids | `scripts/check-dist.mjs` | 本提交：要求 13 个 stub |
-| kids | `package.json` | 本提交：`render:knowledge-entry` |
-| kids | `boards/kids-world/src/lib/legacy-topic-route.ts` | 本提交 |
-| kids | `boards/kids-world/src/lib/knowledge-entry.ts` | 本提交 |
-| kids | `boards/kids-world/src/hooks/use-hash-route.ts` | 本提交 |
-| kids | `boards/kids-world/src/pages/HomePage.tsx` | 本提交 |
-| kids | `boards/kids-world/src/pages/TopicPage.tsx` | 本提交 |
-| kids | `boards/kids-world/src/components/home/KnowledgeEntryNotice.tsx` | 本提交 |
-| kids | `boards/kids-world/src/components/topic/SceneDeckTopicPage.tsx` | 本提交 |
-| kids | `index.html` | 未改（生成器与现文件一致） |
-| kids | `PROJECT_CONTEXT.md` | 未改 |
-| kids | `shared/styles/home.css` | 未改 |
+| kids | `docs/ai/CURRENT_TASK.md` | 未提交：DEPLOY-02 Done |
+| kids | `docs/ai/HANDOFF.md` | 未提交：本交接 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 未提交：DEPLOY-02 DONE |
+| kids | `docs/cognitive-card-os-system-design.md` | 未提交：§11 DEPLOY-02 Done |
+| kids | `docs/operations/cognitive-card-server-deployment-2026-07-14.md` | 未提交：第 10 节 |
+| kids | SITE-02 实现 | 已提交 `44e0990`；记录 SHA `3432e83` |
 | kids | `outputs/` | 既有未跟踪；不纳入 |
-| server | （无） | 本批未改；尖端仍 `fd696c2` |
+| server | （无代码） | 仅生产安装该已有 commit |
 
 ## Decisions Made
 
-- 独立路径 `boards/{slug}/index.html` 做替代说明页，不做即时自动跳转。
-- SPA 短 hash `#dinosaurs` 与 `#topic/dinosaurs`、`?topic=` 直接打开冻结主题。
-- `#worlds` / `#recent-observation` 仍是页内锚点。
-- 回滚不恢复根入口 `http-equiv refresh`；只交换主 CTA。
-- 不把 stub 提交为 13 份源 HTML；由构建/`deploy.sh` 生成。
-- 不改 `/card-os/` Nginx。不 merge、不 push、不现网。
+- 试点从管线分支打 release，未 merge server `main`。
+- 空画廊不得切主 CTA；先上架 `rabbit` 再 rsync hub。
+- 画廊 Nginx 回滚恢复 `pre-deploy-02` snippet，不跑过期的 §7.1 SHA 检查。
+- 不补知识源字段。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` | SITE-02 本提交；另有 `outputs/` 未跟踪 |
-| 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `fd696c2` | 本批未改；不 merge `main` |
-| 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；`/card-os/` 仍 307 到 capabilities |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `3432e83` | 仅 DEPLOY-02 文档未提交；`outputs/` 不纳入 |
+| 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `fd696c2` | 本批未改代码；现网已安装该 commit |
+| 现网对应 | `/opt/cognitive-card-server/current` → `fd696c2` | 旧 `c2a898c` 仍在 `releases/` |
 
 ## Verification Results
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| `npm run test:knowledge-entry` | PASS | 含 hub 两相、13 slug 映射、stub 生成 |
-| `npm run test:deploy` | PASS | stub 生成与无 `--delete` rsync |
-| `npm run test:card-os-deploy` | PASS | 95 项（需非沙箱，因 release 测试 `git init`） |
-| `npm run validate` | PASS | 含 `test:knowledge-entry` |
-| 本机 hub `http://127.0.0.1:5173/index.html` | PASS | 主链 Card OS；档案链旧站 |
-| 本机 `#dinosaurs` / `?topic=moon-phases` | PASS | 打开对应主题，并显示冻结说明 |
-| 本机 `http://127.0.0.1:8766/boards/dinosaurs/index.html` | PASS | 替代说明页；预览 stub 已从 `boards/` 删除 |
+| `npm run test:knowledge-entry` | PASS | 执行会话开始时 |
+| `npm run test:deploy` | PASS | |
+| `npm run validate` | PASS | |
+| `npm run test:card-os-deploy` | PASS | 95 项；沙箱内会因 `git init` hooks 失败 |
+| 回环 health / capabilities / `GET /card-os/` | PASS | 标题 Published artifacts |
+| 公网画廊 / PDF / skill manifest / 敏感 404 | PASS | admin portal 无 token 为 401 |
+| `scripts/deploy.sh` | PASS | stub rsync 无 `--delete` |
+| 浏览器：CTA、`#dinosaurs`、stub | PASS | |
+| 第 4 节健康检查 | PASS | NRestarts=0；8765 仅回环；integrity ok |
 | `git diff --check` | PASS | |
-| `bash scripts/ai/check-handoff.sh` | WARN | 0 FAIL；本更新后 Base Commit 与 HEAD 对齐 |
-| `bash scripts/ai/check-task-state.sh` | PASS | CURRENT_TASK 路径引用全部存在 |
-| `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL 预期；既有 secret 字段名 WARN + 文档复核到期 |
-| 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端仍 `fd696c2` |
+| 未 merge server `main` / 未 push kids | PASS | |
+| `bash scripts/ai/check-handoff.sh` | PASS | |
+| `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收项全勾选 |
 
 ## Known Failures
 
@@ -103,34 +80,32 @@ SITE-02 给 13 个冻结主题接上旧 URL 映射，并把根 hub 接到 `activ
 - catalog `registry_commit=9c1b82b` 诚实性缺口仍只记在交接层。
 - kids `.worktrees/card-os-thin-skill-v1` 未撤：未提交文档仍在。
 - 文档地图 Last Reviewed `2026-07-24` / Next Review Due `2026-08-24` 已过期，属既有治理 WARN。
-- `/tmp/card-os-accept-01` 不是 git 产物；重启后需重跑 CLI。
-- 现网 `/card-os/` 仍是 0.3.1 capabilities 307；仓库 snippet 尚未 reload。
-- 浏览器未能点进替代说明页的「打开旧主题页」（MCP 在该步断开）；该 href 由测试覆盖为 `../kids-world/index.html#topic/{slug}`。
-- 未构建 Vite 时，从静态服务器打开 `boards/kids-world/index.html` 只有壳；短 hash 行为由 Vite 与测试覆盖。
+- 第 7.1 节 `ACTIVE_SNIPPET_SHA256=e8579a5…` 在 DEPLOY-02 之前就已漂移（Skill 注册表 snippet `f734b0e9…`）；画廊回滚用第 10.6 节备份。
+- 生产 `docs/` 仍可能是 rsync 当时的 In Progress 任务稿，直到下次文档部署。
 
 ## Risks and Caveats
 
-- 未授权不要 merge `knowledge-pipeline-v1`、不要 push/deploy。
+- 未授权把 `knowledge-pipeline-v1` merge 进 server `main`。
 - `uv.lock` 与 `outputs/` 不要混入提交。
-- 现网顺序仍是：先应用 Nginx 画廊反代，再部署根入口。回滚到 `parallel` 不能替代该顺序。
-- 回滚必须跑 `node scripts/render-knowledge-entry.mjs --write-hub`，只改 JSON 会使 hub 漂移；测试会拒绝漂移。
-- `deploy.sh` 上传 stub 不得加 `--delete`，否则会删掉 `kids-world` 等兄弟目录。
+- 同 SHA release 再次安装会 `RELEASE_EXISTS`。
+- 回滚 hub 必须跑 `node scripts/render-knowledge-entry.mjs --write-hub`。
 
 ## Remaining Work
 
-1. 授权现网时：先 reload Nginx snippet，再 rsync 根入口与 stub。
+1. 用户若要让 server `main` 与现网尖端一致，另开会话明确授权 merge。
 2. thin-skill 脏文档与 generation-input 功能分支 worktree 仍待用户选择。
 
 ## Exact Next Action
 
-不要重做 SITE-02。授权现网时先 reload Nginx 画廊反代，再部署静态根入口与 `boards/{slug}/` stub。活 server 尖端仍为 `knowledge-pipeline-v1` @ `fd696c2`。队列 §5 编号 11 之后无下一强制切片；后置项须另立会话再授权。
+不要重做 DEPLOY-02。下一动作由用户选：提交本批文档、或授权 merge `knowledge-pipeline-v1` 到 server `main`、或处理后置项（`API-01` 自由编译、`MIG-03` 等）。不要绑 Uvicorn 到非 loopback。
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` @ `44e0990`；SITE-02 已本地提交。
-- 活 server：`knowledge-pipeline-v1` @ `fd696c2`；本批未改。
-- 入口合同：`shared/knowledge-entry.json`
-- 生成 hub：`node scripts/render-knowledge-entry.mjs --write-hub`
-- 回滚：`activeMode=parallel` → 同上生成器 → `scripts/deploy.sh`
+- kids：`kids-visual-learning-pack` `main` @ `3432e83`；DEPLOY-02 文档未提交。
+- 现网：`/opt/cognitive-card-server/current` → `fd696c2`。
+- 任务：`docs/ai/CURRENT_TASK.md`（DEPLOY-02 Done）。
+- 入口合同：`shared/knowledge-entry.json`（`activeMode=card-os`）
+- 画廊回滚：运维记录 §10.6
+- 入口回滚：`activeMode=parallel` → 生成器 → `scripts/deploy.sh`
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
-- 规范：ADR-002/003/004/005、SITE-01/SITE-02 设计。
+- 规范：ADR-002/003/004/005、SITE-01/SITE-02/PORTAL-01 设计、运维记录第 10 节。

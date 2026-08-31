@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：SITE-02 已在仓库完成本地交付。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` / `ACCEPT-01` / `KNOW-01` / `TMPL-01` / `PORTAL-01` / `SITE-01` 已在仓库完成本地交付（server 管线未 merge、未现网）。仍不 merge `main`。
+本里程碑当前切片：`DEPLOY-02` 现网落地试点（Done）。公网画廊与根 CTA 已切到 Card OS；应用提交 `knowledge-pipeline-v1` @ `fd696c2`（版本号仍 `0.3.1`）。默认仍不 merge server `main`。后置项见 §5「不要排进上述队列」。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -66,13 +66,14 @@
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
 | PORTAL-01 | 只读资产门户 | DONE | 已本地提交进 `fd696c2`；未 merge 进 main |
 | UPLOAD-01 | 浏览器手动上传 | BACKLOG | 依赖 AUTH-01、API-01 |
-| SITE-01 | Card OS 替换 `kids-world` | DONE | 仓库内入口已切；未现网应用 Nginx/根入口 |
-| SITE-02 | 旧站兼容与重定向 | DONE | 仓库内映射与回滚已接线；未现网 |
+| SITE-01 | Card OS 替换 `kids-world` | DONE | 现网根 CTA 指向画廊；Nginx 已反代 `/card-os/` |
+| SITE-02 | 旧站兼容与重定向 | DONE | 现网 stub/hash 已抽查；回滚仍是 `activeMode=parallel` |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
-| DEPLOY-01 | Card OS 服务部署 | DONE | 按生产运维记录持续执行升级与回滚门禁 |
+| DEPLOY-01 | Card OS 服务部署 | DONE | 0.3.1 基线；升级门禁见运维记录 |
+| DEPLOY-02 | 现网落地试点 | DONE | 现网画廊+兔子包+根 CTA；未 merge server `main` |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
 | OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
 | ACCEPT-01 | 兔子完整验收 | DONE | 已本地提交 `10b14c8`；未 merge、未现网 |
@@ -464,6 +465,16 @@
 - 实施计划：[个人服务器部署实施计划](superpowers/plans/2026-07-14-cognitive-card-server-deployment-plan.md)。
 - 完成条件：已满足；现有 `/`、`/kids/`、`/sync/` 行为保持不变。
 
+### DEPLOY-02 现网落地试点
+
+- 状态：`DONE`（2026-08-31）
+- 权威仓库：`kids-visual-learning-pack`（入口、Nginx snippet、rsync）；`cognitive-card-server`（从 `knowledge-pipeline-v1` 打 release 与 catalog）。
+- 依赖：DEPLOY-01、PORTAL-01、SITE-01、SITE-02、PUBLISH-01、ACCEPT-01。
+- 目标：公网 `https://www.yutou.space/card-os/` 提供已发布包画廊；根入口主 CTA 指向该画廊；旧 hash 与 `boards/{slug}/` 不静默 404；一次部署可把主 CTA 回滚到 `parallel`。
+- 已完成：release `fd696c2a8cab5400a5d78669031a501390ab5318`（版本号仍 `0.3.1`）在 `127.0.0.1:8765` 同时提供画廊与 health/capabilities；Nginx snippet 已换成仓库 `card-os.conf`；ACCEPT-01 `rabbit` `revision-0001` 为 public current；`scripts/deploy.sh` 已上传根 hub 与 13 个 stub。未 merge server `main`。
+- 完成条件：已满足。证据见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md) 第 10 节。
+- 非范围：知识源 schema、API-01 自由概念编译、MIG-02/03、默认 merge server `main`、Uvicorn 非 loopback。
+
 ### OPS-01 本机备份与恢复
 
 - 状态：`DONE`（2026-08-30，[ADR-004](decisions/ADR-004-single-operator-main-flow.md) 关闭单人门禁）
@@ -500,7 +511,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（仓库内入口与 Nginx snippet）、`SITE-02`（仓库内旧 URL 映射与回滚开关）。均未现网。
+已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网 `fd696c2`，未 merge `main`）。
 
 下一会话起按此编号：
 
@@ -513,10 +524,11 @@
 7. ~~**KNOW-01**~~（本机完成，`4083ce7`）。
 8. ~~**TMPL-01**~~（本机完成，`cbaf2b4`）。
 9. ~~**PORTAL-01**~~（本机完成，`fd696c2`）。
-10. ~~**SITE-01**~~（仓库内完成；未现网）。
-11. ~~**SITE-02**~~（仓库内完成；未现网）。
+10. ~~**SITE-01**~~（现网完成）。
+11. ~~**SITE-02**~~（`44e0990`；现网 stub/hash 已抽查）。
+12. ~~**DEPLOY-02**~~（现网完成；应用 `fd696c2`；未 merge server `main`）。
 
-不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push、不现网，除非用户在**该会话**里明确授权。
+不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
 **不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`API-01` 自由概念编译、`MIG-02` / `MIG-03`。
 
@@ -526,6 +538,8 @@
 
 ### 2026-08-31
 
+- DEPLOY-02：现网落地试点 `DONE`。release `fd696c2`（ops `3432e83`）已安装；`/card-os/` 为画廊；兔子 `public` current 已上架；根 CTA 与 13 个 stub 已 rsync。未 merge server `main`。证据见运维记录第 10 节。
+- DEPLOY-02：现网落地试点立项为 `IN PROGRESS`。SITE-02 已提交 `44e0990`。来源字段不扩展。顺序为从 `knowledge-pipeline-v1` 打 release（默认不 merge `main`）、回环证明画廊与 health/capabilities 并存、reload Nginx、至少一个公开包、再 rsync 根入口与 stub。范围见 `docs/ai/CURRENT_TASK.md`。
 - SITE-02：旧 `kids-world` hash/query 打开冻结主题；`boards/{slug}/index.html` 为替代说明页；根 hub 由 `activeMode` 生成，切到 `parallel` 可一次部署回滚主 CTA。独立设计 `docs/superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md`。未现网。
 - SITE-01：Card OS 替换 kids-world 知识入口。根入口主 CTA 指向画廊；旧站冻结并行可达；Nginx snippet 反代 `/card-os/` 与 `/card-os/packages/`。13 个 C 级主题按 [ADR-005](decisions/ADR-005-knowledge-entry-cutover-without-topic-remakes.md) 冻结，不等 MIG-03。独立设计 `docs/superpowers/specs/2026-08-31-card-os-kids-world-knowledge-entry-design.md`。未现网应用。SITE-02 只做旧 URL 映射与回滚开关。
 - PORTAL-01：已发布 Artifact 只读画廊。CLI 静态 HTML + loopback `/card-os/`；公开观众只看 public current；owner-only / 撤回 / 草稿 404。不替代 BROWSE-01，不写 Knowledge Core / Projection family。独立设计 `docs/superpowers/specs/2026-08-31-published-artifact-gallery-design.md`。focused portal 10 项、pipeline 回归 145 项 PASS。已本地提交 `fd696c2`。未 add `uv.lock`；未 merge `main`；未 push；未现网。

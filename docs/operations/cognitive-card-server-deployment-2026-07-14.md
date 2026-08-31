@@ -1,8 +1,8 @@
 # Cognitive Card OS 生产部署与运维记录
 
-状态：`DEPLOY-01 DONE`；`OPS-01 IN PROGRESS`
+状态：`DEPLOY-01 DONE`；`DEPLOY-02 DONE`；`OPS-01` 单人门禁见路线图
 
-实施日期：2026-07-14 至 2026-07-15（Asia/Shanghai）
+实施日期：2026-07-14 至 2026-07-15（Asia/Shanghai）；DEPLOY-02 现网落地 2026-08-31
 
 生产入口：`https://www.yutou.space/card-os/`
 
@@ -57,16 +57,16 @@
 | `/kids/` | `200 text/html`，2725 bytes |
 | `/sync/` | `401 application/json`，61 bytes |
 
-SITE-01 待应用路由（仓库内 snippet 已改，**尚未** reload 生产 Nginx）：精确 `/card-os/` 与 `/card-os/packages/` GET/HEAD 反代 `127.0.0.1:8765` 画廊；`/card-os/api/v1/capabilities` 保持 API JSON；敏感非画廊路径仍 catch-all 404。现网仍以上表 0.3.1 证据为准，直到授权部署。
+SITE-01 待应用路由（仓库内 snippet 已改，**尚未** reload 生产 Nginx）：精确 `/card-os/` 与 `/card-os/packages/` GET/HEAD 反代 `127.0.0.1:8765` 画廊；`/card-os/api/v1/capabilities` 保持 API JSON；敏感非画廊路径仍 catch-all 404。上表仍是 DEPLOY-01 验收快照。DEPLOY-02（2026-08-31）已应用该路由，现网抽查见第 10 节。
 
-SITE-02 一次部署回滚（仓库内已接线，**本批不执行**）。把知识主 CTA 交回旧站时：
+SITE-02 一次部署回滚（仓库内已接线）。把知识主 CTA 交回旧站时：
 
 1. 确认现网仍需要旧站作为主入口，而不是只关掉画廊；
 2. 把 `shared/knowledge-entry.json` 的 `activeMode` 改为 `parallel`；
 3. 运行 `node scripts/render-knowledge-entry.mjs --write-hub`；
 4. 按既有 `scripts/deploy.sh` 做一次静态部署（含重建 kids-world，以便档案说明随模式变化）。
 
-不要恢复根入口 `http-equiv refresh`。`parallel` 只交换主 CTA。Card OS 次入口在 Nginx 未应用 SITE-01 snippet 时仍可能落到 capabilities 307。
+不要恢复根入口 `http-equiv refresh`。`parallel` 只交换主 CTA。画廊 Nginx 回滚见第 10.6 节，不要用过期的第 7.1 节 snippet SHA。
 
 ### 2.3 一次性 token 验收（仅安全元数据）
 
@@ -377,3 +377,92 @@ systemctl is-enabled cognitive-card-backup.timer
 ## 9. 脱敏声明
 
 本文不包含原始 token、真实 Authorization/Cookie 值、环境文件内容、数据库行内容、候选文件内容、私钥、GitHub 凭据或 ChatGPT 身份材料。示例中的 `<CARD_OS_TOKEN>` 是占位符，不是有效凭据。
+
+## 10. DEPLOY-02 现网落地试点（2026-08-31）
+
+本节追加现网终态，**不改写**第 1 节与第 2.2 节的 0.3.1 历史证据表。DEPLOY-01 归档 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe` 仍留在 `/opt/cognitive-card-server/releases/`。
+
+### 10.1 不可变身份（本批）
+
+| 对象 | 已验证值 |
+| --- | --- |
+| 应用版本 | `0.3.1`（`pyproject` 未升版） |
+| 应用提交 | `fd696c2a8cab5400a5d78669031a501390ab5318`（`knowledge-pipeline-v1`，未 merge `main`） |
+| 治理/运维提交 | `3432e8381dfd6797d0f173b5149118bb70348124` |
+| release schema | `cognitive-card-server-release-v2` |
+| 发布归档 SHA-256 | `6a3b8cd2bf336f65da454003ca135904613880af9410dfce2ce4b7eb295ca9ed` |
+| 摘要 sidecar SHA-256 | `f1573a4f1a9132c897da68e56bebe374cc6faaf89136762ffb8de2338fa7383c` |
+| 安装器 SHA-256 | `e34e0b91c6378dc294347337befb3e7c263957fd764aae381067143927474803` |
+| release manifest SHA-256 | `b1089c21c83978c9f7e90b36005e385484f03181c0a61fef653c41cf30525a55` |
+| install manifest SHA-256 | `449ae5d21aaa9ed043cab40b9493edab6af4a1ec52a3ae93bd43665291727a6a` |
+| 已安装 runtime SHA-256 | `d1369f3c42e48543dfe8f910eb3a3edf99cdf8ef24abd7efd6228242b962a851` |
+| 服务器 Python | `3.12.3` |
+| 安装时间 | `2026-08-31T08:04:40Z` |
+
+后续升级必须把第 6 节示例中的 `APP_COMMIT` 与三个 `EXPECTED_*` 换成**该批次**完整值，不能沿用 DEPLOY-01 的 `c2a898c` 摘要。
+
+第二次对同一 `fd696c2` 调用安装器得到 `RELEASE_EXISTS`（fail-closed，未覆盖）。`current` 已指向该 release。不要删除未标记的旧 release 目录。
+
+### 10.2 进程、网络与第 4 节复查
+
+- `cognitive-card-server.service` active，`Result=success`，`NRestarts=0`，`ExecMainStatus=0`。
+- 监听仍是唯一 `127.0.0.1:8765`；UFW 无 8765 放行。
+- `nginx` 与 `cognitive-card-backup.timer` active；Certbot timer enabled。
+- 回环与公网 `GET /card-os/api/v1/health` 均为 `200`，`server_version=0.3.1`。
+- 公网 capabilities：schema v1，protocol `1..1`，minimum Skill `0.1.0`；`free_form_job_creation=false`。
+- SQLite `PRAGMA integrity_check` 为 `ok`。
+- 根分区约 `63%` / inode `22%`，未到 75% 门禁。
+
+### 10.3 Nginx 画廊路由
+
+替换前生产 snippet SHA-256 为 `f734b0e93c94405ab2e44910dc9d95d08a78d3358a6f0950ed1ddc3b378f9446`（相对第 2.2 节 `e8579a5…` 已含 Skill 注册表 location；§7.1 里的 `ACTIVE_SNIPPET_SHA256` 因此已经对不上，不能当画廊回滚脚本原样执行）。
+
+- 字节保真备份：`/var/backups/cognitive-card-server/nginx/cognitive-card-server.20260831T083618Z.pre-deploy-02.conf`，SHA-256 与替换前一致。
+- 现网 snippet：仓库 `ops/cognitive-card-server/nginx/card-os.conf`，`root:root 0644`，SHA-256 `d3d38a36f1fa488cad89b125a7180661e0151d335f22e79d5e8c9e49bc1649b0`。
+- `nginx -t` 通过后 `systemctl reload nginx`。
+
+| 路径 | DEPLOY-02 验收 |
+| --- | --- |
+| `/card-os/` | `200 text/html`，标题 `Published artifacts`，列出 `rabbit` |
+| `/card-os/api/v1/health` | `200` JSON，`status=ok`，`0.3.1` |
+| `/card-os/api/v1/capabilities` | `200` JSON，protocol `1..1` |
+| `/card-os/packages/rabbit/revisions/0001/files/print.pdf` | `200`，1,728,853 bytes |
+| `/card-os/skill/v1/manifest.json` | `200` |
+| `/card-os/api/v1/admin/portal/packages` | `401`（无 token） |
+| `/card-os/jobs` | 通用 `404` |
+| `/` 与 `/kids/` | `200 text/html`，2708 bytes，主 CTA `aria-label="打开 Card OS 知识画廊"`，HTML 不含 `spider-verse` / `paw-patrol` 链接 |
+
+### 10.4 公开包
+
+- catalog 根：`/var/lib/cognitive-card-server/candidates/package-catalog`（`cardos:cardos`）。
+- 种子：ACCEPT-01 `rabbit` `revision-0001`；`visibility` 缺省为 public。
+- `content_lock_sha256=sha256:f53f4e03863cd56fee560f85bcb2974ff4dbd2e4bd8b447f8fdb214338695f37`
+- `package_sha256=sha256:c56a29475a585a1bf33a35beb306d64e2157e83910647ec0368f19c111c9b69f`
+- 未改 `candidates/sha256/` 既有候选对象。
+
+### 10.5 根入口与 stub
+
+`scripts/deploy.sh` 上传根 `index.html`、`shared/`、`docs/`、kids-world dist、13 个 `boards/{slug}/` stub。stub 的 rsync **没有** `--delete`。`activeMode` 保持 `card-os`。
+
+浏览器抽查：`/kids/` 主 CTA 进入画廊；`/kids/boards/kids-world/#dinosaurs` 打开「恐龙与化石侦探站」；`/kids/boards/dinosaurs/` 为替代说明页（非 404）。
+
+### 10.6 回滚（本批）
+
+只把画廊路由退回 capabilities 307（保留 Skill 注册表）时，**不要**跑第 7.1 节（它会按过期 snippet SHA fail-closed，且会删掉 include）：
+
+```bash
+set -euo pipefail
+SNIPPET=/etc/nginx/snippets/cognitive-card-server.conf
+BACKUP=/var/backups/cognitive-card-server/nginx/cognitive-card-server.20260831T083618Z.pre-deploy-02.conf
+EXPECTED_ACTIVE=d3d38a36f1fa488cad89b125a7180661e0151d335f22e79d5e8c9e49bc1649b0
+EXPECTED_BACKUP=f734b0e93c94405ab2e44910dc9d95d08a78d3358a6f0950ed1ddc3b378f9446
+[[ "$(sha256sum "$SNIPPET" | awk '{print $1}')" == "$EXPECTED_ACTIVE" ]]
+[[ "$(sha256sum "$BACKUP" | awk '{print $1}')" == "$EXPECTED_BACKUP" ]]
+install -o root -g root -m 0644 "$BACKUP" "$SNIPPET"
+nginx -t
+systemctl reload nginx
+```
+
+把知识主 CTA 交回旧站时：把 `shared/knowledge-entry.json` 的 `activeMode` 改为 `parallel`，运行 `node scripts/render-knowledge-entry.mjs --write-hub`，再一次 `scripts/deploy.sh`。不要恢复 `http-equiv refresh`。
+
+应用 release 仍可通过 `current` 指回 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`；本批未演练该切换。未授权 merge server `main`。
