@@ -5,8 +5,8 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: c5154c3
-- Kids HEAD: 本提交记录 ACCEPT-01
+- Base Commit: e9034c6
+- Kids HEAD: e9034c6 `docs(card-os): record ACCEPT-01 rabbit end-to-end acceptance`
 - Server Branch: `knowledge-pipeline-v1` @ `10b14c8`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -58,7 +58,7 @@ ACCEPT-01 用 AUTHOR-02 真实兔子与 Shenzhen / age-5-6 / 双语 / print 请�
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` @ `c5154c3` + 本提交 | 本批后仅 `outputs/` 未跟踪 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `e9034c6` | 本批后仅 `outputs/` 未跟踪 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `10b14c8` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
@@ -71,7 +71,7 @@ ACCEPT-01 用 AUTHOR-02 真实兔子与 Shenzhen / age-5-6 / 双语 / print 请�
 | CLI accept → `/tmp/card-os-accept-01` | PASS | package `rabbit/revision-0001`；QA approved |
 | 本机 view 页含同一 lock | PASS | loopback `:8766/view/index.html` |
 | `git diff --check` | PASS | kids 文档 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `c5154c3` |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `e9034c6` |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `10b14c8` |
@@ -103,7 +103,7 @@ ACCEPT-01 用 AUTHOR-02 真实兔子与 Shenzhen / age-5-6 / 双语 / print 请�
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` @ `c5154c3`；本提交记录 ACCEPT-01。
+- kids：`kids-visual-learning-pack` `main` @ `e9034c6`；本提交记录 kids SHA。
 - 活 server：`knowledge-pipeline-v1` @ `10b14c8`；PUBLISH-01 `7a127b4`；QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 复跑：`python3 -m cognitive_card_server.four_card_accept --authoring examples/authoring/rabbit-real.json --request examples/four-card-converter/rabbit-request.json --repo-root . --work-root /tmp/card-os-accept-01 --actor owner --now 2026-08-31T04:00:00Z`
 - 查看：`/tmp/card-os-accept-01/view/index.html` 或 loopback `:8766`。

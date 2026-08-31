@@ -6,7 +6,7 @@
 - Updated By: Cursor Grok 4.6
 - Status: Done
 - Branch: kids `main`; server `knowledge-pipeline-v1`
-- Base Commit: c5154c3
+- Base Commit: e9034c6
 
 ## Objective
 
