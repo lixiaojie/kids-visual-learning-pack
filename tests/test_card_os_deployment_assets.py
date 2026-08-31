@@ -210,6 +210,25 @@ location ^~ /card-os/packages/ {
     proxy_set_header X-Forwarded-Proto $scheme;
 }
 
+location = /card-os/ops {
+    return 308 /card-os/ops/;
+}
+
+location ^~ /card-os/ops/ {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 120s;
+    proxy_send_timeout 120s;
+    proxy_pass http://127.0.0.1:8765;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
 location ^~ /card-os/ {
     access_log off;
     return 404;
@@ -324,6 +343,7 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertIn("location = /card-os/", nginx)
         self.assertNotIn("return 307 /card-os/api/v1/capabilities", nginx)
         self.assertIn("location ^~ /card-os/packages/", nginx)
+        self.assertIn("location ^~ /card-os/ops/", nginx)
         self.assertIn("location ^~ /card-os/api/", nginx)
         self.assertIn("proxy_pass http://127.0.0.1:8765;", nginx)
         self.assertIn("client_max_body_size 30m", nginx)
@@ -453,7 +473,16 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
                 "/card-os/packages/rabbit/revisions/0001/files/print.pdf"
             ),
         )
-        for selector in ("= /card-os/", "^~ /card-os/packages/"):
+        self.assertEqual("= /card-os/ops", selected_location("/card-os/ops"))
+        self.assertEqual(
+            "^~ /card-os/ops/",
+            selected_location("/card-os/ops/"),
+        )
+        self.assertEqual(
+            "^~ /card-os/ops/",
+            selected_location("/card-os/ops/rabbit"),
+        )
+        for selector in ("= /card-os/", "^~ /card-os/packages/", "^~ /card-os/ops/"):
             body = blocks[selector]
             self.assertIn("proxy_pass http://127.0.0.1:8765;", body)
             self.assertIn("if ($request_method !~ ^(GET|HEAD)$)", body)

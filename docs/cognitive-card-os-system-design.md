@@ -279,8 +279,10 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 14. **`SITE-01` 知识入口切换**：仓库内已完成（根入口主 CTA 指向 Card OS 画廊；旧 `kids-world` 降为冻结档案；Nginx snippet 反代画廊 HTML 与 `/card-os/packages/`）；未现网应用。见 [ADR-005](decisions/ADR-005-knowledge-entry-cutover-without-topic-remakes.md)。
 15. **`SITE-02` 旧 URL 映射与一次部署回滚**：仓库内已完成（短 hash / query 打开冻结主题；独立路径替代说明页；`activeMode=parallel` 一次部署回滚主 CTA）；未现网。
 16. **`DEPLOY-02` 现网落地试点**：Done。现网 `www.yutou.space/card-os/` 为 PORTAL-01 画廊；应用提交 `fd696c2`（版本号仍 `0.3.1`）；未 merge server `main`。不补知识源 schema。
-17. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
-18. 第二个哺乳动物一致性验收仍依赖模板族。
+17. **`WB-01` 令牌操作台只读知识源**：server `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 已提交；未现网。公网画廊保持 PORTAL-01。见 [操作台设计](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md)。
+18. **`WB-02` / `WB-03` / `API-01` 自由编译**：路线图队列第 2–4 项；不在 WB-01 实施。
+19. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
+20. 第二个哺乳动物一致性验收仍依赖模板族。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 
@@ -338,7 +340,7 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 - 当前 API 不是自由概念创建接口；自由请求必须先形成可验证的分类、事实、模板和内容锁。
 - 历史资产必须经过发现、去重、严格 package 验证和受控导入，不能因旧站曾展示而直接成为生产资产。
 - [ADR-002](decisions/ADR-002-knowledge-core-and-projection-architecture.md) 已确认一个受治理 Knowledge Core、Learning Plan/Path 与多种 Projection family 的长期分层；[已批准设计](superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md) 定义其合同语义。`KNOW-02` 先验证四个治理对象和闭包，现有 four-card runtime 在过渡期间继续兼容。
-- [ADR-004](decisions/ADR-004-single-operator-main-flow.md) 确认当前按单人维护、单人使用跑通知识主路径；第二台电脑、加密异地备份与公网 Portal 后置。确认点 1 由 `BROWSE-01` 承担，不等于 `PORTAL-01`。
+- [ADR-004](decisions/ADR-004-single-operator-main-flow.md) 确认当前按单人维护、单人使用跑通知识主路径；第二台电脑、加密异地备份与公网 Portal 后置。确认点 1 由 `BROWSE-01` 本机 CLI 与 `WB-01` 令牌操作台承担，不等于 `PORTAL-01`。
 
 动态状态、下一任务和依赖顺序只在 [Cognitive Card OS 路线图](cognitive-card-os-roadmap.md) 中维护，避免整体设计与执行账本产生两个“当前状态”。
 

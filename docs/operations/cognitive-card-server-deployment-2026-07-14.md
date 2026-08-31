@@ -466,3 +466,26 @@ systemctl reload nginx
 把知识主 CTA 交回旧站时：把 `shared/knowledge-entry.json` 的 `activeMode` 改为 `parallel`，运行 `node scripts/render-knowledge-entry.mjs --write-hub`，再一次 `scripts/deploy.sh`。不要恢复 `http-equiv refresh`。
 
 应用 release 仍可通过 `current` 指回 `c2a898cba5b8a8948c06688d8c2a387353d7cbbe`；本批未演练该切换。未授权 merge server `main`。
+
+## 11. WB-01 操作台（本地实现，未现网）
+
+日期：2026-08-31。不改写第 1–10 节历史表。
+
+### 11.1 本地证据
+
+- server 工作区 `.worktrees/cognitive-card-server-knowledge-core` 分支 `knowledge-pipeline-v1` @ `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`（`knowledge_ops` 已提交；现网应用仍是 `fd696c2`）。
+- focused HTTP：`tests.test_http_knowledge_ops` 5 项 + `test_http_knowledge_library` + `test_http_portal` 合计 16 项 PASS。
+- kids Nginx snippet 增加 `/card-os/ops/` GET/HEAD 反代；`tests.test_card_os_deployment_assets` 与 `tests.test_card_os_release` 67 项 PASS。
+- 未把 Uvicorn 绑到非 loopback。未 merge server `main`。
+
+### 11.2 现网未做（硬顺序）
+
+不得先 reload `/card-os/ops/` 再种子知识库，也不得在未安装含 `knowledge_ops` 的 release 时 reload（旧应用会对 ops 返回 404）。剩余：
+
+1. ~~提交 server `knowledge_ops`（不 add `uv.lock`）。~~ 已提交 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`。
+2. 从该 commit 打不可变 release 并安装到 `127.0.0.1:8765`。
+3. 将 AUTHOR-02 `rabbit-real.json` compile（不覆盖 four-card）publish 为 knowledge-library `rabbit` current；核对话廊 `package_sha256=sha256:c56a29475a585a1bf33a35beb306d64e2157e83910647ec0368f19c111c9b69f` 未变。
+4. 将仓库 `ops/cognitive-card-server/nginx/card-os.conf` 应用到 snippet 并 `nginx -t` + reload。
+5. 抽查：无 token 的 `/card-os/ops/` HTML 不含命题；admin JSON 可见 4 单元 / 8 命题 / 4 来源，chosen `chaptered-guide`；画廊 PDF 仍 200。
+
+回滚 Nginx：去掉 ops location，可恢复第 10.6 节 `pre-deploy-02` 备份或 DEPLOY-02 现网 snippet；不要删除 library 种子。

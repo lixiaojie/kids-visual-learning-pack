@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`DEPLOY-02` 现网落地试点（Done）。公网画廊与根 CTA 已切到 Card OS；应用提交 `knowledge-pipeline-v1` @ `fd696c2`（版本号仍 `0.3.1`）。默认仍不 merge server `main`。后置项见 §5「不要排进上述队列」。
+本里程碑当前切片：`WB-01` 令牌操作台只读知识源（server `115377b` 已提交，现网待 release）。公网画廊保持 PORTAL-01；生产流程放 admin 操作台。队列：WB-01 → WB-02 → WB-03 → API-01。默认仍不 merge server `main`。后置项见 §5「不要排进上述队列」。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -55,7 +55,7 @@
 | AGE-01 | 3–4、5–6 岁配置 | DONE | 已本地提交 `4e0ea52`；未 merge、未现网 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | IN PROGRESS | 集成分支含 LIB-01 `b672949` 与 PROJ-01/WIRE-01 `9e0c353`；功能分支未 merge 进 main；现网仍 `0.3.1` |
+| API-01 | HTTPS 写入 API | IN PROGRESS | 队列第 4 项：自由 prompt 编译成知识源；WB-01/02/03 之后实施；现网仍拒绝自由 payload |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -74,6 +74,9 @@
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
 | DEPLOY-01 | Card OS 服务部署 | DONE | 0.3.1 基线；升级门禁见运维记录 |
 | DEPLOY-02 | 现网落地试点 | DONE | 现网画廊+兔子包+根 CTA；未 merge server `main` |
+| WB-01 | 令牌操作台只读知识源 | IN PROGRESS | server `115377b` 已提交；待打 release、种子 library、reload Nginx |
+| WB-02 | 四卡成熟视觉投影 | BACKLOG | 依赖 WB-01；不改 Knowledge Core |
+| WB-03 | 选投影→生成→上架画廊 | BACKLOG | 依赖 WB-02 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
 | OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
 | ACCEPT-01 | 兔子完整验收 | DONE | 已本地提交 `10b14c8`；未 merge、未现网 |
@@ -300,7 +303,7 @@
 - `0.3.1` 批次验收：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
 - 已部署：`0.3.1` 经 `www.yutou.space/card-os` 的 HTTPS、持久化和非 root 服务验收，health/capabilities 与受保护路径均通过；见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
-- 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。该入口是 ACCEPT-01 的真正前置；候选实现为存档 tag `archive/card-os-thin-skill-v1-20260717` 中 `skills/cognitive-card-os/core/` 的生产核心（分类 v2、27 步工作流、full-spec v4.3/v5.0、哺乳动物 v1 与恐龙 v2 模板族），按 ADR-001 须迁移到服务器侧并重新评审，不得直接从 Skill 包形态合入。
+- 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。该入口已排入路线图 §5 第 16 项，在 WB-01 / WB-02 / WB-03 之后实施；候选实现为存档 tag `archive/card-os-thin-skill-v1-20260717` 中 `skills/cognitive-card-os/core/` 的生产核心（分类 v2、27 步工作流、full-spec v4.3/v5.0、哺乳动物 v1 与恐龙 v2 模板族），按 ADR-001 须迁移到服务器侧并重新评审，不得直接从 Skill 包形态合入。
 - 抢救进度：API-01-IMPL-1 snapshot 已在 `codex/api-01-core-snapshot`；API-01-IMPL-2/3/4 确定性封印、sealed-input store、compiled-jobs 与 prepare/submit 辅助已在隔离分支 `codex/api-01-generation-input-v1` 本地提交 `878a28d`（基线 `9c1b82b`，未 push）。接合合同（四对象 revision lock）已在同一分支本地提交 `4ca3e0e`。用户授权后已开 `knowledge-pipeline-v1`（基线 knowledge-core `1facb79`，merge `4ca3e0e`，authoring lock `1f9c42f`）；两条功能分支未 merge 进 `main`。未 add `uv.lock`；v1 FACT 密封合同未改。兔子/mammal production-record 兼容 snapshot `sha256:ae563e…1f20` 已导入并将 `47d2…d4c1` retained；introducing commit 为 `878a28d`，catalog `registry_commit` 仍为 `9c1b82b`。本机 loopback 已用全新 `/tmp` 与短期 job-bound token 完成 A→B→C：seal lock `sha256:15b8ea…ce2a`，新 packet（未复用 `gp_453f…cc06`），snapshot validator 退出 0，`submit-directory` 为 `candidate_staged`。自由概念仍失败关闭。未接现网。不得把当前状态描述为可执行生产流程。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
 
@@ -475,6 +478,34 @@
 - 完成条件：已满足。证据见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md) 第 10 节。
 - 非范围：知识源 schema、API-01 自由概念编译、MIG-02/03、默认 merge server `main`、Uvicorn 非 loopback。
 
+### WB-01 令牌操作台只读知识源
+
+- 状态：`IN PROGRESS`（server `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 已提交；未现网）
+- 权威仓库：`kids-visual-learning-pack`（产品规范、Nginx snippet、任务治理）；实现落在 `cognitive-card-server` `knowledge-pipeline-v1`。
+- 依赖：BROWSE-01、PROJ-01、WIRE-01、LIB-01、AUTHOR-02、DEPLOY-02。
+- 目标：admin token 操作台浏览知识库 current 与 Projection 选择面；生产兔子 library current 为 AUTHOR-02 章节导读知识源；公开画廊仍是 ACCEPT-01 四卡包。
+- 完成条件：带 token 可见兔子 4 单元 / 8 命题 / 4 来源，chosen `chaptered-guide`，`four-card` discouraged；无 token 看不到命题正文；画廊包摘要不变；Uvicorn 仍回环。
+- 独立设计：[令牌操作台只读知识源](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md)。
+- 非范围：WB-02 / WB-03 / API-01 实现、浏览器会话、在画廊加操作台链接、merge server `main`。
+
+### WB-02 四卡成熟视觉投影
+
+- 状态：`BACKLOG`（WB-01 完成后改为 `READY`）
+- 依赖：WB-01。
+- 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
+- 目标：把 four-card 从确定性锁排版恢复为有图、有内容的成熟投影；不把视觉方案写入 Knowledge Core。
+- 完成条件：兔子四卡不再以空白观察区与纯文字框作为可接受交付；Knowledge Core 字节不因视觉恢复而改写。
+- 独立设计：WB-01 完成后另立。
+
+### WB-03 选投影→生成→上架画廊
+
+- 状态：`BACKLOG`
+- 依赖：WB-02。
+- 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
+- 目标：操作台确认 Projection family 后生成并发布到 PORTAL-01 catalog；默认覆盖仍不得静默写 Knowledge Core。
+- 完成条件：从操作台对已有知识源选出 four-card（显式）可上架；公开画廊出现新包或新 revision；未选不得生成。
+- 独立设计：WB-02 完成后另立。
+
 ### OPS-01 本机备份与恢复
 
 - 状态：`DONE`（2026-08-30，[ADR-004](decisions/ADR-004-single-operator-main-flow.md) 关闭单人门禁）
@@ -527,10 +558,14 @@
 10. ~~**SITE-01**~~（现网完成）。
 11. ~~**SITE-02**~~（`44e0990`；现网 stub/hash 已抽查）。
 12. ~~**DEPLOY-02**~~（现网完成；应用 `fd696c2`；未 merge server `main`）。
+13. **WB-01** 令牌操作台只读知识源（当前；server `115377b` 已提交，现网待 release）。
+14. **WB-02** 四卡成熟视觉投影。
+15. **WB-03** 选投影 → 生成 → 上架画廊。
+16. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
-**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`API-01` 自由概念编译、`MIG-02` / `MIG-03`。
+**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`MIG-02` / `MIG-03`。
 
 存档生产核心仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色。
 
@@ -538,6 +573,8 @@
 
 ### 2026-08-31
 
+- WB-01：令牌操作台只读知识源仍 `IN PROGRESS`。server `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 已提交 `knowledge_ops`；kids Nginx `/card-os/ops/` 已入库。未种子生产 knowledge-library；未 reload 生产 Nginx。
+- WB-01：令牌操作台只读知识源立项为 `IN PROGRESS`。独立设计 `docs/superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md`。公网画廊保持 PORTAL-01。新增队列 WB-01 → WB-02 → WB-03 → API-01；API-01 自由编译从「不要排进队列」移入第 16 项。未开始 server 实现。
 - DEPLOY-02：现网落地试点 `DONE`。release `fd696c2`（ops `3432e83`）已安装；`/card-os/` 为画廊；兔子 `public` current 已上架；根 CTA 与 13 个 stub 已 rsync。未 merge server `main`。证据见运维记录第 10 节。
 - DEPLOY-02：现网落地试点立项为 `IN PROGRESS`。SITE-02 已提交 `44e0990`。来源字段不扩展。顺序为从 `knowledge-pipeline-v1` 打 release（默认不 merge `main`）、回环证明画廊与 health/capabilities 并存、reload Nginx、至少一个公开包、再 rsync 根入口与 stub。范围见 `docs/ai/CURRENT_TASK.md`。
 - SITE-02：旧 `kids-world` hash/query 打开冻结主题；`boards/{slug}/index.html` 为替代说明页；根 hub 由 `activeMode` 生成，切到 `parallel` 可一次部署回滚主 CTA。独立设计 `docs/superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md`。未现网。
