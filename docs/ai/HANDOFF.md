@@ -5,14 +5,14 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 608ef4c
-- Kids HEAD: 608ef4c `docs(ai): record AGE-01 kids commit SHA`
+- Base Commit: 3c56fed
+- Kids HEAD: 3c56fed `docs(card-os): record RENDER-01 locked four-card render`
 - Server Branch: `knowledge-pipeline-v1` @ `1ef6edc`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
 - Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`
-- Working Tree: kids 本提交记录 RENDER-01 设计与任务账本；`outputs/` 未跟踪。server 仅 `uv.lock` 未跟踪
-- Task Status: **Done（RENDER-01 已本地提交 server `1ef6edc`；本提交记录 kids 账本）。** 未 merge server `main`；未 push；未现网。
+- Working Tree: kids 仅 `outputs/` 未跟踪；server 仅 `uv.lock` 未跟踪
+- Task Status: **Done（RENDER-01 已本地提交 server `1ef6edc`；kids `3c56fed`）。** 未 merge server `main`；未 push；未现网。
 
 ## Summary
 
@@ -30,12 +30,12 @@ RENDER-01 把锁定四卡排成 A4 300dpi 四页 PNG 和 CropBox PDF。COPY/描�
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 本提交：RENDER-01 Done |
-| kids | `docs/ai/HANDOFF.md` | 本提交：本交接 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本提交：RENDER-01 / `1ef6edc` |
-| kids | `docs/cognitive-card-os-system-design.md` | 本提交：交付阶段第 7 条 |
-| kids | `docs/README.md` | 本提交：RENDER-01 设计条目 |
-| kids | `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md` | 本提交 |
+| kids | `docs/ai/CURRENT_TASK.md` | `3c56fed`：RENDER-01 Done |
+| kids | `docs/ai/HANDOFF.md` | 本提交：记录 kids SHA `3c56fed` |
+| kids | `docs/cognitive-card-os-roadmap.md` | `3c56fed`：RENDER-01 / `1ef6edc` |
+| kids | `docs/cognitive-card-os-system-design.md` | `3c56fed`：交付阶段第 7 条 |
+| kids | `docs/README.md` | `3c56fed`：RENDER-01 设计条目 |
+| kids | `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md` | `3c56fed` |
 | kids | `outputs/` | 未跟踪；不纳入 |
 | server | `src/cognitive_card_server/four_card_render/` | 已提交 `1ef6edc` |
 | server | `tests/test_four_card_render.py` | 已提交 `1ef6edc` |
@@ -53,7 +53,7 @@ RENDER-01 把锁定四卡排成 A4 300dpi 四页 PNG 和 CropBox PDF。COPY/描�
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` | 本批提交任务账本与 RENDER-01 设计 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `3c56fed` | 任务账本与 RENDER-01 设计已提交 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `1ef6edc` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
@@ -65,7 +65,7 @@ RENDER-01 把锁定四卡排成 A4 300dpi 四页 PNG 和 CropBox PDF。COPY/描�
 | `.venv/bin/python -m unittest tests.test_four_card_render tests.test_age_language_adapter tests.test_four_card_converter tests.test_knowledge_library tests.test_knowledge_browse tests.test_http_knowledge_library tests.test_joined_executor tests.test_knowledge_contract_authoring` | PASS | 85 项 |
 | `.venv/bin/python -m unittest discover -s tests` | WARN | 572 项中 570 PASS；2 项 real-uvicorn 502 既有 |
 | `git diff --check` | PASS | kids 文档 + server renderer |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `608ef4c` 对齐提交前 HEAD；随后补 kids SHA |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `3c56fed` 对齐 RENDER-01 kids 提交 |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `1ef6edc`；仅 `uv.lock` 未跟踪 |
@@ -97,7 +97,7 @@ RENDER-01 把锁定四卡排成 A4 300dpi 四页 PNG 和 CropBox PDF。COPY/描�
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main`；本提交记录 RENDER-01 设计与任务账本。
+- kids：`kids-visual-learning-pack` `main` @ `3c56fed`；本提交只记录该 SHA。
 - 活 server：`knowledge-pipeline-v1` @ `1ef6edc`（RENDER-01）；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
 - 规范：ADR-001/002/004、系统总设计 §3.3、RENDER-01 设计、AGE-01 `copy_plan`。
