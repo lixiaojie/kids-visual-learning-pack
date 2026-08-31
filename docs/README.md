@@ -60,7 +60,9 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Locked Four-Card Render Design](superpowers/specs/2026-08-31-locked-four-card-render-design.md) | RENDER-01: content-lock four-card layout, copy_plan COPY, A4 PDF; not PORTAL/QA/PUBLISH | Approved |
 | [Strict QA and Human Review Design](superpowers/specs/2026-08-31-strict-qa-human-review-design.md) | QA-01: machine QA gate before awaiting_review; human actor, decision, and audit; not PORTAL/PUBLISH | Approved |
 | [Immutable Package Publish Design](superpowers/specs/2026-08-31-immutable-package-publish-design.md) | PUBLISH-01: immutable package revision; withdraw/replace keep history; not PORTAL | Approved |
+| [Rabbit End-to-End Acceptance Design](superpowers/specs/2026-08-31-rabbit-end-to-end-acceptance-design.md) | ACCEPT-01: rabbit Shenzhen age-5-6 bilingual print through lock/render/QA/package; local same-version view; not PORTAL | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
+| [Card OS ACCEPT-01 Evidence](cognitive-card-os-accept-01-evidence.md) | Verified local rabbit print pack: four cards, A4 PDF, approved QA, immutable package, same-version local view | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 
 ### Plans

@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：下一刀 `ACCEPT-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
+本里程碑当前切片：下一刀 `KNOW-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` / `ACCEPT-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -75,7 +75,7 @@
 | DEPLOY-01 | Card OS 服务部署 | DONE | 按生产运维记录持续执行升级与回滚门禁 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
 | OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
-| ACCEPT-01 | 兔子完整验收 | BACKLOG | 依赖发布链路 |
+| ACCEPT-01 | 兔子完整验收 | DONE | 已本地提交 `10b14c8`；未 merge、未现网 |
 | ACCEPT-02 | 第二个哺乳动物一致性验收 | BACKLOG | 依赖 ACCEPT-01 与模板族 |
 
 ## 4. 任务明细
@@ -478,11 +478,13 @@
 
 ### ACCEPT-01 兔子端到端验收
 
-- 状态：`BACKLOG`
-- 输入：兔子、深圳、`age-5-6`、中英文、打印版。
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `10b14c8`；未 merge 进 main，未 push）
+- 输入：兔子、深圳、`age-5-6`、中英文、打印版（AUTHOR-02 `rabbit-real.json` + Shenzhen four-card request）。
 - 依赖：RUN-01、AGE-01、RENDER-01、QA-01、PUBLISH-01。
+- 本批结果：确定性 lock assembler + `four_card_accept` 编排从正式输入写到四卡 PNG、A4 PDF、QA `approved`、不可变 `rabbit/revision-0001`。本机 `view/index.html` 与 package / browse 共用同一 `content_lock_sha256`。不扩 PORTAL，不新增公网 HTTP。focused lock+accept 9 项、pipeline 回归 118 项 PASS。证据见 [ACCEPT-01 Evidence](cognitive-card-os-accept-01-evidence.md)。已本地提交 `10b14c8`。
 - 单人完成条件（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）：从正式输入到四卡、PDF、QA、复核和不可变 package 全链路完成；本机可查看同一版本。
 - 不作为本任务门禁：公网门户（`PORTAL-01`）、第二终端（`SKILL-03`）。
+- 独立设计：[兔子端到端验收](superpowers/specs/2026-08-31-rabbit-end-to-end-acceptance-design.md)。
 
 ### ACCEPT-02 第二个哺乳动物一致性验收
 
@@ -495,7 +497,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）。均未 merge。
+已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）。均未 merge。
 
 下一会话起按此编号：
 
@@ -504,7 +506,7 @@
 3. ~~**RENDER-01**~~（本机完成，`1ef6edc`）。
 4. ~~**QA-01**~~（本机完成，`37a5927`）。
 5. ~~**PUBLISH-01**~~（本机完成，`7a127b4`）。
-6. **ACCEPT-01**：兔子端到端（单人门禁：不要求第二终端）。
+6. ~~**ACCEPT-01**~~（本机完成，`10b14c8`）。
 7. **KNOW-01**：分类接入 authoring，去掉手填 `--request`。
 8. **TMPL-01**：模板族覆盖，为第二主题做准备。
 9. **PORTAL-01**：已发布 Artifact 画廊；不等于 BROWSE-01。
@@ -520,6 +522,7 @@
 
 ### 2026-08-31
 
+- ACCEPT-01：AUTHOR-02 真实兔子 + Shenzhen age-5-6 打印请求本机跑通四卡/PDF/QA/不可变 package。确定性 lock 不经 LLM。本机 `view/index.html` 与 package 同一 `content_lock_sha256`。focused lock+accept 9 项、pipeline 回归 118 项 PASS。证据 `docs/cognitive-card-os-accept-01-evidence.md`。已本地提交 `10b14c8`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - PUBLISH-01：服务器 `four_card_publish` 把 QA-01 `approved` 四卡写成不可变 package revision；撤回/替代只改 current pointer。独立设计 `docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md`。focused publish 12 项 PASS；pipeline 回归 109 项 PASS。已本地提交 `7a127b4`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - QA-01：服务器 `four_card_qa` 对 RENDER-01 产物做机器门禁；通过后才 `awaiting_review`；人工 `approve`/`reject` 绑定 actor 与 `audit.jsonl`。独立设计 `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md`。focused QA 12 项 PASS。已本地提交 `37a5927`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - RENDER-01：服务器 `four_card_render` 按内容锁与 AGE-01 `copy_plan` 排出四页 A4 PNG/PDF；generate COPY 不进字形。独立设计 `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md`。focused renderer 11 项、pipeline+renderer 85 项 PASS；完整 suite 572 中 2 项既有 real-uvicorn 502。已本地提交 `1ef6edc`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
