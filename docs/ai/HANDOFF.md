@@ -2,64 +2,75 @@
 
 ## Metadata
 
-- Updated At: 2026-08-30
+- Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: a85a785
-- Kids HEAD: a85a785 `docs(card-os): record ADR-004, browse confirmation, and four-card convert`
-- Server Branch: `knowledge-pipeline-v1` @ `e9bfd22`（BROWSE-01 + CONV-01 已本地提交；未 merge `main`）
-- Server Worktree: `/Users/admin/projects/family/kids-visual-learning-pack/.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
-- Server Generation-Input Worktree: `/Users/admin/projects/family/kids-visual-learning-pack/.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
-- Server main checkout: `/Users/admin/Documents/Codex/2026-07-11/new-chat/work/cognitive-card-server` @ `c2a898c`
+- Base Commit: 6df8f88
+- Kids HEAD: 本提交记录 AGE-01 / RUN-01 本地 SHA
+- Server Branch: `knowledge-pipeline-v1` @ `4e0ea52`
+- Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
+- Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
+- Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`
 - Working Tree: kids 仅 `outputs/` 未跟踪；server 仅 `uv.lock` 未跟踪
-- Task Status: **Done（CONV-01 接合密封转换已在 `knowledge-pipeline-v1` 验证并本地提交 `e9bfd22`）。** 未 merge server `main`；未 push、未现网。
+- Task Status: **Done（AGE-01 已本地提交 `4e0ea52`；RUN-01 已本地提交 `c55f51b`）。** 未 merge server `main`；未 push；未现网。
 
 ## Summary
 
-CONV-01 已落地并提交。CLI `convert` 把显式 four-card 的 library current 映射为接合 generation-input：FACT `source_id` 去点号，knowledge-core 磁盘不变。默认 chaptered-guide 兔子被拒绝。未写 production-record 本体，未扩 PORTAL-01，未 merge server `main`。
+`age-language-adapter-v1` 把 `age-3-4` / `age-5-6`、CN 同年龄、EN `beginner` 做成服务器侧适配。converter 在密封前把登记儿童中文与 beginner 英文写入 FACT；命题 id、确定性、来源、安全原文跨年龄不变。未登记 claim fail closed。COPY 计划不进 generation-input；`age-3-4` 抑制正式 COPY。独立审查发现中文逗号不分句后已修复。server RUN-01 `c55f51b` 与 AGE-01 `4e0ea52` 已本地提交；未 add `uv.lock`。
 
 ## Completed
 
-- kids `a85a785`：ADR-004、BROWSE-01/CONV-01 设计、路线图与任务账本。
-- server `e9bfd22`：`browse` 静态 HTML + 只读 GET；`four_card_converter` 与 CLI `convert`。
+- 设计：`docs/superpowers/specs/2026-08-31-age-language-adapter-design.md`
+- 适配器：`age_language/registry.py`、`adapter.py`；合成兔子 2 条 + 真实兔子 8 条 claim 已登记
+- converter：`convert_current` 调用 `apply_age_language`
+- 测试：跨年龄不漂移、COPY span、未登记 gap、双次 apply、真实兔子中文子句 COPY
+- server 本地提交：RUN-01 `c55f51b`；AGE-01 `4e0ea52`
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | 治理文档（ADR-004、BROWSE-01/CONV-01 设计、路线图、任务账本） | 已提交 `a85a785` |
+| kids | `docs/ai/CURRENT_TASK.md` | 本提交：AGE-01 Done |
+| kids | `docs/ai/HANDOFF.md` | 本提交：本交接 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 本提交：AGE-01 / RUN-01 SHA |
+| kids | `docs/cognitive-card-os-system-design.md` | 本提交：交付阶段第 6 条 |
+| kids | `docs/README.md` | 本提交：AGE-01 设计条目 |
+| kids | `docs/superpowers/specs/2026-08-31-age-language-adapter-design.md` | 本提交 |
+| kids | `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md` | 本提交：§5.2 cn/en |
 | kids | `outputs/` | 未跟踪；不纳入 |
-| server | browse + convert（14 文件） | 已提交 `e9bfd22` |
-| server | `uv.lock` | 未跟踪；不纳入 |
+| server | `age_language/` + converter + tests | 已提交 `4e0ea52` |
+| server | RUN-01 接线 | 已提交 `c55f51b` |
+| server | `uv.lock` | 未跟踪；不要 add |
 
 ## Decisions Made
 
-- 只转换 current 且 family 为显式 `four-card`。
-- FACT `source_id` 把 `.`/`_` 换成 `-`；碰撞与无法映射 fail closed。
-- `canonical_claim` 临时同时填入 FACT `cn`/`en`；中文表达留给 AGE-01。
-- 不在本批写 production-record 本体；不新增 HTTP convert。
-- 分类由 `--request` 提供，不从 Knowledge Core 发明。
+- 儿童表达来自版本化登记表，不调用模型发明中文；未命中 `AGE_EXPRESSION_GAP`。
+- COPY 由适配器对已适配命题重算，不写入 v1 FACT。RENDER-01 消费 `copy_plan`（`source_card` = 知识卡文本来源，`action_card` = 观察卡落位）。
+- age-3-4 只跑适配器测试，不走 snapshot 模板解析（无 mammal age-3-4 模板族，属 TMPL-01）。
+- 不 merge、不 push、不现网。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `~/projects/family/kids-visual-learning-pack` `main` @ `a85a785` | 本批已提交 |
-| 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `e9bfd22` | BROWSE-01+CONV-01 已本地提交 |
+| kids 治理 | `kids-visual-learning-pack` `main` | 本批提交任务账本与 AGE-01 设计 |
+| 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `4e0ea52` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
 ## Verification Results
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| server unittest converter + browse / library / HTTP / projection / generation-input / join / authoring / contract / auth | PASS | 248 项 |
-| `git merge-base --is-ancestor knowledge-pipeline-v1 main` | PASS | 退出码 1：未 merge 进 main |
-| server `main` | PASS | 仍 `c2a898c` |
-| `git diff --check`（kids + server） | PASS | 无 whitespace 错误 |
-| `bash scripts/ai/check-handoff.sh` | PASS | 本交接写入后对齐 `a85a785` |
+| `.venv/bin/python -m unittest tests.test_age_language_adapter tests.test_four_card_converter` | PASS | 27 项 |
+| `.venv/bin/python -m unittest` focused adapter/converter/library/browse/HTTP library/joined/authoring | PASS | 83 项 |
+| `.venv/bin/python -m unittest discover -s tests` | WARN | 561 项中 559 PASS；2 项 real-uvicorn 502 既有 |
+| 独立审查 [AGE-01 adapter](9e08019e-4976-49c5-b8db-89ed6da63b70) | PASS（修复后） | 初审 HIGH：中文逗号不分句；已补 `，、` 并加真实兔子 COPY 测试 |
+| `git diff --check` | PASS | kids 文档 + server 适配器 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `6df8f88` 为提交前 HEAD |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
-| `bash scripts/ai/check-doc-governance.sh` | WARN | 0 FAIL；3 项文档复核到期，与本批无关 |
+| `bash scripts/ai/check-doc-governance.sh` | WARN | 0 FAIL；文档复核到期，与本批无关 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
+| 未 merge server `main` / 未 push / 未现网 | PASS | `merge-base --is-ancestor knowledge-pipeline-v1 main` 非 0 |
 
 ## Known Failures
 
@@ -70,25 +81,25 @@ CONV-01 已落地并提交。CLI `convert` 把显式 four-card 的 library curre
 
 ## Risks and Caveats
 
-- 转换器是投影，不是 CMS；不要改 Knowledge Core 来迁就 FACT。
+- 未登记主题 convert 会 `AGE_EXPRESSION_GAP`；几何等主题尚未进登记表。
+- age-3-4 仍无 mammal 模板族；完整 convert/assemble 留给 TMPL-01。
+- COPY 计划尚未进入 generation-input；RENDER-01 必须调用 `copy_plan`，不能让 generate 另写 COPY。
 - 未授权不要 merge `knowledge-pipeline-v1`、不要 push/deploy。
 - `uv.lock` 与 `outputs/` 不要混入提交。
-- FACT `cn`/`en` 目前都是英文 `canonical_claim`；儿童中文留给 AGE-01。
 
 ## Remaining Work
 
-1. 下一产品切片：把接合密封交给本机 loopback executor（仍不 merge `main`、不现网），或用户另行授权。
-2. thin-skill 脏文档与 generation-input 功能分支 worktree 仍待用户选择。
-3. 未 push；未 merge server `main`。
+1. 下一实现会话：RENDER-01。
+2. 其后按路线图 §5 编号 4–10。
+3. thin-skill 脏文档与 generation-input 功能分支 worktree 仍待用户选择。
 
 ## Exact Next Action
 
-不要 merge server `main`，不要 push，不要现网，不要扩 PORTAL-01。若继续产品工作，把接合密封接入本机 compiled-job / executor 另立 CURRENT_TASK。
+新开会话，把 `RENDER-01` 写入 `CURRENT_TASK.md`：四卡排版与 A4 PDF。消费 AGE-01 `copy_plan`（观察卡动作、知识卡 span 来源）；不改四对象 schema，不扩 PORTAL，不 merge、不现网。活 server 尖端为 `knowledge-pipeline-v1` @ `4e0ea52`。
 
 ## Recovery Notes
 
-- kids：`/Users/admin/projects/family/kids-visual-learning-pack` `main` @ `a85a785`。
-- 活 server：`knowledge-pipeline-v1` @ `e9bfd22`；main `c2a898c`。
-- 转换命令：`PYTHONPATH=src python3 -m cognitive_card_server.knowledge_library.cli convert --library-root <library> --topic <slug> --repo-root . --snapshot-id sha256:ae563ea0c9d49046b2ff7e13f6294c1d6ddd1c5666f6bda5bd82d36872da1f20 --registry-commit 9c1b82be69df2da8348f66970a993e9c1984ce6d --request examples/four-card-converter/rabbit-request.json --output <joined.json>`
+- kids：`kids-visual-learning-pack` `main`；本提交记录 AGE-01 设计与任务账本。
+- 活 server：`knowledge-pipeline-v1` @ `4e0ea52`（AGE-01）；RUN-01 `c55f51b`；main `c2a898c`。
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
-- 规范：`docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`、ADR-004。
+- 规范：ADR-002、系统总设计 §7、AGE-01 设计、CONV-01。

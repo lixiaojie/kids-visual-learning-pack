@@ -267,9 +267,10 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 2. 本地 authoring MVP：已完成。
 3. 服务器 revision、current 与 freshness 管理及 loopback HTTP 接线：本地完成，未进生产。
 4. **`BROWSE-01` 知识浏览与 Projection 确认（确认点 1）**：本地已完成（静态 HTML + 只读 GET）；未 merge 进生产；不等于 PORTAL-01。
-5. **`CONV-01` four-card converter**：本地已完成（显式 four-card current → 接合 generation-input）；未 merge 进生产；不写出 production-record 本体。随后按需接现网 executor，抢救 Renderer、QA、打印与发布。
-6. 第二台电脑、加密异地备份、浏览器会话、公网 Portal、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
-7. 兔子完整交付及第二个哺乳动物一致性验收仍依赖发布链路，不提前把 SITE-01 拉进主路径。
+5. **`CONV-01` four-card converter** 与 **`RUN-01` 本机执行接合密封**：本地已完成（显式 four-card current → 接合 generation-input → loopback compiled-job / executor → validator 退出 0）；未 merge 进生产；转换器不写出 production-record 本体。
+6. **`AGE-01` 年龄与中文表达适配**：本地已完成（`age-3-4` / `age-5-6` 服务器适配器；命题、确定性、安全边界不随年龄改写）；未 merge 进生产。其后按路线图 §5 做 RENDER / QA / PUBLISH。
+7. 第二台电脑、加密异地备份、浏览器会话、公网 Portal、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
+8. 兔子完整交付及第二个哺乳动物一致性验收仍依赖发布链路，不提前把 SITE-01 拉进主路径。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 

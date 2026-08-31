@@ -2,77 +2,72 @@
 
 ## Metadata
 
-- Updated At: 2026-08-30
+- Updated At: 2026-08-31
 - Updated By: Cursor Grok 4.6
 - Status: Done
-- Branch: kids `main`；实现在 server `knowledge-pipeline-v1`
-- Base Commit: kids `a85a785`；server `knowledge-pipeline-v1` @ `e9bfd22`（基线 `9e0c353`）
+- Branch: kids `main`; server `knowledge-pipeline-v1`
+- Base Commit: 6df8f88
 
 ## Objective
 
-实现 CONV-01：把已 publish 的 library current（且 Projection family 为显式 `four-card`）映射为现有接合 generation-input，使四卡 executor 能密封同一主题。处理 knowledge-core `source_id` 点号与 FACT `source_id` 不允许点号的映射。不写 Knowledge Core，不扩 PORTAL-01，不 merge server `main`，不现网。
+把 3–4、5–6 的年龄与中文表达做成服务器侧适配；命题、确定性、安全边界不随年龄改写。
 
 ## Background
 
-- BROWSE-01 已提供确认点 1。接合 `assemble_from_knowledge_revision` 已存在，但 FACT 仍需人工拼装。
-- Authoring 生成 `src.{topic}.{slug}`（允许点号）；v1 FACT `_SOURCE_ID` 为 `^[a-z][a-z0-9-]{1,63}$`。
-- 兔子默认 chosen 是 `chaptered-guide`；four-card 须显式 `projection.family` 后重新 publish，才允许转换。
+- RUN-01 已在本机 loopback 跑通；server 接线已本地提交 `c55f51b`。
+- CONV-01 把 `canonical_claim` 临时写入 FACT `cn`/`en`。AGE-01 用 `age-language-adapter-v1` 替换该临时投影，已本地提交 `4e0ea52`。
+- 活 server checkout：`.worktrees/cognitive-card-server-knowledge-core` @ `4e0ea52`。
 
 ## Acceptance Criteria
 
-- [x] 显式 four-card 的已 publish current 经 CLI `convert` 写出接合密封，并通过 `validate_joined_generation_input`
-- [x] FACT `source_id` 不含点号；knowledge-core 磁盘上的 `source_id` 仍含点号（转换只读）
-- [x] 默认 chaptered-guide 兔子 current 拒绝转换（`CONVERTER_FAMILY_NOT_FOUR_CARD`）
-- [x] 无 current / unlist 拒绝转换；点号映射碰撞 fail closed
-- [x] 仅改 Projection 时 Knowledge Core 摘要不变；接合 lock 可变
-- [x] 不新增 SQLite 表、不改四对象 schema、不改 v1 FACT 合同、不生成 production-record 本体（那是 executor 输出）
-- [x] 未 merge server `main`；未 push；未现网；未扩 PORTAL-01
+- [x] 带版本的服务器适配器覆盖 `age-3-4`、`age-5-6`；CN 与主年龄同配置；EN 为 `beginner`
+- [x] 年龄只改变表达与任务负荷；同一 Knowledge Core 下命题 id、确定性、来源、安全边界跨年龄一致
+- [x] 未注册的 canonical claim fail closed（`AGE_EXPRESSION_GAP`），不发明中文
+- [x] COPY/描红/口头复述来自同语言知识表达的精确 span；`age-3-4` 抑制正式 COPY
+- [x] 不改四对象 schema、不改 v1 FACT 键集、不扩 PORTAL、不 merge、不现网
+- [x] focused 适配器 + converter 回归 PASS
 
 ## In Scope
 
-Kids 治理：
-
 - `docs/ai/CURRENT_TASK.md`
 - `docs/ai/HANDOFF.md`
-- `docs/cognitive-card-os-roadmap.md`（CONV-01 状态与近期顺序）
-- `docs/cognitive-card-os-system-design.md`（仅交付阶段第 5 条）
-- `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`
-- `docs/README.md`（仅增加本设计一行）
-
-Server 实现（cognitive-card-server worktree，分支 `knowledge-pipeline-v1`）：
-
-- `source_id` 点号→连字符映射与 FACT 投影
-- library current → 接合 generation-input
-- CLI `convert`、focused 测试、server README 转换命令
-- 不修改 `uv.lock`
+- `docs/cognitive-card-os-roadmap.md`（AGE-01 状态与更新记录）
+- `docs/cognitive-card-os-system-design.md`（交付阶段）
+- `docs/README.md`（新设计条目）
+- `docs/superpowers/specs/2026-08-31-age-language-adapter-design.md`
+- `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`（§5.2 临时 cn/en 指向 AGE-01）
+- server `knowledge-pipeline-v1`：`age_language` 适配器、converter 接线、focused 测试
 
 ## Out of Scope
 
-- PORTAL-01、RENDER-01、QA-01、PUBLISH-01、浏览器会话、公网
-- 写出 production-record 本体或跑现网 executor
-- 新 Projection family；把分类写入 Knowledge Core（KNOW-01）
-- 儿童中文 claim（AGE-01）；本批允许把 `canonical_claim` 同时填入 FACT `cn`/`en`
-- merge server `main`；push；deploy；现网
-- 改四对象 schema、v1 FACT 合同、ADR-001 packet 契约
-- 提交 kids `outputs/`；覆盖用户未提交的无关文档
+- 改四对象 schema / v1 FACT 键集 / AUTHOR-05 默认表
+- PORTAL-01、RENDER-01、QA-01、PUBLISH-01、KNOW-01、AGE-02（8/10/15）
+- 新增 age-3-4 模板族（TMPL-01）；age-3-4 不走 `assemble` / snapshot 模板解析
+- 新增 HTTP 端点
+- LLM 翻译
+- merge `knowledge-pipeline-v1`、push、deploy、现网
+- 提交 RUN-01 未提交接线、`uv.lock`、`outputs/`
 
 ## Constraints
 
-- 实现只落在 server `knowledge-pipeline-v1`；kids 只更新任务账本、设计、交接与交付阶段一句。
-- 只转换 **current** 且 family 为 `four-card`；不从历史 revision 建执行密封。
-- 分类 / 地点等 four-card request 由 CLI `--request` 提供，不从 Knowledge Core 发明。
-- 不覆盖用户未提交修改；不 add `uv.lock`。
+- Card OS 任务账本只在 `docs/cognitive-card-os-roadmap.md` 更新。
+- 适配器是投影，不是第五个治理对象；不改 Knowledge Core 字节。
+- 安全边界原文不随年龄改写。
+- 不覆盖 RUN-01 未提交接线（executor、compiled、compiler、knowledge_revision、joined-executor 测试）。
 
 ## Verification Plan
 
-- server focused converter + library / browse / HTTP / projection-family / authoring / contract / generation-input / join 回归
-- server 仍在 `knowledge-pipeline-v1`，未 merge `main`
-- kids：`git diff --check`；`bash scripts/ai/check-handoff.sh`；`bash scripts/ai/check-task-state.sh`；`bash scripts/ai/check-agent-state.sh`
+- server focused：`tests.test_age_language_adapter` + `tests.test_four_card_converter` 27 项 PASS；pipeline 回归 83 项 PASS
+- 完整 suite 561 项，2 项既有 real-uvicorn 502
+- `git diff --check`
+- `bash scripts/ai/check-handoff.sh`
+- `bash scripts/ai/check-task-state.sh`
+- `bash scripts/ai/check-agent-state.sh`
 
 ## Relevant References
 
-- `docs/decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md`
 - `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`
 - `docs/decisions/ADR-004-single-operator-main-flow.md`
-- `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md`
-- `docs/cognitive-card-os-roadmap.md`
+- `docs/cognitive-card-os-system-design.md` §7
+- `docs/superpowers/specs/2026-08-31-age-language-adapter-design.md`
+- `docs/cognitive-card-os-roadmap.md` AGE-01

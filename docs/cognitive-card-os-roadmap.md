@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-08-30
+最近更新：2026-08-31
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`CONV-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。下一刀为现网 executor 路径，仍不 merge `main`。
+本里程碑当前切片：下一刀 `RENDER-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` 已在 `knowledge-pipeline-v1` 本地提交（未 merge、未现网）。仍不 merge `main`。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -49,9 +49,10 @@
 | WIRE-01 | HTTP/DB 受控接线 | DONE | loopback HTTP 已接 library / 选择面 / 接合 current 门禁；已本地提交 `9e0c353`；未 merge 进 main |
 | BROWSE-01 | 知识浏览与 Projection 确认 | DONE | 已本地提交进 `e9bfd22`；未 merge 进 main |
 | CONV-01 | four-card converter | DONE | 已本地提交进 `e9bfd22`；未 merge 进 main |
-| KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 做覆盖矩阵与缺口测试；不阻塞 BROWSE-01 |
+| RUN-01 | 本机执行接合密封 | DONE | 已本地提交 `c55f51b`；未 merge 进 main |
+| KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 覆盖矩阵与缺口测试；排在 RUN-01 / 首包之后，不挡主路径 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
-| AGE-01 | 3–4、5–6 岁配置 | IN PROGRESS | 服务端化并验证路由 |
+| AGE-01 | 3–4、5–6 岁配置 | DONE | 已本地提交 `4e0ea52`；未 merge、未现网；下一刀 RENDER-01 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
 | API-01 | HTTPS 写入 API | IN PROGRESS | 集成分支含 LIB-01 `b672949` 与 PROJ-01/WIRE-01 `9e0c353`；功能分支未 merge 进 main；现网仍 `0.3.1` |
@@ -227,6 +228,15 @@
 - 验收证据：server `knowledge-pipeline-v1` 上 converter 10 项 + library / browse / HTTP / projection-family / generation-input / join / authoring / contract / auth 合计 focused `248` 项 PASS。已本地提交 `e9bfd22`。未 add `uv.lock`。未 merge 进 server `main`（仍 `c2a898c`），未 push。
 - 非范围：新 Projection family、PORTAL-01、完整 RENDER/QA/PUBLISH、写出 production-record 本体、现网。
 
+### RUN-01 本机执行接合密封
+
+- 状态：`DONE`
+- 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
+- 依赖：CONV-01、WIRE-01、EXEC-01；接合 JSON 走已有 `POST /admin/generation-inputs` 与 compiled-job 门禁。
+- 目标：把 CONV-01 写出的接合 generation-input 送进本机 loopback store / compiled-job，由现有 executor 产出通过 snapshot validator 的 `production-record`。不在转换器里写 production-record 本体。
+- 完成结果：默认兔子 `chaptered-guide` convert 返回 `CONVERTER_FAMILY_NOT_FOUR_CARD`；CLI 显式 `four-card` 后 publish revision 2；convert → import-job → prepare → ae563e validator 退出 0 → `submit-directory` `candidate_staged` 201。接合 lock `sha256:347c3a5c28af…d970`，packet `gp_8b24733af51b494aa5acd664b97dca85`。executor 对接合信封校验内层 v1；`job_id_for` 从内层取 object name。转换器未写 `production-record.json`。generate 仍用 ae563e 兔子夹具（snapshot 视觉/安全注册表），不是 Knowledge Core claim 的忠实投影。已本地提交 `c55f51b`。未 add `uv.lock`；未 merge `main`；未 push；未现网。
+- 非范围：新 HTTP convert 端点、PORTAL-01、RENDER-01、改 Knowledge Core、API-01 自由概念编译、merge / deploy。
+
 ### KNOW-01 分类与对象类型覆盖
 
 - 状态：`IN PROGRESS`
@@ -253,10 +263,12 @@
 
 ### AGE-01 现有年龄与语言配置
 
-- 状态：`IN PROGRESS`
-- 范围：`age-3-4`、`age-5-6`、CN 同年龄配置、EN `beginner`。
-- 待办：把年龄与语言规则发布为带版本的服务器适配器；增加跨对象事实不漂移和 COPY 来源测试。
-- 完成条件：年龄只改变表达与任务负荷；四卡命题、确定性和安全边界保持一致。
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `4e0ea52`；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
+- 依赖：[系统总设计 §7](cognitive-card-os-system-design.md)、[CONV-01](superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md)、独立设计 [AGE-01](superpowers/specs/2026-08-31-age-language-adapter-design.md)。
+- 完成结果：`age-language-adapter-v1` 覆盖 `age-3-4` / `age-5-6`、CN 同年龄、EN `beginner`。converter 在密封前把登记儿童表达写入 FACT `cn`/`en`；未登记 claim `AGE_EXPRESSION_GAP`。安全边界原文不随年龄改写。COPY 计划不写入 generation-input；`age-3-4` 抑制正式 COPY。age-3-4 不走 snapshot 模板解析。
+- 验收证据：适配器 + converter focused `27` 项 PASS；与 library / browse / HTTP library / joined / authoring 合计 `83` 项 PASS。完整 suite `561` 项中 `559` PASS，2 项既有 real-uvicorn 502。已本地提交 `4e0ea52`。未 add `uv.lock`。未 merge server `main`（仍 `c2a898c`），未 push，未现网。
+- 非范围：四对象 schema、v1 FACT 键集、PORTAL、RENDER、AGE-02、HTTP 新端点、merge/现网。
 
 ### AGE-02 未来年龄升级
 
@@ -459,7 +471,9 @@
 
 - 状态：`BACKLOG`
 - 输入：兔子、深圳、`age-5-6`、中英文、打印版。
-- 完成条件：从正式输入到四卡、PDF、QA、复核和门户发布全链路完成；可从第二终端查看同一不可变版本。
+- 依赖：RUN-01、AGE-01、RENDER-01、QA-01、PUBLISH-01。
+- 单人完成条件（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）：从正式输入到四卡、PDF、QA、复核和不可变 package 全链路完成；本机可查看同一版本。
+- 不作为本任务门禁：公网门户（`PORTAL-01`）、第二终端（`SKILL-03`）。
 
 ### ACCEPT-02 第二个哺乳动物一致性验收
 
@@ -470,18 +484,36 @@
 
 ## 5. 近期执行顺序
 
-下一轮按单人知识主路径一次启动一个可独立验收的子项目（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）：
+按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-1. **BROWSE-01**（本地完成）：知识浏览 + Projection 确认。CLI 静态 HTML + 只读 GET；未 merge server `main`。
-2. **CONV-01**（本地完成）：显式 four-card current → 接合 generation-input。CLI `convert`；未 merge server `main`。
-3. 现网 executor 路径继续用 `0.3.1` packet 契约；不把 `knowledge-pipeline-v1` merge 进 server `main`，除非用户另行授权。
-4. 分类接入（KNOW-01）和年龄/语言表达（AGE-01）保持独立，不阻塞浏览。
-5. 存档生产核心仍按 ADR-001 留给 CONV/RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。
-6. `SKILL-03`、`OPS-02`、浏览器会话、PORTAL-01、SITE-01、MCP **不进入**下一实现批次。
+已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）。均未 merge。
 
-工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色；集成分支 `knowledge-pipeline-v1` 含 BROWSE-01 与 CONV-01（本地提交 `e9bfd22`），未 merge、未 push。并行治理项继续人工复核 MIG-01 的重复组，不自动删除。
+下一会话起按此编号：
+
+1. ~~**RUN-01**~~（本机完成）。
+2. ~~**AGE-01**~~（本机完成）。
+3. **RENDER-01**：四卡排版与 A4 PDF。
+4. **QA-01**：机器 QA + 人工复核记录。
+5. **PUBLISH-01**：不可变 package。
+6. **ACCEPT-01**：兔子端到端（单人门禁：不要求第二终端）。
+7. **KNOW-01**：分类接入 authoring，去掉手填 `--request`。
+8. **TMPL-01**：模板族覆盖，为第二主题做准备。
+9. **PORTAL-01**：已发布 Artifact 画廊；不等于 BROWSE-01。
+10. **SITE-01** → **SITE-02**：替换 `kids-world` 与旧链重定向。
+
+不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push、不现网，除非用户在**该会话**里明确授权。
+
+**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`API-01` 自由概念编译、`MIG-02` / `MIG-03`。
+
+存档生产核心仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色。
 
 ## 6. 更新记录
+
+### 2026-08-31
+
+- AGE-01：`age-language-adapter-v1` 把 3–4 / 5–6 儿童中文与 beginner 英文做成服务器适配；命题 id、确定性、安全原文跨年龄不变。converter 密封前替换 CONV-01 临时 cn=en。独立设计 `docs/superpowers/specs/2026-08-31-age-language-adapter-design.md`。focused 适配器+converter `27` 项、pipeline 回归 `83` 项 PASS；完整 suite `561` 中 2 项既有 real-uvicorn 502。已本地提交 `4e0ea52`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
+- RUN-01：显式 four-card 兔子 current 本机 loopback 跑通 convert → 入库 → prepare → validator 退出 0 → `candidate_staged`。默认 `chaptered-guide` 先被拒绝。executor / `job_id_for` 接接合信封。focused pipeline+converter+library 等 83 项 PASS；完整 suite 544 项中 2 项既有 real-uvicorn 502。已本地提交 `c55f51b`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
+- 按 ADR-004 把 CONV-01 之后的剩余工作排成一次一会话队列。新增 `RUN-01`（现为 `DONE`）为当时下一刀；§5 编号 1–10。KNOW-01 / TMPL-01 / AGE-01 仍为 IN PROGRESS，但顺序上不挡 RUN-01。自由概念编译、第二终端、异地备份、浏览器会话不进入该队列。
 
 ### 2026-08-30
 

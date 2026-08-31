@@ -85,8 +85,8 @@ Knowledge Core `_SAFE_ID` 允许 `.` 与 `_`；FACT `_SOURCE_ID` 为 `^[a-z][a-z
 | `sources[].locator` | core `locator`；必须 `https://` 前缀，否则 `CONVERTER_SOURCE_LOCATOR_INVALID` |
 | `propositions[].proposition_id` / `meaning_id` | core `proposition_id`（FACT 命题 id **允许**点号，不映射） |
 | `propositions[].certainty` | `established`/`probable` → `known`；`uncertain`/`disputed` → `unknown` |
-| `propositions[].cn` / `en` | 均填 `canonical_claim`（AGE-01 前的临时投影；不发明中文） |
-| `unknowns` | 仅 `unknown` 命题；`policy=preserve-unresolved`；boundary 为 claim 文本 |
+| `propositions[].cn` / `en` | AGE-01 起由 `age-language-adapter-v1` 写入儿童中文与 beginner 英文；未登记 claim fail closed。见 [AGE-01](2026-08-31-age-language-adapter-design.md) |
+| `unknowns` | 仅 `unknown` 命题；`policy=preserve-unresolved`；boundary 与命题 `cn`/`en` 对齐（AGE-01 后为适配表达） |
 | `safety` | 纳入命题的 `safety_scope` 字符串；`safety_id=safety-NN`；`policy=from-knowledge-core`；cn/en 为原文 |
 | `semantic_core.propositions` | 与 FACT 命题逐字段相同 |
 
