@@ -5,8 +5,8 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 6df8f88
-- Kids HEAD: 本提交记录 AGE-01 / RUN-01 本地 SHA
+- Base Commit: 9c39028
+- Kids HEAD: 9c39028 `docs(card-os): record AGE-01 adapters and RUN-01 local SHAs`
 - Server Branch: `knowledge-pipeline-v1` @ `4e0ea52`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -66,7 +66,7 @@
 | `.venv/bin/python -m unittest discover -s tests` | WARN | 561 项中 559 PASS；2 项 real-uvicorn 502 既有 |
 | 独立审查 [AGE-01 adapter](9e08019e-4976-49c5-b8db-89ed6da63b70) | PASS（修复后） | 初审 HIGH：中文逗号不分句；已补 `，、` 并加真实兔子 COPY 测试 |
 | `git diff --check` | PASS | kids 文档 + server 适配器 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `6df8f88` 为提交前 HEAD |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `9c39028` 对齐 HEAD |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
 | `bash scripts/ai/check-doc-governance.sh` | WARN | 0 FAIL；文档复核到期，与本批无关 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
