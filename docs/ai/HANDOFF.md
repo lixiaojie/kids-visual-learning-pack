@@ -5,12 +5,12 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: e8789a7
-- Kids HEAD: e8789a7 `docs(ai): record DEPLOY-02 kids commit SHA`（本提交收录 WB-01 文档与 Nginx）
+- Base Commit: edde037
+- Kids HEAD: edde037905808072f6c85ec0631687f3d71d0b4b `feat(card-os): add token-gated /card-os/ops/ for WB-01`
 - Server Branch: `knowledge-pipeline-v1` @ `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`（未 merge `main`）
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
-- Working Tree: 本提交收录 WB-01；`outputs/` 仍未跟踪、不纳入；server `uv.lock` 未纳入
+- Working Tree: 干净（除既有未跟踪 `outputs/`）；server `uv.lock` 未纳入
 - Task Status: **In Progress（WB-01 本地已提交；现网待从 `115377b` 打 release、种子 library、reload Nginx）。** 未 merge server `main`；未 push kids。
 
 ## Summary
@@ -55,7 +55,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main`（本提交 WB-01） | 不改 server 提交 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `edde037` | 不改 server 提交 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `115377b` | 不 merge `main` |
 | 现网对应 | `/opt/cognitive-card-server/current` → `fd696c2` | 画廊仍是 DEPLOY-02；ops 未上线 |
 
@@ -100,7 +100,7 @@
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` 本提交收录 WB-01；`outputs/` 未跟踪。
+- kids：`kids-visual-learning-pack` `main` @ `edde037905808072f6c85ec0631687f3d71d0b4b`；`outputs/` 未跟踪。
 - server：`.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`。
 - 现网：`/opt/cognitive-card-server/current` → `fd696c2`；画廊未改。
 - 任务：`docs/ai/CURRENT_TASK.md`（WB-01 In Progress，本地已提交）。
