@@ -62,6 +62,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Immutable Package Publish Design](superpowers/specs/2026-08-31-immutable-package-publish-design.md) | PUBLISH-01: immutable package revision; withdraw/replace keep history; not PORTAL | Approved |
 | [Rabbit End-to-End Acceptance Design](superpowers/specs/2026-08-31-rabbit-end-to-end-acceptance-design.md) | ACCEPT-01: rabbit Shenzhen age-5-6 bilingual print through lock/render/QA/package; local same-version view; not PORTAL | Approved |
 | [Classification Registry Design](superpowers/specs/2026-08-31-classification-registry-design.md) | KNOW-01: domain × form × subtype coverage matrix, server registry, authoring-controlled classification; not PORTAL | Approved |
+| [Template Family Registry Design](superpowers/specs/2026-08-31-template-family-registry-design.md) | TMPL-01: four-card family coverage, stable skeletons, TEMPLATE_GAP, cross-object fixtures; not PORTAL | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Card OS ACCEPT-01 Evidence](cognitive-card-os-accept-01-evidence.md) | Verified local rabbit print pack: four cards, A4 PDF, approved QA, immutable package, same-version local view | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |

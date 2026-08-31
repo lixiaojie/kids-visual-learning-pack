@@ -13,12 +13,12 @@
 2. authoring 必填与四卡 request 同形的 `classification`；编译后写入 Knowledge Scope；
 3. four-card convert / accept 默认从 current 的 Scope 分类与 Learning Plan 组装 `normalized_request`；完整 `--request` 变为可选。
 
-本设计满足路线图 KNOW-01 完成条件。模板缺口仍属 TMPL-01。
+本设计满足路线图 KNOW-01 完成条件。四卡模板缺口由 [TMPL-01](2026-08-31-template-family-registry-design.md) 返回 `TEMPLATE_GAP`。
 
 ## 2. 非目标
 
 - 不改四对象顶层 schema 名、v1 FACT 键集、packet 契约、AUTHOR-05 默认 Projection 表。
-- 不实现模板族覆盖或 `TEMPLATE_GAP`（TMPL-01）。
+- 不实现模板族覆盖或 `TEMPLATE_GAP`（已由 [TMPL-01](2026-08-31-template-family-registry-design.md) 承接）。
 - 不等于 PORTAL-01 / AGE-02 / ACCEPT-02。
 - 不新增 HTTP 端点；不 merge server `main`；不 push；不现网。
 - 不阻塞已完成的 RUN-01：既有 `--request` 调用在分类与 Scope 一致时继续通过。
@@ -62,7 +62,7 @@ generation-input v1            键集不变；classification 字段仍是密封�
 | 状态 | 含义 | authoring |
 | --- | --- | --- |
 | `enabled` | 已有首个对象、试产或已启用 family 路由 | 接受 |
-| `gap` | 词表已有，尚无首个对象 / 模板 | 接受（TMPL-01 再挡模板） |
+| `gap` | 词表已有，尚无首个对象 / 模板 | 接受（四卡解析由 TMPL-01 返回 `TEMPLATE_GAP`） |
 | `review` | 两条主路由会实质改变骨架 | `CLASSIFICATION_REVIEW` |
 
 稀疏 overlay 标记 `enabled` 与 `review`；其余为 `gap`。
