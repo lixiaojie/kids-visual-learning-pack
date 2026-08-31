@@ -5,70 +5,71 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: d7d59f1
-- Kids HEAD: d7d59f1 `docs(card-os): record QA-01 machine QA and human review`
-- Server Branch: `knowledge-pipeline-v1` @ `37a5927`
+- Base Commit: 83888dd
+- Kids HEAD: 本提交记录 PUBLISH-01
+- Server Branch: `knowledge-pipeline-v1` @ `7a127b4`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
 - Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`
 - Working Tree: kids 本提交后仅 `outputs/` 未跟踪；server 仅 `uv.lock` 未跟踪
-- Task Status: **Done（QA-01 已本地提交 server `37a5927`；kids `d7d59f1`）。** 未 merge server `main`；未 push；未现网。
+- Task Status: **Done（PUBLISH-01 已本地提交 server `7a127b4`）。** 未 merge server `main`；未 push；未现网。
 
 ## Summary
 
-QA-01 把 RENDER-01 的锁定四卡产物送进服务器权威机器门禁：锁、页序、COPY、来源、未知项、安全、排版摘要和未声明文件全部通过后才进入 `awaiting_review`。人工 `approve`/`reject` 必须有非空人类 actor，并追加 `audit.jsonl`。复核不等于发布。抢救了存档验证器的合同，没有合入客户端 receipt 或恐龙词表。不扩 PORTAL，不新增 HTTP。server 已本地提交 `37a5927`；未 add `uv.lock`。
+PUBLISH-01 把 QA-01 `approved` 的锁定四卡写成服务器权威不可变 package：`revision-NNNN` 只写一次，current 只是 pointer。撤回清空 pointer、历史目录保留；替代写入新 revision 并记录 `supersedes`。相同内容对 current 幂等；撤回后再发同一包只恢复 pointer。抢救了 package-v5 的不可变/历史合同，没有合入 `e78c2fa` 或客户端打包器。不扩 PORTAL，不新增 HTTP。本机 revision 目录即本批次下载句柄。server 已本地提交 `7a127b4`；未 add `uv.lock`。
 
 ## Completed
 
-- 设计：`docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md`
-- 实现：`four_card_qa`（`qa.py` / CLI）；机器收集全部 issues；人类复核绑定 actor
-- 测试：通过进入复核、缺锁/COPY 篡改/未声明文件/摘要篡改/知识卡 COPY 槽/安全改写阻断复核、无 actor、重复复核、CLI
-- server 本地提交：QA-01 `37a5927`（RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`）
+- 设计：`docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md`
+- 实现：`four_card_publish`（catalog / CLI）；只消费 approved QA
+- 测试：发布进 current、拒绝未批准、空 actor、幂等、替代保留旧字节、占用目录不覆盖、篡改 fail closed、撤回/恢复 pointer、CLI
+- server 本地提交：PUBLISH-01 `7a127b4`（QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`）
 - 未改四对象 schema、未 merge、未现网
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | `d7d59f1`：QA-01 Done |
-| kids | `docs/ai/HANDOFF.md` | 本提交：记录 kids SHA `d7d59f1` |
-| kids | `docs/cognitive-card-os-roadmap.md` | `d7d59f1`：QA-01 / `37a5927` |
-| kids | `docs/cognitive-card-os-system-design.md` | `d7d59f1`：交付阶段第 8 条 |
-| kids | `docs/README.md` | `d7d59f1`：QA-01 设计条目 |
-| kids | `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md` | `d7d59f1` |
+| kids | `docs/ai/CURRENT_TASK.md` | 本提交：PUBLISH-01 Done |
+| kids | `docs/ai/HANDOFF.md` | 本提交：记录 server `7a127b4` |
+| kids | `docs/cognitive-card-os-roadmap.md` | 本提交：PUBLISH-01 / `7a127b4` |
+| kids | `docs/cognitive-card-os-system-design.md` | 本提交：交付阶段第 9 条 |
+| kids | `docs/README.md` | 本提交：PUBLISH-01 设计条目 |
+| kids | `docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md` | 本提交 |
 | kids | `outputs/` | 未跟踪；不纳入 |
-| server | `src/cognitive_card_server/four_card_qa/` | 已提交 `37a5927` |
-| server | `tests/test_four_card_qa.py` | 已提交 `37a5927` |
+| server | `src/cognitive_card_server/four_card_publish/` | 已提交 `7a127b4` |
+| server | `tests/test_four_card_publish.py` | 已提交 `7a127b4` |
 | server | `uv.lock` | 未跟踪；不要 add |
 
 ## Decisions Made
 
-- QA 是独立 CLI 门禁，不接线 subscriber `JobState` / HTTP / SQLite。
-- 机器失败收集全部 issues，不 fail-fast；空 issues 才是 `awaiting_review`。
-- 机器 actor 固定 `qa-01-v1`；人类 actor 去空白后不得为空或等于该身份。
-- `approve` 不发布；`reject` 不回写 Knowledge Core。
+- Package 是独立 CLI Artifact 层，不接线 subscriber `JobState` / HTTP / SQLite。
+- 只消费 `status=approved` 且 `review.decision=approve`；人类 actor 不得为 `publish-01-v1` / `qa-01-v1` / `machine`。
+- 内容身份不含 revision 号：相同锁/渲染/QA 对 current 幂等；撤回后再发只恢复 pointer。
+- 占用已有 `revision-NNNN` 目录时改写下一序号，不 `os.replace` 进已存在路径。
+- 授权下载本批次等于本机目录路径；PORTAL-01 再挂 URL。
 - 不 merge、不 push、不现网。本批仅本地提交。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` @ `d7d59f1` | 任务账本与 QA-01 设计已提交 |
-| 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `37a5927` | 不 merge `main` |
+| kids 治理 | `kids-visual-learning-pack` `main` | 任务账本与 PUBLISH-01 设计本提交 |
+| 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `7a127b4` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
 ## Verification Results
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| `.venv/bin/python -m unittest tests.test_four_card_qa` | PASS | 12 项 |
-| `.venv/bin/python -m unittest tests.test_four_card_qa tests.test_four_card_render tests.test_age_language_adapter tests.test_four_card_converter tests.test_knowledge_library tests.test_knowledge_browse tests.test_http_knowledge_library tests.test_joined_executor tests.test_knowledge_contract_authoring` | PASS | 97 项 |
-| `.venv/bin/python -m unittest discover -s tests` | WARN | 584 项中 582 PASS；2 项 real-uvicorn 502 既有 |
-| `git diff --check` | PASS | kids 文档 + server QA |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `d7d59f1` 对齐 QA-01 kids 提交 |
+| `.venv/bin/python -m unittest tests.test_four_card_publish` | PASS | 12 项 |
+| `.venv/bin/python -m unittest tests.test_four_card_publish tests.test_four_card_qa tests.test_four_card_render tests.test_age_language_adapter tests.test_four_card_converter tests.test_knowledge_library tests.test_knowledge_browse tests.test_http_knowledge_library tests.test_joined_executor tests.test_knowledge_contract_authoring` | PASS | 109 项 |
+| `.venv/bin/python -m unittest discover -s tests` | WARN | 596 项中 594 PASS；2 项 real-uvicorn 502 既有 |
+| `git diff --check` | PASS | kids 文档 + server publish |
+| `bash scripts/ai/check-handoff.sh` | WARN | Base Commit 对齐 `83888dd` 后应消除落后 HEAD |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
-| 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `37a5927`；仅 `uv.lock` 未跟踪 |
+| 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `7a127b4`；仅 `uv.lock` 未跟踪 |
 
 ## Known Failures
 
@@ -79,23 +80,23 @@ QA-01 把 RENDER-01 的锁定四卡产物送进服务器权威机器门禁：锁
 
 ## Risks and Caveats
 
-- 主观高视觉观感仍靠人工 `approve`/`reject`，机器只做可判定规则。
+- 公网画廊、下载 URL、容量门禁仍属 PORTAL / 运维，本批次只有本机目录。
 - 未授权不要 merge `knowledge-pipeline-v1`、不要 push/deploy。
 - `uv.lock` 与 `outputs/` 不要混入提交。
 
 ## Remaining Work
 
-1. 下一实现会话：PUBLISH-01。
-2. 其后按路线图 §5 编号 6–10。
+1. 下一实现会话：ACCEPT-01。
+2. 其后按路线图 §5 编号 7–10。
 3. thin-skill 脏文档与 generation-input 功能分支 worktree 仍待用户选择。
 
 ## Exact Next Action
 
-新开会话，把 `PUBLISH-01` 写入 `CURRENT_TASK.md`：不可变 package。消费 QA-01 `approved` 报告；不改 Knowledge Core，不扩 PORTAL，不 merge、不现网。活 server 尖端为 `knowledge-pipeline-v1` @ `37a5927`。
+新开会话，把 `ACCEPT-01` 写入 `CURRENT_TASK.md`：兔子端到端（输入到四卡、PDF、QA、复核和不可变 package）。不扩 PORTAL，不 merge、不现网。活 server 尖端为 `knowledge-pipeline-v1` @ `7a127b4`。
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` @ `d7d59f1`；本提交只记录该 SHA。
-- 活 server：`knowledge-pipeline-v1` @ `37a5927`（QA-01）；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
+- kids：`kids-visual-learning-pack` `main` 本提交记录 PUBLISH-01；基线 `83888dd`。
+- 活 server：`knowledge-pipeline-v1` @ `7a127b4`（PUBLISH-01）；QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
-- 规范：ADR-001/002/004、系统总设计 §10、QA-01 设计、RENDER-01 产物合同。
+- 规范：ADR-001/002/004、系统总设计 §4.4 / §10、PUBLISH-01 设计、QA-01 批准报告。

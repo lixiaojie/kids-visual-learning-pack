@@ -59,6 +59,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Age and Language Adapter Design](superpowers/specs/2026-08-31-age-language-adapter-design.md) | AGE-01: versioned server adapters for age-3-4 / age-5-6 child Chinese and beginner English; fact identity unchanged | Approved |
 | [Locked Four-Card Render Design](superpowers/specs/2026-08-31-locked-four-card-render-design.md) | RENDER-01: content-lock four-card layout, copy_plan COPY, A4 PDF; not PORTAL/QA/PUBLISH | Approved |
 | [Strict QA and Human Review Design](superpowers/specs/2026-08-31-strict-qa-human-review-design.md) | QA-01: machine QA gate before awaiting_review; human actor, decision, and audit; not PORTAL/PUBLISH | Approved |
+| [Immutable Package Publish Design](superpowers/specs/2026-08-31-immutable-package-publish-design.md) | PUBLISH-01: immutable package revision; withdraw/replace keep history; not PORTAL | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 

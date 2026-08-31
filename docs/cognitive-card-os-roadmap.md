@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：下一刀 `PUBLISH-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
+本里程碑当前切片：下一刀 `ACCEPT-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -70,7 +70,7 @@
 | SITE-02 | 旧站兼容与重定向 | BACKLOG | 依赖 SITE-01 切换门禁 |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
-| PUBLISH-01 | 不可变 package 发布 | BACKLOG | 依赖 QA-01 |
+| PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
 | DEPLOY-01 | Card OS 服务部署 | DONE | 按生产运维记录持续执行升级与回滚门禁 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
@@ -434,11 +434,14 @@
 
 ### PUBLISH-01 不可变发布
 
-- 状态：`BACKLOG`
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `7a127b4`；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
 - 依赖：QA-01。
-- 范围：package revision、manifest、四卡、PDF、来源、QA 摘要、创建历史和授权下载。
-- 抢救来源（ADR-001）：存档分支的 package-v5 客户端打包/审计工具与服务器接纳面 `e78c2fa` 是本条目的候选实现；抢救前必须先关闭两个评审 Block（服务器 authority 闭包复算、gallery revision 资产绑定），修复 publisher fixture 失同步与过时 mode pin 使分支套件转绿，并完成 withdraw、容量门禁、备份与部署硬化。
+- 范围：package revision、manifest、四卡、PDF、来源、QA 摘要、创建历史；本机 revision 目录即本批次下载句柄。
+- 抢救来源（ADR-001）：采用存档 package-v5 的不可变包、内容锁贯穿 manifest、撤回/替代保留历史合同；不把 `e78c2fa` 上传面、客户端打包器或恐龙词表钉死合入。公网 URL、容量门禁与部署硬化仍属 PORTAL / 运维后续。
+- 本批结果：服务器 `four_card_publish` 只消费 QA-01 `approved` 报告与 RENDER-01 产物；`revision-NNNN` 不可覆盖；相同内容对 current 幂等；撤回清空 pointer 并保留目录；替代写入新 revision 并记录 `supersedes`。不改 Knowledge Core、不扩 PORTAL、不新增 HTTP。focused publish 12 项 PASS。已本地提交 `7a127b4`。
 - 完成条件：发布版本不可原地修改；撤回和替代保留历史关系。
+- 独立设计：[不可变 package 发布](superpowers/specs/2026-08-31-immutable-package-publish-design.md)。
 
 ### MCP-01 只读 MCP
 
@@ -492,7 +495,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）。均未 merge。
+已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）。均未 merge。
 
 下一会话起按此编号：
 
@@ -500,7 +503,7 @@
 2. ~~**AGE-01**~~（本机完成）。
 3. ~~**RENDER-01**~~（本机完成，`1ef6edc`）。
 4. ~~**QA-01**~~（本机完成，`37a5927`）。
-5. **PUBLISH-01**：不可变 package。
+5. ~~**PUBLISH-01**~~（本机完成，`7a127b4`）。
 6. **ACCEPT-01**：兔子端到端（单人门禁：不要求第二终端）。
 7. **KNOW-01**：分类接入 authoring，去掉手填 `--request`。
 8. **TMPL-01**：模板族覆盖，为第二主题做准备。
@@ -517,6 +520,7 @@
 
 ### 2026-08-31
 
+- PUBLISH-01：服务器 `four_card_publish` 把 QA-01 `approved` 四卡写成不可变 package revision；撤回/替代只改 current pointer。独立设计 `docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md`。focused publish 12 项 PASS；pipeline 回归 109 项 PASS。已本地提交 `7a127b4`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - QA-01：服务器 `four_card_qa` 对 RENDER-01 产物做机器门禁；通过后才 `awaiting_review`；人工 `approve`/`reject` 绑定 actor 与 `audit.jsonl`。独立设计 `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md`。focused QA 12 项 PASS。已本地提交 `37a5927`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - RENDER-01：服务器 `four_card_render` 按内容锁与 AGE-01 `copy_plan` 排出四页 A4 PNG/PDF；generate COPY 不进字形。独立设计 `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md`。focused renderer 11 项、pipeline+renderer 85 项 PASS；完整 suite 572 中 2 项既有 real-uvicorn 502。已本地提交 `1ef6edc`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - AGE-01：`age-language-adapter-v1` 把 3–4 / 5–6 儿童中文与 beginner 英文做成服务器适配；命题 id、确定性、安全原文跨年龄不变。converter 密封前替换 CONV-01 临时 cn=en。独立设计 `docs/superpowers/specs/2026-08-31-age-language-adapter-design.md`。focused 适配器+converter `27` 项、pipeline 回归 `83` 项 PASS；完整 suite `561` 中 2 项既有 real-uvicorn 502。已本地提交 `4e0ea52`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
