@@ -5,8 +5,8 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 83888dd
-- Kids HEAD: 本提交记录 PUBLISH-01
+- Base Commit: e2f0ad3
+- Kids HEAD: e2f0ad3 `docs(card-os): record PUBLISH-01 immutable package publish`
 - Server Branch: `knowledge-pipeline-v1` @ `7a127b4`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -54,7 +54,7 @@ PUBLISH-01 把 QA-01 `approved` 的锁定四卡写成服务器权威不可变 pa
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` | 任务账本与 PUBLISH-01 设计本提交 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `e2f0ad3` | 任务账本与 PUBLISH-01 设计已提交 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `7a127b4` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
@@ -66,7 +66,7 @@ PUBLISH-01 把 QA-01 `approved` 的锁定四卡写成服务器权威不可变 pa
 | `.venv/bin/python -m unittest tests.test_four_card_publish tests.test_four_card_qa tests.test_four_card_render tests.test_age_language_adapter tests.test_four_card_converter tests.test_knowledge_library tests.test_knowledge_browse tests.test_http_knowledge_library tests.test_joined_executor tests.test_knowledge_contract_authoring` | PASS | 109 项 |
 | `.venv/bin/python -m unittest discover -s tests` | WARN | 596 项中 594 PASS；2 项 real-uvicorn 502 既有 |
 | `git diff --check` | PASS | kids 文档 + server publish |
-| `bash scripts/ai/check-handoff.sh` | WARN | Base Commit 对齐 `83888dd` 后应消除落后 HEAD |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `e2f0ad3` 对齐 PUBLISH-01 kids 提交 |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done，验收全勾 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL；既有 secret 字段名 WARN + 文档复核到期 |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `7a127b4`；仅 `uv.lock` 未跟踪 |
@@ -96,7 +96,7 @@ PUBLISH-01 把 QA-01 `approved` 的锁定四卡写成服务器权威不可变 pa
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` 本提交记录 PUBLISH-01；基线 `83888dd`。
+- kids：`kids-visual-learning-pack` `main` @ `e2f0ad3`；本提交只记录该 SHA。
 - 活 server：`knowledge-pipeline-v1` @ `7a127b4`（PUBLISH-01）；QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
 - 规范：ADR-001/002/004、系统总设计 §4.4 / §10、PUBLISH-01 设计、QA-01 批准报告。
