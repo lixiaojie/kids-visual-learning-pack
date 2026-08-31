@@ -5,13 +5,13 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 650bbe4
-- Kids HEAD: 650bbe4 `docs(ai): record ACCEPT-01 kids commit SHA`（本批 kids 文档待提交）
+- Base Commit: 8c7048c
+- Kids HEAD: 8c7048c `docs(card-os): record KNOW-01 classification registry and authoring`
 - Server Branch: `knowledge-pipeline-v1` @ `4083ce7`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
 - Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`
-- Working Tree: kids 本批文档未提交 + `outputs/` 未跟踪；server 仅 `uv.lock` 未跟踪
+- Working Tree: kids 本提交后仅 `outputs/` 未跟踪；server 仅 `uv.lock` 未跟踪
 - Task Status: **Done（KNOW-01 已本地提交 server `4083ce7`）。** 未 merge server `main`；未 push；未现网。
 
 ## Summary
@@ -29,14 +29,14 @@ KNOW-01 把 faceted 分类做成 `classification-registry-v1`：覆盖全部 dom
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 本批：KNOW-01 Done |
-| kids | `docs/ai/HANDOFF.md` | 本批：本交接 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本批：KNOW-01 DONE `4083ce7` |
-| kids | `docs/cognitive-card-os-system-design.md` | 本批：交付阶段第 11 条 |
-| kids | `docs/README.md` | 本批：设计条目 |
-| kids | `docs/superpowers/specs/2026-08-31-classification-registry-design.md` | 本批新增 |
-| kids | `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md` | 本批：`--request` 可选 |
-| kids | `docs/superpowers/specs/2026-08-31-rabbit-end-to-end-acceptance-design.md` | 本批：分类从 authoring 来 |
+| kids | `docs/ai/CURRENT_TASK.md` | 本提交：KNOW-01 Done |
+| kids | `docs/ai/HANDOFF.md` | 本提交：本交接 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 本提交：KNOW-01 DONE `4083ce7` |
+| kids | `docs/cognitive-card-os-system-design.md` | 本提交：交付阶段第 11 条 |
+| kids | `docs/README.md` | 本提交：设计条目 |
+| kids | `docs/superpowers/specs/2026-08-31-classification-registry-design.md` | 本提交 |
+| kids | `docs/superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md` | 本提交：`--request` 可选 |
+| kids | `docs/superpowers/specs/2026-08-31-rabbit-end-to-end-acceptance-design.md` | 本提交：分类从 authoring 来 |
 | kids | `outputs/` | 未跟踪；不纳入 |
 | server | `src/cognitive_card_server/classification/` | 已提交 `4083ce7` |
 | server | authoring / validator / converter / accept / examples / tests | 已提交 `4083ce7` |
@@ -54,7 +54,7 @@ KNOW-01 把 faceted 分类做成 `classification-registry-v1`：覆盖全部 dom
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` @ `650bbe4` | 本批文档未提交；`outputs/` 未跟踪 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `8c7048c` | 本批后仅 `outputs/` 未跟踪 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `4083ce7` | 不 merge `main` |
 | 现网对应 | Documents Codex `cognitive-card-server` `main` @ `c2a898c` | 0.3.1；不在本批改 |
 
@@ -90,15 +90,14 @@ KNOW-01 把 faceted 分类做成 `classification-registry-v1`：覆盖全部 dom
 1. 下一实现会话：TMPL-01。
 2. 其后按路线图 §5 编号 9–10。
 3. thin-skill 脏文档与 generation-input 功能分支 worktree 仍待用户选择。
-4. 本批 kids 治理文档待提交。
 
 ## Exact Next Action
 
-新开会话，把 `TMPL-01` 写入 `CURRENT_TASK.md`：模板族覆盖，为第二主题做准备。不扩 PORTAL，不 merge、不现网。活 server 尖端为 `knowledge-pipeline-v1` @ `4083ce7`。若本批 kids 文档尚未提交，先提交治理文档。
+新开会话，把 `TMPL-01` 写入 `CURRENT_TASK.md`：模板族覆盖，为第二主题做准备。不扩 PORTAL，不 merge、不现网。活 server 尖端为 `knowledge-pipeline-v1` @ `4083ce7`。
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` @ `650bbe4`；本批文档未提交。
+- kids：`kids-visual-learning-pack` `main` @ `8c7048c`；本提交记录 kids SHA。
 - 活 server：`knowledge-pipeline-v1` @ `4083ce7`；ACCEPT-01 `10b14c8`；PUBLISH-01 `7a127b4`；QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 无 `--request` 复跑：`python3 -m cognitive_card_server.four_card_accept --authoring examples/authoring/rabbit-real.json --repo-root . --work-root /tmp/card-os-accept-01 --actor owner --now 2026-08-31T04:00:00Z`
 - 启动：`docs/ai/START_PROMPTS.md` 第 1 节。
