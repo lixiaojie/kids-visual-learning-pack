@@ -5,8 +5,8 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: fc6b26f
-- Kids HEAD: fc6b26f `docs(ai): record PORTAL-01 kids commit SHA`
+- Base Commit: c2bae22
+- Kids HEAD: c2bae22 `feat(card-os): switch knowledge home from kids-world to the Card OS gallery`
 - Server Branch: `knowledge-pipeline-v1` @ `fd696c2`（本批未改）
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -110,7 +110,7 @@ SITE-01 把知识主 CTA 从 `kids-world` 切到 Card OS 画廊，同时保留�
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main`；SITE-01 本提交。SHA 以提交后 `git rev-parse HEAD` 为准。
+- kids：`kids-visual-learning-pack` `main` @ `c2bae22`；本提交记录 kids SHA。
 - 活 server：`knowledge-pipeline-v1` @ `fd696c2`；本批未改。
 - 入口合同：`shared/knowledge-entry.json`
 - 画廊：`PYTHONPATH=src python3 -m cognitive_card_server.four_card_portal gallery --catalog-root /tmp/card-os-accept-01/catalog --output-dir /tmp/card-os-portal`
