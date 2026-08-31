@@ -275,8 +275,9 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 10. **`ACCEPT-01` 兔子端到端**：本机已完成（正式输入到四卡、PDF、QA、不可变 package；本机可查看同一 lock）；已本地提交 `10b14c8`；未 merge 进生产。不扩 PORTAL。
 11. **`KNOW-01` 分类注册表与 authoring 接入**：本机已完成（`classification-registry-v1`、覆盖矩阵、authoring 受控分类、convert 可省略 `--request`）；已本地提交 `4083ce7`；未 merge 进生产。
 12. **`TMPL-01` 模板族注册表与跨对象夹具**：本机已完成（`template-registry-v1`、稳定四页骨架、`TEMPLATE_GAP`、每 family 两对象夹具）；已本地提交 `cbaf2b4`；未 merge 进生产。
-13. 第二台电脑、加密异地备份、浏览器会话、公网 Portal、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
-14. 第二个哺乳动物一致性验收仍依赖模板族，不提前把 SITE-01 拉进主路径。
+13. **`PORTAL-01` 已发布 Artifact 只读画廊**：本机已完成（catalog 静态 HTML + loopback `/card-os/`；公开只看 public current；不替代 BROWSE-01；不写 Knowledge Core）；已本地提交 `fd696c2`；未 merge 进生产；公网入口仍属 SITE-01。
+14. 第二台电脑、加密异地备份、浏览器会话、公网 Portal 部署、只读 MCP、旧站替换：**后置**，不作为单人主路径门禁。
+15. 第二个哺乳动物一致性验收仍依赖模板族，不提前把 SITE-01 拉进主路径。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 

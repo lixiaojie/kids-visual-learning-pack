@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：下一刀按 §5 编号 9。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` / `ACCEPT-01` / `KNOW-01` / `TMPL-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
+本里程碑当前切片：下一刀按 §5 编号 10（SITE-01）。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` / `ACCEPT-01` / `KNOW-01` / `TMPL-01` / `PORTAL-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -64,7 +64,7 @@
 | MIG-01 | 历史资产发现、摘要与去重清单 | DONE | 人工复核重复与衍生候选，等待 MIG-02 导入条件 |
 | MIG-02 | A/B 级结构化 package 导入 | BACKLOG | 依赖导入接口、严格验证和 MIG-01 |
 | MIG-03 | C 级旧主题重制 | BACKLOG | 依赖模板、发布链路和 MIG-01 |
-| PORTAL-01 | 只读资产门户 | BACKLOG | 已发布 Artifact 画廊；不替代 BROWSE-01 |
+| PORTAL-01 | 只读资产门户 | DONE | 已本地提交进 `fd696c2`；未 merge 进 main |
 | UPLOAD-01 | 浏览器手动上传 | BACKLOG | 依赖 AUTH-01、API-01 |
 | SITE-01 | Card OS 替换 `kids-world` | BACKLOG | 依赖门户、发布和迁移覆盖 |
 | SITE-02 | 旧站兼容与重定向 | BACKLOG | 依赖 SITE-01 切换门禁 |
@@ -379,11 +379,14 @@
 
 ### PORTAL-01 只读资产门户
 
-- 状态：`BACKLOG`
-- 目标入口：`https://www.yutou.space/card-os/`
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `fd696c2`；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
+- 目标入口：本机 `/card-os/`（loopback）；公网 `https://www.yutou.space/card-os/` 仍属 SITE-01。
 - 范围：已发布 Artifact 的搜索、筛选、四卡预览、PDF、manifest、来源、QA、摘要、版本历史和状态隔离。
-- 与 BROWSE-01 的边界：本任务不承担确认点 1（源头知识浏览与 Projection 选择）。BROWSE-01 先于本任务，且不依赖本任务。
+- 与 BROWSE-01 的边界：本任务不承担确认点 1（源头知识浏览与 Projection 选择）。BROWSE-01 先于本任务，且不依赖本任务。画廊不写 Knowledge Core。
+- 本批结果：CLI `four_card_portal` 写出静态画廊；公开 GET 无 token；owner-only / 撤回 / 草稿对公开观众 404；`admin` 可见隔离包。下载字节等于 catalog revision。focused portal 10 项、pipeline 回归 145 项 PASS。已本地提交 `fd696c2`。未 merge、未现网。
 - 完成条件：未授权用户看不到 owner-only、隔离或草稿资产；发布版本可稳定下载。
+- 独立设计：[已发布 Artifact 只读画廊](superpowers/specs/2026-08-31-published-artifact-gallery-design.md)。
 
 ### UPLOAD-01 浏览器手动上传
 
@@ -491,7 +494,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）。均未 merge。
+已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）。均未 merge。
 
 下一会话起按此编号：
 
@@ -503,7 +506,7 @@
 6. ~~**ACCEPT-01**~~（本机完成，`10b14c8`）。
 7. ~~**KNOW-01**~~（本机完成，`4083ce7`）。
 8. ~~**TMPL-01**~~（本机完成，`cbaf2b4`）。
-9. **PORTAL-01**：已发布 Artifact 画廊；不等于 BROWSE-01。
+9. ~~**PORTAL-01**~~（本机完成，`fd696c2`）。
 10. **SITE-01** → **SITE-02**：替换 `kids-world` 与旧链重定向。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push、不现网，除非用户在**该会话**里明确授权。
@@ -516,6 +519,7 @@
 
 ### 2026-08-31
 
+- PORTAL-01：已发布 Artifact 只读画廊。CLI 静态 HTML + loopback `/card-os/`；公开观众只看 public current；owner-only / 撤回 / 草稿 404。不替代 BROWSE-01，不写 Knowledge Core / Projection family。独立设计 `docs/superpowers/specs/2026-08-31-published-artifact-gallery-design.md`。focused portal 10 项、pipeline 回归 145 项 PASS。已本地提交 `fd696c2`。未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - TMPL-01：`template-registry-v1` 把精确 mammal/dinosaur 与紧凑 domain/form 族迁入服务器；相同主路由稳定骨架；缺口 `TEMPLATE_GAP`；每 family 两个对象夹具。独立设计 `docs/superpowers/specs/2026-08-31-template-family-registry-design.md`。focused template 10 项、pipeline 回归 136 项 PASS。已本地提交 `cbaf2b4`。未改 snapshot 字节。未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - KNOW-01：`classification-registry-v1` 覆盖矩阵与领域 subtype 词表迁入服务器；authoring 必填受控分类；convert/accept 可省略 `--request`。独立设计 `docs/superpowers/specs/2026-08-31-classification-registry-design.md`。focused classification + authoring/converter/accept 与 pipeline 回归 143 项 PASS；合同校验 141 项 PASS。已本地提交 `4083ce7`。未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - ACCEPT-01：AUTHOR-02 真实兔子 + Shenzhen age-5-6 打印请求本机跑通四卡/PDF/QA/不可变 package。确定性 lock 不经 LLM。本机 `view/index.html` 与 package 同一 `content_lock_sha256`。focused lock+accept 9 项、pipeline 回归 118 项 PASS。证据 `docs/cognitive-card-os-accept-01-evidence.md`。已本地提交 `10b14c8`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
