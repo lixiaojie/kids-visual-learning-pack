@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：下一刀 `KNOW-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` / `ACCEPT-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
+本里程碑当前切片：下一刀 `TMPL-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` / `QA-01` / `PUBLISH-01` / `ACCEPT-01` / `KNOW-01` 已在 `knowledge-pipeline-v1` 本地完成（未 merge、未现网）。仍不 merge `main`。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -50,7 +50,7 @@
 | BROWSE-01 | 知识浏览与 Projection 确认 | DONE | 已本地提交进 `e9bfd22`；未 merge 进 main |
 | CONV-01 | four-card converter | DONE | 已本地提交进 `e9bfd22`；未 merge 进 main |
 | RUN-01 | 本机执行接合密封 | DONE | 已本地提交 `c55f51b`；未 merge 进 main |
-| KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 覆盖矩阵与缺口测试；排在 RUN-01 / 首包之后，不挡主路径 |
+| KNOW-01 | 分类与对象类型体系 | DONE | 已本地提交 `4083ce7`；未 merge 进 main |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
 | AGE-01 | 3–4、5–6 岁配置 | DONE | 已本地提交 `4e0ea52`；未 merge、未现网 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
@@ -239,15 +239,12 @@
 
 ### KNOW-01 分类与对象类型覆盖
 
-- 状态：`IN PROGRESS`
-- 权威来源：当前 `cognitive-card-os` 分类规范；目标迁入服务器版本化注册表。
-- 已有：领域、概念形态、领域自有 subtype、稳定 machine value 和分类停机规则。
-- 待办：
-  - 建立 `domain x form x subtype` 覆盖矩阵；
-  - 为尚未出现首个对象的领域补充 subtype 词表；
-  - 为 `general`、`other` 和 `CLASSIFICATION_REVIEW` 增加边界夹具；
-  - 将注册表、版本和摘要纳入服务器权威发布。
-- 完成条件：所有受控枚举可机器校验；新增概念不会靠自由文本绕过分类。
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `4083ce7`；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
+- 依赖：[系统总设计 §3.2](cognitive-card-os-system-design.md)、[独立设计](superpowers/specs/2026-08-31-classification-registry-design.md)、存档 `classification-v2.md`。
+- 完成结果：`classification-registry-v1` 覆盖全部受控 domain/form，每个 domain 含 subtype 词表（含 `ocean`/`arts` 等尚未出现首个对象的领域）。覆盖矩阵枚举 domain × form × subtype。`general`/`other` 接受；自由文本 `CLASSIFICATION_UNKNOWN`；歧义主路由 `CLASSIFICATION_REVIEW`。authoring 必填分类并写入 Knowledge Scope；convert/accept 可省略 `--request`，CLI 不得覆盖已登记分类。RUN-01 既有 `--request` 路径保持。
+- 验收证据：classification + authoring/converter/accept focused 与 pipeline 回归 143 项 PASS；合同校验 141 项 PASS。已本地提交 `4083ce7`。未 add `uv.lock`。未 merge server `main`（仍 `c2a898c`），未 push，未现网。
+- 非范围：TMPL-01 模板族、`TEMPLATE_GAP`、PORTAL、改 v1 FACT 键集、merge/现网。
 
 ### TMPL-01 领域与形态模板体系
 
@@ -497,7 +494,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）。均未 merge。
+已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`。均未 merge。
 
 下一会话起按此编号：
 
@@ -507,7 +504,7 @@
 4. ~~**QA-01**~~（本机完成，`37a5927`）。
 5. ~~**PUBLISH-01**~~（本机完成，`7a127b4`）。
 6. ~~**ACCEPT-01**~~（本机完成，`10b14c8`）。
-7. **KNOW-01**：分类接入 authoring，去掉手填 `--request`。
+7. ~~**KNOW-01**~~（本机完成，`4083ce7`）。
 8. **TMPL-01**：模板族覆盖，为第二主题做准备。
 9. **PORTAL-01**：已发布 Artifact 画廊；不等于 BROWSE-01。
 10. **SITE-01** → **SITE-02**：替换 `kids-world` 与旧链重定向。
@@ -522,6 +519,7 @@
 
 ### 2026-08-31
 
+- KNOW-01：`classification-registry-v1` 覆盖矩阵与领域 subtype 词表迁入服务器；authoring 必填受控分类；convert/accept 可省略 `--request`。独立设计 `docs/superpowers/specs/2026-08-31-classification-registry-design.md`。focused classification + authoring/converter/accept 与 pipeline 回归 143 项 PASS；合同校验 141 项 PASS。已本地提交 `4083ce7`。未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - ACCEPT-01：AUTHOR-02 真实兔子 + Shenzhen age-5-6 打印请求本机跑通四卡/PDF/QA/不可变 package。确定性 lock 不经 LLM。本机 `view/index.html` 与 package 同一 `content_lock_sha256`。focused lock+accept 9 项、pipeline 回归 118 项 PASS。证据 `docs/cognitive-card-os-accept-01-evidence.md`。已本地提交 `10b14c8`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - PUBLISH-01：服务器 `four_card_publish` 把 QA-01 `approved` 四卡写成不可变 package revision；撤回/替代只改 current pointer。独立设计 `docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md`。focused publish 12 项 PASS；pipeline 回归 109 项 PASS。已本地提交 `7a127b4`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - QA-01：服务器 `four_card_qa` 对 RENDER-01 产物做机器门禁；通过后才 `awaiting_review`；人工 `approve`/`reject` 绑定 actor 与 `audit.jsonl`。独立设计 `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md`。focused QA 12 项 PASS。已本地提交 `37a5927`；未 add `uv.lock`；未 merge `main`；未 push；未现网。

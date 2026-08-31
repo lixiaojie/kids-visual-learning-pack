@@ -23,7 +23,7 @@
 - 不等于 PORTAL-01 / RENDER-01 / QA-01 / PUBLISH-01。
 - 不新增 HTTP 转换端点；写出的 JSON 可交给已有 `POST /admin/generation-inputs`。
 - 不 merge server `main`，不 push，不现网。
-- 不解决儿童中文 claim（AGE-01）或分类进 authoring（KNOW-01）。
+- 不解决儿童中文 claim（AGE-01）。分类进 authoring 见 [KNOW-01](2026-08-31-classification-registry-design.md)。
 
 ## 3. 在分层中的位置
 
@@ -52,11 +52,11 @@ production-record       executor 输出；不在本批生产
 | `get_current(topic, now)` 存在 | `CONVERTER_CURRENT_NOT_FOUND` |
 | current 的 `projection-spec.blueprint.family` 为 `four-card` | `CONVERTER_FAMILY_NOT_FOUR_CARD` |
 | 纳入 scope 的 active 命题至少一条 | `CONVERTER_NO_ACTIVE_PROPOSITIONS` |
-| CLI 提供完整 four-card `normalized_request` JSON | 参数错误 / `CONVERTER_REQUEST_REQUIRED` |
+| Scope 有分类，或 CLI `--request` 可组装完整四卡 request | `CONVERTER_REQUEST_REQUIRED` / `CONVERTER_USAGE_REQUIRED` / `CLASSIFICATION_MISMATCH` |
 
 默认兔子（`chaptered-guide`）必须先显式 `projection.family: four-card` 并重新 publish。不从历史 revision 建执行密封。Candidate / unlist / 过期 current 与 `get_current` 一致，视为无 current。
 
-分类、地点、年龄档位、输出形态**不从 Knowledge Core 推断**。KNOW-01 完成前由 `--request` 提供（兔子试产使用既有 mammal 请求：`life` / `entity` / `animal/mammal`、`age-5-6`、双语、print）。
+分类、地点、年龄档位、输出形态优先从 authoring / Knowledge Scope / Learning Plan 组装。`--request` 可选；若提供，分类必须与 Scope 已登记值一致。见 [KNOW-01](2026-08-31-classification-registry-design.md)。
 
 ## 5. FACT 投影规则
 
@@ -114,7 +114,7 @@ python3 -m cognitive_card_server.knowledge_library.cli convert \
   --repo-root <server-checkout> \
   --snapshot-id sha256:<64hex> \
   --registry-commit <40hex> \
-  --request <four-card-request.json> \
+  [--request <four-card-request.json>] \
   --output <joined.json> \
   --now <utc>
 ```

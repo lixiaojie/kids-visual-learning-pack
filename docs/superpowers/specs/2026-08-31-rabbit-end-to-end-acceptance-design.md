@@ -64,7 +64,7 @@ PUBLISH-01              不可变 package revision + current pointer
 
 不把 `four-card` 写回 `examples/authoring/rabbit-real.json`。AUTHOR-05 默认表保持 `chaptered-guide`。
 
-分类、地点、年龄、输出形态仍由 `--request` 提供，直到 KNOW-01。
+分类、地点、年龄、输出形态由 authoring 受控分类与 `usage` 提供；`--request` 可选。见 [KNOW-01](2026-08-31-classification-registry-design.md)。
 
 ## 5. 确定性锁定
 
