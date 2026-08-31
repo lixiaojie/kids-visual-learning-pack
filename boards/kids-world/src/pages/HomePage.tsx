@@ -24,9 +24,20 @@ export function HomePage({ locale, map, notice }: HomePageProps) {
     });
   }
 
+  const cardOsHref = "https://www.yutou.space/card-os/";
+  const entryNotice =
+    locale === "zh-CN"
+      ? "知识主入口已迁到 Card OS 画廊。本页是冻结的旧知识站。"
+      : "The knowledge home is now the Card OS gallery. This page is a frozen archive.";
+  const entryLinkLabel = locale === "zh-CN" ? "打开新画廊" : "Open the new gallery";
+
   return (
     <main className="page-shell">
       {notice ? <p className="route-notice">{notice}</p> : null}
+      <p className="knowledge-entry-notice">
+        {entryNotice}{" "}
+        <a href={cardOsHref}>{entryLinkLabel}</a>
+      </p>
       <HeroSection map={map} locale={locale} />
       <FeaturedObservation map={map} locale={locale} />
       <WorldGrid

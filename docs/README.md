@@ -64,6 +64,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Classification Registry Design](superpowers/specs/2026-08-31-classification-registry-design.md) | KNOW-01: domain × form × subtype coverage matrix, server registry, authoring-controlled classification; not PORTAL | Approved |
 | [Template Family Registry Design](superpowers/specs/2026-08-31-template-family-registry-design.md) | TMPL-01: four-card family coverage, stable skeletons, TEMPLATE_GAP, cross-object fixtures; not PORTAL | Approved |
 | [Published Artifact Gallery Design](superpowers/specs/2026-08-31-published-artifact-gallery-design.md) | PORTAL-01: read-only published package gallery; not BROWSE-01; not a knowledge CMS | Approved |
+| [Card OS Kids-World Knowledge Entry Design](superpowers/specs/2026-08-31-card-os-kids-world-knowledge-entry-design.md) | SITE-01: parallel gallery then cut over the knowledge home; not SITE-02 URL mapping | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Card OS ACCEPT-01 Evidence](cognitive-card-os-accept-01-evidence.md) | Verified local rabbit print pack: four cards, A4 PDF, approved QA, immutable package, same-version local view | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
@@ -93,6 +94,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [ADR-002 Card OS Knowledge Core and Projection Architecture](decisions/ADR-002-knowledge-core-and-projection-architecture.md) | Knowledge Core owns facts and scope; learning design and multiple projections remain downstream | Accepted |
 | [ADR-003 Knowledge Pipeline Workspace and Branch Governance](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) | Kids governs, server stores knowledge, thin Skill executes; live worktrees are capped until the join contract exists | Accepted |
 | [ADR-004 Single-Operator Main Flow](decisions/ADR-004-single-operator-main-flow.md) | 单人主路径优先；SKILL-02/OPS-01 单人门禁关闭；BROWSE-01 是确认点 1，不等于 PORTAL-01 | Accepted |
+| [ADR-005 Knowledge Entry Cutover Without Topic Remakes](decisions/ADR-005-knowledge-entry-cutover-without-topic-remakes.md) | SITE-01 可在 13 个 C 级主题冻结后切主入口；旧 URL 与回滚属 SITE-02 | Accepted |
 
 ## Codex Memory Snapshots
 

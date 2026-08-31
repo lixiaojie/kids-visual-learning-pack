@@ -57,6 +57,8 @@
 | `/kids/` | `200 text/html`，2725 bytes |
 | `/sync/` | `401 application/json`，61 bytes |
 
+SITE-01 待应用路由（仓库内 snippet 已改，**尚未** reload 生产 Nginx）：精确 `/card-os/` 与 `/card-os/packages/` GET/HEAD 反代 `127.0.0.1:8765` 画廊；`/card-os/api/v1/capabilities` 保持 API JSON；敏感非画廊路径仍 catch-all 404。现网仍以上表 0.3.1 证据为准，直到授权部署。
+
 ### 2.3 一次性 token 验收（仅安全元数据）
 
 - token ID：`972f366b71db85801f504cc12360568d`。

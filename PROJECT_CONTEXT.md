@@ -33,6 +33,7 @@ This is a stable repository index. Current task status belongs in `docs/ai/CURRE
 - Cognitive Card OS long-term architecture decision: `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`; one governed Knowledge Core feeds learning design and multiple Projection families, while `four-card` remains the compatible first family.
 - Cognitive Card OS workspace roles and live-worktree limits: `docs/decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md`.
 - Cognitive Card OS single-operator main path and deferred multi-user gates: `docs/decisions/ADR-004-single-operator-main-flow.md`.
+- Cognitive Card OS knowledge-entry cutover without waiting for C-level remakes: `docs/decisions/ADR-005-knowledge-entry-cutover-without-topic-remakes.md`.
 - Knowledge Core contract semantics: `docs/superpowers/specs/2026-08-19-knowledge-core-and-projection-architecture-design.md`.
 - Production operations truth: `docs/operations/cognitive-card-server-deployment-2026-07-14.md`.
 

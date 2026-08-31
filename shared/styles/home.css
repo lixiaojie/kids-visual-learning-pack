@@ -106,6 +106,11 @@ h1 {
   background: linear-gradient(135deg, #e8fff5, #fff4cf);
 }
 
+.board-card.archive {
+  background: linear-gradient(135deg, #f4f1ea, #eef2f6);
+  min-height: 280px;
+}
+
 .board-art {
   position: relative;
   min-height: 164px;

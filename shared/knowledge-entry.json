@@ -1,0 +1,35 @@
+{
+  "schema": "yutou-knowledge-entry-v1",
+  "activeMode": "card-os",
+  "cardOsPublicUrl": "https://www.yutou.space/card-os/",
+  "kidsWorldArchiveHref": "boards/kids-world/index.html",
+  "hiddenInProduction": [
+    "spider-verse",
+    "paw-patrol"
+  ],
+  "modes": {
+    "parallel": {
+      "primaryId": "kids-world",
+      "secondaryId": "card-os"
+    },
+    "card-os": {
+      "primaryId": "card-os",
+      "secondaryId": "kids-world"
+    }
+  },
+  "frozenKidsWorldTopics": [
+    "insects-and-spiders",
+    "cicada-life",
+    "animal-classification-tree",
+    "blood-cells-3d",
+    "solar-system-overview",
+    "earth-climate-cities",
+    "llm-kids-basics",
+    "dinosaurs",
+    "ecosystem",
+    "digestion",
+    "water-cycle",
+    "robots",
+    "moon-phases"
+  ]
+}

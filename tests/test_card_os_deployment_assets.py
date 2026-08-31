@@ -105,7 +105,18 @@ EXPECTED_NGINX = """location = /card-os {
 }
 
 location = /card-os/ {
-    return 307 /card-os/api/v1/capabilities;
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 120s;
+    proxy_send_timeout 120s;
+    proxy_pass http://127.0.0.1:8765;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
 }
 
 location = /card-os/skill/v1/manifest.json {
@@ -174,6 +185,21 @@ location ^~ /card-os/skill/v1/releases/ {
 location ^~ /card-os/api/ {
     access_log off;
     client_max_body_size 30m;
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 120s;
+    proxy_send_timeout 120s;
+    proxy_pass http://127.0.0.1:8765;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location ^~ /card-os/packages/ {
+    access_log off;
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
     proxy_connect_timeout 5s;
     proxy_read_timeout 120s;
     proxy_send_timeout 120s;
@@ -296,7 +322,8 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
         self.assertIn("location = /card-os", nginx)
         self.assertIn("return 308 /card-os/", nginx)
         self.assertIn("location = /card-os/", nginx)
-        self.assertIn("return 307 /card-os/api/v1/capabilities", nginx)
+        self.assertNotIn("return 307 /card-os/api/v1/capabilities", nginx)
+        self.assertIn("location ^~ /card-os/packages/", nginx)
         self.assertIn("location ^~ /card-os/api/", nginx)
         self.assertIn("proxy_pass http://127.0.0.1:8765;", nginx)
         self.assertIn("client_max_body_size 30m", nginx)
@@ -411,6 +438,28 @@ class CardOsDeploymentAssetTests(unittest.TestCase):
             "^~ /card-os/api/",
             selected_location("/card-os/api/v1/health"),
         )
+        self.assertEqual(
+            "^~ /card-os/api/",
+            selected_location("/card-os/api/v1/capabilities"),
+        )
+        self.assertEqual("= /card-os/", selected_location("/card-os/"))
+        self.assertEqual(
+            "^~ /card-os/packages/",
+            selected_location("/card-os/packages/rabbit"),
+        )
+        self.assertEqual(
+            "^~ /card-os/packages/",
+            selected_location(
+                "/card-os/packages/rabbit/revisions/0001/files/print.pdf"
+            ),
+        )
+        for selector in ("= /card-os/", "^~ /card-os/packages/"):
+            body = blocks[selector]
+            self.assertIn("proxy_pass http://127.0.0.1:8765;", body)
+            self.assertIn("if ($request_method !~ ^(GET|HEAD)$)", body)
+            self.assertNotIn("alias ", body)
+            self.assertNotIn("root ", body)
+            self.assertNotIn("try_files ", body)
         self.assertEqual(
             "^~ /card-os/skill/v1/releases/",
             selected_location(
