@@ -5,8 +5,8 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: bc1c07f
-- Kids HEAD: bc1c07f `docs(ai): drop missing CURRENT_TASK path and record check results`
+- Base Commit: 7e311c0
+- Kids HEAD: 7e311c0 `docs(card-os): record PORTAL-01 published artifact gallery`
 - Server Branch: `knowledge-pipeline-v1` @ `fd696c2`
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core` 现为 `knowledge-pipeline-v1`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
@@ -68,7 +68,7 @@ PORTAL-01 把 PUBLISH-01 catalog 做成只读 Artifact 画廊：静态 HTML + lo
 | `.venv/bin/python -m unittest tests.test_four_card_portal tests.test_http_portal` | PASS | 10 项 |
 | `.venv/bin/python -m unittest` template + classification + authoring + converter + accept + projection + library + browse + HTTP library + joined + AGE + lock + publish + portal | PASS | 145 项 |
 | `git diff --check` | PASS | kids 文档与 server |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 与 HEAD `bc1c07f` 一致 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 与 HEAD 在 SHA 记录提交后对齐 |
 | `bash scripts/ai/check-task-state.sh` | PASS | CURRENT_TASK 路径引用全部存在 |
 | `bash scripts/ai/check-agent-state.sh` | WARN | 0 FAIL 预期；既有 secret 字段名 WARN + 文档复核到期 |
 | 未 merge server `main` / 未 push / 未现网 | PASS | server 尖端 `fd696c2` |
@@ -99,7 +99,7 @@ PORTAL-01 把 PUBLISH-01 catalog 做成只读 Artifact 画廊：静态 HTML + lo
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` @ `bc1c07f`；本提交记录 kids SHA。
+- kids：`kids-visual-learning-pack` `main` @ `7e311c0`；本提交记录 kids SHA。
 - 活 server：`knowledge-pipeline-v1` @ `fd696c2`；TMPL-01 `cbaf2b4`；KNOW-01 `4083ce7`；ACCEPT-01 `10b14c8`；PUBLISH-01 `7a127b4`；QA-01 `37a5927`；RENDER-01 `1ef6edc`；AGE-01 `4e0ea52`；RUN-01 `c55f51b`；main `c2a898c`。
 - 画廊：`PYTHONPATH=src python3 -m cognitive_card_server.four_card_portal gallery --catalog-root /tmp/card-os-accept-01/catalog --output-dir /tmp/card-os-portal`
 - 无 `--request` 复跑：`python3 -m cognitive_card_server.four_card_accept --authoring examples/authoring/rabbit-real.json --repo-root . --work-root /tmp/card-os-accept-01 --actor owner --now 2026-08-31T04:00:00Z`
