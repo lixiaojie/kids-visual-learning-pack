@@ -5,14 +5,14 @@
 - Updated At: 2026-08-31
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 3432e83
-- Kids HEAD: 3432e83 `docs(ai): record SITE-02 kids commit SHA`
+- Base Commit: 8b07277
+- Kids HEAD: 8b07277 `docs(card-os): record DEPLOY-02 production gallery landing`
 - Server Branch: `knowledge-pipeline-v1` @ `fd696c2`（本批未改 server 代码；未 merge `main`）
 - Server Worktree: `.worktrees/cognitive-card-server-knowledge-core`
 - Server Generation-Input Worktree: `.worktrees/cognitive-card-server-api-01-impl-2` @ `4ca3e0e`
 - Server main checkout: Documents Codex `cognitive-card-server` @ `c2a898c`（现网 `current` 已不指向它）
-- Working Tree: DEPLOY-02 任务文档与运维记录未提交；既有 `outputs/` 未跟踪
-- Task Status: **Done（DEPLOY-02 现网已落地）。** 未 merge server `main`；未 push kids。
+- Working Tree: 仅既有 `outputs/` 未跟踪
+- Task Status: **Done（DEPLOY-02 现网已落地，文档已提交 `8b07277`）。** 未 merge server `main`；未 push kids。
 
 ## Summary
 
@@ -32,11 +32,11 @@ DEPLOY-02 已按硬顺序落地：从 `knowledge-pipeline-v1` @ `fd696c2` 打 re
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 未提交：DEPLOY-02 Done |
-| kids | `docs/ai/HANDOFF.md` | 未提交：本交接 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 未提交：DEPLOY-02 DONE |
-| kids | `docs/cognitive-card-os-system-design.md` | 未提交：§11 DEPLOY-02 Done |
-| kids | `docs/operations/cognitive-card-server-deployment-2026-07-14.md` | 未提交：第 10 节 |
+| kids | `docs/ai/CURRENT_TASK.md` | 已提交 `8b07277`：DEPLOY-02 Done |
+| kids | `docs/ai/HANDOFF.md` | 已提交 `8b07277`；本交接补记 SHA |
+| kids | `docs/cognitive-card-os-roadmap.md` | 已提交 `8b07277`：DEPLOY-02 DONE |
+| kids | `docs/cognitive-card-os-system-design.md` | 已提交 `8b07277`：§11 DEPLOY-02 Done |
+| kids | `docs/operations/cognitive-card-server-deployment-2026-07-14.md` | 已提交 `8b07277`：第 10 节 |
 | kids | SITE-02 实现 | 已提交 `44e0990`；记录 SHA `3432e83` |
 | kids | `outputs/` | 既有未跟踪；不纳入 |
 | server | （无代码） | 仅生产安装该已有 commit |
@@ -52,7 +52,7 @@ DEPLOY-02 已按硬顺序落地：从 `knowledge-pipeline-v1` @ `fd696c2` 打 re
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `kids-visual-learning-pack` `main` @ `3432e83` | 仅 DEPLOY-02 文档未提交；`outputs/` 不纳入 |
+| kids 治理 | `kids-visual-learning-pack` `main` @ `8b07277` | DEPLOY-02 文档已提交；`outputs/` 不纳入 |
 | 知识管线集成 | `.worktrees/cognitive-card-server-knowledge-core` @ `fd696c2` | 本批未改代码；现网已安装该 commit |
 | 现网对应 | `/opt/cognitive-card-server/current` → `fd696c2` | 旧 `c2a898c` 仍在 `releases/` |
 
@@ -101,7 +101,7 @@ DEPLOY-02 已按硬顺序落地：从 `knowledge-pipeline-v1` @ `fd696c2` 打 re
 
 ## Recovery Notes
 
-- kids：`kids-visual-learning-pack` `main` @ `3432e83`；DEPLOY-02 文档未提交。
+- kids：`kids-visual-learning-pack` `main` @ `8b07277`；仅 `outputs/` 未跟踪。
 - 现网：`/opt/cognitive-card-server/current` → `fd696c2`。
 - 任务：`docs/ai/CURRENT_TASK.md`（DEPLOY-02 Done）。
 - 入口合同：`shared/knowledge-entry.json`（`activeMode=card-os`）
