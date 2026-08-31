@@ -57,6 +57,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Knowledge Browse and Projection Confirmation Design](superpowers/specs/2026-08-30-knowledge-browse-projection-confirmation-design.md) | Confirmation-point-1 UI: read-only library browse plus projection-family selection; not PORTAL-01 | Approved |
 | [Knowledge Four-Card Converter Design](superpowers/specs/2026-08-30-knowledge-four-card-converter-design.md) | CONV-01: library current to joined four-card generation-input; source_id mapping; not production-record emit | Approved |
 | [Age and Language Adapter Design](superpowers/specs/2026-08-31-age-language-adapter-design.md) | AGE-01: versioned server adapters for age-3-4 / age-5-6 child Chinese and beginner English; fact identity unchanged | Approved |
+| [Locked Four-Card Render Design](superpowers/specs/2026-08-31-locked-four-card-render-design.md) | RENDER-01: content-lock four-card layout, copy_plan COPY, A4 PDF; not PORTAL/QA/PUBLISH | Approved |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
 

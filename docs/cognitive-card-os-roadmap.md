@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：下一刀 `RENDER-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` 已在 `knowledge-pipeline-v1` 本地提交（未 merge、未现网）。仍不 merge `main`。
+本里程碑当前切片：下一刀 `QA-01`。`BROWSE-01` / `CONV-01` / `RUN-01` / `AGE-01` / `RENDER-01` 已在 `knowledge-pipeline-v1` 本地提交（未 merge、未现网）。仍不 merge `main`。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -52,7 +52,7 @@
 | RUN-01 | 本机执行接合密封 | DONE | 已本地提交 `c55f51b`；未 merge 进 main |
 | KNOW-01 | 分类与对象类型体系 | IN PROGRESS | 覆盖矩阵与缺口测试；排在 RUN-01 / 首包之后，不挡主路径 |
 | TMPL-01 | 领域/形态模板族 | IN PROGRESS | 补齐模板注册表和跨对象夹具 |
-| AGE-01 | 3–4、5–6 岁配置 | DONE | 已本地提交 `4e0ea52`；未 merge、未现网；下一刀 RENDER-01 |
+| AGE-01 | 3–4、5–6 岁配置 | DONE | 已本地提交 `4e0ea52`；未 merge、未现网 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
 | API-01 | HTTPS 写入 API | IN PROGRESS | 集成分支含 LIB-01 `b672949` 与 PROJ-01/WIRE-01 `9e0c353`；功能分支未 merge 进 main；现网仍 `0.3.1` |
@@ -68,7 +68,7 @@
 | UPLOAD-01 | 浏览器手动上传 | BACKLOG | 依赖 AUTH-01、API-01 |
 | SITE-01 | Card OS 替换 `kids-world` | BACKLOG | 依赖门户、发布和迁移覆盖 |
 | SITE-02 | 旧站兼容与重定向 | BACKLOG | 依赖 SITE-01 切换门禁 |
-| RENDER-01 | 四卡排版与打印 PDF | BACKLOG | 依赖内容锁和资产接口 |
+| RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
 | QA-01 | 严格 QA 与人工复核 | BACKLOG | 依赖 RENDER-01 |
 | PUBLISH-01 | 不可变 package 发布 | BACKLOG | 依赖 QA-01 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
@@ -414,10 +414,13 @@
 
 ### RENDER-01 四卡与打印渲染
 
-- 状态：`BACKLOG`
+- 状态：`DONE`（实现与 focused 测试完成；已本地提交 `1ef6edc`；未 merge 进 main，未 push）
+- 权威仓库：`cognitive-card-server`（`knowledge-pipeline-v1`）；设计与任务治理为 `kids-visual-learning-pack`。
 - 范围：固定四页顺序、文本忠实布局、图像轨、A4 PDF、字体与中英文断行、manifest 指纹。
-- 抢救来源（ADR-001）：存档分支的受治理 renderer（`render_card_candidate.py`、family style/profile、不可变 render-set 与原子指针）为候选实现；真实高视觉素材上的排版质量尚未验证。
+- 抢救来源（ADR-001）：存档分支的受治理 renderer（A4/Pillow/断行/几何校验/CropBox PDF）为合同来源；不把客户端 workspace lock 或恐龙-only family 钉死合入。真实高视觉素材上的排版质量尚未验证。
+- 本批结果：服务器 `four_card_render` 消费锁定记录与 AGE-01 `copy_plan`；generate COPY 被覆盖；四页 A4 300dpi PNG + CropBox PDF；输入/输出摘要；清场区拒插图。focused renderer 11 项 PASS。未改 Knowledge Core、未扩 PORTAL、未新增 HTTP。已本地提交 `1ef6edc`。
 - 完成条件：渲染器只消费内容锁；输出字节和渲染输入均有摘要；打印 QA 通过。
+- 独立设计：[锁定内容四卡排版](superpowers/specs/2026-08-31-locked-four-card-render-design.md)。
 
 ### QA-01 严格 QA 与人工复核
 
@@ -486,13 +489,13 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）。均未 merge。
+已完成（不要再开）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）。均未 merge。
 
 下一会话起按此编号：
 
 1. ~~**RUN-01**~~（本机完成）。
 2. ~~**AGE-01**~~（本机完成）。
-3. **RENDER-01**：四卡排版与 A4 PDF。
+3. ~~**RENDER-01**~~（本机完成，`1ef6edc`）。
 4. **QA-01**：机器 QA + 人工复核记录。
 5. **PUBLISH-01**：不可变 package。
 6. **ACCEPT-01**：兔子端到端（单人门禁：不要求第二终端）。
@@ -511,6 +514,7 @@
 
 ### 2026-08-31
 
+- RENDER-01：服务器 `four_card_render` 按内容锁与 AGE-01 `copy_plan` 排出四页 A4 PNG/PDF；generate COPY 不进字形。独立设计 `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md`。focused renderer 11 项、pipeline+renderer 85 项 PASS；完整 suite 572 中 2 项既有 real-uvicorn 502。已本地提交 `1ef6edc`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - AGE-01：`age-language-adapter-v1` 把 3–4 / 5–6 儿童中文与 beginner 英文做成服务器适配；命题 id、确定性、安全原文跨年龄不变。converter 密封前替换 CONV-01 临时 cn=en。独立设计 `docs/superpowers/specs/2026-08-31-age-language-adapter-design.md`。focused 适配器+converter `27` 项、pipeline 回归 `83` 项 PASS；完整 suite `561` 中 2 项既有 real-uvicorn 502。已本地提交 `4e0ea52`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - RUN-01：显式 four-card 兔子 current 本机 loopback 跑通 convert → 入库 → prepare → validator 退出 0 → `candidate_staged`。默认 `chaptered-guide` 先被拒绝。executor / `job_id_for` 接接合信封。focused pipeline+converter+library 等 83 项 PASS；完整 suite 544 项中 2 项既有 real-uvicorn 502。已本地提交 `c55f51b`；未 add `uv.lock`；未 merge `main`；未 push；未现网。
 - 按 ADR-004 把 CONV-01 之后的剩余工作排成一次一会话队列。新增 `RUN-01`（现为 `DONE`）为当时下一刀；§5 编号 1–10。KNOW-01 / TMPL-01 / AGE-01 仍为 IN PROGRESS，但顺序上不挡 RUN-01。自由概念编译、第二终端、异地备份、浏览器会话不进入该队列。
