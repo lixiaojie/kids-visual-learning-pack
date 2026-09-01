@@ -6,7 +6,7 @@
 - Updated By: Cursor Grok 4.6
 - Status: Done
 - Branch: kids `main`；server `knowledge-pipeline-v1` 只读编译，默认不 merge `main`、不打新 release
-- Base Commit: 138b83c
+- Base Commit: 8bcf645
 
 ## Objective
 

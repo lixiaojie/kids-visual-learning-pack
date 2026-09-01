@@ -5,8 +5,8 @@
 - Updated At: 2026-09-01
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 138b83c
-- Kids HEAD: 138b83c `docs(ai): record KNOW-03-prod kids commit SHA`
+- Base Commit: 8bcf645
+- Kids HEAD: 8bcf645 `docs(card-os): record KNOW-04 suite library seed evidence`
 - Server Branch: `knowledge-pipeline-v1` @ `7aaeb2b80e591f348c54eb35fb18793e213c5122`
 - Working Tree: 本提交收录 KNOW-04 治理/运维证据；既有未跟踪 `outputs/`；server `uv.lock` 未纳入
 - Task Status: **Done（KNOW-04：生产 library 六主题 current；应用仍 `7aaeb2b`；Nginx / 画廊未改）。** 下一刀须新 CURRENT_TASK。
@@ -43,7 +43,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `138b83c` | 不改 server 提交 |
+| kids 治理 | `main` @ `8bcf645` | 不改 server 提交 |
 | 知识管线 | knowledge-core worktree @ `7aaeb2b` | 只读编译；未 merge `main` |
 
 三角色划分与活 checkout 上限见 ADR-003。
@@ -59,7 +59,7 @@
 | ops 无 token 无命题泄漏；admin `401` | PASS | Nginx SHA 未变 |
 | 未 merge server `main` / 未 push | PASS | |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done；验收项全部勾选 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `138b83c` 与 HEAD 一致 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `8bcf645` 与证据提交一致 |
 | `bash scripts/ai/check-doc-governance.sh` | WARN | 3× Last Reviewed 过期（既有，2026-07-24） |
 | `git diff --check` | PASS | |
 
@@ -85,7 +85,7 @@
 ## Recovery Notes
 
 - 任务：KNOW-04 DONE；现网应用 `7aaeb2b`；library 六主题。
-- Kids HEAD：`138b83c`（本提交收录 KNOW-04 证据；提交后 HEAD 会前移）。
+- Kids HEAD：`8bcf645` `docs(card-os): record KNOW-04 suite library seed evidence`。
 - Server Git：`7aaeb2b80e591f348c54eb35fb18793e213c5122`。
 - library 回滚：`/var/backups/cognitive-card-server/knowledge-library.20260901T070549Z.pre-know04`。
 - 应用回滚目标仍是 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`。
