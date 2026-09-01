@@ -5,21 +5,22 @@
 - Updated At: 2026-09-01
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: bbefb9f
-- Kids HEAD: bbefb9f4343f2ecd9d569192c2348008735d9c75
+- Base Commit: 611598e
+- Kids HEAD: 611598e473f65879dc582ae303e4b0da4f64b333 `docs(card-os): record KNOW-03 coverage work and WB-01 ops evidence`
 - Server Branch: `knowledge-pipeline-v1` @ `7aaeb2b80e591f348c54eb35fb18793e213c5122`
-- Working Tree: KNOW-03 治理文档待本提交纳入；`outputs/` 不纳入；server `uv.lock` 未纳入
-- Task Status: **In Progress（KNOW-03 server 已提交 `7aaeb2b`；未标 DONE；未生产 release、未 merge server `main`、未 reload）。**
+- Working Tree: 干净（除既有未跟踪 `outputs/`）；server `uv.lock` 未纳入
+- Task Status: **In Progress（KNOW-03 server `7aaeb2b`、kids `611598e` 已提交；未标 DONE；未生产 release、未 merge server `main`、未 reload）。**
 
 ## Summary
 
-操作者授权 commit。server `knowledge-pipeline-v1` 已提交 `7aaeb2b`（基线 `115377b`）：coverage 插件与主机、准确性内核、七主题夹具、闭集 fact_type/axes 与 safety 门。`uv.lock` 未纳入。kids 本提交写入 KNOW-03 spec/plan 与治理文档，并纳入此前未提交的 WB-01 现网第 11 节证据。focused 六模块 121 tests OK。全量 discover 631：failures=0、errors=11（缺 fastapi/httpx）。WB-02 仍搁置。
+操作者授权 commit。server `knowledge-pipeline-v1` 已提交 `7aaeb2b`（基线 `115377b`）：coverage 插件与主机、准确性内核、七主题夹具、闭集 fact_type/axes 与 safety 门。`uv.lock` 未纳入。kids `611598e` 写入 KNOW-03 spec/plan 与治理文档，并纳入此前未提交的 WB-01 现网第 11 节证据。focused 六模块 121 tests OK。全量 discover 631：failures=0、errors=11（缺 fastapi/httpx）。WB-02 仍搁置。
 
 ## Completed
 
 - WB-02 Parked（保持）。
 - KNOW-03 spec 批准（Approved，未标 Implemented）。
 - KNOW-03 server 提交 `7aaeb2b`：Task 1.1–3.3、重切修复、Task 4.2。
+- KNOW-03 kids 提交 `611598e`：spec/plan、路线图、CURRENT_TASK/HANDOFF、WB-01 运维证据。
 - server focused 六模块 unittest 121 通过。
 
 ## Changed Files
@@ -27,8 +28,8 @@
 | Repository | File | State |
 | --- | --- | --- |
 | server | coverage 插件/主机、authoring/validator、七主题夹具、AGE 注册表短句、ACCEPT 计数钉 | 已提交 `7aaeb2b` |
-| kids | KNOW-03 spec/plan、README、路线图、CURRENT_TASK/HANDOFF、四卡投影 Parked spec | 本提交 |
-| kids | WB-01 运维第 11 节与 workbench plan 勾选 | 本提交（此前未纳入） |
+| kids | KNOW-03 spec/plan、README、路线图、CURRENT_TASK/HANDOFF、四卡投影 Parked spec | 已提交 `611598e` |
+| kids | WB-01 运维第 11 节与 workbench plan 勾选 | 已提交 `611598e` |
 
 ## Decisions Made
 
@@ -43,7 +44,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `bbefb9f`（本提交之后前进） | 不改 server 提交 |
+| kids 治理 | `main` @ `611598e` | 不改 server 提交 |
 | 知识管线 | knowledge-core worktree @ `7aaeb2b` | 不 merge `main`；不打生产 release 除非另授权 |
 
 三角色划分与活 checkout 上限见 ADR-003。
@@ -52,8 +53,8 @@
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| `bash scripts/ai/check-task-state.sh` | PASS | |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `bbefb9f` at staging |
+| `bash scripts/ai/check-task-state.sh` | PASS | 本 SHA 记录提交后复核 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `611598e`；SHA 记录提交后可能 WARN 落后 HEAD |
 | `git diff --check` | PASS | |
 | server focused 六模块 121 tests | PASS | coverage + classification + authoring + four_card_accept + age_language_adapter |
 | server 全量 discover 631 | FAIL | failures=0；errors=11（fastapi/httpx 导入缺口，既有） |
@@ -67,7 +68,7 @@
 
 ## Remaining Work
 
-见会话回复中的待办清单。路线图 KNOW-03 仍 IN PROGRESS，直到操作者接受 Done。
+KNOW-03 仍 IN PROGRESS，直到操作者接受 Done。不自动打生产 release。默认下一刀仍不实施 WB-02。队列与后置项见 `docs/cognitive-card-os-roadmap.md` §5；非 Card OS 见 `docs/ai/BACKLOG.md`。
 
 ## Exact Next Action
 
@@ -76,5 +77,6 @@
 ## Recovery Notes
 
 - 任务：KNOW-03 本地已提交；未现网。
+- Kids：`611598e473f65879dc582ae303e4b0da4f64b333` on `main`。
 - Server：`7aaeb2b80e591f348c54eb35fb18793e213c5122` on `knowledge-pipeline-v1`。
 - 规范：ADR-002、ADR-003、KNOW-01、KNOW-03 spec 与实施计划。

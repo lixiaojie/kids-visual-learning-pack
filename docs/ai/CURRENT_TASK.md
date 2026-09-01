@@ -6,11 +6,11 @@
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
 - Branch: kids `main`；server `knowledge-pipeline-v1` 只打生产 release，默认不 merge `main`
-- Base Commit: bbefb9f
+- Base Commit: 611598e
 
 ## Objective
 
-**KNOW-03 知识源** 已在 server `knowledge-pipeline-v1` 提交 `7aaeb2b`（相对 `115377b`）。治理文档随后提交。不标 DONE：未打生产 release、未 merge server `main`、未 reload、未种子新 library。不实施 WB-02。
+**KNOW-03 知识源** 已在 server `knowledge-pipeline-v1` 提交 `7aaeb2b`（相对 `115377b`）。治理文档已提交 kids `611598e`。不标 DONE：未打生产 release、未 merge server `main`、未 reload、未种子新 library。不实施 WB-02。
 
 ## Background
 
