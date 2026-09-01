@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`WB-01` 令牌操作台只读知识源（server `115377b` 已提交，现网待 release）。公网画廊保持 PORTAL-01；生产流程放 admin 操作台。队列：WB-01 → WB-02 → WB-03 → API-01。默认仍不 merge server `main`。后置项见 §5「不要排进上述队列」。
+本里程碑当前切片：`KNOW-03` 知识源覆盖与准确性（IN PROGRESS，spec 已批准；server 已提交 `7aaeb2b` on `knowledge-pipeline-v1`，未 merge `main`、未生产 release；focused 六模块 121 tests OK；全量 discover 631：failures=0、errors=11（fastapi/httpx，既有））。只做全面性/准确性/类型插件，不做投影。`WB-02` 已搁置。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -74,8 +74,9 @@
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
 | DEPLOY-01 | Card OS 服务部署 | DONE | 0.3.1 基线；升级门禁见运维记录 |
 | DEPLOY-02 | 现网落地试点 | DONE | 现网画廊+兔子包+根 CTA；未 merge server `main` |
-| WB-01 | 令牌操作台只读知识源 | IN PROGRESS | server `115377b` 已提交；待打 release、种子 library、reload Nginx |
-| WB-02 | 四卡成熟视觉投影 | BACKLOG | 依赖 WB-01；不改 Knowledge Core |
+| WB-01 | 令牌操作台只读知识源 | DONE | 现网 `115377b`；ops `/card-os/ops/`；library AUTHOR-02；画廊未改 |
+| KNOW-03 | 知识源覆盖与准确性 | IN PROGRESS | spec 已批准；server `7aaeb2b` on `knowledge-pipeline-v1`（未 merge `main`）；focused 121 OK；全量 631：0 失败 + 11 导入错误（fastapi/httpx，既有） |
+| WB-02 | 四卡成熟视觉投影 | BACKLOG | 已搁置：先做知识源；本 spec 不实施 |
 | WB-03 | 选投影→生成→上架画廊 | BACKLOG | 依赖 WB-02 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
 | OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
@@ -480,22 +481,33 @@
 
 ### WB-01 令牌操作台只读知识源
 
-- 状态：`IN PROGRESS`（server `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 已提交；未现网）
+- 状态：`DONE`（2026-08-31；现网 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`）
 - 权威仓库：`kids-visual-learning-pack`（产品规范、Nginx snippet、任务治理）；实现落在 `cognitive-card-server` `knowledge-pipeline-v1`。
 - 依赖：BROWSE-01、PROJ-01、WIRE-01、LIB-01、AUTHOR-02、DEPLOY-02。
 - 目标：admin token 操作台浏览知识库 current 与 Projection 选择面；生产兔子 library current 为 AUTHOR-02 章节导读知识源；公开画廊仍是 ACCEPT-01 四卡包。
-- 完成条件：带 token 可见兔子 4 单元 / 8 命题 / 4 来源，chosen `chaptered-guide`，`four-card` discouraged；无 token 看不到命题正文；画廊包摘要不变；Uvicorn 仍回环。
+- 完成条件：已满足。证据见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md) 第 11 节。
 - 独立设计：[令牌操作台只读知识源](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md)。
 - 非范围：WB-02 / WB-03 / API-01 实现、浏览器会话、在画廊加操作台链接、merge server `main`。
 
+### KNOW-03 知识源覆盖、准确性与可插拔升级
+
+- 状态：`IN PROGRESS`
+- 依赖：KNOW-01、AUTHOR-02、WB-01（只读看见现有源）。
+- 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
+- 目标：知识源全面性与准确性；每种 `primary_form` 有可插拔 coverage pack；领域 overlay 可插拔；吸收 Skill 的 FACT/分类/事实检查，忽略投影呈现。
+- 完成条件：主机+内核+全 form pack 文件可加载；§8.1 七主题（兔/鹅掌藤/霸王龙/格温/故宫/四渡赤水/牛顿第一定律）按所选 pack 过门；几何/时效夹具不被 `defined` 包误杀；格温不上画廊；不实施 WB-02。
+- 独立设计：[知识源覆盖与准确性](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md)（已批准）。
+- 实施计划：[KNOW-03 实施计划](superpowers/plans/2026-09-01-entity-knowledge-coverage-implementation-plan.md)（经 SDD 执行；server 已提交 `7aaeb2b` on `knowledge-pipeline-v1`，未 merge `main`、未生产 release；focused 六模块 121 tests OK；全量 discover 631：failures=0 + errors=11（fastapi/httpx，既有））。
+
 ### WB-02 四卡成熟视觉投影
 
-- 状态：`BACKLOG`（WB-01 完成后改为 `READY`）
-- 依赖：WB-01。
+- 状态：`BACKLOG`
+- 依赖：KNOW-03。
 - 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
-- 目标：把 four-card 从确定性锁排版恢复为有图、有内容的成熟投影；不把视觉方案写入 Knowledge Core。
-- 完成条件：兔子四卡不再以空白观察区与纯文字框作为可接受交付；Knowledge Core 字节不因视觉恢复而改写。
-- 独立设计：WB-01 完成后另立。
+- 目标：把 four-card 恢复为有内容（及后续有图）的成熟投影；不把视觉方案写入 Knowledge Core。
+- 完成条件：待知识源阶段结束后重开时再写。
+- 独立设计：[四卡文字成熟投影](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md)（已搁置，不实施）。
+- 2026-09-01：用户判定该 spec 偏离知识源核心目标，搁置。
 
 ### WB-03 选投影→生成→上架画廊
 
@@ -542,7 +554,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网 `fd696c2`，未 merge `main`）。
+已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网画廊 `fd696c2` 基线）、`WB-01`（现网 `115377b`）。
 
 下一会话起按此编号：
 
@@ -558,10 +570,11 @@
 10. ~~**SITE-01**~~（现网完成）。
 11. ~~**SITE-02**~~（`44e0990`；现网 stub/hash 已抽查）。
 12. ~~**DEPLOY-02**~~（现网完成；应用 `fd696c2`；未 merge server `main`）。
-13. **WB-01** 令牌操作台只读知识源（当前；server `115377b` 已提交，现网待 release）。
-14. **WB-02** 四卡成熟视觉投影。
-15. **WB-03** 选投影 → 生成 → 上架画廊。
-16. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
+13. ~~**WB-01**~~ 令牌操作台只读知识源（现网完成，`115377b`）。
+14. **KNOW-03** 知识源覆盖与准确性（可插拔 pack）。
+15. **WB-02** 四卡成熟视觉投影（已搁置，不实施当前 spec）。
+16. **WB-03** 选投影 → 生成 → 上架画廊。
+17. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -571,8 +584,16 @@
 
 ## 6. 更新记录
 
+### 2026-09-01
+
+- KNOW-03：server 已提交 `7aaeb2b80e591f348c54eb35fb18793e213c5122`（`knowledge-pipeline-v1`，未 merge `main`）。focused 六模块 121 tests OK；全量 discover 631：failures=0、errors=11（fastapi/httpx，既有）。未生产 release、未 reload、未种子新 library。格温仅 `examples/authoring/`。
+- KNOW-03：spec 已批准；实施计划经 SDD 执行（server Task 1.1–3.3 + Task 4.2）；rabbit-real 重切已修复。操作者 2026-09-01 授权 commit。
+- WB-02：四卡文字成熟投影 spec 被判定偏离知识源目标，改为 `BACKLOG` / Parked，不实施。
+
 ### 2026-08-31
 
+- WB-02：四卡文字成熟投影书面 spec `docs/superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md`。本刀文字-only、本机验收；插图与上架属 WB-03。待用户审查书面 spec 后再写实施计划。
+- WB-01：令牌操作台只读知识源 `DONE`。release `115377b` 已安装；knowledge-library `rabbit` 为 AUTHOR-02（4/8/4，chosen `chaptered-guide`）；Nginx `/card-os/ops/` 已 reload；画廊 `package_sha256` 未变。未 merge server `main`。证据见运维记录第 11 节。
 - WB-01：令牌操作台只读知识源仍 `IN PROGRESS`。server `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 已提交 `knowledge_ops`；kids Nginx `/card-os/ops/` 已入库。未种子生产 knowledge-library；未 reload 生产 Nginx。
 - WB-01：令牌操作台只读知识源立项为 `IN PROGRESS`。独立设计 `docs/superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md`。公网画廊保持 PORTAL-01。新增队列 WB-01 → WB-02 → WB-03 → API-01；API-01 自由编译从「不要排进队列」移入第 16 项。未开始 server 实现。
 - DEPLOY-02：现网落地试点 `DONE`。release `fd696c2`（ops `3432e83`）已安装；`/card-os/` 为画廊；兔子 `public` current 已上架；根 CTA 与 13 个 stub 已 rsync。未 merge server `main`。证据见运维记录第 10 节。

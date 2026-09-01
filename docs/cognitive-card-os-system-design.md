@@ -279,10 +279,12 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 14. **`SITE-01` 知识入口切换**：仓库内已完成（根入口主 CTA 指向 Card OS 画廊；旧 `kids-world` 降为冻结档案；Nginx snippet 反代画廊 HTML 与 `/card-os/packages/`）；未现网应用。见 [ADR-005](decisions/ADR-005-knowledge-entry-cutover-without-topic-remakes.md)。
 15. **`SITE-02` 旧 URL 映射与一次部署回滚**：仓库内已完成（短 hash / query 打开冻结主题；独立路径替代说明页；`activeMode=parallel` 一次部署回滚主 CTA）；未现网。
 16. **`DEPLOY-02` 现网落地试点**：Done。现网 `www.yutou.space/card-os/` 为 PORTAL-01 画廊；应用提交 `fd696c2`（版本号仍 `0.3.1`）；未 merge server `main`。不补知识源 schema。
-17. **`WB-01` 令牌操作台只读知识源**：server `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 已提交；未现网。公网画廊保持 PORTAL-01。见 [操作台设计](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md)。
-18. **`WB-02` / `WB-03` / `API-01` 自由编译**：路线图队列第 2–4 项；不在 WB-01 实施。
-19. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
-20. 第二个哺乳动物一致性验收仍依赖模板族。
+17. **`WB-01` 令牌操作台只读知识源**：Done。现网 `/card-os/ops/`；应用 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`（版本号仍 `0.3.1`）；library `rabbit` 为 AUTHOR-02；画廊仍是 ACCEPT-01。未 merge server `main`。见 [操作台设计](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md)。
+18. **`WB-02`**：Parked。四卡投影填满不在本阶段实施。见 [四卡文字成熟投影](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md)。
+19. **`KNOW-03` 知识源覆盖与准确性**：In Progress。可插拔 pack/overlay；七主题兼容套件；吸收 Skill 知识生成、忽略投影。见 [知识源覆盖](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md)。
+20. **`WB-03` / `API-01`**：在 KNOW-03 与（后期）WB-02 之后；不在当前实施。
+21. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
+22. 第二个哺乳动物一致性验收仍依赖模板族。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 

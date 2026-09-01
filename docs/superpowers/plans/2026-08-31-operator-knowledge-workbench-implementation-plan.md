@@ -73,3 +73,7 @@ Do not reload Nginx onto an empty library. After a server commit and immutable r
 5. Check: unauthenticated ops HTML has no claims; admin JSON shows 4 units / 8 propositions / 4 sources; gallery PDF still 200 with the same digest.
 
 This task is not executed until the operator authorizes a server commit and production install.
+
+- [x] Compile `rabbit-real.json` without four-card overlay; publish as knowledge-library `rabbit` current (4 units / 8 propositions / 4 sources; chosen `chaptered-guide`; four-card `discouraged` / `COMPRESSES_COMPOSITE`).
+- [x] Catalog `package_sha256` unchanged; PDF still 1,728,853 bytes.
+- [x] Reload Nginx snippet including `/card-os/ops/`; unauthenticated ops HTML has no claims; admin JSON without token is 401.
