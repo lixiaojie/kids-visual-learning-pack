@@ -68,7 +68,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Legacy URL and Rollback Design](superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md) | SITE-02: old kids-world URL mapping, substitute pages, and one-deploy activeMode rollback | Approved |
 | [Operator Knowledge Workbench Design](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md) | WB-01: token-gated read-only knowledge library and projection menu; not PORTAL-01; not WB-02/WB-03 | Approved |
 | [Four-Card Text-Mature Projection Design](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md) | Parked WB-02 four-card text fill; not this phase (knowledge source first) | Parked |
-| [Entity Knowledge Coverage Design](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md) | KNOW-03: pluggable coverage + seven-topic compatibility suite; not projection | Approved |
+| [Entity Knowledge Coverage Design](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md) | KNOW-03: pluggable coverage + seven-topic compatibility suite; not projection | Approved/Implemented |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
 | [Card OS ACCEPT-01 Evidence](cognitive-card-os-accept-01-evidence.md) | Verified local rabbit print pack: four cards, A4 PDF, approved QA, immutable package, same-version local view | Verified |
 | [Project Documentation Governance Design](superpowers/specs/2026-07-24-project-documentation-governance-design.md) | Cross-model documentation governance | Implemented |
@@ -87,7 +87,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Knowledge Core Contract Pilot](superpowers/plans/2026-08-19-knowledge-core-contract-pilot-implementation-plan.md) | Completed canonical-doc convergence and server-authoritative four-object contract fixture plan | Completed |
 | [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Completed documentation-governance implementation plan | Completed |
 | [Operator Knowledge Workbench Implementation](superpowers/plans/2026-08-31-operator-knowledge-workbench-implementation-plan.md) | WB-01 execution plan: token-gated ops HTML and admin knowledge-library JSON | Completed |
-| [Entity Knowledge Coverage Implementation](superpowers/plans/2026-09-01-entity-knowledge-coverage-implementation-plan.md) | KNOW-03 execution plan: coverage plugins, record-shape, seven-topic suite; not WB-02 | Needs Review |
+| [Entity Knowledge Coverage Implementation](superpowers/plans/2026-09-01-entity-knowledge-coverage-implementation-plan.md) | KNOW-03 execution plan: coverage plugins, record-shape, seven-topic suite; not WB-02 | Completed |
 
 ## Operations, Compliance, and Decisions
 

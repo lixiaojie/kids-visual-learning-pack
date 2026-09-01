@@ -1,6 +1,6 @@
 # 知识源覆盖、准确性与可插拔升级（KNOW-03）
 
-- Status: Approved
+- Status: Approved/Implemented
 - Date: 2026-09-01
 - Related: [ADR-001](../../decisions/ADR-001-card-os-client-contract-and-production-core-ownership.md)、[ADR-002](../../decisions/ADR-002-knowledge-core-and-projection-architecture.md)、[KNOW-01](2026-08-31-classification-registry-design.md)、[KNOW-02 / 四对象合同](../../cognitive-card-os-roadmap.md)、[TMPL-01](2026-08-31-template-family-registry-design.md)、[AUTHOR-02](../../cognitive-card-os-roadmap.md)
 - Authority: kids 仓为产品规范；实现落在 server `knowledge-pipeline-v1`
