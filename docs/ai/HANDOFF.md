@@ -5,8 +5,8 @@
 - Updated At: 2026-09-01
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 46d93d5
-- Kids HEAD: 46d93d5 `docs(ai): record KNOW-03 kids commit SHA`
+- Base Commit: b964e0e
+- Kids HEAD: b964e0e `docs(card-os): mark KNOW-03 done locally`
 - Server Branch: `knowledge-pipeline-v1` @ `7aaeb2b80e591f348c54eb35fb18793e213c5122`
 - Working Tree: 干净（除既有未跟踪 `outputs/`）；server `uv.lock` 未纳入
 - Task Status: **Done（KNOW-03 本机完成；未生产 release、未 merge server `main`、未 reload）。** 下一刀须新 CURRENT_TASK。
@@ -43,7 +43,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `46d93d5`（本提交之后前进） | 不改 server 提交 |
+| kids 治理 | `main` @ `b964e0e` | 不改 server 提交 |
 | 知识管线 | knowledge-core worktree @ `7aaeb2b` | 不 merge `main`；不打生产 release 除非另授权 |
 
 三角色划分与活 checkout 上限见 ADR-003。
@@ -76,6 +76,6 @@
 ## Recovery Notes
 
 - 任务：KNOW-03 本机 DONE；未现网。
-- Kids HEAD：本提交纳入 DONE 标记。
+- Kids HEAD：`b964e0e` `docs(card-os): mark KNOW-03 done locally`。
 - Server：`7aaeb2b80e591f348c54eb35fb18793e213c5122` on `knowledge-pipeline-v1`。
 - 规范：ADR-002、ADR-003、KNOW-03 spec（Approved/Implemented）、路线图 §5。

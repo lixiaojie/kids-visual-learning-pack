@@ -6,11 +6,11 @@
 - Updated By: Cursor Grok 4.6
 - Status: Done
 - Branch: kids `main`；server `knowledge-pipeline-v1` 只打生产 release，默认不 merge `main`
-- Base Commit: 46d93d5
+- Base Commit: b964e0e
 
 ## Objective
 
-**KNOW-03 已标 DONE。** 本机完成：server `7aaeb2b`、kids 治理 `611598e` + SHA 记录 `46d93d5`。未打生产 release、未 merge server `main`、未 reload、未种子新 library。不实施 WB-02。下一会话须操作者点名一个路线图 ID，并先改写本文件再实施。
+**KNOW-03 已标 DONE。** 本机完成：server `7aaeb2b`、kids 治理 `611598e` / SHA 记录 `46d93d5` / DONE 标记 `b964e0e`。未打生产 release、未 merge server `main`、未 reload、未种子新 library。不实施 WB-02。下一会话须操作者点名一个路线图 ID，并先改写本文件再实施。
 
 ## Background
 
