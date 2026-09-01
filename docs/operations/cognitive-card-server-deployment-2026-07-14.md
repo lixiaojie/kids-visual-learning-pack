@@ -1,6 +1,6 @@
 # Cognitive Card OS 生产部署与运维记录
 
-状态：`DEPLOY-01 DONE`；`DEPLOY-02 DONE`；`OPS-01` 单人门禁见路线图
+状态：`DEPLOY-01 DONE`；`DEPLOY-02 DONE`；`WB-01 DONE`；`KNOW-03-prod DONE`（切片 A）；`OPS-01` 单人门禁见路线图
 
 实施日期：2026-07-14 至 2026-07-15（Asia/Shanghai）；DEPLOY-02 现网落地 2026-08-31
 
@@ -537,3 +537,60 @@ systemctl reload nginx
 ```
 
 不要删除 knowledge-library 种子。应用 `current` 仍可通过指回 `fd696c2a8cab5400a5d78669031a501390ab5318` 退回画廊-only 应用；本批未演练该切换。未授权 merge server `main`。
+
+## 12. KNOW-03-prod 只换应用（2026-09-01）
+
+日期：2026-09-01。切片 A：只把应用 `current` 从 WB-01 `115377b` 换到 KNOW-03 `7aaeb2b`。不改写第 1–11 节历史表。不 reload Nginx。不重种 knowledge-library。未 merge server `main`。未 push。
+
+### 12.1 不可变身份（本批）
+
+| 对象 | 已验证值 |
+| --- | --- |
+| 应用版本 | `0.3.1`（`pyproject` 未升版） |
+| 应用提交 | `7aaeb2b80e591f348c54eb35fb18793e213c5122`（`knowledge-pipeline-v1`，未 merge `main`） |
+| 治理/运维提交 | `da45e4f3ce8ca31f0ab1edd117ed711a1cb504fb`（打 release 时 kids HEAD；本批证据文档其后提交） |
+| release schema | `cognitive-card-server-release-v2` |
+| 发布归档 SHA-256 | `cf16a42b62078c1970853f40b38bb80b5698b6d84f248852c634fd9de90d534d` |
+| 摘要 sidecar SHA-256 | `13df7ee9dade0f5f9cb82a549e4aac3042283727fc911e445f7de5f2785d9b13` |
+| 安装器 SHA-256 | `e34e0b91c6378dc294347337befb3e7c263957fd764aae381067143927474803` |
+| release manifest SHA-256 | `bee9ee82d5f666fe6b242975cc86f4df6ae1de6eb4a8cd9d06ece5cc749d50ae` |
+| install manifest SHA-256 | `993599e643f5e3e1849b00e844f3a788d53bab9602605f40ecefbd062ee61092` |
+| 已安装 runtime SHA-256 | `d1369f3c42e48543dfe8f910eb3a3edf99cdf8ef24abd7efd6228242b962a851`（与 WB-01 锁定 wheels 相同） |
+| 服务器 Python | `3.12.3` |
+| 安装时间 | `2026-09-01T06:35:56Z` |
+
+`current` 已从 `115377b` 指到 `7aaeb2b`。旧 release 目录保留，包括 `115377b`。不要删除未标记的旧 release。
+
+### 12.2 知识库与画廊未改
+
+安装前后下列摘要相同：
+
+| 对象 | SHA-256 |
+| --- | --- |
+| `rabbit/current.json` | `c1375f3e50dd3773879fe675f506503345aa85966aa857cb6e7540a1003c5ee3` |
+| `rabbit/revision-0001/knowledge-core.json` | `615a4d727295a932227300645edcc59f59e86f9bd6abaca5905c940d5989af1e` |
+| `rabbit/revision-0001/manifest.json` | `de82ec8f5fbf1b3d62c3f64b54b1ceba7c5947a5abd765ed3e1f243b96091c7e` |
+
+- library 根仍是 `/var/lib/cognitive-card-server/candidates/knowledge-library`（`cardos:cardos` `0700`）。
+- 仅主题 `rabbit`；`revision-0001` current：4 `knowledge_units` / 8 `propositions` / 4 `sources`（AUTHOR-02）。
+- 无格温 / Spider-Verse 路径。
+- 画廊 catalog 未改：`/card-os/` 标题 `Published artifacts`，列出 `rabbit`；PDF `200`，1,728,853 bytes。
+
+### 12.3 进程、Nginx 与抽查
+
+- `cognitive-card-server.service` active，`Result=success`，`NRestarts=0`，`ExecMainStatus=0`。
+- 监听仍是唯一 `127.0.0.1:8765`；UFW 无 8765 放行。
+- Nginx snippet SHA-256 仍为 `0ed25814ed84a8b5b242f8994ca2303f04a61b83f0a5f4927c912ac58a0060a1`（WB-01）。本刀未 `systemctl reload nginx`。
+- 回环与公网 `GET /card-os/api/v1/health` 均为 `200`，`server_version=0.3.1`。
+- 公网 capabilities：`free_form_job_creation=false`；protocol `1..1`；minimum Skill `0.1.0`。
+- SQLite `PRAGMA integrity_check` 为 `ok`。
+- `/card-os/ops/` 与 `/card-os/ops/rabbit` 无 token 为 `200 text/html`，页面不含 Merck / `canonical_claim` / `src.rabbit` / `chaptered-guide` / gwen。
+- `/card-os/api/v1/admin/knowledge-library` 无 token 为 `401`。
+- `/card-os/jobs` 通用 `404`。
+- 根分区约 `63%` / inode `22%`。
+
+本批未签发新的生产 admin token。
+
+### 12.4 回滚（本批）
+
+只把应用退回 WB-01 时：将 `/opt/cognitive-card-server/current` 指回 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 并重启 `cognitive-card-server.service`。本批未演练该切换。不要 reload Nginx。不要删除 knowledge-library 种子或旧 release。未授权 merge server `main`。

@@ -6,32 +6,28 @@
 - Updated By: Cursor Grok 4.6
 - Status: Done
 - Branch: kids `main`；server `knowledge-pipeline-v1` 只打生产 release，默认不 merge `main`
-- Base Commit: b964e0e
+- Base Commit: da45e4f
 
 ## Objective
 
-**KNOW-03 已标 DONE。** 本机完成：server `7aaeb2b`、kids 治理 `611598e` / SHA 记录 `46d93d5` / DONE 标记 `b964e0e`。未打生产 release、未 merge server `main`、未 reload、未种子新 library。不实施 WB-02。下一会话须操作者点名一个路线图 ID，并先改写本文件再实施。
+**KNOW-03-prod 切片 A 已完成。** 现网 `current` 从 WB-01 `115377b` 指到 KNOW-03 `7aaeb2b80e591f348c54eb35fb18793e213c5122`。library / 画廊 / Nginx snippet 未改。未 merge server `main`、未 push、未 reload Nginx、未种子格温。
 
 ## Background
 
-- 用户要求结构覆盖多种可学习对象，并以七个典型主题做兼容验证；格温证明不能把 entity 七面套到虚构角色。
-- 已落地：主机 + accuracy kernel + 按 form 的 coverage pack + 按 domain 的 overlay + 闭集 fact_type/axes 与 safety 门。
-- 操作者 2026-09-01 接受本机完成条件，明确不要求本刀上生产。
+- KNOW-03 本机已 DONE。操作者点名 `KNOW-03-prod` 并选择切片 A（只换应用）。切片 B/C 未授权。
+- 打 release 时 kids HEAD 为 `da45e4f`（写入 release `operations_commit`）。本批证据随后提交，不改归档。
 
 ## Acceptance Criteria
 
-- [x] 独立设计已写入 `docs/superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md`（完整知识源 + 插拔升级 + 七主题兼容套件）
-- [x] `docs/README.md` 已挂上该设计
-- [x] `docs/cognitive-card-os-roadmap.md` 含 KNOW-03 DONE；WB-02 为 BACKLOG
-- [x] `docs/cognitive-card-os-system-design.md` §11 指向 KNOW-03
-- [x] 用户已审查重写后的书面 spec
-- [x] 实施计划已写入 `docs/superpowers/plans/2026-09-01-entity-knowledge-coverage-implementation-plan.md`
-- [x] 用户已选择执行方式（subagent / inline）且尚未开始 server 代码
-- [x] server Task 1.1–3.3 按计划落地；focused 六模块 unittest 含 four_card_accept / age_language_adapter
-- [x] Task 4.2：enforced 编译校验闭集 `fact_type` / `semantic_axes`、entity 面轴匹配、safety 类面非空 `safety_scope`（focused 六模块 121 通过）
-- [x] 操作者审查并授权 commit；server `7aaeb2b80e591f348c54eb35fb18793e213c5122`
-- [x] 未实施 WB-02；未改现网 library / 画廊
-- [x] KNOW-03 标 DONE（操作者接受：不要求本刀打生产 release）
+- [x] 路线图含 `KNOW-03-prod`；范围锁定为切片 A
+- [x] 从干净 `knowledge-pipeline-v1` @ `7aaeb2b` 构建 release；builder JSON 的应用提交与三个 SHA-256 已记录
+- [x] 生产 `current` 指向 `7aaeb2b` release 目录；旧 `115377b` 目录保留
+- [x] 第 4 节健康检查：health/capabilities `0.3.1`、唯一 `127.0.0.1:8765`、`NRestarts=0`、SQLite integrity `ok`
+- [x] 公开画廊 `/card-os/` 仍列出 `rabbit`；PDF 字节与 WB-01 记录一致（1,728,853）
+- [x] `/card-os/ops/` 无 token 仍不泄露命题；Nginx snippet SHA 仍为 WB-01 值（本刀未 reload）
+- [x] 生产 library `rabbit` current 仍为 AUTHOR-02（4 单元 / 8 命题）；无格温路径
+- [x] 未 merge server `main`、未 push、未 add `outputs/` 或 server `uv.lock`
+- [x] 运维记录新增第 12 节不可变身份与回滚（指回 `115377b`）
 
 ## In Scope
 
@@ -39,20 +35,24 @@
 - `docs/ai/HANDOFF.md`
 - `docs/cognitive-card-os-roadmap.md`
 - `docs/cognitive-card-os-system-design.md`
-- `docs/README.md`
-- `docs/superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md`
-- `docs/superpowers/plans/2026-09-01-entity-knowledge-coverage-implementation-plan.md`
+- `docs/operations/cognitive-card-server-deployment-2026-07-14.md`
+- 从 server worktree `7aaeb2b` 构建并安装生产 release（不改 server Git 历史）
 
 ## Out of Scope
 
+- 重种生产 knowledge-library（切片 B，KNOW-03 修订后的兔子夹具）
+- 只打本机制品不上现网（切片 C）
+- reload 生产 Nginx 或改 snippet
+- merge server `main`、push、`outputs/`、`uv.lock`
+- 格温 / 画廊新包 / kids-world / 小程序
 - WB-02 / WB-03 / API-01 实现
-- 生产 library reload、merge server `main`、push、`outputs/`、`uv.lock`
-- 把 KNOW-03 装上现网（须新任务、另授权）
 
 ## Constraints
 
 - Card OS 任务账本只在 `docs/cognitive-card-os-roadmap.md` 更新。
-- 工作区继续按 ADR-003 三角色。
+- 工作区继续按 ADR-003 三角色；kids 与 server 分开提交。
+- 升级走 `docs/operations/cognitive-card-server-deployment-2026-07-14.md` 第 6 节；本批 `APP_COMMIT` 与 `EXPECTED_*` 不得沿用 WB-01 的 `115377b` 摘要。
+- 安装器不得覆盖同名 release；不得删除 `/var/lib/cognitive-card-server` 或已验证备份。
 
 ## Verification Plan
 
@@ -60,10 +60,11 @@
 - `bash scripts/ai/check-task-state.sh`
 - `bash scripts/ai/check-handoff.sh`
 - `git diff --check`
+- 生产第 4 节只读健康检查 + 画廊/ops/library 抽查（见验收项）
 
 ## Relevant References
 
 - `docs/superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md`
-- `docs/superpowers/plans/2026-09-01-entity-knowledge-coverage-implementation-plan.md`
-- `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`
+- `docs/operations/cognitive-card-server-deployment-2026-07-14.md`
+- `docs/decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md`
 - `docs/cognitive-card-os-roadmap.md`
