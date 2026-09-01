@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：无活动实现切片。`KNOW-04` 已 `DONE`（生产 library 六主题 current；应用仍 `7aaeb2b`；Nginx / 画廊未改）。下一编号 `WB-02` 仍搁置。新会话须操作者点名一个路线图 ID 并改写 `CURRENT_TASK.md` 后再实施。
+本里程碑当前切片：`WB-02` `DONE`（server `5c11880`；未现网）。下一刀 `WB-03` 仍 `BACKLOG`。不打 release、不上画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -78,7 +78,7 @@
 | KNOW-03 | 知识源覆盖与准确性 | DONE | 本机 `7aaeb2b`；实现不重开；现网切应用见 KNOW-03-prod |
 | KNOW-03-prod | 现网装上 KNOW-03 应用 | DONE | 现网 `current`=`7aaeb2b`；library AUTHOR-02；Nginx 未 reload；未 merge `main` |
 | KNOW-04 | 兼容套件上库 | DONE | 生产六主题 current；`rabbit`=`0002`；无格温；应用仍 `7aaeb2b` |
-| WB-02 | 四卡成熟视觉投影 | BACKLOG | 已搁置：先做知识源；本 spec 不实施 |
+| WB-02 | 四卡成熟视觉投影 | DONE | 本机 `5c11880`；不现网 |
 | WB-03 | 选投影→生成→上架画廊 | BACKLOG | 依赖 WB-02 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
 | OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
@@ -524,13 +524,13 @@
 
 ### WB-02 四卡成熟视觉投影
 
-- 状态：`BACKLOG`
-- 依赖：KNOW-03。
+- 状态：`DONE`（2026-09-01；本机 server `5c11880`；未生产 release）
+- 依赖：KNOW-03、KNOW-04。
 - 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
-- 目标：把 four-card 恢复为有内容（及后续有图）的成熟投影；不把视觉方案写入 Knowledge Core。
-- 完成条件：待知识源阶段结束后重开时再写。
-- 独立设计：[四卡文字成熟投影](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md)（已搁置，不实施）。
-- 2026-09-01：用户判定该 spec 偏离知识源核心目标，搁置。
+- 目标：操作台完成确认点 1 的映射半截：选择 Projection family，锁定四卡槽位方案；不把视觉方案写入 Knowledge Core，不输出 PNG/PDF。
+- 完成条件：已满足（本机）。证据：server `5c11880` focused unittest PASS；`lock_mapping` 不改 `current.json`。现网应用 / Nginx / 画廊不是本刀门禁。
+- 独立设计：[操作台映射方案确认](superpowers/specs/2026-09-01-operator-mapping-scheme-design.md)（Approved）。实施计划：[映射方案实施](superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md)。旧稿 [四卡文字成熟投影](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md) 保持 Parked。
+- 2026-09-01：操作者批准实施。映射 revision 不抢 knowledge current。未打 release。
 
 ### WB-03 选投影→生成→上架画廊
 
@@ -597,7 +597,7 @@
 14. ~~**KNOW-03**~~ 知识源覆盖与准确性（本机完成，`7aaeb2b`）。
 15. ~~**KNOW-03-prod**~~ 现网只换应用（`7aaeb2b`；library / Nginx 未改）。
 16. ~~**KNOW-04**~~ 兼容套件上库（生产六主题 current；不含格温）。
-17. **WB-02** 四卡成熟视觉投影（已搁置，不实施当前 spec）。
+17. ~~**WB-02**~~ 操作台映射方案确认（本机完成，`5c11880`；不现网）。
 18. **WB-03** 选投影 → 生成 → 上架画廊。
 19. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
 
@@ -611,6 +611,9 @@
 
 ### 2026-09-01
 
+- WB-02：本机 `DONE`。server `5c1188074846acbf8652ccb888792080697d140e`（`feat(knowledge): lock projection mapping without moving current`）。未打 release、未 reload Nginx、未上画廊。
+- WB-02：本机 `DONE`。server worktree 实现 `preview_mapping` / `lock_mapping` / `mapping.json` / 安全登记 / ops 第三块；focused unittest PASS。未 commit、未打 release、未 reload Nginx、未上画廊。
+- WB-02：spec 批准并开始实施。计划 `docs/superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md`。不打 release、不上画廊。
 - KNOW-04：`DONE`。生产 library 六主题 current；`rabbit`=`revision-0002`（AUTHOR-02 `0001` 保留）；无格温；应用仍 `7aaeb2b`；Nginx / 画廊未改。证据见运维记录第 13 节。
 - KNOW-04：操作者点名「新知识源切片」。把兼容套件六主题（不含格温）写成生产 library current；兔子为 `revision-0002`。不换应用、不 reload Nginx。
 - KNOW-03-prod：切片 A `DONE`。现网 `current`=`7aaeb2b`；library AUTHOR-02 哈希未变；Nginx snippet 未 reload。未 merge `main`、未 push。证据见运维记录第 12 节。

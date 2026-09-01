@@ -280,7 +280,7 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 15. **`SITE-02` 旧 URL 映射与一次部署回滚**：仓库内已完成（短 hash / query 打开冻结主题；独立路径替代说明页；`activeMode=parallel` 一次部署回滚主 CTA）；未现网。
 16. **`DEPLOY-02` 现网落地试点**：Done。现网 `www.yutou.space/card-os/` 为 PORTAL-01 画廊；应用提交 `fd696c2`（版本号仍 `0.3.1`）；未 merge server `main`。不补知识源 schema。
 17. **`WB-01` 令牌操作台只读知识源**：Done。现网 `/card-os/ops/`；应用 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`（版本号仍 `0.3.1`）；library `rabbit` 为 AUTHOR-02；画廊仍是 ACCEPT-01。未 merge server `main`。见 [操作台设计](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md)。
-18. **`WB-02`**：Parked。四卡投影填满不在本阶段实施。见 [四卡文字成熟投影](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md)。
+18. **`WB-02`**：Done（本机 server `5c11880`；未现网）。操作台映射方案确认。见 [映射方案确认](superpowers/specs/2026-09-01-operator-mapping-scheme-design.md)。旧文字填满稿仍 Parked。
 19. **`KNOW-03` 知识源覆盖与准确性**：Done（本机 `7aaeb2b`）。可插拔 pack/overlay；七主题兼容套件；吸收 Skill 知识生成、忽略投影。见 [知识源覆盖](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md)。
 20. **`KNOW-03-prod` 现网装上 KNOW-03 应用**：Done。现网 `current`=`7aaeb2b80e591f348c54eb35fb18793e213c5122`（版本号仍 `0.3.1`）；library 当时仍为 AUTHOR-02；Nginx 未 reload。未 merge server `main`。见运维记录第 12 节。
 21. **`KNOW-04` 兼容套件上库**：Done。生产 library 六主题 current（不含格温）；`rabbit` current=`revision-0002`；应用仍 `7aaeb2b`；Nginx / 画廊未改。见运维记录第 13 节与 [兼容套件上库](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md)。

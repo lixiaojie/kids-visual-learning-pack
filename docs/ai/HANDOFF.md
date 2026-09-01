@@ -5,46 +5,48 @@
 - Updated At: 2026-09-01
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 8bcf645
-- Kids HEAD: 8bcf645 `docs(card-os): record KNOW-04 suite library seed evidence`
-- Server Branch: `knowledge-pipeline-v1` @ `7aaeb2b80e591f348c54eb35fb18793e213c5122`
-- Working Tree: 本提交收录 KNOW-04 治理/运维证据；既有未跟踪 `outputs/`；server `uv.lock` 未纳入
-- Task Status: **Done（KNOW-04：生产 library 六主题 current；应用仍 `7aaeb2b`；Nginx / 画廊未改）。** 下一刀须新 CURRENT_TASK。
+- Base Commit: 42b3522
+- Kids HEAD: 42b3522 `docs(ai): record KNOW-04 kids commit SHA`（本提交记录 WB-02）
+- Server Branch: `knowledge-pipeline-v1` @ `5c1188074846acbf8652ccb888792080697d140e`
+- Working Tree: kids 本提交后仅余既有未跟踪 `outputs/`；server 仅余未跟踪 `uv.lock`
+- Task Status: **Done（WB-02 已分别提交；未现网）。**
 
 ## Summary
 
-操作者点名「新知识源切片」。已把 KNOW-03 兼容套件里允许上库的六主题写入生产 knowledge-library。`rabbit` current 现为 KNOW-03 修订 `revision-0002`；AUTHOR-02 `0001` 保留。无格温。应用、Nginx、画廊 PDF 未改。未 merge server `main`、未 push。
+WB-02 已提交。server `5c11880` 实现映射预览/锁定，不移动 knowledge current。kids 本提交收录批准 spec、实施计划与路线图 Done。未打 release、未 reload Nginx、未改画廊。
 
 ## Completed
 
-- 账本登记 `KNOW-04` 并完成上库。
-- 本机编译六主题过 coverage 门；生产 `publish` 六个包。
-- 预写备份：`knowledge-library.20260901T070549Z.pre-know04`。
-- 第 4 节健康 + 画廊/ops 抽查通过。运维记录第 13 节已写。
+- server：`5c1188074846acbf8652ccb888792080697d140e` `feat(knowledge): lock projection mapping without moving current`
+- kids：WB-02 spec / plan / 路线图 / 任务与交接（本提交）
+- 未纳入 `outputs/`、server `uv.lock`
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md` | 本提交：KNOW-04 Done |
-| kids | `docs/cognitive-card-os-roadmap.md`、`docs/cognitive-card-os-system-design.md`、`docs/README.md` | 本提交：登记并标 DONE |
-| kids | `docs/superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md` | 本提交：新建 |
-| kids | `docs/operations/cognitive-card-server-deployment-2026-07-14.md` | 本提交：第 13 节 |
-| server | 无 Git 改动 | 仍 `7aaeb2b`；仅生产 library 目录 |
+| server | mapping / safety registry / ops HTTP+第三块 / focused tests | 已提交 `5c11880` |
+| kids | `docs/superpowers/specs/2026-09-01-operator-mapping-scheme-design.md` | 本提交：Approved spec |
+| kids | `docs/superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md` | 本提交 |
+| kids | `docs/superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md` | 本提交：Parked 注记 |
+| kids | `docs/ai/CURRENT_TASK.md`、`docs/ai/HANDOFF.md`、路线图、系统设计、`docs/README.md` | 本提交 |
+| kids | `outputs/` | 未跟踪；未纳入 |
+| server | `uv.lock` | 未跟踪；未纳入 |
 
 ## Decisions Made
 
-- 新 ID `KNOW-04`，不是 KNOW-03-prod 切片 B 的名义，但包含修订兔子 current。
-- 格温不上库。不 reload Nginx。不换应用。不实施 WB-02。
-- 兔子 `topic.revision=2` 只在编译副本上发生。
-- kids 与 server 分开提交。server 本刀无新 commit。
+- WB-02 = 映射确认，不是四卡排版填满。
+- `lock_mapping` 写新 revision + `mapping.json`，不调用会移动 current 的 `publish`。
+- 新 mapping 包必须抬四对象 `revision`；事实载荷对齐后与 current 相等。
+- 像素溢出进 sources 明确禁止。
+- 安全中文走登记表；GAP 时不得锁定 four-card。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `8bcf645` | 不改 server 提交 |
-| 知识管线 | knowledge-core worktree @ `7aaeb2b` | 只读编译；未 merge `main` |
+| kids 治理 | `main` 本提交 | 不改 server |
+| 知识管线 | knowledge-core worktree @ `5c11880` | 不 merge `main`、不 push、不打 release |
 
 三角色划分与活 checkout 上限见 ADR-003。
 
@@ -52,16 +54,12 @@
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| 本机六主题 compile + publish | PASS | 无格温；兔子 rev=2 |
-| 生产 `publish` 六包 | PASS | `rabbit` current=2；`0001` 摘要未变 |
-| 生产 `current`=`7aaeb2b`；health `0.3.1`；`NRestarts=0` | PASS | |
-| 画廊 PDF 1,728,853；只列 `rabbit` | PASS | |
-| ops 无 token 无命题泄漏；admin `401` | PASS | Nginx SHA 未变 |
-| 未 merge server `main` / 未 push | PASS | |
-| `bash scripts/ai/check-task-state.sh` | PASS | Status Done；验收项全部勾选 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `8bcf645` 与证据提交一致 |
-| `bash scripts/ai/check-doc-governance.sh` | WARN | 3× Last Reviewed 过期（既有，2026-07-24） |
-| `git diff --check` | PASS | |
+| server focused unittest（40 项，含 library / ops / safety） | PASS | 提交前已跑 |
+| `bash scripts/ai/check-task-state.sh` | PASS | 以本回合重跑为准 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `42b3522` |
+| `bash scripts/ai/check-doc-governance.sh` | WARN | 3× Last Reviewed 过期（既有） |
+| kids `git diff --check` | PASS | |
+| 现网 / Nginx / 画廊 | 未执行 | 本刀不改 |
 
 ## Known Failures
 
@@ -70,23 +68,21 @@
 
 ## Risks and Caveats
 
-- 操作台现在能列出六个知识源；公网四卡仍只有 ACCEPT-01 兔子包。
-- library 回滚是换回 `knowledge-library.20260901T070549Z.pre-know04`；本批未演练。
-- 证据文档提交后 kids HEAD 会前移，不改应用归档。
+- 现网应用仍为 `7aaeb2b`；画廊仍是 ACCEPT-01。本刀提交 ≠ 安装。
+- 现网 `publish` 若被误用会抢走兔子 chaptered-guide current。
 
 ## Remaining Work
 
-无 KNOW-04 实现剩余。编号队列下一格是 WB-02（Parked），不能 silently skip 后做 WB-03。下一刀须操作者点名一个路线图 ID。
+WB-03 另立设计后再实施。不要 merge server `main`、不要 push、不要打 release、不要 reload Nginx。
 
 ## Exact Next Action
 
-**停止实现。** 等操作者点名一个主线路线图 ID，先改写 `docs/ai/CURRENT_TASK.md` 再动手。不要实施 WB-02、不要 reload Nginx、不要 merge server `main`，除非该会话明确授权。可将本批 7 个治理/运维文件入库。
+另立会话写 **WB-03** 设计（按映射 revision 生成并上架画廊）。不要 merge server `main`、不要 push、不要打 release、不要 reload Nginx、不要把 `uv.lock` 或 `outputs/` 加入提交。
 
 ## Recovery Notes
 
-- 任务：KNOW-04 DONE；现网应用 `7aaeb2b`；library 六主题。
-- Kids HEAD：`8bcf645` `docs(card-os): record KNOW-04 suite library seed evidence`。
-- Server Git：`7aaeb2b80e591f348c54eb35fb18793e213c5122`。
-- library 回滚：`/var/backups/cognitive-card-server/knowledge-library.20260901T070549Z.pre-know04`。
+- 任务：WB-02 Done；server `5c11880`；kids 本提交。
+- Kids HEAD：见本提交后 `git rev-parse HEAD`。
+- Server Git：`5c1188074846acbf8652ccb888792080697d140e`。
+- library 回滚：`knowledge-library.20260901T070549Z.pre-know04`。
 - 应用回滚目标仍是 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`。
-- 证据：运维记录第 13 节。

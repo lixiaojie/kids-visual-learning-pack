@@ -1,9 +1,9 @@
 # 四卡文字成熟投影（WB-02）
 
-- Status: Parked — not approved for this phase
+- Status: Parked — superseded for WB-02 scope
 - Date: 2026-08-31
 - Parked At: 2026-09-01
-- Parked Reason: 本阶段核心是知识源建立与维护，不是四卡投影填满。本文件保留为后续投影切片，不实施。
+- Parked Reason: 把排版填满当成 WB-02，偏离「生成 → 管理 → 映射 → 产物」。WB-02 改由 [操作台映射方案确认](2026-09-01-operator-mapping-scheme-design.md) 承担。本文件保留为产物层（WB-03）候选材料，不实施。
 - Related: [ADR-002](../../decisions/ADR-002-knowledge-core-and-projection-architecture.md)、[ADR-004](../../decisions/ADR-004-single-operator-main-flow.md)、[AGE-01](2026-08-31-age-language-adapter-design.md)、[CONV-01](2026-08-30-knowledge-four-card-converter-design.md)、[RENDER-01](2026-08-31-locked-four-card-render-design.md)、[ACCEPT-01](2026-08-31-rabbit-end-to-end-acceptance-design.md)、[WB-01](2026-08-31-operator-knowledge-workbench-design.md)
 - Authority: kids 仓为产品规范；实现落在 server `knowledge-pipeline-v1`
 
