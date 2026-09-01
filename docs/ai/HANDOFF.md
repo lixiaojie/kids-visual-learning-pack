@@ -5,8 +5,8 @@
 - Updated At: 2026-09-01
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: da45e4f
-- Kids HEAD: da45e4f `docs(ai): record KNOW-03 DONE kids commit SHA`
+- Base Commit: 382d7c0
+- Kids HEAD: 382d7c0 `docs(card-os): record KNOW-03-prod app cutover evidence`
 - Server Branch: `knowledge-pipeline-v1` @ `7aaeb2b80e591f348c54eb35fb18793e213c5122`
 - Working Tree: 干净（除既有未跟踪 `outputs/`）；server `uv.lock` 未纳入
 - Task Status: **Done（KNOW-03-prod 切片 A：现网 `current`=`7aaeb2b`；library / Nginx 未改）。** 下一刀须新 CURRENT_TASK。
@@ -43,7 +43,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `da45e4f` + 本提交 | 不改 server 提交 |
+| kids 治理 | `main` @ `382d7c0` | 不改 server 提交 |
 | 知识管线 | knowledge-core worktree @ `7aaeb2b` | 已打生产 release；未 merge `main` |
 
 三角色划分与活 checkout 上限见 ADR-003。
@@ -53,7 +53,7 @@
 | Command / Check | Result | Notes |
 | --- | --- | --- |
 | `bash scripts/ai/check-task-state.sh` | PASS | Status Done；验收项全部勾选 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `da45e4f` 与 HEAD 一致 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit `382d7c0` 与 HEAD 一致 |
 | `bash scripts/ai/check-doc-governance.sh` | WARN | 3× Last Reviewed 过期（既有，2026-07-24） |
 | `git diff --check` | PASS | |
 | 生产 `current`=`7aaeb2b`；health `0.3.1`；`NRestarts=0` | PASS | 安装器 `status=installed` |
@@ -85,7 +85,7 @@
 ## Recovery Notes
 
 - 任务：KNOW-03-prod 切片 A DONE；现网 `7aaeb2b`。
-- Kids HEAD：`da45e4f`；工作区有未提交证据。
+- Kids HEAD：`382d7c0` `docs(card-os): record KNOW-03-prod app cutover evidence`。
 - Server Git：`7aaeb2b80e591f348c54eb35fb18793e213c5122` on `knowledge-pipeline-v1`。
 - 回滚目标：`115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`。
 - 证据：运维记录第 12 节。
