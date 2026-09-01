@@ -1,6 +1,6 @@
 # Cognitive Card OS 生产部署与运维记录
 
-状态：`DEPLOY-01 DONE`；`DEPLOY-02 DONE`；`WB-01 DONE`；`KNOW-03-prod DONE`（切片 A）；`OPS-01` 单人门禁见路线图
+状态：`DEPLOY-01 DONE`；`DEPLOY-02 DONE`；`WB-01 DONE`；`KNOW-03-prod DONE`（切片 A）；`KNOW-04 DONE`（兼容套件上库）；`OPS-01` 单人门禁见路线图
 
 实施日期：2026-07-14 至 2026-07-15（Asia/Shanghai）；DEPLOY-02 现网落地 2026-08-31
 
@@ -594,3 +594,46 @@ systemctl reload nginx
 ### 12.4 回滚（本批）
 
 只把应用退回 WB-01 时：将 `/opt/cognitive-card-server/current` 指回 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd` 并重启 `cognitive-card-server.service`。本批未演练该切换。不要 reload Nginx。不要删除 knowledge-library 种子或旧 release。未授权 merge server `main`。
+
+## 13. KNOW-04 兼容套件上库（2026-09-01）
+
+日期：2026-09-01。把 KNOW-03 兼容套件里允许上库的六主题写成生产 knowledge-library current。不换应用。不 reload Nginx。不改画廊。未 merge server `main`。未 push。未种子格温。
+
+### 13.1 不可变身份（本批）
+
+| 对象 | 已验证值 |
+| --- | --- |
+| 应用版本 | `0.3.1`（未改） |
+| 应用提交 | 仍为 `7aaeb2b80e591f348c54eb35fb18793e213c5122` |
+| 编译源 | server worktree `7aaeb2b`；本机 `write_authoring_package` + 生产 `knowledge_library.cli publish` |
+| 种子 tar SHA-256 | `70c2585a48ce5c7c7420cee553d26a0c81c2fcd6e5872c4071db4eae46eac86d` |
+| library 备份 | `/var/backups/cognitive-card-server/knowledge-library.20260901T070549Z.pre-know04`（预写快照，含 AUTHOR-02 `rabbit/revision-0001`） |
+| Nginx snippet SHA-256 | 仍为 `0ed25814ed84a8b5b242f8994ca2303f04a61b83f0a5f4927c912ac58a0060a1`（未 reload） |
+
+### 13.2 知识库 current
+
+library 根仍是 `/var/lib/cognitive-card-server/candidates/knowledge-library`（`cardos:cardos` `0700`）。
+
+| topic | current | units / props / sources | `current.json` SHA-256 |
+| --- | --- | --- | --- |
+| `rabbit` | `revision-0002`（KNOW-03 修订；`0001` 保留） | 7 / 9 / 4 | `57d2400b954ed3268af796fae24fc7022f3b2f630c2f02576cb3d868f75f07ac` |
+| `heptapleurum-arboricola` | `revision-0001` | 7 / 8 / 1 | `d97585fa227319c539a231601bb779db97c550ce4b19c913da24770dee30fe3f` |
+| `tyrannosaurus-rex` | `revision-0001` | 11 / 11 / 1 | `40289d90219d2abb2e9f7880acaf4352eb3537bc9a8a9cae64ed8ef5ac73bf4f` |
+| `forbidden-city` | `revision-0001` | 5 / 5 / 1 | `1c0d09f9042274fa78f435a948623074bd1084908019c26ab71b139acc063398` |
+| `four-crossings-chishui` | `revision-0001` | 6 / 6 / 1 | `f470c595199ce2f85f869cf71f7fe1a7910164a05d29c1924669bfb10e9c4d99` |
+| `newton-first-law` | `revision-0001` | 4 / 4 / 1 | `27d58ddc36cbbbcc2b216e13ef1c2ad602ae0fe2a7169d23372d25ea838cc0e8` |
+
+`rabbit/revision-0001/knowledge-core.json` 仍为 `615a4d727295a932227300645edcc59f59e86f9bd6abaca5905c940d5989af1e`（AUTHOR-02，未覆盖）。`rabbit/revision-0002/knowledge-core.json` 为 `6e1113e24a855c57707e006d4238c72f29b1d1c95524c0f096124d698da22306`。无 `spider-gwen` 路径。
+
+### 13.3 画廊、Nginx 与健康抽查
+
+- 应用 `current` 仍指向 `7aaeb2b`。`cognitive-card-server.service` active，`NRestarts=0`。
+- 监听仍是唯一 `127.0.0.1:8765`。SQLite integrity `ok`。health `0.3.1`。
+- 公开画廊 `/card-os/` 仍只列出 `rabbit`；不出现鹅掌藤 / 霸王龙 / 故宫 / 四渡赤水 / 牛顿 / gwen。PDF `200`，1,728,853 bytes。
+- `/card-os/ops/` 与 `/card-os/ops/rabbit` 无 token 为 `200`，页面不含 Merck / `canonical_claim` / gwen / 学名。
+- `/card-os/api/v1/admin/knowledge-library` 无 token 为 `401`。
+- 本刀未 `systemctl reload nginx`。
+
+### 13.4 回滚（本批）
+
+只撤回本刀 library 写入时：把 `/var/lib/cognitive-card-server/candidates/knowledge-library` 换回备份 `knowledge-library.20260901T070549Z.pre-know04`（先确认备份里 `rabbit/revision-0001` 摘要仍为 `615a4d…`）。不要删该备份。不要改应用 `current`。不要 reload Nginx。本批未演练该切换。未授权 merge server `main`。

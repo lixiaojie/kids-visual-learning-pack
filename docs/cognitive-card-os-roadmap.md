@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：无活动实现切片。`KNOW-03-prod` 已 `DONE`（现网 `current`=`7aaeb2b`；library / Nginx 未改）。下一编号 `WB-02` 仍搁置。新会话须操作者点名一个路线图 ID 并改写 `CURRENT_TASK.md` 后再实施。
+本里程碑当前切片：无活动实现切片。`KNOW-04` 已 `DONE`（生产 library 六主题 current；应用仍 `7aaeb2b`；Nginx / 画廊未改）。下一编号 `WB-02` 仍搁置。新会话须操作者点名一个路线图 ID 并改写 `CURRENT_TASK.md` 后再实施。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -77,6 +77,7 @@
 | WB-01 | 令牌操作台只读知识源 | DONE | 现网 `115377b`；ops `/card-os/ops/`；library AUTHOR-02；画廊未改 |
 | KNOW-03 | 知识源覆盖与准确性 | DONE | 本机 `7aaeb2b`；实现不重开；现网切应用见 KNOW-03-prod |
 | KNOW-03-prod | 现网装上 KNOW-03 应用 | DONE | 现网 `current`=`7aaeb2b`；library AUTHOR-02；Nginx 未 reload；未 merge `main` |
+| KNOW-04 | 兼容套件上库 | DONE | 生产六主题 current；`rabbit`=`0002`；无格温；应用仍 `7aaeb2b` |
 | WB-02 | 四卡成熟视觉投影 | BACKLOG | 已搁置：先做知识源；本 spec 不实施 |
 | WB-03 | 选投影→生成→上架画廊 | BACKLOG | 依赖 WB-02 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
@@ -511,6 +512,16 @@
 - 非范围：重种 `rabbit-real.json`（切片 B，须另授权）；reload Nginx；merge server `main`；push；WB-02。
 - 回滚：把 `current` 指回 `115377b6da16a02e5aea5b73879ad7bb7ee5b2cd`；不删旧 release。
 
+### KNOW-04 兼容套件上库
+
+- 状态：`DONE`（2026-09-01）
+- 依赖：KNOW-03-prod（现网应用 `7aaeb2b`）、KNOW-03 本机七主题夹具、WB-01 操作台与 library 根。
+- 权威仓库：`cognitive-card-server`（只读编译源提交）；任务治理与运维证据为 `kids-visual-learning-pack`。
+- 目标：把兼容套件里允许上库的对象做成生产 knowledge-library current，使操作台列出它们。不换应用、不 reload Nginx、不改画廊。
+- 完成条件：已满足。证据见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md) 第 13 节。
+- 独立设计：[兼容套件上库](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md)。
+- 非范围：格温；新 release；Nginx；merge server `main`；WB-02。
+
 ### WB-02 四卡成熟视觉投影
 
 - 状态：`BACKLOG`
@@ -566,7 +577,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网画廊 `fd696c2` 基线）、`WB-01`（现网曾为 `115377b`）、`KNOW-03`（本机 `7aaeb2b`）、`KNOW-03-prod`（现网 `current`=`7aaeb2b`；library / Nginx 未改）。
+已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网画廊 `fd696c2` 基线）、`WB-01`（现网曾为 `115377b`）、`KNOW-03`（本机 `7aaeb2b`）、`KNOW-03-prod`（现网 `current`=`7aaeb2b`）、`KNOW-04`（生产 library 六主题 current）。
 
 下一会话起按此编号：
 
@@ -585,9 +596,10 @@
 13. ~~**WB-01**~~ 令牌操作台只读知识源（现网完成，`115377b`）。
 14. ~~**KNOW-03**~~ 知识源覆盖与准确性（本机完成，`7aaeb2b`）。
 15. ~~**KNOW-03-prod**~~ 现网只换应用（`7aaeb2b`；library / Nginx 未改）。
-16. **WB-02** 四卡成熟视觉投影（已搁置，不实施当前 spec）。
-17. **WB-03** 选投影 → 生成 → 上架画廊。
-18. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
+16. ~~**KNOW-04**~~ 兼容套件上库（生产六主题 current；不含格温）。
+17. **WB-02** 四卡成熟视觉投影（已搁置，不实施当前 spec）。
+18. **WB-03** 选投影 → 生成 → 上架画廊。
+19. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -599,6 +611,8 @@
 
 ### 2026-09-01
 
+- KNOW-04：`DONE`。生产 library 六主题 current；`rabbit`=`revision-0002`（AUTHOR-02 `0001` 保留）；无格温；应用仍 `7aaeb2b`；Nginx / 画廊未改。证据见运维记录第 13 节。
+- KNOW-04：操作者点名「新知识源切片」。把兼容套件六主题（不含格温）写成生产 library current；兔子为 `revision-0002`。不换应用、不 reload Nginx。
 - KNOW-03-prod：切片 A `DONE`。现网 `current`=`7aaeb2b`；library AUTHOR-02 哈希未变；Nginx snippet 未 reload。未 merge `main`、未 push。证据见运维记录第 12 节。
 - KNOW-03-prod：操作者点名并选择切片 A（只换应用 `7aaeb2b`）。不重种 library、不 reload Nginx、不实施 WB-02。
 - KNOW-03：操作者接受本机完成条件，标 `DONE`。不等于现网已装 `7aaeb2b`。下一编号 WB-02 仍搁置。
