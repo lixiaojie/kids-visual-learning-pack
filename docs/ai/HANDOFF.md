@@ -5,10 +5,10 @@
 - Updated At: 2026-09-02
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 2238377
-- Kids HEAD: 2238377 `docs(ai): record WB-02 kids commit SHA`
+- Base Commit: a4047c6
+- Kids HEAD: a4047c6 `docs(card-os): record ChatGPT compile path and reply normalization`
 - Server Branch: `knowledge-pipeline-v1` @ `91b7cf31ad47a7faf7b239af2f0aa198cf838e55`
-- Working Tree: kids 待提交 Card OS 文档（不含 `outputs/`）；server 仅余未跟踪 `uv.lock`
+- Working Tree: kids 仅未跟踪 `outputs/`；server 仅余未跟踪 `uv.lock`
 - Task Status: **Paused（API-01-TPL 已随 server `91b7cf3` 提交；kids 文档本回合提交；未现网）。**
 
 ## Summary
@@ -80,7 +80,7 @@ Server `91b7cf3` 提交 compile-intent、ChatGPT JSON 归一、mapping-artifact 
 
 - 任务：API-01-TPL 已随 `91b7cf3` 提交；未现网
 - Spec：`docs/superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md` §10.1
-- Kids HEAD：本回合文档提交后更新
+- Kids HEAD：`a4047c630ea8591219f66ae88015d7299adaad9d`
 - Server Git：`91b7cf31ad47a7faf7b239af2f0aa198cf838e55`
 - 试用数据：`/tmp/card-os-api01`（服务已停）
 - library 回滚：`knowledge-library.20260901T070549Z.pre-know04`
