@@ -2,74 +2,57 @@
 
 ## Metadata
 
-- Updated At: 2026-09-01
+- Updated At: 2026-09-02
 - Updated By: Cursor Grok 4.6
-- Status: Done
-- Branch: kids `main`；server `knowledge-pipeline-v1` @ `5c11880`
-- Base Commit: 42b3522
+- Status: Paused
+- Branch: kids `main`；server `knowledge-pipeline-v1` @ `91b7cf3`
+- Base Commit: 2238377
 
 ## Objective
 
-实施 **WB-02**：本机操作台选择 Projection family、锁定槽位映射 revision；不抢 knowledge current；不生成 PNG；不现网。
+API-01-TPL：加厚 `knowledge-compile-v1`，并加强解析层对 ChatGPT 输出形态的兼容。Server 已提交 `91b7cf3`；本回合提交 kids 文档。未现网。
 
 ## Background
 
-- 操作者批准 `docs/superpowers/specs/2026-09-01-operator-mapping-scheme-design.md`。
-- 旧文字成熟 spec 仍 Parked。
-- 现网应用仍为 `7aaeb2b`；画廊仍是 ACCEPT-01。本刀不安装新 release。
+- 试用 ChatGPT 自造 schema（顶层 propositions + coverage.facets）。本回合归一后，同一份 /tmp 库存未改写 JSON 可不经人工映射脚本编过。
+- 未新开 loopback 8765。
 
 ## Acceptance Criteria
 
-- [x] 书面 spec 经操作者审查（批准实施）
-- [x] 路线图 `WB-02` `DONE`（本机；完成条件对齐 spec §10）
-- [x] 写出实施计划
-- [x] server：`preview_mapping` / `lock_mapping` / mapping pointer / 安全登记 / ops HTTP+第三块
-- [x] focused 测试 PASS（library mapping、safety GAP、ops 既有用例）
-- [x] 未打 release、未 reload Nginx、未改画廊、未 merge server `main`、未 push
+- [x] `knowledge-compile-v1` 列出 `rabbit-real` 必填键（含 `safety_scope` 英文原文）；模板 digest 已变
+- [x] 解析层：围栏外说明、无围栏 JSON、ChatGPT 自造可映射键归一到合同对象
+- [x] `rabbit-real` 经 parse 后仍能 compile；散文与缺键仍失败关闭
+- [x] 不从散文抽命题；不发明 claim / locator；safety 面只复用已有 claim
+- [x] focused unittest 27 PASS；server 已提交 `91b7cf3`；未 release / merge / push
+- [x] 未新开 8765；用库存未改写 ChatGPT JSON 验证编过
 
 ## In Scope
 
 - `docs/ai/CURRENT_TASK.md`
 - `docs/ai/HANDOFF.md`
 - `docs/cognitive-card-os-roadmap.md`
-- `docs/cognitive-card-os-system-design.md`
-- `docs/README.md`
-- `docs/superpowers/specs/2026-09-01-operator-mapping-scheme-design.md`
-- `docs/superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md`（保持 Parked）
-- `docs/superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md`
-- server worktree `.worktrees/cognitive-card-server-knowledge-core` 上 `knowledge-pipeline-v1`：`age_language`、`knowledge_library`、`knowledge_ops`、`http`、对应 `tests/`
+- `docs/superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md`
+- server worktree knowledge_compile parse + knowledge-compile-v1 模板 + 其 unittest（不在 kids 仓根路径）
 
 ## Out of Scope
 
-- CONV-01 / RENDER-01 / QA-01 / PUBLISH-01 / 生图 / 画廊上架（WB-03）
-- 改命题（知识源更改）
-- API-01、AGE-02
-- 新打应用 release、reload Nginx、merge server `main`、push
+- `IMG-01`；生图；mapping-lock；artifact-generate
+- 改四对象 schema / 生产安装 / commit
 - `outputs/`、server `uv.lock`
-- 改四对象 schema、v1 FACT 键集、AUTHOR-05 默认表
 
 ## Constraints
 
-- Card OS 账本只在 `docs/cognitive-card-os-roadmap.md` 更新。
-- ADR-003：kids 与 server 分开提交；不自动 commit。
-- `lock_mapping` 不得调用会移动 current 的 `publish`。
-- 不覆盖未提交的 `outputs/`。
+- 不把 `API-01` 标 `DONE`。
+- 不覆盖未提交 WB-03 加权行为。
 
 ## Verification Plan
 
-- 在 server worktree：`python3 -m unittest tests.test_age_safety_expression tests.test_mapping_preview tests.test_knowledge_library_mapping tests.test_http_knowledge_ops tests.test_knowledge_library -v`
-- `bash scripts/ai/check-doc-governance.sh`
+- `PYTHONPATH=src .venv/bin/python -m unittest tests.test_knowledge_compile tests.test_http_knowledge_compile -v`
 - `bash scripts/ai/check-task-state.sh`
 - `bash scripts/ai/check-handoff.sh`
 - `git diff --check`
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-09-01-operator-mapping-scheme-design.md`
-- `docs/superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md`
-- `docs/superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md`
-- `docs/superpowers/specs/2026-08-30-knowledge-library-revision-current-design.md`
-- `docs/superpowers/specs/2026-08-30-projection-family-selection-design.md`
-- `docs/decisions/ADR-002-knowledge-core-and-projection-architecture.md`
-- `docs/decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md`
-- `docs/cognitive-card-os-roadmap.md`
+- `docs/superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md` §10.1
+- `/tmp/card-os-api01/ragdoll-chatgpt.json`

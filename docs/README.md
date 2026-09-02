@@ -67,8 +67,11 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Card OS Kids-World Knowledge Entry Design](superpowers/specs/2026-08-31-card-os-kids-world-knowledge-entry-design.md) | SITE-01: parallel gallery then cut over the knowledge home; not SITE-02 URL mapping | Approved |
 | [Card OS Legacy URL and Rollback Design](superpowers/specs/2026-08-31-card-os-legacy-url-and-rollback-design.md) | SITE-02: old kids-world URL mapping, substitute pages, and one-deploy activeMode rollback | Approved |
 | [Operator Knowledge Workbench Design](superpowers/specs/2026-08-31-operator-knowledge-workbench-design.md) | WB-01: token-gated read-only knowledge library and projection menu; not PORTAL-01; not WB-02/WB-03 | Approved |
-| [Four-Card Text-Mature Projection Design](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md) | Parked; superseded for WB-02 by mapping-scheme spec; leftover packing rules are WB-03 candidates | Parked |
+| [Four-Card Text-Mature Projection Design](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md) | Parked; superseded for WB-02 by mapping-scheme spec; leftover packing overflow not adopted by WB-03 | Parked |
 | [Operator Mapping Scheme Design](superpowers/specs/2026-09-01-operator-mapping-scheme-design.md) | WB-02: ops select family and lock slot mapping; no PNG/gallery | Approved |
+| [Operator Mapping Artifact Publish Design](superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md) | WB-03: mapping revision → text-mature four-card → local gallery; no image gen; no production | Approved |
+| [Mapping-Artifact Weighted Layout Design](superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md) | WB-03 print binding: content-sized zone heights for mapping-artifact-v1; not a Core contract; not ACCEPT-01 | Approved |
+| [Operator Free-Prompt Knowledge Compile Design](superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md) | API-01 this slice: ops expands copyable ChatGPT prompt, ingests reply into four-object current; no API executor | Approved |
 | [Entity Knowledge Coverage Design](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md) | KNOW-03: pluggable coverage + seven-topic compatibility suite; not projection | Approved/Implemented |
 | [Knowledge Suite Library Seed Design](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md) | KNOW-04: seed six allowed suite topics into production library current; not Gwen; not WB-02 | Approved/Implemented |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
@@ -90,6 +93,9 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Project Documentation Governance Implementation](superpowers/plans/2026-07-24-project-documentation-governance-implementation.md) | Completed documentation-governance implementation plan | Completed |
 | [Operator Knowledge Workbench Implementation](superpowers/plans/2026-08-31-operator-knowledge-workbench-implementation-plan.md) | WB-01 execution plan: token-gated ops HTML and admin knowledge-library JSON | Completed |
 | [Operator Mapping Scheme Implementation](superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md) | WB-02 execution: safety registry, preview/lock mapping, ops third panel; not PNG | Completed |
+| [Operator Mapping Artifact Publish Implementation](superpowers/plans/2026-09-01-operator-mapping-artifact-publish-implementation-plan.md) | WB-03 execution: convert_mapping, fail-closed pack, generate/publish ops; not production | Completed |
+| [Mapping-Artifact Weighted Layout Implementation](superpowers/plans/2026-09-02-mapping-artifact-weighted-layout-implementation-plan.md) | WB-03 print binding: shared weighted zone heights; not Core; not ACCEPT-01 equal split | Completed |
+| [Operator Free-Prompt Knowledge Compile Implementation](superpowers/plans/2026-09-02-operator-free-prompt-knowledge-compile-implementation-plan.md) | API-01 execution: copyable ChatGPT prompt, reply compile, confirm current; worktree only, not production | Completed |
 
 ## Operations, Compliance, and Decisions
 

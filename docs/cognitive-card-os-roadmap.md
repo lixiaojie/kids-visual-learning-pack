@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-09-01
+最近更新：2026-09-02
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`WB-02` `DONE`（server `5c11880`；未现网）。下一刀 `WB-03` 仍 `BACKLOG`。不打 release、不上画廊。
+本里程碑当前切片：`API-01` 本刀已在 server worktree 实施（未 commit、未生产）；2026-09-02 本机 loopback 试用 `ragdoll-cat` 已 Confirm current，**止于知识源冻结**。下一会话：`API-01-TPL`。图形打印/插画另立 `IMG-01`（未设计）。`WB-03` 本机 `DONE`（文字四卡；不接生图；样式后置）。`WB-02` 本机 `DONE`。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -55,7 +55,9 @@
 | AGE-01 | 3–4、5–6 岁配置 | DONE | 已本地提交 `4e0ea52`；未 merge、未现网 |
 | AGE-02 | 8、10、15 岁配置 | BACKLOG | 分年龄建立认知与语言规范 |
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
-| API-01 | HTTPS 写入 API | IN PROGRESS | 队列第 4 项：自由 prompt 编译成知识源；WB-01/02/03 之后实施；现网仍拒绝自由 payload |
+| API-01 | HTTPS 写入 API | IN PROGRESS | server `91b7cf3` 已提交 compile+TPL；未现网；不标 DONE |
+| API-01-TPL | 加厚知识编译提示词 | IN PROGRESS | 已随 `91b7cf3` 提交；未现网 |
+| IMG-01 | 图形投影生图提示词 | BACKLOG | 选打印/插画时扩完整 ChatGPT 生图提示词并收回图；对标 API-01 复制/粘贴 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -79,7 +81,7 @@
 | KNOW-03-prod | 现网装上 KNOW-03 应用 | DONE | 现网 `current`=`7aaeb2b`；library AUTHOR-02；Nginx 未 reload；未 merge `main` |
 | KNOW-04 | 兼容套件上库 | DONE | 生产六主题 current；`rabbit`=`0002`；无格温；应用仍 `7aaeb2b` |
 | WB-02 | 四卡成熟视觉投影 | DONE | 本机 `5c11880`；不现网 |
-| WB-03 | 选投影→生成→上架画廊 | BACKLOG | 依赖 WB-02 |
+| WB-03 | 选投影→生成→上架画廊 | DONE | 本机 worktree；基础信息已接受；样式后置；未现网 |
 | OPS-01 | 本机备份与恢复 | DONE | 本机 SQLite/候选备份、隔离恢复、14 天保留已验收 |
 | OPS-02 | 异地拷贝与告警 | BACKLOG | 可选：把已验证本机备份拷到第二块盘；不做加密复制服务 |
 | ACCEPT-01 | 兔子完整验收 | DONE | 已本地提交 `10b14c8`；未 merge、未现网 |
@@ -306,9 +308,28 @@
 - `0.3.1` 批次验收：真实 HTTP 集成测试覆盖正常流程、错误码、重启恢复和并发认领。
 - `API-01` 完成条件：上述批次保持通过；服务经 `www.yutou.space` 的 HTTPS 和持久化部署验收；受信任上游能把用户请求转换为规范化锁定任务，而服务器仍拒绝自由 payload 绕过内容锁。
 - 已部署：`0.3.1` 经 `www.yutou.space/card-os` 的 HTTPS、持久化和非 root 服务验收，health/capabilities 与受保护路径均通过；见 [生产部署与运维记录](operations/cognitive-card-server-deployment-2026-07-14.md)。
-- 未完成：把自由概念请求编译为规范化锁定任务的可信上游接口。因此当前批次不能被描述为通用概念创建 API。该入口已排入路线图 §5 第 16 项，在 WB-01 / WB-02 / WB-03 之后实施；候选实现为存档 tag `archive/card-os-thin-skill-v1-20260717` 中 `skills/cognitive-card-os/core/` 的生产核心（分类 v2、27 步工作流、full-spec v4.3/v5.0、哺乳动物 v1 与恐龙 v2 模板族），按 ADR-001 须迁移到服务器侧并重新评审，不得直接从 Skill 包形态合入。
+- 未完成：HTTPS/生产验收与 2026-07-31 salvage 仍后置。本刀（ChatGPT 会员复制/粘贴 → 四对象 current）已在 server worktree `knowledge-pipeline-v1` 实施，**未 commit、未打 release、未接现网**；不得标 `DONE`。2026-09-02 隔离 loopback `/tmp/card-os-api01`：`ragdoll-cat` Confirm current r1；ChatGPT 自造 schema 缺 `learning`/`units`；本轮止于知识源冻结。下一刀 `API-01-TPL`。spec Approved：[自由 prompt 编译成知识源](superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md)。[2026-07-31](superpowers/specs/2026-07-31-cognitive-card-trusted-upstream-compiler-design.md) packet salvage 仍后置。当前批次仍不能被描述为通用概念创建 API。存档 `core/` 不得直接从 Skill 包形态合入（ADR-001）。
 - 抢救进度：API-01-IMPL-1 snapshot 已在 `codex/api-01-core-snapshot`；API-01-IMPL-2/3/4 确定性封印、sealed-input store、compiled-jobs 与 prepare/submit 辅助已在隔离分支 `codex/api-01-generation-input-v1` 本地提交 `878a28d`（基线 `9c1b82b`，未 push）。接合合同（四对象 revision lock）已在同一分支本地提交 `4ca3e0e`。用户授权后已开 `knowledge-pipeline-v1`（基线 knowledge-core `1facb79`，merge `4ca3e0e`，authoring lock `1f9c42f`）；两条功能分支未 merge 进 `main`。未 add `uv.lock`；v1 FACT 密封合同未改。兔子/mammal production-record 兼容 snapshot `sha256:ae563e…1f20` 已导入并将 `47d2…d4c1` retained；introducing commit 为 `878a28d`，catalog `registry_commit` 仍为 `9c1b82b`。本机 loopback 已用全新 `/tmp` 与短期 job-bound token 完成 A→B→C：seal lock `sha256:15b8ea…ce2a`，新 packet（未复用 `gp_453f…cc06`），snapshot validator 退出 0，`submit-directory` 为 `candidate_staged`。自由概念仍失败关闭。未接现网。不得把当前状态描述为可执行生产流程。
 - 实施计划：[远程 API、认证与协议实施计划](superpowers/plans/2026-07-13-cognitive-card-remote-api-auth-protocol-plan.md)。首批只接受可信上游产生的已锁定任务，不把自由主题输入伪装为服务器端知识编译。
+
+### API-01-TPL 加厚知识编译提示词
+
+- 状态：`IN PROGRESS`
+- 权威仓库：`cognitive-card-server`；任务治理为 `kids-visual-learning-pack`。
+- 依赖：API-01 本刀 worktree 代码（未 commit）。
+- 目标：`knowledge-compile-v1` 模板列出与 `examples/authoring/rabbit-real.json` 同形的必填键（`topic.scope_type`、`classification` 合同字段、`units`+`coverage_facet`、`learning`、`sources.slug`/`kind`/`intake.search`、命题 `claim`/`source_slug`/`safety_scope` 用英文原文以便 AGE 登记表命中）。解析层对 ChatGPT 常见输出做确定性归一（围栏/说明文字、`id`/`canonical_claim`/`coverage.facets`/`learning_goal`、分类学 classification），不发明命题。操作台失败态展示 `error.code` 与 `error_path`。本机 loopback 用新主题再贴一次真实 ChatGPT 回复，不经人工改写成合同 JSON 即能 `compiled`。
+- 非范围：生图提示词（`IMG-01`）；生产安装；merge `main`；打开 `source-intake-search.v1.json` 全局 enabled；改四对象 schema；从散文抽命题。
+- 完成条件：模板 digest 变更；focused unittest 覆盖 ChatGPT 形态夹具过门、合同夹具仍绿、不可映射回复失败；loopback 能做则做否则交接标明；不打 release。
+
+### IMG-01 图形投影 ChatGPT 生图提示词
+
+- 状态：`BACKLOG`
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现落在 `cognitive-card-server`。
+- 依赖：知识源已能 Confirm current（API-01）；WB-02/WB-03 文字四卡路径已存在。生图不走现有 Pillow `render_locked`。
+- 目标：操作员在映射阶段选择图形可视化/打印插画时，服务器扩出**完整生图提示词**（版本化模板），人复制到 ChatGPT 会员生图，再把图贴回/上传操作台后装箱。服务器仍无图像 API、无 claim。
+- 非范围：本刀未开始前不写实施代码；不把「图装得下」写成知识源准入；不改 KNOW-04 六主题 current。
+- 下一动作：独立设计会话写 spec，经操作者批准后再写计划与实施。
+- 完成条件：待 spec 锁定（入口、模板、回传合同、与 WB-03 文字渲染的边界）。
 
 ### AUTH-01 Card OS 身份与权限
 
@@ -534,12 +555,14 @@
 
 ### WB-03 选投影→生成→上架画廊
 
-- 状态：`BACKLOG`
+- 状态：`DONE`（2026-09-02 本机；未 commit、未现网）
 - 依赖：WB-02。
 - 权威仓库：`cognitive-card-server`（实现）；任务治理为 `kids-visual-learning-pack`。
-- 目标：操作台确认 Projection family 后生成并发布到 PORTAL-01 catalog；默认覆盖仍不得静默写 Knowledge Core。
-- 完成条件：从操作台对已有知识源选出 four-card（显式）可上架；公开画廊出现新包或新 revision；未选不得生成。
-- 独立设计：WB-02 完成后另立。
+- 目标：操作台按已锁定 mapping revision 生成并发布到 PORTAL-01 catalog；不得把 mapping 包设为 knowledge current；不得静默写 Knowledge Core。
+- 完成条件：已满足（本机信息层）。证据：server worktree `convert_mapping` / `pack_from_mapping` / generate+publish / ops 第四块；加权版式后 rabbit-real pack/generate unittest `awaiting_review`；操作者 2026-09-02 看过四卡 PNG/`print.pdf`，接受基础信息。现网应用 / Nginx / 画廊不是本刀门禁。
+- 明确未验收：打印样式（区框、留白、字重、标签等）。操作者要求全部阶段完工后，再以最终投影产物反查各阶段调优。不在本刀开样式批次。
+- 独立设计：[按映射生成并上架](superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md)（Approved）；打印绑定补丁 [加权版式](superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md)（Approved）。实施计划：[映射产物上架](superpowers/plans/2026-09-01-operator-mapping-artifact-publish-implementation-plan.md)、[加权版式](superpowers/plans/2026-09-02-mapping-artifact-weighted-layout-implementation-plan.md)。旧稿 [四卡文字成熟投影](superpowers/specs/2026-08-31-four-card-text-mature-projection-design.md) 保持 Parked；溢出到来源区不采纳。
+- 2026-09-02：操作者接受基础信息，标本机 `DONE`。未打 release。
 
 ### OPS-01 本机备份与恢复
 
@@ -577,7 +600,7 @@
 
 按单人知识主路径 **一次一个会话、一个任务 ID**（[ADR-004](decisions/ADR-004-single-operator-main-flow.md)）。新会话先把该 ID 写入 `CURRENT_TASK.md` 再实现。
 
-已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网画廊 `fd696c2` 基线）、`WB-01`（现网曾为 `115377b`）、`KNOW-03`（本机 `7aaeb2b`）、`KNOW-03-prod`（现网 `current`=`7aaeb2b`）、`KNOW-04`（生产 library 六主题 current）。
+已完成（不要再开实现切片）：`BROWSE-01`、`CONV-01`（`e9bfd22`）、`RUN-01`（`c55f51b`）、`AGE-01`（`4e0ea52`）、`RENDER-01`（`1ef6edc`）、`QA-01`（`37a5927`）、`PUBLISH-01`（`7a127b4`）、`ACCEPT-01`（`10b14c8`）、`KNOW-01`（`4083ce7`）、`TMPL-01`（`cbaf2b4`）、`PORTAL-01`（`fd696c2`）、`SITE-01`（现网根 CTA 与 Nginx 画廊反代）、`SITE-02`（`44e0990`；记录 SHA `3432e83`）、`DEPLOY-02`（现网画廊 `fd696c2` 基线）、`WB-01`（现网曾为 `115377b`）、`KNOW-03`（本机 `7aaeb2b`）、`KNOW-03-prod`（现网 `current`=`7aaeb2b`）、`KNOW-04`（生产 library 六主题 current）、`WB-02`（本机 `5c11880`）、`WB-03`（本机 worktree；样式后置）。
 
 下一会话起按此编号：
 
@@ -598,19 +621,36 @@
 15. ~~**KNOW-03-prod**~~ 现网只换应用（`7aaeb2b`；library / Nginx 未改）。
 16. ~~**KNOW-04**~~ 兼容套件上库（生产六主题 current；不含格温）。
 17. ~~**WB-02**~~ 操作台映射方案确认（本机完成，`5c11880`；不现网）。
-18. **WB-03** 选投影 → 生成 → 上架画廊。
-19. **API-01** 自由 prompt 编译成知识源，进入同一操作台。
+18. ~~**WB-03**~~ 选投影 → 生成 → 上架画廊（本机完成；样式后置；未现网）。
+19. **API-01** 自由 prompt 编译成知识源（worktree 已实施；试用止于冻结；**不**在本项里加厚模板或生图）。
+20. **API-01-TPL** 加厚模板 + 解析层兼容 ChatGPT 自造 schema（worktree 已实施；试用 JSON 可未改写编过；未 commit）。
+21. **IMG-01** 图形/打印插画：扩完整生图提示词并收回图（先设计；不与 TPL 混开）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
-**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`MIG-02` / `MIG-03`。
+**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`MIG-02` / `MIG-03`、打印样式调优（等全部阶段完工后，以最终投影产物反查各阶段；不以当前四卡观感开新切片）、API-01 生产安装 / merge `main`、kids+server 提交（须该会话明确要求 commit）。
 
 存档生产核心仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色。
 
 ## 6. 更新记录
 
+### 2026-09-02
+
+- API-01-TPL：server `91b7cf3` 提交加厚模板 + ChatGPT 形态归一；focused compile 27 PASS；库存未改写 ragdoll JSON 可编过。未现网、未 merge `main`。
+- API-01-TPL：server worktree 加厚 `knowledge-compile-v1`；`parse_authoring_reply` 归一 ChatGPT 自造 schema。focused `test_knowledge_compile`+`test_http_knowledge_compile` 27 PASS。未改写的 `/tmp/card-os-api01/ragdoll-chatgpt.json` 可 `compile_authoring_request(..., allow_search=True)`。未新开 8765、未 commit、未打 release。
+- API-01 本机试用收口：隔离 `/tmp/card-os-api01` 已停（原 8765）。`ragdoll-cat` Confirm current r1。ChatGPT JSON 缺合同键，经人工映射才编过。操作者判定本轮止于知识源冻结。现有 WB-03 是 Pillow 文字四卡，不是会员生图。新增队列 `API-01-TPL`（READY）、`IMG-01`（BACKLOG）。8765 已停。
+- API-01：本刀已在 server worktree 实施（提示词模板、compile-intent、reply/`allow_search`、confirm current、admin JSON、ops HTML）。focused unittest 44 PASS（`test_knowledge_compile` 12 + `test_http_knowledge_compile` 8 + `test_http_knowledge_ops` 13 + `test_http_auth` 11）。未 commit、未打 release、未现网。路线图仍 `IN PROGRESS`。
+- API-01：操作者批准 ChatGPT 会员复制/粘贴设计。spec Approved；计划 `docs/superpowers/plans/2026-09-02-operator-free-prompt-knowledge-compile-implementation-plan.md`。未实施、未打 release。
+- WB-03：本机 `DONE`。操作者看过加权四卡 PNG/`print.pdf`：基础信息可接受；样式问题很大，全部阶段完工后再以最终投影反查各阶段调优。未 commit、未打 release、未现网。
+- WB-03：加权版式已在 server worktree 实施（`weighted_layout` + pack/COPY/RENDER 共用区高）。rabbit-real `pack_from_mapping` / `generate_from_mapping` focused unittest 不再 `TEXT_OVERFLOW`；`test_rabbit_real_generate_awaits_review` PASS。未 commit、未打 release。WB-03 仍 `IN PROGRESS`（待操作者接受可见卡）。加权 spec 保持 Approved。
+- WB-03：加权版式书面 spec Draft `docs/superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md`。分层纪律写进该 spec（不新开 ADR）。待操作者审查后再写实施计划。未实施、未打 release。
+
 ### 2026-09-01
 
+- WB-03：仍 `IN PROGRESS`。server `knowledge-pipeline-v1` worktree 已有 `convert_mapping` / `pack_from_mapping` / generate+publish / ops 第四块（未 commit）；focused 117+6 unittest OK；rabbit-real pack/generate 按规格 `TEXT_OVERFLOW`，§11 未满足。未打 release、未 reload Nginx、未改画廊、未生产安装。
+- WB-03：操作者确认 spec。计划 `docs/superpowers/plans/2026-09-01-operator-mapping-artifact-publish-implementation-plan.md`。未实施、未打 release、未 reload Nginx、未改画廊。
+- WB-03：书面 spec Draft `docs/superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md`。待操作者审查。未实施、未打 release、未 reload Nginx、未改画廊。
+- WB-03：立项为 `IN PROGRESS`。本回合只写书面设计；输入预定为 mapping revision 而非 knowledge current。未实施、未打 release、未 reload Nginx、未改画廊。
 - WB-02：本机 `DONE`。server `5c1188074846acbf8652ccb888792080697d140e`（`feat(knowledge): lock projection mapping without moving current`）。未打 release、未 reload Nginx、未上画廊。
 - WB-02：本机 `DONE`。server worktree 实现 `preview_mapping` / `lock_mapping` / `mapping.json` / 安全登记 / ops 第三块；focused unittest PASS。未 commit、未打 release、未 reload Nginx、未上画廊。
 - WB-02：spec 批准并开始实施。计划 `docs/superpowers/plans/2026-09-01-operator-mapping-scheme-implementation-plan.md`。不打 release、不上画廊。
