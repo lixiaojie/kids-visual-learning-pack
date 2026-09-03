@@ -73,6 +73,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Mapping-Artifact Weighted Layout Design](superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md) | WB-03 print binding: content-sized zone heights for mapping-artifact-v1; not a Core contract; not ACCEPT-01 | Approved |
 | [Operator Free-Prompt Knowledge Compile Design](superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md) | API-01 this slice: ops expands copyable ChatGPT prompt, ingests reply into four-object current; no API executor | Approved |
 | [Operator Illustration Hero Page Design](superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md) | IMG-01 first slice: copyable ChatGPT image prompt, one PNG upload, ops page of hero + active claims; no image API | Approved |
+| [Operator Composite Projection Display Design](superpowers/specs/2026-09-03-operator-composite-projection-display-design.md) | COMPOSE-01: hero PNG + locked four-card text → HTML page and OBS print image band; no burn-in | Approved |
 | [Entity Knowledge Coverage Design](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md) | KNOW-03: pluggable coverage + seven-topic compatibility suite; not projection | Approved/Implemented |
 | [Knowledge Suite Library Seed Design](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md) | KNOW-04: seed six allowed suite topics into production library current; not Gwen; not WB-02 | Approved/Implemented |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
@@ -98,6 +99,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Mapping-Artifact Weighted Layout Implementation](superpowers/plans/2026-09-02-mapping-artifact-weighted-layout-implementation-plan.md) | WB-03 print binding: shared weighted zone heights; not Core; not ACCEPT-01 equal split | Completed |
 | [Operator Free-Prompt Knowledge Compile Implementation](superpowers/plans/2026-09-02-operator-free-prompt-knowledge-compile-implementation-plan.md) | API-01 execution: copyable ChatGPT prompt, reply compile, confirm current; worktree only, not production | Completed |
 | [Operator Illustration Hero Page Implementation](superpowers/plans/2026-09-02-operator-illustration-hero-page-implementation-plan.md) | IMG-01 first slice: versioned hero prompt, one authenticated PNG, identity-pinned active-claim page; not production | Completed |
+| [Operator Composite Projection Display Implementation](superpowers/plans/2026-09-03-operator-composite-projection-display-implementation-plan.md) | COMPOSE-01: compose gate, ops HTML, OBS image band; not production | In Progress |
 
 ## Operations, Compliance, and Decisions
 

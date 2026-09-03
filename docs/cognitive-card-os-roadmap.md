@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`IMG-01` 本机 loopback 已验收（含 ChatGPT 真图）；未 commit、未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图；样式后置）。`WB-02` 本机 `DONE`。不打 release、不默认上现网画廊。
+本里程碑当前切片：`COMPOSE-01` 合成展示（IMG-01 无字主图 + WB-03 锁定四卡）。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图；样式后置）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -58,6 +58,7 @@
 | API-01 | HTTPS 写入 API | IN PROGRESS | server `91b7cf3` 已提交 compile+TPL；未现网；不标 DONE |
 | API-01-TPL | 加厚知识编译提示词 | IN PROGRESS | 已随 `91b7cf3` 提交；未现网 |
 | IMG-01 | 图形投影生图提示词 | IN PROGRESS | 本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交；未生产、不标 DONE |
+| COMPOSE-01 | 插画与四卡合成展示 | IN PROGRESS | 本机 focused 109 PASS；未 commit、未生产；不标 IMG-01 DONE |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -331,6 +332,18 @@
 - 已实现：server `knowledge-pipeline-v1` @ `54092cb`；intent/模板/identity stale/PNG/admin HTTP/精确 multipart/ops 一页完成；82 focused PASS；独立复审 READY；本机 ChatGPT 真图已验收。
 - 下一动作：不要默认开生产 8765、push、release、标 `DONE`。新切片须另开任务。
 - 完成条件：spec 与计划已锁定并实现；focused 测试与独立复审通过。因未 commit / 未生产，本条仍为 `IN PROGRESS`，不得标 `DONE`。
+
+### COMPOSE-01 插画与四卡合成展示
+
+- 状态：`IN PROGRESS`（本机测试已过；未 commit、未生产，不标 `DONE`）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现落在 `cognitive-card-server`。
+- 依赖：IMG-01 本机 illustrated PNG；WB-03 文字四卡 `generate_from_mapping`。
+- 目标：同一 topic 在有效无字主图与 `awaiting_review` 锁定四卡都在且六键 identity 一致时，输出屏幕 HTML 四段页，并把主图放进中英文观察卡页顶图像带后重渲。ChatGPT 不烧字。无图 generate 路径保持可用。
+- 非范围：图像 API；知识卡插图；可交互烧字页；生产安装；标 IMG-01 DONE。
+- 独立设计：[合成展示](superpowers/specs/2026-09-03-operator-composite-projection-display-design.md)。
+- 已实现：server worktree `knowledge-pipeline-v1` @ `54092cb`+（未提交）：`compose_projection` 门禁、ops HTML 四段、OBS 页顶图像带（实际高度 = min(720, look 剩余 − gap)）、知识卡 PNG 字节不变。focused 109 PASS。隔离 TestClient 临时 `database` / `candidate_root`，未写 KNOW-04 生产 library。
+- 下一动作：操作者决定是否 commit；不要 merge/push/reload Nginx；不要标 IMG-01 `DONE`。
+- 完成条件：focused 测试覆盖门禁、身份、HTML 壳、兔子夹具加带不溢出、知识卡 PNG 字节不变；本机隔离 candidate 根；不打 release。因未 commit / 未生产，本条仍为 `IN PROGRESS`。
 
 ### AUTH-01 Card OS 身份与权限
 
@@ -625,7 +638,8 @@
 18. ~~**WB-03**~~ 选投影 → 生成 → 上架画廊（本机完成；样式后置；未现网）。
 19. **API-01** 自由 prompt 编译成知识源（worktree 已实施；试用止于冻结；**不**在本项里加厚模板或生图）。
 20. **API-01-TPL** 加厚模板 + 解析层兼容 ChatGPT 自造 schema（worktree 已实施；试用 JSON 可未改写编过；未 commit）。
-21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交。
+21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交。不标 `DONE`。
+22. **COMPOSE-01** 合成展示：本机 focused 109 PASS；未 commit、未生产。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
