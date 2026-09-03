@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -60,7 +60,7 @@
 | IMG-01 | 图形投影生图提示词 | IN PROGRESS | 本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交；未生产、不标 DONE |
 | COMPOSE-01 | 插画与四卡合成展示 | IN PROGRESS | 本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产、不标 DONE |
 | LEGEND-01 | 投影图例注册表 | IN PROGRESS | kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不实施多图与模块铬 |
-| IMG-02 | 多视图无字资产 | BACKLOG | 依赖 LEGEND-01 词表与 IMG-01 无字合同；仅已有实例才要图 |
+| IMG-02 | 多视图无字资产 | IN PROGRESS | server `8710914` 已本地提交；未 push；不标 DONE |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -358,17 +358,21 @@
 - 独立设计：[投影图例](superpowers/specs/2026-09-03-projection-legend-v1-design.md)。
 - 实施计划：[投影图例实施](superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md)。
 - 已实现：server `knowledge-pipeline-v1` @ `f9baf8f`：`projection_legend/` 登记表与解析、编译提示词/门禁、映射 `legend` 块。combined focused 117 PASS。未 push。
-- 下一动作：不要 merge/push/release。不要开始 IMG-02。
+- 下一动作：不要 merge/push/release。不要开始 RENDER-02。
 - 完成条件：服务器登记表与编译提示词只列出图例角色；未知角色/双角色/`sequence` 无序/`blank` 含命题失败关闭；兔子 current 仅靠 entity 别名仍可 convert；对照旧 Skill 剑龙卡只验收模块该亮/该空，不对像素。因未生产，本条不得标 `DONE`。
 
 ### IMG-02 多视图无字资产
 
-- 状态：`BACKLOG`
-- 权威仓库：产品规范 `kids-visual-learning-pack`；实现将落在 `cognitive-card-server`。
+- 状态：`IN PROGRESS`（spec Approved；实施计划已落盘；server `8710914` 已本地提交）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现落在 `cognitive-card-server` `knowledge-pipeline-v1` worktree。
 - 依赖：LEGEND-01 词表已锁定；IMG-01 无字主图合同仍有效。
-- 范围：资产键 = 角色 + 画法（`observe.isolate` / `three_view` / `section` / `exploded`，`setting.in_situ` / `interaction` 等）。只对已有实例的角色/画法请求无字 PNG。ChatGPT 仍不烧字。不得把「视法出齐」写成知识源准入。
-- 非范围：改 Core；作废 IMG-01 单主图路径（须在本任务 spec 里显式决定是否并存）；RENDER-02 排版；生产安装。
-- 完成条件：另立 spec 与实施计划；focused 测试覆盖「无实例不请图」、烧字失败、`learning_place` 不得画成栖息地。
+- 范围：资产键 = 角色 + 画法。只对已有实例的像素画法列出可选无字 PNG。ChatGPT 仍不烧字。不得把「视法出齐」写成知识源准入。
+- 非范围：改 Core；作废 IMG-01 单主图路径（本 spec **并存**：`hero.png` = `observe.isolate`）；RENDER-02 排版；生产安装；生产 OCR。
+- 独立设计：[多视图无字资产](superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md)。
+- 实施计划：[多视图无字资产实施](superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md)。
+- 已实现：server `knowledge-pipeline-v1` @ `8710914`：额外像素槽与同一 illustration-intent；compose 仍只读 hero。combined focused 99 ran / 97 PASS / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`，LEGEND-01 夹具）。未 push。
+- 下一动作：不要 push/merge/release。不要开始 RENDER-02。不要标 `DONE`。
+- 完成条件：focused 测试覆盖「无实例不请图」、烧字失败、`learning_place` 不得画成栖息地。因未生产，本条不得标 `DONE`。
 
 ### RENDER-02 图例模块铬
 
@@ -675,7 +679,7 @@
 21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交。不标 `DONE`。
 22. **COMPOSE-01** 合成展示：本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产。
 23. **LEGEND-01** 投影图例：spec Approved；kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不标 DONE。
-24. **IMG-02** 多视图无字资产（BACKLOG；依赖 LEGEND-01）。
+24. **IMG-02** 多视图无字资产（IN PROGRESS；server `8710914` 已本地提交；未 push；不标 DONE）。
 25. **RENDER-02** 图例模块铬（BACKLOG；依赖 LEGEND-01；取代无名的「打印样式调优」切片）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
@@ -688,7 +692,9 @@
 
 ### 2026-09-03
 
-- LEGEND-01：kids `1598e74`、server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；combined focused 117 PASS。路线图仍 `IN PROGRESS`。未 push、不标 `DONE`。IMG-02 / RENDER-02 仍 BACKLOG。
+- IMG-02：server `knowledge-pipeline-v1` @ `8710914` 已本地提交；combined focused 99 ran / 97 PASS / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING` on `_short_authoring()` / rabbit-composite；LEGEND-01 夹具，非 IMG-02）。未 push。不标 `DONE`。RENDER-02 仍 BACKLOG。
+- IMG-02：spec Approved `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`；实施计划 `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md`。IMG-01 isolate 主图并存；额外像素键可选；同一 illustration-intent；不经 mapping-lock。
+- LEGEND-01：kids `1598e74`、server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；combined focused 117 PASS。路线图仍 `IN PROGRESS`。未 push、不标 `DONE`。
 - LEGEND-01 / IMG-02 / RENDER-02：操作者确认质量标尺为旧 Skill 卡的模块密度、禁止整卡烧字；图例按认知角色而非知识分类；`sequence` 合并时间链/事件链；三视/剖面/爆炸为 `observe` 可选画法；环境为 `setting`。spec Approved；实施计划 `docs/superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md`。
 - IMG-01：操作者确认隔离 loopback 内容无误，并走通复制提示词 → ChatGPT 生图 → 上传 → 演示页。kids `efc75aa`、server `54092cb` 已本地提交。未生产、不标 `DONE`。
 
