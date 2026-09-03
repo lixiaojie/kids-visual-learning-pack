@@ -57,7 +57,7 @@
 | EXEC-01 | 订阅执行核心 | DONE | 作为 API 应用服务使用 |
 | API-01 | HTTPS 写入 API | IN PROGRESS | server `91b7cf3` 已提交 compile+TPL；未现网；不标 DONE |
 | API-01-TPL | 加厚知识编译提示词 | IN PROGRESS | 已随 `91b7cf3` 提交；未现网 |
-| IMG-01 | 图形投影生图提示词 | IN PROGRESS | 本机 loopback + ChatGPT 真图已验收；server `54092cb` 已本地提交；未生产、不标 DONE |
+| IMG-01 | 图形投影生图提示词 | IN PROGRESS | 本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交；未生产、不标 DONE |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -329,7 +329,7 @@
 - 目标：首刀从已 Confirm 的 current 开 `illustration-intent`，服务器扩出**完整无字主体插画提示词**（版本化模板），人复制到 ChatGPT 会员生图，再上传一张 PNG；操作台展示主图 + active 命题。服务器仍无图像 API、无 claim。本刀不经 WB-02 mapping-lock，不装箱。
 - 非范围：不把「图装得下」写成知识源准入；不改 KNOW-04 六主题 current；不接 WB-03/Pillow；不生产安装。
 - 已实现：server `knowledge-pipeline-v1` @ `54092cb`；intent/模板/identity stale/PNG/admin HTTP/精确 multipart/ops 一页完成；82 focused PASS；独立复审 READY；本机 ChatGPT 真图已验收。
-- 下一动作：kids 文档本提交后记录 SHA。不要默认开生产 8765、push、release、标 `DONE`。
+- 下一动作：不要默认开生产 8765、push、release、标 `DONE`。新切片须另开任务。
 - 完成条件：spec 与计划已锁定并实现；focused 测试与独立复审通过。因未 commit / 未生产，本条仍为 `IN PROGRESS`，不得标 `DONE`。
 
 ### AUTH-01 Card OS 身份与权限
@@ -625,7 +625,7 @@
 18. ~~**WB-03**~~ 选投影 → 生成 → 上架画廊（本机完成；样式后置；未现网）。
 19. **API-01** 自由 prompt 编译成知识源（worktree 已实施；试用止于冻结；**不**在本项里加厚模板或生图）。
 20. **API-01-TPL** 加厚模板 + 解析层兼容 ChatGPT 自造 schema（worktree 已实施；试用 JSON 可未改写编过；未 commit）。
-21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；server `54092cb` 已本地提交；kids 文档待本提交。
+21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -637,7 +637,7 @@
 
 ### 2026-09-03
 
-- IMG-01：操作者确认隔离 loopback 内容无误，并走通复制提示词 → ChatGPT 生图 → 上传 → 演示页。server 已本地提交 `54092cb`。未生产、不标 `DONE`。
+- IMG-01：操作者确认隔离 loopback 内容无误，并走通复制提示词 → ChatGPT 生图 → 上传 → 演示页。kids `efc75aa`、server `54092cb` 已本地提交。未生产、不标 `DONE`。
 
 ### 2026-09-02
 

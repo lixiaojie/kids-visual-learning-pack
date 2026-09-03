@@ -6,14 +6,14 @@
 - Agent: Cursor Grok 4.6
 - Branch: main
 - Base Commit: ebf3034
-- Kids HEAD: ebf3034 `docs(ai): record API-01 kids and server commit SHAs`
+- Kids HEAD: efc75aa `docs(card-os): record operator illustration hero page and local loopback`
 - Server Branch: `knowledge-pipeline-v1` @ `54092cb4ce2a66cae9c1c69cb6a2508ed648a933`
-- Working Tree: kids 文档/spec/plan 本提交纳入；另有未跟踪 `outputs/`；server IMG-01 已提交，`uv.lock` 仍未跟踪
-- Task Status: **Paused（IMG-01 本机 loopback 含 ChatGPT 真图已验收；server `54092cb` 已本地提交；未生产、不标 DONE）。**
+- Working Tree: kids 仅未跟踪 `outputs/`；server 仅未跟踪 `uv.lock`
+- Task Status: **Paused（IMG-01 本机 loopback 含 ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交；未生产、不标 DONE）。**
 
 ## Summary
 
-操作者 2026-09-03 确认隔离 loopback 内容无误，并验证了复制提示词 → ChatGPT 生图 → 上传 → 演示页。server IMG-01 已本地提交 `54092cb`。未写生产 library，未 reload Nginx。
+操作者 2026-09-03 确认隔离 loopback 内容无误，并验证了复制提示词 → ChatGPT 生图 → 上传 → 演示页。kids `efc75aa`、server `54092cb` 已本地提交。未写生产 library，未 reload Nginx。
 
 ## Completed
 
@@ -27,10 +27,10 @@
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md` | 本提交纳入 |
-| kids | `docs/superpowers/plans/2026-09-02-operator-illustration-hero-page-implementation-plan.md` | 本提交纳入 |
-| kids | `docs/README.md` | 本提交纳入 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本提交纳入 |
+| kids | `docs/superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md` | 已提交 `efc75aa` |
+| kids | `docs/superpowers/plans/2026-09-02-operator-illustration-hero-page-implementation-plan.md` | 已提交 `efc75aa` |
+| kids | `docs/README.md` | 已提交 `efc75aa` |
+| kids | `docs/cognitive-card-os-roadmap.md` | 已提交 `efc75aa` |
 | kids | `docs/ai/CURRENT_TASK.md` | 本提交纳入 |
 | kids | `docs/ai/HANDOFF.md` | 本提交纳入 |
 | kids | `outputs/` | 未跟踪；未纳入 |
@@ -87,18 +87,18 @@
 
 ## Remaining Work
 
-等待 kids 文档本提交完成后，记录 kids SHA。不要默认生产安装、push、release、标 IMG-01 `DONE`。
+kids `efc75aa` 与 server `54092cb` 已本地提交。不要默认生产安装、push、release、标 IMG-01 `DONE`。新切片须另开 `CURRENT_TASK`。
 
 ## Exact Next Action
 
-本提交写入 kids spec/plan/路线图后，不要 merge `main`、不要 push、不要生产安装。
+不要 merge `main`、不要 push、不要生产安装。新切片（插画叠四卡 / 可交互页）须另开 `CURRENT_TASK`。
 
 ## Recovery Notes
 
 - 任务：IMG-01 本机 loopback 含 ChatGPT 真图已验收；server `54092cb` 已本地提交；未生产
 - Spec：`docs/superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md`
 - Plan：`docs/superpowers/plans/2026-09-02-operator-illustration-hero-page-implementation-plan.md`
-- Kids HEAD：`ebf30343737267256919aa66eb7ed6c5ca730165`
+- Kids HEAD：`efc75aab72977843cb7998bba6124df0c67c2b41`
 - Server Git：`54092cb4ce2a66cae9c1c69cb6a2508ed648a933`
 - 隔离 loopback：`/tmp/card-os-img01`；监听 `127.0.0.1:8765`
 - 短期 admin token_id：`a15dc003c203dcfe4e84562fb68a03bf`（原始 token 只在本机 tmp，expires `2026-09-03T12:00:00Z`）

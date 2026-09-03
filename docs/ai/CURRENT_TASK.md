@@ -5,12 +5,12 @@
 - Updated At: 2026-09-03
 - Updated By: Cursor Grok 4.6
 - Status: Paused
-- Branch: kids `main`；server `knowledge-pipeline-v1` @ `54092cb`
+- Branch: kids `main` @ `efc75aa`；server `knowledge-pipeline-v1` @ `54092cb`
 - Base Commit: ebf3034
 
 ## Objective
 
-IMG-01 本机 loopback（含 ChatGPT 真图）已验收；server 已本地提交 `54092cb`。等待 kids 文档提交记录。不生产、不标 DONE。
+IMG-01 本机 loopback（含 ChatGPT 真图）已验收；kids `efc75aa`、server `54092cb` 已本地提交。不生产、不标 DONE。
 
 ## Background
 
