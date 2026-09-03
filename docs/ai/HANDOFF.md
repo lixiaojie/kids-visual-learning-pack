@@ -5,11 +5,11 @@
 - Updated At: 2026-09-03
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: a381c00
-- Kids HEAD: a381c00
+- Base Commit: 1598e74
+- Kids HEAD: 1598e74
 - Server Branch: `knowledge-pipeline-v1` @ `f9baf8f`（本地提交；未 push）
-- Working Tree: kids LEGEND-01 文档待本提交纳入；`outputs/` 未跟踪未纳入。server `uv.lock` 未跟踪未纳入。
-- Task Status: **In Progress（LEGEND-01 已本地提交 server `f9baf8f`；kids 文档一并提交；未 push、未生产、不标 DONE）。**
+- Working Tree: LEGEND-01 kids `1598e74`、server `f9baf8f` 已本地提交；`outputs/` 未跟踪未纳入。server `uv.lock` 未跟踪未纳入。
+- Task Status: **In Progress（LEGEND-01 kids `1598e74`、server `f9baf8f` 已本地提交；未 push、未生产、不标 DONE）。**
 
 ## Summary
 
@@ -31,8 +31,7 @@ LEGEND-01：闭集图例、编译门禁与四卡 mapping `legend` 块已在 serv
 | kids | `docs/README.md` | 本提交纳入 |
 | kids | `docs/cognitive-card-os-system-design.md` | 本提交纳入 |
 | kids | `docs/ai/CURRENT_TASK.md` | 本提交纳入 |
-| kids | `docs/ai/HANDOFF.md` | 本文件 |
-| kids | `outputs/` | 未跟踪；未纳入 |
+| kids | `1598e74` | 已本地提交；不含 `outputs/` |
 | server | `f9baf8f` | 已本地提交；不含 `uv.lock` |
 
 ## Decisions Made
@@ -46,7 +45,7 @@ LEGEND-01：闭集图例、编译门禁与四卡 mapping `legend` 块已在 serv
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `a381c00` + 本提交文档 | 不 push；不提交 `outputs/` |
+| kids 治理 | `main` @ `1598e74` | 不 push；不提交 `outputs/` |
 | 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `f9baf8f` | 不 push；不纳入 `uv.lock` |
 | 本机验收 | 文档 checker | 不开 8765 |
 
@@ -57,7 +56,7 @@ LEGEND-01：闭集图例、编译门禁与四卡 mapping `legend` 块已在 serv
 | server combined focused | PASS | 117 tests OK；StarletteDeprecationWarning 既有噪音（fastapi/testclient） |
 | `git diff --check` | PASS | kids 根 |
 | `bash scripts/ai/check-task-state.sh` | PASS | |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 对齐 HEAD `a381c00`（本提交前） |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 对齐 HEAD `1598e74` |
 | `bash scripts/ai/check-doc-governance.sh` | WARN | Last Reviewed 2026-07-24 过期（既有；3 warnings） |
 
 ## Known Failures

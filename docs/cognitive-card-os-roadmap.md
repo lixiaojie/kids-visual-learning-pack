@@ -59,7 +59,7 @@
 | API-01-TPL | 加厚知识编译提示词 | IN PROGRESS | 已随 `91b7cf3` 提交；未现网 |
 | IMG-01 | 图形投影生图提示词 | IN PROGRESS | 本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交；未生产、不标 DONE |
 | COMPOSE-01 | 插画与四卡合成展示 | IN PROGRESS | 本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产、不标 DONE |
-| LEGEND-01 | 投影图例注册表 | IN PROGRESS | server `f9baf8f` 已本地提交；未 push；不实施多图与模块铬 |
+| LEGEND-01 | 投影图例注册表 | IN PROGRESS | kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不实施多图与模块铬 |
 | IMG-02 | 多视图无字资产 | BACKLOG | 依赖 LEGEND-01 词表与 IMG-01 无字合同；仅已有实例才要图 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
@@ -674,7 +674,7 @@
 20. **API-01-TPL** 加厚模板 + 解析层兼容 ChatGPT 自造 schema（worktree 已实施；试用 JSON 可未改写编过；未 commit）。
 21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交。不标 `DONE`。
 22. **COMPOSE-01** 合成展示：本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产。
-23. **LEGEND-01** 投影图例：spec Approved；server `f9baf8f` 已本地提交；未 push；不标 DONE。
+23. **LEGEND-01** 投影图例：spec Approved；kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不标 DONE。
 24. **IMG-02** 多视图无字资产（BACKLOG；依赖 LEGEND-01）。
 25. **RENDER-02** 图例模块铬（BACKLOG；依赖 LEGEND-01；取代无名的「打印样式调优」切片）。
 
@@ -688,7 +688,7 @@
 
 ### 2026-09-03
 
-- LEGEND-01：server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；combined focused 117 PASS。kids 文档对齐为 `IN PROGRESS`。未 push、不标 `DONE`。IMG-02 / RENDER-02 仍 BACKLOG。
+- LEGEND-01：kids `1598e74`、server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；combined focused 117 PASS。路线图仍 `IN PROGRESS`。未 push、不标 `DONE`。IMG-02 / RENDER-02 仍 BACKLOG。
 - LEGEND-01 / IMG-02 / RENDER-02：操作者确认质量标尺为旧 Skill 卡的模块密度、禁止整卡烧字；图例按认知角色而非知识分类；`sequence` 合并时间链/事件链；三视/剖面/爆炸为 `observe` 可选画法；环境为 `setting`。spec Approved；实施计划 `docs/superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md`。
 - IMG-01：操作者确认隔离 loopback 内容无误，并走通复制提示词 → ChatGPT 生图 → 上传 → 演示页。kids `efc75aa`、server `54092cb` 已本地提交。未生产、不标 `DONE`。
 
