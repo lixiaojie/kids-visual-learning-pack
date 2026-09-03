@@ -5,11 +5,11 @@
 - Updated At: 2026-09-03
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 6401ea6
-- Kids HEAD: 6401ea6
+- Base Commit: 8c7c2d8
+- Kids HEAD: 8c7c2d8
 - Server Branch: `knowledge-pipeline-v1` @ `8710914`（本地提交；未 push）
-- Working Tree: kids IMG-02 文档待本提交纳入；`outputs/` 未跟踪未纳入。server `uv.lock` 未跟踪未纳入。
-- Task Status: **In Progress（IMG-02 已本地提交 server `8710914`；kids 文档一并提交；未 push、未生产、不标 DONE）。**
+- Working Tree: IMG-02 kids `8c7c2d8`、server `8710914` 已本地提交；`outputs/` 未跟踪未纳入。server `uv.lock` 未跟踪未纳入。
+- Task Status: **In Progress（IMG-02 kids `8c7c2d8`、server `8710914` 已本地提交；未 push、未生产、不标 DONE）。**
 
 ## Summary
 
@@ -28,14 +28,14 @@ IMG-02：可选额外无字像素视图已在 server `knowledge-pipeline-v1` 提
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md` | 待本提交纳入 |
-| kids | `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md` | 待本提交纳入 |
-| kids | `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md` | 待本提交纳入 |
-| kids | `docs/README.md` | 待本提交纳入 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 待本提交纳入 |
-| kids | `docs/cognitive-card-os-system-design.md` | 待本提交纳入 |
-| kids | `docs/ai/CURRENT_TASK.md` | 待本提交纳入 |
-| kids | `docs/ai/HANDOFF.md` | 待本提交纳入 |
+| kids | `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md` | `8c7c2d8` 已本地提交 |
+| kids | `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md` | `8c7c2d8` 已本地提交 |
+| kids | `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md` | `8c7c2d8` 已本地提交 |
+| kids | `docs/README.md` | `8c7c2d8` 已本地提交 |
+| kids | `docs/cognitive-card-os-roadmap.md` | SHA 记录待本提交纳入 |
+| kids | `docs/cognitive-card-os-system-design.md` | `8c7c2d8` 已本地提交 |
+| kids | `docs/ai/CURRENT_TASK.md` | SHA 记录待本提交纳入 |
+| kids | `docs/ai/HANDOFF.md` | SHA 记录待本提交纳入 |
 | kids | `outputs/` | 未跟踪；不纳入 |
 | server | illustration / HTTP / ops / compose 测试 | `8710914` 已本地提交 |
 | server | `uv.lock` | 未跟踪；不纳入 |
@@ -56,7 +56,7 @@ IMG-02：可选额外无字像素视图已在 server `knowledge-pipeline-v1` 提
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `6401ea6` | 不 push；不提交 `outputs/` |
+| kids 治理 | `main` @ `8c7c2d8` | 不 push；不提交 `outputs/` |
 | 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `8710914` | 已本地提交；不 push；不改 `uv.lock` |
 | 本机验收 | 文档 checker + server combined focused | 不开 8765 |
 
@@ -66,7 +66,7 @@ IMG-02：可选额外无字像素视图已在 server `knowledge-pipeline-v1` 提
 | --- | --- | --- |
 | `git diff --check` | PASS | kids 根 |
 | `bash scripts/ai/check-task-state.sh` | PASS | In Scope 路径均存在 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 对齐 HEAD `6401ea6` |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 对齐 HEAD `8c7c2d8` |
 | `bash scripts/ai/check-doc-governance.sh` | WARN | Last Reviewed 2026-07-24 过期（既有；3 warnings） |
 | combined focused gate（server worktree） | FAIL | 99 ran；97 PASS；2 FAIL（见 Known Failures） |
 
@@ -87,11 +87,11 @@ IMG-02：可选额外无字像素视图已在 server `knowledge-pipeline-v1` 提
 
 ## Remaining Work
 
-不要开始 RENDER-02。不要 merge/push/release。不要标 DONE。kids 本提交纳入后，用后续 SHA 记录提交写上 kids HEAD。
+不要开始 RENDER-02。不要 merge/push/release。不要标 DONE。
 
 ## Exact Next Action
 
-不要 push/merge/release。不要开始 RENDER-02。不要标 IMG-02 `DONE`。下一位若要继续，先读 kids HEAD 与 server `8710914`，再等操作者授权下一刀（RENDER-02 仍 BACKLOG）。
+不要 push/merge/release。不要开始 RENDER-02。不要标 IMG-02 `DONE`。下一位若要继续，先读 kids `8c7c2d8` 与 server `8710914`，再等操作者授权下一刀（RENDER-02 仍 BACKLOG）。
 
 ## Recovery Notes
 
