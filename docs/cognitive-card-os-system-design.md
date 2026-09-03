@@ -286,8 +286,10 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 21. **`KNOW-04` 兼容套件上库**：Done。生产 library 六主题 current（不含格温）；`rabbit` current=`revision-0002`；应用仍 `7aaeb2b`；Nginx / 画廊未改。见运维记录第 13 节与 [兼容套件上库](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md)。
 22. **`WB-03`**：Done（本机；`91b7cf3`；未现网）。mapping-artifact 路径 + 加权版式；操作者接受兔子卡基础信息；打印样式后置。见 [按映射生成并上架](superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md)、[加权版式](superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md)。
 23. **`API-01`**：本机已实施（`91b7cf3`；含 TPL 归一）。操作台扩展提示词 → ChatGPT 会员 → 贴回复 → 四对象 current。见 [本刀设计](superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md)。未现网、未 merge `main`。
-24. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
-25. 第二个哺乳动物一致性验收仍依赖模板族。
+24. **`LEGEND-01` 投影图例**：spec Approved。server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交（未 push、未生产）。认知角色凡例约束编译与呈现槽；不改 Knowledge Core schema。见 [投影图例](superpowers/specs/2026-09-03-projection-legend-v1-design.md)。
+25. **`IMG-02` / `RENDER-02`**：BACKLOG。多视图无字资产与图例模块铬；精确状态见路线图。
+26. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
+27. 第二个哺乳动物一致性验收仍依赖模板族。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 

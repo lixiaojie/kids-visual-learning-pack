@@ -4,27 +4,28 @@
 
 - Updated At: 2026-09-03
 - Updated By: Cursor Grok 4.6
-- Status: Done
-- Branch: kids `main` @ `18375cf`；server `knowledge-pipeline-v1` @ `ec22a33`
-- Base Commit: ebf3034
+- Status: In Progress
+- Branch: kids `main` @ `a381c00`；server `knowledge-pipeline-v1` @ `f9baf8f`（本地提交；未 push）
+- Base Commit: a381c00
 
 ## Objective
 
-COMPOSE-01：把 IMG-01 无字主图与 WB-03 锁定四卡文案合成屏幕 HTML + 观察卡带图打印。本机隔离 library。不生产、不标 IMG-01 DONE。
+LEGEND-01：server 已本地提交 `f9baf8f`；kids 文档对齐一并提交。未 push、未生产、不标 DONE。
 
 ## Background
 
-- Spec：`docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`
-- ChatGPT 不烧字。缺图或缺四卡失败关闭。主图只进中英文观察卡页顶图像带。
+投影图例约束编译与四卡映射的认知角色。IMG-02 / RENDER-02 不在本计划内。
 
 ## Acceptance Criteria
 
-- [x] 设计写入 spec（操作者已批准计划并授权实施）
-- [x] spec 收录文档地图与路线图 `COMPOSE-01`
+- [x] 路线图登记 `LEGEND-01`、`IMG-02`、`RENDER-02`
+- [x] spec 写入并标为 Approved
+- [x] spec 收录文档地图
+- [x] 系统总设计 §11 指向新任务
+- [x] 操作者审阅书面 spec（「继续」）
 - [x] 实施计划落盘
-- [x] server TDD：门禁、HTML、OBS 图像带、兔子夹具不溢出
-- [x] focused 回归含 IMG-01 / WB-03（109 tests OK）
-- [x] 本机隔离 candidate 根验证；不写生产 library
+- [x] 不覆盖未提交 `outputs/`
+- [x] server 按计划实施并本地提交 `f9baf8f`
 
 ## In Scope
 
@@ -32,33 +33,26 @@ COMPOSE-01：把 IMG-01 无字主图与 WB-03 锁定四卡文案合成屏幕 HTM
 - `docs/ai/HANDOFF.md`
 - `docs/cognitive-card-os-roadmap.md`
 - `docs/README.md`
-- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`
-- `docs/superpowers/plans/2026-09-03-operator-composite-projection-display-implementation-plan.md`
-- server worktree `src/cognitive_card_server/knowledge_compose/**`
-- server worktree `src/cognitive_card_server/four_card_render/{weighted_layout.py,render.py}`
-- server worktree `src/cognitive_card_server/knowledge_ops/{http.py,pages.py}`
-- server worktree `src/cognitive_card_server/http/{app.py,errors.py}`
-- server worktree compose / render / HTTP / ops 测试
+- `docs/cognitive-card-os-system-design.md`
+- `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md`
+- `docs/superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md`
 
 ## Out of Scope
 
-- OpenAI / ChatGPT 图像 API、Cookie、claim 执行器、可交互烧字页
-- 改四对象 schema；改 KNOW-04 current；知识卡插图
-- 把装箱/装图写成知识源准入
-- merge `main`、push、release、现网、Nginx reload
+- IMG-02 / RENDER-02 实施
+- 改四对象顶层 schema、v1 FACT 键集、KNOW-03 七面 id
+- merge / push / release / 现网
 - `outputs/`、server `uv.lock`
-- 标 IMG-01 `DONE`
+- 标 IMG-01 / COMPOSE-01 / API-01 `DONE`
 
 ## Constraints
 
-- 权威仓库：产品规范在 kids；实现在 server `knowledge-pipeline-v1`。
-- 按 TDD：每批生产代码前先看对应测试因缺功能正确失败。
+- 不 merge/push/release。
 - 不覆盖未提交 `outputs/`。
-- WB-03 `generate_from_mapping` 无图路径保持可用。
+- 不把 server `uv.lock` 纳入提交。
 
 ## Verification Plan
 
-- server: `PYTHONPATH=src .venv/bin/python -m unittest tests.test_knowledge_compile tests.test_http_knowledge_compile tests.test_http_knowledge_ops tests.test_knowledge_library_mapping tests.test_weighted_layout tests.test_http_auth tests.test_knowledge_illustration tests.test_http_knowledge_illustration tests.test_knowledge_compose tests.test_http_knowledge_compose tests.test_artifact_pipeline`
 - `bash scripts/ai/check-task-state.sh`
 - `bash scripts/ai/check-handoff.sh`
 - `bash scripts/ai/check-doc-governance.sh`
@@ -66,7 +60,6 @@ COMPOSE-01：把 IMG-01 无字主图与 WB-03 锁定四卡文案合成屏幕 HTM
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`
-- `docs/superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md`
-- `docs/superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md`
-- `docs/cognitive-card-os-roadmap.md` § COMPOSE-01
+- `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md`
+- `docs/superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md`
+- `docs/cognitive-card-os-roadmap.md` § LEGEND-01

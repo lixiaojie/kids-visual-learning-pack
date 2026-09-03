@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`COMPOSE-01` 合成展示（IMG-01 无字主图 + WB-03 锁定四卡）。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图；样式后置）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -59,6 +59,8 @@
 | API-01-TPL | 加厚知识编译提示词 | IN PROGRESS | 已随 `91b7cf3` 提交；未现网 |
 | IMG-01 | 图形投影生图提示词 | IN PROGRESS | 本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交；未生产、不标 DONE |
 | COMPOSE-01 | 插画与四卡合成展示 | IN PROGRESS | 本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产、不标 DONE |
+| LEGEND-01 | 投影图例注册表 | IN PROGRESS | server `f9baf8f` 已本地提交；未 push；不实施多图与模块铬 |
+| IMG-02 | 多视图无字资产 | BACKLOG | 依赖 LEGEND-01 词表与 IMG-01 无字合同；仅已有实例才要图 |
 | AUTH-01 | Card OS 身份与权限 | IN PROGRESS | machine token 已部署；浏览器会话不阻塞主路径 |
 | PROTO-01 | capability/protocol discovery | DONE | 作为 Skill 注册表和部署兼容门禁使用 |
 | SKILL-01 | Skill 发布注册表 | DONE | 完整 `0.1.1` 已 provisional 激活生产 stable；回滚与不可变历史已实证 |
@@ -72,6 +74,7 @@
 | SITE-01 | Card OS 替换 `kids-world` | DONE | 现网根 CTA 指向画廊；Nginx 已反代 `/card-os/` |
 | SITE-02 | 旧站兼容与重定向 | DONE | 现网 stub/hash 已抽查；回滚仍是 `activeMode=parallel` |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
+| RENDER-02 | 图例模块铬 | BACKLOG | 依赖 LEGEND-01；见上表 |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
@@ -344,6 +347,37 @@
 - 已实现：server `knowledge-pipeline-v1` @ `ec22a33`：`compose_projection` 门禁、ops HTML 四段、OBS 页顶图像带（实际高度 = min(720, look 剩余 − gap)）、知识卡 PNG 字节不变。focused 109 PASS。隔离 TestClient / `/tmp/compose-01-preview`，未写 KNOW-04 生产 library。
 - 下一动作：不要 merge/push/reload Nginx；不要标 IMG-01 或 COMPOSE-01 `DONE`。
 - 完成条件：focused 测试覆盖门禁、身份、HTML 壳、兔子夹具加带不溢出、知识卡 PNG 字节不变；本机隔离 candidate 根；不打 release。因未生产，本条仍为 `IN PROGRESS`。
+
+### LEGEND-01 投影图例注册表
+
+- 状态：`IN PROGRESS`（server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；未 push；不标 `DONE`）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现落在 `cognitive-card-server` `knowledge-pipeline-v1`。
+- 依赖：COMPOSE-01 管线可合成（本机即可，不要求生产）；KNOW-03 coverage 面保持独立；TMPL-01 骨架稳定。
+- 目标：发布 `projection-legend-v1`。封闭认知角色 + 允许的视觉语法。AI 只往已有角色填实例；空角色不画；禁止 `misc` 与整卡烧字。编译/映射按角色解析（显式 `legend_role` 或 coverage 别名），不改四对象 schema，不替换 entity `coverage_facet`。
+- 非范围：IMG-02 多图槽；RENDER-02 模块铬；改 KNOW-03 七面词表；生产安装；merge `main`。
+- 独立设计：[投影图例](superpowers/specs/2026-09-03-projection-legend-v1-design.md)。
+- 实施计划：[投影图例实施](superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md)。
+- 已实现：server `knowledge-pipeline-v1` @ `f9baf8f`：`projection_legend/` 登记表与解析、编译提示词/门禁、映射 `legend` 块。combined focused 117 PASS。未 push。
+- 下一动作：不要 merge/push/release。不要开始 IMG-02。
+- 完成条件：服务器登记表与编译提示词只列出图例角色；未知角色/双角色/`sequence` 无序/`blank` 含命题失败关闭；兔子 current 仅靠 entity 别名仍可 convert；对照旧 Skill 剑龙卡只验收模块该亮/该空，不对像素。因未生产，本条不得标 `DONE`。
+
+### IMG-02 多视图无字资产
+
+- 状态：`BACKLOG`
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现将落在 `cognitive-card-server`。
+- 依赖：LEGEND-01 词表已锁定；IMG-01 无字主图合同仍有效。
+- 范围：资产键 = 角色 + 画法（`observe.isolate` / `three_view` / `section` / `exploded`，`setting.in_situ` / `interaction` 等）。只对已有实例的角色/画法请求无字 PNG。ChatGPT 仍不烧字。不得把「视法出齐」写成知识源准入。
+- 非范围：改 Core；作废 IMG-01 单主图路径（须在本任务 spec 里显式决定是否并存）；RENDER-02 排版；生产安装。
+- 完成条件：另立 spec 与实施计划；focused 测试覆盖「无实例不请图」、烧字失败、`learning_place` 不得画成栖息地。
+
+### RENDER-02 图例模块铬
+
+- 状态：`BACKLOG`
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现将落在 `cognitive-card-server`。
+- 依赖：LEGEND-01；RENDER-01 / COMPOSE-01 清场区与无字字形权威。
+- 范围：按角色画模块铬（色块、时间条、步骤条、三视板、环境区、描红/抄写）。空角色跳过。字仍由服务器排。对照旧 Skill 剑龙卡验收模块种类，不对整卡像素。
+- 非范围：用观感倒逼补 Knowledge Core 事实；退回整卡烧字；改 ACCEPT-01 等分版式合同。
+- 完成条件：另立 spec 与实施计划；空模块不画假框；清场区无插图；既有无图 generate 仍可用。
 
 ### AUTH-01 Card OS 身份与权限
 
@@ -640,10 +674,13 @@
 20. **API-01-TPL** 加厚模板 + 解析层兼容 ChatGPT 自造 schema（worktree 已实施；试用 JSON 可未改写编过；未 commit）。
 21. **IMG-01** 图形/打印插画：本机 loopback + ChatGPT 真图已验收；kids `efc75aa`、server `54092cb` 已本地提交。不标 `DONE`。
 22. **COMPOSE-01** 合成展示：本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产。
+23. **LEGEND-01** 投影图例：spec Approved；server `f9baf8f` 已本地提交；未 push；不标 DONE。
+24. **IMG-02** 多视图无字资产（BACKLOG；依赖 LEGEND-01）。
+25. **RENDER-02** 图例模块铬（BACKLOG；依赖 LEGEND-01；取代无名的「打印样式调优」切片）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
-**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`MIG-02` / `MIG-03`、打印样式调优（等全部阶段完工后，以最终投影产物反查各阶段；不以当前四卡观感开新切片）、API-01 生产安装 / merge `main`、kids+server 提交（须该会话明确要求 commit）。
+**不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`MIG-02` / `MIG-03`、API-01 生产安装 / merge `main`、kids+server 提交（须该会话明确要求 commit）。不以当前四卡观感绕过 LEGEND-01 直接改 Pillow。
 
 存档生产核心仍按 ADR-001 留给 RENDER/QA/PUBLISH 抢救，不充当 Knowledge Core 存储层。工作区仍按 [ADR-003](decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md) 三角色。
 
@@ -651,6 +688,8 @@
 
 ### 2026-09-03
 
+- LEGEND-01：server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；combined focused 117 PASS。kids 文档对齐为 `IN PROGRESS`。未 push、不标 `DONE`。IMG-02 / RENDER-02 仍 BACKLOG。
+- LEGEND-01 / IMG-02 / RENDER-02：操作者确认质量标尺为旧 Skill 卡的模块密度、禁止整卡烧字；图例按认知角色而非知识分类；`sequence` 合并时间链/事件链；三视/剖面/爆炸为 `observe` 可选画法；环境为 `setting`。spec Approved；实施计划 `docs/superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md`。
 - IMG-01：操作者确认隔离 loopback 内容无误，并走通复制提示词 → ChatGPT 生图 → 上传 → 演示页。kids `efc75aa`、server `54092cb` 已本地提交。未生产、不标 `DONE`。
 
 ### 2026-09-02
