@@ -2,100 +2,96 @@
 
 ## Metadata
 
-- Updated At: 2026-09-03
+- Updated At: 2026-09-04
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 8c7c2d8
-- Kids HEAD: 8c7c2d8
-- Server Branch: `knowledge-pipeline-v1` @ `8710914`（本地提交；未 push）
-- Working Tree: IMG-02 kids `8c7c2d8`、server `8710914` 已本地提交；`outputs/` 未跟踪未纳入。server `uv.lock` 未跟踪未纳入。
-- Task Status: **In Progress（IMG-02 kids `8c7c2d8`、server `8710914` 已本地提交；未 push、未生产、不标 DONE）。**
+- Base Commit: 4bb276f
+- Kids HEAD: 4bb276f
+- Server Branch: `knowledge-pipeline-v1` @ `427bf89`（本地提交；未 push）
+- Working Tree: kids RENDER-02 文档待本提交纳入；`outputs/` 未跟踪未纳入。server `uv.lock` 未跟踪未纳入。
+- Task Status: **In Progress（RENDER-02 已本地提交 server `427bf89`；kids 文档一并提交；未 push、未生产、不标 DONE）。**
 
 ## Summary
 
-IMG-02：可选额外无字像素视图已在 server `knowledge-pipeline-v1` 提交为 `8710914`。同一 illustration-intent；`hero.png` 仍是 `observe.isolate`；compose 仍只读 hero。kids spec/plan/路线图对齐。未 merge/push/release。RENDER-02 仍 BACKLOG。
+RENDER-02：compose HTML 按 `legend_role` 换壳已在 server `knowledge-pipeline-v1` 提交为 `427bf89`。打印 PNG 仍两 OBS 主图带；额外视图只按 sha 进 JSON/屏幕。kids spec/计划/路线图对齐。未 merge/push/release。不标 DONE。
 
 ## Completed
 
-- server `8710914`：`views.py` 允许像素键、`illustration-view-v1` 提示词、`views/` 磁盘槽、额外上传 HTTP/ops UI；compose 仍只读 `hero.png`
-- spec Approved：`docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
-- 计划：`docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md`（Medium，7 tasks / 3 phases）
-- 文档地图、系统总设计 §11、路线图 IMG-02
-- `test_compose_ignores_extra_view_png` GREEN
-- combined focused gate 99 ran：97 PASS，2 FAIL（见 Known Failures）
+- server `427bf89`：`page_modules` 按角色收 AGE 句；`_public` 挂 `pages[].modules`；compose 页模块铬；打印 assets 仍 `CN_OBS:band` / `EN_OBS:band`；KNOW 无 `<img>`；`assign_legend` 失败则 `modules: []`
+- spec Approved：`docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md`
+- 计划：`docs/superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md`
+- 请图提示词划归 IMG，不在本刀
+- 整支审查 Ready to commit；无 Critical/Important
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md` | `8c7c2d8` 已本地提交 |
-| kids | `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md` | `8c7c2d8` 已本地提交 |
-| kids | `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md` | `8c7c2d8` 已本地提交 |
-| kids | `docs/README.md` | `8c7c2d8` 已本地提交 |
-| kids | `docs/cognitive-card-os-roadmap.md` | SHA 记录待本提交纳入 |
-| kids | `docs/cognitive-card-os-system-design.md` | `8c7c2d8` 已本地提交 |
-| kids | `docs/ai/CURRENT_TASK.md` | SHA 记录待本提交纳入 |
-| kids | `docs/ai/HANDOFF.md` | SHA 记录待本提交纳入 |
+| kids | `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md` | 待本提交纳入 |
+| kids | `docs/superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md` | 待本提交纳入 |
+| kids | `docs/README.md` | 待本提交纳入 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 待本提交纳入 |
+| kids | `docs/cognitive-card-os-system-design.md` | 待本提交纳入 |
+| kids | `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md` | 待本提交纳入 |
+| kids | `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md` | 待本提交纳入 |
+| kids | `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md` | 待本提交纳入 |
+| kids | `docs/ai/CURRENT_TASK.md` | 待本提交纳入 |
+| kids | `docs/ai/HANDOFF.md` | 本文件 |
 | kids | `outputs/` | 未跟踪；不纳入 |
-| server | illustration / HTTP / ops / compose 测试 | `8710914` 已本地提交 |
+| server | chrome / pipeline / pages / compose tests | `427bf89` |
 | server | `uv.lock` | 未跟踪；不纳入 |
 
 ## Decisions Made
 
-- IMG-01 单主图路径**并存**。
-- 额外画法**可选子集**。
-- 同一 `illustration-intent`；允许键从 current `assign_legend` 来，不经 mapping-lock。
-- 须先 `illustrated` 才传额外槽；额外槽可覆盖重传。
-- 烧字：额外槽可注入检测器；不交付生产 OCR。
-- COMPOSE 仍只消费 `hero.png`；磁盘 `views/` 不得进入 compose `assets`。
-- compose 测试里需要 mapping-lock 的夹具改用 `_rabbit_real()`；不把 rabbit-composite 的 `LEGEND_ROLE_MISSING` 当成 IMG-02 去改图例门禁。
-- RENDER-02 仍 BACKLOG。不标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 `DONE`。
-- 不 merge/push/release；不把 `outputs/` 或 `uv.lock` 纳入。
+- 打印 PNG 不加铬。
+- 屏幕：同一 compose 四段页换壳。
+- 该页锁定 AGE 句按 `legend_role` 收模块。
+- 所有 `<img>` 只在观察卡。
+- 请图提示词属 IMG，不属 RENDER-02。
+- 不 merge/push/release。不标 DONE。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `8c7c2d8` | 不 push；不提交 `outputs/` |
-| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `8710914` | 已本地提交；不 push；不改 `uv.lock` |
-| 本机验收 | 文档 checker + server combined focused | 不开 8765 |
+| kids 治理 | `main` @ `4bb276f` + 本提交文档 | 不 push；不提交 `outputs/` |
+| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `427bf89` | 不 merge/push/release；不纳入 `uv.lock` |
+| 本机验收 | 文档 checker | 不开 8765 |
 
 ## Verification Results
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| `git diff --check` | PASS | kids 根 |
-| `bash scripts/ai/check-task-state.sh` | PASS | In Scope 路径均存在 |
-| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 对齐 HEAD `8c7c2d8` |
-| `bash scripts/ai/check-doc-governance.sh` | WARN | Last Reviewed 2026-07-24 过期（既有；3 warnings） |
-| combined focused gate（server worktree） | FAIL | 99 ran；97 PASS；2 FAIL（见 Known Failures） |
+| `git diff --check` | PASS | kids 根；exit 0 |
+| `bash scripts/ai/check-task-state.sh` | PASS | In Scope 12 路径均存在 |
+| `bash scripts/ai/check-handoff.sh` | PASS | Base Commit 对齐 HEAD `4bb276f` |
+| `bash scripts/ai/check-doc-governance.sh` | WARN | Last Reviewed 2026-07-24 过期（既有） |
+| server `unittest` focused compose HTTP | PASS | `tests.test_http_knowledge_compose` 7/7 |
+| server combined focused gate | 107 pass / 2 FAIL | 两 FAIL 为 ops mapping-lock `LEGEND_ROLE_MISSING`（既有；不要修） |
+| 整支审查 | Ready to commit | 无 Critical/Important |
 
 ## Known Failures
 
-- 文档地图 Last Reviewed 过期 WARN（既有，2026-07-24）：`PROJECT_CONTEXT.md`、`docs/README.md`、`docs/knowledge/codex-memory/README.md`。与本次修改无关。
-- 现网应用仍 `7aaeb2b`。与本次修改无关。
-- `tests.test_http_knowledge_ops.HttpKnowledgeOpsTests.test_generate_keeps_current_and_publish_requires_actor`：mapping-lock 返回 `LEGEND_ROLE_MISSING`。夹具 `_short_authoring()` / `rabbit-composite.json`。LEGEND-01 图例门禁，不是 IMG-02。不放宽 `assign_legend`，不为该夹具补 IMG-02 覆盖。
-- `tests.test_http_knowledge_ops.HttpKnowledgeOpsTests.test_publish_refuses_stale_work_after_relock`：同上，mapping-lock `LEGEND_ROLE_MISSING` on `_short_authoring()` / rabbit-composite。非 IMG-02。
+- 文档地图 Last Reviewed 过期 WARN（既有，2026-07-24）。与本次无关。
+- 现网应用仍 `7aaeb2b`。与本次无关。
+- server combined focused 2 FAIL：ops mapping-lock `test_generate_keeps_current_and_publish_requires_actor`、`test_publish_refuses_stale_work_after_relock`（`LEGEND_ROLE_MISSING`）。LEGEND-01 夹具，不是 RENDER-02。不要修。
 
 ## Risks and Caveats
 
-- `app.py` 的 multipart 白名单必须同时允许 `/views/.../image`，否则额外上传会被中间件挡掉。
-- rabbit-real 的 `allowed_view_keys` 以 `assign_legend` 实测为准，不要硬填满五键。
-- 不要把 IMG-02 做成 RENDER-02。
+- 不要改 illustration 提示词。
 - 不要把 `outputs/` 或 server `uv.lock` 加入提交。
-- combined gate 的 2 FAIL 是 LEGEND-01 夹具，不要在 IMG-02 里“修”掉。
+- 不要 merge/push/release。不要标 RENDER-02 `DONE`。
 
 ## Remaining Work
 
-不要开始 RENDER-02。不要 merge/push/release。不要标 DONE。
+不要 merge/push/release。不要标 DONE。本提交后用 `docs(ai)` 记录 kids 与 server SHA。
 
 ## Exact Next Action
 
-不要 push/merge/release。不要开始 RENDER-02。不要标 IMG-02 `DONE`。下一位若要继续，先读 kids `8c7c2d8` 与 server `8710914`，再等操作者授权下一刀（RENDER-02 仍 BACKLOG）。
+本提交纳入 kids RENDER-02 spec/计划/文档后，再提交 `docs(ai): record RENDER-02 kids and server commit SHAs`。不要 push。不要标 `DONE`。
 
 ## Recovery Notes
 
-- Spec：`docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
-- Plan：`docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md`
-- Server：`.worktrees/cognitive-card-server-knowledge-core` @ `8710914`
-- Combined gate：99 ran；97 PASS；2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`）
+- Spec：`docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md`
+- Plan：`docs/superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md`
+- Server：`.worktrees/cognitive-card-server-knowledge-core` @ `427bf89`

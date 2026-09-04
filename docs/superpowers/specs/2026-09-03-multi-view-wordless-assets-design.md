@@ -179,9 +179,9 @@ CLI 与 HTTP 同一函数。library 根由调用方显式注入。本机验收�
 
 ## 13. 与 COMPOSE-01 / RENDER-02
 
-COMPOSE-01 继续只取 `hero.png`。本刀 focused 测试须断言 compose 夹具不读取 `views/`。
+COMPOSE-01 继续只取 `hero.png`。本刀 focused 测试须断言 compose **打印**夹具不读取 `views/`。
 
-RENDER-02 可按 sha 引用已存额外 PNG；不得把本刀完成条件写成「四卡上已有三视板」。无图 generate 路径保持可用。
+RENDER-02 可按 sha 在 **HTML** 里引用已存额外 PNG；不得把本刀完成条件写成「四卡上已有三视板」。无图 generate 路径保持可用。请图与 `illustration-view-v1` 扩写留在本刀（IMG），不挪到 RENDER-02。RENDER-02 spec：[模块铬](2026-09-04-legend-module-chrome-design.md)。
 
 不得把额外视图登记为新的 `projection.family`。
 

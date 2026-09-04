@@ -288,7 +288,7 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 23. **`API-01`**：本机已实施（`91b7cf3`；含 TPL 归一）。操作台扩展提示词 → ChatGPT 会员 → 贴回复 → 四对象 current。见 [本刀设计](superpowers/specs/2026-09-02-operator-free-prompt-knowledge-compile-design.md)。未现网、未 merge `main`。
 24. **`LEGEND-01` 投影图例**：spec Approved。server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交（未 push、未生产）。认知角色凡例约束编译与呈现槽；不改 Knowledge Core schema。见 [投影图例](superpowers/specs/2026-09-03-projection-legend-v1-design.md)。
 25. **`IMG-02` 多视图无字资产**：spec Approved。server `knowledge-pipeline-v1` @ `8710914` 已本地提交（未 push、未生产）。IMG-01 isolate 主图并存；额外像素键可选；不经 mapping-lock。见 [多视图无字资产](superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md)。
-26. **`RENDER-02` 图例模块铬**：BACKLOG。依赖 LEGEND-01；精确状态见路线图。
+26. **`RENDER-02` 图例模块铬**：spec Approved，实施计划已落盘。server `knowledge-pipeline-v1` @ `427bf89` 已本地提交（未 push、未生产）。屏幕 HTML 按角色换壳；打印 PNG 不变；三视/剖面/爆炸提示词仍属 IMG-02。不标 `DONE`。精确状态见路线图。见 [模块铬](superpowers/specs/2026-09-04-legend-module-chrome-design.md)。
 27. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
 28. 第二个哺乳动物一致性验收仍依赖模板族。
 

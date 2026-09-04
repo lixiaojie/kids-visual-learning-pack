@@ -2,31 +2,32 @@
 
 ## Metadata
 
-- Updated At: 2026-09-03
+- Updated At: 2026-09-04
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `8c7c2d8`；server `knowledge-pipeline-v1` @ `8710914`（本地提交；未 push）
-- Base Commit: 8c7c2d8
+- Branch: kids `main` @ `4bb276f`；server `knowledge-pipeline-v1` @ `427bf89`（本地提交；未 push）
+- Base Commit: 4bb276f
 
 ## Objective
 
-IMG-02：spec Approved，实施计划已落盘。server `8710914` 已本地提交 Tasks 1.1–3.3。kids 文档一并提交。未 push、不标 DONE。RENDER-02 未开始。
+RENDER-02：图例模块铬 spec 已 Approved、实施计划已落盘；server `427bf89` 已本地提交；kids 文档一并提交。空角色不画假框；清场区无插图；字仍由服务器排；无图 generate 仍可用。不 merge/push/release。不标 IMG-02 / LEGEND-01 / COMPOSE-01 / RENDER-02 `DONE`。
 
 ## Background
 
-LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地提交。IMG-02：IMG-01 isolate 主图并存；额外像素键可选；同一 illustration-intent；不经 mapping-lock。RENDER-02 不在本任务。
+LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地提交。IMG-02 已在 kids `8c7c2d8` / SHA 记录 `4bb276f`、server `8710914` 本地提交。COMPOSE-01 仍只读 `hero.png`；额外 PNG 在 `views/`。旧 Skill 剑龙卡是模块种类标尺，不是整卡烧字合同。兔子 mapping-artifact 观察卡加主图带后 `look` 剩余约 117 px。
 
 ## Acceptance Criteria
 
-- [x] spec 写入 `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md` 并标为 Approved（操作者审阅通过）
+- [x] spec 写入 `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md` 并标为 Approved（操作者审阅通过）
 - [x] spec 收录文档地图
-- [x] 系统总设计 §11 与路线图指向 IMG-02 本刀
-- [x] 显式决定 IMG-01 单主图路径是否并存（并存；`hero.png` = `observe.isolate`）
-- [x] 完成条件覆盖：无实例不请图、烧字失败、`learning_place` 不得画成栖息地
+- [x] 系统总设计 §11 与路线图指向 RENDER-02 本刀
+- [x] 显式决定铬画在观察卡、知识卡、或两者（HTML 两卡都画；打印 PNG 不变）
+- [x] 完成条件覆盖：空模块不画假框、清场区无插图、既有无图 generate 仍可用
+- [x] 三视/剖面/爆炸提示词划归 IMG，不在本刀
 - [x] 实施计划落盘
 - [x] 不覆盖未提交 `outputs/`
-- [x] server 按计划实施并本地提交（`8710914`；未 push）
-- [x] 本刀未开始 RENDER-02
+- [x] spec Approved；计划已落盘；server `427bf89` 已本地提交；本刀为 kids 文档提交
+- [x] 不标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 / RENDER-02 `DONE`
 
 ## In Scope
 
@@ -35,27 +36,33 @@ LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地
 - `docs/cognitive-card-os-roadmap.md`
 - `docs/README.md`
 - `docs/cognitive-card-os-system-design.md`
+- `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md`
+- `docs/superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md`
 - `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md`（只改后续消费面交叉引用，若需要）
-- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
-- `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md`
+- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`（只改后续消费面交叉引用，若需要）
+- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`（只改后续消费面交叉引用，若需要）
 
 ## Out of Scope
 
-- RENDER-02 模块铬
-- 改四对象顶层 schema、v1 FACT 键集、KNOW-03 七面 id
-- 接图像 API / Skill claim / 生产 OCR
+- 再改 server 代码（Tasks 1.1–3.2 已提交为 `427bf89`；本刀仅 kids 文档）
+- 改四对象顶层 schema、v1 FACT 键集、KNOW-03 七面 id、ACCEPT-01 等分版式
+- 用观感倒逼补 Knowledge Core 事实
+- 退回整卡烧字；接图像 API / Skill claim / 生产 OCR
 - merge / push / release / 现网
 - `outputs/`、server `uv.lock`
-- 标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 `DONE`
-- 把 rabbit-composite mapping-lock 的 `LEGEND_ROLE_MISSING` 当成 IMG-02 缺陷去放宽图例门禁
+- 标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 / RENDER-02 `DONE`
 
 ## Constraints
 
 - 不 merge/push/release。
 - 不覆盖未提交 `outputs/`。
 - 不把 server `uv.lock` 纳入提交。
-- 不把「视法出齐」写成知识源准入。
-- 不标 IMG-02 `DONE`（未生产）。
+- 不改 ACCEPT-01 等分版式合同。
+- 不把「视法出齐 / 模块出齐」写成知识源准入。
+- 空角色跳过，禁止为填满画假框。
+- 插图不得进入 `record` / `trace` / `copy` / `sources` / `safety` / `confusion` / `uncertain` / `blank`。
+- 字由服务器排，不烧进图。
+- 不标 RENDER-02 `DONE`（未生产）。
 
 ## Verification Plan
 
@@ -66,8 +73,9 @@ LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
-- `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md`
 - `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md`
-- `docs/superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md`
-- `docs/cognitive-card-os-roadmap.md` § IMG-02
+- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
+- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`
+- `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md`
+- `docs/superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md`
+- `docs/cognitive-card-os-roadmap.md` § RENDER-02

@@ -2,7 +2,7 @@
 
 - Status: Approved for this execution tranche
 - Date: 2026-09-03
-- Related: [ADR-002](../../decisions/ADR-002-knowledge-core-and-projection-architecture.md)、[ADR-003](../../decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md)、[ADR-004](../../decisions/ADR-004-single-operator-main-flow.md)、[IMG-01](2026-09-02-operator-illustration-hero-page-design.md)、[WB-02](2026-09-01-operator-mapping-scheme-design.md)、[WB-03](2026-09-01-operator-mapping-artifact-publish-design.md)、[加权版式](2026-09-02-mapping-artifact-weighted-layout-design.md)、[RENDER-01](2026-08-31-locked-four-card-render-design.md)
+- Related: [ADR-002](../../decisions/ADR-002-knowledge-core-and-projection-architecture.md)、[ADR-003](../../decisions/ADR-003-knowledge-pipeline-workspace-and-branch-governance.md)、[ADR-004](../../decisions/ADR-004-single-operator-main-flow.md)、[IMG-01](2026-09-02-operator-illustration-hero-page-design.md)、[WB-02](2026-09-01-operator-mapping-scheme-design.md)、[WB-03](2026-09-01-operator-mapping-artifact-publish-design.md)、[加权版式](2026-09-02-mapping-artifact-weighted-layout-design.md)、[RENDER-01](2026-08-31-locked-four-card-render-design.md)、[RENDER-02](2026-09-04-legend-module-chrome-design.md)
 - Does not implement: OpenAI 图像 API；ChatGPT 整卡烧字；Codex claim；新 Projection family；知识卡插图；可交互烧字页；Pillow 样式大改；生产安装
 - Authority: kids 仓为产品规范；实现落在 server `knowledge-pipeline-v1`
 
@@ -132,6 +132,8 @@ Renderer Binding：
 - `CN_KNOW` / `EN_KNOW`：无图，只排锁定文案。
 
 主图经已有 `GET .../knowledge-illustration/{intent_id}/image` 拉取。禁止匿名读图。
+
+屏幕 HTML 按角色换壳属 [RENDER-02](2026-09-04-legend-module-chrome-design.md)，不在本刀。本刀打印合同不因此作废。
 
 主题详情页增加「合成展示」入口；仅当该 topic 有 current 时显示按钮，真正能否合成仍由 POST 门禁决定。
 

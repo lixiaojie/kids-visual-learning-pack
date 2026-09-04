@@ -236,7 +236,7 @@ IMG-01 现网合同（一张主图）不因本 spec 作废。IMG-02 不得把「
 | --- | --- | --- |
 | LEGEND-01 实施 | 服务器登记表、编译提示词、解析与失败码、映射按角色聚槽 | 多图、模块铬皮肤 |
 | IMG-02 | 资产键 = 角色 + 画法；仅已有实例；仍无字。spec：[多视图无字资产](2026-09-03-multi-view-wordless-assets-design.md)。IMG-01 主图并存 | 改 Core；模块铬；视法出齐准入 |
-| RENDER-02 | 模块铬、时间条、步骤条、三视板、环境区；空则跳过 | 用观感倒逼补事实 |
+| RENDER-02 | 屏幕 HTML 模块铬；打印不变；额外 PNG 按 sha 引用。spec：[模块铬](2026-09-04-legend-module-chrome-design.md) | 用观感倒逼补事实；改 illustration 提示词 |
 
 ## 12. 复杂度
 

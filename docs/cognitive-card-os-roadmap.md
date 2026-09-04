@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-09-03
+最近更新：2026-09-04
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`RENDER-02` 图例模块铬（spec Approved；计划已落盘；server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -74,7 +74,7 @@
 | SITE-01 | Card OS 替换 `kids-world` | DONE | 现网根 CTA 指向画廊；Nginx 已反代 `/card-os/` |
 | SITE-02 | 旧站兼容与重定向 | DONE | 现网 stub/hash 已抽查；回滚仍是 `activeMode=parallel` |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
-| RENDER-02 | 图例模块铬 | BACKLOG | 依赖 LEGEND-01；见上表 |
+| RENDER-02 | 图例模块铬 | IN PROGRESS | spec Approved；计划已落盘；server `427bf89` 已本地提交；未 merge/push/release；不标 DONE |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
@@ -358,7 +358,7 @@
 - 独立设计：[投影图例](superpowers/specs/2026-09-03-projection-legend-v1-design.md)。
 - 实施计划：[投影图例实施](superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md)。
 - 已实现：server `knowledge-pipeline-v1` @ `f9baf8f`：`projection_legend/` 登记表与解析、编译提示词/门禁、映射 `legend` 块。combined focused 117 PASS。未 push。
-- 下一动作：不要 merge/push/release。不要开始 RENDER-02。
+- 下一动作：不要 merge/push/release。模块铬见 RENDER-02 spec，不在本条实施。
 - 完成条件：服务器登记表与编译提示词只列出图例角色；未知角色/双角色/`sequence` 无序/`blank` 含命题失败关闭；兔子 current 仅靠 entity 别名仍可 convert；对照旧 Skill 剑龙卡只验收模块该亮/该空，不对像素。因未生产，本条不得标 `DONE`。
 
 ### IMG-02 多视图无字资产
@@ -371,17 +371,21 @@
 - 独立设计：[多视图无字资产](superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md)。
 - 实施计划：[多视图无字资产实施](superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md)。
 - 已实现：server `knowledge-pipeline-v1` @ `8710914`：额外像素槽与同一 illustration-intent；compose 仍只读 hero。combined focused 99 ran / 97 PASS / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`，LEGEND-01 夹具）。未 push。
-- 下一动作：不要 push/merge/release。不要开始 RENDER-02。不要标 `DONE`。
+- 下一动作：不要 push/merge/release。不要标 `DONE`。更细的「对象类型 → 画法」提示词若要做，另立 IMG 切片，不并进 RENDER-02。
 - 完成条件：focused 测试覆盖「无实例不请图」、烧字失败、`learning_place` 不得画成栖息地。因未生产，本条不得标 `DONE`。
 
 ### RENDER-02 图例模块铬
 
-- 状态：`BACKLOG`
-- 权威仓库：产品规范 `kids-visual-learning-pack`；实现将落在 `cognitive-card-server`。
-- 依赖：LEGEND-01；RENDER-01 / COMPOSE-01 清场区与无字字形权威。
-- 范围：按角色画模块铬（色块、时间条、步骤条、三视板、环境区、描红/抄写）。空角色跳过。字仍由服务器排。对照旧 Skill 剑龙卡验收模块种类，不对整卡像素。
-- 非范围：用观感倒逼补 Knowledge Core 事实；退回整卡烧字；改 ACCEPT-01 等分版式合同。
-- 完成条件：另立 spec 与实施计划；空模块不画假框；清场区无插图；既有无图 generate 仍可用。
+- 状态：`IN PROGRESS`（spec Approved；实施计划已落盘；server `427bf89` 已本地提交）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现落在 `cognitive-card-server` `knowledge-pipeline-v1` worktree。
+- 依赖：LEGEND-01；RENDER-01 / COMPOSE-01 清场区与无字字形权威；IMG-02 额外 PNG 按 sha 可选引用。
+- 范围：同一 compose HTML 四段页按 `legend_role` 收模块。打印 PNG 字节不变。空角色跳过。字仍由服务器排。对照旧 Skill 剑龙卡验收模块种类，不对整卡像素。
+- 非范围：改 illustration / compile 提示词；对象类型 → 画法清单（属 IMG）；用观感倒逼补 Knowledge Core 事实；退回整卡烧字；改 ACCEPT-01 等分版式合同；打印铬。
+- 独立设计：[模块铬](superpowers/specs/2026-09-04-legend-module-chrome-design.md)。
+- 实施计划：[模块铬实施](superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md)。
+- 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `427bf89`：compose chrome / pipeline / ops pages / compose tests。combined focused 107 PASS / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。不要 push。
+- 完成条件：空模块不画假框；清场区无插图；既有无图 generate 仍可用；打印 sha 不变。因未生产，本条不得标 `DONE`。
 
 ### AUTH-01 Card OS 身份与权限
 
@@ -680,7 +684,7 @@
 22. **COMPOSE-01** 合成展示：本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产。
 23. **LEGEND-01** 投影图例：spec Approved；kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不标 DONE。
 24. **IMG-02** 多视图无字资产（IN PROGRESS；kids `8c7c2d8`、server `8710914` 已本地提交；未 push；不标 DONE）。
-25. **RENDER-02** 图例模块铬（BACKLOG；依赖 LEGEND-01；取代无名的「打印样式调优」切片）。
+25. **RENDER-02** 图例模块铬（IN PROGRESS；spec Approved；计划已落盘；server `427bf89` 已本地提交；未 merge/push/release；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -690,9 +694,14 @@
 
 ## 6. 更新记录
 
+### 2026-09-04
+
+- RENDER-02：spec Approved；计划已落盘。server `knowledge-pipeline-v1` @ `427bf89` 已本地提交（compose chrome / pipeline / ops pages / compose tests）。combined focused 107 PASS / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。不标 `DONE`。
+
 ### 2026-09-03
 
-- IMG-02：kids `8c7c2d8`、server `knowledge-pipeline-v1` @ `8710914` 已本地提交；combined focused 99 ran / 97 PASS / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING` on `_short_authoring()` / rabbit-composite；LEGEND-01 夹具，非 IMG-02）。未 push。不标 `DONE`。RENDER-02 仍 BACKLOG。
+- RENDER-02：spec 已写 `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md`（待操作者审阅本文件）。compose HTML 按角色换壳；打印 PNG 不变；三视/剖面/爆炸提示词仍属 IMG-02。未实施、未 push、不标 `DONE`。
+- IMG-02：kids `8c7c2d8`、server `knowledge-pipeline-v1` @ `8710914` 已本地提交；combined focused 99 ran / 97 PASS / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING` on `_short_authoring()` / rabbit-composite；LEGEND-01 夹具，非 IMG-02）。未 push。不标 `DONE`。
 - IMG-02：spec Approved `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`；实施计划 `docs/superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md`。IMG-01 isolate 主图并存；额外像素键可选；同一 illustration-intent；不经 mapping-lock。
 - LEGEND-01：kids `1598e74`、server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交；combined focused 117 PASS。路线图仍 `IN PROGRESS`。未 push、不标 `DONE`。
 - LEGEND-01 / IMG-02 / RENDER-02：操作者确认质量标尺为旧 Skill 卡的模块密度、禁止整卡烧字；图例按认知角色而非知识分类；`sequence` 合并时间链/事件链；三视/剖面/爆炸为 `observe` 可选画法；环境为 `setting`。spec Approved；实施计划 `docs/superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md`。
