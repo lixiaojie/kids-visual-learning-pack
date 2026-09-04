@@ -77,6 +77,9 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Projection Legend v1 Design](superpowers/specs/2026-09-03-projection-legend-v1-design.md) | LEGEND-01: closed cognitive roles + visual grammar; empty modules omitted; not knowledge taxonomy | Approved |
 | [Multi-View Wordless Assets Design](superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md) | IMG-02: optional extra wordless PNGs keyed by legend role+view; IMG-01 isolate hero kept; not RENDER-02 | Approved |
 | [Legend Module Chrome Design](superpowers/specs/2026-09-04-legend-module-chrome-design.md) | RENDER-02: regroup compose HTML by legend role; print PNG unchanged; extra views by sha only; not IMG prompts | Approved |
+| [Operator Iterative Workflow Design](superpowers/specs/2026-09-04-operator-iterative-workflow-design.md) | FLOW-01: two-round prompts, graph+form freeze with Core/media-plan split writes, per-node images, gallery of locked packages; not an implementation tranche | Approved |
+| [Operator Framework Prompt Round Design](superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md) | API-01-R1: dinosaur-entity framework prompt on compile-intent; skeleton cannot Confirm current; one-shot complete path kept | Approved |
+| [Operator Complete Prompt Round Design](superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md) | API-01-R2: same intent advances to complete authoring; image_suggestions stay on the intent; no media-plan file | Approved |
 | [Entity Knowledge Coverage Design](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md) | KNOW-03: pluggable coverage + seven-topic compatibility suite; not projection | Approved/Implemented |
 | [Knowledge Suite Library Seed Design](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md) | KNOW-04: seed six allowed suite topics into production library current; not Gwen; not WB-02 | Approved/Implemented |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
@@ -106,6 +109,8 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Projection Legend v1 Implementation](superpowers/plans/2026-09-03-projection-legend-v1-implementation-plan.md) | LEGEND-01: registry, role resolve, compile gate, mapping legend block; not IMG-02/RENDER-02 | In Progress |
 | [Multi-View Wordless Assets Implementation](superpowers/plans/2026-09-03-multi-view-wordless-assets-implementation-plan.md) | IMG-02: optional extra PNGs on the same illustration-intent; IMG-01 hero kept; not RENDER-02 | In Progress |
 | [Legend Module Chrome Implementation](superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md) | RENDER-02: compose HTML modules by legend role; print PNG unchanged; not IMG prompts; server `427bf89` local; not production | In Progress |
+| [Operator Framework Prompt Round Implementation](superpowers/plans/2026-09-04-operator-framework-prompt-round-implementation-plan.md) | API-01-R1: dinosaur-entity framework round on compile-intent; no Confirm current; not R2; server `4f76aca` local; not production | In Progress |
+| [Operator Complete Prompt Round Implementation](superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md) | API-01-R2: same-intent advance, complete authoring, intent-sidecar suggestions; server `4f76aca` local; not media-plan; not production | In Progress |
 
 ## Operations, Compliance, and Decisions
 

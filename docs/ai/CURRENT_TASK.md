@@ -5,67 +5,59 @@
 - Updated At: 2026-09-04
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `05dfeaa`；server `knowledge-pipeline-v1` @ `427bf89`（本地提交；未 push）
-- Base Commit: 05dfeaa
+- Branch: kids `main`（本提交记录 FLOW-01/R1/R2 文档）；server `knowledge-pipeline-v1` @ `4f76aca`
+- Base Commit: f33a583
 
 ## Objective
 
-RENDER-02：图例模块铬 spec 已 Approved、实施计划已落盘；kids `05dfeaa`、server `427bf89` 已本地提交。空角色不画假框；清场区无插图；字仍由服务器排；无图 generate 仍可用。不 merge/push/release。不标 IMG-02 / LEGEND-01 / COMPOSE-01 / RENDER-02 `DONE`。
+按计划实施 API-01-R2：同一 dinosaur-entity intent 显式 advance、完整提示词内嵌骨架、authoring 可 Confirm、image_suggestions 进 intent 旁路、return-framework 回到骨架。启用 KNOW-01 `paleontology + entity + fossil-animal`。不写 media-plan。不 merge/push/release。不标 `DONE`。server 已本地提交 `4f76aca`。
 
 ## Background
 
-LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地提交。IMG-02 已在 kids `8c7c2d8` / SHA 记录 `4bb276f`、server `8710914` 本地提交。COMPOSE-01 仍只读 `hero.png`；额外 PNG 在 `views/`。旧 Skill 剑龙卡是模块种类标尺，不是整卡烧字合同。兔子 mapping-artifact 观察卡加主图带后 `look` 剩余约 117 px。
+FLOW-01 Approved。操作者批准 R2 spec 并要求实施与 commit。串行 subagent 已跑完计划 Tasks 1–5。server `4f76aca` 已本地提交（不含 `uv.lock`）。
 
 ## Acceptance Criteria
 
-- [x] spec 写入 `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md` 并标为 Approved（操作者审阅通过）
-- [x] spec 收录文档地图
-- [x] 系统总设计 §11 与路线图指向 RENDER-02 本刀
-- [x] 显式决定铬画在观察卡、知识卡、或两者（HTML 两卡都画；打印 PNG 不变）
-- [x] 完成条件覆盖：空模块不画假框、清场区无插图、既有无图 generate 仍可用
-- [x] 三视/剖面/爆炸提示词划归 IMG，不在本刀
-- [x] 实施计划落盘
-- [x] 不覆盖未提交 `outputs/`
-- [x] spec Approved；计划已落盘；kids `05dfeaa`、server `427bf89` 已本地提交
-- [x] 不标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 / RENDER-02 `DONE`
+- [x] R2 spec Approved `docs/superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md`
+- [x] 实施计划落盘 `docs/superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md`
+- [x] Task 1：fossil-animal enabled + complete 模板 + `expand_complete_prompt`
+- [x] Task 2：`parse_complete_reply` + suggestions sidecar
+- [x] Task 3：advance / complete reply / return-framework / confirm；cat 路径保持
+- [x] Task 4：HTTP/ops HTML；无 token 壳不含提示词
+- [x] Task 5：kids 账本；不标 API-01 / API-01-R1 / FLOW-01 `DONE`
+- [x] 不写 media-plan library 文件
+- [x] 不 merge/push/release、不覆盖 `outputs/`、不提交 `uv.lock`
 
 ## In Scope
 
+- server worktree `knowledge-pipeline-v1` under `.worktrees/cognitive-card-server-knowledge-core`（classification registry、compile 模块、ops HTTP/pages、http errors、compile/classification 单测）
 - `docs/ai/CURRENT_TASK.md`
 - `docs/ai/HANDOFF.md`
 - `docs/cognitive-card-os-roadmap.md`
-- `docs/README.md`
 - `docs/cognitive-card-os-system-design.md`
-- `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md`
-- `docs/superpowers/plans/2026-09-04-legend-module-chrome-implementation-plan.md`
-- `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md`（只改后续消费面交叉引用，若需要）
-- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`（只改后续消费面交叉引用，若需要）
-- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`（只改后续消费面交叉引用，若需要）
+- `docs/README.md`
+- `docs/superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md`
+- `docs/superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md`
 
 ## Out of Scope
 
-- 再改 server 代码（Tasks 1.1–3.2 已提交为 `427bf89`；本刀仅 kids 文档）
-- 改四对象顶层 schema、v1 FACT 键集、KNOW-03 七面 id、ACCEPT-01 等分版式
-- 用观感倒逼补 Knowledge Core 事实
-- 退回整卡烧字；接图像 API / Skill claim / 生产 OCR
-- merge / push / release / 现网
+- media-plan library 文件、GRAPH / FORM / FREEZE、生图、现网、merge/push/release
+- 新 ADR、改四对象 schema、KNOW-04 生产 library
+- 其他对象类型模板
 - `outputs/`、server `uv.lock`
-- 标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 / RENDER-02 `DONE`
+- 标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / API-01-R1 / IMG-02 / RENDER-02 / FLOW-01 `DONE`
+- 修 ops mapping-lock `LEGEND_ROLE_MISSING`
+- 回退未提交的 API-01-R1 server 改动
 
 ## Constraints
 
-- 不 merge/push/release。
-- 不覆盖未提交 `outputs/`。
-- 不把 server `uv.lock` 纳入提交。
-- 不改 ACCEPT-01 等分版式合同。
-- 不把「视法出齐 / 模块出齐」写成知识源准入。
-- 空角色跳过，禁止为填满画假框。
-- 插图不得进入 `record` / `trace` / `copy` / `sources` / `safety` / `confusion` / `uncertain` / `blank`。
-- 字由服务器排，不烧进图。
-- 不标 RENDER-02 `DONE`（未生产）。
+- 不 merge/push/release。未要求不 commit。计划默认不 commit。
+- 不覆盖未提交 `outputs/`。不提交 server `uv.lock`。
+- 省略 `object_type` 的既有编译路径不得改坏。
 
 ## Verification Plan
 
+- server worktree combined focused gate（classification + compile + compile HTTP + ops HTTP + auth）：已跑；新测通过；2 已知 `LEGEND_ROLE_MISSING` 未修
 - `bash scripts/ai/check-task-state.sh`
 - `bash scripts/ai/check-handoff.sh`
 - `bash scripts/ai/check-doc-governance.sh`
@@ -73,9 +65,7 @@ LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-09-03-projection-legend-v1-design.md`
-- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
-- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`
-- `docs/superpowers/specs/2026-08-31-locked-four-card-render-design.md`
-- `docs/superpowers/specs/2026-09-02-mapping-artifact-weighted-layout-design.md`
-- `docs/cognitive-card-os-roadmap.md` § RENDER-02
+- `docs/superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md`
+- `docs/superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md`
+- `docs/superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md`
+- `docs/superpowers/specs/2026-09-04-operator-iterative-workflow-design.md`

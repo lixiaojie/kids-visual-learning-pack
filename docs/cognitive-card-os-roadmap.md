@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`API-01-R2` 完整对象第二轮（spec Approved；server `4f76aca` 已本地提交；未 merge/push/release、未生产）。`API-01-R1` 恐龙粗框架提示词（同提交 `4f76aca`；未生产）。`FLOW-01` 迭代工作流（spec Approved；程序不实施）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -75,6 +75,14 @@
 | SITE-02 | 旧站兼容与重定向 | DONE | 现网 stub/hash 已抽查；回滚仍是 `activeMode=parallel` |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
 | RENDER-02 | 图例模块铬 | IN PROGRESS | kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE |
+| FLOW-01 | 操作台迭代工作流 | IN PROGRESS | spec Approved；程序不实施；R1/R2 server `4f76aca` 本地 |
+| API-01-R1 | 对象类型粗框架提示词 | IN PROGRESS | server `4f76aca` 已本地提交；未生产；不标 DONE |
+| API-01-R2 | 完整对象第二轮编译 | IN PROGRESS | server `4f76aca` 已本地提交；focused 96 PASS / 2 已知 FAIL；不标 DONE |
+| GRAPH-01 | 知识图谱初版 | BACKLOG | 依赖 Confirm current 与 LEGEND-01 |
+| FORM-01 | 节点形态计划 | BACKLOG | text / wordless-image / interactive |
+| FREEZE-01 | 排版冻结 | BACKLOG | mapping + media-plan；钉 Core 身份 |
+| IMG-03 | 按冻结节点请图回填 | BACKLOG | 依赖 FREEZE-01；缺槽不失败 |
+| PUBLISH-02 | 锁定带图投影上画廊 | BACKLOG | 依赖人锁定与 PUBLISH-01 |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
@@ -387,6 +395,42 @@
 - 下一动作：不要 merge/push/release。不要标 `DONE`。不要 push。
 - 完成条件：空模块不画假框；清场区无插图；既有无图 generate 仍可用；打印 sha 不变。因未生产，本条不得标 `DONE`。
 
+### FLOW-01 操作台迭代工作流
+
+- 状态：`IN PROGRESS`（spec Approved；程序不实施；不得标 `DONE`）
+- 权威仓库：`kids-visual-learning-pack`（程序规范）；server 只按当前子刀 spec/计划改。
+- 依赖：ADR-002/003/004；API-01 扩词机制；LEGEND-01；WB-02 mapping；IMG-01 无字合同；PUBLISH-01 / PORTAL-01。
+- 范围：两轮提示词、图谱初版、形态计划、排版冻结、按节点请图、锁定包进画廊。分类变更写 Core revision；形态变更写 media-plan。
+- 非范围：不把本条当一刀实施；不新开 ADR；不接模型 API；不可交互运行时；不打印铬；不 merge/push/release。
+- 独立设计：[迭代工作流](superpowers/specs/2026-09-04-operator-iterative-workflow-design.md)。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。R1/R2 server `4f76aca` 已本地提交；程序仍不整条实施。
+- 完成条件：子刀按竖切落地且对照旧剑龙卡只验收模块种类。因程序未竖切完，本条不得标 `DONE`。
+
+### API-01-R1 对象类型粗框架提示词
+
+- 状态：`IN PROGRESS`（server `4f76aca` 已本地提交；未生产；不得标 `DONE`）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现 `cognitive-card-server` `knowledge-pipeline-v1`。
+- 依赖：FLOW-01 Approved；API-01 `compile-intent`。
+- 范围：`object_type=dinosaur-entity` 扩框架提示词；解析 `cognitive-card-knowledge-framework-v1`；`state=framework`；禁止 Confirm current。省略类型时既有一轮路径不变。
+- 非范围：R2、media-plan、其他对象类型模板、现网、merge/push/release。
+- 独立设计：[粗框架](superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md)。
+- 实施计划：[计划](superpowers/plans/2026-09-04-operator-framework-prompt-round-implementation-plan.md)。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。
+- 完成条件：骨架可复制/可贴/不可入库；`cat` 一轮路径仍过。因未生产，本条不得标 `DONE`。
+
+### API-01-R2 完整对象第二轮编译
+
+- 状态：`IN PROGRESS`（server `4f76aca` 已本地提交；未生产；不得标 `DONE`）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现 `cognitive-card-server` `knowledge-pipeline-v1`。
+- 依赖：API-01-R1 骨架路径；KNOW-01 单元格启用。
+- 范围：同一 dinosaur-entity intent 显式 advance；完整提示词内嵌骨架；authoring 可 Confirm；`image_suggestions` 进 intent 旁路；`return-framework` 回到骨架。该分类单元格改为 `enabled`。
+- 非范围：media-plan library 文件、GRAPH/FORM/FREEZE、其他对象类型、现网、merge/push/release。
+- 独立设计：[完整第二轮](superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md)。
+- 实施计划：[计划](superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md)。
+- 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `4f76aca`：fossil-animal enabled、complete 模板、`advance` / `return-framework`、suggestions sidecar、ops Start round 2。combined focused 98 ran / 96 PASS / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。
+- 完成条件：完整对象可 Confirm；建议不进 Core；一轮 cat 路径仍过。因未生产，本条不得标 `DONE`。
+
 ### AUTH-01 Card OS 身份与权限
 
 - 状态：`IN PROGRESS`
@@ -696,6 +740,10 @@
 
 ### 2026-09-04
 
+- API-01-R2：server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交（叠 R1；不含 `uv.lock`）。combined focused 98 ran / 96 PASS / 2 已知 `LEGEND_ROLE_MISSING`。未 merge/push/release。不标 `DONE`。
+- API-01-R1：同提交 `4f76aca`（框架模板、骨架解析、`state=framework`、confirm 409、ops 类型选择）。未生产。不标 `DONE`。
+- API-01-R1：spec Approved `docs/superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md`；实施计划 `docs/superpowers/plans/2026-09-04-operator-framework-prompt-round-implementation-plan.md`。恐龙 entity 框架 round；骨架不得 Confirm current；既有一轮路径保持。
+- FLOW-01：spec Approved `docs/superpowers/specs/2026-09-04-operator-iterative-workflow-design.md`。分类改 Core、形态改 media-plan。程序不实施。
 - RENDER-02：kids `05dfeaa`、server `knowledge-pipeline-v1` @ `427bf89` 已本地提交（compose chrome / pipeline / ops pages / compose tests）。combined focused 107 PASS / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。不标 `DONE`。
 
 ### 2026-09-03
