@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`RENDER-02` 图例模块铬（spec Approved；计划已落盘；server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -74,7 +74,7 @@
 | SITE-01 | Card OS 替换 `kids-world` | DONE | 现网根 CTA 指向画廊；Nginx 已反代 `/card-os/` |
 | SITE-02 | 旧站兼容与重定向 | DONE | 现网 stub/hash 已抽查；回滚仍是 `activeMode=parallel` |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
-| RENDER-02 | 图例模块铬 | IN PROGRESS | spec Approved；计划已落盘；server `427bf89` 已本地提交；未 merge/push/release；不标 DONE |
+| RENDER-02 | 图例模块铬 | IN PROGRESS | kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
@@ -376,7 +376,7 @@
 
 ### RENDER-02 图例模块铬
 
-- 状态：`IN PROGRESS`（spec Approved；实施计划已落盘；server `427bf89` 已本地提交）
+- 状态：`IN PROGRESS`（spec Approved；实施计划已落盘；kids `05dfeaa`、server `427bf89` 已本地提交）
 - 权威仓库：产品规范 `kids-visual-learning-pack`；实现落在 `cognitive-card-server` `knowledge-pipeline-v1` worktree。
 - 依赖：LEGEND-01；RENDER-01 / COMPOSE-01 清场区与无字字形权威；IMG-02 额外 PNG 按 sha 可选引用。
 - 范围：同一 compose HTML 四段页按 `legend_role` 收模块。打印 PNG 字节不变。空角色跳过。字仍由服务器排。对照旧 Skill 剑龙卡验收模块种类，不对整卡像素。
@@ -684,7 +684,7 @@
 22. **COMPOSE-01** 合成展示：本机 focused 109 PASS；kids `18375cf`、server `ec22a33` 已本地提交；未生产。
 23. **LEGEND-01** 投影图例：spec Approved；kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不标 DONE。
 24. **IMG-02** 多视图无字资产（IN PROGRESS；kids `8c7c2d8`、server `8710914` 已本地提交；未 push；不标 DONE）。
-25. **RENDER-02** 图例模块铬（IN PROGRESS；spec Approved；计划已落盘；server `427bf89` 已本地提交；未 merge/push/release；不标 DONE）。
+25. **RENDER-02** 图例模块铬（IN PROGRESS；kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -696,7 +696,7 @@
 
 ### 2026-09-04
 
-- RENDER-02：spec Approved；计划已落盘。server `knowledge-pipeline-v1` @ `427bf89` 已本地提交（compose chrome / pipeline / ops pages / compose tests）。combined focused 107 PASS / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。不标 `DONE`。
+- RENDER-02：kids `05dfeaa`、server `knowledge-pipeline-v1` @ `427bf89` 已本地提交（compose chrome / pipeline / ops pages / compose tests）。combined focused 107 PASS / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。不标 `DONE`。
 
 ### 2026-09-03
 

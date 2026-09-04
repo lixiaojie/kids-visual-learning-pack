@@ -5,12 +5,12 @@
 - Updated At: 2026-09-04
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `4bb276f`；server `knowledge-pipeline-v1` @ `427bf89`（本地提交；未 push）
-- Base Commit: 4bb276f
+- Branch: kids `main` @ `05dfeaa`；server `knowledge-pipeline-v1` @ `427bf89`（本地提交；未 push）
+- Base Commit: 05dfeaa
 
 ## Objective
 
-RENDER-02：图例模块铬 spec 已 Approved、实施计划已落盘；server `427bf89` 已本地提交；kids 文档一并提交。空角色不画假框；清场区无插图；字仍由服务器排；无图 generate 仍可用。不 merge/push/release。不标 IMG-02 / LEGEND-01 / COMPOSE-01 / RENDER-02 `DONE`。
+RENDER-02：图例模块铬 spec 已 Approved、实施计划已落盘；kids `05dfeaa`、server `427bf89` 已本地提交。空角色不画假框；清场区无插图；字仍由服务器排；无图 generate 仍可用。不 merge/push/release。不标 IMG-02 / LEGEND-01 / COMPOSE-01 / RENDER-02 `DONE`。
 
 ## Background
 
@@ -26,7 +26,7 @@ LEGEND-01 已在 kids `1598e74` / SHA 记录 `6401ea6`、server `f9baf8f` 本地
 - [x] 三视/剖面/爆炸提示词划归 IMG，不在本刀
 - [x] 实施计划落盘
 - [x] 不覆盖未提交 `outputs/`
-- [x] spec Approved；计划已落盘；server `427bf89` 已本地提交；本刀为 kids 文档提交
+- [x] spec Approved；计划已落盘；kids `05dfeaa`、server `427bf89` 已本地提交
 - [x] 不标 IMG-01 / COMPOSE-01 / LEGEND-01 / API-01 / IMG-02 / RENDER-02 `DONE`
 
 ## In Scope
