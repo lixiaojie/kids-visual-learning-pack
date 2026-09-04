@@ -5,10 +5,10 @@
 - Updated At: 2026-09-04
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: f33a583
-- Kids HEAD: 本提交记录 FLOW-01 / R1 / R2 文档（SHA 下一条）
+- Base Commit: c32d4d2
+- Kids HEAD: c32d4d2
 - Server Branch: `knowledge-pipeline-v1` @ `4f76aca`
-- Working Tree: kids `outputs/` 未跟踪。server `uv.lock` 未跟踪。R1+R2 已本地提交。
+- Working Tree: kids `outputs/` 未跟踪。server `uv.lock` 未跟踪。
 - Task Status: **In Progress（API-01-R2 已本地提交 server `4f76aca`；未 merge/push/release、未生产。不标 DONE）。**
 
 ## Summary
@@ -26,7 +26,7 @@
 | Repository | File | State |
 | --- | --- | --- |
 | server | compile 框架+完整 round、classification、ops HTTP/pages、errors、单测、两套模板、`types.py` | 已提交 `4f76aca` |
-| kids | FLOW-01 / R1 / R2 spec 与计划；README、路线图、系统总设计、CURRENT_TASK、HANDOFF | 本提交 |
+| kids | FLOW-01 / R1 / R2 spec 与计划；README、路线图、系统总设计、CURRENT_TASK、HANDOFF | 已提交 `c32d4d2` |
 | kids | `outputs/` | 未跟踪；未纳入 |
 | server | `uv.lock` | 未跟踪；未纳入 |
 
@@ -41,7 +41,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` 本提交 + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
+| kids 治理 | `main` @ `c32d4d2` + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
 | 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `4f76aca` | `uv.lock` 仍未跟踪 |
 | 本机验收 | focused unittest | 不开 8765（本刀未做浏览器验收） |
 

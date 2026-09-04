@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`API-01-R2` 完整对象第二轮（spec Approved；server `4f76aca` 已本地提交；未 merge/push/release、未生产）。`API-01-R1` 恐龙粗框架提示词（同提交 `4f76aca`；未生产）。`FLOW-01` 迭代工作流（spec Approved；程序不实施）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`API-01-R2` 完整对象第二轮（spec Approved；kids `c32d4d2`、server `4f76aca` 已本地提交；未 merge/push/release、未生产）。`API-01-R1` 恐龙粗框架提示词（同提交；未生产）。`FLOW-01` 迭代工作流（spec Approved；程序不实施）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -740,7 +740,7 @@
 
 ### 2026-09-04
 
-- API-01-R2：server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交（叠 R1；不含 `uv.lock`）。combined focused 98 ran / 96 PASS / 2 已知 `LEGEND_ROLE_MISSING`。未 merge/push/release。不标 `DONE`。
+- API-01-R2：kids `c32d4d2`、server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交（叠 R1；不含 `uv.lock` / `outputs/`）。combined focused 98 ran / 96 PASS / 2 已知 `LEGEND_ROLE_MISSING`。未 merge/push/release。不标 `DONE`。
 - API-01-R1：同提交 `4f76aca`（框架模板、骨架解析、`state=framework`、confirm 409、ops 类型选择）。未生产。不标 `DONE`。
 - API-01-R1：spec Approved `docs/superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md`；实施计划 `docs/superpowers/plans/2026-09-04-operator-framework-prompt-round-implementation-plan.md`。恐龙 entity 框架 round；骨架不得 Confirm current；既有一轮路径保持。
 - FLOW-01：spec Approved `docs/superpowers/specs/2026-09-04-operator-iterative-workflow-design.md`。分类改 Core、形态改 media-plan。程序不实施。
