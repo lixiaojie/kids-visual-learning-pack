@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结（spec Approved；server `knowledge-pipeline-v1` @ `28ec476` 已本地提交；未 merge/push/release、未生产、不标 `DONE`）。`FLOW-01` 迭代工作流（spec Approved；程序仍不整条实施）。`API-01-R2` 完整对象第二轮（kids `c32d4d2`、server `4f76aca` 已本地提交；未生产）。`API-01-R1` 恐龙粗框架提示词（同提交；未生产）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`IMG-03` 冻结节点请图 + compose 锁定（spec Approved；实施计划已落盘；server `knowledge-pipeline-v1` @ `629144c` 已本地提交；未生产、不标 `DONE`；不含 PUBLISH-02）。`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结（spec Approved；server `knowledge-pipeline-v1` @ `28ec476` 已本地提交；未 merge/push/release、未生产、不标 `DONE`）。`FLOW-01` 迭代工作流（spec Approved；程序仍不整条实施）。`API-01-R2` 完整对象第二轮（kids `c32d4d2`、server `4f76aca` 已本地提交；未生产）。`API-01-R1` 恐龙粗框架提示词（同提交；未生产）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -75,13 +75,13 @@
 | SITE-02 | 旧站兼容与重定向 | DONE | 现网 stub/hash 已抽查；回滚仍是 `activeMode=parallel` |
 | RENDER-01 | 四卡排版与打印 PDF | DONE | 已本地提交 `1ef6edc`；未 merge、未现网 |
 | RENDER-02 | 图例模块铬 | IN PROGRESS | kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE |
-| FLOW-01 | 操作台迭代工作流 | IN PROGRESS | spec Approved；程序不整条实施；GRAPH/FORM/FREEZE server `28ec476` 本地；不标 DONE |
+| FLOW-01 | 操作台迭代工作流 | IN PROGRESS | spec Approved；程序不整条实施；GRAPH/FORM/FREEZE server `28ec476` 本地；IMG-03 server `629144c` 本地；不标 DONE |
 | API-01-R1 | 对象类型粗框架提示词 | IN PROGRESS | server `4f76aca` 已本地提交；未生产；不标 DONE |
 | API-01-R2 | 完整对象第二轮编译 | IN PROGRESS | server `4f76aca` 已本地提交；focused 96 PASS / 2 已知 FAIL；不标 DONE |
 | GRAPH-01 | 知识图谱初版 | IN PROGRESS | layout outline；server `28ec476` 本地；不标 DONE |
 | FORM-01 | 节点形态计划 | IN PROGRESS | media-plan draft/PATCH；不写 Core；不标 DONE |
 | FREEZE-01 | 排版冻结 | IN PROGRESS | freeze 要求 mapping；钉身份；不标 DONE |
-| IMG-03 | 按冻结节点请图回填 | BACKLOG | 依赖 FREEZE-01；缺槽不失败；本刀不实施 |
+| IMG-03 | 按冻结节点请图回填 | IN PROGRESS | spec+plan 已落盘；server `629144c` 本地；不含 PUBLISH-02 |
 | PUBLISH-02 | 锁定带图投影上画廊 | BACKLOG | 依赖人锁定与 PUBLISH-01 |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
@@ -403,7 +403,7 @@
 - 范围：两轮提示词、图谱初版、形态计划、排版冻结、按节点请图、锁定包进画廊。分类变更写 Core revision；形态变更写 media-plan。
 - 非范围：不把本条当一刀实施；不新开 ADR；不接模型 API；不可交互运行时；不打印铬；不 merge/push/release。
 - 独立设计：[迭代工作流](superpowers/specs/2026-09-04-operator-iterative-workflow-design.md)。
-- 下一动作：不要 merge/push/release。不要标 `DONE`。GRAPH/FORM/FREEZE 竖切 server `28ec476` 已本地提交；IMG-03 仍 BACKLOG；程序仍不整条实施。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。IMG-03 已在 server `629144c` 本地提交；程序仍不整条实施（PUBLISH-02 仍 BACKLOG）。
 - 完成条件：子刀按竖切落地且对照旧剑龙卡只验收模块种类。因程序未竖切完，本条不得标 `DONE`。
 
 ### API-01-R1 对象类型粗框架提示词
@@ -441,7 +441,7 @@
 - 独立设计：[排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
 - 实施计划：[排版图谱形态冻结实施](superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md)。
 - 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `28ec476`：`knowledge_layout` outline。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。
-- 下一动作：不要 merge/push/release。不要标 `DONE`。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。IMG-03 已开刀，本条仍不标 DONE。
 - 完成条件：大纲来自 current；不因 GET 把 pointer 改写成 stale。因未生产，本条不得标 `DONE`。
 
 ### FORM-01 节点形态计划
@@ -454,7 +454,7 @@
 - 独立设计：[排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
 - 实施计划：[排版图谱形态冻结实施](superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md)。
 - 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `28ec476`：`get_layout` / `patch_media_plan`、library pointer + revision IO。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。
-- 下一动作：不要 merge/push/release。不要标 `DONE`。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。IMG-03 已开刀，本条仍不标 DONE。
 - 完成条件：草稿在第一次 GET；PATCH 仅 draft；Confirm 路径无 media-plan 写入。因未生产，本条不得标 `DONE`。
 
 ### FREEZE-01 排版冻结
@@ -467,8 +467,21 @@
 - 独立设计：[排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
 - 实施计划：[排版图谱形态冻结实施](superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md)。
 - 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `28ec476`：`freeze_media_plan` / `unfreeze_media_plan`、ops `/layout` HTML。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。
-- 下一动作：不要 merge/push/release。不要标 `DONE`。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。IMG-03 已开刀，本条仍不标 DONE。
 - 完成条件：无 mapping 不得 freeze；身份或 mapping 漂移则 stale；不调用 illustration 扩词。因未生产，本条不得标 `DONE`。
+
+### IMG-03 按冻结节点请图回填
+
+- 状态：`IN PROGRESS`（spec Approved；实施计划已落盘；server `629144c` 已本地提交；不得标 `DONE`）
+- 权威仓库：产品规范 `kids-visual-learning-pack`；实现 `cognitive-card-server` `knowledge-pipeline-v1` worktree。
+- 依赖：FREEZE-01 frozen 且未 stale；IMG-01 无字合同；COMPOSE-01 / RENDER-02 / QA-01。
+- 范围：仅 frozen `wordless-image` 节点扩无字提示词、人回填 PNG、缺槽不失败；有 media-plan pointer 时 compose POST 与投影锁定走 freeze 门禁；锁定 = QA-01 `approve`，不发布。
+- 非范围：PUBLISH-02；OpenAI / 图像 API；改 `lock_mapping`；打印铬；生产安装；merge/push/release。
+- 独立设计：[冻结节点请图与投影锁定](superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md)。
+- 实施计划：[冻结节点请图与投影锁定实施](superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md)。
+- 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `629144c`（冻结绑定扩词、节点 PNG、compose freeze 门禁与 QA approve 锁定、HTTP/ops HTML）。controller 复跑 combined focused 221 ran / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。
+- 下一动作：不要 merge/push/release。不要标 `DONE`。不要开 PUBLISH-02。
+- 完成条件：绑定 freeze 的节点扩词/回填；缺槽不失败；锁定不调用 `publish_approved`。因未生产，本条不得标 `DONE`。
 
 ### AUTH-01 Card OS 身份与权限
 
@@ -768,8 +781,9 @@
 23. **LEGEND-01** 投影图例：spec Approved；kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不标 DONE。
 24. **IMG-02** 多视图无字资产（IN PROGRESS；kids `8c7c2d8`、server `8710914` 已本地提交；未 push；不标 DONE）。
 25. **RENDER-02** 图例模块铬（IN PROGRESS；kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE）。
-26. **GRAPH-01 / FORM-01 / FREEZE-01** 排版大纲与 media-plan 冻结（IN PROGRESS；kids `c1c09cc`、server `28ec476` 已本地提交；combined focused 126 ran / 124 OK / 2 已知 FAIL；不标 DONE；不实施 IMG-03）。
-27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；不标 DONE）。
+26. **GRAPH-01 / FORM-01 / FREEZE-01** 排版大纲与 media-plan 冻结（IN PROGRESS；kids `c1c09cc`、server `28ec476` 已本地提交；combined focused 126 ran / 124 OK / 2 已知 FAIL；不标 DONE）。
+27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；IMG-03 server `629144c` 本地；PUBLISH-02 仍 BACKLOG；不标 DONE）。
+28. **IMG-03** 冻结节点请图 + compose 锁定（IN PROGRESS；spec Approved；计划已落盘；server `629144c` 已本地提交；不含 PUBLISH-02；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -781,8 +795,9 @@
 
 ### 2026-09-07
 
-- GRAPH-01 / FORM-01 / FREEZE-01：kids `c1c09cc`、server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（outline、draft GET/PATCH、freeze/unfreeze、ops `/layout`；不含 `uv.lock` / `outputs/`）。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。三行仍 `IN PROGRESS`，不标 `DONE`。不实施 IMG-03。
-- FLOW-01：程序仍不整条实施。GRAPH/FORM/FREEZE 为其中一竖切；IMG-03 仍 BACKLOG。不标 `DONE`。
+- IMG-03 + compose 锁定：spec Approved；实施计划 `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md`。server `knowledge-pipeline-v1` @ `629144c` 已本地提交（不含 `uv.lock` / `outputs/`）。combined focused 221 ran / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。不含 PUBLISH-02。未 merge/push/release。不标 `DONE`。
+- GRAPH-01 / FORM-01 / FREEZE-01：kids `c1c09cc`、server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（outline、draft GET/PATCH、freeze/unfreeze、ops `/layout`；不含 `uv.lock` / `outputs/`）。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。三行仍 `IN PROGRESS`，不标 `DONE`。
+- FLOW-01：程序仍不整条实施。GRAPH/FORM/FREEZE 为其中一竖切；IMG-03 server `629144c` 已本地提交。PUBLISH-02 仍 BACKLOG。不标 `DONE`。
 
 ### 2026-09-04
 

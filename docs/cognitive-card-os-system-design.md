@@ -292,9 +292,10 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 27. **`FLOW-01` 操作台迭代工作流**：书面程序。两轮提示词 → 图谱与形态分写冻结 → 分块无字图回填 → 画廊收锁定包。分类改 Core，形态改 media-plan。spec Approved [迭代工作流](superpowers/specs/2026-09-04-operator-iterative-workflow-design.md)。不实施整条程序。GRAPH/FORM/FREEZE 为其中一竖切，程序仍未完。
 28. **`API-01-R1` 对象类型粗框架提示词**：恐龙 entity 框架 round。spec Approved [粗框架](superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md)。server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交。省略 `object_type` 的一轮完整编译保持。未生产。不标 `DONE`。
 29. **`API-01-R2` 完整对象第二轮编译**：同一 intent 显式 advance；骨架内嵌进完整提示词；可 Confirm current；`image_suggestions` 进 intent 旁路。spec Approved [完整第二轮](superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md)。server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交。未生产。不标 `DONE`。
-30. **`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结**：spec Approved。server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（layout outline、media-plan draft/PATCH/freeze、ops `/layout`）。不实施 IMG-03。未生产。不标 `DONE`。精确状态见路线图。见 [排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
-31. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
-32. 第二个哺乳动物一致性验收仍依赖模板族。
+30. **`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结**：spec Approved。server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（layout outline、media-plan draft/PATCH/freeze、ops `/layout`）。未生产。不标 `DONE`。精确状态见路线图。见 [排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
+31. **`IMG-03` 冻结节点请图与投影锁定**：spec Approved。server `knowledge-pipeline-v1` @ `629144c` 已本地提交：frozen 节点无字提示词与 PNG 回填、compose freeze 门禁、QA-01 `approve` 锁定投影。不含 PUBLISH-02。未生产。不标 `DONE`。精确状态见路线图。见 [冻结节点请图与投影锁定](superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md)。
+32. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
+33. 第二个哺乳动物一致性验收仍依赖模板族。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 
