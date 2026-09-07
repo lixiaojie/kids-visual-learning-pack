@@ -768,7 +768,7 @@
 23. **LEGEND-01** 投影图例：spec Approved；kids `1598e74`、server `f9baf8f` 已本地提交；未 push；不标 DONE。
 24. **IMG-02** 多视图无字资产（IN PROGRESS；kids `8c7c2d8`、server `8710914` 已本地提交；未 push；不标 DONE）。
 25. **RENDER-02** 图例模块铬（IN PROGRESS；kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE）。
-26. **GRAPH-01 / FORM-01 / FREEZE-01** 排版大纲与 media-plan 冻结（IN PROGRESS；server `28ec476` 已本地提交；combined focused 126 ran / 124 OK / 2 已知 FAIL；不标 DONE；不实施 IMG-03）。
+26. **GRAPH-01 / FORM-01 / FREEZE-01** 排版大纲与 media-plan 冻结（IN PROGRESS；kids `c1c09cc`、server `28ec476` 已本地提交；combined focused 126 ran / 124 OK / 2 已知 FAIL；不标 DONE；不实施 IMG-03）。
 27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
@@ -781,7 +781,7 @@
 
 ### 2026-09-07
 
-- GRAPH-01 / FORM-01 / FREEZE-01：spec Approved `docs/superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md`；实施计划 `docs/superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md`。server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（outline、draft GET/PATCH、freeze/unfreeze、ops `/layout`；不含 `uv.lock`）。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。三行仍 `IN PROGRESS`，不标 `DONE`。不实施 IMG-03。
+- GRAPH-01 / FORM-01 / FREEZE-01：kids `c1c09cc`、server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（outline、draft GET/PATCH、freeze/unfreeze、ops `/layout`；不含 `uv.lock` / `outputs/`）。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。三行仍 `IN PROGRESS`，不标 `DONE`。不实施 IMG-03。
 - FLOW-01：程序仍不整条实施。GRAPH/FORM/FREEZE 为其中一竖切；IMG-03 仍 BACKLOG。不标 `DONE`。
 
 ### 2026-09-04

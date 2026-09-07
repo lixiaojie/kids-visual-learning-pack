@@ -5,8 +5,8 @@
 - Updated At: 2026-09-07
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 14f6794
-- Kids HEAD: 14f6794
+- Base Commit: c1c09cc
+- Kids HEAD: c1c09cc
 - Server Branch: `knowledge-pipeline-v1` @ `28ec476`
 - Working Tree: kids `outputs/` 未跟踪。server `uv.lock` 未跟踪。
 - Task Status: **In Progress（GRAPH+FORM+FREEZE 已本地提交 server `28ec476`；未 merge/push/release、未生产。不标 DONE）。**
@@ -57,7 +57,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `14f6794` + 本刀文档 + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
+| kids 治理 | `main` @ `c1c09cc` + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
 | 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `28ec476` | 不提交 `uv.lock`；不 merge/push |
 | 本机验收 | 文档脚本 | 未开 8765 |
 
@@ -92,7 +92,7 @@
 
 ## Exact Next Action
 
-不要 merge/push/release。不要把 GRAPH-01 / FORM-01 / FREEZE-01 / FLOW-01 标 `DONE`。server `28ec476` 与本刀 kids 文档已本地提交（不含 `uv.lock` / `outputs/`）。下一步由操作者决定是否本机开 8765 试 layout，或授权下一刀 IMG-03。
+不要 merge/push/release。不要把 GRAPH-01 / FORM-01 / FREEZE-01 / FLOW-01 标 `DONE`。kids `c1c09cc`、server `28ec476` 已本地提交（不含 `uv.lock` / `outputs/`）。下一步由操作者决定是否本机开 8765 试 layout，或授权下一刀 IMG-03。
 
 ## Recovery Notes
 

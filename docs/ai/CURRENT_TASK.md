@@ -5,8 +5,8 @@
 - Updated At: 2026-09-07
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `14f6794`；server `knowledge-pipeline-v1` @ `28ec476`
-- Base Commit: 14f6794
+- Branch: kids `main` @ `c1c09cc`；server `knowledge-pipeline-v1` @ `28ec476`
+- Base Commit: c1c09cc
 
 ## Objective
 
