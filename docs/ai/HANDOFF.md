@@ -5,15 +5,15 @@
 - Updated At: 2026-09-07
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: b022d73
-- Kids HEAD: b022d73
+- Base Commit: 3944447
+- Kids HEAD: 3944447
 - Server Branch: `knowledge-pipeline-v1` @ `629144c`
-- Working Tree: kids 文档未提交；`outputs/` 未跟踪。server 已提交 `629144c`；`uv.lock` 未跟踪。
-- Task Status: **In Progress（IMG-03 spec+plan+server `629144c` 已本地提交；kids 账本本提交落盘；不标 DONE；不 merge/push/release）。**
+- Working Tree: kids 本提交写入 SHA；`outputs/` 未跟踪。server `629144c`；`uv.lock` 未跟踪。
+- Task Status: **In Progress（IMG-03 kids `3944447`、server `629144c` 已本地提交；不标 DONE；不 merge/push/release）。**
 
 ## Summary
 
-IMG-03 + compose 锁定：spec Approved、计划已落盘。server `knowledge-pipeline-v1` @ `629144c` 已本地提交（冻结绑定扩词、节点 PNG、compose freeze 门禁、QA-01 `approve` 锁定、HTTP/ops；含 `legend_role`）。kids 本提交记录 spec/plan/账本。IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 均不标 `DONE`。FLOW-01 程序仍不整条实施。PUBLISH-02 仍 BACKLOG。不含 `outputs/` 与 `uv.lock`。未 merge/push/release。现网应用仍 `7aaeb2b`。
+IMG-03 + compose 锁定：spec Approved、计划已落盘。kids `3944447`、server `knowledge-pipeline-v1` @ `629144c` 已本地提交。IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 均不标 `DONE`。FLOW-01 程序仍不整条实施。PUBLISH-02 仍 BACKLOG。不含 `outputs/` 与 `uv.lock`。未 merge/push/release。现网应用仍 `7aaeb2b`。
 
 ## Completed
 
@@ -29,13 +29,13 @@ IMG-03 + compose 锁定：spec Approved、计划已落盘。server `knowledge-pi
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 本提交 |
-| kids | `docs/ai/HANDOFF.md` | 本提交 |
-| kids | `docs/README.md` | 本提交 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本提交 |
-| kids | `docs/cognitive-card-os-system-design.md` | 本提交 |
-| kids | `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md` | 本提交（新；Approved） |
-| kids | `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md` | 本提交（新） |
+| kids | `docs/ai/CURRENT_TASK.md` | `3944447` |
+| kids | `docs/ai/HANDOFF.md` | `3944447`（本提交补 SHA） |
+| kids | `docs/README.md` | `3944447` |
+| kids | `docs/cognitive-card-os-roadmap.md` | `3944447` |
+| kids | `docs/cognitive-card-os-system-design.md` | `3944447` |
+| kids | `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md` | `3944447` |
+| kids | `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md` | `3944447` |
 | kids | `outputs/` | 未跟踪；未纳入 |
 | server | `knowledge-pipeline-v1` @ `629144c` | 已本地提交；`uv.lock` 未纳入 |
 
@@ -51,7 +51,7 @@ IMG-03 + compose 锁定：spec Approved、计划已落盘。server `knowledge-pi
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `b022d73` + 本提交文档 + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
+| kids 治理 | `main` @ `3944447` + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
 | 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `629144c` | 不提交 `uv.lock`；不 merge/push |
 | 本机验收 | 文档脚本 + server combined focused gate | 未开 8765 |
 
@@ -96,7 +96,7 @@ git diff --check                         # exit 0；无输出
 
 ## Exact Next Action
 
-不要 merge/push/release。不要标 `DONE`。不要开 PUBLISH-02。server 已本地提交 `629144c`。kids spec/plan/账本随本提交落盘。
+不要 merge/push/release。不要标 `DONE`。不要开 PUBLISH-02。kids `3944447`、server `629144c` 已本地提交。
 
 ## Recovery Notes
 

@@ -783,7 +783,7 @@
 25. **RENDER-02** 图例模块铬（IN PROGRESS；kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release；不标 DONE）。
 26. **GRAPH-01 / FORM-01 / FREEZE-01** 排版大纲与 media-plan 冻结（IN PROGRESS；kids `c1c09cc`、server `28ec476` 已本地提交；combined focused 126 ran / 124 OK / 2 已知 FAIL；不标 DONE）。
 27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；IMG-03 server `629144c` 本地；PUBLISH-02 仍 BACKLOG；不标 DONE）。
-28. **IMG-03** 冻结节点请图 + compose 锁定（IN PROGRESS；spec Approved；计划已落盘；server `629144c` 已本地提交；不含 PUBLISH-02；不标 DONE）。
+28. **IMG-03** 冻结节点请图 + compose 锁定（IN PROGRESS；kids `3944447`、server `629144c` 已本地提交；不含 PUBLISH-02；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -795,7 +795,7 @@
 
 ### 2026-09-07
 
-- IMG-03 + compose 锁定：spec Approved；实施计划 `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md`。server `knowledge-pipeline-v1` @ `629144c` 已本地提交（不含 `uv.lock` / `outputs/`）。combined focused 221 ran / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。不含 PUBLISH-02。未 merge/push/release。不标 `DONE`。
+- IMG-03 + compose 锁定：kids `3944447`、server `knowledge-pipeline-v1` @ `629144c` 已本地提交（不含 `uv.lock` / `outputs/`）。combined focused 221 ran / 2 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。不含 PUBLISH-02。未 merge/push/release。不标 `DONE`。
 - GRAPH-01 / FORM-01 / FREEZE-01：kids `c1c09cc`、server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（outline、draft GET/PATCH、freeze/unfreeze、ops `/layout`；不含 `uv.lock` / `outputs/`）。combined focused 126 ran / 124 OK / 2 已知 FAIL（ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 merge/push/release。三行仍 `IN PROGRESS`，不标 `DONE`。
 - FLOW-01：程序仍不整条实施。GRAPH/FORM/FREEZE 为其中一竖切；IMG-03 server `629144c` 已本地提交。PUBLISH-02 仍 BACKLOG。不标 `DONE`。
 
