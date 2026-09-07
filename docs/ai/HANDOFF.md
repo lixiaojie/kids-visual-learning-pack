@@ -2,87 +2,100 @@
 
 ## Metadata
 
-- Updated At: 2026-09-04
+- Updated At: 2026-09-07
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: c32d4d2
-- Kids HEAD: c32d4d2
-- Server Branch: `knowledge-pipeline-v1` @ `4f76aca`
+- Base Commit: 14f6794
+- Kids HEAD: 14f6794
+- Server Branch: `knowledge-pipeline-v1` @ `28ec476`
 - Working Tree: kids `outputs/` 未跟踪。server `uv.lock` 未跟踪。
-- Task Status: **In Progress（API-01-R2 已本地提交 server `4f76aca`；未 merge/push/release、未生产。不标 DONE）。**
+- Task Status: **In Progress（GRAPH+FORM+FREEZE 已本地提交 server `28ec476`；未 merge/push/release、未生产。不标 DONE）。**
 
 ## Summary
 
-操作者要求 commit。server `knowledge-pipeline-v1` @ `4f76aca` 含 API-01-R1 框架 round 与 API-01-R2 完整第二轮。dinosaur-entity 可 Start round 2、完整提示词内嵌骨架、authoring Confirm current、`image_suggestions.json` 旁路、Return to framework。`paleontology × entity × fossil-animal` 已 enabled。未 merge/push/release。不标 `DONE`。
+操作者要求 commit。server `knowledge-pipeline-v1` @ `28ec476` 含 layout 大纲、media-plan 草稿/PATCH/freeze/unfreeze、ops `/layout`。Confirm current 仍不写 media-plan。GRAPH-01 / FORM-01 / FREEZE-01 仍 `IN PROGRESS`。FLOW-01 仍程序不整条实施。未 merge/push/release。不标 `DONE`。
 
 ## Completed
 
-- API-01-R1 / API-01-R2 server 本地提交 `4f76aca`（不含 `uv.lock`）
-- FLOW-01 / R1 / R2 kids spec、计划与账本纳入本提交（不含 `outputs/`）
-- 整支审查 Important 已修：cat 路径 Return to framework 要求 `object_type === "dinosaur-entity"`
+- spec Approved（含 `LAYOUT_UNAUTHORIZED`）
+- 5-task 实施计划落盘
+- server 本地提交 `28ec476`（不含 `uv.lock`）：outline、draft GET/PATCH、freeze/unfreeze、HTTP/ops
+- Task 5：kids 账本；GRAPH/FORM/FREEZE 仍 `IN PROGRESS`
+- 全分支评审：无 Critical/Important；不 merge
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| server | compile 框架+完整 round、classification、ops HTTP/pages、errors、单测、两套模板、`types.py` | 已提交 `4f76aca` |
-| kids | FLOW-01 / R1 / R2 spec 与计划；README、路线图、系统总设计、CURRENT_TASK、HANDOFF | 已提交 `c32d4d2` |
+| kids | `docs/README.md` | 本提交 |
+| kids | `docs/ai/CURRENT_TASK.md` | 本提交 |
+| kids | `docs/ai/HANDOFF.md` | 本提交 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 本提交 |
+| kids | `docs/cognitive-card-os-system-design.md` | 本提交 |
+| kids | `docs/superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md` | 本提交 |
+| kids | `docs/superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md` | 本提交 |
 | kids | `outputs/` | 未跟踪；未纳入 |
+| server | `src/cognitive_card_server/knowledge_layout/` | 已提交 `28ec476` |
+| server | `src/cognitive_card_server/knowledge_library/store.py` | 已提交 `28ec476` |
+| server | `src/cognitive_card_server/knowledge_ops/http.py` | 已提交 `28ec476` |
+| server | `src/cognitive_card_server/knowledge_ops/pages.py` | 已提交 `28ec476` |
+| server | `src/cognitive_card_server/http/app.py` | 已提交 `28ec476` |
+| server | `src/cognitive_card_server/http/errors.py` | 已提交 `28ec476` |
+| server | `tests/test_knowledge_layout.py` | 已提交 `28ec476` |
+| server | `tests/test_http_knowledge_layout.py` | 已提交 `28ec476` |
+| server | `tests/test_http_knowledge_ops.py` | 已提交 `28ec476` |
+| server | `tests/test_http_auth.py` | 已提交 `28ec476` |
 | server | `uv.lock` | 未跟踪；未纳入 |
 
 ## Decisions Made
 
-- spec Approved；建议生图只进 intent 旁路，不写 media-plan 文件。
-- 不标 DONE。不 merge/push/release。
-- 已知 2 FAIL `LEGEND_ROLE_MISSING` 不修。
-- commit 未带 `outputs/` 与 `uv.lock`。
+- 三行 `IN PROGRESS`，不标 `DONE`。FLOW-01 仍程序不完。
+- 操作者要求 commit。不含 `outputs/` 与 `uv.lock`。
+- 不 merge/push/release。不修 ops mapping-lock `LEGEND_ROLE_MISSING`。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `c32d4d2` + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
-| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `4f76aca` | `uv.lock` 仍未跟踪 |
-| 本机验收 | focused unittest | 不开 8765（本刀未做浏览器验收） |
+| kids 治理 | `main` @ `14f6794` + 本刀文档 + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
+| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `28ec476` | 不提交 `uv.lock`；不 merge/push |
+| 本机验收 | 文档脚本 | 未开 8765 |
 
 ## Verification Results
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| combined focused gate（classification + compile + compile HTTP + ops HTTP + auth） | FAIL（2 已知） | 98 ran / 96 PASS / 2 FAIL 均为 ops mapping-lock `LEGEND_ROLE_MISSING`；与本刀无关，未修 |
-| Task 1–4 分任务审查 | PASS | 均 Approved；0 Critical / 0 Important |
-| 整支审查 Important 修复 | PASS | cat 路径 Return to framework 现要求 `object_type === "dinosaur-entity"`；5 compile HTTP 测 OK |
 | `bash scripts/ai/check-task-state.sh` | PASS | 账本更新后绿 |
-| `bash scripts/ai/check-handoff.sh` | PASS | 账本更新后绿 |
-| `bash scripts/ai/check-doc-governance.sh` | WARN | 0 FAIL；3 既有 Last Reviewed 过期（2026-07-24），与本次无关 |
-| `git diff --check` | PASS | kids 与 server 提交前均无空白错误 |
+| `bash scripts/ai/check-handoff.sh` | PASS | 填入本表后绿 |
+| `bash scripts/ai/check-doc-governance.sh` | WARN | 0 FAIL；3 既有 Last Reviewed 过期（2026-07-24）：PROJECT_CONTEXT.md、docs/README.md、docs/knowledge/codex-memory/README.md |
+| `git diff --check` | PASS | 无空白错误 |
+| server combined focused gate（Task 4） | 126 ran / 124 OK / 2 FAIL | 已知 ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀；不修 |
+| whole-branch review | PASS | 无 Critical/Important；minors 可等；不 merge |
 
 ## Known Failures
 
-- ops mapping-lock `LEGEND_ROLE_MISSING` 两测（`test_generate_keeps_current_and_publish_requires_actor`、`test_publish_refuses_stale_work_after_relock`）。不要修。
+- ops mapping-lock `LEGEND_ROLE_MISSING` 两测：`test_generate_keeps_current_and_publish_requires_actor`、`test_publish_refuses_stale_work_after_relock`。不要修。
 - 文档地图 Last Reviewed 过期 WARN（2026-07-24）。与本次无关。
 - 现网应用仍 `7aaeb2b`。与本次无关。
 
 ## Risks and Caveats
 
-- 未 push。未生产安装。
-- 本机未开 8765 做操作台点击验收。
-- Task 3 审查非阻塞：无幂等 advance 单测；`return_intent` complete 分支可能留下 `error_path`；`return_framework` 未显式限制 `state ∈ {open,failed,compiled}`。
+- server `28ec476` 仅本地；未 push、未 merge `main`、未生产。
+- Confirm intent 扫描依赖 `compile-intents/` 仍在。
+- `write_intent` 夹具必须带齐 compile-intent schema 键，否则 `list_intents` 会跳过。
 
 ## Remaining Work
 
-- 不 merge/push/release、不生产安装。
-- 不标 API-01 / API-01-R1 / API-01-R2 / FLOW-01 / RENDER-02 `DONE`。
-- 可选：本机 ops 走 dinosaur-entity R1 → Start round 2 → paste complete → Confirm。
-- 整支审查其余 Minor 不阻塞：error_path 卫生、缺幂等 advance / 建议校验单测、未标注 `<pre>`。
+- 不 merge/push/release。不标 GRAPH-01 / FORM-01 / FREEZE-01 / FLOW-01 `DONE`。
+- IMG-03 仍 BACKLOG。
+- 可选本机开 8765 试 `/ops/layout/{topic}`。
 
 ## Exact Next Action
 
-不要 merge/push/release。不要生产安装。不要标 `DONE`。可选本机打开 ops compile，走 dinosaur-entity 框架 → Start round 2 → 贴完整 authoring → Confirm current。
+不要 merge/push/release。不要把 GRAPH-01 / FORM-01 / FREEZE-01 / FLOW-01 标 `DONE`。server `28ec476` 与本刀 kids 文档已本地提交（不含 `uv.lock` / `outputs/`）。下一步由操作者决定是否本机开 8765 试 layout，或授权下一刀 IMG-03。
 
 ## Recovery Notes
 
-- Spec：`docs/superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md`
-- Plan：`docs/superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md`
-- Server worktree：`.worktrees/cognitive-card-server-knowledge-core` @ `4f76aca`
-- SDD ledger：`.superpowers/sdd/progress.md`
+- Spec：`docs/superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md`
+- Plan：`docs/superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md`
+- Server worktree：`.worktrees/cognitive-card-server-knowledge-core` @ `28ec476`

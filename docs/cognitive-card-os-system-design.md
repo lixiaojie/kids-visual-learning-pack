@@ -289,11 +289,12 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 24. **`LEGEND-01` 投影图例**：spec Approved。server `knowledge-pipeline-v1` @ `f9baf8f` 已本地提交（未 push、未生产）。认知角色凡例约束编译与呈现槽；不改 Knowledge Core schema。见 [投影图例](superpowers/specs/2026-09-03-projection-legend-v1-design.md)。
 25. **`IMG-02` 多视图无字资产**：spec Approved。server `knowledge-pipeline-v1` @ `8710914` 已本地提交（未 push、未生产）。IMG-01 isolate 主图并存；额外像素键可选；不经 mapping-lock。见 [多视图无字资产](superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md)。
 26. **`RENDER-02` 图例模块铬**：spec Approved，实施计划已落盘。server `knowledge-pipeline-v1` @ `427bf89` 已本地提交（未 push、未生产）。屏幕 HTML 按角色换壳；打印 PNG 不变；三视/剖面/爆炸提示词仍属 IMG-02。不标 `DONE`。精确状态见路线图。见 [模块铬](superpowers/specs/2026-09-04-legend-module-chrome-design.md)。
-27. **`FLOW-01` 操作台迭代工作流**：书面程序。两轮提示词 → 图谱与形态分写冻结 → 分块无字图回填 → 画廊收锁定包。分类改 Core，形态改 media-plan。spec Approved [迭代工作流](superpowers/specs/2026-09-04-operator-iterative-workflow-design.md)。不实施整条程序。
+27. **`FLOW-01` 操作台迭代工作流**：书面程序。两轮提示词 → 图谱与形态分写冻结 → 分块无字图回填 → 画廊收锁定包。分类改 Core，形态改 media-plan。spec Approved [迭代工作流](superpowers/specs/2026-09-04-operator-iterative-workflow-design.md)。不实施整条程序。GRAPH/FORM/FREEZE 为其中一竖切，程序仍未完。
 28. **`API-01-R1` 对象类型粗框架提示词**：恐龙 entity 框架 round。spec Approved [粗框架](superpowers/specs/2026-09-04-operator-framework-prompt-round-design.md)。server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交。省略 `object_type` 的一轮完整编译保持。未生产。不标 `DONE`。
 29. **`API-01-R2` 完整对象第二轮编译**：同一 intent 显式 advance；骨架内嵌进完整提示词；可 Confirm current；`image_suggestions` 进 intent 旁路。spec Approved [完整第二轮](superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md)。server `knowledge-pipeline-v1` @ `4f76aca` 已本地提交。未生产。不标 `DONE`。
-30. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
-31. 第二个哺乳动物一致性验收仍依赖模板族。
+30. **`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结**：spec Approved。server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（layout outline、media-plan draft/PATCH/freeze、ops `/layout`）。不实施 IMG-03。未生产。不标 `DONE`。精确状态见路线图。见 [排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
+31. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
+32. 第二个哺乳动物一致性验收仍依赖模板族。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 
