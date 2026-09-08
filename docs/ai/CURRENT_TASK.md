@@ -2,47 +2,48 @@
 
 ## Metadata
 
-- Updated At: 2026-09-07
+- Updated At: 2026-09-08
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `3944447`；server `knowledge-pipeline-v1` @ `629144c`
-- Base Commit: 3944447
+- Branch: kids `main` @ `94b4a55`；server `knowledge-pipeline-v1` @ `a0c8081`
+- Base Commit: 94b4a55
 
 ## Objective
 
-实施 IMG-03 + compose 锁定：仅对 frozen 且未 stale 的 `wordless-image` 节点导出无字提示词、人回填 PNG、缺槽不失败；compose 身份一致后以 QA-01 `approve` 锁定投影工作区。不写 PUBLISH-02。不接图像 API。不 merge/push/release。不标 `DONE`。
+实施 PUBLISH-02：已锁定（QA `approved`）的带图投影显式上架本机画廊。新函数 `publish_locked_projection` 只调 `publish_approved`；包形状守 PUBLISH-01；有 media-plan pointer 时封掉旧一刀 `publish_from_artifact` /「批准并上架」。不改身份算法。不改 PORTAL。不接图像 API。不 merge/push/release。不标 `DONE`。
 
 ## Background
 
-操作者结合 [进度核对](a1544cf9-3823-452d-8b5a-8bff28e60d6b) 授权第 4 步。前三步已本地提交：API-01-R1/R2 `4f76aca`，GRAPH/FORM/FREEZE `28ec476`。竖切顺序仍是 R1 → R2 → GRAPH+FORM+FREEZE → **本刀** → PUBLISH-02。SDD Tasks 1–4 已在 server worktree 本地提交 `629144c`；Task 5 只改 kids 账本。compose 锁定走 QA-01 `record_review`。现网应用仍 `7aaeb2b`。不标 `DONE`。
+操作者批准 PUBLISH-02 spec。实施计划已落盘。前四步已本地提交：API-01-R1/R2 `4f76aca`，GRAPH/FORM/FREEZE `28ec476`，IMG-03 `629144c`。竖切顺序仍是 R1 → R2 → GRAPH+FORM+FREEZE → IMG-03 投影锁定 → **本刀**。server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交（`publish_locked_projection`、封旧路、HTTP/ops、单测）。Tasks 1–3 审查 PASS。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。现网应用仍 `7aaeb2b`。不 merge/push/release。不标 `DONE`。
 
 ## Acceptance Criteria
 
-- [x] spec 操作者 Approved `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md`
-- [x] 实施计划落盘 `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md`
-- [x] 无 media-plan pointer 时 IMG-01 / IMG-02 / COMPOSE-01 行为与本刀之前相同
-- [x] 有 pointer 时：节点扩词/回填、compose POST、投影锁定均要求 frozen 且 `is_stale=false`
-- [x] 缺节点 PNG 不失败；观察卡才 `<img>`；知识卡无插图
-- [x] 锁定 = QA-01 `approve`；不调用 `publish_approved`
-- [ ] 对照旧剑龙卡只验收模块种类，不对像素
-- [ ] 不 merge/push/release、不覆盖 `outputs/`、不提交 `uv.lock`
+- [x] spec 操作者 Approved `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
+- [x] 实施计划落盘 `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
+- [x] 无 media-plan pointer 时 `publish_from_artifact` / `artifact-publish` 与本刀之前相同
+- [x] 有 pointer 时：旧一刀发布 409 `PUBLISH_LOCKED_PATH_REQUIRED`；新函数要求 frozen、未 stale、compose 身份一致、已 `approved`
+- [x] 成功只调用 `publish_approved`；包内无 compose HTML / 节点 PNG；knowledge library current 指针不变
+- [x] 缺节点 PNG 不失败；同身份幂等
+- [x] PORTAL-01 下载允白与身份算法不变
+- [x] 不 merge/push/release、不覆盖 `outputs/`、不提交 `uv.lock`
 - [x] 不修 ops mapping-lock `LEGEND_ROLE_MISSING`
-- [ ] 不标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`
+- [x] 不标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`
 
 ## In Scope
 
-- server worktree `knowledge-pipeline-v1` under `.worktrees/cognitive-card-server-knowledge-core`（illustration 节点槽、compose freeze 门禁、投影锁定、ops HTML、errors、单测）
+- server worktree `knowledge-pipeline-v1` under `.worktrees/cognitive-card-server-knowledge-core`（`publish_locked_projection`、封旧发布入口、HTTP/ops、单测）
 - `docs/ai/CURRENT_TASK.md`
 - `docs/ai/HANDOFF.md`
 - `docs/cognitive-card-os-roadmap.md`
 - `docs/cognitive-card-os-system-design.md`
 - `docs/README.md`
-- `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md`
-- `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md`
+- `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
+- `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
 
 ## Out of Scope
 
-- PUBLISH-02、画廊历史打开/下载、改 PUBLISH-01 身份算法
+- 改 PUBLISH-01 身份算法、改 PORTAL-01 允白/详情 HTML
+- 把 compose HTML / 节点 PNG 写入 package
 - OpenAI / 图像 API、Skill claim、canvas 图谱
 - 改 `lock_mapping`、改 Confirm current、改四对象 schema
 - 打印铬、可交互运行时、新 ADR、KNOW-04 生产 library
@@ -54,14 +55,15 @@
 ## Constraints
 
 - 不 merge/push/release。不含 `outputs/` 与 `uv.lock`。
-- 无 media-plan 的既有 isolate / compose / QA focused 路径不得改坏。
+- 无 media-plan 的既有 `publish_from_artifact` 不得改坏。
 - 复用 `knowledge_layout.plan.is_stale`；禁止另写一套 stale 公式。
+- 锁定路径继续禁止 `publish_approved`。
 - ChatGPT 仍在人的浏览器里。
 
 ## Verification Plan
 
-- spec 已 Approved；实施计划已落盘；SDD Tasks 1–5 已本地实施（不 commit）
-- server worktree combined focused gate：221 ran / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）
+- spec Approved；实施计划已落盘
+- server `a0c8081` 已本地提交；审查 PASS；combined focused 263 ran / 261 ok / 2 FAIL（已知 `LEGEND_ROLE_MISSING`）
 - `bash scripts/ai/check-task-state.sh`
 - `bash scripts/ai/check-handoff.sh`
 - `bash scripts/ai/check-doc-governance.sh`
@@ -69,10 +71,9 @@
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-09-04-operator-iterative-workflow-design.md` §5.3
-- `docs/superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md`
-- `docs/superpowers/specs/2026-09-02-operator-illustration-hero-page-design.md`
-- `docs/superpowers/specs/2026-09-03-multi-view-wordless-assets-design.md`
-- `docs/superpowers/specs/2026-09-03-operator-composite-projection-display-design.md`
-- `docs/superpowers/specs/2026-09-04-legend-module-chrome-design.md`
-- `docs/superpowers/specs/2026-08-31-strict-qa-human-review-design.md`
+- `docs/superpowers/specs/2026-09-04-operator-iterative-workflow-design.md` §5.4
+- `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md`
+- `docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md`
+- `docs/superpowers/specs/2026-08-31-published-artifact-gallery-design.md`
+- `docs/superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md`
+- `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`

@@ -2,105 +2,100 @@
 
 ## Metadata
 
-- Updated At: 2026-09-07
+- Updated At: 2026-09-08
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 3944447
-- Kids HEAD: 3944447
-- Server Branch: `knowledge-pipeline-v1` @ `629144c`
-- Working Tree: kids 本提交写入 SHA；`outputs/` 未跟踪。server `629144c`；`uv.lock` 未跟踪。
-- Task Status: **In Progress（IMG-03 kids `3944447`、server `629144c` 已本地提交；不标 DONE；不 merge/push/release）。**
+- Base Commit: 94b4a55
+- Kids HEAD: 94b4a55
+- Server Branch: `knowledge-pipeline-v1` @ `a0c8081`
+- Working Tree: kids 本提交含 spec+plan+账本；`outputs/` 未跟踪。server `a0c8081` 已本地提交；`uv.lock` 未跟踪。
+- Task Status: **In Progress（PUBLISH-02 spec Approved；server `a0c8081` 已本地提交；不标 DONE）。**
 
 ## Summary
 
-IMG-03 + compose 锁定：spec Approved、计划已落盘。kids `3944447`、server `knowledge-pipeline-v1` @ `629144c` 已本地提交。IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 均不标 `DONE`。FLOW-01 程序仍不整条实施。PUBLISH-02 仍 BACKLOG。不含 `outputs/` 与 `uv.lock`。未 merge/push/release。现网应用仍 `7aaeb2b`。
+操作者要求 commit。server `knowledge-pipeline-v1` @ `a0c8081`：`publish_locked_projection`、有 pointer 时封旧一刀发布、HTTP/ops「上架画廊」。kids 本提交记录 spec、计划与 SHA。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。现网应用仍 `7aaeb2b`。未 merge/push/release。不标 `DONE`。
 
 ## Completed
 
-- spec Approved `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md`
-- 实施计划 `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md`
-- SDD Tasks 1–4：server `629144c` 已本地提交（冻结绑定扩词、节点 PNG、compose freeze 门禁与 QA-01 `approve` 锁定、HTTP/ops HTML、`legend_role`）
-- SDD Task 5（kids 账本）：路线图 IMG-03 仍 `IN PROGRESS`；系统总设计 §11 指向 `629144c`、非 DONE
-- controller 复跑 combined focused gate：221 ran / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）
-- whole-branch 审查：无 Critical；Important `legend_role` 已补；Ready to commit when operator asks
-- 节点 `legend_role` 创建时写入 meta、`_public` 原样带回；illustration+compose **64 ran, OK**
+- spec Approved `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
+- 实施计划 `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
+- server `a0c8081`：`publish_locked_projection`、有 pointer 时封 `publish_from_artifact` / `artifact-publish`、HTTP/ops「上架画廊」、compose overlay 后 `run_machine_qa` 例外；锁定仍只 `record_review`；发布不再 `record_review`
+- Tasks 1–3 审查 PASS；整支审查 Ready to commit；combined focused 263 ran / 261 ok / 2 FAIL（已知 `LEGEND_ROLE_MISSING`）
+- kids 账本记录 server `a0c8081`；PUBLISH-02 仍 `IN PROGRESS`
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | `3944447` |
-| kids | `docs/ai/HANDOFF.md` | `3944447`（本提交补 SHA） |
-| kids | `docs/README.md` | `3944447` |
-| kids | `docs/cognitive-card-os-roadmap.md` | `3944447` |
-| kids | `docs/cognitive-card-os-system-design.md` | `3944447` |
-| kids | `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md` | `3944447` |
-| kids | `docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md` | `3944447` |
+| kids | `docs/ai/CURRENT_TASK.md` | 本提交 |
+| kids | `docs/ai/HANDOFF.md` | 本提交 |
+| kids | `docs/README.md` | 本提交 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 本提交 |
+| kids | `docs/cognitive-card-os-system-design.md` | 本提交 |
+| kids | `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md` | 本提交 |
+| kids | `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md` | 本提交 |
 | kids | `outputs/` | 未跟踪；未纳入 |
-| server | `knowledge-pipeline-v1` @ `629144c` | 已本地提交；`uv.lock` 未纳入 |
+| server | `knowledge-pipeline-v1` @ `a0c8081` | 已本地提交 |
+| server | `uv.lock` | 未跟踪；未纳入 |
 
 ## Decisions Made
 
-- 锁定 = QA-01 `approve`，禁止 `publish_approved`。
+- 画廊面守 PUBLISH-01：四页 PNG + PDF；compose HTML / 节点 PNG 留在 ops。
+- 新 ops「上架画廊」；有 pointer 时 `publish_from_artifact` / `artifact-publish` 409 `PUBLISH_LOCKED_PATH_REQUIRED`。
+- 新函数 `publish_locked_projection` 只调 `publish_approved`；不改身份算法；不改 PORTAL。
+- compose 例外：overlay 后 `run_machine_qa`；锁定仍只 `record_review`；发布不再 `record_review`。
 - 不 merge/push/release。不修 ops mapping-lock `LEGEND_ROLE_MISSING`。
 - 不标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`。
-- SDD Tasks 1–5 跳过每任务 commit，除非操作者要求。
-- PUBLISH-02 仍 BACKLOG；不开本刀。
+- 不含 `uv.lock` 与 `outputs/`。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `3944447` + `outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
-| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `629144c` | 不提交 `uv.lock`；不 merge/push |
-| 本机验收 | 文档脚本 + server combined focused gate | 未开 8765 |
+| kids 治理 | `main` @ `94b4a55` + 本提交；`outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
+| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `a0c8081` | 不提交 `uv.lock`；不 merge/push |
+| 本机验收 | 文档脚本 + server combined gate 263/261/2 | 未开 8765；现网仍 `7aaeb2b` |
 
 ## Verification Results
 
-Task 5 实跑（2026-09-07，kids repo）：
-
-```
-RESULT: PASS (all checks green)          # check-task-state.sh
-RESULT: PASS (all checks green)          # check-handoff.sh
-RESULT: WARN (0 failures, 3 warning(s))  # check-doc-governance.sh
-git diff --check                         # exit 0；无输出
-```
+本回合 commit 前账本已按 `a0c8081` 改写。checker 在 kids 提交后复跑。
 
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| `bash scripts/ai/check-task-state.sh` | PASS | `RESULT: PASS (all checks green)`；14 个仓库路径存在；Status In Progress |
-| `bash scripts/ai/check-handoff.sh` | PASS | `RESULT: PASS (all checks green)`；Branch `main`；Base Commit `b022d73` |
-| `bash scripts/ai/check-doc-governance.sh` | WARN | `RESULT: WARN (0 failures, 3 warning(s))`；仅 Last Reviewed 过期（2026-07-24）：`PROJECT_CONTEXT.md`、`docs/README.md`、`docs/knowledge/codex-memory/README.md` |
+| `bash scripts/ai/check-task-state.sh` | PASS | 提交前；Status In Progress |
+| `bash scripts/ai/check-handoff.sh` | PASS | 提交前；Branch `main`；Base Commit `94b4a55` |
+| `bash scripts/ai/check-doc-governance.sh` | WARN | 0 failures, 3 warning(s)；仅 Last Reviewed 过期（2026-07-24） |
 | `git diff --check` | PASS | 无输出；exit 0 |
-| server combined focused gate | FAIL 2 | controller 复跑 `Ran 221 tests in 109.362s` / `FAILED (failures=2)`；已知 `LEGEND_ROLE_MISSING`；非本刀 |
-| `unittest tests.test_knowledge_illustration tests.test_knowledge_compose` | PASS | whole-branch `legend_role` 修复后 **64 ran, OK** |
+| server combined focused gate | 263 ran / 261 ok / 2 FAIL | 已知 ops mapping-lock `LEGEND_ROLE_MISSING`；commit 后未复跑 |
 
 ## Known Failures
 
 - ops mapping-lock `LEGEND_ROLE_MISSING` 两测：`test_generate_keeps_current_and_publish_requires_actor`、`test_publish_refuses_stale_work_after_relock`。不要修。
 - 文档地图 Last Reviewed 过期 WARN（2026-07-24）。与本次无关。
 - 现网应用仍 `7aaeb2b`。与本次无关。
-- StarletteDeprecationWarning about httpx/testclient 是噪声，不是新 FAIL。
 
 ## Risks and Caveats
 
-- 对照旧剑龙卡只验收模块种类尚未做。
-- 本机 8765 仍未走过恐龙 R1→R2→Confirm→layout→Freeze→请图→compose 锁定。
+- IMG-03 对照旧剑龙卡只验收模块种类尚未做。
+- 本机 8765 仍未走过恐龙 R1→R2→Confirm→layout→Freeze→请图→compose 锁定→上架。
 - ChatGPT 仍在人这边；不接模型 API。
-- server 实现已本地提交 `629144c`。工作区仅剩未跟踪 `uv.lock`。
+- GET artifact 只读 `media_plan` 布尔；禁止用 `get_layout` 探测 pointer（会建草稿）。
+- spec §10「已上架」要 catalog 身份等于本次工作区；计划 Task 3 JS 用 portal GET 200。未在本刀改。
 
 ## Remaining Work
 
-- 不 merge/push/release。不标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH / FORM / FREEZE / PUBLISH-02 `DONE`。
-- 不开 PUBLISH-02。
+- spec §10 ops「已上架」身份比对是整支审查记的 follow-up；未改。
+- 不 merge/push/release。不标 `DONE`。
 
 ## Exact Next Action
 
-不要 merge/push/release。不要标 `DONE`。不要开 PUBLISH-02。kids `3944447`、server `629144c` 已本地提交。
+不要 merge/push/release。不要标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`。不要纳入 `uv.lock` 或 `outputs/`。
 
 ## Recovery Notes
 
-- Spec：`docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md`
-- Plan：`docs/superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md`
-- Server worktree：`.worktrees/cognitive-card-server-knowledge-core` @ `629144c`
-- Combined gate：221 ran / 2 FAIL（已知 ops mapping-lock）
+- Spec：`docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
+- Plan：`docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
+- Server worktree：`.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `a0c8081`
+- Combined gate（PUBLISH-02）：263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock）
+- Whole-branch：Ready to commit；0 Critical；ops「已上架」身份启发式为 follow-up
+- Production app still `7aaeb2b`

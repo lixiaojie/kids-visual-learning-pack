@@ -82,6 +82,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Operator Complete Prompt Round Design](superpowers/specs/2026-09-04-operator-complete-prompt-round-design.md) | API-01-R2: same intent advances to complete authoring; image_suggestions stay on the intent; no media-plan file | Approved |
 | [Operator Layout Graph Form Freeze Design](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md) | GRAPH-01 / FORM-01 / FREEZE-01: layout outline, media-plan draft/freeze beside mapping, Core identity pin; not IMG-03 | Approved |
 | [Operator Frozen Node Illustration and Compose Lock Design](superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md) | IMG-03 + compose lock: per frozen wordless-image node prompts/PNG; QA approve locks projection; not PUBLISH-02 | Approved |
+| [Operator Locked Projection Gallery Publish Design](superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md) | PUBLISH-02: locked approved projection → PUBLISH-01 package on local gallery; not identity/PORTAL change | Approved |
 | [Entity Knowledge Coverage Design](superpowers/specs/2026-09-01-entity-knowledge-coverage-design.md) | KNOW-03: pluggable coverage + seven-topic compatibility suite; not projection | Approved/Implemented |
 | [Knowledge Suite Library Seed Design](superpowers/specs/2026-09-01-knowledge-suite-library-seed-design.md) | KNOW-04: seed six allowed suite topics into production library current; not Gwen; not WB-02 | Approved/Implemented |
 | [Knowledge Core Contract Pilot Evidence](knowledge-core-contract-pilot-evidence.md) | Verified local evidence for the four-object contract fixtures, zero-runtime boundary, and full-suite baseline limitation | Verified |
@@ -115,6 +116,7 @@ Start with [PROJECT_CONTEXT](../PROJECT_CONTEXT.md). This file is the only canon
 | [Operator Complete Prompt Round Implementation](superpowers/plans/2026-09-04-operator-complete-prompt-round-implementation-plan.md) | API-01-R2: same-intent advance, complete authoring, intent-sidecar suggestions; server `4f76aca` local; not media-plan; not production | In Progress |
 | [Operator Layout Graph Form Freeze Implementation](superpowers/plans/2026-09-07-operator-layout-graph-form-freeze-implementation-plan.md) | GRAPH-01 / FORM-01 / FREEZE-01: layout outline, media-plan draft/freeze; server `28ec476` local; not IMG-03; not production | In Progress |
 | [Operator Frozen Node Illustration and Compose Lock Implementation](superpowers/plans/2026-09-07-operator-frozen-node-illustration-compose-lock-implementation-plan.md) | IMG-03 + compose lock: bound node prompts/PNG, freeze-gated compose, QA approve without publish; server `629144c` local; not production | In Progress |
+| [Operator Locked Projection Gallery Publish Implementation](superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md) | PUBLISH-02: publish_locked_projection, block artifact-publish when media-plan pointer; not identity/PORTAL change; server `a0c8081` local; not production | In Progress |
 
 ## Operations, Compliance, and Decisions
 
