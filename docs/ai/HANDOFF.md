@@ -5,15 +5,15 @@
 - Updated At: 2026-09-08
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: 94b4a55
-- Kids HEAD: 94b4a55
+- Base Commit: becaef3
+- Kids HEAD: becaef3
 - Server Branch: `knowledge-pipeline-v1` @ `a0c8081`
-- Working Tree: kids 本提交含 spec+plan+账本；`outputs/` 未跟踪。server `a0c8081` 已本地提交；`uv.lock` 未跟踪。
+- Working Tree: kids 干净（`outputs/` 未跟踪）。server `a0c8081` 已本地提交；`uv.lock` 未跟踪。
 - Task Status: **In Progress（PUBLISH-02 spec Approved；server `a0c8081` 已本地提交；不标 DONE）。**
 
 ## Summary
 
-操作者要求 commit。server `knowledge-pipeline-v1` @ `a0c8081`：`publish_locked_projection`、有 pointer 时封旧一刀发布、HTTP/ops「上架画廊」。kids 本提交记录 spec、计划与 SHA。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。现网应用仍 `7aaeb2b`。未 merge/push/release。不标 `DONE`。
+操作者要求 commit。server `knowledge-pipeline-v1` @ `a0c8081`：`publish_locked_projection`、有 pointer 时封旧一刀发布、HTTP/ops「上架画廊」。kids `becaef3` 记录 spec、计划与 SHA。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。现网应用仍 `7aaeb2b`。未 merge/push/release。不标 `DONE`。
 
 ## Completed
 
@@ -27,13 +27,7 @@
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | `docs/ai/CURRENT_TASK.md` | 本提交 |
-| kids | `docs/ai/HANDOFF.md` | 本提交 |
-| kids | `docs/README.md` | 本提交 |
-| kids | `docs/cognitive-card-os-roadmap.md` | 本提交 |
-| kids | `docs/cognitive-card-os-system-design.md` | 本提交 |
-| kids | `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md` | 本提交 |
-| kids | `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md` | 本提交 |
+| kids | spec+plan+账本 | `becaef3` 已本地提交 |
 | kids | `outputs/` | 未跟踪；未纳入 |
 | server | `knowledge-pipeline-v1` @ `a0c8081` | 已本地提交 |
 | server | `uv.lock` | 未跟踪；未纳入 |
@@ -52,7 +46,7 @@
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `94b4a55` + 本提交；`outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
+| kids 治理 | `main` @ `becaef3`；`outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
 | 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `a0c8081` | 不提交 `uv.lock`；不 merge/push |
 | 本机验收 | 文档脚本 + server combined gate 263/261/2 | 未开 8765；现网仍 `7aaeb2b` |
 
@@ -63,7 +57,7 @@
 | Command / Check | Result | Notes |
 | --- | --- | --- |
 | `bash scripts/ai/check-task-state.sh` | PASS | 提交前；Status In Progress |
-| `bash scripts/ai/check-handoff.sh` | PASS | 提交前；Branch `main`；Base Commit `94b4a55` |
+| `bash scripts/ai/check-handoff.sh` | PASS | 提交前；Branch `main`；Base Commit `becaef3` |
 | `bash scripts/ai/check-doc-governance.sh` | WARN | 0 failures, 3 warning(s)；仅 Last Reviewed 过期（2026-07-24） |
 | `git diff --check` | PASS | 无输出；exit 0 |
 | server combined focused gate | 263 ran / 261 ok / 2 FAIL | 已知 ops mapping-lock `LEGEND_ROLE_MISSING`；commit 后未复跑 |

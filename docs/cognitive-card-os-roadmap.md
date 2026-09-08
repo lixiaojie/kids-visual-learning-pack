@@ -797,7 +797,7 @@
 26. **GRAPH-01 / FORM-01 / FREEZE-01** 排版大纲与 media-plan 冻结（IN PROGRESS；kids `c1c09cc`、server `28ec476` 已本地提交；combined focused 126 ran / 124 OK / 2 已知 FAIL；不标 DONE）。
 27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；IMG-03 server `629144c` 本地；PUBLISH-02 server `a0c8081` 本地；不标 DONE）。
 28. **IMG-03** 冻结节点请图 + compose 锁定（IN PROGRESS；kids `3944447`、server `629144c` 已本地提交；不含把 PUBLISH-02 标 DONE；不标 DONE）。
-29. **PUBLISH-02** 锁定带图投影上画廊（IN PROGRESS；spec Approved；计划已落盘；server `a0c8081` 本地；combined 263/261/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
+29. **PUBLISH-02** 锁定带图投影上画廊（IN PROGRESS；kids `becaef3`、server `a0c8081` 已本地提交；combined 263/261/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -809,7 +809,7 @@
 
 ### 2026-09-08
 
-- PUBLISH-02：spec Approved；实施计划已落盘。server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交（`publish_locked_projection`、封旧路、HTTP/ops、单测）。Tasks 1–3 审查 PASS。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 add `uv.lock` / `outputs/`。未 merge/push/release。不标 `DONE`。FLOW-01 程序仍不整条实施。IMG-03 仍 `IN PROGRESS`。
+- PUBLISH-02：kids `becaef3`、server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交（`publish_locked_projection`、封旧路、HTTP/ops、单测）。Tasks 1–3 审查 PASS。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 add `uv.lock` / `outputs/`。未 merge/push/release。不标 `DONE`。FLOW-01 程序仍不整条实施。IMG-03 仍 `IN PROGRESS`。
 
 ### 2026-09-07
 
