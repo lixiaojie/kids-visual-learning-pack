@@ -6,7 +6,7 @@
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
 - Branch: kids `main`；server `main` / `knowledge-pipeline-v1` @ `7ff8369`
-- Base Commit: a108b18
+- Base Commit: be0edd6
 
 ## Objective
 
@@ -28,7 +28,7 @@ Plan：`docs/superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-impl
 - [x] Task 5 numbered package + PORTAL + kids docs
 - [x] `dino-walk.local` 隔离走通 pack-layout 上架（剑龙 `revision-0002`）
 - [x] server `main` 已 fast-forward 到 `7ff8369` 并 push `origin/main`
-- [ ] kids `main` 已 push 到 origin（本提交之后）
+- [x] kids `main` 已 push 到 origin（本提交之后）
 - [ ] 不标 FLOW-01 / PUBLISH-02 / IMG-03 / PACK-01 `DONE`
 - [ ] 未写现网 catalog、未 reload Nginx
 

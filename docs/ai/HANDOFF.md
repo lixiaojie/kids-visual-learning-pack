@@ -5,8 +5,8 @@
 - Updated At: 2026-09-09
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: a108b18
-- Kids HEAD: a108b18
+- Base Commit: be0edd6
+- Kids HEAD: be0edd6
 - Server Branch: `main` / `knowledge-pipeline-v1` @ `7ff8369`（`origin/main` 同 SHA）
 - Working Tree: server 已 merge/push。本回合提交隔离走通与 merge 记录后 push kids `main`。`AGENTS.md` 有他人未提交修改（未纳入）；`outputs/` 未跟踪。server 对照表/age/`uv.lock` 仍未提交。
 - Task Status: **In Progress（PACK-01 不标 DONE。server `origin/main`=`7ff8369`；现网应用仍 `7aaeb2b`）。**
