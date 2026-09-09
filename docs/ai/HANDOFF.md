@@ -2,94 +2,87 @@
 
 ## Metadata
 
-- Updated At: 2026-09-08
+- Updated At: 2026-09-09
 - Agent: Cursor Grok 4.6
 - Branch: main
-- Base Commit: becaef3
-- Kids HEAD: becaef3
-- Server Branch: `knowledge-pipeline-v1` @ `a0c8081`
-- Working Tree: kids 干净（`outputs/` 未跟踪）。server `a0c8081` 已本地提交；`uv.lock` 未跟踪。
-- Task Status: **In Progress（PUBLISH-02 spec Approved；server `a0c8081` 已本地提交；不标 DONE）。**
+- Base Commit: b01b51d
+- Kids HEAD: b01b51d
+- Server Branch: `knowledge-pipeline-v1` @ `7ff8369`
+- Working Tree: 本提交记录 PACK-01 spec/计划与账本。`AGENTS.md` 有他人未提交修改（未纳入）；`outputs/` 未跟踪。server 对照表/age/`uv.lock` 仍未提交（未纳入 PACK-01）。
+- Task Status: **In Progress（PACK-01 server `7ff8369` 已本地提交；combined focused 311 ran / 309 ok / 2 FAIL 已知 `LEGEND_ROLE_MISSING`；未标 DONE）。**
 
 ## Summary
 
-操作者要求 commit。server `knowledge-pipeline-v1` @ `a0c8081`：`publish_locked_projection`、有 pointer 时封旧一刀发布、HTTP/ops「上架画廊」。kids `becaef3` 记录 spec、计划与 SHA。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。现网应用仍 `7aaeb2b`。未 merge/push/release。不标 `DONE`。
+PACK-01 已本地提交到 server `knowledge-pipeline-v1` @ `7ff8369`。本提交落盘 kids spec、实施计划与路线图 SHA。未 merge/push/release。未写现网 catalog。PACK-01 不标 DONE。
 
 ## Completed
 
-- spec Approved `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
-- 实施计划 `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
-- server `a0c8081`：`publish_locked_projection`、有 pointer 时封 `publish_from_artifact` / `artifact-publish`、HTTP/ops「上架画廊」、compose overlay 后 `run_machine_qa` 例外；锁定仍只 `record_review`；发布不再 `record_review`
-- Tasks 1–3 审查 PASS；整支审查 Ready to commit；combined focused 263 ran / 261 ok / 2 FAIL（已知 `LEGEND_ROLE_MISSING`）
-- kids 账本记录 server `a0c8081`；PUBLISH-02 仍 `IN PROGRESS`
+- server：`7ff8369` `feat(knowledge): add pack-layout dual gallery for locked projections`
+- 未纳入 server 提交：age_language、copy_plan、pack.py、`.gitignore`、`uv.lock`、`test_age_*`、`test_pack_from_mapping.py`
 
 ## Changed Files
 
 | Repository | File | State |
 | --- | --- | --- |
-| kids | spec+plan+账本 | `becaef3` 已本地提交 |
-| kids | `outputs/` | 未跟踪；未纳入 |
-| server | `knowledge-pipeline-v1` @ `a0c8081` | 已本地提交 |
-| server | `uv.lock` | 未跟踪；未纳入 |
+| kids | `docs/ai/CURRENT_TASK.md` | 本提交 |
+| kids | `docs/ai/HANDOFF.md` | 本文件 |
+| kids | `docs/README.md` | 本提交 |
+| kids | `docs/cognitive-card-os-roadmap.md` | 本提交 |
+| kids | `docs/cognitive-card-os-system-design.md` | 本提交 |
+| kids | PACK-01 spec / 实施计划 | 本提交 |
+| kids | `AGENTS.md` | 他人未提交修改；未纳入 |
+| kids | `outputs/` | 未跟踪 |
+| server | PACK-01 实现 | 已提交 `7ff8369` |
+| server | age / copy_plan / pack.py / `.gitignore` / `uv.lock` | 仍未提交；未纳入 |
 
 ## Decisions Made
 
-- 画廊面守 PUBLISH-01：四页 PNG + PDF；compose HTML / 节点 PNG 留在 ops。
-- 新 ops「上架画廊」；有 pointer 时 `publish_from_artifact` / `artifact-publish` 409 `PUBLISH_LOCKED_PATH_REQUIRED`。
-- 新函数 `publish_locked_projection` 只调 `publish_approved`；不改身份算法；不改 PORTAL。
-- compose 例外：overlay 后 `run_machine_qa`；锁定仍只 `record_review`；发布不再 `record_review`。
-- 不 merge/push/release。不修 ops mapping-lock `LEGEND_ROLE_MISSING`。
-- 不标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`。
-- 不含 `uv.lock` 与 `outputs/`。
+- 操作者要求 commit；server 与 kids 分仓提交。
+- PACK-01 不标 `DONE`；不 merge/push/release。
+- 对照表/age 补丁与 `uv.lock` 不进 PACK-01 提交。
 
 ## Isolation Map
 
 | 角色 | 路径 | 规则 |
 | --- | --- | --- |
-| kids 治理 | `main` @ `becaef3`；`outputs/` 未跟踪 | 不默认 push；不提交 `outputs/` |
-| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `a0c8081` | 不提交 `uv.lock`；不 merge/push |
-| 本机验收 | 文档脚本 + server combined gate 263/261/2 | 未开 8765；现网仍 `7aaeb2b` |
+| kids 治理 | `main` @ `b01b51d` | 本提交只改文档 |
+| 知识管线 | `.worktrees/cognitive-card-server-knowledge-core` @ `7ff8369` | PACK-01 已本地提交 |
+| 本机验收 | `dino-walk.local` | 不写现网 |
+| 现网 | 应用仍 `7aaeb2b` | 未动 |
 
 ## Verification Results
 
-本回合 commit 前账本已按 `a0c8081` 改写。checker 在 kids 提交后复跑。
-
 | Command / Check | Result | Notes |
 | --- | --- | --- |
-| `bash scripts/ai/check-task-state.sh` | PASS | 提交前；Status In Progress |
-| `bash scripts/ai/check-handoff.sh` | PASS | 提交前；Branch `main`；Base Commit `becaef3` |
-| `bash scripts/ai/check-doc-governance.sh` | WARN | 0 failures, 3 warning(s)；仅 Last Reviewed 过期（2026-07-24） |
-| `git diff --check` | PASS | 无输出；exit 0 |
-| server combined focused gate | 263 ran / 261 ok / 2 FAIL | 已知 ops mapping-lock `LEGEND_ROLE_MISSING`；commit 后未复跑 |
+| combined focused gate | 311 ran / 309 ok / 2 FAIL | 已知 ops mapping-lock `LEGEND_ROLE_MISSING` |
+| `check-task-state.sh` | PASS | 填入本表后复跑 |
+| `check-handoff.sh` | PASS | 填入本表后复跑 |
+| `git diff --check`（kids） | PASS | 无 whitespace 错误 |
 
 ## Known Failures
 
-- ops mapping-lock `LEGEND_ROLE_MISSING` 两测：`test_generate_keeps_current_and_publish_requires_actor`、`test_publish_refuses_stale_work_after_relock`。不要修。
-- 文档地图 Last Reviewed 过期 WARN（2026-07-24）。与本次无关。
-- 现网应用仍 `7aaeb2b`。与本次无关。
+- 霸王龙夹具 `mapping-lock` `LEGEND_ROLE_MISSING`（`test_http_knowledge_ops` 两例）。未修；与本刀无关。
+- 文档地图 Last Reviewed 过期 WARN（既有，2026-07-24）。
+- kids `boards/kids-world/structure.test.mjs` 既有 19 !== 18。与本次无关。
+- 已上架剑龙 `revision-0001` 仍是 Pillow 四卡 hero 带，直到对该主题重锁重发。
 
 ## Risks and Caveats
 
-- IMG-03 对照旧剑龙卡只验收模块种类尚未做。
-- 本机 8765 仍未走过恐龙 R1→R2→Confirm→layout→Freeze→请图→compose 锁定→上架。
-- ChatGPT 仍在人这边；不接模型 API。
-- GET artifact 只读 `media_plan` 布尔；禁止用 `get_layout` 探测 pointer（会建草稿）。
-- spec §10「已上架」要 catalog 身份等于本次工作区；计划 Task 3 JS 用 portal GET 200。未在本刀改。
+- server 工作区仍有对照表/age/`uv.lock` 未提交修改。
+- 不要把 `uv.lock` 或 `outputs/` 加入提交。
+- PACK-01 不得标 `DONE`。
 
 ## Remaining Work
 
-- spec §10 ops「已上架」身份比对是整支审查记的 follow-up；未改。
-- 不 merge/push/release。不标 `DONE`。
+不要 merge/push/release。不要标 DONE。不写现网 catalog。kids 提交后用后续 SHA 记录提交对齐 HANDOFF Base Commit。
 
 ## Exact Next Action
 
-不要 merge/push/release。不要标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`。不要纳入 `uv.lock` 或 `outputs/`。
+不要 merge/push/release，不要把 PACK-01 标 `DONE`。若要对剑龙重发双画廊包，在 `dino-walk.local` 走 compose → pack-layout → lock → publish。
 
 ## Recovery Notes
 
-- Spec：`docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
-- Plan：`docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
-- Server worktree：`.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `a0c8081`
-- Combined gate（PUBLISH-02）：263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock）
-- Whole-branch：Ready to commit；0 Critical；ops「已上架」身份启发式为 follow-up
-- Production app still `7aaeb2b`
+- Spec：`docs/superpowers/specs/2026-09-08-operator-pack-layout-dual-gallery-design.md`
+- Plan：`docs/superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-implementation-plan.md`
+- Server：`7ff8369` on `knowledge-pipeline-v1`
+- 本机画廊：`dino-walk.local/private-candidates/package-catalog/`

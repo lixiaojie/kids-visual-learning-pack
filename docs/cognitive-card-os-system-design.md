@@ -295,8 +295,9 @@ Card OS 使用自己的身份，不转发 ChatGPT 身份。初始权限范围为
 30. **`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结**：spec Approved。server `knowledge-pipeline-v1` @ `28ec476` 已本地提交（layout outline、media-plan draft/PATCH/freeze、ops `/layout`）。未生产。不标 `DONE`。精确状态见路线图。见 [排版图谱形态冻结](superpowers/specs/2026-09-07-operator-layout-graph-form-freeze-design.md)。
 31. **`IMG-03` 冻结节点请图与投影锁定**：spec Approved。server `knowledge-pipeline-v1` @ `629144c` 已本地提交：frozen 节点无字提示词与 PNG 回填、compose freeze 门禁、QA-01 `approve` 锁定投影。不含 PUBLISH-02。未生产。不标 `DONE`。精确状态见路线图。见 [冻结节点请图与投影锁定](superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md)。
 32. **`PUBLISH-02` 锁定带图投影上画廊**：spec Approved，实施计划已落盘。已锁定 `approved` 投影显式 `publish_locked_projection` → `publish_approved`；包形状守 PUBLISH-01；有 pointer 时封旧一刀发布。不改身份算法、不改 PORTAL。compose 例外：overlay 后 `run_machine_qa`；锁定仍只 `record_review`；发布不再 `record_review`。server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交。不标 `DONE`。精确状态见路线图。见 [锁定投影上画廊](superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md)。
-33. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
-34. 第二个哺乳动物一致性验收仍依赖模板族。
+33. **`PACK-01` 投影块选择、A4 排版与双画廊**：spec Approved。compose 之后勾选子块、A4 自动分页/拖块、印样门禁锁定；一个包两种渲染（屏幕完整投影 / A4 分页）；有 pack-layout 的主题不再上架四张 hero 带 PNG。server `knowledge-pipeline-v1` @ `7ff8369` 已本地提交。未生产。不标 `DONE`。精确状态见路线图。见 [投影块选择与双画廊](superpowers/specs/2026-09-08-operator-pack-layout-dual-gallery-design.md)、[实施计划](superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-implementation-plan.md)。
+34. 第二台电脑、加密异地备份、浏览器会话、只读 MCP：**后置**，不作为单人主路径门禁。
+35. 第二个哺乳动物一致性验收仍依赖模板族。
 
 各批次的状态、依赖与验收条件只在路线图中更新。
 

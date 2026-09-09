@@ -2,78 +2,67 @@
 
 ## Metadata
 
-- Updated At: 2026-09-08
+- Updated At: 2026-09-09
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `becaef3`；server `knowledge-pipeline-v1` @ `a0c8081`
-- Base Commit: 94b4a55
+- Branch: kids `main` @ `b01b51d`；server `knowledge-pipeline-v1` @ `7ff8369`
+- Base Commit: b01b51d
 
 ## Objective
 
-实施 PUBLISH-02：已锁定（QA `approved`）的带图投影显式上架本机画廊。新函数 `publish_locked_projection` 只调 `publish_approved`；包形状守 PUBLISH-01；有 media-plan pointer 时封掉旧一刀 `publish_from_artifact` /「批准并上架」。不改身份算法。不改 PORTAL。不接图像 API。不 merge/push/release。不标 `DONE`。
+PACK-01 已在 server `7ff8369` 本地提交。本回合记录 spec/计划与 SHA。不 merge/push/release、不标 DONE。
 
 ## Background
 
-操作者批准 PUBLISH-02 spec。实施计划已落盘。前四步已本地提交：API-01-R1/R2 `4f76aca`，GRAPH/FORM/FREEZE `28ec476`，IMG-03 `629144c`。竖切顺序仍是 R1 → R2 → GRAPH+FORM+FREEZE → IMG-03 投影锁定 → **本刀**。server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交（`publish_locked_projection`、封旧路、HTTP/ops、单测）。Tasks 1–3 审查 PASS。combined focused 263 ran / 261 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。现网应用仍 `7aaeb2b`。不 merge/push/release。不标 `DONE`。
+Spec：`docs/superpowers/specs/2026-09-08-operator-pack-layout-dual-gallery-design.md`。
+Plan：`docs/superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-implementation-plan.md`。
+执行工位：`.worktrees/cognitive-card-server-knowledge-core`。不得还原该树上已有未提交对照表/compose 补丁。不得动 `uv.lock`。
 
 ## Acceptance Criteria
 
-- [x] spec 操作者 Approved `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
-- [x] 实施计划落盘 `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
-- [x] 无 media-plan pointer 时 `publish_from_artifact` / `artifact-publish` 与本刀之前相同
-- [x] 有 pointer 时：旧一刀发布 409 `PUBLISH_LOCKED_PATH_REQUIRED`；新函数要求 frozen、未 stale、compose 身份一致、已 `approved`
-- [x] 成功只调用 `publish_approved`；包内无 compose HTML / 节点 PNG；knowledge library current 指针不变
-- [x] 缺节点 PNG 不失败；同身份幂等
-- [x] PORTAL-01 下载允白与身份算法不变
-- [x] 不 merge/push/release、不覆盖 `outputs/`、不提交 `uv.lock`
-- [x] 不修 ops mapping-lock `LEGEND_ROLE_MISSING`
-- [x] 不标 IMG-03 / COMPOSE-01 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`
+- [x] spec 与计划落盘
+- [x] Task 1 catalog / GET draft / PATCH selected
+- [x] Task 2 PATCH placement
+- [x] Task 3 print sample + lock_pack_layout + compose-lock 409
+- [x] Task 4 HTTP + ops pack
+- [x] Task 5 numbered package + PORTAL + kids docs
+- [ ] 不标 FLOW-01 / PUBLISH-02 / IMG-03 / PACK-01 `DONE`
 
 ## In Scope
 
-- server worktree `knowledge-pipeline-v1` under `.worktrees/cognitive-card-server-knowledge-core`（`publish_locked_projection`、封旧发布入口、HTTP/ops、单测）
 - `docs/ai/CURRENT_TASK.md`
 - `docs/ai/HANDOFF.md`
+- `docs/README.md`
 - `docs/cognitive-card-os-roadmap.md`
 - `docs/cognitive-card-os-system-design.md`
-- `docs/README.md`
-- `docs/superpowers/specs/2026-09-07-operator-locked-projection-gallery-publish-design.md`
-- `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
+- `docs/superpowers/specs/2026-09-08-operator-pack-layout-dual-gallery-design.md`
+- `docs/superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-implementation-plan.md`
+- server worktree `.worktrees/cognitive-card-server-knowledge-core` 中计划 File map 所列路径（`knowledge_pack/`、`knowledge_library/store.py`、compose lock gate、publish/portal/ops/http、对应 tests）
 
 ## Out of Scope
 
-- 改 PUBLISH-01 身份算法、改 PORTAL-01 允白/详情 HTML
-- 把 compose HTML / 节点 PNG 写入 package
-- OpenAI / 图像 API、Skill claim、canvas 图谱
-- 改 `lock_mapping`、改 Confirm current、改四对象 schema
-- 打印铬、可交互运行时、新 ADR、KNOW-04 生产 library
-- `outputs/`、server `uv.lock`
-- 标 IMG-01 / IMG-02 / IMG-03 / COMPOSE-01 / LEGEND-01 / RENDER-02 / API-01 / API-01-R1 / API-01-R2 / FLOW-01 / GRAPH-01 / FORM-01 / FREEZE-01 / PUBLISH-02 `DONE`
+- OpenAI / 图像 API、Skill claim
+- 改四对象 schema；现网 catalog
+- merge/push/release；git commit（除非操作者另说）
+- `outputs/`、server `uv.lock`、`AGENTS.md`
+- 还原 server 树上已有未提交补丁
 - 修 ops mapping-lock `LEGEND_ROLE_MISSING`
-- merge/push/release
 
 ## Constraints
 
-- 不 merge/push/release。不含 `outputs/` 与 `uv.lock`。
-- 无 media-plan 的既有 `publish_from_artifact` 不得改坏。
-- 复用 `knowledge_layout.plan.is_stale`；禁止另写一套 stale 公式。
-- 锁定路径继续禁止 `publish_approved`。
-- ChatGPT 仍在人的浏览器里。
+- 子代理模型：`cursor-grok-4.6-high`（禁止 on-demand / composer-2.5-fast）。
+- 不覆盖 `AGENTS.md` 未提交修改。
+- 不把 admin token 写入聊天或仓库。
 
 ## Verification Plan
 
-- spec Approved；实施计划已落盘
-- server `a0c8081` 已本地提交；审查 PASS；combined focused 263 ran / 261 ok / 2 FAIL（已知 `LEGEND_ROLE_MISSING`）
+- 各任务计划内 unittest
+- Task 5 后 combined focused gate
 - `bash scripts/ai/check-task-state.sh`
 - `bash scripts/ai/check-handoff.sh`
-- `bash scripts/ai/check-doc-governance.sh`
 - `git diff --check`
 
 ## Relevant References
 
-- `docs/superpowers/specs/2026-09-04-operator-iterative-workflow-design.md` §5.4
-- `docs/superpowers/specs/2026-09-07-operator-frozen-node-illustration-compose-lock-design.md`
-- `docs/superpowers/specs/2026-08-31-immutable-package-publish-design.md`
-- `docs/superpowers/specs/2026-08-31-published-artifact-gallery-design.md`
-- `docs/superpowers/specs/2026-09-01-operator-mapping-artifact-publish-design.md`
-- `docs/superpowers/plans/2026-09-07-operator-locked-projection-gallery-publish-implementation-plan.md`
+- `docs/superpowers/specs/2026-09-08-operator-pack-layout-dual-gallery-design.md`
+- `docs/superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-implementation-plan.md`
