@@ -5,12 +5,12 @@
 - Updated At: 2026-09-09
 - Updated By: Cursor Grok 4.6
 - Status: In Progress
-- Branch: kids `main` @ `b01b51d`；server `knowledge-pipeline-v1` @ `7ff8369`
-- Base Commit: b01b51d
+- Branch: kids `main` @ `7bed28f`；server `knowledge-pipeline-v1` @ `7ff8369`
+- Base Commit: 7bed28f
 
 ## Objective
 
-PACK-01 已在 server `7ff8369` 本地提交。本回合记录 spec/计划与 SHA。不 merge/push/release、不标 DONE。
+PACK-01 已在 server `7ff8369` 与 kids `7bed28f` 本地提交。不 merge/push/release、不标 DONE。
 
 ## Background
 

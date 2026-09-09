@@ -812,7 +812,7 @@
 27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；IMG-03 server `629144c` 本地；PUBLISH-02 server `a0c8081` 本地；PACK-01 server `7ff8369` 本地；不标 DONE）。
 28. **IMG-03** 冻结节点请图 + compose 锁定（IN PROGRESS；kids `3944447`、server `629144c` 已本地提交；不含把 PUBLISH-02 标 DONE；不标 DONE）。
 29. **PUBLISH-02** 锁定带图投影上画廊（IN PROGRESS；kids `becaef3`、server `a0c8081` 已本地提交；combined 263/261/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
-30. **PACK-01** 投影块选择、A4 排版与双画廊（IN PROGRESS；server `7ff8369` 已本地提交；combined 311/309/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
+30. **PACK-01** 投影块选择、A4 排版与双画廊（IN PROGRESS；kids `7bed28f`、server `7ff8369` 已本地提交；combined 311/309/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
 
 不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
 
@@ -824,7 +824,7 @@
 
 ### 2026-09-09
 
-- PACK-01：server `knowledge-pipeline-v1` @ `7ff8369` 已本地提交（pack-layout、编号包、PORTAL 双画廊、stale GET 新 draft、AGE 折行高度）。combined focused 311 ran / 309 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。未 add `uv.lock` / `outputs/`。未 merge/push/release。不标 `DONE`。隔离：`dino-walk.local` only。
+- PACK-01：kids `7bed28f`、server `knowledge-pipeline-v1` @ `7ff8369` 已本地提交（pack-layout、编号包、PORTAL 双画廊、stale GET 新 draft、AGE 折行高度）。combined focused 311 ran / 309 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。未 add `uv.lock` / `outputs/`。未 merge/push/release。不标 `DONE`。隔离：`dino-walk.local` only。
 
 ### 2026-09-08
 
