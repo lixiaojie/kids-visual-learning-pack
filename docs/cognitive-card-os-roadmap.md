@@ -1,7 +1,7 @@
 # Cognitive Card OS 路线图与任务账本
 
 状态：活动中  
-最近更新：2026-09-08
+最近更新：2026-09-09
 整体设计：[Cognitive Card OS 整体设计](cognitive-card-os-system-design.md)
 
 ## 1. 维护规则
@@ -25,7 +25,7 @@
 
 目标：单人维护、单人使用。先跑通 结构化输入 → 四对象 revision → library current → **浏览并确认 Projection family**。现网 `0.3.1` 继续承担锁定任务领取与提交。第二台电脑、加密异地备份、公网 Portal、旧站替换不是本里程碑门禁。见 [ADR-004](decisions/ADR-004-single-operator-main-flow.md)。
 
-本里程碑当前切片：`PACK-01` 投影块选择、A4 排版与双画廊（spec Approved；server `knowledge-pipeline-v1` @ `7ff8369` 已本地提交；combined focused 311 ran / 309 ok / 2 FAIL 已知 ops mapping-lock；不标 `DONE`）。`PUBLISH-02` 锁定带图投影上画廊（spec Approved；实施计划已落盘；server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交；combined focused 263 ran / 261 ok / 2 FAIL 已知 ops mapping-lock `LEGEND_ROLE_MISSING`；不标 `DONE`）。`IMG-03` 冻结节点请图 + compose 锁定（spec Approved；实施计划已落盘；server `knowledge-pipeline-v1` @ `629144c` 已本地提交；未生产、不标 `DONE`）。`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结（spec Approved；server `knowledge-pipeline-v1` @ `28ec476` 已本地提交；未 merge/push/release、未生产、不标 `DONE`）。`FLOW-01` 迭代工作流（spec Approved；程序仍不整条实施）。`API-01-R2` 完整对象第二轮（kids `c32d4d2`、server `4f76aca` 已本地提交；未生产）。`API-01-R1` 恐龙粗框架提示词（同提交；未生产）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
+本里程碑当前切片：`PACK-01` 投影块选择、A4 排版与双画廊（spec Approved；server `origin/main`=`7ff8369` 已 merge/push；`dino-walk.local` 剑龙 `revision-0002` 已隔离走通；combined focused 311 ran / 309 ok / 2 FAIL 已知 ops mapping-lock；不标 `DONE`；现网应用仍 `7aaeb2b`）。`PUBLISH-02` 锁定带图投影上画廊（spec Approved；实施计划已落盘；server `knowledge-pipeline-v1` @ `a0c8081` 已本地提交；combined focused 263 ran / 261 ok / 2 FAIL 已知 ops mapping-lock `LEGEND_ROLE_MISSING`；不标 `DONE`）。`IMG-03` 冻结节点请图 + compose 锁定（spec Approved；实施计划已落盘；server `knowledge-pipeline-v1` @ `629144c` 已本地提交；未生产、不标 `DONE`）。`GRAPH-01` / `FORM-01` / `FREEZE-01` 排版大纲与 media-plan 冻结（spec Approved；server `knowledge-pipeline-v1` @ `28ec476` 已本地提交；未 merge/push/release、未生产、不标 `DONE`）。`FLOW-01` 迭代工作流（spec Approved；程序仍不整条实施）。`API-01-R2` 完整对象第二轮（kids `c32d4d2`、server `4f76aca` 已本地提交；未生产）。`API-01-R1` 恐龙粗框架提示词（同提交；未生产）。`RENDER-02` 图例模块铬（kids `05dfeaa`、server `427bf89` 已本地提交；未 merge/push/release）。`IMG-02` 多视图无字资产（server `8710914` 已本地提交；未 push、未生产）。`LEGEND-01` 投影图例（server `f9baf8f` 已本地提交；未 push、未生产；不退回整卡烧字）。`COMPOSE-01` 本机 focused 已过；未生产、不标 `DONE`。`IMG-01` 本机 loopback 已验收；未生产、不标 `DONE`。`API-01` / `API-01-TPL` 已随 server `91b7cf3` 提交（未现网、不标 DONE）。`WB-03` 本机 `DONE`（文字四卡；不接生图）。不打 release、不默认上现网画廊。
 
 **M1（历史，单人门禁已关闭）**
 
@@ -83,7 +83,7 @@
 | FREEZE-01 | 排版冻结 | IN PROGRESS | freeze 要求 mapping；钉身份；不标 DONE |
 | IMG-03 | 按冻结节点请图回填 | IN PROGRESS | spec+plan 已落盘；server `629144c` 本地；不含 PUBLISH-02 |
 | PUBLISH-02 | 锁定带图投影上画廊 | IN PROGRESS | spec+plan 已落盘；server `a0c8081` 本地；不标 DONE |
-| PACK-01 | 投影块选择、A4 排版与双画廊 | IN PROGRESS | spec Approved；server `7ff8369` 本地；不标 DONE |
+| PACK-01 | 投影块选择、A4 排版与双画廊 | IN PROGRESS | spec Approved；server `origin/main`=`7ff8369`；隔离剑龙 `revision-0002` 已走通；不标 DONE |
 | QA-01 | 严格 QA 与人工复核 | DONE | 已本地提交 `37a5927`；未 merge、未现网 |
 | PUBLISH-01 | 不可变 package 发布 | DONE | 已本地提交 `7a127b4`；未 merge、未现网 |
 | MCP-01 | 只读 MCP | BACKLOG | 依赖稳定查询 API |
@@ -499,15 +499,15 @@
 
 ### PACK-01 投影块选择、A4 排版与双画廊
 
-- 状态：`IN PROGRESS`（spec Approved；server `knowledge-pipeline-v1` @ `7ff8369` 已本地提交；不得标 `DONE`）
+- 状态：`IN PROGRESS`（spec Approved；server `origin/main`=`7ff8369` 已 merge/push；`dino-walk.local` 剑龙 `revision-0002` 已隔离走通；不得标 `DONE`）
 - 权威仓库：产品规范 `kids-visual-learning-pack`；实现 `cognitive-card-server` `knowledge-pipeline-v1` worktree。
 - 依赖：IMG-03 compose；PUBLISH-02；PORTAL-01；RENDER-02；FREEZE-01。
 - 范围：compose 之后建 pack-layout 草稿；勾选模块内可拆子块（成对、清场区可选）；A4 自动分页续页；HTML 预览 + 刷新印样；拖块改页/改序；`lock_pack_layout`；包内 A4 多页 + 完整投影 HTML；画廊切换两种渲染。
 - 非范围：图像 API；改四对象；画廊内勾选；缩小字号；生产 catalog；merge/push/release。
 - 独立设计：[投影块选择与双画廊](superpowers/specs/2026-09-08-operator-pack-layout-dual-gallery-design.md)。
 - 实施计划：[投影块选择与双画廊实施](superpowers/plans/2026-09-08-operator-pack-layout-dual-gallery-implementation-plan.md)。
-- 已实现：server `.worktrees/cognitive-card-server-knowledge-core` `knowledge-pipeline-v1` @ `7ff8369`（pack-layout 草稿/拖块/印样/`lock_pack_layout`、编号包、PORTAL 双画廊、stale GET 新 draft、AGE 折行高度）。combined focused 311 ran / 309 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 add `uv.lock`。未 merge/push/release。
-- 下一动作：不要 merge/push/release。不要标 `DONE`。不写现网 catalog。
+- 已实现：server `.worktrees/cognitive-card-server-knowledge-core` @ `7ff8369`（pack-layout 草稿/拖块/印样/`lock_pack_layout`、编号包、PORTAL 双画廊、stale GET 新 draft、AGE 折行高度）。`dino-walk.local` 剑龙 `revision-0002` 已隔离走通。combined focused 311 ran / 309 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`；非本刀）。未 add `uv.lock`。2026-09-09 已 fast-forward 进 server `main` 并 push `origin/main`=`7ff8369`。未切现网、未 reload Nginx、未打 release。
+- 下一动作：不要标 `DONE`。不要切现网 / reload Nginx。不要打 release。
 - 完成条件：能拿掉过长句和多余图后锁出可翻页 A4，画廊能切换同一组块的完整投影；旧无 media-plan 主题四页包不变。因未生产，本条不得标 `DONE`。
 
 ### AUTH-01 Card OS 身份与权限
@@ -812,9 +812,9 @@
 27. **FLOW-01** 操作台迭代工作流（IN PROGRESS；spec Approved；程序仍不整条实施；IMG-03 server `629144c` 本地；PUBLISH-02 server `a0c8081` 本地；PACK-01 server `7ff8369` 本地；不标 DONE）。
 28. **IMG-03** 冻结节点请图 + compose 锁定（IN PROGRESS；kids `3944447`、server `629144c` 已本地提交；不含把 PUBLISH-02 标 DONE；不标 DONE）。
 29. **PUBLISH-02** 锁定带图投影上画廊（IN PROGRESS；kids `becaef3`、server `a0c8081` 已本地提交；combined 263/261/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
-30. **PACK-01** 投影块选择、A4 排版与双画廊（IN PROGRESS；kids `7bed28f`、server `7ff8369` 已本地提交；combined 311/309/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
+30. **PACK-01** 投影块选择、A4 排版与双画廊（IN PROGRESS；kids 本回合 push `main`；server `origin/main`=`7ff8369`；`dino-walk.local` 剑龙 `revision-0002` 已隔离走通；combined 311/309/2 已知 `LEGEND_ROLE_MISSING`；不标 DONE）。
 
-不把 `knowledge-pipeline-v1` merge 进 server `main`、不 push server 远程，除非用户在**该会话**里明确授权。`DEPLOY-02` 已落地现网，仍不构成对 merge `main` 的授权。
+本会话已授权：`knowledge-pipeline-v1` fast-forward 进 server `main` 并 push，`origin/main`=`7ff8369`。现网应用仍 `7aaeb2b`；切现网 / reload Nginx 须另授权。
 
 **不要排进上述队列**（后置，另立会话且须再授权）：`SKILL-03`、`OPS-02`、`AUTH-01` 浏览器会话、`MCP-01`、`UPLOAD-01`、`AGE-02`、`ACCEPT-02`、`MIG-02` / `MIG-03`、API-01 生产安装 / merge `main`、kids+server 提交（须该会话明确要求 commit）。不以当前四卡观感绕过 LEGEND-01 直接改 Pillow。
 
@@ -824,6 +824,8 @@
 
 ### 2026-09-09
 
+- PACK-01：操作者授权后 server `knowledge-pipeline-v1` @ `7ff8369` fast-forward 进 `main` 并 push；`origin/main` 与 `origin/knowledge-pipeline-v1` 均为 `7ff8369`。kids `main` 同步 push 文档栈。未切现网（仍 `7aaeb2b`）、未 reload Nginx、未打 release。不标 `DONE`。
+- PACK-01：`dino-walk.local` 隔离走通剑龙 compose lock 409 → pack draft → print-sample → lock frozen → publish `revision-0002`。画廊默认 A4、可切完整投影；列表缩略 `cn-observe-01.png`。loopback `:8765` 非现网。不标 `DONE`。
 - PACK-01：kids `7bed28f`、server `knowledge-pipeline-v1` @ `7ff8369` 已本地提交（pack-layout、编号包、PORTAL 双画廊、stale GET 新 draft、AGE 折行高度）。combined focused 311 ran / 309 ok / 2 FAIL（已知 ops mapping-lock `LEGEND_ROLE_MISSING`）。未 add `uv.lock` / `outputs/`。未 merge/push/release。不标 `DONE`。隔离：`dino-walk.local` only。
 
 ### 2026-09-08
